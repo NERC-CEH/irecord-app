@@ -1,0 +1,11 @@
+.DS_Store
+.idea
+.sass-cache
+dist
+node_modules
+bower_components
+
+!src/scripts/libs
+src/scripts/libs/*
+!src/scripts/libs/datepick/
+!src/scripts/libs/jquery.mobile/

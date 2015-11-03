@@ -1,0 +1,56 @@
+{
+  "name": "rare_arable_flowers",
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery": "2.1.4",
+    "requirejs": "2.1.16",
+    "backbone": "1.1.2",
+    "lodash": "3.6.0",
+    "marionette": "2.4.3",
+    "backbone.localStorage": "jeromegn/Backbone.localStorage#1.1.16",
+    "morel": "Indicia-Team/morel#3.0",
+    "latlon": "chrisveness/geodesy#d50580b5054b562f0d1c94441f74a9d0bf8ba710",
+    "IndexedDBShim": "axemclion/IndexedDBShim#3d1f549f106a9a078a6f7448796a241eee7f9a76",
+    "fastclick": "1.0.3"
+  },
+  "exportsOverride": {
+    "requirejs": {
+      "js": "require.js"
+    },
+    "backbone": {
+      "js": "backbone.js"
+    },
+    "backbone.localStorage": {
+      "js": ["backbone.localStorage.js", "backbone.localStorage-min.js"]
+    },
+    "marionette": {
+      "js": ["lib/backbone.marionette.js", "lib/backbone.marionette.min.js"]
+    },
+    "fastclick": {
+      "js": "lib/fastclick.js"
+    },
+    "d3": {
+      "js": ["d3.js", "d3.min.js"]
+    },
+    "IndexedDBShim": {
+      "js": ["dist/IndexedDBShim.js"]
+    },
+    "jquery": {
+      "js": ["dist/jquery.js", "dist/jquery.min.js"]
+    },
+    "latlon": {
+      "js": [
+        "latlon-ellipsoidal.js",
+        "osgridref.js",
+        "vector3d.js",
+        "dms.js"
+      ]
+    },
+    "lodash": {
+      "js": ["lodash.js", "lodash.min.js"]
+    },
+    "morel": {
+      "js": ["morel.js", "morel.min.js"]
+    }
+  }
+}

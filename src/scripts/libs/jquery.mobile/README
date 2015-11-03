@@ -1,0 +1,164 @@
+jQuery Mobile Custom build
+--------------------------
+
+(Link)[http://jquerymobile.com/download-builder/]
+
+
+
+Core
+====
+Animation Complete
+A handler for css transition & animation end events to ensure callback is executed
+
+jqmData
+Mobile versions of Data functions to allow for namespaceing
+
+Defaults
+Default values for jQuery Mobile
+
+Helpers
+Helper functions and references
+
+Init
+Global initialization of the library.
+
+Namespace
+The mobile namespace on the jQuery object
+
+Support Tests
+Assorted tests to qualify browsers by detecting features
+
+Orientation support test
+Feature test for orientation
+
+Touch support test
+Touch feature test
+
+Virtual Mouse (vmouse) Bindings
+Normalizes touch/mouse events.
+
+Widget Factory
+Widget factory extentions for mobile.
+
+Page Creation
+Basic page definition and formatting.
+
+
+
+Events
+======
+
+Navigate
+Provides a wrapper around hashchange and popstate
+
+Orientation Change
+Provides a wrapper around the inconsistent browser implementations of orientationchange
+
+Throttled Resize
+Fires a resize event with a slight delay to prevent excessive callback invocation
+
+Touch
+Touch events including: touchstart, touchmove, touchend, tap, taphold, swipe, swipeleft, swiperight, scrollstart, scrollstop
+
+Events
+Custom events and shortcuts.
+
+
+
+Forms
+=====
+
+Controlgroups
+Visually groups sets of buttons, checks, radios, etc.
+
+Checkboxes & Radio Buttons
+Consistent styling for checkboxes/radio buttons.
+
+Text Input Clear Button
+Add the ability to have a clear button
+
+Flip Switch
+Consistent styling for native select menus. Tapping opens a native select menu.
+
+Range Slider
+Range Slider form widget
+
+Text Inputs & Textareas
+Enhances and consistently styles text inputs.
+
+
+
+Navigation
+==========
+
+Content Management
+Applies the AJAX navigation system to links and forms to enable page transitions
+
+Base Tag
+Dynamic Base Tag Support
+
+History Manager
+Manages a stack of history entries. Used exclusively by the Navigation Manager
+
+Navigate Method
+A wrapper for the primary Navigator and History objects in jQuery Mobile
+
+Navigation Manager
+Manages URL history and information in conjunction with the navigate event
+
+Path Helpers
+Path parsing and manipulation helpers
+
+Content Management
+Widget to create page container which manages pages and transitions
+
+
+
+Transitions
+===========
+
+Transition Concurrent
+Animated page change with concurrent transition style application
+
+Transition Handlers
+Animated page change handlers for integrating with Navigation
+
+Transition Serial
+Animated page change with serial transition style application
+
+Transition Core
+Animated page change base constructor and logic
+
+
+
+Utilities
+=========
+
+Degrade Inputs
+Changes input type to another after custom enhancements are made (ex. range > numeric).
+
+Match Media Polyfill
+A workaround for browsers without window.matchMedia
+
+Zoom Handling
+Utility methods for enabling and disabling user scaling (pinch zoom)
+
+
+
+Widgets
+=======
+
+First & Last Classes
+Behavior mixin to mark first and last visible item with special classes.
+
+Toolbars: Fixed
+Behavior for "fixed" headers and footers - be sure to also include the item 'Browser specific workarounds for "fixed" headers and footers' when supporting Android 2.x or iOS 5
+
+Listview
+Applies listview styling of various types (standard, numbered, split button, etc.)
+
+Listview Autodividers
+Generates dividers for listview items
+
+Loading Message
+Loading message for page transitions

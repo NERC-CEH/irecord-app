@@ -1,0 +1,50 @@
+<html>
+<head>
+  <title>iRecord</title>
+
+  <link rel="manifest" href="/manifest.json">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1,
+        minimum-scale=1, maximum-scale=1, user-scalable=no"/>
+
+  <meta name="description" content="iRecord mobile/offline first web application for species recording.">
+  <meta name="keywords" content="CEH,BRC,Record,iRecord,Flowers,Biological,Species,Citizen,Science">
+  <meta name="author" content="Karolis Kazlauskis">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="RAF">
+  <meta name="application-name" content="iRecord">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- ICONS -->
+
+  <!-- STYLES -->
+  <link type="text/css" rel="stylesheet" href="styles/main.min.css"/>
+
+  <!-- SCRIPTS -->
+  <script src="scripts/libs/require.min.js" data-main="scripts/main" async></script>
+</head>
+
+<body class="loading">
+  <div class="loading">
+    <h1>iRecord App</h1>
+    <br/>
+    <div class="loader">
+      <img src="images/ajax-loader.gif" />
+      <div class="error"><!-- Error while loading --></div>
+      <noscript>
+        <style type="text/css">
+          .loader img {display:none;}
+        </style>
+        <div class="error">
+          Oh no! Looks like you don't have javascript enabled.
+        </div>
+      </noscript>
+    </div>
+  </div>
+</body>
+
+</html>
