@@ -3,6 +3,7 @@
  *****************************************************************************/
 
 @import "conf.scss";
+@import "loading.scss";
 
 body {
   margin: 0;
@@ -198,10 +199,6 @@ a.ui-btn > img {
   opacity: 1;
 }
 
-.app-version {
-  color: #616161;
-  font-weight: lighter;
-}
 
 .differences-table {
   width: 100%;
@@ -230,7 +227,6 @@ a.ui-btn > img {
 .listview-full {
   margin: 0 !important;
 }
-
 
 .ui-checkbox, .ui-radio {
   margin: 0 3%;
@@ -340,28 +336,6 @@ input:focus {
   margin-right: 1px !important;
 }
 
-.loading .loader img {
-  width: 50px;
-  background: white;
-  box-shadow: 0px 0px 24px 1px white;
-  border-radius: 25px;
-}
-
-.loading .loader .error {
-  margin-top: 20px;
-  color: white;
-  text-shadow: none;
-}
-
-ul.credits {
-  padding-left: 10px;
-  line-height: 1;
-}
-
-.ui-collapsible-set {
-  padding: 1em;
-}
-
 .ui-slider input {
   width: initial !important;
   height: initial !important;
@@ -371,3 +345,4 @@ ul.credits {
 .ui-field-contain {
   padding: 0.5em 1em;
 }
+
