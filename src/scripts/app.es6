@@ -10,13 +10,15 @@ define([
     'routers/router',
     'models/app',
     'models/user',
+    'app-config',
     'helpers/log'
   ],
-  function ($, jqm, Marionette, FastClick, morel, Router, AppModel, UserModel) {
+  function ($, jqm, Marionette, FastClick, morel, Router, AppModel, UserModel, CONFIG) {
     var App = {
       init: function () {
-        //init data
-        app.recordManager = new morel.Manager(app.CONF.morel);
+        $.extend(true, morel.Sample.keys, CONFIG.morel.sample);
+        $.extend(true, morel.Occurrence.keys, CONFIG.morel.occurrence);
+        app.recordManager = new morel.Manager(CONFIG.morel.manager);
 
         app.models = {};
         app.models.user = new UserModel();

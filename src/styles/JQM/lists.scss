@@ -1,0 +1,28 @@
+
+.ui-collapsible-content p,
+.ui-listview>li p {
+  font-size: 90%;
+  white-space: normal;
+}
+
+
+.ui-content .ui-listview {
+  margin: 0 3%;
+}
+
+.ui-listview>.ui-li-static {
+  padding: .7em 3%;
+}
+
+/* Increase label width compared to standard jQM. */
+@media (min-width: 28em) {
+  .ui-field-contain > label,
+  .ui-field-contain .ui-controlgroup-label,
+  .ui-field-contain > .ui-rangeslider > label {
+    width: 30%;
+  }
+}
+
+.listview-full {
+  margin: 0 !important;
+}

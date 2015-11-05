@@ -1,0 +1,21 @@
+
+@media only screen and (min-width: $app-max-width) {
+  #app {
+    max-width: $app-max-width;
+    margin: 0 auto;
+    overflow: hidden;
+
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
+  }
+
+  html {
+    overflow-y: scroll;
+  }
+
+  .ui-header-fixed, .ui-footer-fixed {
+    width: $app-max-width;
+    margin-left: -380px;
+    left: 50%;
+  }
+}

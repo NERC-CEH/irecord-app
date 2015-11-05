@@ -3,8 +3,7 @@
  *****************************************************************************/
 define([
   'backbone',
-  'backbone.localStorage',
-  'conf'
+  'backbone.localStorage'
 ], function (Backbone) {
 
   'use strict';

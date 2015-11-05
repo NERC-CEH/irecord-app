@@ -5,7 +5,7 @@
   require.config({
     baseUrl: "scripts/",
     paths: {
-      'conf': '', //replaced with grunt
+      'app-config': '{CONFIG}', //replaced on build
       'jquery': 'libs/jquery.min',
       'jquery.mobile': 'libs/jquery.mobile.custom.min',
       'IndexedDBShim': 'libs/IndexedDBShim.min',
@@ -23,7 +23,7 @@
     shim: {
       'latlon': {deps: ['latlon-ellipsoidal']},
       'latlon-ellipsoidal': {deps: ['vector3d', 'dms']},
-      'jquery.mobile': {deps: ['conf-jqm']},
+      'jquery.mobile': {deps: ['config/jqm']},
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
       'marionette': {deps: ['backbone']},
       'morel': {deps: ['IndexedDBShim']}
@@ -33,7 +33,7 @@
 
   //Load the mighty app :)
   window.app = {};
-  require(['conf-jqm', 'app'], function (jqmConf, App) {
+  require(['app', 'config/jqm'], function (App) {
     //jquery mobile - backbone configuration should be set up by this point.
     App.init();
   });

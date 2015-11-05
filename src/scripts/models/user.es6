@@ -5,7 +5,6 @@ define([
   'backbone',
   'helpers/location',
   'backbone.localStorage',
-  'conf',
   'latlon'
 ], function (Backbone, locHelp) {
   'use strict';

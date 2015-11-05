@@ -2,8 +2,9 @@
  * A default JQM page view.
  *****************************************************************************/
 define([
-  'backbone'
-], function (Backbone) {
+  'backbone',
+  'helpers/log'
+], function (Backbone, log) {
   'use strict';
 
   var Page = Backbone.View.extend({
@@ -17,7 +18,7 @@ define([
      * @param id
      */
     initialize: function (id) {
-      _log('views.Page(' + id + '): initialize', log.DEBUG);
+      log('views.Page(' + id + '): initialize', 'd');
 
       this.el.id = id;
       this.id = id;
@@ -33,7 +34,7 @@ define([
      * @returns {Page}
      */
     render: function () {
-      _log('views.Page(' + this.id + '): render', log.DEBUG);
+      log('views.Page(' + this.id + '): render', 'd');
 
       $(this.el).html(this.template());
       $('body').append($(this.el));
@@ -61,7 +62,7 @@ define([
      * to bring the history back.
      */
     appendBackButtonListeners: function () {
-      _log('views.Page(' + this.id + '): appending Back button listeners', log.DEBUG);
+      log('views.Page(' + this.id + '): appending Back button listeners', 'd');
 
       this.$el.find('a[data-rel="back"]').on('click', function (e) {
         window.history.back();

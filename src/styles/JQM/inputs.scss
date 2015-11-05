@@ -1,0 +1,27 @@
+
+.ui-checkbox input,
+.ui-radio input {
+  top: 0;
+}
+
+
+.ui-checkbox, .ui-radio {
+  margin: 0 3%;
+}
+
+.ui-checkbox .ui-btn {
+  border-radius: 0;
+  border-right: none;
+  border-left: none;
+}
+
+.ui-radio label {
+  border-right: none;
+  border-left: none;
+}
+
+.ui-slider input {
+  width: initial !important;
+  height: initial !important;
+  margin: initial !important;
+}

@@ -28,11 +28,10 @@
   <script src="scripts/libs/require.min.js" data-main="scripts/main" async></script>
 </head>
 
-<body class="loading">
-  <div class="loading">
+<body>
+  <div id="loader">
     <h1>iRecord App</h1>
-    <br/>
-    <div class="loader">
+    <div id="animation">
       <img src="images/ajax-loader.gif" />
       <div class="error"><!-- Error while loading --></div>
       <noscript>
@@ -44,6 +43,10 @@
         </div>
       </noscript>
     </div>
+  </div>
+
+  <div id="app">
+    <!--  App nodes -->
   </div>
 </body>
 

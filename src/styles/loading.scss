@@ -6,22 +6,26 @@
 //}
 //
 
-.loading {
-  margin-top: 40vh;
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  margin: 0 0 4em -200px;
+  width: 400px;
 }
 
-.loading h1 {
+#loader h1 {
   color: #1f1f1f;
   text-align: center;
   font-size: 3em;
 }
 
-.loading .loader {
+#loader #animation {
   text-align: center;
 }
 
-.loading .loader .error {
+#loader #animation .error {
   margin-top: 20px;
-  color: white;
+  color: black;
   text-shadow: none;
 }

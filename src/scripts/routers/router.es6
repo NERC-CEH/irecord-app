@@ -3,9 +3,11 @@
  *****************************************************************************/
 define([
   'routers/router_extension',
+  'helpers/log',
   'views/_page',
-  'views/main/page'
-], function(ext, Page, MainPage) {
+  'views/main/page',
+  'views/record/page'
+], function(ext, log, Page, MainPage, RecordPage) {
   'use strict';
 
   app.views = {};
@@ -15,7 +17,7 @@ define([
      * Initialize the router.
      */
     initialize: function () {
-      _log('app.Router: initialize.', log.DEBUG);
+      log('app.Router: initialize.', 'd');
     },
 
     /**
@@ -29,12 +31,18 @@ define([
         this.changePage(app.views.mainPage);
       },
 
-
       "main": function () {
         if (!app.views.mainPage) {
           app.views.mainPage = new MainPage();
         }
         this.changePage(app.views.mainPage);
+      },
+
+      "record": function () {
+        if (!app.views.recordPage) {
+          app.views.recordPage = new RecordPage();
+        }
+        this.changePage(app.views.recordPage);
       }
     },
 
@@ -61,7 +69,7 @@ define([
       // We turned off $.mobile.autoInitializePage, but now that we've
       // added our first page to the DOM, we can now call initializePage.
       if (!this.initializedFirstPage) {
-        _log('app.Router: loading first page.', log.DEBUG);
+        log('app.Router: loading first page.', 'd');
 
         $.mobile.initializePage();
         this.initializedFirstPage = true;

@@ -2,8 +2,8 @@ module.exports = function (grunt) {
   var DEST = 'dist/',
       SCRIPTS = 'dist/scripts/',
       MANIFEST_NAME = 'manifest.json',
-      CONF_NAME = 'conf.js',
-      CONF_DEV_NAME = 'conf-dev.js';
+      CONFIG_NAME = 'config/app',
+      CONFIG_DEV_NAME = 'config/dev';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -25,50 +25,47 @@ module.exports = function (grunt) {
         files: [
           //HTML
           {
-            src:  "src/*.html", dest: 'dist/',
+            src: "src/*.html", dest: 'dist/',
             expand: true, flatten: true
           },
           {
-            src:  "src/*.json", dest: 'dist/',
+            src: "src/*.json", dest: 'dist/',
             expand: true, flatten: true
           },
           {
-            src:  "src/images/**", dest: 'dist/images/',
+            src: "src/images/**", dest: 'dist/images/',
             expand: true, flatten: true, filter: 'isFile'
           },
           {
-            src:  "src/images/ajax-loader.gif", dest: 'dist/styles/images/',
+            src: "src/images/ajax-loader.gif", dest: 'dist/styles/images/',
             expand: true, flatten: true
           },
           //JS
           {
-            src:  "src/scripts/libs/**/js/*", dest: 'dist/scripts/libs/',
+            src: "src/scripts/libs/**/js/*", dest: 'dist/scripts/libs/',
             expand: true, flatten: true
           },
           {
-            src:  "src/scripts/libs/**/css/*", dest: 'dist/styles/',
+            src: "src/scripts/libs/**/css/*", dest: 'dist/styles/',
             expand: true, flatten: true
           }
         ]
-      }
+    }
     },
 
 
     jst: {
       compile: {
         options: {
-          namespace: 'app.jst',
+          amd: true,
+          namespace: 'JST',
           prettify: true,
-          //this does not support using %=
-          //templateSettings: {
-          //  interpolate : /\{\{(.+?)\}\}/g
-          //},
           processName: function(filepath) {
             return filepath.split('templates/')[1].split('.')[0];
           }
         },
         files: {
-          "dist/scripts/templates.js": [
+          "dist/scripts/JST.js": [
             "src/templates/*.tpl",
             "src/templates/**/*.tpl"
           ]
@@ -111,8 +108,8 @@ module.exports = function (grunt) {
       //App NAME and VERSION
       main: {
         src: [
-          SCRIPTS + CONF_NAME,
-          SCRIPTS + CONF_DEV_NAME,
+          SCRIPTS + CONFIG_NAME + '.js',
+          SCRIPTS + CONFIG_DEV_NAME + '.js',
           DEST + MANIFEST_NAME
         ],
         overwrite: true, // overwrite matched source files
@@ -121,28 +118,28 @@ module.exports = function (grunt) {
           to: '<%= pkg.version %>'
         },
           {
-            from: /{APP_NAME}/g,  // string replacement
+            from: /{APP_NAME}/g,
             to: '<%= pkg.name %>'
           }
         ]
       },
 
-      //App configuration
+      //App CONFIG
       config: {
         src: [SCRIPTS + 'main.js'],
-        overwrite: true, // overwrite matched source files
+        overwrite: true,
         replacements: [{
-          from: /\'conf\': \'.*\'/g, // string replacement
-          to: '\'conf\': \'conf\''
+          from: /{CONFIG}/g,
+          to: CONFIG_NAME
         }]
       },
 
       dev_config: {
         src: [SCRIPTS + 'main.js'],
-        overwrite: true, // overwrite matched source files
+        overwrite: true,
         replacements: [{
-          from: /\'conf\': \'.*\'/g, // string replacement
-          to: '\'conf\': \'conf-dev\''
+          from: /{CONFIG}/g,
+          to: CONFIG_DEV_NAME
         }]
       }
     },
@@ -338,15 +335,15 @@ module.exports = function (grunt) {
   // the default task can be run just by typing "grunt" on the command line
   grunt.registerTask('init', [
     'bower',
-    'fontello'
-
-  ]);
-  grunt.registerTask('run', [
     'replace:indexedDBShim',
     'replace:latlon',
     'uglify',
+    'fontello',
+    'copy'
+  ]);
+
+  grunt.registerTask('run', [
     'babel',
-    'copy:main',
     'sass',
     'cssmin',
     'jst',

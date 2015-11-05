@@ -9,18 +9,18 @@ define([
   'use strict';
 
   var Page = DefaultPage.extend({
-    id: 'main',
+    id: 'record',
 
-    template: JST['main/page'],
+    template: JST['record/page'],
 
     initialize: function () {
-      log('views.MainPage: initialize', 'd');
+      log('views.RecordPage: initialize', 'd');
       this.render();
       return this;
     },
 
     render: function () {
-      log('views.MainPage: render', 'd');
+      log('views.RecordPage: render', 'd');
 
       this.$el.html(this.template());
       $('#app').append($(this.el));
