@@ -4,16 +4,15 @@
 define([
     'jquery',
     'jquery.mobile',
-    'marionette',
     'fastclick',
     'morel',
-    'routers/router',
+    'routers/records',
     'models/app',
     'models/user',
     'app-config',
     'helpers/log'
   ],
-  function ($, jqm, Marionette, FastClick, morel, Router, AppModel, UserModel, CONFIG) {
+  function ($, jqm, FastClick, morel, Records, AppModel, UserModel, CONFIG) {
     var App = {
       init: function () {
         $.extend(true, morel.Sample.keys, CONFIG.morel.sample);
@@ -26,7 +25,7 @@ define([
         app.models.sample = null; //to be set up on record opening
         app.collections = {};
 
-        app.router = new Router();
+        app.records = Records;
         Backbone.history.start();
 
         FastClick.attach(document.body);
