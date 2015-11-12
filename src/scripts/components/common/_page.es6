@@ -3,7 +3,7 @@
  *****************************************************************************/
 define([
   'backbone',
-  'helpers/log'
+  'log'
 ], function (Backbone, log) {
   'use strict';
 

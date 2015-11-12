@@ -4,36 +4,68 @@
 define([
     'jquery',
     'jquery.mobile',
+    'backbone',
+    'marionette',
     'fastclick',
     'morel',
-    'routers/records',
-    'models/app',
-    'models/user',
     'app-config',
-    'helpers/log'
+    'log'
   ],
-  function ($, jqm, FastClick, morel, Records, AppModel, UserModel, CONFIG) {
-    var App = {
-      init: function () {
-        $.extend(true, morel.Sample.keys, CONFIG.morel.sample);
-        $.extend(true, morel.Occurrence.keys, CONFIG.morel.occurrence);
-        app.recordManager = new morel.Manager(CONFIG.morel.manager);
+  function ($, jqm, Backbone, Marionette, FastClick, morel, CONFIG, log) {
+    var app = new Marionette.Application();
 
-        app.models = {};
-        app.models.user = new UserModel();
-        app.models.app = new AppModel();
-        app.models.sample = null; //to be set up on record opening
-        app.collections = {};
+    app.navigate = function(route,  options = {}){
+      Backbone.history.navigate(route, options);
+    };
 
-        app.records = Records;
+    app.getCurrentRoute = function(){
+      return Backbone.history.fragment
+    };
+
+    app.on("before:start", function(){
+      var RegionContainer = Marionette.LayoutView.extend({
+        el: "#app",
+
+        regions: {
+          header: "#header",
+          main: "#main",
+          footer: "#footer"
+        }
+      });
+
+      app.regions = new RegionContainer();
+    });
+
+    app.on("start", function () {
+      $.extend(true, morel.Sample.keys, CONFIG.morel.sample);
+      $.extend(true, morel.Occurrence.keys, CONFIG.morel.occurrence);
+      app.recordManager = new morel.Manager(CONFIG.morel.manager);
+
+      //app.models = {};
+      //app.models.user = new UserModel();
+      //app.models.app = new AppModel();
+      //app.models.sample = null; //to be set up on record opening
+      //app.collections = {};
+      //
+      //app.records = Records;
+
+      FastClick.attach(document.body);
+
+      //turn off the loading splash screen
+      $('div.loading').css('display', 'none');
+      $('body').removeClass('loading');
+
+
+      if (Backbone.history) {
         Backbone.history.start();
 
-        FastClick.attach(document.body);
-
-        //turn off the loading splash screen
-        $('div.loading').css('display', 'none');
-        $('body').removeClass('loading');
+        if (this.getCurrentRoute() === '') {
+          app.trigger('records:list');
+        }
       }
-    };
-    return App;
+
+      $.mobile.initializePage();
+    });
+
+    return app;
   });

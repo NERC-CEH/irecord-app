@@ -61,13 +61,21 @@ module.exports = function (grunt) {
           namespace: 'JST',
           prettify: true,
           processName: function(filepath) {
-            return filepath.split('templates/')[1].split('.')[0];
+            var templatesDir = '/templates';
+            filepath = filepath.split('src/scripts/components/')[1];
+            filepath = filepath.split('.')[0];
+            //cut out templates dir
+            var dirIndex = filepath.indexOf(templatesDir);
+            if (dirIndex){
+              filepath = filepath.substr(0, dirIndex) +
+                filepath.substr(dirIndex + templatesDir.length);
+            }
+            return filepath;
           }
         },
         files: {
           "dist/scripts/JST.js": [
-            "src/templates/*.tpl",
-            "src/templates/**/*.tpl"
+            "src/scripts/components/**/**/**/*.tpl"
           ]
         }
       }
@@ -295,7 +303,7 @@ module.exports = function (grunt) {
       files: {
         expand: true,
         cwd: 'src',
-        src: ['scripts/**/*.es6'],
+        src: ['scripts/**/**/**/*.es6'],
         dest: 'dist',
         ext: '.js'
       }

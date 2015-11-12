@@ -18,7 +18,9 @@
       'underscore': 'libs/lodash.min',
       'backbone': 'libs/backbone.min',
       'marionette': 'libs/backbone.marionette.min',
-      'backbone.localStorage': 'libs/backbone.localStorage-min'
+      'backbone.localStorage': 'libs/backbone.localStorage-min',
+      'log': 'components/common/log',
+      'default_page': 'components/common/_page'
     },
     shim: {
       'latlon': {deps: ['latlon-ellipsoidal']},
@@ -32,10 +34,9 @@
   });
 
   //Load the mighty app :)
-  window.app = {};
-  require(['app', 'config/jqm'], function (App) {
+  require(['app', 'config/jqm', 'components/records/router'], function (app) {
     //jquery mobile - backbone configuration should be set up by this point.
-    App.init();
+    app.start();
   });
 
 })();

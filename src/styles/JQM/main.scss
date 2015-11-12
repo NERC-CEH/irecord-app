@@ -191,3 +191,7 @@ a.ui-btn > img {
   margin: 0 3%;
   border-radius: 0;
 }
+
+.ui-footer:empty, .ui-header:empty {
+  display: none;
+}
