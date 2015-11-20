@@ -1,7 +1,7 @@
 define([
   'app',
   './main_view',
-  './header_view'
+  'common/header_view'
 ], function (app, MainView, HeaderView) {
   let controller = function () {
     let RecordModel = Backbone.Model.extend({
