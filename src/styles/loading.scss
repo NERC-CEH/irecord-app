@@ -7,11 +7,13 @@
 //
 
 #loader {
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  margin: 0 0 4em -200px;
-  width: 400px;
+  z-index: 1000;
+  position: fixed;
+
+  padding-top: 40vh;
+  width: 100%;
+  background-color: $background-color;
+  height: 100vh;
 }
 
 #loader h1 {

@@ -3,7 +3,6 @@
  *****************************************************************************/
 define([
     'jquery',
-    'jquery.mobile',
     'backbone',
     'marionette',
     'fastclick',
@@ -11,7 +10,7 @@ define([
     'app-config',
     'log'
   ],
-  function ($, jqm, Backbone, Marionette, FastClick, morel, CONFIG, log) {
+  function ($, Backbone, Marionette, FastClick, morel, CONFIG, log) {
     var app = new Marionette.Application();
 
     app.navigate = function(route,  options = {}){
@@ -28,8 +27,7 @@ define([
 
         regions: {
           header: "#header",
-          main: "#main",
-          footer: "#footer"
+          main: "#main"
         }
       });
 
@@ -62,9 +60,10 @@ define([
         if (this.getCurrentRoute() === '') {
           app.trigger('records:list');
         }
+
+        $('#loader').remove();
       }
 
-      $.mobile.initializePage();
     });
 
     return app;

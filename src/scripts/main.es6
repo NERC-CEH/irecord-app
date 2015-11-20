@@ -6,8 +6,8 @@
     baseUrl: "scripts/",
     paths: {
       'app-config': '{CONFIG}', //replaced on build
+      'ratchet': 'libs/ratchet.min',
       'jquery': 'libs/jquery.min',
-      'jquery.mobile': 'libs/jquery.mobile.custom.min',
       'IndexedDBShim': 'libs/IndexedDBShim.min',
       'latlon': 'libs/osgridref.min',
       'latlon-ellipsoidal': 'libs/latlon-ellipsoidal.min',
@@ -19,13 +19,12 @@
       'backbone': 'libs/backbone.min',
       'marionette': 'libs/backbone.marionette.min',
       'backbone.localStorage': 'libs/backbone.localStorage-min',
-      'log': 'components/common/log',
-      'default_page': 'components/common/_page'
+      'common': 'components/common',
+      'log': 'components/common/log'
     },
     shim: {
       'latlon': {deps: ['latlon-ellipsoidal']},
       'latlon-ellipsoidal': {deps: ['vector3d', 'dms']},
-      'jquery.mobile': {deps: ['config/jqm']},
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
       'marionette': {deps: ['backbone']},
       'morel': {deps: ['IndexedDBShim']}
@@ -34,8 +33,7 @@
   });
 
   //Load the mighty app :)
-  require(['app', 'config/jqm', 'components/records/router'], function (app) {
-    //jquery mobile - backbone configuration should be set up by this point.
+  require(['app', 'ratchet', 'components/records/router'], function (app) {
     app.start();
   });
 

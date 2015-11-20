@@ -9,17 +9,8 @@ define([
   'use strict';
 
   var Page = Marionette.ItemView.extend({
-    id: 'records-header',
     tagName: 'nav',
-    template: JST['common/header'],
-
-    events: {
-      'click a[data-rel="back"]': "navigateBack"
-    },
-
-    navigateBack: function () {
-      window.history.back();
-    }
+    template: JST['common/header']
   });
 
   return Page;

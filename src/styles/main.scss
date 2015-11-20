@@ -2,9 +2,10 @@
  * Main styling placeholder. Only imports!
  *****************************************************************************/
 
-@import "_conf.scss";
+@import "config.scss";
 @import "loading.scss";
 
 @import "app.scss";
 @import "app-wide.scss";
-@import "JQM/main.scss";
+
+@import "records/main.scss";

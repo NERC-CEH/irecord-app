@@ -45,8 +45,14 @@ module.exports = function (grunt) {
             src: "src/scripts/libs/**/js/*", dest: 'dist/scripts/libs/',
             expand: true, flatten: true
           },
+          //CSS
           {
             src: "src/scripts/libs/**/css/*", dest: 'dist/styles/',
+            expand: true, flatten: true
+          },
+          //FONTS
+          {
+            src: "src/scripts/libs/ratchet/fonts/*", dest: 'dist/fonts/',
             expand: true, flatten: true
           }
         ]
@@ -75,7 +81,8 @@ module.exports = function (grunt) {
         },
         files: {
           "dist/scripts/JST.js": [
-            "src/scripts/components/**/**/**/*.tpl"
+            "src/scripts/components/**/**/**/*.tpl",
+            "src/scripts/components/common/templates/*.tpl"
           ]
         }
       }
@@ -279,8 +286,8 @@ module.exports = function (grunt) {
       target: {
         files: [{
           src: [
-            'dist/styles/jquery.mobile.custom.structure.min.css',
-            'dist/styles/icons.css',
+            'dist/styles/ratchet.min.css',
+            //'dist/styles/icons.css',
             'dist/styles/main.css'
           ],
           dest: 'dist/styles/main.min.css'

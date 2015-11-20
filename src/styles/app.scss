@@ -49,3 +49,13 @@ input:focus {
 .space-bottom {
   margin-bottom: 25px !important;
 }
+
+header, footer {
+  color: $header-text-color;
+  background-color: $header-color !important;
+}
+
+header a,
+footer a {
+  color: $header-text-color;
+}

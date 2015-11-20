@@ -13,9 +13,18 @@
     overflow-y: scroll;
   }
 
-  .ui-header-fixed, .ui-footer-fixed {
+  footer, header {
     width: $app-max-width;
-    margin-left: -380px;
-    left: 50%;
+    margin-left: -$app-max-width/2 !important;
+    left: 50% !important;
+  }
+
+  body {
+    position: static !important;
+  }
+
+  .content {
+    min-height: 100vh;
+    position: relative !important;
   }
 }

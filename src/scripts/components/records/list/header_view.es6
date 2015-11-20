@@ -10,7 +10,7 @@ define([
 
   var Page = Marionette.ItemView.extend({
     id: 'records-header',
-    tagName: 'h1',
+    tagName: 'nav',
     template: JST['records/list/header']
   });
 

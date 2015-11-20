@@ -1,5 +1,3 @@
-  <a href="#records" class="ui-btn">Main</a>
-
   <p>
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget justo a nulla mattis accumsan. Nam feugiat viverra lectus vel vehicula. Pellentesque convallis sed arcu sit amet commodo. Fusce consequat mauris magna. Cras gravida blandit risus nec vestibulum. Phasellus vestibulum eget arcu eu vehicula. Sed non elit et orci fringilla volutpat. Phasellus non lorem volutpat, lobortis leo tempor, feugiat lacus. Fusce id egestas arcu. Ut justo erat, cursus at dignissim non, porttitor id quam. Sed hendrerit ornare urna, at sollicitudin massa. Nunc sed velit at nulla pretium maximus vel eget enim. Duis et ipsum id purus luctus tempor porta ut ante.
 
