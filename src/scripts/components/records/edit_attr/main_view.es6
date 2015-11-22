@@ -14,12 +14,12 @@ define([
     template: JST['records/list/record']
   });
 
-  let RecordsView = Marionette.CollectionView.extend({
+  let View = Marionette.CollectionView.extend({
     id: 'records-list',
     tagName: 'ul',
     className: 'table-view',
     childView: RecordView
   });
 
-  return RecordsView;
+  return View;
 });

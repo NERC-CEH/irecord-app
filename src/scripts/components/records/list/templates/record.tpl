@@ -1,6 +1,7 @@
-<a  href="#records/<%- Math.random() %>" class="navigate-right">
-    <div class="media-object pull-left icon icon-star"></div>
+<a  href="#records/<%- obj.id %>" class="navigate-right">
+    <div class="media-object pull-left photo"></div>
     <div class="media-body">
-      <%- name %>
+     <strong> <%- obj.occurrences[0].attributes.taxon %></strong>
+     <p><%- obj.attributes.date %></p>
     </div>
 </a>

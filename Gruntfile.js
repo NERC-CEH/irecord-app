@@ -54,6 +54,11 @@ module.exports = function (grunt) {
           {
             src: "src/scripts/libs/ratchet/fonts/*", dest: 'dist/fonts/',
             expand: true, flatten: true
+          },
+          //DATA
+          {
+            src: "src/data/*", dest: 'dist/scripts/data/',
+            expand: true, flatten: true
           }
         ]
     }

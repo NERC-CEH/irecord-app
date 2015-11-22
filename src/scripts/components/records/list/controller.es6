@@ -1,25 +1,17 @@
 define([
   'app',
   './main_view',
-  './header_view'
-], function (app, MainView, HeaderView) {
+  './header_view',
+  './empty_list_view',
+  'common/record_manager'
+], function (app, MainView, HeaderView, EmptyListView, recordManager) {
   let controller = function () {
-    let RecordModel = Backbone.Model.extend({
-      defaults: {
-        name: 'record'
-      }
+    recordManager.getAll(function (err, records) {
+      let mainView = new MainView({
+        collection: records
+      });
+      app.regions.main.show(mainView);
     });
-
-    let RecordsCollection = Backbone.Collection.extend({
-      model: RecordModel
-    });
-
-    let recordsCollecion = new RecordsCollection(new Array(100));
-
-    let mainView = new MainView({
-      collection: recordsCollecion
-    });
-    app.regions.main.show(mainView);
 
     let headerView = new HeaderView();
     app.regions.header.show(headerView);

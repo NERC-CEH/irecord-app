@@ -6,11 +6,9 @@ define([
     'backbone',
     'marionette',
     'fastclick',
-    'morel',
-    'app-config',
     'log'
   ],
-  function ($, Backbone, Marionette, FastClick, morel, CONFIG, log) {
+  function ($, Backbone, Marionette, FastClick, log) {
     var app = new Marionette.Application();
 
     app.navigate = function(route,  options = {}){
@@ -35,10 +33,6 @@ define([
     });
 
     app.on("start", function () {
-      $.extend(true, morel.Sample.keys, CONFIG.morel.sample);
-      $.extend(true, morel.Occurrence.keys, CONFIG.morel.occurrence);
-      app.recordManager = new morel.Manager(CONFIG.morel.manager);
-
       //app.models = {};
       //app.models.user = new UserModel();
       //app.models.app = new AppModel();

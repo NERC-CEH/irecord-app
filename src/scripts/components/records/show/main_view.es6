@@ -8,10 +8,10 @@ define([
 ], function (Marionette, JST, log) {
   'use strict';
 
-  var Page = Marionette.ItemView.extend({
+  var View = Marionette.ItemView.extend({
     id: 'records-list',
     template: JST['records/show/main']
   });
 
-  return Page;
+  return View;
 });

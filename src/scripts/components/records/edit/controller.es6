@@ -1,24 +1,22 @@
 define([
   'app',
   './main_view',
-  'common/header_view'
-], function (app, MainView, HeaderView) {
-  let controller = function () {
-    let RecordModel = Backbone.Model.extend({
-      defaults: {
-        name: 'record'
-      }
-    });
+  'common/header_view',
+  'common/record_manager'
+], function (app, MainView, HeaderView, recordManager) {
+  let controller = function (recordID) {
+    let sample;
 
-    let RecordsCollection = Backbone.Collection.extend({
-      model: RecordModel
-    });
+    if (!recordID) {
+      //new record
+      sample = new morel.Sample();
 
-    let recordsCollecion = new RecordsCollection(new Array(100));
+    } else {
+      //existing record
+      sample = recordManager.get(recordID);
+    }
 
-    let mainView = new MainView({
-      collection: recordsCollecion
-    });
+    let mainView = new MainView(sample);
     app.regions.main.show(mainView);
 
     let headerView = new HeaderView();

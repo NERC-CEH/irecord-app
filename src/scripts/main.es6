@@ -6,8 +6,8 @@
     baseUrl: "scripts/",
     paths: {
       'app-config': '{CONFIG}', //replaced on build
-      'ratchet': 'libs/ratchet.min',
-      'jquery': 'libs/jquery.min',
+      'ratchet': 'libs/ratchet',
+      'jquery': 'libs/jquery',
       'IndexedDBShim': 'libs/IndexedDBShim.min',
       'latlon': 'libs/osgridref.min',
       'latlon-ellipsoidal': 'libs/latlon-ellipsoidal.min',
@@ -15,9 +15,9 @@
       'dms': 'libs/dms.min',
       'fastclick': 'libs/fastclick.min',
       'morel': 'libs/morel',
-      'underscore': 'libs/lodash.min',
-      'backbone': 'libs/backbone.min',
-      'marionette': 'libs/backbone.marionette.min',
+      'underscore': 'libs/lodash',
+      'backbone': 'libs/backbone',
+      'marionette': 'libs/backbone.marionette',
       'backbone.localStorage': 'libs/backbone.localStorage-min',
       'common': 'components/common',
       'log': 'components/common/log'

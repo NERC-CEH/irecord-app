@@ -15,8 +15,7 @@ define([
   app.records.Router = Marionette.AppRouter.extend({
     routes: {
       "records": ListController,
-      "records/new": EditController,
-      "records/new/:attr": EditAttrController,
+      "records/new": TaxonController,
       "records/:id": ShowController,
       "records/:id/edit": EditController,
       "records/:id/edit/location": LocationController,

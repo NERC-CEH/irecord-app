@@ -8,18 +8,9 @@ define([
 ], function (Marionette, JST, log) {
   'use strict';
 
-  let RecordView = Marionette.ItemView.extend({
-    tagName: 'li',
-    className: 'table-view-cell',
-    template: JST['records/list/record']
+  let View = Marionette.ItemView.extend({
+    template: JST['records/edit/record']
   });
 
-  let RecordsView = Marionette.CollectionView.extend({
-    id: 'records-list',
-    tagName: 'ul',
-    className: 'table-view',
-    childView: RecordView
-  });
-
-  return RecordsView;
+  return View;
 });
