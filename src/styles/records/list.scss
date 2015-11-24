@@ -34,9 +34,15 @@
 }
 
 #records-list li .photo {
-  height: 42px;
-  width: 42px;
+  margin: -11px 8px 0 -14px;
+  height: 64px;
+  width: 64px;
   background-color: $color-secondary-2-1;
+}
+
+#records-list li .photo img {
+  height: 100%;
+  width: 100%;
 }
 
 .alert {
@@ -59,4 +65,19 @@ li.alert {
   height: initial !important;
   min-height: initial !important;
   border: none;
+}
+
+.img-picker {
+  width: 45%;
+  display: inline-block;
+  text-align: center;
+}
+
+.img-picker input {
+  left: 0;
+  position: absolute;
+  padding: .4em;
+  opacity: 0;
+  margin: -8px 0px !important;
+  height: inherit!important;
 }

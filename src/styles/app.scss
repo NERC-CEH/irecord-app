@@ -60,6 +60,11 @@ footer a {
   color: $header-text-color;
 }
 
+header .title {
+  color: $header-text-color;
+  font-weight: bold;
+}
+
 .navigate-right:after, .push-right:after {
   color: $header-color;
   content: '\e818';
@@ -87,4 +92,21 @@ footer a {
 @keyframes spin {
   from {transform:rotate(0deg);}
   to {transform:rotate(360deg);}
+}
+
+header a {
+  font-size: 18px !important;
+}
+
+header a:before {
+  font-size: 24px;
+}
+
+.warn {
+  color: $color-secondary-2-2;
+}
+
+.content {
+  padding-left: 20px;
+  padding-right: 20px;
 }

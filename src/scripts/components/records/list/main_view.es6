@@ -11,7 +11,21 @@ define([
   let RecordView = Marionette.ItemView.extend({
     tagName: 'li',
     className: 'table-view-cell',
-    template: JST['records/list/record']
+    template: JST['records/list/record'],
+
+    render: function () {
+      let date = this.model.get('date'),
+          taxon = this.model.occurrences.getFirst().get('taxon'),
+          images = this.model.occurrences.getFirst().images;
+      let img = images.length && images.getFirst().data;
+      let templateData = {
+        id: this.model.id,
+        date: date,
+        taxon: taxon,
+        img: img ? '<img src="' + img + '"/>' : ''
+      };
+      this.$el.html(this.template(templateData));
+    }
   });
 
   let NoRecordsView = Marionette.ItemView.extend({

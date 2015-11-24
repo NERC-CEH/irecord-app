@@ -1,0 +1,25 @@
+li h3 {
+  font-size: 1em;
+  font-weight: 700;
+  display: block;
+  margin: .45em 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.heading {
+  font-size: .9em!important;
+  width: 50%;
+}
+
+.descript, .heading {
+  display: inline-block!important;
+  vertical-align: middle;
+  margin: 0!important;
+}
+
+.descript {
+  width: 46%;
+  text-align: right;
+}

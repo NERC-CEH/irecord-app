@@ -24,23 +24,23 @@ define([
     }
   });
 
-  app.on("records:list", function() {
-    app.navigate('records');
+  app.on("records:list", function(options) {
+    app.navigate('records', options);
     ListController();
   });
 
-  app.on("records:show", function(id) {
-    app.navigate('records/' + id);
+  app.on("records:show", function(id, options) {
+    app.navigate('records/' + id, options);
     ShowController(id);
   });
 
-  app.on("records:edit", function(id) {
-    app.navigate('records/' + id + '/edit');
+  app.on("records:edit", function(id, options) {
+    app.navigate('records/' + id + '/edit', options);
     EditController(id);
   });
 
-  app.on("records:edit:attr", function(id, attrID) {
-    app.navigate('records/' + id + '/edit/' + attrID);
+  app.on("records:edit:attr", function(id, attrID, options) {
+    app.navigate('records/' + id + '/edit/' + attrID, options);
     switch (attrID){
       case 'location':
         LocationController(id);
@@ -53,13 +53,13 @@ define([
     }
   });
 
-  app.on("records:new", function() {
-    app.navigate('records/new');
+  app.on("records:new", function(options) {
+    app.navigate('records/new', options);
     EditController();
   });
 
-  app.on("records:new:attr", function(attrID) {
-    app.navigate('records/new/' + attrID);
+  app.on("records:new:attr", function(attrID, options) {
+    app.navigate('records/new/' + attrID, options);
     switch (attrID) {
       case 'location':
         LocationController();

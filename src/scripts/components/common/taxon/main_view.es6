@@ -24,6 +24,10 @@ define([
       suggestions: '#suggestions'
     },
 
+    initialize: function (options){
+      this.removeEditBtn = options.removeEditBtn;
+    },
+
     updateSuggestions: function (e) {
       log('taxon: updating suggestions.', 'd');
 
@@ -51,7 +55,8 @@ define([
           var s = species[i][1].toLowerCase().indexOf(text);
           if (s >= 0) {
             selection.push({
-              name: species[i][1]
+              name: species[i][1],
+              removeEditBtn: this.removeEditBtn
             });
           }
         }
@@ -79,7 +84,14 @@ define([
 
     select: function (e) {
       log('taxon: selected.', 'd');
-      app.trigger('common:taxon:selected', e.target.dataset.name);
+      let speciesID = e.target.dataset.name;
+      let edit = false;
+
+      if (!speciesID) {
+        speciesID = e.target.parentElement.dataset.name;
+        edit = true;
+      }
+      app.trigger('common:taxon:selected', speciesID, edit);
     }
   });
 

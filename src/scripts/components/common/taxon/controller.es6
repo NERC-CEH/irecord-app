@@ -10,14 +10,33 @@ define([
   let controller = function (recordID) {
     id = recordID;
 
-    let mainView = new MainView();
-    app.regions.main.show(mainView);
+    if (recordID) {
+      //check if the record has taxon specified
+      recordManager.get(recordID, function (err, record) {
+        let mainView
 
-    let headerView = new HeaderView();
+        if (!record.occurrences.getFirst().get('taxon')) {
+          mainView = new MainView();
+        } else {
+          mainView = new MainView({removeEditBtn: true});
+        }
+
+        app.regions.main.show(mainView);
+      });
+    } else {
+      let mainView = new MainView();
+      app.regions.main.show(mainView);
+    }
+
+    let headerView = new HeaderView({
+      model: new Backbone.Model({
+        pageName: 'Species'
+      })
+    });
     app.regions.header.show(headerView);
   };
 
-  app.on('common:taxon:selected', function (taxon) {
+  app.on('common:taxon:selected', function (taxon, edit) {
     if (!id) {
       //create new sighting
       let occurrence = new morel.Occurrence({
@@ -31,10 +50,26 @@ define([
       });
 
       recordManager.set(sample, function () {
-        //return to previous page
-        window.history.back();
+        if (edit) {
+          app.trigger('records:edit', sample.id, {replace: true});
+        } else {
+          //return to previous page
+          window.history.back();
+        }
       });
-
+    } else {
+      //edit existing one
+      recordManager.get(id, function (err, record) {
+        record.occurrences.getFirst().set('taxon', taxon);
+        recordManager.set(record, function (err) {
+          if (edit) {
+            app.trigger('records:edit', id, {replace: true});
+          } else {
+            //return to previous page
+            window.history.back();
+          }
+        });
+      });
     }
   });
 

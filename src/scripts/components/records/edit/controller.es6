@@ -5,21 +5,18 @@ define([
   'common/record_manager'
 ], function (app, MainView, HeaderView, recordManager) {
   let controller = function (recordID) {
-    let sample;
+    recordManager.get(recordID, function (err, record) {
+      let mainView = new MainView({
+        model: record
+      });
+      app.regions.main.show(mainView);
+    });
 
-    if (!recordID) {
-      //new record
-      sample = new morel.Sample();
-
-    } else {
-      //existing record
-      sample = recordManager.get(recordID);
-    }
-
-    let mainView = new MainView(sample);
-    app.regions.main.show(mainView);
-
-    let headerView = new HeaderView();
+    let headerView = new HeaderView({
+      model: new Backbone.Model({
+        pageName: 'Edit'
+      })
+    });
     app.regions.header.show(headerView);
   };
 

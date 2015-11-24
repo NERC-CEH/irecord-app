@@ -33,7 +33,12 @@
   });
 
   //Load the mighty app :)
-  require(['app', 'ratchet', 'components/records/router'], function (app) {
+  require([
+    'app',
+    'ratchet',
+    'components/records/router',
+    'components/app/router'
+  ], function (app) {
     app.start();
   });
 
