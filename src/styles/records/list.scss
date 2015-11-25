@@ -1,22 +1,45 @@
 //HEADER
-#records-header .pull-right {
+.records.header {
+  height: 45px;
+  padding: 0 10px;
+}
+
+.records.subheader {
+  height: 30px;
+  margin-top: -1px;
+  padding: 0 10px;
+  background-color: #4A4A4A;
+}
+
+.records.subheader .segmented-control {
+  width: 90px;
+  top: 2px;
+  background-color: transparent;
+}
+
+.records.subheader .segmented-control a{
+  padding: 0;
+  color: white;
+}
+
+.records.header .pull-right {
   width: 200px;
   margin-right: -10px;
   background-color: white;
 }
 
-#records-header .pull-right a {
+.records.header .pull-right a {
   width: 45%;
   text-align: center;
 }
 
-#records-header .pull-right .icon:before {
+.records.header .pull-right .icon:before {
   color: $header-color;
 }
 
 //LIST
 #records-list {
-  margin: 0;
+  margin: 30px 0 0;
 }
 
 #records-list.table-view {
@@ -34,9 +57,9 @@
 }
 
 #records-list li .photo {
-  margin: -11px 8px 0 -14px;
-  height: 64px;
-  width: 64px;
+  margin: -9px 8px 0 -14px;
+  height: 60px;
+  width: 60px;
   background-color: $color-secondary-2-1;
 }
 

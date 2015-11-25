@@ -292,7 +292,7 @@ module.exports = function (grunt) {
         files: [{
           src: [
             'dist/styles/ratchet.min.css',
-            //'dist/styles/icons.css',
+            'dist/styles/icons.css',
             'dist/styles/main.css'
           ],
           dest: 'dist/styles/main.min.css'

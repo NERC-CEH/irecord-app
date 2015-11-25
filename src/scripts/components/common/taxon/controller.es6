@@ -26,6 +26,7 @@ define([
     } else {
       let mainView = new MainView();
       app.regions.main.show(mainView);
+      app.regions.main.$el.find('#taxon').select();
     }
 
     let headerView = new HeaderView({

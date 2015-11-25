@@ -28,6 +28,11 @@ define([
       this.removeEditBtn = options.removeEditBtn;
     },
 
+    onRender: function () {
+      console.log('sdsdsd');
+      this.$el.find('#taxon').select();
+    },
+
     updateSuggestions: function (e) {
       log('taxon: updating suggestions.', 'd');
 
