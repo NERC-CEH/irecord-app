@@ -107,7 +107,34 @@ header a:before {
   color: $color-orange;
 }
 
+//todo: alert is absolete
+.alert {
+  color: $color-orange;
+
+  padding: 8px 35px 8px 14px;
+  margin-bottom: 20px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
 .content {
   padding-left: 12px;
   padding-right: 12px;
+}
+
+.navigate-right:after, .push-right:after {
+  font-family: 'icons';
+  content: '\e808'
+}
+
+.icon-small:before {
+  font-size: 14px;
+}
+
+.table-view.no-top {
+  border-top: none;
 }

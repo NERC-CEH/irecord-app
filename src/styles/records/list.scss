@@ -4,30 +4,6 @@
   padding: 0 10px;
 }
 
-.records.subheader {
-  height: 30px;
-  margin-top: -1px;
-  padding: 0 10px;
-  background-color: $color-green-light;
-}
-
-.records.subheader .segmented-control {
-  width: 90px;
-  top: 2px;
-  background-color: transparent;
-  border-color: $color-white;
-}
-
-.records.subheader .segmented-control a{
-  padding: 0;
-  color: $color-white;
-  border-color: $color-white;
-}
-
-.segmented-control .control-item.active {
-
-}
-
 .records.header .pull-right {
   width: 40%;
   margin-right: -10px;
@@ -41,6 +17,38 @@
 
 .records.header .pull-right .icon:before {
   color: $header-color;
+}
+
+//SUBHEADER
+.records.subheader {
+  height: 30px;
+  margin-top: -1px;
+  padding: 0 10px;
+  background-color: $color-green-light;
+}
+
+.records.subheader .segmented-control {
+  width: 90px;
+  top: 5px;
+  background-color: transparent;
+  border-color: $color-white;
+}
+
+.records.subheader .segmented-control a{
+  padding: 0;
+  color: $color-white;
+  border-color: $color-white;
+}
+
+.records.subheader a:before {
+  font-size: 18px;
+}
+
+#list-search-btn,
+#list-filter-btn {
+  background-color: transparent;
+  padding: 5px 0;
+  border: none;
 }
 
 //LIST
@@ -62,6 +70,20 @@
   line-height: 17.3333px;
 }
 
+#records-list li.empty {
+  height: initial !important;
+  min-height: initial !important;
+  padding: 13px 0;
+  border: none;
+  margin: 0;
+
+  list-style: none;
+  text-align: center;
+
+  font-weight: bold;
+  color: $color-black;
+}
+
 #records-list li .photo {
   margin: -9px 8px 0 -14px;
   height: 60px;
@@ -72,28 +94,6 @@
 #records-list li .photo img {
   height: 100%;
   width: 100%;
-}
-
-.alert {
-  color: $color-orange;
-
-  padding: 8px 35px 8px 14px;
-  margin-bottom: 20px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  background-color: #fcf8e3;
-  border: 1px solid #fbeed5;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-}
-
-li.alert {
-  list-style: none;
-  margin: 0;
-  text-align: center;
-  height: initial !important;
-  min-height: initial !important;
-  border: none;
 }
 
 .img-picker {

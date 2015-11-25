@@ -52,7 +52,7 @@ module.exports = function (grunt) {
           },
           //FONTS
           {
-            src: "src/scripts/libs/ratchet/fonts/*", dest: 'dist/fonts/',
+            src: "src/scripts/libs/fontello/font/*", dest: 'dist/font/',
             expand: true, flatten: true
           },
           //DATA
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
             expand: true, flatten: true
           }
         ]
-    }
+      }
     },
 
 
@@ -161,6 +161,20 @@ module.exports = function (grunt) {
           from: /{CONFIG}/g,
           to: CONFIG_DEV_NAME
         }]
+      },
+
+      //need to remove Ratchet's default fonts to work with fontello ones
+      ratchet_fonts: {
+        src: ['src/scripts/libs/ratchet/css/ratchet.css'],
+        overwrite: true,
+        replacements: [{
+          from: /font-family: Ratchicons;/g,
+          to: ''
+          },
+          {
+            from: /src: url\(\"\.\.\/fonts.*;/g,
+            to: ''
+          }]
       }
     },
 
@@ -291,22 +305,12 @@ module.exports = function (grunt) {
       target: {
         files: [{
           src: [
-            'dist/styles/ratchet.min.css',
+            'dist/styles/ratchet.css',
             'dist/styles/icons.css',
             'dist/styles/main.css'
           ],
           dest: 'dist/styles/main.min.css'
         }]
-      }
-    },
-
-    fontello: {
-      dist: {
-        options: {
-          config  : 'src/images/icons/config.json',
-          fonts   : 'dist/font',
-          styles  : 'dist/styles/'
-        }
       }
     },
 
@@ -348,7 +352,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-fontello');
   grunt.loadNpmTasks('grunt-babel');
 
 
@@ -357,8 +360,8 @@ module.exports = function (grunt) {
     'bower',
     'replace:indexedDBShim',
     'replace:latlon',
+    'replace:ratchet_fonts',
     'uglify',
-    'fontello',
     'copy'
   ]);
 

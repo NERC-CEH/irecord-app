@@ -8,4 +8,4 @@ bower_components
 !src/scripts/libs
 src/scripts/libs/*
 !src/scripts/libs/datepick/
-!src/scripts/libs/jquery.mobile/
+!src/scripts/libs/fontello/
