@@ -9,7 +9,7 @@
 }
 
 #loader h1 {
-  color: $header-color;
+  color: $color-green;
   text-align: center;
   font-size: 3em;
 }
@@ -17,12 +17,16 @@
 #loader #animation {
   text-align: center;
   font-size: 2em;
-  color: $color-primary-3;
+  color: $color-green;
+}
+
+#loader #animation span{
+ font-size: 1em;
 }
 
 #loader #animation .error {
   font-size: 20px;
   margin-top: 20px;
-  color: #C72D2D;
+  color: $color-red;
   text-shadow: none;
 }

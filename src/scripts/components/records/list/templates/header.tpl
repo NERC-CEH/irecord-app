@@ -9,7 +9,7 @@
   </div>
 </div>
 <div class="records subheader">
-<div class="segmented-control">
+  <div class="segmented-control">
     <a class="control-item icon icon-list"></a>
     <a class="control-item icon icon-stop"></a>
   </div>

@@ -8,24 +8,30 @@
   height: 30px;
   margin-top: -1px;
   padding: 0 10px;
-  background-color: #4A4A4A;
+  background-color: $color-green-light;
 }
 
 .records.subheader .segmented-control {
   width: 90px;
   top: 2px;
   background-color: transparent;
+  border-color: $color-white;
 }
 
 .records.subheader .segmented-control a{
   padding: 0;
-  color: white;
+  color: $color-white;
+  border-color: $color-white;
+}
+
+.segmented-control .control-item.active {
+
 }
 
 .records.header .pull-right {
-  width: 200px;
+  width: 40%;
   margin-right: -10px;
-  background-color: white;
+  background-color: $color-white;
 }
 
 .records.header .pull-right a {
@@ -43,12 +49,12 @@
 }
 
 #records-list.table-view {
-  border-color: $color-primary-1;
+  border-color: $color-green-light;
 }
 
 #records-list li {
   min-height: 65px;
-  border-color: $color-primary-1;
+  border-color: $color-green-light;
 
   font-size: 13.3333px;
   font-weight: normal;
@@ -60,7 +66,7 @@
   margin: -9px 8px 0 -14px;
   height: 60px;
   width: 60px;
-  background-color: $color-secondary-2-1;
+  background-color: $color-yellow;
 }
 
 #records-list li .photo img {
@@ -69,7 +75,7 @@
 }
 
 .alert {
-  color: $color-secondary-2-1;
+  color: $color-orange;
 
   padding: 8px 35px 8px 14px;
   margin-bottom: 20px;
