@@ -3,9 +3,8 @@ define([
   'app',
   './main_view',
   './header_view',
-  './empty_list_view',
   'common/record_manager'
-], function (morel, app, MainView, HeaderView, EmptyListView, recordManager) {
+], function (morel, app, MainView, HeaderView, recordManager) {
   let controller = function () {
     recordManager.getAll(function (err, records) {
       let mainView = new MainView({
