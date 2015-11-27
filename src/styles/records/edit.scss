@@ -10,7 +10,7 @@ li h3 {
 
 .heading {
   font-size: .9em!important;
-  width: 50%;
+  width: 33%;
 }
 
 .descript, .heading {
@@ -20,6 +20,26 @@ li h3 {
 }
 
 .descript {
-  width: 46%;
+  width: 64%;
   text-align: right;
+  color: $header-color;
+}
+
+#species-button .descript {
+  width: 100%;
+  padding-left: 1em;
+}
+
+.inputs a {
+  padding-right: 45px !important;
+}
+
+.inputs .table-view-cell {
+  padding-left: 2%;
+}
+
+.inputs .media-object.icon {
+  font-size: 16px;
+  margin-right: 2%;
+  margin-left: 1%;
 }

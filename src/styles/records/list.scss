@@ -61,6 +61,23 @@
   border-color: $color-green-light;
 }
 
+#records-list .table-view-cell {
+  padding-right: 33px;
+}
+
+#records-list .online-status {
+  font-size: 15px;
+}
+
+#records-list .online-status.icon-cloud {
+  color: $color-orange;
+}
+
+#records-list .online-status.icon-upload-cloud,
+#records-list .online-status.icon-check {
+  color: $color-green;
+}
+
 #records-list li {
   min-height: 65px;
   border-color: $color-green-light;

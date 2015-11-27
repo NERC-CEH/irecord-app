@@ -3,9 +3,11 @@
  *****************************************************************************/
 define([
   'marionette',
+  'morel',
   'JST',
-  'log'
-], function (Marionette, JST, log) {
+  'log',
+  'common/record_manager'
+], function (Marionette, morel, JST, log) {
   'use strict';
 
   let RecordView = Marionette.ItemView.extend({
@@ -20,6 +22,7 @@ define([
       let img = images.length && images.getFirst().data;
       let templateData = {
         id: this.model.id,
+        onDatabase: this.model.getSyncStatus() === morel.SYNCED,
         date: date,
         taxon: taxon,
         img: img ? '<img src="' + img + '"/>' : ''

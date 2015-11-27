@@ -1,6 +1,8 @@
 
 .icon-camera:before { content: '\e800'; } /* '' */
 .icon-map:before { content: '\e801'; } /* '' */
+.icon-cloud:before { content: '\e802'; } /* '' */
+.icon-upload-cloud:before { content: '\e803'; } /* '' */
 .icon-plus:before { content: '\e804'; } /* '' */
 .icon-search:before { content: '\e805'; } /* '' */
 .icon-edit:before { content: '\e806'; } /* '' */
@@ -12,3 +14,9 @@
 .icon-lock:before { content: '\e80c'; } /* '' */
 .icon-user:before { content: '\e80d'; } /* '' */
 .icon-info:before { content: '\e80e'; } /* '' */
+.icon-check:before { content: '\e80f'; } /* '' */
+.icon-number:before { content: '\e810'; } /* '' */
+.icon-calendar:before { content: '\e811'; } /* '' */
+.icon-location:before { content: '\e812'; } /* '' */
+.icon-species:before { content: '\e813'; } /* '' */
+.icon-stage:before { content: '\e814'; } /* '' */
