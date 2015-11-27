@@ -2,6 +2,7 @@
 .records.header {
   height: 45px;
   padding: 0 10px;
+  border-bottom: 1px $header-color solid
 }
 
 .records.header .pull-right {
@@ -20,40 +21,40 @@
 }
 
 //SUBHEADER
-.records.subheader {
-  height: 30px;
-  margin-top: -1px;
-  padding: 0 10px;
-  background-color: $color-green-light;
-}
-
-.records.subheader .segmented-control {
-  width: 90px;
-  top: 5px;
-  background-color: transparent;
-  border-color: $color-white;
-}
-
-.records.subheader .segmented-control a{
-  padding: 0;
-  color: $color-white;
-  border-color: $color-white;
-}
-
-.records.subheader a:before {
-  font-size: 18px;
-}
-
-#list-search-btn,
-#list-filter-btn {
-  background-color: transparent;
-  padding: 5px 0;
-  border: none;
-}
+//.records.subheader {
+//  height: 30px;
+//  margin-top: -1px;
+//  padding: 0 10px;
+//  background-color: $color-green-light;
+//}
+//
+//.records.subheader .segmented-control {
+//  width: 90px;
+//  top: 5px;
+//  background-color: transparent;
+//  border-color: $color-white;
+//}
+//
+//.records.subheader .segmented-control a{
+//  padding: 0;
+//  color: $color-white;
+//  border-color: $color-white;
+//}
+//
+//.records.subheader a:before {
+//  font-size: 18px;
+//}
+//
+//#list-search-btn,
+//#list-filter-btn {
+//  background-color: transparent;
+//  padding: 5px 0;
+//  border: none;
+//}
 
 //LIST
 #records-list {
-  margin: 30px 0 0;
+  margin: 0;
 }
 
 #records-list.table-view {
