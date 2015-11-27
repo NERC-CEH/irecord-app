@@ -1,4 +1,4 @@
-<ul class="table-view core inputs">
+<ul class="table-view core inputs no-top">
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/taxon" id="species-button" class="navigate-right">
       <p class="descript"><%- obj.occurrences[0].attributes.taxon %></p>

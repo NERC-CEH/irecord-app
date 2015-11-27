@@ -1,18 +1,19 @@
-li h3 {
-  font-size: 1em;
-  font-weight: 700;
-  display: block;
-  margin: .45em 0;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
+//HEADING
 .heading {
   font-size: .9em!important;
   width: 33%;
 }
 
+#record-save-btn {
+  height: 43px;
+  width: 100px;
+  color: $header-color;
+  float: right;
+  border: none;
+  background-color: $color-white;
+}
+
+//MAIN
 .descript, .heading {
   display: inline-block!important;
   vertical-align: middle;

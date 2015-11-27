@@ -53,6 +53,7 @@ input:focus {
 header, footer {
   color: $header-text-color;
   background-color: $header-color !important;
+  border-bottom: 1px $header-color solid;
 }
 
 header a,
@@ -137,4 +138,14 @@ header a:before {
 
 .table-view.no-top {
   border-top: none;
+}
+
+li h3 {
+  font-size: 1em;
+  font-weight: 700;
+  display: block;
+  margin: .45em 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

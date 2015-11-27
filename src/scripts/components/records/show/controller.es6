@@ -12,7 +12,11 @@ define([
       app.regions.main.show(mainView);
     });
 
-    let headerView = new HeaderView();
+    let headerView = new HeaderView({
+      model: new Backbone.Model({
+        pageName: 'Record'
+      })
+    });
     app.regions.header.show(headerView);
   };
 

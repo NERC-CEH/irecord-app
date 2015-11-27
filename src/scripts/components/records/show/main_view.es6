@@ -9,8 +9,7 @@ define([
   'use strict';
 
   var View = Marionette.ItemView.extend({
-    id: 'records-list',
-    template: JST['records/show/main']
+    template: JST['records/show/record']
   });
 
   return View;

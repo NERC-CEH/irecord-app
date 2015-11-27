@@ -22,6 +22,7 @@ define([
       let img = images.length && images.getFirst().data;
       let templateData = {
         id: this.model.id,
+        saved: this.model.metadata.saved,
         onDatabase: this.model.getSyncStatus() === morel.SYNCED,
         date: date,
         taxon: taxon,
