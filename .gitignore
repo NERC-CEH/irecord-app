@@ -5,7 +5,7 @@ dist
 node_modules
 bower_components
 
-!src/scripts/libs
-src/scripts/libs/*
-!src/scripts/libs/datepick/
-!src/scripts/libs/fontello/
+!src/vendor
+src/vendor/*
+!src/vendor/datepick/
+!src/vendor/fontello/

@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     bower: {
       install: {
         options: {
-          targetDir: 'src/scripts/libs',
+          targetDir: 'src/vendor',
           layout: 'byComponent',
           cleanBowerDir: false
         }
@@ -42,17 +42,17 @@ module.exports = function (grunt) {
           },
           //JS
           {
-            src: "src/scripts/libs/**/js/*", dest: 'dist/scripts/libs/',
+            src: "src/vendor/**/js/*", dest: 'dist/vendor/',
             expand: true, flatten: true
           },
           //CSS
           {
-            src: "src/scripts/libs/**/css/*", dest: 'dist/styles/',
+            src: "src/vendor/**/css/*", dest: 'dist/styles/',
             expand: true, flatten: true
           },
           //FONTS
           {
-            src: "src/scripts/libs/fontello/font/*", dest: 'dist/font/',
+            src: "src/vendor/fontello/font/*", dest: 'dist/font/',
             expand: true, flatten: true
           },
           //DATA
@@ -97,7 +97,7 @@ module.exports = function (grunt) {
     replace: {
       // Fix double define problem
       latlon: {
-        src: ['src/scripts/libs/latlon/js/latlon-ellipsoidal.js'],
+        src: ['src/vendor/latlon/js/latlon-ellipsoidal.js'],
         overwrite: true,
         replacements: [
           {
@@ -112,7 +112,7 @@ module.exports = function (grunt) {
       },
       //Fix iOS 8 readonly broken IndexedDB
       indexedDBShim: {
-        src: ['src/scripts/libs/IndexedDBShim/js/IndexedDBShim.js'],
+        src: ['src/vendor/IndexedDBShim/js/IndexedDBShim.js'],
         overwrite: true,
         replacements: [
           {
@@ -165,7 +165,7 @@ module.exports = function (grunt) {
 
       //need to remove Ratchet's default fonts to work with fontello ones
       ratchet_fonts: {
-        src: ['src/scripts/libs/ratchet/css/ratchet.css'],
+        src: ['src/vendor/ratchet/css/ratchet.css'],
         overwrite: true,
         replacements: [{
           from: /font-family: Ratchicons;/g,
@@ -189,7 +189,7 @@ module.exports = function (grunt) {
           '*/\n'
         },
         files: {
-          'src/scripts/libs/IndexedDBShim/js/IndexedDBShim.min.js': ['src/scripts/libs/IndexedDBShim/js/IndexedDBShim.js']
+          'src/vendor/IndexedDBShim/js/IndexedDBShim.min.js': ['src/vendor/IndexedDBShim/js/IndexedDBShim.js']
         }
       },
       backbone: {
@@ -202,7 +202,7 @@ module.exports = function (grunt) {
           '//     http://backbonejs.org */\n'
         },
         files: {
-          'src/scripts/libs/backbone/js/backbone.min.js': ['src/scripts/libs/backbone/js/backbone.js']
+          'src/vendor/backbone/js/backbone.min.js': ['src/vendor/backbone/js/backbone.js']
         }
       },
       fastclick: {
@@ -218,7 +218,7 @@ module.exports = function (grunt) {
           '*/\n'
         },
         files: {
-          'src/scripts/libs/fastclick/js/fastclick.min.js': ['src/scripts/libs/fastclick/js/fastclick.js']
+          'src/vendor/fastclick/js/fastclick.min.js': ['src/vendor/fastclick/js/fastclick.js']
         }
       },
       dms: {
@@ -230,7 +230,7 @@ module.exports = function (grunt) {
           '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
         },
         files: {
-          'src/scripts/libs/latlon/js/dms.min.js': ['src/scripts/libs/latlon/js/dms.js']
+          'src/vendor/latlon/js/dms.min.js': ['src/vendor/latlon/js/dms.js']
         }
       },
       latlon_ellipsoid: {
@@ -244,7 +244,7 @@ module.exports = function (grunt) {
           '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
         },
         files: {
-          'src/scripts/libs/latlon/js/latlon-ellipsoidal.min.js': ['src/scripts/libs/latlon/js/latlon-ellipsoidal.js']
+          'src/vendor/latlon/js/latlon-ellipsoidal.min.js': ['src/vendor/latlon/js/latlon-ellipsoidal.js']
         }
       },
       osgridref: {
@@ -258,7 +258,7 @@ module.exports = function (grunt) {
           '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
         },
         files: {
-          'src/scripts/libs/latlon/js/osgridref.min.js': ['src/scripts/libs/latlon/js/osgridref.js']
+          'src/vendor/latlon/js/osgridref.min.js': ['src/vendor/latlon/js/osgridref.js']
         }
       },
       vector3d: {
@@ -270,7 +270,7 @@ module.exports = function (grunt) {
           '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
         },
         files: {
-          'src/scripts/libs/latlon/js/vector3d.min.js': ['src/scripts/libs/latlon/js/vector3d.js']
+          'src/vendor/latlon/js/vector3d.min.js': ['src/vendor/latlon/js/vector3d.js']
         }
       },
       requirejs: {
@@ -284,7 +284,7 @@ module.exports = function (grunt) {
           '*/\n'
         },
         files: {
-          'src/scripts/libs/requirejs/js/require.min.js': ['src/scripts/libs/requirejs/js/require.js']
+          'src/vendor/requirejs/js/require.min.js': ['src/vendor/requirejs/js/require.js']
         }
       }
     },
