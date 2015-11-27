@@ -1,9 +1,22 @@
 <ul class="table-view">
-  <li class="table-view-cell">About</li>
-  <li class="table-view-cell">Privacy Policy</li>
-  <li class="table-view-cell">BRC Approved</li>
-  <li class="table-view-cell">Credits</li>
+  <li class="table-view-cell">
+    <a class="navigate-right">About</a>
+  </li>
+  <li class="table-view-cell">
+    <a class="navigate-right">Privacy Policy</a>
+    </li>
+  <li class="table-view-cell">
+    <a class="navigate-right">BRC Approved</a>
+  </li>
+  <li class="table-view-cell">
+    <a class="navigate-right">Credits</a>
+  </li>
+
   <li class="table-view-divider">Settings</li>
-  <li class="table-view-cell">App</li>
-  <li class="table-view-cell">User</li>
+  <li class="table-view-cell">
+    <a class="navigate-right">App</a>
+    </li>
+  <li class="table-view-cell">
+    <a class="navigate-right">User</a>
+  </li>
 </ul>
