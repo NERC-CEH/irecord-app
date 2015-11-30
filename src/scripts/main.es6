@@ -20,7 +20,7 @@
       'marionette': '../vendor/backbone.marionette',
       'backbone.localStorage': '../vendor/backbone.localStorage-min',
       'common': 'components/common',
-      'log': 'components/common/log'
+      'log': 'helpers/log'
     },
     shim: {
       'latlon': {deps: ['latlon-ellipsoidal']},
@@ -37,7 +37,8 @@
     'app',
     'ratchet',
     'components/records/router',
-    'components/app/router'
+    'components/app/router',
+    'components/user/router'
   ], function (app) {
     app.start();
   });

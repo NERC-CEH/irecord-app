@@ -25,7 +25,8 @@ define([
 
         regions: {
           header: "#header",
-          main: "#main"
+          main: "#main",
+          dialog: '#dialog'
         }
       });
 

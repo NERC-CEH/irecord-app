@@ -5,16 +5,18 @@ define([
   './header_view',
   'common/record_manager'
 ], function (morel, app, MainView, HeaderView, recordManager) {
-  let controller = function () {
-    recordManager.getAll(function (err, records) {
-      let mainView = new MainView({
-        collection: records
+  let API = {
+    show: function (){
+      recordManager.getAll(function (err, records) {
+        let mainView = new MainView({
+          collection: records
+        });
+        app.regions.main.show(mainView);
       });
-      app.regions.main.show(mainView);
-    });
 
-    let headerView = new HeaderView();
-    app.regions.header.show(headerView);
+      let headerView = new HeaderView();
+      app.regions.header.show(headerView);
+    }
   };
 
   //create new record with a photo
@@ -44,5 +46,5 @@ define([
     morel.Image.toString(e.target.files[0], callback);
   });
 
-  return controller;
+  return API;
 });

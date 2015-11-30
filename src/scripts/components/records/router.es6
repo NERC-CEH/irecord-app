@@ -14,61 +14,61 @@ define([
 
   app.records.Router = Marionette.AppRouter.extend({
     routes: {
-      "records": ListController,
-      "records/new": TaxonController,
-      "records/:id": ShowController,
-      "records/:id/edit": EditController,
-      "records/:id/edit/location": LocationController,
-      "records/:id/edit/taxon": TaxonController,
-      "records/:id/edit/:attr": EditAttrController
+      "records": ListController.show,
+      "records/new": TaxonController.show,
+      "records/:id": ShowController.show,
+      "records/:id/edit": EditController.show,
+      "records/:id/edit/location": LocationController.show,
+      "records/:id/edit/taxon": TaxonController.show,
+      "records/:id/edit/:attr": EditAttrController.show
     }
   });
 
   app.on("records:list", function(options) {
     app.navigate('records', options);
-    ListController();
+    ListController.show();
   });
 
   app.on("records:show", function(id, options) {
     app.navigate('records/' + id, options);
-    ShowController(id);
+    ShowController.show(id);
   });
 
   app.on("records:edit", function(id, options) {
     app.navigate('records/' + id + '/edit', options);
-    EditController(id);
+    EditController.show(id);
   });
 
   app.on("records:edit:attr", function(id, attrID, options) {
     app.navigate('records/' + id + '/edit/' + attrID, options);
     switch (attrID){
       case 'location':
-        LocationController(id);
+        LocationController.show(id);
         break;
       case 'taxon':
-        TaxonController(id);
+        TaxonController.show(id);
         break;
       default:
-        EditAttrController(id, attrID);
+        EditAttrController.show(id, attrID);
     }
   });
 
   app.on("records:new", function(options) {
     app.navigate('records/new', options);
-    EditController();
+    EditController.show();
   });
 
   app.on("records:new:attr", function(attrID, options) {
     app.navigate('records/new/' + attrID, options);
     switch (attrID) {
       case 'location':
-        LocationController();
+        LocationController.show();
         break;
       case 'taxon':
-        TaxonController();
+        TaxonController.show();
         break;
       default:
-        EditAttrController(null, attrID);
+        EditAttrController.show(null, attrID);
     }
   });
 

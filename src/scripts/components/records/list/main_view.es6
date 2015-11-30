@@ -43,7 +43,13 @@ define([
     tagName: 'ul',
     className: 'table-view no-top',
     emptyView: NoRecordsView,
-    childView: RecordView
+    childView: RecordView,
+
+    onRenderCollection: function(){
+      this.attachHtml = function(collectionView, childView, index){
+        collectionView.$el.prepend(childView.el);
+      }
+    }
   });
 
   return View;

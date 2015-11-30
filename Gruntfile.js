@@ -73,7 +73,11 @@ module.exports = function (grunt) {
           prettify: true,
           processName: function(filepath) {
             var templatesDir = '/templates';
-            filepath = filepath.split('src/scripts/components/')[1];
+            if (filepath.indexOf('components') >= 0) {
+              filepath = filepath.split('src/scripts/components/')[1];
+            } else {
+              filepath = filepath.split('src/scripts/')[1];
+            }
             filepath = filepath.split('.')[0];
             //cut out templates dir
             var dirIndex = filepath.indexOf(templatesDir);
@@ -87,7 +91,8 @@ module.exports = function (grunt) {
         files: {
           "dist/scripts/JST.js": [
             "src/scripts/components/**/**/**/*.tpl",
-            "src/scripts/components/common/templates/*.tpl"
+            "src/scripts/components/common/templates/*.tpl",
+            "src/scripts/helpers/templates/*.tpl"
           ]
         }
       }

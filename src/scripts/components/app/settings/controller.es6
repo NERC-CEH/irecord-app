@@ -5,7 +5,7 @@ define([
   'common/record_manager'
 ], function (app, MainView, HeaderView, recordManager) {
   let API = {
-    show: function (id){
+    show: function (id) {
       recordManager.get(id, function (err, record) {
         let mainView = new MainView({
           model: record

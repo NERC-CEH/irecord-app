@@ -7,34 +7,36 @@ define([
   'common/header_view'
 ], function (morel, app, log, recordManager, MainView, HeaderView) {
   let id = null;
-  let controller = function (recordID) {
-    id = recordID;
+  let API = {
+    show: function (recordID){
+      id = recordID;
 
-    if (recordID) {
-      //check if the record has taxon specified
-      recordManager.get(recordID, function (err, record) {
-        let mainView
+      if (recordID) {
+        //check if the record has taxon specified
+        recordManager.get(recordID, function (err, record) {
+          let mainView
 
-        if (!record.occurrences.getFirst().get('taxon')) {
-          mainView = new MainView();
-        } else {
-          mainView = new MainView({removeEditBtn: true});
-        }
+          if (!record.occurrences.getFirst().get('taxon')) {
+            mainView = new MainView();
+          } else {
+            mainView = new MainView({removeEditBtn: true});
+          }
 
+          app.regions.main.show(mainView);
+        });
+      } else {
+        let mainView = new MainView();
         app.regions.main.show(mainView);
-      });
-    } else {
-      let mainView = new MainView();
-      app.regions.main.show(mainView);
-      app.regions.main.$el.find('#taxon').select();
-    }
+        app.regions.main.$el.find('#taxon').select();
+      }
 
-    let headerView = new HeaderView({
-      model: new Backbone.Model({
-        pageName: 'Species'
-      })
-    });
-    app.regions.header.show(headerView);
+      let headerView = new HeaderView({
+        model: new Backbone.Model({
+          pageName: 'Species'
+        })
+      });
+      app.regions.header.show(headerView);
+    }
   };
 
   app.on('common:taxon:selected', function (taxon, edit) {
@@ -44,7 +46,7 @@ define([
         attributes: {
           'taxon': taxon
         }
-      })
+      });
 
       let sample = new morel.Sample({
         occurrences: [occurrence]
@@ -74,5 +76,5 @@ define([
     }
   });
 
-  return controller;
+  return API;
 });

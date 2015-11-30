@@ -19,4 +19,12 @@
   <li class="table-view-cell">
     <a class="navigate-right">User</a>
   </li>
+
+  <li class="table-view-divider">Account</li>
+  <li class="table-view-cell">
+    <a href="#user/login" class="navigate-right">Login</a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#user/register" class="navigate-right">Register</a>
+  </li>
 </ul>

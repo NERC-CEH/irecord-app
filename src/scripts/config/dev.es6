@@ -19,6 +19,11 @@ define(['config/map'], function (MAP) {
       status: false
     },
 
+    login: {
+      url: 'http://192.171.199.230/irecord7/user/mobile/register',
+      timeout: 80000
+    },
+
     //mapping
     map: MAP,
 

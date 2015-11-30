@@ -3,10 +3,11 @@
  *****************************************************************************/
 define([
   'backbone',
+  'app-config',
   'helpers/location',
   'backbone.localStorage',
   'latlon'
-], function (Backbone, locHelp) {
+], function (Backbone, CONFIG, locHelp) {
   'use strict';
 
   var User = Backbone.Model.extend({
@@ -27,12 +28,12 @@ define([
       this.fetch();
     },
 
-    localStorage: new Store(app.NAME),
+    localStorage: new Store(CONFIG.name),
 
     /**
      * Resets the user login information.
      */
-    signOut: function () {
+    logOut: function () {
       this.set('email', '');
       this.set('secret', '');
       this.set('name', '');
@@ -47,7 +48,7 @@ define([
      *
      * @param user User object or empty object
      */
-    signIn: function (user) {
+    logIn: function (user) {
       this.set('secret', user.secret || '');
       this.setContactDetails(user);
       this.save();
@@ -67,7 +68,7 @@ define([
     /**
      * Returns user contact information.
      */
-    hasSignIn: function () {
+    hasLogIn: function () {
       return this.get('secret');
     },
 
@@ -130,5 +131,5 @@ define([
     }
   });
 
-  return User;
+  return new User();
 });
