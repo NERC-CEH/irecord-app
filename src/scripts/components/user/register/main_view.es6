@@ -10,13 +10,13 @@ define([
   'use strict';
 
   var View = Marionette.ItemView.extend({
-    template: JST['user/login/main'],
+    template: JST['user/register/main'],
 
     events: {
-      'click #login-button': 'login'
+      'click #register-button': 'register'
     },
 
-    login: function (e) {
+    register: function (e) {
       //validate
       var $inputPassword = this.$el.find('#password');
       var $inputEmail = this.$el.find('#email');
@@ -26,7 +26,7 @@ define([
 
       //validate
       if (this.valid($inputEmail, $inputPassword)) {
-        this.trigger('login', email, password);
+        this.trigger('register', email, password);
       }
     },
 

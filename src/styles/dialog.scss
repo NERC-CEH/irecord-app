@@ -21,6 +21,7 @@
   top: 20%;
   left: 50%;
   margin-left: -40%;
+  overflow: hidden;
 }
 
 #dialog .error .dialog-header{
@@ -42,7 +43,7 @@
   position: absolute;
   top: 35%;
   left: 50%;
-  margin-left: -40px;
+  margin-left: -60px;
   font-size: 80px;
   color: $color-white ;
 }

@@ -13,12 +13,12 @@ define([
 
       let headerView = new HeaderView({
         model: new Backbone.Model({
-          pageName: 'Login'
+          pageName: 'Register'
         })
       });
       app.regions.header.show(headerView);
 
-      mainView.on('login', function (email, password) {
+      mainView.on('register', function (email, password) {
         app.regions.dialog.showLoader();
 
         API.login(email, password, function (err, data) {
