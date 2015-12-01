@@ -6,9 +6,10 @@ define([
     'backbone',
     'marionette',
     'fastclick',
-    'log'
+    'log',
+    'helpers/dialog_region'
   ],
-  function ($, Backbone, Marionette, FastClick, log) {
+  function ($, Backbone, Marionette, FastClick, log, DialogRegion) {
     var app = new Marionette.Application();
 
     app.navigate = function(route,  options = {}){
@@ -26,7 +27,7 @@ define([
         regions: {
           header: "#header",
           main: "#main",
-          dialog: '#dialog'
+          dialog: DialogRegion
         }
       });
 
