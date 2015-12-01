@@ -32,8 +32,12 @@ define([
      * Creates dialog
      *
      * @param view
+     * className
+     * hideAllowed
+     *
      * title
      * body
+     *
      * buttons:
      *  title
      *  id
@@ -53,7 +57,7 @@ define([
         });
         view = new marionette.ItemView({
             template: view.template || JST['helpers/dialog'],
-            className: 'content',
+            className: 'content ' + (view.className ? view.className : ''),
 
             model: model
           });
@@ -90,6 +94,19 @@ define([
     hideLoader: function () {
       this.hideAllowed = true;
       this.hide();
+    },
+
+    error: function (error) {
+      let view = {
+        className: 'error',
+        title: 'Error',
+        body: error.message,
+        buttons: [{
+          id: 'ok',
+          title: 'OK'
+        }]
+      }
+      this.show(view);
     },
 
     _onContainerClick: function (e) {

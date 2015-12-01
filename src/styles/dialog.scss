@@ -23,6 +23,13 @@
   margin-left: -40%;
 }
 
+#dialog .error .dialog-header{
+  margin: 0 -12px;
+  background-color: $color-orange;
+  color: $color-white;
+;
+}
+
 //limit width for wide screens
 @media only screen and (min-width: 500px) {
   #dialog .content {
@@ -51,7 +58,6 @@
   padding: 0;
   font-size: 15px;
 
-  color: #000;
   font-weight: 500;
   font-family: "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
   line-height: 1.2;
