@@ -5,21 +5,7 @@ define([
 ], function (app, MainView, HeaderView) {
   let API = {
     show: function (){
-      let RecordModel = Backbone.Model.extend({
-        defaults: {
-          name: 'record'
-        }
-      });
-
-      let RecordsCollection = Backbone.Collection.extend({
-        model: RecordModel
-      });
-
-      let recordsCollecion = new RecordsCollection(new Array(100));
-
-      let mainView = new MainView({
-        collection: recordsCollecion
-      });
+      let mainView = new MainView();
       app.regions.main.show(mainView);
 
       let headerView = new HeaderView();

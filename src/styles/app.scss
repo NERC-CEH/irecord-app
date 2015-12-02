@@ -22,11 +22,6 @@ label, form label {
   width: auto;
 }
 
-input.dark-border {
-  color: white;
-  border-color: #585858;
-}
-
 input:focus {
   outline:none !important
 }
@@ -224,4 +219,25 @@ input {
 
 .toggle.active.no-yes:before {
   content: 'yes';
+}
+
+
+//ionic framework
+.item {
+  border: 0;
+  border-bottom: 2px solid $color-gray-light;
+}
+
+.checkbox input:before {
+  width: 25px;
+  height: 25px;
+}
+
+.checkbox input:checked:before {
+  background: $header-color;
+  border-color: $header-color;
+}
+
+.radio-icon.icon-check:before {
+ color: $header-color;
 }

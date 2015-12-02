@@ -2,8 +2,9 @@
  * Main styling placeholder. Only imports!
  *****************************************************************************/
 
-@import "config.scss";
+@import "_variables.scss";
 @import "loading.scss";
+@import "ionic.scss";
 
 @import "app.scss";
 @import "app-wide.scss";

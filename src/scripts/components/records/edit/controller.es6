@@ -10,30 +10,36 @@ define([
     show: function (recordID){
       id = recordID;
 
-      recordManager.get(recordID, function (err, savedRecord) {
-        record = savedRecord;
-        //todo: check if saved if so then redirect to show
+      recordManager.get(recordID, function (err, record) {
+
+        //can't edit a saved one - to be removed when record update
+        //is possible on the server
+        if (record.metadata.saved) {
+          app.trigger('records:show', recordID);
+          return;
+        }
+
         let mainView = new MainView({
           model: record
         });
         app.regions.main.show(mainView);
-      });
 
-      let headerView = new HeaderView({
-        model: new Backbone.Model({
-          pageName: 'Edit'
-        })
+        mainView.on('save', function (e) {
+          record.metadata.saved = true;
+          recordManager.set(record, function (err) {
+            window.history.back();
+          })
+        });
+
+        let headerView = new HeaderView({
+          model: new Backbone.Model({
+            pageName: 'Edit'
+          })
+        });
+        app.regions.header.show(headerView);
       });
-      app.regions.header.show(headerView);
     }
   };
-
-  app.on('records:edit:save', function (e) {
-    record.metadata.saved = true;
-    recordManager.set(record, function (err) {
-      window.history.back();
-    })
-  });
 
   return API;
 });
