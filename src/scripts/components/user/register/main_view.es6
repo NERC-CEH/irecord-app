@@ -3,31 +3,49 @@
  *****************************************************************************/
 define([
   'marionette',
+  'app',
   'JST',
   'log',
   'helpers/validate'
-], function (Marionette, JST, log, validate) {
+], function (Marionette, app, JST, log, validate) {
   'use strict';
 
   var View = Marionette.ItemView.extend({
     template: JST['user/register/main'],
 
     events: {
-      'click #register-button': 'register'
+      'click #register-button': 'register',
+      'click #terms-agree-button': 'toggleRegisterButton',
+    },
+
+    onRender: function () {
+      this.$registerButton = this.$el.find('#register-button');
+      this.$registerButton.prop('disabled', true);
     },
 
     register: function (e) {
-      //validate
-      var $inputPassword = this.$el.find('#password');
-      var $inputEmail = this.$el.find('#email');
+      //todo: add validation
+      var data = new FormData();
 
-      let email = $inputEmail.val(),
-        password = $inputPassword.val();
+      //user logins
+      this.email = this.$el.find('input[name=email]').val(); //save it for future
+      var name = this.$el.find('input[name=name]').val();
+      var surname = this.$el.find('input[name=surname]').val();
+      var pass = this.$el.find('input[name=pass]').val();
+      var passConf = this.$el.find('input[name=passConf]').val();
 
-      //validate
-      if (this.valid($inputEmail, $inputPassword)) {
-        this.trigger('register', email, password);
+      if (pass !== passConf) {
+        app.regions.dialog.show({title: 'Sorry, passwords don\'t match'});
+        return;
       }
+
+      data.append('email', this.email);
+      data.append('firstname', name);
+      data.append('secondname', surname);
+      data.append('password', pass);
+      data.append('password-confirm', passConf);
+
+      this.trigger('register', data);
     },
 
     valid: function ($inputEmail, $inputPassword) {
@@ -50,7 +68,23 @@ define([
       }
 
       return valid;
+    },
+
+    /**
+     * Shows/hides the registration submit button.
+     *
+     * @param e
+     */
+    toggleRegisterButton: function (e) {
+      //enable 'Create account' button on Terms agreement
+      var agree = $(e.currentTarget).hasClass('active');
+      if (agree) {
+        this.$registerButton.prop('disabled', true);
+      } else {
+        this.$registerButton.prop('disabled', false);
+      }
     }
+
 
   });
 

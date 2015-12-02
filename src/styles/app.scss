@@ -217,3 +217,11 @@ input {
   margin-bottom: 0;
   border: 0;
 }
+
+.toggle.no-yes:before {
+  content: 'no';
+}
+
+.toggle.active.no-yes:before {
+  content: 'yes';
+}

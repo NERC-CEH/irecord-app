@@ -18,10 +18,10 @@ define([
       });
       app.regions.header.show(headerView);
 
-      mainView.on('register', function (email, password) {
+      mainView.on('register', function (data) {
         app.regions.dialog.showLoader();
 
-        API.login(email, password, function (err, data) {
+        API.register(data, function (err, data) {
           if (err) {
             switch (err.xhr.status) {
               case 401:
@@ -56,28 +56,25 @@ define([
      * It is important that the app authorises itself providing
      * appname and appsecret for the mentioned module.
      */
-    login: function (email, password, callback) {
+    register: function (formData, callback) {
       log('views.login: start.', 'd');
-      var person = {
-        //user logins
-        'email': email,
-        'password': password,
 
-        //app logins
-        'appname': CONFIG.morel.manager.appname,
-        'appsecret': CONFIG.morel.manager.appsecret
-      };
+      //app logins
+      formData.append('appname', CONFIG.morel.manager.appname);
+      formData.append('appsecret', CONFIG.morel.manager.appsecret);
 
       $.ajax({
         url: CONFIG.login.url,
         type: 'POST',
-        data: person,
-        callback_data: person,
+        data: formData,
         dataType: 'text',
+        contentType: false,
+        processData: false,
         timeout: CONFIG.login.timeout,
+
         success: function (data) {
           var details = API.extractUserDetails(data);
-          details.email = person.email;
+          details.email = formData.get('email');
           user.logIn(details);
 
           callback(null, details);
