@@ -32,7 +32,7 @@ define([
 
       let headerView = new HeaderView({
         model: new Backbone.Model({
-          pageName: 'Species'
+          title: 'Species'
         })
       });
       app.regions.header.show(headerView);

@@ -15,16 +15,14 @@ define([
 
     events: {
       'click a[data-rel="back"]': "navigateBack",
+    },
+
+    triggers: {
       'click #record-save-btn': 'save'
     },
 
     navigateBack: function () {
       window.history.back();
-    },
-
-    save: function (e) {
-      log('records:edit: saving.' ,'d');
-      app.trigger('records:edit:save', e);
     }
   });
 

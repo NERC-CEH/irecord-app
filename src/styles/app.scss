@@ -221,6 +221,14 @@ input {
   content: 'yes';
 }
 
+.error-404 {
+  padding-top: 1em;
+  text-align: center;
+  font-size: 2em;
+  color: $header-color;
+  font-weight: bold;
+}
+
 
 //ionic framework
 .item {
@@ -241,3 +249,4 @@ input {
 .radio-icon.icon-check:before {
  color: $header-color;
 }
+

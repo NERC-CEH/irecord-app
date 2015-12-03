@@ -20,7 +20,8 @@ define([
       "records/:id/edit": EditController.show,
       "records/:id/edit/location": LocationController.show,
       "records/:id/edit/taxon": TaxonController.show,
-      "records/:id/edit/:attr": EditAttrController.show
+      "records/:id/edit/:attr": EditAttrController.show,
+      "records/*path": function () {app.trigger('404:show')}
     }
   });
 

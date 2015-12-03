@@ -6,7 +6,8 @@ define([
   'morel',
   'JST',
   'log',
-  'common/record_manager'
+  'common/record_manager',
+  'helpers/date_extension'
 ], function (Marionette, morel, JST, log) {
   'use strict';
 
@@ -16,7 +17,7 @@ define([
     template: JST['records/list/record'],
 
     render: function () {
-      let date = this.model.get('date'),
+      let date = this.model.get('date').print(),
           taxon = this.model.occurrences.getFirst().get('taxon'),
           images = this.model.occurrences.getFirst().images;
       let img = images.length && images.getFirst().data;

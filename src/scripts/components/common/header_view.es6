@@ -18,7 +18,11 @@ define([
     },
 
     navigateBack: function () {
-      window.history.back();
+      if (this.options.onExit) {
+        this.options.onExit();
+      } else {
+        window.history.back();
+      }
     }
   });
 

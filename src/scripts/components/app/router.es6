@@ -9,7 +9,8 @@ define([
 
   app.info.Router = Marionette.AppRouter.extend({
     routes: {
-      "app/info": InfoController.show
+      "app/info": InfoController.show,
+      "app/*path": function () {app.trigger('404:show')}
     }
   });
 

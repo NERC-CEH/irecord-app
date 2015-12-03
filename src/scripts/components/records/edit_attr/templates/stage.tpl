@@ -4,7 +4,7 @@
 
 <div class="list">
   <label class="item item-radio">
-    <input type="radio" name="group" value="Not recorded" checked>
+    <input type="radio" name="group" value=" "  <%- !_.keys(obj).length || obj[' '] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
         Not recorded
@@ -14,7 +14,7 @@
   </label>
 
   <label class="item item-radio">
-    <input type="radio" name="group" value="Pre-adult">
+    <input type="radio" name="group" value="Pre-adult" <%- obj['Pre-adult'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
         Pre-adult
@@ -24,7 +24,7 @@
   </label>
 
   <label class="item item-radio">
-    <input type="radio" name="group" value="Adult">
+    <input type="radio" name="group" value="Adult" <%- obj['Adult'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
         Adult
@@ -34,7 +34,7 @@
   </label>
 
   <label class="item item-radio">
-    <input type="radio" name="group" value="Other">
+    <input type="radio" name="group" value="Other" <%- obj['Other'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
         Other

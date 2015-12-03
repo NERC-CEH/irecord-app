@@ -7,9 +7,10 @@ define([
     'marionette',
     'fastclick',
     'log',
-    'helpers/dialog_region'
+    'helpers/dialog_region',
+    'common/controller'
   ],
-  function ($, Backbone, Marionette, FastClick, log, DialogRegion) {
+  function ($, Backbone, Marionette, FastClick, log, DialogRegion, CommonController) {
     var app = new Marionette.Application();
 
     app.navigate = function(route,  options = {}){
@@ -35,20 +36,11 @@ define([
     });
 
     app.on("start", function () {
-      //app.models = {};
-      //app.models.user = new UserModel();
-      //app.models.app = new AppModel();
-      //app.models.sample = null; //to be set up on record opening
-      //app.collections = {};
-      //
-      //app.records = Records;
-
       FastClick.attach(document.body);
 
       //turn off the loading splash screen
       $('div.loading').css('display', 'none');
       $('body').removeClass('loading');
-
 
       if (Backbone.history) {
         Backbone.history.start();
@@ -56,6 +48,14 @@ define([
         if (this.getCurrentRoute() === '') {
           app.trigger('records:list');
         }
+
+        app.on('404:show', function () {
+          CommonController.show({
+            app: app,
+            route: 'common/404/main',
+            title: 404
+          });
+        });
 
         $('#loader').remove();
       }

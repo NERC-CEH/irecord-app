@@ -20,7 +20,7 @@ define([
 
       let headerView = new HeaderView({
         model: new Backbone.Model({
-          pageName: 'Info'
+          title: 'Info'
         })
       });
       app.regions.header.show(headerView);

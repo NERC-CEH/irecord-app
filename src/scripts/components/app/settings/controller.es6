@@ -15,7 +15,7 @@ define([
 
       let headerView = new HeaderView({
         model: new Backbone.Model({
-          pageName: 'Record'
+          title: 'Record'
         })
       });
       app.regions.header.show(headerView);
