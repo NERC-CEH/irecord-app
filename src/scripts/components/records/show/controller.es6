@@ -12,13 +12,14 @@ define([
           return;
         }
         let occ = record.occurrences.getFirst();
-        let templateData = {
-          date: record.get('date').print(),
+        let templateData = new Backbone.Model({
           taxon: occ.get('taxon'),
-          number: occ.get('number'),
-          stage: occ.get('stage'),
-          comment: occ.get('comment').limit(20)
-        }
+          date: record.get('date').print(),
+          number: occ.get('number') && occ.get('number').limit(20),
+          stage: occ.get('stage') && occ.get('stage').limit(20),
+          comment: occ.get('comment') && occ.get('comment').limit(20)
+        });
+
         let mainView = new MainView({
           model: templateData
         });
