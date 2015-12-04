@@ -29,7 +29,7 @@
       'marionette': {deps: ['backbone']},
       'morel': {deps: ['IndexedDBShim']}
     },
-    waitSeconds: 20
+    waitSeconds: 30
   });
 
   //Load the mighty app :)

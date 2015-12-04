@@ -7,7 +7,7 @@ define([
     'marionette',
     'fastclick',
     'log',
-    'helpers/dialog_region',
+    'common/dialog_region',
     'common/controller'
   ],
   function ($, Backbone, Marionette, FastClick, log, DialogRegion, CommonController) {

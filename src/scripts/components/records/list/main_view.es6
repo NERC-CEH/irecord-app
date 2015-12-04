@@ -17,9 +17,10 @@ define([
     template: JST['records/list/record'],
 
     render: function () {
+      let occ = this.model.occurrences.getFirst();
       let date = this.model.get('date').print(),
-          taxon = this.model.occurrences.getFirst().get('taxon'),
-          images = this.model.occurrences.getFirst().images;
+          taxon = occ.get('taxon'),
+          images = occ.images;
       let img = images.length && images.getFirst().data;
       let templateData = {
         id: this.model.id,
@@ -46,10 +47,9 @@ define([
     emptyView: NoRecordsView,
     childView: RecordView,
 
-    onRenderCollection: function(){
-      this.attachHtml = function(collectionView, childView, index){
-        collectionView.$el.prepend(childView.el);
-      }
+    //inverse the collection
+    attachHtml: function(collectionView, childView, index){
+      collectionView.$el.prepend(childView.el);
     }
   });
 

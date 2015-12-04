@@ -56,7 +56,7 @@ define([
             buttons: view.buttons
         });
         view = new marionette.ItemView({
-            template: view.template || JST['helpers/dialog'],
+            template: view.template || JST['common/dialog'],
             className: 'content ' + (view.className ? view.className : ''),
 
             model: model
