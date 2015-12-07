@@ -12,7 +12,9 @@ define([
       let MainView = Marionette.ItemView.extend({
         template: JST[options.route]
       });
-      app.regions.main.show(new MainView());
+      app.regions.main.show(new MainView({
+        model: new Backbone.Model(options.model || {})
+      }));
 
       let headerView = new HeaderView({
         model: new Backbone.Model({

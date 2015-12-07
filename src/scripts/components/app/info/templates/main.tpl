@@ -1,23 +1,20 @@
 <ul class="table-view">
   <li class="table-view-cell">
-    <a class="navigate-right">About</a>
+    <a href="#app/about" class="navigate-right">About</a>
   </li>
   <li class="table-view-cell">
-    <a class="navigate-right">Privacy Policy</a>
+    <a href="#app/privacy" class="navigate-right">Privacy Policy</a>
   </li>
   <li class="table-view-cell">
-    <a class="navigate-right">BRC Approved</a>
+    <a href="#app/brc-approved" class="navigate-right">BRC Approved</a>
   </li>
   <li class="table-view-cell">
-    <a class="navigate-right">Credits</a>
+    <a href="#app/credits" class="navigate-right">Credits</a>
   </li>
 
   <li class="table-view-divider">Settings</li>
   <li class="table-view-cell">
-    <a class="navigate-right">App</a>
-  </li>
-  <li class="table-view-cell">
-    <a class="navigate-right">User</a>
+    <a href="#app/settings" class="navigate-right">App</a>
   </li>
 
   <li class="table-view-divider">Account</li>

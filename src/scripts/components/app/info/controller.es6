@@ -1,7 +1,7 @@
 define([
   'app',
   'log',
-  'common/models/user',
+  'common/user_model',
   './main_view',
   'common/header_view'
 ], function (app, log, user, MainView, HeaderView) {
