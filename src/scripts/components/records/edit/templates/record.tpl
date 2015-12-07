@@ -22,9 +22,6 @@
       </div>
     </a>
   </li>
-</ul>
-
-<ul class="table-view dynamic inputs">
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/number" id="number-button" class="navigate-right">
       <span class="media-object pull-left icon icon-number"></span>
