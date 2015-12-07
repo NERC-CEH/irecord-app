@@ -3,8 +3,10 @@ define([
   'common/tabs_layout',
   './header_view',
   './gps_view',
-  './map_view'
-], function (app, TabsLayout, HeaderView, GpsView, MapView) {
+  './map_view',
+  './grid_ref_view',
+  './past_view'
+], function (app, TabsLayout, HeaderView, GpsView, MapView, GridRefView, PastView) {
   let API = {
     show: function (){
       let mainView = new TabsLayout({
@@ -18,6 +20,16 @@ define([
             id: 'map',
             title: 'Map',
             ContentView: MapView
+          },
+          {
+            id: 'grid-ref',
+            title: 'Grid Ref',
+            ContentView: GridRefView
+          },
+          {
+            id: 'past',
+            title: 'Past',
+            ContentView: PastView
           }
         ]
       });
