@@ -1,7 +1,7 @@
 define([
   'app',
   'common/tabs_layout',
-  './header_view',
+  'common/header_view',
   './gps_view',
   './map_view',
   './grid_ref_view',
@@ -12,6 +12,7 @@ define([
       let mainView = new TabsLayout({
         tabs: [
           {
+            active: true,
             id: 'gps',
             title: 'GPS',
             ContentView: GpsView

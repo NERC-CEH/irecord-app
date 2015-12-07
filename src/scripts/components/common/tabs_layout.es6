@@ -6,6 +6,10 @@ define([
     tagName: 'li',
     template: JST['common/tab'],
 
+    className: function () {
+      return this.model.get('active') ? 'active' : '';
+    },
+
     attributes: function () {
       return {
         'data-id': this.model.id
@@ -27,6 +31,12 @@ define([
 
     tabClicked: function(e){
       let tabId = e.view.model.id;
+      let active = this.collection.find(model => model.get('active'));
+      active.set('active', false);
+      e.view.model.set('active', true);
+
+      this.render();
+
       this.trigger("showTab", tabId);
     }
   });
@@ -58,7 +68,7 @@ define([
     _showContent: function (tabID) {
       let tab;
       if (!tabID) {
-        tab = this.options.tabs[0];
+        tab = this.options.tabs.filter(tab => tab.active)[0];
       } else {
         tab = this.options.tabs.filter(tab => tab.id === tabID)[0];
       }
