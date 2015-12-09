@@ -1,6 +1,7 @@
 define([
-  'marionette'
-], function (marionette) {
+  'marionette',
+  'JST'
+], function (marionette, JST) {
 
   return marionette.ItemView.extend({
     template: JST['common/location/gps']
