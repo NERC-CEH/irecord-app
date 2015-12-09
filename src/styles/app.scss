@@ -231,6 +231,11 @@ input {
   font-weight: bold;
 }
 
+.icon-delete:before {
+  content: '\e804';
+  transform: rotate(45deg);
+}
+
 //ionic framework
 .item {
   border: 0;

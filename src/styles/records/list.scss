@@ -2,23 +2,39 @@
 .records.header {
   height: 45px;
   padding: 0 10px;
-  border-bottom: 1px $header-color solid
+  border-bottom: 1px $header-color solid;
+
+  .pull-right {
+    width: 40%;
+    margin-right: -10px;
+    background-color: $color-white;
+
+    a {
+      width: 45%;
+      text-align: center;
+    }
+
+    .icon:before {
+      color: $header-color;
+    }
+  }
 }
 
-.records.header .pull-right {
-  width: 40%;
-  margin-right: -10px;
-  background-color: $color-white;
-}
-
-.records.header .pull-right a {
+.img-picker {
   width: 45%;
+  display: inline-block;
   text-align: center;
+
+  input {
+    left: 0;
+    position: absolute;
+    padding: .4em;
+    opacity: 0;
+    margin: -8px 0px !important;
+    height: inherit!important;
+  }
 }
 
-.records.header .pull-right .icon:before {
-  color: $header-color;
-}
 
 //SUBHEADER
 //.records.subheader {
@@ -55,76 +71,133 @@
 //LIST
 #records-list {
   margin: 0;
-}
 
-#records-list.table-view {
-  border-color: $color-green-light;
-}
+  &.table-view {
+    border-color: $color-green-light;
+  }
 
-#records-list .table-view-cell {
-  padding-right: 33px;
-}
+  .table-view-cell {
+    padding-right: 33px;
+  }
 
-#records-list .online-status {
-  font-size: 15px;
-}
+  li {
+    min-height: 65px;
+    border-color: $color-green-light;
 
-#records-list .online-status.icon-cloud {
-  color: $color-orange;
-}
+    font-size: 13.3333px;
+    font-weight: normal;
+    height: 16px;
+    line-height: 17.3333px;
 
-#records-list .online-status.icon-upload-cloud,
-#records-list .online-status.icon-check {
-  color: $color-green;
-}
+    &.empty {
+      height: initial !important;
+      min-height: initial !important;
+      padding: 13px 0;
+      border: none;
+      margin: 0;
 
-#records-list li {
-  min-height: 65px;
-  border-color: $color-green-light;
+      list-style: none;
+      text-align: center;
 
-  font-size: 13.3333px;
-  font-weight: normal;
-  height: 16px;
-  line-height: 17.3333px;
-}
+      font-weight: bold;
+      color: $color-black;
+    }
 
-#records-list li.empty {
-  height: initial !important;
-  min-height: initial !important;
-  padding: 13px 0;
-  border: none;
-  margin: 0;
+    .photo {
+      margin: -9px 8px 0 -14px;
+      height: 60px;
+      width: 60px;
+      background-color: #E5EACD;
 
-  list-style: none;
-  text-align: center;
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
 
-  font-weight: bold;
-  color: $color-black;
-}
+    a {
+      cursor: default;
 
-#records-list li .photo {
-  margin: -9px 8px 0 -14px;
-  height: 60px;
-  width: 60px;
-  background-color: #E5EACD;
-}
+      //pull right
+      .online-status {
+        .icon:before {
+          font-size: 15px;
+        }
 
-#records-list li .photo img {
-  height: 100%;
-  width: 100%;
-}
+        .icon-cloud {
+          color: $color-orange;
+        }
 
-.img-picker {
-  width: 45%;
-  display: inline-block;
-  text-align: center;
-}
+        .icon-upload-cloud,
+        .icon-check {
+          font-size: 15px;
+          color: $color-green;
+        }
+      }
 
-.img-picker input {
-  left: 0;
-  position: absolute;
-  padding: .4em;
-  opacity: 0;
-  margin: -8px 0px !important;
-  height: inherit!important;
+      .edit {
+        display: none;
+        padding-top: 13px;
+
+        color: $color-gray;
+
+        .icon{
+          cursor: initial;
+          &:before {
+            font-size: 17px;
+          }
+          &:hover {
+            color: $color-black
+          }
+        }
+      }
+
+      &:hover {
+        .online-status {
+          display: none;
+        }
+
+        .edit {
+          display: inline-block;
+          
+          .delete {
+            margin-left: 25px;
+          }
+        }
+      }
+
+
+      //record info
+      .media-body {
+        .species {
+          display: block;
+          font-size: 15px;
+          font-weight: 700;
+          color: $color-black;
+        }
+
+        .date {
+          display: inline-block;
+          font-size: 12px;
+          color: $color-black;
+        }
+
+        p.number,
+        p.stage {
+          @extend .date;
+          margin-left: 10px;
+        }
+
+        p.comment {
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          font-size: 12px;
+        }
+
+      }
+    }
+  }
 }
