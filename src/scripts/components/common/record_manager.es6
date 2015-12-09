@@ -6,6 +6,11 @@ define(['jquery', 'morel', 'app-config'], function ($, morel, CONFIG) {
     Storage: morel.DatabaseStorage
   });
 
+  //todo: make it more specific
+  morel.Collection.prototype.comparator = function (a, b) {
+    return a.get('date') > b.get('date');
+  };
+
   let manager = new morel.Manager(morelConfiguration);
 
   return manager;
