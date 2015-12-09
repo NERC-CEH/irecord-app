@@ -11,6 +11,16 @@ define([
         let mainView = new MainView({
           collection: records
         });
+
+        console.log(records);
+
+        mainView.on('childview:record:edit:attr', function (childView, attr) {
+          app.trigger('records:edit:attr', childView.model.id || childView.model.cid, attr);
+        });
+
+        mainView.on('childview:record:delete', function (childView) {
+          recordManager.remove(childView.model);
+        });
         app.regions.main.show(mainView);
       });
 
@@ -33,7 +43,7 @@ define([
           type: fileType
         }));
 
-        let sample = new morel.Sample({
+        let sample = new morel.Sample(null, {
           occurrences: [occurrence]
         });
 

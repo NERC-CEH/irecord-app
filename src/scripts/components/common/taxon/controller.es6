@@ -16,7 +16,7 @@ define([
         recordManager.get(recordID, function (err, record) {
           let mainView
 
-          if (!record.occurrences.getFirst().get('taxon')) {
+          if (!record.occurrences.at(0).get('taxon')) {
             mainView = new MainView();
           } else {
             mainView = new MainView({removeEditBtn: true});
@@ -43,18 +43,16 @@ define([
     if (!id) {
       //create new sighting
       let occurrence = new morel.Occurrence({
-        attributes: {
           'taxon': taxon
-        }
       });
 
-      let sample = new morel.Sample({
+      let sample = new morel.Sample(null, {
         occurrences: [occurrence]
       });
 
       recordManager.set(sample, function () {
         if (edit) {
-          app.trigger('records:edit', sample.id, {replace: true});
+          app.trigger('records:edit', sample.cid, {replace: true});
         } else {
           //return to previous page
           window.history.back();
@@ -63,7 +61,7 @@ define([
     } else {
       //edit existing one
       recordManager.get(id, function (err, record) {
-        record.occurrences.getFirst().set('taxon', taxon);
+        record.occurrences.at(0).set('taxon', taxon);
         recordManager.set(record, function (err) {
           if (edit) {
             app.trigger('records:edit', id, {replace: true});

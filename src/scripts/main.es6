@@ -27,7 +27,7 @@
       'latlon-ellipsoidal': {deps: ['vector3d', 'dms']},
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
       'marionette': {deps: ['backbone']},
-      'morel': {deps: ['IndexedDBShim']}
+      'morel': {deps: ['backbone', 'IndexedDBShim']}
     },
     waitSeconds: 30
   });

@@ -13,7 +13,7 @@ define([
           return;
         }
 
-        let occ = record.occurrences.getFirst();
+        let occ = record.occurrences.at(0);
         let templateData = new Backbone.Model();
         switch (attr) {
           case 'date':

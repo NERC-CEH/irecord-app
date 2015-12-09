@@ -24,9 +24,9 @@ define([
           return;
         }
 
-        let occ = record.occurrences.getFirst();
+        let occ = record.occurrences.at(0);
         let templateData = new Backbone.Model({
-          id: record.id,
+          id: record.id || record.cid,
           taxon: occ.get('taxon'),
           date: record.get('date').print(),
           number: occ.get('number') && occ.get('number').limit(20),

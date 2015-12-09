@@ -1,6 +1,7 @@
 define([
-  'marionette'
-], function (marionette) {
+  'marionette',
+  'JST'
+], function (marionette, JST) {
   
   let Tab = marionette.ItemView.extend({
     tagName: 'li',

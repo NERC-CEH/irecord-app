@@ -11,7 +11,7 @@ define([
           app.trigger('404:show');
           return;
         }
-        let occ = record.occurrences.getFirst();
+        let occ = record.occurrences.at(0);
         let templateData = new Backbone.Model({
           taxon: occ.get('taxon'),
           date: record.get('date').print(),
