@@ -12,8 +12,6 @@ define([
           collection: records
         });
 
-        console.log(records);
-
         mainView.on('childview:record:edit:attr', function (childView, attr) {
           app.trigger('records:edit:attr', childView.model.id || childView.model.cid, attr);
         });

@@ -29,7 +29,6 @@ define([
     },
 
     onRender: function () {
-      console.log('sdsdsd');
       this.$el.find('#taxon').select();
     },
 
