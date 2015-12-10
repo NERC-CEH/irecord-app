@@ -63,13 +63,14 @@ define([
       var hammertime = new Hammer(this.el, {direction: Hammer.DIRECTION_HORIZONTAL});
       var that = this;
 
+      //on tap bring back
+      this.$record.on('tap click', $.proxy(this._swipeHome, this));
+
       hammertime.on('pan', function(e) {
-        console.log(e);
         e.preventDefault();
         that._swipe(e, options);
       });
       hammertime.on('panend', function(e) {
-        console.log(e);
         that._swipeEnd(e, options);
       });
 
@@ -101,7 +102,15 @@ define([
       }
 
       this.$record.css('transform', 'translateX(' + this.position + 'px)');
-      console.log(this.position);
+    },
+
+    _swipeHome: function (e) {
+      if (this.docked) {
+        e.preventDefault();
+        this.position = 0;
+        this.$record.css('transform', 'translateX(' + this.position + 'px)');
+        this.docked = false;
+      }
     }
   });
 
