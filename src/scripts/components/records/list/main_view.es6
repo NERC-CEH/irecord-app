@@ -7,15 +7,15 @@ define([
   'JST',
   'log',
   'hammerjs',
+  'helpers/browser',
   'common/record_manager',
   'helpers/date_extension'
-], function (Marionette, morel, JST, log, Hammer) {
+], function (Marionette, morel, JST, log, Hammer, browser) {
   'use strict';
 
   let RecordView = Marionette.ItemView.extend({
     tagName: 'li',
     className: 'table-view-cell',
-    template: JST['records/list/record'],
 
     triggers: {
       'click #delete': 'record:delete'
@@ -27,6 +27,10 @@ define([
         e.preventDefault();
         this.trigger('record:edit:attr', $(e.target).data('attr'))
       }
+    },
+
+    initialize: function () {
+      this.template = JST['records/list/record' + (browser.isMobile() ? '_mobile': '')];
     },
 
     render: function () {
@@ -47,10 +51,14 @@ define([
         img: img ? '<img src="' + img + '"/>' : ''
       };
       this.$el.html(this.template(templateData));
+
       this.onRender();
     },
 
     onRender: function () {
+      //early return
+      if (!browser.isMobile()) return;
+
       this.$record = this.$el.find('a');
       this.docked = false;
       this.position = 0;

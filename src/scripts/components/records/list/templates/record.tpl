@@ -10,6 +10,21 @@
         <div class="icon <%- obj.onDatabase ? 'icon-upload-cloud' : 'icon-cloud' %>"></div>
         <div class="icon icon-check"></div>
       </div>
+      <div class="edit">
+        <div id="delete" class="delete icon icon-delete"></div>
+      </div>
+      <% } else { %>
+      <div class="edit">
+        <% if (obj.taxon) { %>
+        <div data-attr="date" class="js-attr icon icon-calendar"></div>
+        <div data-attr="location" class="js-attr icon icon-location"></div>
+        <div data-attr="number" class="js-attr icon icon-number"></div>
+        <div data-attr="stage" class="js-attr icon icon-stage"></div>
+        <div data-attr="comment" class="js-attr icon icon-comment"></div>
+        <% } %>
+
+        <div id="delete" class="delete icon icon-delete"></div>
+      </div>
       <% } %>
     </div>
 
@@ -33,7 +48,3 @@
 
     </div>
   </a>
-
-  <div class="mobile-edit">
-    <div id="delete" class="delete icon icon-delete"></div>
-  </div>
