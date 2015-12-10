@@ -26,11 +26,12 @@
   text-align: center;
 
   input {
+    width: 100%;
     left: 0;
     position: absolute;
     padding: .4em;
     opacity: 0;
-    margin: -8px 0px !important;
+    margin: -8px 0 !important;
     height: inherit!important;
   }
 }
@@ -116,6 +117,8 @@
     }
 
     a {
+      z-index: 10;
+      background-color: $color-white;
       cursor: default;
 
       //pull right
@@ -199,6 +202,26 @@
           font-size: 12px;
         }
 
+      }
+    }
+
+    .mobile-edit {
+      height: 100%;
+      width: 50px;
+      position: absolute;
+      top: 0;
+      right: 1px;
+
+      background-color: $color-red;
+      color: $color-white;
+
+      .delete {
+        height: 100%;
+        width: 100%;
+
+        text-align: center;
+        padding-top: 10px;
+        font-size: 40px;
       }
     }
   }

@@ -19,6 +19,7 @@
       'backbone': '../vendor/backbone',
       'marionette': '../vendor/backbone.marionette',
       'backbone.localStorage': '../vendor/backbone.localStorage-min',
+      'hammerjs': '../vendor/hammer',
       'common': 'components/common',
       'log': 'helpers/log'
     },

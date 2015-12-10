@@ -236,6 +236,10 @@ input {
   transform: rotate(45deg);
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 //ionic framework
 .item {
   border: 0;
@@ -256,3 +260,9 @@ input {
   color: $header-color;
 }
 
+
+
+.prompt-remove {
+  background: rgba(255,255,150,0.4);
+  transform:translateX(-140px);
+}

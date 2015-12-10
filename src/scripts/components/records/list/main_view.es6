@@ -6,9 +6,10 @@ define([
   'morel',
   'JST',
   'log',
+  'hammerjs',
   'common/record_manager',
   'helpers/date_extension'
-], function (Marionette, morel, JST, log) {
+], function (Marionette, morel, JST, log, Hammer) {
   'use strict';
 
   let RecordView = Marionette.ItemView.extend({
@@ -46,6 +47,61 @@ define([
         img: img ? '<img src="' + img + '"/>' : ''
       };
       this.$el.html(this.template(templateData));
+      this.onRender();
+    },
+
+    onRender: function () {
+      this.$record = this.$el.find('a');
+      this.docked = false;
+      this.position = 0;
+
+      var options = {
+        threshold: 50,
+        toolsWidth: 100
+      };
+
+      var hammertime = new Hammer(this.el, {direction: Hammer.DIRECTION_HORIZONTAL});
+      var that = this;
+
+      hammertime.on('pan', function(e) {
+        console.log(e);
+        e.preventDefault();
+        that._swipe(e, options);
+      });
+      hammertime.on('panend', function(e) {
+        console.log(e);
+        that._swipeEnd(e, options);
+      });
+
+    },
+
+    _swipe: function (e, options) {
+      if (this.docked) {
+        this.position = -options.toolsWidth + e.deltaX;
+      } else {
+        this.position = e.deltaX;
+      }
+
+      //protection of swipeing right too much
+      if (this.position > 0) this.position = 0;
+
+      this.$record.css('transform', 'translateX(' + this.position + 'px)');
+    },
+
+    _swipeEnd: function (e, options) {
+      // if (e.deltaX > options.threshold) {
+      if ((-options.toolsWidth + e.deltaX) > -options.toolsWidth) {
+        //bring back
+        this.position = 0;
+        this.docked = false;
+      } else {
+        //open tools
+        this.docked = true;
+        this.position = -options.toolsWidth;
+      }
+
+      this.$record.css('transform', 'translateX(' + this.position + 'px)');
+      console.log(this.position);
     }
   });
 
