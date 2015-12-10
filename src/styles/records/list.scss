@@ -139,7 +139,7 @@
         display: none;
         padding-top: 13px;
 
-        color: $color-gray;
+        color: $color-gray-dark;
 
         .icon{
           cursor: initial;
@@ -153,6 +153,8 @@
       }
 
       &:hover {
+        background-color: $color-gray-light;
+
         .online-status {
           display: none;
         }
