@@ -1,11 +1,17 @@
 #suggestions .table-view-cell {
   padding: 8px 65px 8px 15px;
+
+  &:hover {
+    background-color: $color-gray-light;
+  }
 }
 
 #suggestions .table-view-cell button {
   width: 20%;
   max-width: 80px;
   right: 0;
+
+  background-color: transparent;
   border: none;
-  border-left: 1px $color-gray-light solid;
+  border-left: 1px $color-gray solid;
 }
