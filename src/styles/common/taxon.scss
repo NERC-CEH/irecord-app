@@ -4,14 +4,22 @@
   &:hover {
     background-color: $color-gray-light;
   }
-}
 
-#suggestions .table-view-cell button {
-  width: 20%;
-  max-width: 80px;
-  right: 0;
+  &.selected {
+    background-color: $color-gray;
 
-  background-color: transparent;
-  border: none;
-  border-left: 1px $color-gray solid;
+    button {
+      border-left: 1px $color-gray-dark solid;
+    }
+  }
+
+  button {
+    width: 20%;
+    max-width: 80px;
+    right: 0;
+
+    background-color: transparent;
+    border: none;
+    border-left: 1px $color-gray solid;
+  }
 }

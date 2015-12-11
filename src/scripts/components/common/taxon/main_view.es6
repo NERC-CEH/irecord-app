@@ -17,7 +17,7 @@ define([
     template: JST['common/taxon/layout'],
 
     events: {
-      'input #taxon': 'updateSuggestions'
+      'keydown #taxon': '_keydown'
     },
 
     regions: {
@@ -26,29 +26,79 @@ define([
 
     initialize: function (options){
       this.removeEditBtn = options.removeEditBtn;
+      this.selectedIndex = 0;
     },
 
     onRender: function () {
       this.$el.find('#taxon').select();
     },
 
-    updateSuggestions: function (e) {
-      log('taxon: updating suggestions.', 'd');
-
+    _keydown: function (e) {
       let input = e.target.value;
       if (!input) {
         return;
       }
 
-      let likelySpecies = this.getSuggestions(input);
+      switch (e.keyCode) {
+        case 13:
+          //press Enter
+          e.preventDefault();
 
-      let suggestions = new SuggestionsView({
-        collection: likelySpecies
-      });
-      this.suggestions.show(suggestions);
+          //exit if no suggestions
+          if (this.selectedIndex < 0) return;
+
+          //find which one is currently selected
+          let selectedModel = this.suggestionsCol.at(this.selectedIndex);
+
+          let speciesID = selectedModel.get('name');
+          this.trigger('taxon:selected', speciesID, false);
+
+          return false;
+        case 38:
+          //Up
+          e.preventDefault();
+
+          if (this.selectedIndex > 0) {
+            this.suggestionsCol.at(this.selectedIndex).set('selected', false);
+            this.selectedIndex--;
+            this.suggestionsCol.at(this.selectedIndex).set('selected', true);
+          }
+          //rerender
+          break;
+        case 40:
+          //Down
+          e.preventDefault();
+
+          if ((this.suggestionsCol && this.suggestionsCol.length) && //initialized
+            this.selectedIndex < this.suggestionsCol.length - 1) { //not out of boundaries
+            this.suggestionsCol.at(this.selectedIndex).set('selected', false);
+            this.selectedIndex++;
+            this.suggestionsCol.at(this.selectedIndex).set('selected', true);
+          }
+          break;
+        default:
+          this.suggestionsCol = this.getSuggestions(input);
+
+          //reset selection
+          this.selectedIndex = this.suggestionsCol.length > 0 ? 0 : -1;
+
+          //select first
+          this.suggestionsCol.length && this.suggestionsCol.at(0).set('selected', true);
+
+          let suggestionsColView = new SuggestionsView({
+            collection: this.suggestionsCol
+          });
+          suggestionsColView.on('childview:taxon:selected',
+            (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
+
+          this.suggestions.show(suggestionsColView);
+
+      }
     },
 
     getSuggestions: function (input) {
+      log('taxon: generating suggestions.', 'd');
+
       let MAX = 20;
       let text = input.toLowerCase(),
           selection = [];
@@ -73,7 +123,10 @@ define([
 
   let SpeciesView = Marionette.ItemView.extend({
     tagName: 'li',
-    className: 'table-view-cell',
+    className: function () {
+      return 'table-view-cell ' + (this.model.get('selected') ? 'selected' : '');
+    },
+
     template: JST['common/taxon/species'],
 
     events: {
@@ -86,6 +139,13 @@ define([
       };
     },
 
+    modelEvents: {'change': 'render'},
+
+    onRender: function() {
+      //have to manually repaint
+      this.$el.removeClass().addClass(this.className());
+    },
+
     select: function (e) {
       log('taxon: selected.', 'd');
       let speciesID = e.target.dataset.name;
@@ -95,7 +155,7 @@ define([
         speciesID = e.target.parentElement.dataset.name;
         edit = true;
       }
-      app.trigger('common:taxon:selected', speciesID, edit);
+      this.trigger('taxon:selected', speciesID, edit);
     }
   });
 
