@@ -124,6 +124,36 @@
       z-index: 10;
       background-color: $color-white;
 
+      &:hover {
+        background-color: $color-gray-light;
+
+        .online-status {
+          display: none;
+        }
+
+        .edit {
+          display: inline-block;
+
+          .delete {
+            margin-left: 25px;
+          }
+        }
+      }
+
+      &.mobile:hover {
+        background-color: $color-white;
+
+        .online-status {
+          display: inline-block;
+        }
+
+        .edit {
+          .delete {
+            margin-left: 0;
+          }
+        }
+      }
+
       //pull right
       .online-status {
         .icon:before {
@@ -157,23 +187,6 @@
           }
         }
       }
-
-      &:hover {
-        background-color: $color-gray-light;
-
-        .online-status {
-          display: none;
-        }
-
-        .edit {
-          display: inline-block;
-          
-          .delete {
-            margin-left: 25px;
-          }
-        }
-      }
-
 
       //record info
       .media-body {

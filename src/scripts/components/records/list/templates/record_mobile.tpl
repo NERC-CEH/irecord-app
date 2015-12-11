@@ -1,7 +1,7 @@
 <% if (obj.taxon) { %>
-<a href="#records/<%- obj.id %><%- obj.saved ? '' : '/edit' %>">
+<a href="#records/<%- obj.id %><%- obj.saved ? '' : '/edit' %>" class="mobile">
   <% } else { %>
-  <a href="#records/<%- obj.id %>/edit/taxon">
+  <a href="#records/<%- obj.id %>/edit/taxon" class="mobile">
     <% } %>
     <div class="media-object pull-left photo"><%= obj.img %></div>
     <div class="pull-right">
