@@ -69,7 +69,7 @@ define(['app-config'], function (CONFIG) {
       console.error(error.message, error.url, error.line, error.column, error.obj);
 
       //todo: clean this up
-      $('#loader #animation img').remove();
+      $('#loader #animation span.icon').remove();
       $('#loader #animation .error').html(
         '<center><b>Oh no, Error! </b></center><br/>' + error.message +
         ' [' +  error.line + ', '  + error.column + '] ' +
