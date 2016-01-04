@@ -8,9 +8,12 @@ define([
     'fastclick',
     'log',
     'common/dialog_region',
-    'common/controller'
+    'common/controller',
+    'helpers/brcart'
   ],
-  function ($, Backbone, Marionette, FastClick, log, DialogRegion, CommonController) {
+  function ($, Backbone, Marionette, FastClick, log, DialogRegion, CommonController, brcArt) {
+    log(brcArt, 'i');
+
     var app = new Marionette.Application();
 
     app.navigate = function(route,  options = {}){
@@ -36,6 +39,11 @@ define([
     });
 
     app.on("start", function () {
+      // Init for the first time
+      // download appcache
+      // set up DB
+      // when done - carry on with showing pages
+
       FastClick.attach(document.body);
 
       //turn off the loading splash screen
