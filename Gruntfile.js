@@ -1,7 +1,7 @@
 module.exports = function (grunt) {
   var DEST = 'dist/',
       SCRIPTS = 'dist/scripts/',
-      MANIFEST_NAME = 'manifest.json',
+      MANIFEST_NAME = 'appcache.manifest',
       CONFIG_NAME = 'config/app',
       CONFIG_DEV_NAME = 'config/dev';
 
@@ -27,6 +27,9 @@ module.exports = function (grunt) {
           {
             src: "src/*.html", dest: 'dist/',
             expand: true, flatten: true
+          },
+          {
+            src: ['src/appcache.manifest'], dest: 'dist/appcache.manifest'
           },
           {
             src: "src/*.json", dest: 'dist/',
