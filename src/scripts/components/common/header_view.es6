@@ -8,13 +8,24 @@ define([
 ], function (Marionette, JST, log) {
   'use strict';
 
-  var Page = Marionette.ItemView.extend({
+  var Page = Marionette.LayoutView.extend({
     id: 'records-header',
     tagName: 'nav',
     template: JST['common/header'],
 
+    regions: {
+      leftPanel: '#left-panel',
+      rightPanel: '#right-panel'
+    },
+
     events: {
       'click a[data-rel="back"]': "navigateBack"
+    },
+
+    onRender: function () {
+      if (this.options.rightPanel) {
+        this.rightPanel.show(this.options.rightPanel);
+      }
     },
 
     navigateBack: function () {
