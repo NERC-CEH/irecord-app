@@ -19,12 +19,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "7432077e6a2d6aa19984ca821bb6bbda",
-      "css": "species",
-      "code": 59411,
-      "src": "fontawesome"
-    },
-    {
       "uid": "d61be837c725a299b432dcbee2ecdae6",
       "css": "stage",
       "code": 59412,
@@ -53,6 +47,18 @@
       "css": "map",
       "code": 59393,
       "src": "entypo"
+    },
+    {
+      "uid": "4x5p6fnblkhqsj4ibuc724faotghuiaq",
+      "css": "lock-closed",
+      "code": 59404,
+      "src": "typicons"
+    },
+    {
+      "uid": "75cff40f03567673e13b0e7d005b7741",
+      "css": "lock-open",
+      "code": 59411,
+      "src": "typicons"
     },
     {
       "uid": "2d220a22480861b15878d1632e31ab47",
@@ -106,12 +112,6 @@
       "uid": "b59cc4d390a6df564a055f43c03a6af5",
       "css": "camera",
       "code": 59392,
-      "src": "linecons"
-    },
-    {
-      "uid": "47e9e56d2b5abe839bcf1e014d643dea",
-      "css": "lock",
-      "code": 59404,
       "src": "linecons"
     },
     {
