@@ -18,7 +18,8 @@ define([
       surname: '',
       email: '',
       secret: '',
-      locations: []
+      locations: [],
+      attrLocks: {}
     },
 
     /**
@@ -120,6 +121,18 @@ define([
 
       //remove the spaces
       return gref.replace(/ /g, '');
+    },
+
+    setAttrLock: function (attr, value) {
+      let locks = this.get('attrLocks');
+
+      locks[attr] = value;
+      this.set(locks);
+    },
+
+    getAttrLock: function (attr) {
+      let locks = this.get('attrLocks');
+      return locks[attr];
     },
 
     appendSampleUser: function (sample) {

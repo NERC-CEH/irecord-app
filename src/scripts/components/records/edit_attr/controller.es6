@@ -1,10 +1,12 @@
 define([
   'app',
+  'common/user_model',
   './main_view',
   'common/header_view',
+  './lock_view',
   'common/record_manager',
   'helpers/date_extension'
-], function (app, MainView, HeaderView, recordManager) {
+], function (app, user, MainView, HeaderView, LockView, recordManager) {
   let API =  {
     show: function (recordID, attr) {
       recordManager.get(recordID, function (err, record) {
@@ -40,6 +42,7 @@ define([
           return;
         }
 
+        //MAIN
         let mainView = new MainView({
           attr: attr,
           model: templateData
@@ -64,13 +67,49 @@ define([
             default:
           }
           recordManager.set(record, function () {
+            //update locked value if attr is locked
+            if (user.getAttrLock(attr)) {
+              user.setAttrLock(attr, values);
+            }
+
             window.history.back();
           })
         };
 
-        let headerView = new HeaderView({
-          onExit: onExit
+        //HEADER
+        let lockView = new LockView({
+          model: user
         });
+        let headerView = new HeaderView({
+          onExit: onExit,
+          rightPanel: lockView
+        });
+
+        lockView.on('lockClick', function () {
+          //save the lock of the attribute
+          let value = null;
+          if (!user.getAttrLock(attr)) {
+            switch (attr) {
+              case 'date':
+                value = record.get('date');
+                break;
+              case 'number':
+                value = occ.get('number');
+                break;
+              case 'stage':
+                value = occ.get('stage');
+                break;
+              case 'comment':
+              /*fallthrough*/
+              default:
+                return;
+            };
+          }
+
+          user.setAttrLock(attr, value);
+        });
+
+
         app.regions.header.show(headerView);
 
         //if exit on selection click

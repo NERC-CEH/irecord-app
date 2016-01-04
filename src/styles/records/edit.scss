@@ -45,3 +45,17 @@
   margin-right: 2%;
   margin-left: 1%;
 }
+
+#lock-btn {
+  margin-right: 7px;
+}
+
+.lock:after {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+
+  color: $color-green;
+  font-family: icons;
+  content: '\e80c';
+}

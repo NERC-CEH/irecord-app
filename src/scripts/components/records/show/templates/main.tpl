@@ -1,3 +1,6 @@
+<div class="info-message">
+  <p>This record has been locked and cannot be edited.</p>
+</div>
 <ul class="table-view core inputs info no-top">
   <li class="table-view-cell species">
     <p class="descript"><%- obj.taxon %></p>
