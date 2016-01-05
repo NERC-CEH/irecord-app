@@ -13,6 +13,10 @@ define([
 
     triggers: {
       'click #lock-btn': 'lockClick'
+    },
+
+    modelEvents: {
+      'change': 'render'
     }
   });
 

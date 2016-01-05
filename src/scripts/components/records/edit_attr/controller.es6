@@ -69,7 +69,7 @@ define([
           recordManager.set(record, function () {
             //update locked value if attr is locked
             if (user.getAttrLock(attr)) {
-              user.setAttrLock(attr, values);
+              user.setAttrLock(attr, values[attr]);
             }
 
             window.history.back();
@@ -77,36 +77,33 @@ define([
         };
 
         //HEADER
-        let lockView = new LockView({
-          model: user
+        //populate template data
+        let lockTemplateData = new Backbone.Model({
+          locked: user.getAttrLock(attr)
+        })
+        user.on('change:attrLocks', function () {
+          lockTemplateData.set('locked', user.getAttrLock(attr));
         });
+
+        let lockView = new LockView({
+          model: lockTemplateData
+        });
+
+        //clean up bindings on leave
+        lockView.on('destroy', function () {
+          user.off('change:attrLocks');
+        });
+
+        //header view
         let headerView = new HeaderView({
           onExit: onExit,
           rightPanel: lockView
         });
 
         lockView.on('lockClick', function () {
-          //save the lock of the attribute
-          let value = null;
-          if (!user.getAttrLock(attr)) {
-            switch (attr) {
-              case 'date':
-                value = record.get('date');
-                break;
-              case 'number':
-                value = occ.get('number');
-                break;
-              case 'stage':
-                value = occ.get('stage');
-                break;
-              case 'comment':
-              /*fallthrough*/
-              default:
-                return;
-            };
-          }
-
-          user.setAttrLock(attr, value);
+          //invert the lock of the attribute
+          //real value will be put on exit
+          user.setAttrLock(attr, !user.getAttrLock(attr));
         });
 
 

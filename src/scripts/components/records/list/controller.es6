@@ -1,10 +1,11 @@
 define([
   'morel',
   'app',
+  'common/user_model',
   './main_view',
   './header_view',
   'common/record_manager'
-], function (morel, app, MainView, HeaderView, recordManager) {
+], function (morel, app, user, MainView, HeaderView, recordManager) {
   let API = {
     show: function (){
       recordManager.getAll(function (err, records) {
@@ -44,6 +45,9 @@ define([
         let sample = new morel.Sample(null, {
           occurrences: [occurrence]
         });
+
+        //append locked attributes
+        user.appendAttrLocks(sample);
 
         recordManager.set(sample, function () {
           //hide loader

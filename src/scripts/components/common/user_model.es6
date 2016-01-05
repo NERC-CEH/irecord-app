@@ -128,11 +128,40 @@ define([
 
       locks[attr] = value;
       this.set(locks);
+      this.trigger('change:attrLocks');
+      this.save();
     },
 
     getAttrLock: function (attr) {
       let locks = this.get('attrLocks');
       return locks[attr];
+    },
+
+    appendAttrLocks: function (sample) {
+      var locks = this.get('attrLocks');
+      let occurrence = sample.occurrences.at(0);
+
+      _.each(locks, function (value, key) {
+        switch (key) {
+          case 'location':
+            sample.set('location', value);
+            break;
+          case 'date':
+            //parse stringified date
+            sample.set('date', new Date(value));
+            break;
+          case 'number':
+            occurrence.set('number', value);
+            break;
+          case 'stage':
+            occurrence.set('stage', value);
+            break;
+          case 'comment':
+            occurrence.set('comment', value);
+            break;
+          default:
+        }
+      });
     },
 
     appendSampleUser: function (sample) {

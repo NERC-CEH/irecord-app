@@ -1,14 +1,15 @@
 define([
   'morel',
   'app',
+  'common/user_model',
   'log',
   'common/record_manager',
   './main_view',
   'common/header_view'
-], function (morel, app, log, recordManager, MainView, HeaderView) {
-  let id = null;
+], function (morel, app, user, log, recordManager, MainView, HeaderView) {
   let API = {
     show: function (recordID){
+      let that = this;
       this.id = recordID;
 
       if (recordID) {
@@ -21,7 +22,7 @@ define([
           } else {
             mainView = new MainView({removeEditBtn: true});
           }
-          mainView.on('taxon:selected', API._onSelected);
+          mainView.on('taxon:selected', API._onSelected, that);
           app.regions.main.show(mainView);
         });
       } else {
@@ -52,6 +53,9 @@ define([
           let sample = new morel.Sample(null, {
             occurrences: [occurrence]
           });
+
+          //add locked attributes
+          user.appendAttrLocks(sample);
 
           recordManager.set(sample, function () {
             if (edit) {

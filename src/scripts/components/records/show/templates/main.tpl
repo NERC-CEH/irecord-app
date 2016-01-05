@@ -1,5 +1,5 @@
 <div class="info-message">
-  <p>This record has been locked and cannot be edited.</p>
+  <p>This record has been locked for submission and cannot be edited.</p>
 </div>
 <ul class="table-view core inputs info no-top">
   <li class="table-view-cell species">
