@@ -103,18 +103,20 @@ define([
       let text = input.toLowerCase(),
           selection = [];
 
-      for (var listID = 0; listID < 4 && selection.length < MAX; listID++) {
-        var species = window['species_' + listID];
+        var species = window['species_list'];
         for (var i = 0; i < species.length && selection.length < MAX; i++) {
-          var s = species[i][1].toLowerCase().indexOf(text);
-          if (s >= 0) {
+          var s = species[i][2].toLowerCase().indexOf(text);
+          var c = species[i][3].toLowerCase().indexOf(text);
+          if (s >= 0 || c >= 0) {
             selection.push({
-              name: species[i][1],
+              id: species[i][0],
+              name: species[i][2],
+              common_name: species[i][3],
               removeEditBtn: this.removeEditBtn
             });
           }
         }
-      }
+
 
       return new Backbone.Collection(selection);
     }
