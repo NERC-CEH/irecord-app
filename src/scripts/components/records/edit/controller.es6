@@ -27,10 +27,12 @@ define([
 
         let occ = record.occurrences.at(0);
         let specie = occ.get('taxon');
+        let taxon = user.get('useScientificNames') ?
+          specie.taxon : specie.common_name || specie.taxon;
 
         let templateData = new Backbone.Model({
           id: record.id || record.cid,
-          taxon: user.get('useCommonNames') ? specie.common_name : specie.taxon,
+          taxon: taxon,
           date: record.get('date').print(),
           number: occ.get('number') && occ.get('number').limit(20),
           stage: occ.get('stage') && occ.get('stage').limit(20),

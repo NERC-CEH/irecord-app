@@ -172,14 +172,14 @@ define([
 
       let species = {
         warehouse_id: e.target.dataset.warehouse_id,
-        common_name: e.target.dataset.name,
+        common_name: e.target.dataset.common_name,
         taxon: e.target.dataset.taxon
       };
 
       if (!species.warehouse_id) {
         species = {
           warehouse_id: e.target.parentElement.dataset.warehouse_id,
-          common_name: e.target.parentElement.dataset.name,
+          common_name: e.target.parentElement.dataset.common_name,
           taxon: e.target.parentElement.dataset.taxon
         };
 

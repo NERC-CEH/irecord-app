@@ -41,12 +41,15 @@ define([
           images = occ.images;
       let img = images.length && images.at(0).get('data');
 
+      let taxon = user.get('useScientificNames') ?
+        specie.taxon : specie.common_name || specie.taxon;
+
       let templateData = {
         id: this.model.id || this.model.cid,
         saved: this.model.metadata.saved,
         onDatabase: this.model.getSyncStatus() === morel.SYNCED,
         date: date,
-        taxon: user.get('useCommonNames') ? specie.common_name : specie.taxon,
+        taxon: taxon,
         number: occ.get('number') && occ.get('number').limit(20),
         stage: occ.get('stage') && occ.get('stage').limit(20),
         comment: occ.get('comment'),

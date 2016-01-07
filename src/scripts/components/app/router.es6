@@ -4,8 +4,9 @@ define([
   'app',
   'app-config',
   'common/controller',
-  './info/controller'
-], function(Marionette, log, app, CONFIG, CommonController, InfoController) {
+  './info/controller',
+  './settings/controller'
+], function(Marionette, log, app, CONFIG, CommonController, InfoController, SettingsController) {
   app.info = {};
 
   app.info.Router = Marionette.AppRouter.extend({
@@ -28,10 +29,7 @@ define([
         CommonController.show({
           title: 'Credits', app: app, route: 'app/credits/main'
         })},
-      "app/settings": function() {
-        CommonController.show({
-          title: 'Settings', app: app, route: 'app/settings/main'
-        })},
+      "app/settings": SettingsController.show,
       "app/*path": function () {app.trigger('404:show')}
     }
   });
