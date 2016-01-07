@@ -17,11 +17,12 @@ define([
         var s = species[i][2].toLowerCase().indexOf(searchPhrase);
         var c = species[i][3].toLowerCase().indexOf(searchPhrase);
         if (s >= 0 || c >= 0) {
-          results.push({
+          let specie = {
             id: species[i][0],
-            name: species[i][2],
-            removeEditBtn: this.removeEditBtn
-          });
+            name: species[i][2]
+          };
+
+          results.push(specie);
         }
       }
 

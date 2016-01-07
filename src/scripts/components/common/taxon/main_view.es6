@@ -20,8 +20,7 @@ define([
       suggestions: '#suggestions'
     },
 
-    initialize: function (options){
-      this.removeEditBtn = options.removeEditBtn;
+    initialize: function (){
       this.selectedIndex = 0;
     },
 
@@ -40,8 +39,9 @@ define([
       this.suggestionsCol.length && this.suggestionsCol.at(0).set('selected', true);
 
       let suggestionsColView = new SuggestionsView({
-        collection: this.suggestionsCol
-      });
+        collection: this.suggestionsCol,
+        removeEditBtn: this.options.removeEditBtn
+    });
       suggestionsColView.on('childview:taxon:selected',
         (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
 
@@ -123,6 +123,14 @@ define([
 
     modelEvents: {'change': 'render'},
 
+    serializeData: function () {
+      let templateData = {};
+      templateData.name = this.model.get('name');
+      templateData.removeEditBtn = this.options.removeEditBtn;
+
+      return templateData;
+    },
+
     onRender: function() {
       //have to manually repaint
       this.$el.removeClass().addClass(this.className());
@@ -144,7 +152,12 @@ define([
   let SuggestionsView = Marionette.CollectionView.extend({
     tagName: 'ul',
     className: 'table-view',
-    childView: SpeciesView
+    childView: SpeciesView,
+    childViewOptions: function () {
+      return {
+        removeEditBtn: this.options.removeEditBtn
+      }
+    }
   });
 
   return View;

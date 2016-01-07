@@ -23,19 +23,11 @@ define([
           } else {
             mainView = new MainView({removeEditBtn: true});
           }
-          mainView.on('taxon:selected', API._onSelected, that);
-          app.regions.main.show(mainView);
+          API._showMainView(mainView);
         });
       } else {
         let mainView = new MainView();
-
-        mainView.on('taxon:selected', API._onSelected, this);
-        mainView.on('taxon:searched', function (searchPhrase) {
-          let selection = SE.search(searchPhrase);
-          mainView.updateSuggestions(new Backbone.Collection(selection));
-        });
-
-        app.regions.main.show(mainView);
+        API._showMainView(mainView);
 
           //should be done in the view
         app.regions.main.$el.find('#taxon').select();
@@ -47,6 +39,16 @@ define([
         })
       });
       app.regions.header.show(headerView);
+    },
+
+    _showMainView: function (mainView) {
+      mainView.on('taxon:selected', API._onSelected, this);
+      mainView.on('taxon:searched', function (searchPhrase) {
+        let selection = SE.search(searchPhrase);
+        mainView.updateSuggestions(new Backbone.Collection(selection));
+      });
+
+      app.regions.main.show(mainView);
     },
 
     _onSelected: function (taxon, edit) {
