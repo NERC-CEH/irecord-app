@@ -51,12 +51,12 @@ define([
       app.regions.main.show(mainView);
     },
 
-    _onSelected: function (taxon, edit) {
+    _onSelected: function (species, edit) {
         var that = this;
         if (!this.id) {
           //create new sighting
           let occurrence = new morel.Occurrence({
-            'taxon': taxon
+            'taxon': species
           });
 
           let sample = new morel.Sample(null, {
@@ -77,7 +77,7 @@ define([
         } else {
           //edit existing one
           recordManager.get(this.id, function (err, record) {
-            record.occurrences.at(0).set('taxon', taxon);
+            record.occurrences.at(0).set('taxon', species);
             recordManager.set(record, function (err) {
               if (edit) {
                 app.trigger('records:edit', that.id, {replace: true});

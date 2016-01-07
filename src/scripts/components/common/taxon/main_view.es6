@@ -9,6 +9,8 @@ define([
 ], function (Marionette, JST, log, app) {
   'use strict';
 
+  const MIN_SEARCH_LENGTH = 3;
+
   let View = Marionette.LayoutView.extend({
     template: JST['common/taxon/layout'],
 
@@ -42,7 +44,7 @@ define([
         collection: this.suggestionsCol,
         removeEditBtn: this.options.removeEditBtn,
         searchPhrase: searchPhrase
-    });
+      });
       suggestionsColView.on('childview:taxon:selected',
         (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
 
@@ -99,7 +101,9 @@ define([
 
           //let controller know
           let text = input.toLowerCase().trim();
-          this.trigger('taxon:searched', text);
+          if (text.length >= MIN_SEARCH_LENGTH) {
+            this.trigger('taxon:searched', text);
+          }
       }
     }
   });
@@ -118,7 +122,9 @@ define([
 
     attributes: function () {
       return {
-        'data-name': this.model.get('name')
+        'data-warehouse_id': this.model.get('warehouse_id'),
+        'data-common_name': this.model.get('common_name'),
+        'data-taxon': this.model.get('taxon'),
       };
     },
 
@@ -162,14 +168,24 @@ define([
 
     select: function (e) {
       log('taxon: selected.', 'd');
-      let speciesID = e.target.dataset.name;
       let edit = false;
 
-      if (!speciesID) {
-        speciesID = e.target.parentElement.dataset.name;
+      let species = {
+        warehouse_id: e.target.dataset.warehouse_id,
+        common_name: e.target.dataset.name,
+        taxon: e.target.dataset.taxon
+      };
+
+      if (!species.warehouse_id) {
+        species = {
+          warehouse_id: e.target.parentElement.dataset.warehouse_id,
+          common_name: e.target.parentElement.dataset.name,
+          taxon: e.target.parentElement.dataset.taxon
+        };
+
         edit = true;
       }
-      this.trigger('taxon:selected', speciesID, edit);
+      this.trigger('taxon:selected', species, edit);
     }
   });
 

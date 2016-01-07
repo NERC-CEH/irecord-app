@@ -2,6 +2,7 @@
  * Welcome page view.
  *****************************************************************************/
 define([
+  'common/user_model',
   'marionette',
   'morel',
   'JST',
@@ -10,7 +11,7 @@ define([
   'helpers/browser',
   'common/record_manager',
   'helpers/date_extension'
-], function (Marionette, morel, JST, log, Hammer, browser) {
+], function (user, Marionette, morel, JST, log, Hammer, browser) {
   'use strict';
 
   let RecordView = Marionette.ItemView.extend({
@@ -36,15 +37,16 @@ define([
     render: function () {
       let occ = this.model.occurrences.at(0);
       let date = this.model.get('date').print(),
-          taxon = occ.get('taxon'),
+          specie = occ.get('taxon'),
           images = occ.images;
       let img = images.length && images.at(0).get('data');
+
       let templateData = {
         id: this.model.id || this.model.cid,
         saved: this.model.metadata.saved,
         onDatabase: this.model.getSyncStatus() === morel.SYNCED,
         date: date,
-        taxon: taxon,
+        taxon: user.get('useCommonNames') ? specie.common_name : specie.taxon,
         number: occ.get('number') && occ.get('number').limit(20),
         stage: occ.get('stage') && occ.get('stage').limit(20),
         comment: occ.get('comment'),
