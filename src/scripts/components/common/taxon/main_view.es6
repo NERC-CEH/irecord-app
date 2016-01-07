@@ -134,11 +134,11 @@ define([
       let common_name = this.model.get('common_name');
 
       //check if found in taxon
-      let taxon_pos = taxon.toLowerCase().indexOf(this.options.searchPhrase);
-      if (taxon_pos >= 0 ) {
-        templateData.name = this._prettifyName(taxon, this.options.searchPhrase);
-      } else {
+      let common_pos = common_name.toLowerCase().indexOf(this.options.searchPhrase);
+      if (common_pos >= 0 ) {
         templateData.name = this._prettifyName(common_name, this.options.searchPhrase);
+      } else {
+        templateData.name = this._prettifyName(taxon, this.options.searchPhrase);
       }
 
       templateData.removeEditBtn = this.options.removeEditBtn;
