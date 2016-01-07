@@ -13,7 +13,7 @@ define([
     template: JST['common/taxon/layout'],
 
     events: {
-      'keydown #taxon': '_keydown'
+      'keyup #taxon': '_keydown'
     },
 
     regions: {
@@ -29,7 +29,7 @@ define([
       this.$el.find('#taxon').select();
     },
 
-    updateSuggestions: function (suggestions) {
+    updateSuggestions: function (suggestions, searchPhrase) {
       this.suggestionsCol = suggestions;
 
       //reset selection
@@ -40,7 +40,8 @@ define([
 
       let suggestionsColView = new SuggestionsView({
         collection: this.suggestionsCol,
-        removeEditBtn: this.options.removeEditBtn
+        removeEditBtn: this.options.removeEditBtn,
+        searchPhrase: searchPhrase
     });
       suggestionsColView.on('childview:taxon:selected',
         (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
@@ -97,7 +98,7 @@ define([
           //check time difference
 
           //let controller know
-          let text = input.toLowerCase();
+          let text = input.toLowerCase().trim();
           this.trigger('taxon:searched', text);
       }
     }
@@ -123,12 +124,35 @@ define([
 
     modelEvents: {'change': 'render'},
 
+    /**
+     * Prepare search results for the view
+     * @returns {{}}
+     */
     serializeData: function () {
       let templateData = {};
-      templateData.name = this.model.get('name');
+      let taxon = this.model.get('taxon');
+      let common_name = this.model.get('common_name');
+
+      //check if found in taxon
+      let taxon_pos = taxon.toLowerCase().indexOf(this.options.searchPhrase);
+      if (taxon_pos >= 0 ) {
+        templateData.name = this._prettifyName(taxon, this.options.searchPhrase);
+      } else {
+        templateData.name = this._prettifyName(common_name, this.options.searchPhrase);
+      }
+
       templateData.removeEditBtn = this.options.removeEditBtn;
 
       return templateData;
+    },
+
+    _prettifyName: function (name, searchPhrase) {
+      let search_pos = name.toLowerCase().indexOf(searchPhrase);
+      let prettyName = name.slice(0, search_pos) + '<b>' +
+        name.slice(search_pos, search_pos + searchPhrase.length) + '</b>' +
+        name.slice(search_pos + searchPhrase.length);
+
+      return prettyName;
     },
 
     onRender: function() {
@@ -155,7 +179,8 @@ define([
     childView: SpeciesView,
     childViewOptions: function () {
       return {
-        removeEditBtn: this.options.removeEditBtn
+        removeEditBtn: this.options.removeEditBtn,
+        searchPhrase: this.options.searchPhrase
       }
     }
   });

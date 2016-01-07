@@ -45,7 +45,7 @@ define([
       mainView.on('taxon:selected', API._onSelected, this);
       mainView.on('taxon:searched', function (searchPhrase) {
         let selection = SE.search(searchPhrase);
-        mainView.updateSuggestions(new Backbone.Collection(selection));
+        mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
       });
 
       app.regions.main.show(mainView);
