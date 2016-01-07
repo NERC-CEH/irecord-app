@@ -5,8 +5,9 @@ define([
   'log',
   'common/record_manager',
   './main_view',
-  'common/header_view'
-], function (morel, app, user, log, recordManager, MainView, HeaderView) {
+  'common/header_view',
+  './taxon_search_engine'
+], function (morel, app, user, log, recordManager, MainView, HeaderView, SE) {
   let API = {
     show: function (recordID){
       let that = this;
@@ -27,7 +28,13 @@ define([
         });
       } else {
         let mainView = new MainView();
+
         mainView.on('taxon:selected', API._onSelected, this);
+        mainView.on('taxon:searched', function (searchPhrase) {
+          let selection = SE.search(searchPhrase);
+          mainView.updateSuggestions(new Backbone.Collection(selection));
+        });
+
         app.regions.main.show(mainView);
 
           //should be done in the view
@@ -79,7 +86,6 @@ define([
             });
           });
         }
-
     }
   };
 

@@ -5,11 +5,7 @@ define([
   'marionette',
   'JST',
   'log',
-  'app',
-  'data/master_list',
-  'data/master_list_1',
-  'data/master_list_2',
-  'data/master_list_3',
+  'app'
 ], function (Marionette, JST, log, app) {
   'use strict';
 
@@ -30,7 +26,26 @@ define([
     },
 
     onRender: function () {
+      //preselect the input for typing
       this.$el.find('#taxon').select();
+    },
+
+    updateSuggestions: function (suggestions) {
+      this.suggestionsCol = suggestions;
+
+      //reset selection
+      this.selectedIndex = this.suggestionsCol.length > 0 ? 0 : -1;
+
+      //select first
+      this.suggestionsCol.length && this.suggestionsCol.at(0).set('selected', true);
+
+      let suggestionsColView = new SuggestionsView({
+        collection: this.suggestionsCol
+      });
+      suggestionsColView.on('childview:taxon:selected',
+        (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
+
+      this.suggestions.show(suggestionsColView);
     },
 
     _keydown: function (e) {
@@ -77,50 +92,15 @@ define([
           }
           break;
         default:
-          this.suggestionsCol = this.getSuggestions(input);
+          //Other
 
-          //reset selection
-          this.selectedIndex = this.suggestionsCol.length > 0 ? 0 : -1;
+          //check time difference
 
-          //select first
-          this.suggestionsCol.length && this.suggestionsCol.at(0).set('selected', true);
-
-          let suggestionsColView = new SuggestionsView({
-            collection: this.suggestionsCol
-          });
-          suggestionsColView.on('childview:taxon:selected',
-            (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
-
-          this.suggestions.show(suggestionsColView);
-
+          //let controller know
+          let text = input.toLowerCase();
+          this.trigger('taxon:searched', text);
       }
-    },
-
-    getSuggestions: function (input) {
-      log('taxon: generating suggestions.', 'd');
-
-      let MAX = 20;
-      let text = input.toLowerCase(),
-          selection = [];
-
-        var species = window['species_list'];
-        for (var i = 0; i < species.length && selection.length < MAX; i++) {
-          var s = species[i][2].toLowerCase().indexOf(text);
-          var c = species[i][3].toLowerCase().indexOf(text);
-          if (s >= 0 || c >= 0) {
-            selection.push({
-              id: species[i][0],
-              name: species[i][2],
-              common_name: species[i][3],
-              removeEditBtn: this.removeEditBtn
-            });
-          }
-        }
-
-
-      return new Backbone.Collection(selection);
     }
-
   });
 
   let SpeciesView = Marionette.ItemView.extend({
