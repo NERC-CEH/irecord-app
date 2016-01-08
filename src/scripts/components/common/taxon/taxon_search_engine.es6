@@ -14,7 +14,11 @@ define([
   let API = {
     search: function (searchPhrase) {
       var species = window['species_list'];
-      let result = []; //search results
+      //search results
+      let commonNameRes = [];
+      let commonNameFirstWordRes = [];
+      let scientificRes = [];
+      let scientificFirstWordRes = [];
 
       let timeStart = new Date(); //track search time
 
@@ -22,45 +26,53 @@ define([
 
       //reverse loop quicker than for
       let i = species.length;
-      while (i > 0 && result.length < MAX) {
+      let re = new RegExp('\\b' + API._escapeRegExp(searchPhrase), "i");
+
+      while (i > 0 &&
+      (commonNameFirstWordRes.length + commonNameRes.length +
+      scientificFirstWordRes.length + scientificRes.length ) < MAX) {
         i--;
         let sp = species[i];
 
-        let string = (sp[TAXON_ID] + ' ' + sp[COMMON_NAME_ID]).toLowerCase();
-        let foundIndex = string.indexOf(searchPhrase);
-        let foundWithSpaceIndex = string.indexOf(' ' + searchPhrase) > 0;
+        let common, scientific;
+        //skips the second bit if found in first
+        if ((common = sp[COMMON_NAME_ID].match(re)) || (scientific = sp[TAXON_ID].match(re))) {
+          //found as a first word in name
+          let index = common ? sp[COMMON_NAME_ID].toLowerCase().indexOf(searchPhrase) :
+            sp[TAXON_ID].toLowerCase().indexOf(searchPhrase);
 
-        if (foundIndex === 0 || foundWithSpaceIndex) {
-          //found as word start
           let specie = {
             warehouse_id: sp[WAREHOUSE_ID],
             taxon: sp[TAXON_ID],
             common_name: sp[COMMON_NAME_ID]
           };
 
-          //prepend
-          result.unshift(specie);
-        } else if (foundIndex > 0) {
-          //found in other places
-          foundArray.push(i);
-        }
-      }
-
-      if (result.length < MAX && foundArray.length) {
-        let diff = MAX - result.length;
-        for (i = 0; i < foundArray.length && diff > 0; i++, diff--) {
-          let sp = species[foundArray[i]];
-          let specie = {
-            warehouse_id: sp[WAREHOUSE_ID],
-            taxon: sp[TAXON_ID],
-            common_name: sp[COMMON_NAME_ID]
-          };
-          result.push(specie);
+          //save results
+          if (common) {
+            if (index === 0) {
+              commonNameFirstWordRes.unshift(specie);
+            } else {
+              commonNameRes.unshift(specie);
+            }
+          } else {
+            //scientific
+            if (index === 0) {
+              scientificFirstWordRes.unshift(specie);
+            } else {
+              scientificRes.unshift(specie);
+            }
+          }
         }
       }
 
       log('Search time: ' + (new Date() - timeStart) + 'ms', 'd');
-      return result;
+
+      //return results in the order
+      return commonNameFirstWordRes.concat(scientificFirstWordRes, commonNameRes, scientificRes);
+    },
+
+    _escapeRegExp: function (string){
+      return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     }
   };
 

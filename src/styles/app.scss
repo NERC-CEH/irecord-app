@@ -37,14 +37,19 @@ input:focus {
 }
 
 header, footer {
+  padding: 0 5px !important; //overrides the bar css
   color: $header-text-color;
   background-color: $header-color !important;
   border-bottom: 1px $header-color solid;
+
+  a {
+    color: $header-text-color;
+  }
 }
 
 header a,
-footer a {
-  color: $header-text-color;
+header button {
+  font-size: 20px !important;
 }
 
 header .title {
@@ -80,14 +85,6 @@ header .title {
 @keyframes spin {
   from {transform:rotate(0deg);}
   to {transform:rotate(360deg);}
-}
-
-header a {
-  font-size: 18px !important;
-}
-
-header a:before {
-  font-size: 24px;
 }
 
 .warn {
@@ -265,4 +262,8 @@ input {
 .prompt-remove {
   background: rgba(255,255,150,0.4);
   transform:translateX(-140px);
+}
+
+.pull-right {
+  margin-right: -5px;
 }

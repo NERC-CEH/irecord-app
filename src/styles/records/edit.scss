@@ -2,6 +2,7 @@
 .heading {
   font-size: .9em!important;
   width: 33%;
+  overflow: visible;
 }
 
 #record-save-btn {
@@ -22,6 +23,8 @@
 
 .descript {
   width: 64%;
+  min-height: 21px;
+
   float: right;
   text-align: right;
   color: $header-color;

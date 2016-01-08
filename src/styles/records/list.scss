@@ -1,12 +1,13 @@
 //HEADER
-.records.header {
+#records-header {
   height: 45px;
-  padding: 0 10px;
   border-bottom: 1px $header-color solid;
 
+  .pull-left {
+    margin-left: 3px;
+  }
   .pull-right {
     width: 40%;
-    margin-right: -10px;
     background-color: $color-white;
 
     a {
