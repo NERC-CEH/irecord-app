@@ -34,25 +34,50 @@ define(['config/map'], function (MAP) {
         appname: "test",
         appsecret: "mytest",
         website_id: 23,
-        survey_id: 258
+        survey_id: 269
       },
       sample: {
         name: {id: 6},
         surname: {id: 7},
         email: {id: 8},
+        location: {
+          values: function () {
+            return "51.6049249,-1.0672276";
+          }
+        },
         location_accuracy: {id: 282},
-        location_name: {id: 274}
+        location_name: {id: 274},
+        date: {
+          values: function (date) {
+            return '11/01/2015';
+          }
+        }
       },
       occurrence: {
+        taxon: {
+          values: function (taxon) {
+            return taxon.warehouse_id;
+          }
+        },
         number: {
-          id: 383,
+          id: 379,
           values: {
-            '1': 4774,
-            '2-10': 4775,
-            '11-100': 4776,
-            '101-1000': 4777,
-            '1000+': 4778,
-            'Present': 4779 //default
+            '1': 665,
+            '2-5': 666,
+            '6-20': 667,
+            '21-100': 668,
+            '101-500': 669,
+            '500+': 670,
+            'Present': 671 //default
+          }
+        },
+        stage: {
+          id: 106,
+          values: {
+            'Not Recorded': 1949,
+            'Adult': 1950,
+            'Pre-adult': 1951,
+            'Other': 1952
           }
         }
       }

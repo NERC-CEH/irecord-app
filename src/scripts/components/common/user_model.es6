@@ -19,7 +19,8 @@ define([
       email: '',
       secret: '',
       locations: [],
-      attrLocks: {}
+      attrLocks: {},
+      autosync: true
     },
 
     /**
@@ -168,6 +169,7 @@ define([
       sample.set('name', this.get('name') || '_');
       sample.set('surname', this.get('surname'));
       sample.set('email', this.get('email'));
+      //sample.set('secret', this.get('secret'));
 
       return sample;
     }

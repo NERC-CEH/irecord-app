@@ -56,6 +56,7 @@ define([
           record.metadata.saved = true;
           recordManager.set(record, function (err) {
             window.history.back();
+            app.trigger('records:edit:saved', record);
           })
         });
       });

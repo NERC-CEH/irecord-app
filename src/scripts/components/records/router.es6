@@ -2,13 +2,15 @@ define([
   'marionette',
   'log',
   'app',
+  'common/record_manager',
+  'common/user_model',
   './list/controller',
   './show/controller',
   './edit/controller',
   './edit_attr/controller',
   'common/location/controller',
   'common/taxon/controller'
-], function(Marionette, log, app, ListController, ShowController, EditController,
+], function(Marionette, log, app, recordManager, userModel, ListController, ShowController, EditController,
             EditAttrController, LocationController, TaxonController) {
   app.records = {};
 
@@ -25,9 +27,18 @@ define([
     }
   });
 
+  let syncRecords = function () {
+    if (window.navigator.onLine && userModel.hasLogIn() && userModel.get('autosync')) {
+      recordManager.syncAll(function (sample) {
+        userModel.appendSampleUser(sample);
+        sample.set('location', '51.6049249,-1.0672276');
+      });
+    }
+  };
+
   app.on("records:list", function(options) {
     app.navigate('records', options);
-    ListController.show();
+    ListController.show(  );
   });
 
   app.on("records:show", function(id, options) {
@@ -38,6 +49,10 @@ define([
   app.on("records:edit", function(id, options) {
     app.navigate('records/' + id + '/edit', options);
     EditController.show(id);
+  });
+
+  app.on("records:edit:saved", function(recordID) {
+    syncRecords();
   });
 
   app.on("records:edit:attr", function(id, attrID, options) {
@@ -59,6 +74,10 @@ define([
     EditController.show();
   });
 
+  //app.on("records:new:saved", function(recordID) {
+  //  syncRecords();
+  //});
+
   app.on("records:new:attr", function(attrID, options) {
     app.navigate('records/new/' + attrID, options);
     switch (attrID) {
@@ -75,5 +94,10 @@ define([
 
   app.on('before:start', function(){
     new app.records.Router();
+    //syncRecords();
   });
+
+
+
+
 });

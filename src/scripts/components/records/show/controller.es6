@@ -1,9 +1,10 @@
 define([
   'app',
+  'common/user_model',
   './main_view',
   'common/header_view',
   'common/record_manager'
-], function (app, MainView, HeaderView, recordManager) {
+], function (app, userModel, MainView, HeaderView, recordManager) {
   let API = {
     show: function (id){
       recordManager.get(id, function (err, record) {
@@ -12,8 +13,13 @@ define([
           return;
         }
         let occ = record.occurrences.at(0);
+
+        let specie = occ.get('taxon');
+        let taxon = userModel.get('useScientificNames') ?
+          specie.taxon : specie.common_name || specie.taxon;
+
         let templateData = new Backbone.Model({
-          taxon: occ.get('taxon'),
+          taxon: taxon,
           date: record.get('date').print(),
           number: occ.get('number') && occ.get('number').limit(20),
           stage: occ.get('stage') && occ.get('stage').limit(20),

@@ -24,20 +24,30 @@
   </label>
 
   <label class="item item-radio">
-    <input type="radio" name="group" value="2-10" <%- obj['2-10'] ? 'checked' : ''%>>
+    <input type="radio" name="group" value="2-5" <%- obj['2-5'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
-        2-10
+        2-5
       </div>
       <i class="radio-icon icon-check"></i>
     </div>
   </label>
 
   <label class="item item-radio">
-    <input type="radio" name="group" value="11-100" <%- obj['11-100'] ? 'checked' : ''%>>
+    <input type="radio" name="group" value="6-20" <%- obj['6-20'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
-        11-100
+        6-20
+      </div>
+      <i class="radio-icon icon-check"></i>
+    </div>
+  </label>
+
+  <label class="item item-radio">
+    <input type="radio" name="group" value="21-100" <%- obj['21-100'] ? 'checked' : ''%>>
+    <div class="radio-content">
+      <div class="item-content">
+        21-100
       </div>
       <i class="radio-icon icon-check"></i>
     </div>

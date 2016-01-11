@@ -30,6 +30,10 @@ define([
       }
     },
 
+    modelEvents: {
+      'sync:request sync:done sync:error': 'render'
+    },
+
     initialize: function () {
       this.template = JST['records/list/record' + (browser.isMobile() ? '_mobile': '')];
     },
@@ -44,10 +48,13 @@ define([
       let taxon = user.get('useScientificNames') ?
         specie.taxon : specie.common_name || specie.taxon;
 
+      let syncStatus = this.model.getSyncStatus();
+
       let templateData = {
         id: this.model.id || this.model.cid,
         saved: this.model.metadata.saved,
-        onDatabase: this.model.getSyncStatus() === morel.SYNCED,
+        onDatabase: syncStatus === morel.SYNCED,
+        isSynchronising: syncStatus === morel.SYNCHRONISING,
         date: date,
         taxon: taxon,
         number: occ.get('number') && occ.get('number').limit(20),

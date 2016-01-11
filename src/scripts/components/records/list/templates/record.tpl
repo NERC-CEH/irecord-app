@@ -7,8 +7,13 @@
     <div class="pull-right">
       <% if (obj.saved) { %>
       <div class="online-status">
+        <% if (obj.isSynchronising) { %>
+        <div class="icon icon-plus spin"></div>
+        <% } else { %>
         <div class="icon <%- obj.onDatabase ? 'icon-upload-cloud' : 'icon-cloud' %>"></div>
+        <% } %>
         <div class="icon icon-check"></div>
+
       </div>
       <div class="edit">
         <div id="delete" class="delete icon icon-delete"></div>

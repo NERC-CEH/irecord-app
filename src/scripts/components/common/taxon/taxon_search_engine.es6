@@ -28,9 +28,9 @@ define([
       let i = species.length;
       let re = new RegExp('\\b' + API._escapeRegExp(searchPhrase), "i");
 
-      while (i > 0 &&
+      while (i > 0 && ((commonNameFirstWordRes.length + scientificFirstWordRes.length) < MAX ||
       (commonNameFirstWordRes.length + commonNameRes.length +
-      scientificFirstWordRes.length + scientificRes.length ) < MAX) {
+      scientificFirstWordRes.length + scientificRes.length ) < MAX)) {
         i--;
         let sp = species[i];
 
