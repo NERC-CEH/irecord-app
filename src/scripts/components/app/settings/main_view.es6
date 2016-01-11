@@ -14,7 +14,8 @@ define([
     template: JST['app/settings/main'],
 
     events: {
-      'click #use-scientific-btn': 'onSettingToggled'
+      'click #use-scientific-btn': 'onSettingToggled',
+      'click #use-autosync-btn': 'onSettingToggled'
     },
 
     onRender: function () {

@@ -9,7 +9,10 @@ define([
   'use strict';
 
   var View = Marionette.ItemView.extend({
-    template: JST['records/show/main']
+    template: JST['records/show/main'],
+    triggers: {
+      'click #sync-btn': 'sync:init'
+    }
   });
 
   return View;

@@ -74,10 +74,6 @@ define([
     EditController.show();
   });
 
-  //app.on("records:new:saved", function(recordID) {
-  //  syncRecords();
-  //});
-
   app.on("records:new:attr", function(attrID, options) {
     app.navigate('records/new/' + attrID, options);
     switch (attrID) {
@@ -94,7 +90,7 @@ define([
 
   app.on('before:start', function(){
     new app.records.Router();
-    //syncRecords();
+    syncRecords();
   });
 
 

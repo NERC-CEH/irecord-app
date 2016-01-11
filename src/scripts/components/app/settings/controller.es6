@@ -9,7 +9,8 @@ define([
   let API = {
     show: function () {
       let templateData = new Backbone.Model({
-        useScientificNames: user.get('useScientificNames')
+        useScientificNames: user.get('useScientificNames'),
+        autosync: user.get('autosync')
       });
 
       let mainView = new MainView({

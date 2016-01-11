@@ -1,5 +1,9 @@
 <div class="info-message">
+  <% if (obj.onDatabase) { %>
+  <p>This record has been submitted and cannot be edited.</p>
+  <% } else { %>
   <p>This record has been locked for submission and cannot be edited.</p>
+  <% }%>
 </div>
 <ul class="table-view core inputs info no-top">
   <li class="table-view-cell species">
@@ -44,3 +48,7 @@
     </div>
   </li>
 </ul>
+
+<% if (!obj.onDatabase) { %>
+<button id="sync-btn" class="btn btn-narrow btn-positive btn-block">Synchronise</button>
+<% } %>

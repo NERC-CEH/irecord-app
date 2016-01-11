@@ -18,7 +18,10 @@ define([
         let taxon = userModel.get('useScientificNames') ?
           specie.taxon : specie.common_name || specie.taxon;
 
+        let syncStatus = record.getSyncStatus();
+
         let templateData = new Backbone.Model({
+          onDatabase: syncStatus === morel.SYNCED,
           taxon: taxon,
           date: record.get('date').print(),
           number: occ.get('number') && occ.get('number').limit(20),
@@ -29,6 +32,20 @@ define([
         let mainView = new MainView({
           model: templateData
         });
+
+        mainView.on('sync:init', function () {
+          app.regions.dialog.showLoader();
+
+          recordManager.sync(record, function (err) {
+            if (err) {
+              app.regions.dialog.error(err);
+              return;
+            }
+            app.regions.dialog.hideLoader();
+            window.history.back();
+          });
+        });
+
         app.regions.main.show(mainView);
       });
 
