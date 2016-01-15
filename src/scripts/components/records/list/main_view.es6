@@ -41,7 +41,7 @@ define([
     render: function () {
       let occ = this.model.occurrences.at(0);
       let date = this.model.get('date').print(),
-          specie = occ.get('taxon'),
+          specie = occ.get('taxon') || {},
           images = occ.images;
       let img = images.length && images.at(0).get('data');
 

@@ -4,7 +4,7 @@
   border-bottom: 1px $header-color solid;
 
   .pull-left {
-    margin-left: 3px;
+    margin-left: 2%;
   }
   .pull-right {
     width: 40%;
@@ -94,15 +94,24 @@
     &.empty {
       height: initial !important;
       min-height: initial !important;
-      padding: 13px 0;
+      padding: 13px 0 0;
       border: none;
       margin: 0;
 
       list-style: none;
       text-align: center;
 
-      font-weight: bold;
       color: $color-black;
+
+      a {
+        font-size: 1em;
+        max-width: 115px;
+        display: block;
+        position: relative;
+        right: 0;
+        margin: 22px auto 0;
+        color: $color-green-light;
+      }
     }
 
     .photo {
@@ -197,27 +206,43 @@
           font-size: 15px;
           font-weight: 700;
           color: $color-black;
+          &.warn {
+            color: $color-orange;
+          }
         }
 
-        .date {
-          display: inline-block;
+        .date,
+        .location{
+          float: left;
           font-size: 12px;
           color: $color-black;
+          margin-right: 10px;
+          &.warn {
+            color: $color-orange;
+          }
         }
 
-        p.number,
-        p.stage {
+        .attributes {
+          clear: both;
+        }
+
+        div.stage,
+        div.number {
           @extend .date;
-          margin-left: 10px;
+          margin-right: 10px;
         }
 
-        p.comment {
-          width: 100%;
+        div.comment {
+          @extend .date;
+          float: none;
           overflow: hidden;
+
+          word-wrap: normal;
           white-space: nowrap;
           text-overflow: ellipsis;
 
           font-size: 12px;
+          color: $color-gray-dark;
         }
 
       }

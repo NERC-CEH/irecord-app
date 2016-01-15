@@ -15,22 +15,28 @@
 
     <div class="media-body">
       <% if (obj.taxon) { %>
-      <p class="species"> <%= obj.taxon %></p>
+      <div class="species"> <%= obj.taxon %></div>
       <% } else { %>
-      <p class="species"><i class="warn">Required: species</i></p>
+      <div class="species warn">Species missing</div>
       <% } %>
 
       <% if (obj.date) { %>
-      <p class="date"><%= obj.date %></p>
+      <div class="date"><%= obj.date %></div>
       <% } else { %>
-      <p><i class="date warn">Required: date</i></p>
+      <div class="date warn">Date</div>
       <% } %>
 
-      <p class="number"><%= obj.number %></p>
-      <p class="stage"><%= obj.stage %></p>
+      <% if (obj.location) { %>
+      <div class="location"><%= obj.location %></div>
+      <% } else { %>
+      <div class="location warn">Location</div>
+      <% } %>
 
-      <p class="comment"><%= obj.comment %></p>
-
+      <div class="attributes">
+        <div class="number"><%= obj.number %></div>
+        <div class="stage"><%= obj.stage %></div>
+        <div class="comment"><%= obj.comment %></div>
+      </div>
     </div>
   </a>
 

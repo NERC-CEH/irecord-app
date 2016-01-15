@@ -15,12 +15,8 @@ define([
 
     events: {
       'click #use-scientific-btn': 'onSettingToggled',
+      'click #use-gridref-btn': 'onSettingToggled',
       'click #use-autosync-btn': 'onSettingToggled'
-    },
-
-    onRender: function () {
-   //   this.$registerButton = this.$el.find('#register-button');
-     // this.$registerButton.prop('disabled', true);
     },
 
     onSettingToggled: function (e) {

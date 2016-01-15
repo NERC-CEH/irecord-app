@@ -9,7 +9,7 @@ define([
   'use strict';
 
   var Page = Marionette.LayoutView.extend({
-    id: 'records-header',
+    id: 'common-header',
     tagName: 'nav',
     template: JST['common/header'],
 

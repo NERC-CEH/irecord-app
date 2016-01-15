@@ -23,9 +23,6 @@
       <p class="descript"><%- obj.date %></p>
     </div>
   </li>
-</ul>
-
-<ul class="table-view dynamic inputs info">
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-number"></span>
     <div class="media-body">

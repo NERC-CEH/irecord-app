@@ -15,7 +15,7 @@ define([
     template: JST['common/taxon/layout'],
 
     events: {
-      'keyup #taxon': '_keydown'
+      'keydown #taxon': '_keydown'
     },
 
     regions: {
@@ -68,8 +68,12 @@ define([
           //find which one is currently selected
           let selectedModel = this.suggestionsCol.at(this.selectedIndex);
 
-          let speciesID = selectedModel.get('name');
-          this.trigger('taxon:selected', speciesID, false);
+          let species = {
+            warehouse_id: selectedModel.get('warehouse_id'),
+            common_name: selectedModel.get('common_name'),
+            taxon: selectedModel.get('taxon')
+          };
+          this.trigger('taxon:selected', species, false);
 
           return false;
         case 38:
@@ -100,9 +104,18 @@ define([
           //check time difference
 
           //let controller know
-          let text = input.toLowerCase().trim();
-          if (text.length >= MIN_SEARCH_LENGTH) {
-            this.trigger('taxon:searched', text);
+          let text = input.trim();
+          //on keyDOWN need to add the pressed char
+
+          let pressedChar = String.fromCharCode(e.keyCode);
+          if (e.keyCode != 8){
+            //ignore backspace
+            text += pressedChar;
+          } else {
+            text =  text.slice(0, text.length - 1);
+          }
+          if ((text.length)>= MIN_SEARCH_LENGTH) {
+            this.trigger('taxon:searched', text.toLowerCase());
           }
       }
     }
@@ -189,9 +202,16 @@ define([
     }
   });
 
+  let NoSuggestionsView = Marionette.ItemView.extend({
+    tagName: 'li',
+    className: 'table-view-cell empty',
+    template: JST['common/taxon/list-none']
+  });
+
   let SuggestionsView = Marionette.CollectionView.extend({
     tagName: 'ul',
     className: 'table-view',
+    emptyView: NoSuggestionsView,
     childView: SpeciesView,
     childViewOptions: function () {
       return {

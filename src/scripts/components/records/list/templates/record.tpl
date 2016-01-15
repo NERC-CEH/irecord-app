@@ -1,11 +1,13 @@
 <% if (obj.taxon) { %>
-<a href="#records/<%- obj.id %><%- obj.saved ? '' : '/edit' %>">
-  <% } else { %>
+  <a href="#records/<%- obj.id %><%- obj.saved ? '' : '/edit' %>">
+<% } else { %>
   <a href="#records/<%- obj.id %>/edit/taxon">
-    <% } %>
+<% } %>
+
     <div class="media-object pull-left photo"><%= obj.img %></div>
     <div class="pull-right">
-      <% if (obj.saved) { %>
+    <% if (obj.saved) { %>
+
       <div class="online-status">
         <% if (obj.isSynchronising) { %>
         <div class="icon icon-plus spin"></div>
@@ -13,12 +15,12 @@
         <div class="icon <%- obj.onDatabase ? 'icon-upload-cloud' : 'icon-cloud' %>"></div>
         <% } %>
         <div class="icon icon-check"></div>
-
       </div>
       <div class="edit">
         <div id="delete" class="delete icon icon-delete"></div>
       </div>
-      <% } else { %>
+
+    <% } else { %>
       <div class="edit">
         <% if (obj.taxon) { %>
         <div data-attr="date" class="js-attr icon icon-calendar"></div>
@@ -30,26 +32,32 @@
 
         <div id="delete" class="delete icon icon-delete"></div>
       </div>
-      <% } %>
+    <% } %>
     </div>
 
     <div class="media-body">
       <% if (obj.taxon) { %>
-      <p class="species"> <%= obj.taxon %></p>
+      <div class="species"> <%= obj.taxon %></div>
       <% } else { %>
-      <p class="species"><i class="warn">Required: species</i></p>
+      <div class="species warn">Species missing</div>
       <% } %>
 
       <% if (obj.date) { %>
-      <p class="date"><%= obj.date %></p>
+      <div class="date"><%= obj.date %></div>
       <% } else { %>
-      <p><i class="date warn">Required: date</i></p>
+      <div class="date warn">Date</div>
       <% } %>
 
-      <p class="number"><%= obj.number %></p>
-      <p class="stage"><%= obj.stage %></p>
+        <% if (obj.location) { %>
+      <div class="location"><%= obj.location %></div>
+      <% } else { %>
+      <div class="location warn">Location</div>
+      <% } %>
 
-      <p class="comment"><%= obj.comment %></p>
-
+      <div class="attributes">
+        <div class="number"><%= obj.number %></div>
+        <div class="stage"><%= obj.stage %></div>
+        <div class="comment"><%= obj.comment %></div>
+      </div>
     </div>
   </a>

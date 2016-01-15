@@ -13,3 +13,11 @@
     <!--<div class="toggle-handle"></div>-->
   <!--</div>-->
 <!--</div>-->
+
+<div class="table-view-cell">
+  Translate coordinates to Gridref
+  <div id="use-gridref-btn" data-setting="useGridRef"
+       class="toggle no-yes <%- obj.useGridRef ? 'active' : '' %>">
+    <div class="toggle-handle"></div>
+  </div>
+</div>

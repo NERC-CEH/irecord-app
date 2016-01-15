@@ -52,6 +52,10 @@ header button {
   font-size: 20px !important;
 }
 
+header .pull-left a {
+  margin-left: 3px;
+}
+
 header .title {
   color: $header-text-color;
   font-weight: bold;
@@ -153,7 +157,7 @@ li h3 {
 .warning-message {
   font-size: 13px;
   font-weight: 700;
-  margin: 0 -15;
+  margin: 0 -2%;
   border-radius: 0;
   padding: 3px 15px 3px 42px;
   line-height: 1.4em;

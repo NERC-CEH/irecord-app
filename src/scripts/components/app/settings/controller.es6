@@ -10,6 +10,7 @@ define([
     show: function () {
       let templateData = new Backbone.Model({
         useScientificNames: user.get('useScientificNames'),
+        useGridRef: user.get('useGridRef'),
         autosync: user.get('autosync')
       });
 

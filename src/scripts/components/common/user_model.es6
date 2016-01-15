@@ -20,7 +20,8 @@ define([
       secret: '',
       locations: [],
       attrLocks: {},
-      autosync: true
+      autosync: true,
+      useGridRef: false
     },
 
     /**
@@ -143,6 +144,11 @@ define([
       let occurrence = sample.occurrences.at(0);
 
       _.each(locks, function (value, key) {
+        //false or undefined
+        if (!value) {
+          return;
+        }
+
         switch (key) {
           case 'location':
             sample.set('location', value);
