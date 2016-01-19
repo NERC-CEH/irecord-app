@@ -28,6 +28,18 @@
   float: right;
   text-align: right;
   color: $header-color;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  &.warn {
+    color: $color-yellow;
+  }
+
+  &.error {
+    color: $color-red;
+  }
 }
 
 #species-button .descript {

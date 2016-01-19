@@ -41,8 +41,9 @@ define(['config/map'], function (MAP) {
         surname: {id: 7},
         email: {id: 8},
         location: {
-          values: function () {
-            return "51.6049249,-1.0672276";
+          values: function (location) {
+            //todo: move name and accuracy to different fields
+            return location.latitude + ', ' + location.longitude;
           }
         },
         location_accuracy: {id: 282},

@@ -20,6 +20,10 @@
       'marionette': '../vendor/backbone.marionette',
       'backbone.localStorage': '../vendor/backbone.localStorage-min',
       'hammerjs': '../vendor/hammer',
+      'leaflet': '../vendor/leaflet',
+      'proj4': '../vendor/proj4',
+      'proj4leaflet': '../vendor/proj4leaflet',
+      'os-leaflet':'../vendor/OSOpenSpace',
       'common': 'components/common',
       'log': 'helpers/log'
     },
@@ -28,7 +32,8 @@
       'latlon-ellipsoidal': {deps: ['vector3d', 'dms']},
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
       'marionette': {deps: ['backbone']},
-      'morel': {deps: ['backbone', 'IndexedDBShim']}
+      'morel': {deps: ['backbone', 'IndexedDBShim']},
+      'os-leaflet': {deps: ['proj4leaflet']}
     },
     waitSeconds: 30
   });

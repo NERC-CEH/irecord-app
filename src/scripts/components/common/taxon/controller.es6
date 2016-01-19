@@ -3,11 +3,12 @@ define([
   'app',
   'common/user_model',
   'log',
+  'helpers/gps',
   'common/record_manager',
   './main_view',
   'common/header_view',
   './taxon_search_engine'
-], function (morel, app, user, log, recordManager, MainView, HeaderView, SE) {
+], function (morel, app, user, log, GPS, recordManager, MainView, HeaderView, SpeciesSearchEngine) {
   let API = {
     show: function (recordID){
       let that = this;
@@ -16,7 +17,7 @@ define([
       if (recordID) {
         //check if the record has taxon specified
         recordManager.get(recordID, function (err, record) {
-          let mainView
+          let mainView;
 
           if (!record.occurrences.at(0).get('taxon')) {
             mainView = new MainView();
@@ -44,7 +45,7 @@ define([
     _showMainView: function (mainView, that) {
       mainView.on('taxon:selected', API._onSelected, that);
       mainView.on('taxon:searched', function (searchPhrase) {
-        let selection = SE.search(searchPhrase);
+        let selection = SpeciesSearchEngine.search(searchPhrase);
         mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
       });
 
@@ -67,6 +68,8 @@ define([
           user.appendAttrLocks(sample);
 
           recordManager.set(sample, function () {
+            sample.startGPS();
+
             if (edit) {
               app.trigger('records:edit', sample.cid, {replace: true});
             } else {

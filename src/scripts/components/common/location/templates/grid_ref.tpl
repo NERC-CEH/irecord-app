@@ -8,5 +8,5 @@
   <input type="text" id="location-name" placeholder="Location Name (optional)"/>
 </div>
 
-<button id="grid-ref-set"
+<button id="grid-ref-set-btn"
         class="btn btn-narrow btn-positive btn-block">Set</button>

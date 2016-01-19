@@ -10,7 +10,15 @@
     <span class="media-object pull-left icon icon-location"></span>
       <div class="media-body">
         <h3 class="heading">Location</h3>
-        <p class="descript"><%- obj.location %></p>
+        <% if (obj.location) { %>
+          <p class="descript"><%- obj.location %></p>
+        <% } else { %>
+          <% if (obj.isLocating) { %>
+            <p class="descript warn">Locating...</p>
+          <% } else { %>
+            <p class="descript error">Location missing</p>
+          <% } %>
+        <% } %>
       </div>
     </a>
   </li>

@@ -11,25 +11,25 @@ define([
 
   app.info.Router = Marionette.AppRouter.extend({
     routes: {
-      "app/info": InfoController.show,
-      "app/about": function() {
+      "app/info(/)": InfoController.show,
+      "app/about(/)": function() {
         CommonController.show({
           title: 'About', app: app, route: 'app/about/main',
           model: {version: CONFIG.version}
         })},
-      "app/privacy": function() {
+      "app/privacy(/)": function() {
         CommonController.show({
           title: 'Privacy Policy', app: app, route: 'app/privacy/main'
         })},
-      "app/brc-approved": function() {
+      "app/brc-approved(/)": function() {
         CommonController.show({
           title: 'BRC Approved', app: app, route: 'app/brc_approved/main'
         })},
-      "app/credits": function() {
+      "app/credits(/)": function() {
         CommonController.show({
           title: 'Credits', app: app, route: 'app/credits/main'
         })},
-      "app/settings": SettingsController.show,
+      "app/settings(/)": SettingsController.show,
       "app/*path": function () {app.trigger('404:show')}
     }
   });

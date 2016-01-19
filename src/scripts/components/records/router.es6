@@ -16,13 +16,13 @@ define([
 
   app.records.Router = Marionette.AppRouter.extend({
     routes: {
-      "records": ListController.show,
-      "records/new": TaxonController.show,
+      "records(/)": ListController.show,
+      "records/new(/)": TaxonController.show,
       "records/:id": ShowController.show,
-      "records/:id/edit": EditController.show,
-      "records/:id/edit/location": LocationController.show,
-      "records/:id/edit/taxon": TaxonController.show,
-      "records/:id/edit/:attr": EditAttrController.show,
+      "records/:id/edit(/)": EditController.show,
+      "records/:id/edit/location(/)": LocationController.show,
+      "records/:id/edit/taxon(/)": TaxonController.show,
+      "records/:id/edit/:attr(/)": EditAttrController.show,
       "records/*path": function () {app.trigger('404:show')}
     }
   });
@@ -41,31 +41,31 @@ define([
     ListController.show(  );
   });
 
-  app.on("records:show", function(id, options) {
-    app.navigate('records/' + id, options);
-    ShowController.show(id);
+  app.on("records:show", function(recordID, options) {
+    app.navigate('records/' + recordID, options);
+    ShowController.show(recordID);
   });
 
-  app.on("records:edit", function(id, options) {
-    app.navigate('records/' + id + '/edit', options);
-    EditController.show(id);
+  app.on("records:edit", function(recordID, options) {
+    app.navigate('records/' + recordID + '/edit', options);
+    EditController.show(recordID);
   });
 
   app.on("records:edit:saved", function(recordID) {
     syncRecords();
   });
 
-  app.on("records:edit:attr", function(id, attrID, options) {
-    app.navigate('records/' + id + '/edit/' + attrID, options);
+  app.on("records:edit:attr", function(recordID, attrID, options) {
+    app.navigate('records/' + recordID + '/edit/' + attrID, options);
     switch (attrID){
       case 'location':
-        LocationController.show(id);
+        LocationController.show(recordID);
         break;
       case 'taxon':
-        TaxonController.show(id);
+        TaxonController.show(recordID);
         break;
       default:
-        EditAttrController.show(id, attrID);
+        EditAttrController.show(recordID, attrID);
     }
   });
 

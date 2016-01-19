@@ -3,7 +3,7 @@ define([
   'common/user_model',
   './main_view',
   'common/header_view',
-  './lock_view',
+  'common/attr_lock_view',
   'common/record_manager',
   'helpers/date_extension'
 ], function (app, user, MainView, HeaderView, LockView, recordManager) {
@@ -77,21 +77,14 @@ define([
         };
 
         //HEADER
-        //populate template data
-        let lockTemplateData = new Backbone.Model({
-          locked: user.getAttrLock(attr)
-        })
-        user.on('change:attrLocks', function () {
-          lockTemplateData.set('locked', user.getAttrLock(attr));
-        });
-
         let lockView = new LockView({
-          model: lockTemplateData
-        });
-
-        //clean up bindings on leave
-        lockView.on('destroy', function () {
-          user.off('change:attrLocks');
+          model: user,
+          attr: attr,
+          onLockClick:function () {
+            //invert the lock of the attribute
+            //real value will be put on exit
+            user.setAttrLock(attr, !user.getAttrLock(attr));
+          }
         });
 
         //header view
@@ -99,13 +92,6 @@ define([
           onExit: onExit,
           rightPanel: lockView
         });
-
-        lockView.on('lockClick', function () {
-          //invert the lock of the attribute
-          //real value will be put on exit
-          user.setAttrLock(attr, !user.getAttrLock(attr));
-        });
-
 
         app.regions.header.show(headerView);
 

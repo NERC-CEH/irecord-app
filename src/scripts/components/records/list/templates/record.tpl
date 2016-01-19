@@ -39,19 +39,23 @@
       <% if (obj.taxon) { %>
       <div class="species"> <%= obj.taxon %></div>
       <% } else { %>
-      <div class="species warn">Species missing</div>
+      <div class="species error">Species missing</div>
       <% } %>
 
       <% if (obj.date) { %>
       <div class="date"><%= obj.date %></div>
       <% } else { %>
-      <div class="date warn">Date</div>
+      <div class="date error">Date</div>
       <% } %>
 
         <% if (obj.location) { %>
       <div class="location"><%= obj.location %></div>
       <% } else { %>
-      <div class="location warn">Location</div>
+        <% if (obj.isLocating) { %>
+           <div class="location warn">Locating...</div>
+        <% } else {%>
+           <div class="location error">No location</div>
+        <% } %>
       <% } %>
 
       <div class="attributes">

@@ -314,6 +314,7 @@ module.exports = function (grunt) {
         files: [{
           src: [
             'dist/styles/ratchet.css',
+            'dist/styles/leaflet.css',
             'dist/styles/icons.css',
             'dist/styles/main.css'
           ],

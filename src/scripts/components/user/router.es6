@@ -9,8 +9,8 @@ define([
 
   app.user.Router = Marionette.AppRouter.extend({
     routes: {
-      "user/login": LoginController.show,
-      "user/register": RegisterController.show,
+      "user/login(/)": LoginController.show,
+      "user/register(/)": RegisterController.show,
       "user/*path": function () {app.trigger('404:show')}
     }
   });

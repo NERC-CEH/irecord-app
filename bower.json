@@ -1,5 +1,5 @@
 {
-  "name": "rare_arable_flowers",
+  "name": "irecord-app",
   "version": "0.0.0",
   "dependencies": {
     "ratchet": "twbs/ratchet#2.0.2",
@@ -13,7 +13,11 @@
     "latlon": "chrisveness/geodesy#d50580b5054b562f0d1c94441f74a9d0bf8ba710",
     "IndexedDBShim": "axemclion/IndexedDBShim#3d1f549f106a9a078a6f7448796a241eee7f9a76",
     "fastclick": "1.0.3",
-    "hammerjs": "hammerjs/hammer.js"
+    "hammerjs": "hammerjs/hammer.js",
+    "proj4": "latest",
+    "proj4Leaflet": "kartena/Proj4Leaflet#0.7.2",
+    "leaflet": "latest",
+    "os-leaflet": "rob-murray/os-leaflet"
   },
   "exportsOverride": {
     "ratchet": {
@@ -65,6 +69,19 @@
     },
     "hammerjs": {
       "js": ["hammer.js", "hammer.min.js"]
+    },
+    "leaflet": {
+      "js": ["dist/leaflet.js"],
+      "css": ["dist/leaflet.css"]
+    },
+    "proj4Leaflet": {
+      "js": ["src/proj4leaflet.js"]
+    },
+    "proj4": {
+      "js": ["dist/proj4.js"]
+    },
+    "os-leaflet": {
+      "js": ["OSOpenSpace.js"]
     }
   }
 }

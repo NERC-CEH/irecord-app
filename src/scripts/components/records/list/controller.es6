@@ -10,7 +10,8 @@ define([
     show: function (){
       recordManager.getAll(function (err, records) {
         let mainView = new MainView({
-          collection: records
+          collection: records,
+          user: user
         });
 
         mainView.on('childview:record:edit:attr', function (childView, attr) {

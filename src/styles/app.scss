@@ -49,6 +49,10 @@ header, footer {
 
 header a,
 header button {
+  &:hover {
+    text-shadow: 0px 0px 0px white, 0px 0px 0px white;
+  }
+
   font-size: 20px !important;
 }
 
@@ -270,4 +274,25 @@ input {
 
 .pull-right {
   margin-right: -5px;
+}
+
+@mixin empty-list() {
+  &.empty {
+    font-size: 13.3333px;
+    line-height: 17.3333px;
+
+    height: initial!important;
+    min-height: initial!important;
+    padding: 13px 0;
+    border: none;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    font-weight: normal;
+    color: $color-black;
+  }
+
+  &:hover {
+    background-color: $color-gray-light;
+  }
 }

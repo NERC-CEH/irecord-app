@@ -7,36 +7,20 @@ define([
 ], function (app, userModel, MainView, HeaderView, recordManager) {
   let API = {
     show: function (id){
-      recordManager.get(id, function (err, record) {
-        if (!record) {
+      recordManager.get(id, function (err, recordModel) {
+        if (!recordModel) {
           app.trigger('404:show');
           return;
         }
-        let occ = record.occurrences.at(0);
-
-        let specie = occ.get('taxon');
-        let taxon = userModel.get('useScientificNames') ?
-          specie.taxon : specie.common_name || specie.taxon;
-
-        let syncStatus = record.getSyncStatus();
-
-        let templateData = new Backbone.Model({
-          onDatabase: syncStatus === morel.SYNCED,
-          taxon: taxon,
-          date: record.get('date').print(),
-          number: occ.get('number') && occ.get('number').limit(20),
-          stage: occ.get('stage') && occ.get('stage').limit(20),
-          comment: occ.get('comment') && occ.get('comment').limit(20)
-        });
 
         let mainView = new MainView({
-          model: templateData
+          model: new Backbone.Model({record: recordModel, user: userModel})
         });
 
         mainView.on('sync:init', function () {
           app.regions.dialog.showLoader();
 
-          recordManager.sync(record, function (err) {
+          recordManager.sync(recordModel, function (err) {
             if (err) {
               app.regions.dialog.error(err);
               return;

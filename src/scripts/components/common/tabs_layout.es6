@@ -73,7 +73,7 @@ define([
       } else {
         tab = this.options.tabs.filter(tab => tab.id === tabID)[0];
       }
-      let contentView = new tab.ContentView();
+      let contentView = new tab.ContentView({model: this.model});
       this.content.show(contentView);
     }
 

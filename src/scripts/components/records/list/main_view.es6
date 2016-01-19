@@ -2,7 +2,6 @@
  * Welcome page view.
  *****************************************************************************/
 define([
-  'common/user_model',
   'marionette',
   'morel',
   'JST',
@@ -11,7 +10,7 @@ define([
   'helpers/browser',
   'common/record_manager',
   'helpers/date_extension'
-], function (user, Marionette, morel, JST, log, Hammer, browser) {
+], function (Marionette, morel, JST, log, Hammer, browser) {
   'use strict';
 
   let RecordView = Marionette.ItemView.extend({
@@ -31,40 +30,12 @@ define([
     },
 
     modelEvents: {
-      'sync:request sync:done sync:error': 'render'
+      'sync:request sync:done sync:error': 'render',
+      'geolocation': 'render'
     },
 
     initialize: function () {
       this.template = JST['records/list/record' + (browser.isMobile() ? '_mobile': '')];
-    },
-
-    render: function () {
-      let occ = this.model.occurrences.at(0);
-      let date = this.model.get('date').print(),
-          specie = occ.get('taxon') || {},
-          images = occ.images;
-      let img = images.length && images.at(0).get('data');
-
-      let taxon = user.get('useScientificNames') ?
-        specie.taxon : specie.common_name || specie.taxon;
-
-      let syncStatus = this.model.getSyncStatus();
-
-      let templateData = {
-        id: this.model.id || this.model.cid,
-        saved: this.model.metadata.saved,
-        onDatabase: syncStatus === morel.SYNCED,
-        isSynchronising: syncStatus === morel.SYNCHRONISING,
-        date: date,
-        taxon: taxon,
-        number: occ.get('number') && occ.get('number').limit(20),
-        stage: occ.get('stage') && occ.get('stage').limit(20),
-        comment: occ.get('comment'),
-        img: img ? '<img src="' + img + '"/>' : ''
-      };
-      this.$el.html(this.template(templateData));
-
-      this.onRender();
     },
 
     onRender: function () {
@@ -94,6 +65,39 @@ define([
         that._swipeEnd(e, options);
       });
 
+    },
+
+    serializeData: function () {
+      let recordModel = this.model;
+      let occ = recordModel.occurrences.at(0);
+      let date = recordModel.get('date').print(),
+          specie = occ.get('taxon') || {},
+          images = occ.images;
+      let img = images.length && images.at(0).get('data');
+
+      let userModel = this.options.user;
+
+      let taxon = userModel.get('useScientificNames') ?
+        specie.taxon : specie.common_name || specie.taxon;
+
+      let syncStatus = this.model.getSyncStatus();
+
+      let location = recordModel.printLocation();
+
+      return {
+        id: recordModel.id || recordModel.cid,
+        saved: recordModel.metadata.saved,
+        onDatabase: syncStatus === morel.SYNCED,
+        isLocating: recordModel.locating >= 0,
+        location: location,
+        isSynchronising: syncStatus === morel.SYNCHRONISING,
+        date: date,
+        taxon: taxon,
+        number: occ.get('number') && occ.get('number').limit(20),
+        stage: occ.get('stage') && occ.get('stage').limit(20),
+        comment: occ.get('comment'),
+        img: img ? '<img src="' + img + '"/>' : ''
+      };
     },
 
     _swipe: function (e, options) {
@@ -150,7 +154,14 @@ define([
     //inverse the collection
     attachHtml: function(collectionView, childView, index){
       collectionView.$el.prepend(childView.el);
+    },
+
+    childViewOptions: function () {
+      return {
+        user: this.options.user
+      }
     }
+
   });
 
   return View;
