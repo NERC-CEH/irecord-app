@@ -39,6 +39,10 @@
     margin: -8px 0 !important;
     height: inherit!important;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 
@@ -198,7 +202,7 @@
             font-size: 17px;
           }
           &:hover {
-            color: $color-black
+            color: $button-black;
           }
         }
       }
@@ -209,7 +213,7 @@
           display: block;
           font-size: 15px;
           font-weight: 700;
-          color: $color-black;
+          color: $button-black;
           &.error {
             color: $color-orange;
           }
@@ -219,7 +223,7 @@
         .location{
           float: left;
           font-size: 12px;
-          color: $color-black;
+          color: $button-black;
           margin-right: 10px;
           &.error {
             color: $color-orange;

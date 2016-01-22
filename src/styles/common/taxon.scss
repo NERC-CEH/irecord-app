@@ -7,14 +7,6 @@
 
   @include empty-list();
 
-  &.selected {
-    background-color: $color-gray;
-
-    button {
-      border-left: 1px $color-gray-dark solid;
-    }
-  }
-
   button {
     width: 20%;
     max-width: 80px;
@@ -23,5 +15,17 @@
     background-color: transparent;
     border: none;
     border-left: 1px $color-gray solid;
+  }
+
+  &.selected {
+    background-color: $color-gray;
+
+    button {
+      border-left: 1px $color-gray-dark solid;
+    }
+  }
+  
+  &:hover {
+    cursor: pointer;
   }
 }

@@ -49,11 +49,26 @@ header, footer {
 
 header a,
 header button {
-  &:hover {
-    text-shadow: 0px 0px 0px white, 0px 0px 0px white;
-  }
-
   font-size: 20px !important;
+}
+
+header a:hover {
+  cursor: pointer;
+  color: $color-gray-light;
+  text-shadow: 0px 0px 0px $color-gray-light, 0px 0px 0px $color-gray-light;
+}
+
+header button:hover {
+  background-color: $color-gray-light !important;
+  color: $button-black!important;
+}
+
+button {
+  &:hover{
+    background-color: $color-gray-light;
+    color: $button-black;
+    border: 1px solid $color-gray;
+  }
 }
 
 header .pull-left a {
@@ -66,7 +81,6 @@ header .title {
 }
 
 .navigate-right:after, .push-right:after {
-  color: $header-color;
   content: '\e818';
 }
 
@@ -265,8 +279,6 @@ input {
   color: $header-color;
 }
 
-
-
 .prompt-remove {
   background: rgba(255,255,150,0.4);
   transform:translateX(-140px);
@@ -295,4 +307,17 @@ input {
   &:hover {
     background-color: $color-gray-light;
   }
+}
+
+.table-view-cell {
+  p {
+    color: $color-black;
+  }
+  a:hover {
+    background-color: $color-gray-light;
+  }
+}
+
+p a {
+  color: $header-color;
 }

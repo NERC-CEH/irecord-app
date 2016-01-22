@@ -37,12 +37,13 @@
 
     &:hover, &:focus {
       background: $color-gray-light;
-      color: $color-black;
+      color: $button-black;
     }
 
     &.active {
       background-color: $color-white;
-      color: $color-black;
+      color: $button-black;
+    ;
     }
   }
 

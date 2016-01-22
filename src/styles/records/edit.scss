@@ -15,10 +15,16 @@
 }
 
 //MAIN
+.inputs span.icon {
+  color: $button-black;
+}
+
 .descript, .heading {
   display: inline-block!important;
   vertical-align: middle;
   margin: 0!important;
+
+  color: $button-black;
 }
 
 .descript {
@@ -27,7 +33,7 @@
 
   float: right;
   text-align: right;
-  color: $header-color;
+  color: $color-gray-dark ;
 
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -70,7 +76,7 @@
   top: 10px;
   right: 15px;
 
-  color: $color-green;
+  color: $color-gray-dark;
   font-family: icons;
   content: '\e80c';
 }

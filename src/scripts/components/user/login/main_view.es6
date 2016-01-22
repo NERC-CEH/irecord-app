@@ -42,7 +42,7 @@ define([
         $inputPassword.removeClass('error');
       }
 
-      if (!validate.email(email)) {
+      if (!Validate.email(email)) {
         $inputEmail.addClass('error');
         valid = false;
       } else {
