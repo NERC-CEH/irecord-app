@@ -3,10 +3,10 @@
  *****************************************************************************/
 define([
   'marionette',
-  'JST',
+  'morel',
   'log',
-  'morel'
-], function (Marionette, JST, log, morel) {
+  'JST'
+], function (Marionette, Morel, Log, JST) {
   'use strict';
 
   var View = Marionette.ItemView.extend({
@@ -16,12 +16,12 @@ define([
     },
 
     serializeData: function () {
-      let recordModel = this.model.get('record');
+      let recordModel = this.model.get('recordModel');
       let occ = recordModel.occurrences.at(0);
       let specie = occ.get('taxon');
-      let userModel = this.model.get('user');
+      let appModel = this.model.get('appModel');
 
-      let taxon = userModel.get('useScientificNames') ?
+      let taxon = appModel.get('useScientificNames') ?
         specie.taxon : specie.common_name || specie.taxon;
 
       let syncStatus = recordModel.getSyncStatus();
@@ -29,7 +29,7 @@ define([
       let location = recordModel.printLocation();
 
       return {
-        onDatabase: syncStatus === morel.SYNCED,
+        onDatabase: syncStatus === Morel.SYNCED,
         taxon: taxon,
         location: location,
         date: recordModel.get('date').print(),

@@ -3,10 +3,10 @@
  *****************************************************************************/
 define([
   'marionette',
+  'log',
   'app',
-  'JST',
-  'log'
-], function (Marionette, app, JST, log) {
+  'JST'
+], function (Marionette, Log, App, JST) {
   'use strict';
 
   var Page = Marionette.ItemView.extend({
@@ -14,13 +14,8 @@ define([
     tagName: 'nav',
     template: JST['records/list/header'],
 
-    events: {
-      'change input': 'photoUpload'
-    },
-
-    photoUpload: function (e) {
-      log('records:list: photo upload.' ,'d');
-      app.trigger('records:list:upload', e);
+    triggers: {
+      'change input': 'photo:upload'
     }
   });
 

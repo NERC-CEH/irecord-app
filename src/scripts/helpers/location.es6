@@ -1,7 +1,7 @@
 /******************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
-define(['latlon'], function () {
+define(['latlon'], function () { //LatLon is global
   var Module = {
     coord2grid: function (location, locationGranularity) {
       var p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);

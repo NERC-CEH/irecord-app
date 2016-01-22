@@ -1,63 +1,63 @@
 define([
   'morel',
   'app',
-  'common/user_model',
+  'common/app_model',
   './main_view',
   './header_view',
   'common/record_manager'
-], function (morel, app, user, MainView, HeaderView, recordManager) {
+], function (Morel, App, appModel, MainView, HeaderView, recordManager) {
   let API = {
     show: function (){
-      recordManager.getAll(function (err, records) {
+      recordManager.getAll(function (err, recordsCollection) {
         let mainView = new MainView({
-          collection: records,
-          user: user
+          collection: recordsCollection,
+          appModel: appModel
         });
 
         mainView.on('childview:record:edit:attr', function (childView, attr) {
-          app.trigger('records:edit:attr', childView.model.id || childView.model.cid, attr);
+          App.trigger('records:edit:attr', childView.model.id || childView.model.cid, attr);
         });
 
         mainView.on('childview:record:delete', function (childView) {
           recordManager.remove(childView.model);
         });
-        app.regions.main.show(mainView);
+        App.regions.main.show(mainView);
       });
 
       let headerView = new HeaderView();
-      app.regions.header.show(headerView);
+
+      //create new record with a photo
+      headerView.on('photo:upload', function (e) {
+        let occurrence = new Morel.Occurrence();
+
+        //show loader
+
+        //create and add new record
+        var callback = function (err, data, fileType) {
+          Morel.Image.resize(data, fileType, 800, 800, function (err, image, data) {
+            occurrence.images.set(new Morel.Image({
+              data: data,
+              type: fileType
+            }));
+
+            let sample = new Morel.Sample(null, {
+              occurrences: [occurrence]
+            });
+
+            //append locked attributes
+            appModel.appendAttrLocks(sample);
+
+            recordManager.set(sample, function () {
+              //hide loader
+            });
+          });
+        };
+
+        Morel.Image.toString(e.target.files[0], callback);
+      });
+      App.regions.header.show(headerView);
     }
   };
-
-  //create new record with a photo
-  app.on('records:list:upload', function (e) {
-    let occurrence = new morel.Occurrence();
-
-    //show loader
-
-    //create and add new record
-    var callback = function (err, data, fileType) {
-      morel.Image.resize(data, fileType, 800, 800, function (err, image, data) {
-        occurrence.images.set(new morel.Image({
-          data: data,
-          type: fileType
-        }));
-
-        let sample = new morel.Sample(null, {
-          occurrences: [occurrence]
-        });
-
-        //append locked attributes
-        user.appendAttrLocks(sample);
-
-        recordManager.set(sample, function () {
-          //hide loader
-        });
-      });
-    };
-
-    morel.Image.toString(e.target.files[0], callback);
-  });
 
   return API;
 });

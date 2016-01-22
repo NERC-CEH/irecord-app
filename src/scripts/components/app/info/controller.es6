@@ -1,20 +1,20 @@
 define([
-  'app',
   'log',
+  'app',
   'common/user_model',
   './main_view',
   'common/header_view'
-], function (app, log, user, MainView, HeaderView) {
+], function (Log, App, userModel, MainView, HeaderView) {
   let infoModel;
 
   let API = {
     show: function () {
       infoModel = new Backbone.Model({
-        user: user.get('surname')
+        userModel: userModel.get('surname')
       });
 
       let mainView = new MainView({model: infoModel});
-      app.regions.main.show(mainView);
+      App.regions.main.show(mainView);
 
       mainView.on('logout', API.logout);
 
@@ -23,12 +23,12 @@ define([
           title: 'Info'
         })
       });
-      app.regions.header.show(headerView);
+      App.regions.header.show(headerView);
     },
 
     logout: function () {
-      user.logOut();
-      infoModel.unset('user');
+      userModel.logOut();
+      infoModel.unset('userModel');
     }
   };
 

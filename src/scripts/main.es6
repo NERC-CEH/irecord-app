@@ -5,7 +5,10 @@
   require.config({
     baseUrl: "scripts/",
     paths: {
+      //config
       'app-config': '{CONFIG}', //replaced on build
+
+      //libraries
       'ratchet': '../vendor/ratchet',
       'jquery': '../vendor/jquery',
       'IndexedDBShim': '../vendor/IndexedDBShim.min',
@@ -24,8 +27,25 @@
       'proj4': '../vendor/proj4',
       'proj4leaflet': '../vendor/proj4leaflet',
       'os-leaflet':'../vendor/OSOpenSpace',
+
+      //shorthands
       'common': 'components/common',
-      'log': 'helpers/log'
+
+      //common pages
+      'common/location': 'components/common/pages/location',
+      'common/taxon': 'components/common/pages/taxon',
+
+      //helpers
+      'log': 'helpers/log',
+      'gps': 'helpers/gps',
+      'browser': 'helpers/browser',
+      'validate': 'helpers/validate',
+      'location': 'helpers/location',
+      'error': 'helpers/error',
+      'date_extension': 'helpers/date_extension',
+      'string_extension': 'helpers/string_extension',
+      'router_extension': 'helpers/router_extension',
+      'brcart': 'helpers/brcart'
     },
     shim: {
       'latlon': {deps: ['latlon-ellipsoidal']},
@@ -45,8 +65,8 @@
     'components/records/router',
     'components/app/router',
     'components/user/router'
-  ], function (app) {
-    app.start();
+  ], function (App) {
+    App.start();
   });
 
 })();

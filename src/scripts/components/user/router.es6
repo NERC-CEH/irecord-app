@@ -4,28 +4,28 @@ define([
   'app',
   './login/controller',
   './register/controller'
-], function(Marionette, log, app, LoginController, RegisterController) {
-  app.user = {};
+], function(Marionette, Log, App, LoginController, RegisterController) {
+  App.user = {};
 
-  app.user.Router = Marionette.AppRouter.extend({
+  App.user.Router = Marionette.AppRouter.extend({
     routes: {
       "user/login(/)": LoginController.show,
       "user/register(/)": RegisterController.show,
-      "user/*path": function () {app.trigger('404:show')}
+      "user/*path": function () {App.trigger('404:show')}
     }
   });
 
-  app.on("user:login", function() {
-    app.navigate('user/login');
+  App.on("user:login", function() {
+    App.navigate('user/login');
     LoginController.show();
   });
 
-  app.on("user:register", function() {
-    app.navigate('user/register');
+  App.on("user:register", function() {
+    App.navigate('user/register');
     RegisterController.show();
   });
 
-  app.on('before:start', function(){
-    new app.user.Router();
+  App.on('before:start', function(){
+    new App.user.Router();
   });
 });

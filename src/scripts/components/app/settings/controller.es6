@@ -1,35 +1,35 @@
 define([
-  'app',
   'log',
+  'app',
   'app-config',
-  'common/user_model',
+  'common/app_model',
   './main_view',
   'common/header_view'
-], function (app, log, CONFIG, user, MainView, HeaderView) {
+], function (Log, App, CONFIG, appModel, MainView, HeaderView) {
   let API = {
     show: function () {
       let templateData = new Backbone.Model({
-        useScientificNames: user.get('useScientificNames'),
-        useGridRef: user.get('useGridRef'),
-        autosync: user.get('autosync')
+        useScientificNames: appModel.get('useScientificNames'),
+        useGridRef: appModel.get('useGridRef'),
+        autosync: appModel.get('autosync')
       });
 
       let mainView = new MainView({
         model: templateData
       });
       mainView.on('setting:toggled', function (setting, on) {
-        user.set(setting, on);
-        user.save();
+        appModel.set(setting, on);
+        appModel.save();
       });
 
-      app.regions.main.show(mainView);
+      App.regions.main.show(mainView);
 
       let headerView = new HeaderView({
         model: new Backbone.Model({
           title: 'Settings'
         })
       });
-      app.regions.header.show(headerView);
+      App.regions.header.show(headerView);
     }
   };
 

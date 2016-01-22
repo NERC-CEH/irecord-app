@@ -1,21 +1,21 @@
 define([
-  'helpers/gps',
+  'gps',
   'app',
-  'common/user_model',
+  'common/record_manager',
+  'common/app_model',
   'common/tabs_layout',
   'common/header_view',
   'common/attr_lock_view',
   './gps_view',
   './map_view',
   './grid_ref_view',
-  './past_view',
-  'common/record_manager'
-], function (GPS, app, userModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView, recordManager) {
+  './past_view'
+], function (GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView) {
   let API = {
     show: function (recordID){
       recordManager.get(recordID, function (err, recordModel) {
         if (!recordModel) {
-          app.trigger('404:show');
+          App.trigger('404:show');
           return;
         }
 
@@ -43,7 +43,7 @@ define([
               ContentView: PastView
             }
           ],
-          model: new Backbone.Model({record: recordModel, user: userModel})
+          model: new Backbone.Model({recordModel: recordModel, appModel: appModel})
         });
 
         let onLocationSelect = function (view, location) {
@@ -63,8 +63,8 @@ define([
         let onPageExit = function () {
           recordManager.set(recordModel, function () {
             //update locked value if attr is locked
-            if (userModel.getAttrLock('location')) {
-              userModel.setAttrLock('location', recordModel.get('location'));
+            if (appModel.getAttrLock('location')) {
+              appModel.setAttrLock('location', recordModel.get('location'));
             }
 
             window.history.back();
@@ -78,16 +78,16 @@ define([
         });
         mainView.on('childview:gps:click', onGPSClick);
 
-        app.regions.main.show(mainView);
+        App.regions.main.show(mainView);
 
         //HEADER
         let lockView = new LockView({
-          model: userModel,
+          model: appModel,
           attr: 'location',
           onLockClick:function () {
             //invert the lock of the attribute
             //real value will be put on exit
-            userModel.setAttrLock('location', !userModel.getAttrLock('location'));
+            appModel.setAttrLock('location', !appModel.getAttrLock('location'));
           }
         });
 
@@ -124,7 +124,7 @@ define([
           model: recordModel
         });
 
-        app.regions.header.show(headerView);
+        App.regions.header.show(headerView);
 
         //if exit on selection click
         mainView.on('save', onPageExit);

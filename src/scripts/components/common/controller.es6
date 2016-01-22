@@ -1,18 +1,18 @@
 define([
   'marionette',
+  'log',
   'app',
   'JST',
-  'log',
   'common/header_view'
-], function (Marionette, app, JST, log, HeaderView) {
+], function (Marionette, Log, App, JST, HeaderView) {
   let API = {
     show: function (options) {
-      app = options.app || app; //passed when showing 404
+      App = options.App || App; //passed when showing 404
 
       let MainView = Marionette.ItemView.extend({
         template: JST[options.route]
       });
-      app.regions.main.show(new MainView({
+      App.regions.main.show(new MainView({
         model: new Backbone.Model(options.model || {})
       }));
 
@@ -21,7 +21,7 @@ define([
           title: options.title || ''
         })
       });
-      app.regions.header.show(headerView);
+      App.regions.header.show(headerView);
     }
   };
 

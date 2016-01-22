@@ -3,17 +3,16 @@
  *****************************************************************************/
 define([
   'marionette',
-  'JST',
-  'app'
-], function (marionette, JST, app) {
+  'JST'
+], function (Marionette, JST) {
   "use strict";
 
-  let DialogRegion = marionette.Region.extend({
+  let DialogRegion = Marionette.Region.extend({
     el: '#dialog',
 
     constructor: function(){
       _.bindAll(this);
-      marionette.Region.prototype.constructor.apply(this, arguments);
+      Marionette.Region.prototype.constructor.apply(this, arguments);
 
       //attach events
       this.on("view:show", this.showModal, this);
@@ -46,7 +45,7 @@ define([
     show: function (view) {
       if (!view) return;
 
-      if (!(view instanceof marionette.ItemView)){
+      if (!(view instanceof Marionette.ItemView)){
         let that = this;
         this.hideAllowed = typeof view.hideAllowed != 'undefined' ? view.hideAllowed : true ;
 
@@ -55,7 +54,7 @@ define([
             body: view.body || '',
             buttons: view.buttons
         });
-        view = new marionette.ItemView({
+        view = new Marionette.ItemView({
             template: view.template || JST['common/dialog'],
             className: 'content ' + (view.className ? view.className : ''),
 
@@ -69,7 +68,7 @@ define([
       this.$el.fadeIn(300);
 
       view.on("close", this.hide, this);
-      marionette.Region.prototype.show.call(this, view);
+      Marionette.Region.prototype.show.call(this, view);
     },
 
     hide: function () {
@@ -84,7 +83,7 @@ define([
     showLoader: function () {
       this.hideAllowed = false;
 
-      let view = new marionette.ItemView({
+      let view = new Marionette.ItemView({
         template: _.template('<span class="icon icon-plus spin"></span>')
       });
 

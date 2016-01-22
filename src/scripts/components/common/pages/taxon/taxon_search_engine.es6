@@ -4,7 +4,7 @@
 define([
   'log',
   'data/master_list'
-], function (log) {
+], function (Log) {
   const WAREHOUSE_ID = 0,
         TAXON_GROUP_ID = 1,
         TAXON_ID = 2,
@@ -65,7 +65,7 @@ define([
         }
       }
 
-      log('Search time: ' + (new Date() - timeStart) + 'ms', 'd');
+      Log('Search time: ' + (new Date() - timeStart) + 'ms', 'd');
 
       //return results in the order
       return commonNameFirstWordRes.concat(scientificFirstWordRes, commonNameRes, scientificRes);

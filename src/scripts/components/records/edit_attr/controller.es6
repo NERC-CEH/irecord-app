@@ -1,17 +1,17 @@
 define([
+  'date_extension',
   'app',
-  'common/user_model',
+  'common/app_model',
   './main_view',
   'common/header_view',
   'common/attr_lock_view',
   'common/record_manager',
-  'helpers/date_extension'
-], function (app, user, MainView, HeaderView, LockView, recordManager) {
+], function (Date, App, appModel, MainView, HeaderView, LockView, recordManager) {
   let API =  {
     show: function (recordID, attr) {
       recordManager.get(recordID, function (err, record) {
         if (!record) {
-          app.trigger('404:show');
+          App.trigger('404:show');
           return;
         }
 
@@ -31,14 +31,14 @@ define([
             templateData.set('comment', occ.get('comment'));
             break;
           default:
-            app.trigger('404:show');
+            App.trigger('404:show');
             return;
         };
 
         //can't edit a saved one - to be removed when record update
         //is possible on the server
         if (record.metadata.saved) {
-          app.trigger('records:show', recordID);
+          App.trigger('records:show', recordID);
           return;
         }
 
@@ -47,7 +47,7 @@ define([
           attr: attr,
           model: templateData
         });
-        app.regions.main.show(mainView);
+        App.regions.main.show(mainView);
 
         let onExit = function () {
           let values = mainView.getValues();
@@ -68,8 +68,8 @@ define([
           }
           recordManager.set(record, function () {
             //update locked value if attr is locked
-            if (user.getAttrLock(attr)) {
-              user.setAttrLock(attr, values[attr]);
+            if (appModel.getAttrLock(attr)) {
+              appModel.setAttrLock(attr, values[attr]);
             }
 
             window.history.back();
@@ -78,12 +78,12 @@ define([
 
         //HEADER
         let lockView = new LockView({
-          model: user,
+          model: appModel,
           attr: attr,
           onLockClick:function () {
             //invert the lock of the attribute
             //real value will be put on exit
-            user.setAttrLock(attr, !user.getAttrLock(attr));
+            appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
           }
         });
 
@@ -93,7 +93,7 @@ define([
           rightPanel: lockView
         });
 
-        app.regions.header.show(headerView);
+        App.regions.header.show(headerView);
 
         //if exit on selection click
         mainView.on('save', onExit);

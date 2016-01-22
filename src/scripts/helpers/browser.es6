@@ -71,7 +71,7 @@ define([], function () {
 
       return iOS || IE;
     } catch (err) {
-      _log(err, log.ERROR);
+      Log(err, Log.ERROR);
 
       return false;
     }

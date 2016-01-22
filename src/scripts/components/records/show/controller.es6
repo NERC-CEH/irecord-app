@@ -1,36 +1,36 @@
 define([
   'app',
-  'common/user_model',
+  'common/app_model',
   './main_view',
   'common/header_view',
   'common/record_manager'
-], function (app, userModel, MainView, HeaderView, recordManager) {
+], function (App, appModel, MainView, HeaderView, recordManager) {
   let API = {
     show: function (id){
       recordManager.get(id, function (err, recordModel) {
         if (!recordModel) {
-          app.trigger('404:show');
+          App.trigger('404:show');
           return;
         }
 
         let mainView = new MainView({
-          model: new Backbone.Model({record: recordModel, user: userModel})
+          model: new Backbone.Model({recordModel: recordModel, appModel: appModel})
         });
 
         mainView.on('sync:init', function () {
-          app.regions.dialog.showLoader();
+          App.regions.dialog.showLoader();
 
           recordManager.sync(recordModel, function (err) {
             if (err) {
-              app.regions.dialog.error(err);
+              App.regions.dialog.error(err);
               return;
             }
-            app.regions.dialog.hideLoader();
+            App.regions.dialog.hideLoader();
             window.history.back();
           });
         });
 
-        app.regions.main.show(mainView);
+        App.regions.main.show(mainView);
       });
 
       let headerView = new HeaderView({
@@ -38,7 +38,7 @@ define([
           title: 'Record'
         })
       });
-      app.regions.header.show(headerView);
+      App.regions.header.show(headerView);
     }
   };
 

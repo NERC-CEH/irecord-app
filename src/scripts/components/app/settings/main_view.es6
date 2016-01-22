@@ -3,11 +3,9 @@
  *****************************************************************************/
 define([
   'marionette',
-  'app',
-  'JST',
   'log',
-  'helpers/validate'
-], function (Marionette, app, JST, log, validate) {
+  'JST',
+], function (Marionette, Log, JST) {
   'use strict';
 
   var View = Marionette.ItemView.extend({

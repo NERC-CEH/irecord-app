@@ -8,4 +8,6 @@ define([], function () {
   Date.prototype.print = function() {
     return this.getDate() + "/" + (this.getMonth() + 1) + "/"  + this.getFullYear();
   };
+
+  return Date;
 });

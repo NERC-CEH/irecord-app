@@ -1,9 +1,9 @@
 define([
   'marionette',
   'JST'
-], function (marionette, JST) {
+], function (Marionette, JST) {
   
-  let Tab = marionette.ItemView.extend({
+  let Tab = Marionette.ItemView.extend({
     tagName: 'li',
     template: JST['common/tab'],
 
@@ -42,7 +42,7 @@ define([
     }
   });
 
-  let TabsLayout = marionette.LayoutView.extend({
+  let TabsLayout = Marionette.LayoutView.extend({
     template: JST['common/tabs_container'],
 
     regions: {

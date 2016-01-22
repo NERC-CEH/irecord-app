@@ -76,24 +76,31 @@ module.exports = function (grunt) {
           prettify: true,
           processName: function(filepath) {
             var templatesDir = '/templates';
-            if (filepath.indexOf('components') >= 0) {
-              filepath = filepath.split('src/scripts/components/')[1];
-            } else {
-              filepath = filepath.split('src/scripts/')[1];
+
+            //strip all until components folder
+            filepath = filepath.split('src/scripts/components/')[1];
+
+            //remove 'pages' from common/pages
+            if (filepath.indexOf('common/pages') >= 0) {
+              filepath = filepath.replace('/pages', '');
             }
+
+            //remove extension
             filepath = filepath.split('.')[0];
+
             //cut out templates dir
             var dirIndex = filepath.indexOf(templatesDir);
             if (dirIndex){
               filepath = filepath.substr(0, dirIndex) +
                 filepath.substr(dirIndex + templatesDir.length);
             }
+
             return filepath;
           }
         },
         files: {
           "dist/scripts/JST.js": [
-            "src/scripts/components/**/**/**/*.tpl",
+            "src/scripts/components/**/**/**/**/*.tpl",
             "src/scripts/components/common/templates/*.tpl",
             "src/scripts/helpers/templates/*.tpl"
           ]
@@ -178,7 +185,7 @@ module.exports = function (grunt) {
         replacements: [{
           from: /font-family: Ratchicons;/g,
           to: ''
-          },
+        },
           {
             from: /src: url\(\"\.\.\/fonts.*;/g,
             to: ''

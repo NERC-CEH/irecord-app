@@ -2,15 +2,15 @@ define([
   'marionette',
   'JST',
   'os-leaflet'
-], function (marionette, JST) {
+], function (Marionette, JST) {
 
-  return marionette.ItemView.extend({
+  return Marionette.ItemView.extend({
     template: JST['common/location/map'],
 
     onShow: function () {
       let that = this;
 
-      let currentLocation = this.model.get('record').get('location') || {};
+      let currentLocation = this.model.get('recordModel').get('location') || {};
       let mapZoomCoords = [53.7326306,-2.6546124];
       let mapZoomLevel = 1;
       let markerCoords = [];

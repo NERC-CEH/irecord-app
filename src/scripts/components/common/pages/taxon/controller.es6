@@ -1,14 +1,14 @@
 define([
   'morel',
-  'app',
-  'common/user_model',
   'log',
-  'helpers/gps',
+  'gps',
+  'app',
+  'common/app_model',
   'common/record_manager',
   './main_view',
   'common/header_view',
   './taxon_search_engine'
-], function (morel, app, user, log, GPS, recordManager, MainView, HeaderView, SpeciesSearchEngine) {
+], function (Morel, Log, GPS, App, appModel, recordManager, MainView, HeaderView, SpeciesSearchEngine) {
   let API = {
     show: function (recordID){
       let that = this;
@@ -31,7 +31,7 @@ define([
         API._showMainView(mainView, this);
 
           //should be done in the view
-        app.regions.main.$el.find('#taxon').select();
+        App.regions.main.$el.find('#taxon').select();
       }
 
       let headerView = new HeaderView({
@@ -39,7 +39,7 @@ define([
           title: 'Species'
         })
       });
-      app.regions.header.show(headerView);
+      App.regions.header.show(headerView);
     },
 
     _showMainView: function (mainView, that) {
@@ -49,29 +49,29 @@ define([
         mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
       });
 
-      app.regions.main.show(mainView);
+      App.regions.main.show(mainView);
     },
 
     _onSelected: function (species, edit) {
         var that = this;
         if (!this.id) {
           //create new sighting
-          let occurrence = new morel.Occurrence({
+          let occurrence = new Morel.Occurrence({
             'taxon': species
           });
 
-          let sample = new morel.Sample(null, {
+          let sample = new Morel.Sample(null, {
             occurrences: [occurrence]
           });
 
           //add locked attributes
-          user.appendAttrLocks(sample);
+          appModel.appendAttrLocks(sample);
 
           recordManager.set(sample, function () {
             sample.startGPS();
 
             if (edit) {
-              app.trigger('records:edit', sample.cid, {replace: true});
+              App.trigger('records:edit', sample.cid, {replace: true});
             } else {
               //return to previous page
               window.history.back();
@@ -83,7 +83,7 @@ define([
             record.occurrences.at(0).set('taxon', species);
             recordManager.set(record, function (err) {
               if (edit) {
-                app.trigger('records:edit', that.id, {replace: true});
+                App.trigger('records:edit', that.id, {replace: true});
               } else {
                 //return to previous page
                 window.history.back();

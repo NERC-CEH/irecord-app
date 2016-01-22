@@ -3,11 +3,11 @@
  *****************************************************************************/
 define([
   'marionette',
-  'app',
-  'JST',
   'log',
-  'helpers/validate'
-], function (Marionette, app, JST, log, validate) {
+  'validate',
+  'app',
+  'JST'
+], function (Marionette, Log, Validate, App, JST) {
   'use strict';
 
   var View = Marionette.ItemView.extend({
@@ -35,7 +35,7 @@ define([
       var passConf = this.$el.find('input[name=passConf]').val();
 
       if (pass !== passConf) {
-        app.regions.dialog.show({title: 'Sorry, passwords don\'t match'});
+        App.regions.dialog.show({title: 'Sorry, passwords don\'t match'});
         return;
       }
 

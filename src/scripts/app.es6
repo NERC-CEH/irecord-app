@@ -7,24 +7,24 @@ define([
     'marionette',
     'fastclick',
     'log',
+    'brcart',
     'common/dialog_region',
-    'common/controller',
-    'helpers/brcart'
+    'common/controller'
   ],
-  function ($, Backbone, Marionette, FastClick, log, DialogRegion, CommonController, brcArt) {
-    log(brcArt, 'i');
+  function ($, Backbone, Marionette, FastClick, Log, BrcArt, DialogRegion, CommonController) {
+    Log(BrcArt, 'i');
 
-    var app = new Marionette.Application();
+    var App = new Marionette.Application();
 
-    app.navigate = function(route,  options = {}){
+    App.navigate = function(route,  options = {}){
       Backbone.history.navigate(route, options);
     };
 
-    app.getCurrentRoute = function(){
+    App.getCurrentRoute = function(){
       return Backbone.history.fragment
     };
 
-    app.on("before:start", function(){
+    App.on("before:start", function(){
       var RegionContainer = Marionette.LayoutView.extend({
         el: "#app",
 
@@ -35,10 +35,10 @@ define([
         }
       });
 
-      app.regions = new RegionContainer();
+      App.regions = new RegionContainer();
     });
 
-    app.on("start", function () {
+    App.on("start", function () {
       // Init for the first time
       // download appcache
       // set up DB
@@ -54,21 +54,20 @@ define([
         Backbone.history.start();
 
         if (this.getCurrentRoute() === '') {
-          app.trigger('records:list');
+          App.trigger('records:list');
         }
 
-        app.on('404:show', function () {
+        App.on('404:show', function () {
           CommonController.show({
-            app: app,
-            route: 'common/404/main',
+            App: App,
+            route: 'common/404',
             title: 404
           });
         });
 
         $('#loader').remove();
       }
-
     });
 
-    return app;
+    return App;
   });

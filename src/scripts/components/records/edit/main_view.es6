@@ -3,21 +3,21 @@
  *****************************************************************************/
 define([
   'marionette',
-  'JST',
-  'log'
-], function (Marionette, JST, log) {
+  'log',
+  'JST'
+], function (Marionette, Log, JST) {
   'use strict';
 
   let View = Marionette.ItemView.extend({
     template: JST['records/edit/record'],
 
     serializeData: function () {
-      let recordModel = this.model.get('record');
+      let recordModel = this.model.get('recordModel');
       let occ = recordModel.occurrences.at(0);
       let specie = occ.get('taxon');
-      let userModel = this.model.get('user');
+      let appModel = this.model.get('appModel');
 
-      let taxon = userModel.get('useScientificNames') ?
+      let taxon = appModel.get('useScientificNames') ?
         specie.taxon : specie.common_name || specie.taxon;
 
       let location = recordModel.printLocation();
@@ -31,7 +31,7 @@ define([
         number: occ.get('number') && occ.get('number').limit(20),
         stage: occ.get('stage') && occ.get('stage').limit(20),
         comment: occ.get('comment') && occ.get('comment').limit(20),
-        locks: userModel.get('attrLocks')
+        locks: appModel.get('attrLocks')
       };
     }
   });

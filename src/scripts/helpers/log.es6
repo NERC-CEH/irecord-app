@@ -20,7 +20,7 @@ define(['app-config'], function (CONFIG) {
       INFO = 'i',
       DEBUG = 'd';
 
-  let log = {
+  let Log = {
     core: function (message, type) {
       //do nothing if logging turned off
       if (!(CONFIG.log && CONFIG.log.states)) {
@@ -30,7 +30,7 @@ define(['app-config'], function (CONFIG) {
       if (CONFIG.log.states.indexOf(type) >= 0 || !type) {
         switch (type) {
           case ERROR:
-            log.error(message);
+            Log.error(message);
             break;
           case WARNING:
             console.warn(message);
@@ -109,11 +109,11 @@ define(['app-config'], function (CONFIG) {
       'obj': obj || ''
     };
 
-    log.error(error);
+    Log.error(error);
 
     window.onerror = this; // turn on error handling again
     return true; // suppress normal error reporting
   };
 
-  return log.core;
+  return Log.core;
 });

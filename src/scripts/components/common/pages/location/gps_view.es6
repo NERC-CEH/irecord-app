@@ -1,12 +1,12 @@
 define([
   'marionette',
   'JST'
-], function (marionette, JST) {
+], function (Marionette, JST) {
 
-  return marionette.ItemView.extend({
+  return Marionette.ItemView.extend({
     initialize: function () {
       let that = this;
-      let recordModel = this.model.get('record');
+      let recordModel = this.model.get('recordModel');
 
       this.template = function () {
         if (recordModel.locating) {
@@ -43,7 +43,7 @@ define([
     },
 
     serializeData: function () {
-      let recordModel = this.model.get('record');
+      let recordModel = this.model.get('recordModel');
       let location = this.locationUpdate || recordModel.get('location');
 
       if (location) {

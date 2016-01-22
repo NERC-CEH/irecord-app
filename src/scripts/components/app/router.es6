@@ -6,77 +6,77 @@ define([
   'common/controller',
   './info/controller',
   './settings/controller'
-], function(Marionette, log, app, CONFIG, CommonController, InfoController, SettingsController) {
-  app.info = {};
+], function(Marionette, Log, App, CONFIG, CommonController, InfoController, SettingsController) {
+  App.info = {};
 
-  app.info.Router = Marionette.AppRouter.extend({
+  App.info.Router = Marionette.AppRouter.extend({
     routes: {
       "app/info(/)": InfoController.show,
       "app/about(/)": function() {
         CommonController.show({
-          title: 'About', app: app, route: 'app/about/main',
+          title: 'About', App: App, route: 'app/about/main',
           model: {version: CONFIG.version}
         })},
       "app/privacy(/)": function() {
         CommonController.show({
-          title: 'Privacy Policy', app: app, route: 'app/privacy/main'
+          title: 'Privacy Policy', App: App, route: 'app/privacy/main'
         })},
       "app/brc-approved(/)": function() {
         CommonController.show({
-          title: 'BRC Approved', app: app, route: 'app/brc_approved/main'
+          title: 'BRC Approved', App: App, route: 'app/brc_approved/main'
         })},
       "app/credits(/)": function() {
         CommonController.show({
-          title: 'Credits', app: app, route: 'app/credits/main'
+          title: 'Credits', App: App, route: 'app/credits/main'
         })},
       "app/settings(/)": SettingsController.show,
-      "app/*path": function () {app.trigger('404:show')}
+      "app/*path": function () {App.trigger('404:show')}
     }
   });
 
-  app.on("app:info", function() {
-    app.navigate('app/info');
+  App.on("app:info", function() {
+    App.navigate('app/info');
     InfoController.show();
   });
 
-  app.on("app:about", function() {
-    app.navigate('app/about');
+  App.on("app:about", function() {
+    App.navigate('app/about');
     CommonController.show({
-      title: 'About', app: app, route: 'app/about/main',
+      title: 'About', App: App, route: 'app/about/main',
       model: {version: CONFIG.version}
     });
   });
 
-  app.on("app:privacy", function() {
-    app.navigate('app/privacy');
+  App.on("app:privacy", function() {
+    App.navigate('app/privacy');
     CommonController.show({
-      title: 'Privacy Policy', app: app, route: 'app/privacy/main'
+      title: 'Privacy Policy', App: App, route: 'app/privacy/main'
     });
   });
 
-  app.on("app:brc-approved", function() {
-    app.navigate('app/brc-approved');
+  App.on("app:brc-approved", function() {
+    App.navigate('app/brc-approved');
     CommonController.show({
-      title: 'BRC Approved', app: app, route: 'app/brc_approved/main'
+      title: 'BRC Approved', App: App, route: 'app/brc_approved/main'
     });
   });
 
-  app.on("app:credits", function() {
-    app.navigate('app/credits');
+  App.on("app:credits", function() {
+    App.navigate('app/credits');
     CommonController.show({
-      title: 'Credits', app: app, route: 'app/credits/main'
+      title: 'Credits', App: App, route: 'app/credits/main'
     });
   });
 
-  app.on("app:settings", function() {
-    app.navigate('app/settings');
+  App.on("app:settings", function() {
+    App.navigate('app/settings');
     CommonController.show({
-      title: 'Settings', app: app, route: 'app/settings/main'
+      title: 'Settings', App: App, route: 'app/settings/main'
     });
   });
 
 
-  app.on('before:start', function(){
-    new app.info.Router();
+  App.on('before:start', function(){
+    new App.info.Router();
   });
 });

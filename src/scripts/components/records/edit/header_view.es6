@@ -3,10 +3,9 @@
  *****************************************************************************/
 define([
   'marionette',
-  'app',
-  'JST',
-  'log'
-], function (Marionette, app, JST, log) {
+  'log',
+  'JST'
+], function (Marionette, Log, JST) {
   'use strict';
 
   var Page = Marionette.ItemView.extend({

@@ -5,21 +5,21 @@ define([
   'common/user_model',
   './main_view',
   'common/header_view'
-], function (app, log, CONFIG, user, MainView, HeaderView) {
+], function (App, Log, CONFIG, userModel, MainView, HeaderView) {
   let API = {
     show: function () {
       let mainView = new MainView();
-      app.regions.main.show(mainView);
+      App.regions.main.show(mainView);
 
       let headerView = new HeaderView({
         model: new Backbone.Model({
           title: 'Register'
         })
       });
-      app.regions.header.show(headerView);
+      App.regions.header.show(headerView);
 
       mainView.on('register', function (data) {
-        app.regions.dialog.showLoader();
+        App.regions.dialog.showLoader();
 
         API.register(data, function (err, data) {
           if (err) {
@@ -28,7 +28,7 @@ define([
                 //unauthorised
                 break;
               default:
-                log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+                Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
             }
 
             var response = '';
@@ -38,11 +38,11 @@ define([
               response = err.xhr.responseText;
             }
 
-            app.regions.dialog.error({message: response});
+            App.regions.dialog.error({message: response});
             return;
           }
 
-          app.regions.dialog.hideLoader();
+          App.regions.dialog.hideLoader();
           window.history.back();
         });
       })
@@ -57,7 +57,7 @@ define([
      * appname and appsecret for the mentioned module.
      */
     register: function (formData, callback) {
-      log('views.login: start.', 'd');
+      Log('views.login: start.', 'd');
 
       //app logins
       formData.append('appname', CONFIG.morel.manager.appname);
@@ -75,7 +75,7 @@ define([
         success: function (data) {
           var details = API.extractUserDetails(data);
           details.email = formData.get('email');
-          user.logIn(details);
+          userModel.logIn(details);
 
           callback(null, details);
         },
@@ -103,7 +103,7 @@ define([
           'surname': lines[2]
         };
       } else {
-        log('login:extractdetails: problems with received secret.', 'w');
+        Log('login:extractdetails: problems with received secret.', 'w');
         return null;
       }
     },
@@ -112,7 +112,7 @@ define([
      * Logs the user out of the system.
      */
     logout: function () {
-      user.logOut();
+      userModel.logOut();
     },
 
     /**
@@ -120,7 +120,7 @@ define([
      * @returns boolean true if the user is logged in, or false if not
      */
     getLoginState: function () {
-      return user.hasLogIn();
+      return userModel.hasLogIn();
     }
   };
 

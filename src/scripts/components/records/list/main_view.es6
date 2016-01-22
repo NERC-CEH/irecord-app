@@ -4,13 +4,12 @@
 define([
   'marionette',
   'morel',
-  'JST',
-  'log',
   'hammerjs',
-  'helpers/browser',
-  'common/record_manager',
-  'helpers/date_extension'
-], function (Marionette, morel, JST, log, Hammer, browser) {
+  'log',
+  'browser',
+  'date_extension',
+  'JST'
+], function (Marionette, Morel, Hammer, Log, Browser, DateExtension, JST) {
   'use strict';
 
   let RecordView = Marionette.ItemView.extend({
@@ -35,12 +34,12 @@ define([
     },
 
     initialize: function () {
-      this.template = JST['records/list/record' + (browser.isMobile() ? '_mobile': '')];
+      this.template = JST['records/list/record' + (Browser.isMobile() ? '_mobile': '')];
     },
 
     onRender: function () {
       //early return
-      if (!browser.isMobile()) return;
+      if (!Browser.isMobile()) return;
 
       this.$record = this.$el.find('a');
       this.docked = false;
@@ -75,9 +74,9 @@ define([
           images = occ.images;
       let img = images.length && images.at(0).get('data');
 
-      let userModel = this.options.user;
+      let appModel = this.options.appModel;
 
-      let taxon = userModel.get('useScientificNames') ?
+      let taxon = appModel.get('useScientificNames') ?
         specie.taxon : specie.common_name || specie.taxon;
 
       let syncStatus = this.model.getSyncStatus();
@@ -87,10 +86,10 @@ define([
       return {
         id: recordModel.id || recordModel.cid,
         saved: recordModel.metadata.saved,
-        onDatabase: syncStatus === morel.SYNCED,
+        onDatabase: syncStatus === Morel.SYNCED,
         isLocating: recordModel.locating >= 0,
         location: location,
-        isSynchronising: syncStatus === morel.SYNCHRONISING,
+        isSynchronising: syncStatus === Morel.SYNCHRONISING,
         date: date,
         taxon: taxon,
         number: occ.get('number') && occ.get('number').limit(20),
@@ -158,10 +157,9 @@ define([
 
     childViewOptions: function () {
       return {
-        user: this.options.user
+        appModel: this.options.appModel
       }
     }
-
   });
 
   return View;

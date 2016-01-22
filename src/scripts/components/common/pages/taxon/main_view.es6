@@ -3,10 +3,9 @@
  *****************************************************************************/
 define([
   'marionette',
-  'JST',
   'log',
-  'app'
-], function (Marionette, JST, log, app) {
+  'JST'
+], function (Marionette, Log, JST) {
   'use strict';
 
   const MIN_SEARCH_LENGTH = 3;
@@ -180,7 +179,7 @@ define([
     },
 
     select: function (e) {
-      log('taxon: selected.', 'd');
+      Log('taxon: selected.', 'd');
       let edit = false;
 
       let species = {

@@ -1,10 +1,10 @@
 define([
   'marionette',
+  'location',
   'JST',
-  'helpers/location'
-], function (marionette, JST, locHelp) {
+], function (Marionette, LocHelp, JST) {
 
-  return marionette.ItemView.extend({
+  return Marionette.ItemView.extend({
     template: JST['common/location/grid_ref'],
 
     events: {
@@ -19,7 +19,7 @@ define([
       var val = this.$el.find('#grid-ref').val();
       var name = this.$el.find('#location-name').val();
 
-      var latLon = locHelp.grid2coord(val);
+      var latLon = LocHelp.grid2coord(val);
       if (latLon) {
         location.latitude = latLon.lat;
         location.longitude = latLon.lon;

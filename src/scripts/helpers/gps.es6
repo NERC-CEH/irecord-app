@@ -1,8 +1,7 @@
 define([
   'jquery',
-  'helpers/error',
-  'morel'
-], function ($, Error, morel) {
+  'error'
+], function ($, Error) {
 
   let API = {
     GPS_ACCURACY_LIMIT: 100, //meters
