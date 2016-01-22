@@ -47,5 +47,6 @@
 </ul>
 
 <% if (!obj.onDatabase) { %>
-<button id="sync-btn" class="btn btn-narrow btn-positive btn-block">Synchronise</button>
+<button id="sync-btn" class="btn btn-narrow btn-positive btn-block <%- obj.isSynchronising ? 'icon-plus icon-spin' : '' %>"
+<%- obj.isSynchronising ? 'disabled' : '' %> >Synchronise</button>
 <% } %>

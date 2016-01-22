@@ -1,7 +1,7 @@
 /******************************************************************************
  * Main app configuration file.
  *****************************************************************************/
-define(['config/map'], function (MAP) {
+define([], function () {
 
   let CONFIG = {
     version: '{APP_VER}', //replaced on build
@@ -25,7 +25,9 @@ define(['config/map'], function (MAP) {
     },
 
     //mapping
-    map: MAP,
+    map: {
+      API_KEY: '28994B5673A86451E0530C6CA40A91A5'
+    },
 
     //morel configuration
     morel:{

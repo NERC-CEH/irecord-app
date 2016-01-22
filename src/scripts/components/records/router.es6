@@ -29,10 +29,17 @@ define([
   });
 
   let syncRecords = function () {
-    if (window.navigator.onLine && userModel.hasLogIn() && appModel.get('autosync')) {
+    Log('records:sync');
+
+    //force login
+    if (!userModel.hasLogIn()) {
+      App.trigger('user:login');
+      return;
+    }
+
+    if (window.navigator.onLine && appModel.get('autosync')) {
       recordManager.syncAll(function (sample) {
         userModel.appendSampleUser(sample);
-        sample.set('location', '51.6049249,-1.0672276');
       });
     }
   };
@@ -91,7 +98,10 @@ define([
 
   App.on('before:start', function(){
     new App.records.Router();
-    syncRecords();
+
+    if (userModel.hasLogIn()) {
+      syncRecords();
+    }
   });
 
 

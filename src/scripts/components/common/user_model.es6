@@ -71,8 +71,8 @@ define([
 
     appendSampleUser: function (sample) {
       sample.set('name', this.get('name') || '_');
-      sample.set('surname', this.get('surname'));
-      sample.set('email', this.get('email'));
+      sample.set('surname', this.get('surname') || 'Test');
+      sample.set('email', this.get('email') || 'test@test.com');
       //sample.set('secret', this.get('secret'));
 
       return sample;

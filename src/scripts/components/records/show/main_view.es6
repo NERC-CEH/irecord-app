@@ -11,6 +11,11 @@ define([
 
   var View = Marionette.ItemView.extend({
     template: JST['records/show/main'],
+
+    initialize: function () {
+      this.listenTo(this.model.get('recordModel'), 'sync:request sync:done sync:error', this.render);
+    },
+
     triggers: {
       'click #sync-btn': 'sync:init'
     },
@@ -29,6 +34,7 @@ define([
       let location = recordModel.printLocation();
 
       return {
+        isSynchronising: syncStatus === Morel.SYNCHRONISING,
         onDatabase: syncStatus === Morel.SYNCED,
         taxon: taxon,
         location: location,

@@ -8,7 +8,7 @@ define([
 ], function (Marionette, Log, JST) {
   'use strict';
 
-  const MIN_SEARCH_LENGTH = 3;
+  const MIN_SEARCH_LENGTH = 2;
 
   let View = Marionette.LayoutView.extend({
     template: JST['common/taxon/layout'],

@@ -21,13 +21,13 @@ define(['app-config'], function (CONFIG) {
       DEBUG = 'd';
 
   let Log = {
-    core: function (message, type) {
+    core: function (message, type = DEBUG) {
       //do nothing if logging turned off
       if (!(CONFIG.log && CONFIG.log.states)) {
         return;
       }
 
-      if (CONFIG.log.states.indexOf(type) >= 0 || !type) {
+      if (CONFIG.log.states.indexOf(type) >= 0) {
         switch (type) {
           case ERROR:
             Log.error(message);

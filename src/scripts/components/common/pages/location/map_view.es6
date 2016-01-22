@@ -1,8 +1,9 @@
 define([
   'marionette',
   'JST',
+  'app-config',
   'os-leaflet'
-], function (Marionette, JST) {
+], function (Marionette, JST, CONFIG) {
 
   return Marionette.ItemView.extend({
     template: JST['common/location/map'],
@@ -44,7 +45,7 @@ define([
 
       /* New L.TileLayer.OSOpenSpace with API Key */
       //TODO: replace API_KEY
-      let API_KEY = "EC9EDE7DAD732ABAE0430C6CA40AB812";
+      let API_KEY = CONFIG.map.API_KEY;
       openspaceLayer = L.tileLayer.OSOpenSpace(API_KEY);
 
       map.addLayer(openspaceLayer);

@@ -1,10 +1,11 @@
 define([
   'app',
   'common/app_model',
+  'common/user_model',
   './main_view',
   'common/header_view',
   'common/record_manager'
-], function (App, appModel, MainView, HeaderView, recordManager) {
+], function (App, appModel, userModel, MainView, HeaderView, recordManager) {
   let API = {
     show: function (id){
       recordManager.get(id, function (err, recordModel) {
@@ -18,15 +19,16 @@ define([
         });
 
         mainView.on('sync:init', function () {
-          App.regions.dialog.showLoader();
+          if (window.navigator.onLine && !userModel.hasLogIn()) {
+            App.trigger('user:login');
+            return;
+          }
 
           recordManager.sync(recordModel, function (err) {
             if (err) {
               App.regions.dialog.error(err);
               return;
             }
-            App.regions.dialog.hideLoader();
-            window.history.back();
           });
         });
 
