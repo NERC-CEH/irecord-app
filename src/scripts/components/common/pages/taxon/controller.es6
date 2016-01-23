@@ -5,10 +5,12 @@ define([
   'app',
   'common/app_model',
   'common/record_manager',
+  'common/sample',
+  'common/occurrence',
   './main_view',
   'common/header_view',
   './taxon_search_engine'
-], function (Morel, Log, GPS, App, appModel, recordManager, MainView, HeaderView, SpeciesSearchEngine) {
+], function (Morel, Log, GPS, App, appModel, recordManager, Sample, Occurrence, MainView, HeaderView, SpeciesSearchEngine) {
   let API = {
     show: function (recordID){
       let that = this;
@@ -56,11 +58,11 @@ define([
         var that = this;
         if (!this.id) {
           //create new sighting
-          let occurrence = new Morel.Occurrence({
+          let occurrence = new Occurrence({
             'taxon': species
           });
 
-          let sample = new Morel.Sample(null, {
+          let sample = new Sample(null, {
             occurrences: [occurrence]
           });
 

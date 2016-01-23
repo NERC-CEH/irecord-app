@@ -1,12 +1,12 @@
 <% if (obj.title) { %>
 <div class="dialog-header">
-  <h3><%- obj.title %></h3>
+  <h3><%= obj.title %></h3>
 </div>
 <% } %>
 
 <% if (obj.body) { %>
 <div class="dialog-body">
-  <div><%- obj.body %></div>
+  <div><%= obj.body %></div>
 </div>
 <% } %>
 

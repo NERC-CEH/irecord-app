@@ -37,8 +37,27 @@ define([
         });
         App.regions.header.show(headerView);
 
+        //Set the record for submission
         headerView.on('save', function (e) {
           recordModel.metadata.saved = true;
+
+          let invalids = recordModel.validate();
+          if (invalids) {
+            recordModel.metadata.saved = false;
+
+            let missing = '';
+            _.each(invalids, function(invalid) {
+              missing += '<b>' + invalid.name + '</b> - ' + invalid.message + '</br>';
+            });
+
+            App.regions.dialog.show({
+              title: 'Sorry',
+              body: missing
+            });
+
+            return;
+          }
+
           recordManager.set(recordModel, function (err) {
             window.history.back();
             App.trigger('records:edit:saved', recordModel);

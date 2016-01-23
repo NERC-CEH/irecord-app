@@ -4,8 +4,10 @@ define([
   'common/app_model',
   './main_view',
   './header_view',
-  'common/record_manager'
-], function (Morel, App, appModel, MainView, HeaderView, recordManager) {
+  'common/record_manager',
+  'common/sample',
+  'common/occurrence'
+], function (Morel, App, appModel, MainView, HeaderView, recordManager, Sample, Occurrence) {
   let API = {
     show: function (){
       recordManager.getAll(function (err, recordsCollection) {
@@ -28,7 +30,7 @@ define([
 
       //create new record with a photo
       headerView.on('photo:upload', function (e) {
-        let occurrence = new Morel.Occurrence();
+        let occurrence = new Occurrence();
 
         //show loader
 
@@ -40,7 +42,7 @@ define([
               type: fileType
             }));
 
-            let sample = new Morel.Sample(null, {
+            let sample = new Sample(null, {
               occurrences: [occurrence]
             });
 
