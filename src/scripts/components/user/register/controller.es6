@@ -18,10 +18,17 @@ define([
       });
       App.regions.header.show(headerView);
 
+      //Start registration
       mainView.on('register', function (data) {
+        let formData = new FormData();
+        
+        _.forEach(data, function (value, key) {
+          formData.append(key, value);
+        });
+
         App.regions.dialog.showLoader();
 
-        API.register(data, function (err, data) {
+        API.register(formData, function (err, data) {
           if (err) {
             switch (err.xhr.status) {
               case 401:
@@ -35,14 +42,14 @@ define([
             if (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0) {
               response = 'Bad Username or Password';
             } else {
-              response = err.xhr.responseText;
+              response = err.thrownError;
             }
 
             App.regions.dialog.error({message: response});
             return;
           }
-
           App.regions.dialog.hideLoader();
+
           window.history.back();
         });
       })

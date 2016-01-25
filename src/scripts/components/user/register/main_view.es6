@@ -25,42 +25,54 @@ define([
 
     register: function (e) {
       //todo: add validation
-      var data = new FormData();
+      var data = {};
 
-      //user logins
-      this.email = this.$el.find('input[name=email]').val(); //save it for future
-      var name = this.$el.find('input[name=name]').val();
-      var surname = this.$el.find('input[name=surname]').val();
-      var pass = this.$el.find('input[name=pass]').val();
-      var passConf = this.$el.find('input[name=passConf]').val();
+      let $emailInput  = this.$el.find('input[name=email]');
+      let $passwordInput  = this.$el.find('input[name=pass]');
+      let $passwordConfInput = this.$el.find('input[name=passConf]');
 
-      if (pass !== passConf) {
-        App.regions.dialog.show({title: 'Sorry, passwords don\'t match'});
+      //validate
+      if (!this.valid($emailInput, $passwordInput, $passwordConfInput)) {
         return;
       }
 
-      data.append('email', this.email);
-      data.append('firstname', name);
-      data.append('secondname', surname);
-      data.append('password', pass);
-      data.append('password-confirm', passConf);
+      //user logins
+      this.email = $emailInput.val(); //save it for future
+      var name = this.$el.find('input[name=name]').val();
+      var surname = this.$el.find('input[name=surname]').val();
+      var pass = $passwordInput.val();
+      var passConf = $passwordConfInput.val();
+
+      data.email = this.email;
+      data.firstname = name;
+      data.secondname = surname;
+      data.password = pass;
+      data['password-confirm'] = passConf;
 
       this.trigger('register', data);
     },
 
-    valid: function ($inputEmail, $inputPassword) {
+    valid: function ($inputEmail, $inputPassword, $inputPasswordConf) {
       let valid = true;
       let email = $inputEmail.val(),
-        password = $inputPassword.val();
+        password = $inputPassword.val(),
+        passwordConf = $inputPasswordConf.val();
 
-      if (!password) {
+      if (password !== passwordConf) {
+        $inputPasswordConf.addClass('error');
+        valid = false;
+      } else {
+        $inputPasswordConf.removeClass('error');
+      }
+
+      if (!password || password.length < 5) {
         $inputPassword.addClass('error');
         valid = false;
       } else {
         $inputPassword.removeClass('error');
       }
 
-      if (!validate.email(email)) {
+      if (!Validate.email(email)) {
         $inputEmail.addClass('error');
         valid = false;
       } else {
@@ -84,8 +96,6 @@ define([
         this.$registerButton.prop('disabled', false);
       }
     }
-
-
   });
 
   return View;
