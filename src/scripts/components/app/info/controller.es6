@@ -25,7 +25,6 @@ define([
 
     logout: function () {
       userModel.logOut();
-      infoModel.unset('userModel');
     }
   };
 

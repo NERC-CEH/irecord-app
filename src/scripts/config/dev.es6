@@ -39,9 +39,6 @@ define([], function () {
         survey_id: 269
       },
       sample: {
-        name: {id: 6},
-        surname: {id: 7},
-        email: {id: 8},
         location: {
           values: function (location) {
             //todo: move name and accuracy to different fields
