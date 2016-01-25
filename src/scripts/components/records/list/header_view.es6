@@ -14,8 +14,12 @@ define([
     tagName: 'nav',
     template: JST['records/list/header'],
 
-    triggers: {
-      'change input': 'photo:upload'
+    events: {
+      'change input': 'photoUpload'
+    },
+
+    photoUpload: function (e) {
+      this.trigger('photo:upload', e);
     }
   });
 

@@ -50,6 +50,7 @@ define([
             appModel.appendAttrLocks(sample);
 
             recordManager.set(sample, function () {
+              sample.startGPS();
               //hide loader
             });
           });
