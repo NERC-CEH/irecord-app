@@ -18,9 +18,9 @@
   </li>
 
   <li class="table-view-divider">Account</li>
-  <% if (obj.user) { %>
+  <% if (obj.surname) { %>
   <li class="table-view-cell">
-    <a id="logout-button" class="navigate-right">Logout: <%- obj.user %></a>
+    <a id="logout-button" class="navigate-right">Logout: <%- obj.surname %></a>
   </li>
   <% } else { %>
   <li class="table-view-cell">

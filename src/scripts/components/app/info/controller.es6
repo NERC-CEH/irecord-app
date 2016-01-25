@@ -9,11 +9,8 @@ define([
 
   let API = {
     show: function () {
-      infoModel = new Backbone.Model({
-        userModel: userModel.get('surname')
-      });
 
-      let mainView = new MainView({model: infoModel});
+      let mainView = new MainView({model: userModel});
       App.regions.main.show(mainView);
 
       mainView.on('logout', API.logout);

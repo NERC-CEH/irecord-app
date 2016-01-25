@@ -19,6 +19,12 @@ define([
       'change': 'render'
     },
 
+    serializeDate: function () {
+      return {
+        surname: this.model.get('surname')
+      }
+    },
+
     logout: function () {
       this.trigger('logout');
     }
