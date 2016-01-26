@@ -47,6 +47,9 @@ define([
         });
 
         let onLocationSelect = function (view, location) {
+          //we don't need the GPS running and overwriting the selected location
+          recordModel.stopGPS();
+
           recordModel.set('location', location);
           recordModel.trigger('change:location');
         };
