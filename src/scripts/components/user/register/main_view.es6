@@ -55,8 +55,8 @@ define([
     valid: function ($inputEmail, $inputPassword, $inputPasswordConf) {
       let valid = true;
       let email = $inputEmail.val(),
-        password = $inputPassword.val(),
-        passwordConf = $inputPasswordConf.val();
+          password = $inputPassword.val(),
+          passwordConf = $inputPasswordConf.val();
 
       if (password !== passwordConf) {
         $inputPasswordConf.addClass('error');
@@ -89,12 +89,11 @@ define([
      */
     toggleRegisterButton: function (e) {
       //enable 'Create account' button on Terms agreement
-      var agree = $(e.currentTarget).hasClass('active');
-      if (agree) {
-        this.$registerButton.prop('disabled', true);
-      } else {
-        this.$registerButton.prop('disabled', false);
-      }
+      var active = $(e.currentTarget).hasClass('active');
+      $(e.currentTarget).toggleClass('active', !active);
+
+      this.$registerButton.prop('disabled', active == true);
+
     }
   });
 

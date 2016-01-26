@@ -19,6 +19,8 @@ define([
 
     onSettingToggled: function (e) {
       let active = $(e.currentTarget).hasClass('active');
+      $(e.currentTarget).toggleClass('active', !active);
+
       let setting = $(e.currentTarget).data('setting');
 
       //invert because it takes time to get the class
