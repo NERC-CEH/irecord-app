@@ -10,6 +10,9 @@ define([
   });
 
   let PastLocationView = Marionette.ItemView.extend({
+    tagName: 'li',
+    className: 'table-view-cell',
+
     template: JST['common/location/past_location'],
 
     events: {
