@@ -1,2 +1,2 @@
-<%- (obj.name ? '<strong>' + obj.name + '</strong>' : '') %>
-<p> <%- obj.gref %></p>
+<%= (obj.name ? '<strong>' + obj.name + '</strong>' : '') %>
+<p> <%- obj.location %></p>

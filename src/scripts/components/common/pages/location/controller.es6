@@ -70,10 +70,18 @@ define([
               appModel.setAttrLock('location', recordModel.get('location'));
             }
 
+            //save to past locations
+            appModel.setLocation(recordModel.get('location'));
+
             window.history.back();
           });
         };
 
+        mainView.on('childview:childview:location:select:past', function (e, view, location) {
+          onLocationSelect(view, location);
+          onPageExit();
+        });
+        mainView.on('childview:location:select:past', onLocationSelect);
         mainView.on('childview:location:select:map', onLocationSelect);
         mainView.on('childview:location:select:gridref', function(view, location) {
           onLocationSelect(view, location);
