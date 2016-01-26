@@ -4,8 +4,8 @@
 </div>
 
 <div class="input-group">
-  <input type="text" id="grid-ref" placeholder="Grid Reference"/>
-  <input type="text" id="location-name" placeholder="Location Name (optional)"/>
+  <input type="text" id="grid-ref" placeholder="Grid Reference" value="<%- obj.gridref %>" />
+  <input type="text" id="location-name" placeholder="Location Name (optional)" value="<%- obj.name %>"/>
 </div>
 
 <button id="grid-ref-set-btn"

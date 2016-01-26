@@ -32,6 +32,23 @@ define([
         //trigger won't work to bubble up
         this.triggerMethod('location:select:gridref', location);
       }
+    },
+
+    serializeData: function () {
+      let location = this.model.get('recordModel').get('location');
+      let gridref;
+
+      if (location && location.latitude && location.longitude) {
+        gridref = LocHelp.coord2grid({
+          latitude: location.latitude,
+          longitude: location.longitude
+        }, location.accuracy);
+      }
+
+      return {
+        gridref: gridref,
+        name: location.name
+      }
     }
   });
 });
