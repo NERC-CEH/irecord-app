@@ -66,7 +66,7 @@ define([
               break;
             default:
           }
-          recordManager.set(record, function () {
+          record.save(function () {
             //update locked value if attr is locked
             if (appModel.getAttrLock(attr)) {
               appModel.setAttrLock(attr, values[attr]);

@@ -36,7 +36,7 @@ define([
      *
      * @param location
      */
-    setLocation: function (location) {
+    setLocation: function (location = {}) {
       var MAX_LENGTH = 10; //max number of locations to store
       var locations = this.get('locations'),
           exists = false;

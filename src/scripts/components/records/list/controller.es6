@@ -49,7 +49,7 @@ define([
             //append locked attributes
             appModel.appendAttrLocks(sample);
 
-            recordManager.set(sample, function () {
+           recordManager.set(sample, function () {
               sample.startGPS();
               //hide loader
             });

@@ -58,7 +58,7 @@ define([
             return;
           }
 
-          recordManager.set(recordModel, function (err) {
+          recordModel.save(function (err) {
             window.history.back();
             App.trigger('records:edit:saved', recordModel);
           })

@@ -77,7 +77,7 @@ define([
           location.gps = true;
           location.updateTime = new Date(); //track when gps was acquired
           that.set('location', location);
-          manager.set(that);
+          that.save();
 
           that.trigger('change:location');
           that.trigger('geolocation', location);

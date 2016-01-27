@@ -83,7 +83,7 @@ define([
           //edit existing one
           recordManager.get(this.id, function (err, record) {
             record.occurrences.at(0).set('taxon', species);
-            recordManager.set(record, function (err) {
+            record.save(function (err) {
               if (edit) {
                 App.trigger('records:edit', that.id, {replace: true});
               } else {

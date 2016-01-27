@@ -64,7 +64,7 @@ define([
         };
 
         let onPageExit = function () {
-          recordManager.set(recordModel, function () {
+          recordModel.save(function () {
             //update locked value if attr is locked
             if (appModel.getAttrLock('location')) {
               appModel.setAttrLock('location', recordModel.get('location'));
