@@ -20,15 +20,10 @@ define([
 
       //Start registration
       mainView.on('register', function (data) {
-        let formData = new FormData();
-        
-        _.forEach(data, function (value, key) {
-          formData.append(key, value);
-        });
 
         App.regions.dialog.showLoader();
 
-        API.register(formData, function (err, data) {
+        API.register(data, function (err, data) {
           if (err) {
             switch (err.xhr.status) {
               case 401:
@@ -63,8 +58,15 @@ define([
      * It is important that the app authorises itself providing
      * appname and appsecret for the mentioned module.
      */
-    register: function (formData, callback) {
+    register: function (data, callback) {
       Log('views.login: start.', 'd');
+
+      let formData = new FormData();
+
+      _.forEach(data, function (value, key) {
+        formData.append(key, value);
+      });
+
 
       //app logins
       formData.append('appname', CONFIG.morel.manager.appname);
@@ -79,9 +81,9 @@ define([
         processData: false,
         timeout: CONFIG.login.timeout,
 
-        success: function (data) {
-          var details = API.extractUserDetails(data);
-          details.email = formData.get('email');
+        success: function (response) {
+          var details = API.extractUserDetails(response);
+          details.email = data.email;
           userModel.logIn(details);
 
           callback(null, details);
