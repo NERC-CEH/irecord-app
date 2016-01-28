@@ -174,17 +174,18 @@
 
       //pull right
       .online-status {
-        .icon:before {
+        margin-right: 7px;
+
+        &.icon:before {
           font-size: 15px;
         }
 
-        .icon-cloud {
+        &.local {
           color: $color-orange;
         }
 
-        .icon-upload-cloud,
-        .icon-plus,
-        .icon-check {
+        &.cloud,
+        &.icon-plus{
           font-size: 15px;
           color: $color-green;
         }
