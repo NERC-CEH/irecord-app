@@ -4,6 +4,11 @@
 define(['latlon'], function () { //LatLon is global
   var Module = {
     coord2grid: function (location, locationGranularity) {
+      //no more than 10 digits
+      if (locationGranularity > 10) {
+        locationGranularity = 10;
+      }
+
       var p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);
       var grid = OsGridRef.latLonToOsGrid(p);
 
