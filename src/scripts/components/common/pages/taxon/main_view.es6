@@ -100,20 +100,28 @@ define([
         default:
           //Other
 
-          //check time difference
+          //todo: check time difference
 
-          //let controller know
-          let text = input.trim();
+          let text = input;
+
           //on keyDOWN need to add the pressed char
-
           let pressedChar = String.fromCharCode(e.keyCode);
-          if (e.keyCode != 8){
-            //ignore backspace
+          if (e.keyCode != 8) {
+            //http://stackoverflow.com/questions/19278037/javascript-non-unicode-char-code-to-unicode-character
+            if (e.keyCode === 189 || e.keyCode === 109){
+              pressedChar = '-';
+            }
             text += pressedChar;
           } else {
+            //Backspace - remove a char
             text =  text.slice(0, text.length - 1);
           }
+
+          //proceed if minimum length phrase was provided
           if ((text.length)>= MIN_SEARCH_LENGTH) {
+            text = text.trim();
+
+            //let controller know
             this.trigger('taxon:searched', text.toLowerCase());
           }
       }
