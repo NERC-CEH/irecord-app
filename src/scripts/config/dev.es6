@@ -49,7 +49,7 @@ define([], function () {
         location_name: {id: 274},
         date: {
           values: function (date) {
-            return '11/01/2015';
+            return date.print();
           }
         }
       },
