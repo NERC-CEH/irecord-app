@@ -15,13 +15,13 @@ define([
     }
   });
 
-  App.on("user:login", function() {
-    App.navigate('user/login');
+  App.on("user:login", function(options) {
+    App.navigate('user/login', options);
     LoginController.show();
   });
 
-  App.on("user:register", function() {
-    App.navigate('user/register');
+  App.on("user:register", function(options) {
+    App.navigate('user/register', options);
     RegisterController.show();
   });
 

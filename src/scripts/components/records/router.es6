@@ -28,22 +28,6 @@ define([
     }
   });
 
-  let syncRecords = function () {
-    Log('records:sync');
-
-    //force login
-    if (!userModel.hasLogIn()) {
-      App.trigger('user:login');
-      return;
-    }
-
-    if (window.navigator.onLine && appModel.get('autosync')) {
-      recordManager.syncAll(function (sample) {
-        userModel.appendSampleUser(sample);
-      });
-    }
-  };
-
   App.on("records:list", function(options) {
     App.navigate('records', options);
     ListController.show(  );
@@ -57,10 +41,6 @@ define([
   App.on("records:edit", function(recordID, options) {
     App.navigate('records/' + recordID + '/edit', options);
     EditController.show(recordID);
-  });
-
-  App.on("records:edit:saved", function(recordID) {
-    syncRecords();
   });
 
   App.on("records:edit:attr", function(recordID, attrID, options) {
@@ -95,6 +75,17 @@ define([
         EditAttrController.show(null, attrID);
     }
   });
+
+
+  function syncRecords () {
+    if (window.navigator.onLine && appModel.get('autosync')) {
+      recordManager.syncAll(function (sample) {
+        userModel.appendSampleUser(sample);
+      });
+    }
+  }
+
+  userModel.on('login', syncRecords);
 
   App.on('before:start', function(){
     new App.records.Router();

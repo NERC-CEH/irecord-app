@@ -3,10 +3,11 @@ define([
   'date_extension',
   'app',
   'common/app_model',
+  'common/user_model',
   './main_view',
   './header_view',
   'common/record_manager'
-], function (String, Date, App, appModel, MainView, HeaderView, recordManager) {
+], function (String, Date, App, appModel, userModel, MainView, HeaderView, recordManager) {
   let id;
   let record;
   let API = {
@@ -58,9 +59,15 @@ define([
             return;
           }
 
+          //save record
           recordModel.save(function (err) {
-            window.history.back();
-            App.trigger('records:edit:saved', recordModel);
+            if (window.navigator.onLine && !userModel.hasLogIn()) {
+              App.trigger('user:login', {replace: true});
+              return;
+            } else {
+              recordManager.sync(recordModel);
+              window.history.back();
+            }
           })
         });
       });
