@@ -19,6 +19,12 @@ define([
       var val = this.$el.find('#grid-ref').val();
       var name = this.$el.find('#location-name').val();
 
+      let validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
+
+      if (!validGridRef.test(val.replace(/\s/g, ''))) {
+        return;
+      }
+
       var latLon = LocHelp.grid2coord(val);
       if (latLon) {
         location.latitude = latLon.lat;

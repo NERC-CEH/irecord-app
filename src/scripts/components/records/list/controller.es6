@@ -50,7 +50,12 @@ define([
             appModel.appendAttrLocks(sample);
 
            recordManager.set(sample, function () {
-              sample.startGPS();
+             //check if location attr is not locked
+             let locks = appModel.get('attrLocks');
+             if (!locks.location) {
+               sample.startGPS();
+             }
+
               //hide loader
             });
           });

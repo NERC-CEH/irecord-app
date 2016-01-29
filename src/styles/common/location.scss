@@ -11,6 +11,10 @@
   font-size: 4em;
 }
 
+input#grid-ref {
+  text-transform: uppercase;
+}
+
 #user-locations .table-view-cell {
   @include empty-list();
 }
