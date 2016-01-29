@@ -62,19 +62,19 @@ define([], function () {
         number: {
           id: 379,
           values: {
+            'default': 671,
             '1': 665,
             '2-5': 666,
             '6-20': 667,
             '21-100': 668,
             '101-500': 669,
-            '500+': 670,
-            'Present': 671 //default
+            '500+': 670
           }
         },
         stage: {
           id: 106,
           values: {
-            'Not Recorded': 1949,
+            'default': 1949,
             'Adult': 1950,
             'Pre-adult': 1951,
             'Other': 1952

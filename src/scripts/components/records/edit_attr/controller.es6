@@ -19,7 +19,7 @@ define([
         let templateData = new Backbone.Model();
         switch (attr) {
           case 'date':
-            templateData.set('date', record.get('date').toDateInputValue())
+            templateData.set('date', record.get('date').toDateInputValue());
             break;
           case 'number':
             templateData.set(occ.get('number'), true);
@@ -49,6 +49,7 @@ define([
         });
         App.regions.main.show(mainView);
 
+
         let onExit = function () {
           let values = mainView.getValues();
           switch (attr) {
@@ -56,9 +57,13 @@ define([
               record.set('date', values.date);
               break;
             case 'number':
+              //don't save default values
+              values.number = values.number === 'default' ? null : values.number;
               occ.set('number', values.number);
               break;
             case 'stage':
+              //don't save default values
+              values.stage = values.stage === 'default' ? null : values.stage;
               occ.set('stage', values.stage);
               break;
             case 'comment':
@@ -69,7 +74,11 @@ define([
           record.save(function () {
             //update locked value if attr is locked
             if (appModel.getAttrLock(attr)) {
-              appModel.setAttrLock(attr, values[attr]);
+              if (values[attr] === 'default') {
+                appModel.setAttrLock(attr, null);
+              } else {
+                appModel.setAttrLock(attr, values[attr]);
+              }
             }
 
             window.history.back();

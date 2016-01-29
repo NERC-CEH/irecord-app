@@ -4,7 +4,7 @@
 
 <div class="list">
   <label class="item item-radio">
-    <input type="radio" name="group" value=" "  <%- !_.keys(obj).length || obj[' '] ? 'checked' : ''%>>
+    <input type="radio" name="group" value="default"  <%- !_.keys(obj).length || obj['default'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
         Not recorded
