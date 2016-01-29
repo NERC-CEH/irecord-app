@@ -41,7 +41,7 @@
     <span class="media-object pull-left icon icon-comment"></span>
     <div class="media-body">
       <h3 class="heading">Comment</h3>
-      <p class="descript"><%- obj.comment %></p>
+      <p class="descript comment"><%- obj.comment %></p>
     </div>
   </li>
 </ul>
