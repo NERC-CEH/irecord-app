@@ -42,7 +42,7 @@ define([
           latitude: latitude
         }, accuracy)
       } else {
-        location = longitude + ', ' + latitude;
+        location = longitude.toFixed(4) + ', ' + latitude.toFixed(4);
       }
 
       return {

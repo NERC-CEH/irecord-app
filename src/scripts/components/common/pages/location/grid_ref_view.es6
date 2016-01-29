@@ -35,10 +35,10 @@ define([
     },
 
     serializeData: function () {
-      let location = this.model.get('recordModel').get('location');
+      let location = this.model.get('recordModel').get('location') || {};
       let gridref;
 
-      if (location && location.latitude && location.longitude) {
+      if (location.latitude && location.longitude) {
         gridref = LocHelp.coord2grid({
           latitude: location.latitude,
           longitude: location.longitude
