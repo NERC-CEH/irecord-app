@@ -14,6 +14,23 @@
 input#grid-ref {
   text-transform: uppercase;
 }
+input#grid-ref {
+  text-transform: uppercase;
+}
+input#grid-ref::-webkit-input-placeholder { /* WebKit browsers */
+  text-transform: none;
+}
+input#grid-ref:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+input#grid-ref::-moz-placeholder { /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
+  text-transform: none;
+}
+
+
 
 #user-locations .table-view-cell {
   @include empty-list();
