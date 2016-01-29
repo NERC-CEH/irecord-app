@@ -4,8 +4,9 @@
 define([
   'marionette',
   'log',
+  'browser',
   'JST',
-], function (Marionette, Log, JST) {
+], function (Marionette, Log, Browser, JST) {
   'use strict';
 
   var View = Marionette.ItemView.extend({
@@ -24,9 +25,10 @@ define([
       let setting = $(e.currentTarget).data('setting');
       let active = $(e.currentTarget).hasClass('active');
 
-      if (e.type != 'toggle') {
-        //invert because it takes time to get the class
-        active = !active;
+      if (e.type != 'toggle' && !Browser.isMobile()) {
+        //Browser.isMobile() android generates both swipe and click
+
+        active = !active; //invert because it takes time to get the class
         $(e.currentTarget).toggleClass('active', active);
       }
 

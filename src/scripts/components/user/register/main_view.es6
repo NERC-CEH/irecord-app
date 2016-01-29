@@ -4,10 +4,11 @@
 define([
   'marionette',
   'log',
+  'browser',
   'validate',
   'app',
   'JST'
-], function (Marionette, Log, Validate, App, JST) {
+], function (Marionette, Log, Browser, Validate, App, JST) {
   'use strict';
 
   var View = Marionette.ItemView.extend({
@@ -16,6 +17,7 @@ define([
     events: {
       'click #register-button': 'register',
       'click #terms-agree-button': 'toggleRegisterButton',
+      'toggle #terms-agree-button': 'toggleRegisterButton',
     },
 
     onRender: function () {
@@ -90,10 +92,14 @@ define([
     toggleRegisterButton: function (e) {
       //enable 'Create account' button on Terms agreement
       var active = $(e.currentTarget).hasClass('active');
-      $(e.currentTarget).toggleClass('active', !active);
 
-      this.$registerButton.prop('disabled', active == true);
+      if (e.type != 'toggle' && !Browser.isMobile()) {
+        //invert because it takes time to get the class
+        active = !active;
+        $(e.currentTarget).toggleClass('active', active);
+      }
 
+      this.$registerButton.prop('disabled', !active);
     }
   });
 
