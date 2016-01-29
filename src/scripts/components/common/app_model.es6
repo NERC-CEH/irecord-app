@@ -15,8 +15,9 @@ define([
     defaults: {
       locations: [],
       attrLocks: {},
+      useScientificNames: false,
       autosync: true,
-      useGridRef: false
+      useGridRef: true
     },
 
     localStorage: new Store(CONFIG.name),
