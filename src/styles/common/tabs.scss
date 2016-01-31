@@ -48,3 +48,10 @@
   }
 
 }
+
+//remove hover on touch devices
+@media (pointer:coarse) {
+  #tabs li:hover {
+    background-color: inherit;
+  }
+}

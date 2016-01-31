@@ -22,6 +22,14 @@ define([
 
       let location = recordModel.printLocation();
 
+      let attrLocks = {
+        date: appModel.isAttrLocked('date', recordModel.get('date')),
+        location: appModel.isAttrLocked('location', recordModel.get('location')),
+        number: appModel.isAttrLocked('number', occ.get('number')),
+        stage: appModel.isAttrLocked('stage', occ.get('stage')),
+        comment: appModel.isAttrLocked('comment', occ.get('comment'))
+      };
+
       return {
         id: recordModel.id || recordModel.cid,
         taxon: taxon,
@@ -31,7 +39,7 @@ define([
         number: occ.get('number') && occ.get('number').limit(20),
         stage: occ.get('stage') && occ.get('stage').limit(20),
         comment: occ.get('comment') && occ.get('comment').limit(20),
-        locks: appModel.get('attrLocks')
+        locks: attrLocks
       };
     }
   });

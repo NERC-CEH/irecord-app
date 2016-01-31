@@ -9,17 +9,17 @@ define([
 ], function (Date, App, appModel, MainView, HeaderView, LockView, recordManager) {
   let API =  {
     show: function (recordID, attr) {
-      recordManager.get(recordID, function (err, record) {
-        if (!record) {
+      recordManager.get(recordID, function (err, recordModel) {
+        if (!recordModel) {
           App.trigger('404:show');
           return;
         }
 
-        let occ = record.occurrences.at(0);
+        let occ = recordModel.occurrences.at(0);
         let templateData = new Backbone.Model();
         switch (attr) {
           case 'date':
-            templateData.set('date', record.get('date').toDateInputValue());
+            templateData.set('date', recordModel.get('date').toDateInputValue());
             break;
           case 'number':
             templateData.set(occ.get('number'), true);
@@ -37,7 +37,7 @@ define([
 
         //can't edit a saved one - to be removed when record update
         //is possible on the server
-        if (record.metadata.saved) {
+        if (recordModel.metadata.saved) {
           App.trigger('records:show', recordID);
           return;
         }
@@ -52,31 +52,43 @@ define([
 
         let onExit = function () {
           let values = mainView.getValues();
+          let currentVal;
+
           switch (attr) {
             case 'date':
-              record.set('date', values.date);
+              currentVal = recordModel.get('date');
+
+              recordModel.set('date', values.date);
               break;
             case 'number':
+              currentVal = occ.get('number');
+
               //don't save default values
               values.number = values.number === 'default' ? null : values.number;
               occ.set('number', values.number);
               break;
             case 'stage':
+              currentVal = occ.get('stage');
+
               //don't save default values
               values.stage = values.stage === 'default' ? null : values.stage;
               occ.set('stage', values.stage);
               break;
             case 'comment':
+              currentVal = occ.get('comment');
+
               occ.set('comment', values.comment);
               break;
             default:
           }
-          record.save(function () {
+
+          recordModel.save(function () {
             //update locked value if attr is locked
-            if (appModel.getAttrLock(attr)) {
+            let lockedValue = appModel.getAttrLock(attr);
+            if (lockedValue) {
               if (values[attr] === 'default') {
                 appModel.setAttrLock(attr, null);
-              } else {
+              } else if (lockedValue === true || lockedValue == currentVal) {
                 appModel.setAttrLock(attr, values[attr]);
               }
             }
@@ -87,7 +99,7 @@ define([
 
         //HEADER
         let lockView = new LockView({
-          model: appModel,
+            model: new Backbone.Model({appModel:appModel, recordModel:recordModel}),
           attr: attr,
           onLockClick:function () {
             //invert the lock of the attribute

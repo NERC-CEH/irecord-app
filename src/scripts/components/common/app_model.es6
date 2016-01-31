@@ -96,6 +96,20 @@ define([
       return locks[attr];
     },
 
+    isAttrLocked: function (attr, value) {
+      let lockedVal = this.getAttrLock(attr);
+      if (!lockedVal) return false; //has not been locked
+      if (lockedVal === true) return true; //has been locked
+
+      switch (attr) {
+        case 'location':
+          return value.latitude == lockedVal.latitude && value.longitude == lockedVal.longitude;
+          break;
+        default:
+          return value == lockedVal;
+      }
+    },
+
     appendAttrLocks: function (sample) {
       var locks = this.get('attrLocks');
       let occurrence = sample.occurrences.at(0);
