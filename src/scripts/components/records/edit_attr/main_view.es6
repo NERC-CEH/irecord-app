@@ -54,7 +54,7 @@ define([
           break;
         case 'comment':
           value = this.$el.find('textarea').val();
-          values[attr] = value;
+          values[attr] = value.escape();
           break;
         default:
       }

@@ -3,6 +3,6 @@
 </div>
 <div class="input-group">
   <textarea id="record-comment" cols="80" rows="16" placeholder="Add a note" autofocus>
-    <%- obj.comment %>
+    <%= obj.comment %>
   </textarea>
 </div>
