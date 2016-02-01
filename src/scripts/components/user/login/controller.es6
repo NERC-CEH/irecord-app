@@ -8,6 +8,11 @@ define([
 ], function (App, Log, CONFIG, userModel, MainView, HeaderView) {
   let API = {
     show: function () {
+      //don't show if logged in
+      if (userModel.hasLogIn()) {
+        window.history.back();
+      }
+
       let mainView = new MainView();
       App.regions.main.show(mainView);
 

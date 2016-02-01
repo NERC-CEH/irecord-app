@@ -112,7 +112,15 @@ define([
       let location = this.get('location') || {};
       if (location.latitude && location.longitude){
         if (useGridRef || location.source === 'gridref') {
-          output = LocHelp.coord2grid(location, location.accuracy);
+          let accuracy = location.accuracy;
+
+          //cannot be odd
+          if (accuracy % 2 != 0) {
+            //should not be less than 2
+            accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
+          }
+
+          output = LocHelp.coord2grid(location, accuracy);
         } else {
           output =  location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
         }
