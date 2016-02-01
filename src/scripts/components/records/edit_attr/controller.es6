@@ -58,13 +58,19 @@ define([
             case 'date':
               currentVal = recordModel.get('date');
 
-              recordModel.set('date', values.date);
+              //validate before setting up
+              if (values.date != 'Invalid Date') {
+                recordModel.set('date', values.date);
+              }
               break;
             case 'number':
               currentVal = occ.get('number');
 
               //don't save default values
               values.number = values.number === 'default' ? null : values.number;
+
+              //validate before setting up
+
               occ.set('number', values.number);
               break;
             case 'stage':
@@ -72,10 +78,15 @@ define([
 
               //don't save default values
               values.stage = values.stage === 'default' ? null : values.stage;
+
+              //validate before setting up
+
               occ.set('stage', values.stage);
               break;
             case 'comment':
               currentVal = occ.get('comment');
+
+              //validate before setting up
 
               occ.set('comment', values.comment);
               break;
@@ -111,7 +122,8 @@ define([
         //header view
         let headerView = new HeaderView({
           onExit: onExit,
-          rightPanel: lockView
+          rightPanel: lockView,
+          model: new Backbone.Model({title: attr})
         });
 
         App.regions.header.show(headerView);

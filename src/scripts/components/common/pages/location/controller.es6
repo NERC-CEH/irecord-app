@@ -63,15 +63,31 @@ define([
           }
         };
 
+        let currentVal = recordModel.get('location');
         let onPageExit = function () {
           recordModel.save(function () {
-            //update locked value if attr is locked
-            if (appModel.getAttrLock('location')) {
-              appModel.setAttrLock('location', recordModel.get('location'));
+            let attr = 'location';
+            let location = recordModel.get('location');
+
+            let lockedValue = appModel.getAttrLock(attr);
+
+            if (location) {
+              //save to past locations
+              appModel.setLocation(recordModel.get('location'));
+
+              //update locked value if attr is locked
+              if (lockedValue) {
+                if (lockedValue === true ||
+                  (lockedValue.latitude == currentVal.latitude &&
+                  lockedValue.longitude == currentVal.longitude)) {
+                  appModel.setAttrLock(attr, location);
+                }
+              }
+            } else if (lockedValue == true) {
+              //reset if no location selected but locked is clicked
+              appModel.setAttrLock(attr, null);
             }
 
-            //save to past locations
-            appModel.setLocation(recordModel.get('location'));
 
             window.history.back();
           });
@@ -93,7 +109,7 @@ define([
 
         //HEADER
         let lockView = new LockView({
-          model: appModel,
+          model: new Backbone.Model({appModel: appModel, recordModel: recordModel}),
           attr: 'location',
           onLockClick:function () {
             //invert the lock of the attribute

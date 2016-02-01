@@ -96,7 +96,7 @@ define([
       return locks[attr];
     },
 
-    isAttrLocked: function (attr, value) {
+    isAttrLocked: function (attr, value = {}) {
       let lockedVal = this.getAttrLock(attr);
       if (!lockedVal) return false; //has not been locked
       if (lockedVal === true) return true; //has been locked

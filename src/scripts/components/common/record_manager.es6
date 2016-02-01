@@ -2,11 +2,15 @@ define([
   'jquery',
   'morel',
   'app-config',
-  'common/sample'
-], function ($, Morel, CONFIG, Sample) {
+  'common/sample',
+  'common/user_model'
+], function ($, Morel, CONFIG, Sample, userModel) {
   let morelConfiguration = $.extend(CONFIG.morel.manager, {
     Storage: Morel.DatabaseStorage,
-    Sample: Sample
+    Sample: Sample,
+    onSend: function (sample) {
+      userModel.appendSampleUser(sample);
+    }
   });
 
   //todo: make it more specific

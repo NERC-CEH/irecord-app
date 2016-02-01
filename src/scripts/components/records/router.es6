@@ -79,9 +79,7 @@ define([
 
   function syncRecords () {
     if (window.navigator.onLine && appModel.get('autosync')) {
-      recordManager.syncAll(function (sample) {
-        userModel.appendSampleUser(sample);
-      });
+      recordManager.syncAll();
     }
   }
 
