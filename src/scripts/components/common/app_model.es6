@@ -105,6 +105,12 @@ define([
         case 'location':
           return value.latitude == lockedVal.latitude && value.longitude == lockedVal.longitude;
           break;
+        case 'date':
+          lockedVal = new Date(lockedVal);
+          if (lockedVal == 'Invalid Date') return false;
+
+          return lockedVal.getTime() === value.getTime();
+          break;
         default:
           return value == lockedVal;
       }
