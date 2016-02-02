@@ -60,6 +60,29 @@ define([
       }
 
       return values;
+    },
+
+    serializeData:  function () {
+      let templateData = {};
+      switch (attr) {
+        case 'date':
+          templateData.date = recordModel.get('date').toDateInputValue();
+          break;
+        case 'number':
+          templateData[occ.get('number')] = true;
+          break;
+        case 'stage':
+          templateData[occ.get('stage')] =  true;
+          break;
+        case 'comment':
+          templateData.comment = occ.get('comment');
+          break;
+        default:
+          Log('No such attribute', 'e');
+          return;
+      };
+
+      return templateData
     }
 
   });

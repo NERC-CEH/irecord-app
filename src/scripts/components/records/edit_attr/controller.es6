@@ -10,30 +10,13 @@ define([
   let API =  {
     show: function (recordID, attr) {
       recordManager.get(recordID, function (err, recordModel) {
+        //Not found
         if (!recordModel) {
           App.trigger('404:show');
           return;
         }
 
         let occ = recordModel.occurrences.at(0);
-        let templateData = new Backbone.Model();
-        switch (attr) {
-          case 'date':
-            templateData.set('date', recordModel.get('date').toDateInputValue());
-            break;
-          case 'number':
-            templateData.set(occ.get('number'), true);
-            break;
-          case 'stage':
-            templateData.set(occ.get('stage'), true);
-            break;
-          case 'comment':
-            templateData.set('comment', occ.get('comment'));
-            break;
-          default:
-            App.trigger('404:show');
-            return;
-        };
 
         //can't edit a saved one - to be removed when record update
         //is possible on the server
@@ -45,10 +28,9 @@ define([
         //MAIN
         let mainView = new MainView({
           attr: attr,
-          model: templateData
+          model: recordModel
         });
         App.regions.main.show(mainView);
-
 
         let onExit = function () {
           let values = mainView.getValues();
