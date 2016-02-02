@@ -181,6 +181,11 @@ li h3 {
   line-height: 1.4em;
   text-shadow: none;
   text-align: center;
+
+  a {
+    color: $color-white;
+    font-style: italic;
+  }
 }
 
 

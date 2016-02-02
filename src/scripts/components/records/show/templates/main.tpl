@@ -1,6 +1,7 @@
 <div class="info-message">
   <% if (obj.onDatabase) { %>
-  <p>This record has been submitted and cannot be edited.</p>
+  <p>This record has been submitted and cannot be edited within this App.
+    Go to the <a href="http://192.171.199.230/irecord7" target="_blank">iRecord website</a> to edit.</p>
   <% } else { %>
   <p>This record has been locked for submission and cannot be edited.</p>
   <% }%>
