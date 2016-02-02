@@ -114,21 +114,6 @@ define([
         Log('login:extractdetails: problems with received secret.', 'w');
         return null;
       }
-    },
-
-    /**
-     * Logs the user out of the system.
-     */
-    logout: function () {
-      userModel.logOut();
-    },
-
-    /**
-     * Brings the state of the user being logged in.
-     * @returns boolean true if the user is logged in, or false if not
-     */
-    getLoginState: function () {
-      return userModel.hasLogIn();
     }
   };
 

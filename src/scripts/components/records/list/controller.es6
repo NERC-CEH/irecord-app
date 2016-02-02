@@ -11,6 +11,7 @@ define([
   let API = {
     show: function (){
       recordManager.getAll(function (err, recordsCollection) {
+        //MAIN
         let mainView = new MainView({
           collection: recordsCollection,
           appModel: appModel
@@ -26,44 +27,56 @@ define([
         App.regions.main.show(mainView);
       });
 
+      //HEADER
       let headerView = new HeaderView();
 
-      //create new record with a photo
       headerView.on('photo:upload', function (e) {
-        let occurrence = new Occurrence();
-
         //show loader
-
-        //create and add new record
-        var callback = function (err, data, fileType) {
-          Morel.Image.resize(data, fileType, 800, 800, function (err, image, data) {
-            occurrence.images.set(new Morel.Image({
-              data: data,
-              type: fileType
-            }));
-
-            let sample = new Sample(null, {
-              occurrences: [occurrence]
-            });
-
-            //append locked attributes
-            appModel.appendAttrLocks(sample);
-
-           recordManager.set(sample, function () {
-             //check if location attr is not locked
-             let locks = appModel.get('attrLocks');
-             if (!locks.location) {
-               sample.startGPS();
-             }
-
-              //hide loader
-            });
-          });
-        };
-
-        Morel.Image.toString(e.target.files[0], callback);
+        API.photoUpload(e.target.files[0], function () {
+          //hide loader
+        });
       });
       App.regions.header.show(headerView);
+    },
+
+    /**
+     * Create new record with a photo
+     */
+    photoUpload: function (file, callback) {
+      let occurrence = new Occurrence();
+
+      //create and add new record
+      var stringified = function (err, data, fileType) {
+        Morel.Image.resize(data, fileType, 800, 800, function (err, image, data) {
+          if (err) {
+            App.regions.dialog.error(err);
+            return;
+          }
+
+          occurrence.images.set(new Morel.Image({
+            data: data,
+            type: fileType
+          }));
+
+          let sample = new Sample(null, {
+            occurrences: [occurrence]
+          });
+
+          //append locked attributes
+          appModel.appendAttrLocks(sample);
+
+          recordManager.set(sample, function () {
+            //check if location attr is not locked
+            let locks = appModel.get('attrLocks');
+            if (!locks.location) {
+              sample.startGPS();
+            }
+            callback()
+          });
+        });
+      };
+
+      Morel.Image.toString(file, stringified);
     }
   };
 
