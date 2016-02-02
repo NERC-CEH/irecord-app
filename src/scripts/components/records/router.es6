@@ -76,6 +76,9 @@ define([
     }
   });
 
+  App.on("record:saved", function () {
+    window.history.back();
+  });
 
   function syncRecords () {
     if (window.navigator.onLine && appModel.get('autosync')) {

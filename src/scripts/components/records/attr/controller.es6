@@ -46,7 +46,6 @@ define([
           API.save(attr, values, recordModel);
         };
 
-        //header view
         let headerView = new HeaderView({
           onExit: onExit,
           rightPanel: lockView,

@@ -13,12 +13,13 @@ define([
   let API = {
     show: function (recordID){
       id = recordID;
-
       recordManager.get(recordID, function (err, recordModel) {
+        //Not found
         if (!recordModel) {
           App.trigger('404:show');
           return;
         }
+
         //can't edit a saved one - to be removed when record update
         //is possible on the server
         if (recordModel.metadata.saved) {
@@ -26,11 +27,13 @@ define([
           return;
         }
 
+        //MAIN
         let mainView = new MainView({
           model: new Backbone.Model({recordModel: recordModel, appModel: appModel})
         });
         App.regions.main.show(mainView);
 
+        //HEADER
         let headerView = new HeaderView({
           model: new Backbone.Model({
             title: 'Edit'
@@ -38,14 +41,10 @@ define([
         });
         App.regions.header.show(headerView);
 
-        //Set the record for submission
         headerView.on('save', function (e) {
-          recordModel.metadata.saved = true;
+          let invalids = API.setToSend(recordModel);
 
-          let invalids = recordModel.validate();
           if (invalids) {
-            recordModel.metadata.saved = false;
-
             let missing = '';
             _.each(invalids, function(invalid) {
               missing += '<b>' + invalid.name + '</b> - ' + invalid.message + '</br>';
@@ -55,22 +54,33 @@ define([
               title: 'Sorry',
               body: missing
             });
-
-            return;
           }
-
-          //save record
-          recordModel.save(function (err) {
-            if (window.navigator.onLine && !userModel.hasLogIn()) {
-              App.trigger('user:login', {replace: true});
-              return;
-            } else {
-              recordManager.sync(recordModel);
-              window.history.back();
-            }
-          })
         });
       });
+    },
+
+    /**
+     * Set the record for submission and send it.
+     */
+    setToSend: function (recordModel) {
+      recordModel.metadata.saved = true;
+
+      let invalids = recordModel.validate();
+      if (invalids) {
+        recordModel.metadata.saved = false;
+        return invalids;
+      }
+
+      //save record
+      recordModel.save(function (err) {
+        if (window.navigator.onLine && !userModel.hasLogIn()) {
+          App.trigger('user:login', {replace: true});
+          return;
+        } else {
+          recordManager.sync(recordModel);
+          App.trigger('record:saved');
+        }
+      })
     }
   };
 
