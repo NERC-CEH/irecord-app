@@ -19,17 +19,23 @@ define([
         });
 
         mainView.on('sync:init', function () {
-          if (window.navigator.onLine && !userModel.hasLogIn()) {
-            App.trigger('user:login');
-            return;
-          }
-
-          recordManager.sync(recordModel, function (err) {
-            if (err) {
-              App.regions.dialog.error(err);
+          if (window.navigator.onLine) {
+            if (!userModel.hasLogIn()) {
+              App.trigger('user:login');
               return;
             }
-          });
+
+            recordManager.sync(recordModel, function (err) {
+              if (err) {
+                App.regions.dialog.error(err);
+                return;
+              }
+            });
+          } else {
+            App.regions.dialog.error({
+              message: 'Looks like you are offline!'
+            });
+          }
         });
 
         App.regions.main.show(mainView);
