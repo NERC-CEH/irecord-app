@@ -10,7 +10,7 @@ define([
 
   let View = Marionette.ItemView.extend({
     initialize: function (options) {
-      this.template =  JST['records/edit_attr/' + options.attr];
+      this.template =  JST['records/attr/' + options.attr];
     },
 
     triggers: function () {
@@ -64,9 +64,11 @@ define([
 
     serializeData:  function () {
       let templateData = {};
-      switch (attr) {
+      let occ = this.model.occurrences.at(0);
+
+      switch (this.options.attr) {
         case 'date':
-          templateData.date = recordModel.get('date').toDateInputValue();
+          templateData.date = this.model.get('date').toDateInputValue();
           break;
         case 'number':
           templateData[occ.get('number')] = true;

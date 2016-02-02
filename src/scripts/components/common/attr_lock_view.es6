@@ -9,7 +9,7 @@ define([
   'use strict';
 
   let View = Marionette.ItemView.extend({
-    template: JST['records/edit_attr/lock'],
+    template: JST['records/attr/lock'],
 
     initialize: function () {
       this.onLockClick = this.options.onLockClick;
