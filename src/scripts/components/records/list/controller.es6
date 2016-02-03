@@ -22,7 +22,7 @@ define([
         });
 
         mainView.on('childview:record:delete', function (childView) {
-          recordManager.remove(childView.model);
+          childView.model.destroy();
         });
         App.regions.main.show(mainView);
       });
