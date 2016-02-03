@@ -48,6 +48,10 @@ define([
       let API_KEY = CONFIG.map.API_KEY;
       openspaceLayer = L.tileLayer.OSOpenSpace(API_KEY);
 
+      openspaceLayer.on('tileerror', function (tile) {
+        tile.tile.src = tile.tile.src + '&missingTileString';
+      });
+
       map.addLayer(openspaceLayer);
       map.setView(mapZoomCoords, mapZoomLevel);
 
