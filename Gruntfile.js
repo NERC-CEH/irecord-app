@@ -140,6 +140,17 @@ module.exports = function (grunt) {
           }
         ]
       },
+
+      //ratchet's modal functionality is not compatable with spa routing
+      ratchet: {
+        src: ['src/vendor/ratchet/js/ratchet.js'],
+        overwrite: true,
+        replacements: [{
+          from: 'getModal(event)',
+          to: 'null'
+        }]
+      },
+
       //App NAME and VERSION
       main: {
         src: [
@@ -376,6 +387,7 @@ module.exports = function (grunt) {
     'bower',
     'replace:indexedDBShim',
     'replace:latlon',
+    'replace:ratchet',
     'replace:ratchet_fonts',
     'uglify',
     'copy'
