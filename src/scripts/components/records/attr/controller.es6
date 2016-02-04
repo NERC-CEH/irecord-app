@@ -111,6 +111,8 @@ define([
         if (lockedValue) {
           if (values[attr] === 'default') {
             appModel.setAttrLock(attr, null);
+          } else if (attr === 'date' && values[attr].print() == new Date().print()){
+            appModel.setAttrLock(attr, null);
           } else if (lockedValue === true || lockedValue == currentVal) {
             appModel.setAttrLock(attr, values[attr]);
           }
