@@ -65,7 +65,7 @@
       "js": ["lodash.js", "lodash.min.js"]
     },
     "morel": {
-      "js": ["morel.js", "morel.min.js"]
+      "js": ["dist/morel.js", "dist/morel.min.js"]
     },
     "hammerjs": {
       "js": ["hammer.js", "hammer.min.js"]
