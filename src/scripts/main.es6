@@ -27,6 +27,7 @@
       'proj4': '../vendor/proj4',
       'proj4leaflet': '../vendor/proj4leaflet',
       'os-leaflet':'../vendor/OSOpenSpace',
+      'ga': '//www.google-analytics.com/analytics',
 
       //shorthands
       'common': 'components/common',
@@ -37,6 +38,7 @@
 
       //helpers
       'log': 'helpers/log',
+      'analytics': 'helpers/analytics',
       'gps': 'helpers/gps',
       'browser': 'helpers/browser',
       'validate': 'helpers/validate',
@@ -53,7 +55,8 @@
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
       'marionette': {deps: ['backbone']},
       'morel': {deps: ['backbone', 'IndexedDBShim']},
-      'os-leaflet': {deps: ['proj4leaflet']}
+      'os-leaflet': {deps: ['proj4leaflet']},
+      'ga': {exports: "__ga__"}
     },
     waitSeconds: 30
   });

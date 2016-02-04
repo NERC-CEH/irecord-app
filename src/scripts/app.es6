@@ -8,11 +8,16 @@ define([
     'fastclick',
     'log',
     'brcart',
+    'analytics',
+    'app-config',
     'common/dialog_region',
     'common/controller'
   ],
-  function ($, Backbone, Marionette, FastClick, Log, BrcArt, DialogRegion, CommonController) {
-    Log(BrcArt, 'i');
+  function ($, Backbone, Marionette, FastClick, Log, BrcArt, Analytics, CONFIG, DialogRegion, CommonController) {
+    //init Analytics
+    Analytics.init();
+
+    Log(BrcArt, 'i'); //saying hello :)
 
     var App = new Marionette.Application();
 

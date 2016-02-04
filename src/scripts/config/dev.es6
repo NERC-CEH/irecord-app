@@ -16,7 +16,8 @@ define([], function () {
 
     //google analytics
     ga: {
-      status: false
+      status: true,
+      ID: 'UA-58378803-4'
     },
 
     login: {
