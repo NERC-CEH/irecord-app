@@ -11,7 +11,7 @@ define([], function () {
     //logging
     log: {
       states: ['e', 'w', 'i', 'd'], //see log helper
-      ga_error: false
+      ga_error: true
     },
 
     //google analytics
