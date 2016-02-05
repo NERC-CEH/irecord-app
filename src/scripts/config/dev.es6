@@ -6,6 +6,9 @@ define([], function () {
   let CONFIG = {
     version: '{APP_VER}', //replaced on build
     name: '{APP_NAME}', //replaced on build
+
+    platform:'{PLATFORM}', //replaced on build
+
     gps_accuracy_limit: 100,
 
     //logging

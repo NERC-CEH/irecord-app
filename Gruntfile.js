@@ -5,6 +5,8 @@ module.exports = function (grunt) {
       CONFIG_NAME = 'config/app',
       CONFIG_DEV_NAME = 'config/dev';
 
+  grunt.option('platform', 'web');
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -166,6 +168,10 @@ module.exports = function (grunt) {
           {
             from: /{APP_NAME}/g,
             to: '<%= pkg.name %>'
+          },
+          {
+            from: /{PLATFORM}/g,
+            to: '<%= grunt.option("platform") %>'
           }
         ]
       },
@@ -382,6 +388,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-babel');
 
 
+  //Grunt Configuration Function
+  grunt.registerTask('set_option', 'Set a option property.', function(name, val) {
+    grunt.option(name, val);
+  });
+
   // the default task can be run just by typing "grunt" on the command line
   grunt.registerTask('init', [
     'bower',
@@ -412,5 +423,12 @@ module.exports = function (grunt) {
   grunt.registerTask('dev', [
     'run',
     'replace:dev_config'
+  ]);
+
+  //Cordova build package
+  grunt.registerTask('cordova', [
+    'set_option:platform:cordova',
+    'init',
+    'dev'
   ]);
 };

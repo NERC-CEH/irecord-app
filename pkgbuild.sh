@@ -4,7 +4,7 @@ echo 'Build stared'
 
 #prepare www source
 npm install
-grunt init & grunt dev
+grunt cordova
 
 #init cordova source
 echo 'Initializing cordova'
