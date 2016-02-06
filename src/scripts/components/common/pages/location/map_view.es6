@@ -83,8 +83,8 @@ define([
         }
 
         let location = {
-          latitude: e.latlng.lat,
-          longitude: e.latlng.lng,
+          latitude: Number.parseFloat(e.latlng.lat.toFixed(7)),
+          longitude: Number.parseFloat(e.latlng.lng.toFixed(7)),
           source: 'map',
           accuracy: map.getZoom()
         };

@@ -27,8 +27,8 @@ define([
 
       var latLon = LocHelp.grid2coord(val);
       if (latLon) {
-        location.latitude = latLon.lat;
-        location.longitude = latLon.lon;
+        location.latitude = Number.parseFloat(latLon.lat.toFixed(7));
+        location.longitude = Number.parseFloat(latLon.lon.toFixed(7));
         location.name = name;
 
         //-2 because of gridref letters, 2 because this is min precision
