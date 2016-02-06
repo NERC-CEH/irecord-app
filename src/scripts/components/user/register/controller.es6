@@ -20,6 +20,13 @@ define([
 
       //Start registration
       mainView.on('register', function (data) {
+        if (!navigator.onLine) {
+          App.regions.dialog.show({
+            title: 'Sorry',
+            body: 'Looks like you are offline!'
+          });
+          return;
+        }
 
         App.regions.dialog.showLoader();
 

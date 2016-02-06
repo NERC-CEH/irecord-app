@@ -24,6 +24,14 @@ define([
       App.regions.header.show(headerView);
 
       mainView.on('login', function (email, password) {
+        if (!navigator.onLine) {
+          App.regions.dialog.show({
+            title: 'Sorry',
+            body: 'Looks like you are offline!'
+          });
+          return;
+        }
+
         App.regions.dialog.showLoader();
 
         API.login(email, password, function (err, data) {
