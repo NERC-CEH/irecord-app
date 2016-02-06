@@ -9,3 +9,5 @@ bower_components
 src/vendor/*
 !src/vendor/datepick/
 !src/vendor/fontello/
+
+cordova/*
