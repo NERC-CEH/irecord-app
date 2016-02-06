@@ -16,8 +16,8 @@ define([
         source: 'gridref'
       };
 
-      var val = this.$el.find('#grid-ref').val();
-      var name = this.$el.find('#location-name').val();
+      var val = this.$el.find('#grid-ref').val().escape();
+      var name = this.$el.find('#location-name').val().escape();
 
       let validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
 

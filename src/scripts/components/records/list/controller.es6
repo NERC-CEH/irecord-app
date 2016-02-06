@@ -22,7 +22,33 @@ define([
         });
 
         mainView.on('childview:record:delete', function (childView) {
-          childView.model.destroy();
+          let recordModel = childView.model;
+          let syncStatus = recordModel.getSyncStatus();
+          let body = 'Are you sure you want to remove this record from your device?';
+
+          if (syncStatus === Morel.SYNCED) {
+            body += '</br><i><b>Note:</b> it will remain on the server.</i>';
+          }
+          App.regions.dialog.show({
+            title: 'Delete',
+            body: body,
+            buttons: [
+              {
+                title: 'Delete',
+                class: 'btn-negative',
+                onClick: function () {
+                  childView.model.destroy();
+                  App.regions.dialog.hide();
+                }
+              },
+              {
+                title: 'Cancel',
+                onClick: function () {
+                  App.regions.dialog.hide();
+                }
+              }
+            ]
+          });
         });
         App.regions.main.show(mainView);
       });

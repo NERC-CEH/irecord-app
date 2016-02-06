@@ -50,21 +50,34 @@ define([
         this.hideAllowed = typeof view.hideAllowed != 'undefined' ? view.hideAllowed : true ;
 
         let model = new Backbone.Model({
-            title: view.title || '',
-            body: view.body || '',
-            buttons: view.buttons
+          title: view.title || '',
+          body: view.body || '',
+          buttons: view.buttons
         });
+
+        _.each(model.get('buttons'), function (button) {
+          button.id = button.id || Math.floor(Math.random() * 10000);
+          button.onClick = button.onClick || that.hide
+        });
+
         view = new Marionette.ItemView({
-            template: view.template || JST['common/dialog'],
-            className: 'content ' + (view.className ? view.className : ''),
+          template: view.template || JST['common/dialog'],
+          className: 'content ' + (view.className ? view.className : ''),
 
-            model: model
-          });
+          model: model,
 
-        _.each(view.model.get('buttons'), function (button) {
-          view.$el.on('click button#' + button.id, button.onClick || that.hide)
+          events: {
+            'click button': function (e) {
+              _.each(this.model.get('buttons'), function (button) {
+                  if (e.target.id == button.id) {
+                    button.onClick();
+                  }
+              });
+            }
+          }
         });
       }
+
       this.$el.fadeIn(300);
 
       view.on("close", this.hide, this);
