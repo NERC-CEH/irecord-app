@@ -51,6 +51,7 @@ define([
     },
 
     _keydown: function (e) {
+      let that = this;
       let input = e.target.value;
       if (!input) {
         return;
@@ -99,9 +100,6 @@ define([
           break;
         default:
           //Other
-
-          //todo: check time difference
-
           let text = input;
 
           //on keyDOWN need to add the pressed char
@@ -121,8 +119,16 @@ define([
           if ((text.length)>= MIN_SEARCH_LENGTH) {
             text = text.trim();
 
-            //let controller know
-            this.trigger('taxon:searched', text.toLowerCase());
+            // Clear previous timeout
+            if (this.timeout != -1) {
+              clearTimeout(this.timeout);
+            }
+
+            // Set new timeout - don't run if user is typing
+            this.timeout = setTimeout(function () {
+              //let controller know
+              that.trigger('taxon:searched', text.toLowerCase());
+            }, 200);
           }
       }
     }
