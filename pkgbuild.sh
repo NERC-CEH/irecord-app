@@ -21,5 +21,3 @@ cordova platforms add ios android
 cordova plugin add org.apache.cordova.device
 cordova plugin add org.apache.cordova.console
 cordova plugin add org.apache.cordova.geolocation
-
-cordova build ios
