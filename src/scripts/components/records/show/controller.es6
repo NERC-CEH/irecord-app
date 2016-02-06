@@ -11,7 +11,7 @@ define([
       recordManager.get(id, function (err, recordModel) {
         //Not found
         if (!recordModel) {
-          App.trigger('404:show');
+          App.trigger('404:show', {replace: true});
           return;
         }
 

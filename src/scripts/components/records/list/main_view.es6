@@ -70,6 +70,7 @@ define([
       //removing the last element leaves emptyView + fading out entry for a moment
       if (this.model.collection.length >= 1) {
         let that = this;
+        this.$el.addClass('shrink');
         this.$el.fadeOut('fast', function () {
           Marionette.ItemView.prototype.remove.call(that);
         });

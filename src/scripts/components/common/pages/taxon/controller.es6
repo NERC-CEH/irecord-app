@@ -18,10 +18,23 @@ define([
 
       if (recordID) {
         //check if the record has taxon specified
-        recordManager.get(recordID, function (err, record) {
+        recordManager.get(recordID, function (err, recordModel) {
+          //Not found
+          if (!recordModel) {
+            App.trigger('404:show', {replace: true});
+            return;
+          }
+
+          //can't edit a saved one - to be removed when record update
+          //is possible on the server
+          if (recordModel.getSyncStatus() == Morel.SYNCED) {
+            App.trigger('records:show', recordID, {replace: true});
+            return;
+          }
+
           let mainView;
 
-          if (!record.occurrences.at(0).get('taxon')) {
+          if (!recordModel.occurrences.at(0).get('taxon')) {
             mainView = new MainView();
           } else {
             mainView = new MainView({removeEditBtn: true});
@@ -85,9 +98,9 @@ define([
           });
         } else {
           //edit existing one
-          recordManager.get(this.id, function (err, record) {
-            record.occurrences.at(0).set('taxon', species);
-            record.save(function (err) {
+          recordManager.get(this.id, function (err, recordModel) {
+            recordModel.occurrences.at(0).set('taxon', species);
+            recordModel.save(function (err) {
               if (edit) {
                 App.trigger('records:edit', that.id, {replace: true});
               } else {

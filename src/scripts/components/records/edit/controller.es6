@@ -1,4 +1,5 @@
 define([
+  'morel',
   'string_extension',
   'date_extension',
   'app',
@@ -7,7 +8,7 @@ define([
   './main_view',
   './header_view',
   'common/record_manager'
-], function (String, Date, App, appModel, userModel, MainView, HeaderView, recordManager) {
+], function (Morel, String, Date, App, appModel, userModel, MainView, HeaderView, recordManager) {
   let id;
   let record;
   let API = {
@@ -16,16 +17,17 @@ define([
       recordManager.get(recordID, function (err, recordModel) {
         //Not found
         if (!recordModel) {
-          App.trigger('404:show');
+          App.trigger('404:show', {replace: true});
           return;
         }
 
         //can't edit a saved one - to be removed when record update
         //is possible on the server
-        if (recordModel.metadata.saved) {
-          App.trigger('records:show', recordID);
+        if (recordModel.getSyncStatus() == Morel.SYNCED) {
+          App.trigger('records:show', recordID, {replace: true});
           return;
         }
+
 
         //MAIN
         let mainView = new MainView({
@@ -33,11 +35,23 @@ define([
         });
         App.regions.main.show(mainView);
 
+        //on finish sync move to show
+        let checkIfSynced = function () {
+          if (recordModel.getSyncStatus() == Morel.SYNCED) {
+            App.trigger('records:show', recordID, {replace: true});
+            return;
+          }
+        };
+        recordModel.on('sync:request sync:done sync:error', checkIfSynced);
+        mainView.on('destroy', function () {
+          //unbind when page destroyed
+          recordModel.off('sync:request sync:done sync:error', checkIfSynced);
+        });
+
+
         //HEADER
         let headerView = new HeaderView({
-          model: new Backbone.Model({
-            title: 'Edit'
-          })
+          model: recordModel
         });
         App.regions.header.show(headerView);
 
@@ -77,7 +91,7 @@ define([
           App.trigger('user:login', {replace: true});
           return;
         } else {
-          recordManager.sync(recordModel);
+          recordManager.syncAll();
           App.trigger('record:saved');
         }
       })

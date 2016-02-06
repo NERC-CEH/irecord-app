@@ -2,14 +2,20 @@
  * Welcome page view.
  *****************************************************************************/
 define([
+  'morel',
   'marionette',
   'log',
   'JST'
-], function (Marionette, Log, JST) {
+], function (Morel, Marionette, Log, JST) {
   'use strict';
 
   let View = Marionette.ItemView.extend({
     template: JST['records/edit/record'],
+
+    initialize: function () {
+      let recordModel = this.model.get('recordModel');
+      this.listenTo(recordModel, 'sync:request sync:done sync:error', this.render);
+    },
 
     serializeData: function () {
       let recordModel = this.model.get('recordModel');
@@ -34,6 +40,7 @@ define([
         id: recordModel.id || recordModel.cid,
         taxon: taxon,
         isLocating: recordModel.locating >= 0,
+        isSynchronising: recordModel.getSyncStatus() == Morel.SYNCHRONISING,
         location: location,
         date: recordModel.get('date').print(),
         number: occ.get('number') && occ.get('number').limit(20),

@@ -1,4 +1,5 @@
 define([
+  'morel',
   'date_extension',
   'app',
   'common/app_model',
@@ -6,20 +7,20 @@ define([
   'common/header_view',
   'common/attr_lock_view',
   'common/record_manager',
-], function (Date, App, appModel, MainView, HeaderView, LockView, recordManager) {
+], function (Morel, Date, App, appModel, MainView, HeaderView, LockView, recordManager) {
   let API =  {
     show: function (recordID, attr) {
       recordManager.get(recordID, function (err, recordModel) {
         //Not found
         if (!recordModel) {
-          App.trigger('404:show');
+          App.trigger('404:show', {replace: true});
           return;
         }
 
         //can't edit a saved one - to be removed when record update
         //is possible on the server
-        if (recordModel.metadata.saved) {
-          App.trigger('records:show', recordID);
+        if (recordModel.getSyncStatus() == Morel.SYNCED) {
+          App.trigger('records:show', recordID, {replace: true});
           return;
         }
 

@@ -1,5 +1,5 @@
 <% if (obj.taxon) { %>
-<a href="#records/<%- obj.id %><%- obj.saved ? '' : '/edit' %>" class="mobile">
+<a href="#records/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>" class="mobile">
   <% } else { %>
   <a href="#records/<%- obj.id %>/edit/taxon" class="mobile">
     <% } %>

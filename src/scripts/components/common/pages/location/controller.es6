@@ -1,4 +1,5 @@
 define([
+  'morel',
   'gps',
   'app',
   'common/record_manager',
@@ -10,12 +11,20 @@ define([
   './map_view',
   './grid_ref_view',
   './past_view'
-], function (GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView) {
+], function (Morel, GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView) {
   let API = {
     show: function (recordID){
       recordManager.get(recordID, function (err, recordModel) {
+        //Not found
         if (!recordModel) {
-          App.trigger('404:show');
+          App.trigger('404:show', {replace: true});
+          return;
+        }
+
+        //can't edit a saved one - to be removed when record update
+        //is possible on the server
+        if (recordModel.getSyncStatus() == Morel.SYNCED) {
+          App.trigger('records:show', recordID, {replace: true});
           return;
         }
 

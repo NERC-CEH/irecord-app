@@ -99,6 +99,18 @@
     height: 16px;
     line-height: 17.3333px;
 
+    //shrink the size nicely
+    &.shrink {
+      min-height: 0;
+      margin: 0;
+      height: 0;
+      padding: 0;
+    }
+    -webkit-transition:height 200ms ease-in-out;
+    -moz-transition:height 200ms ease-in-out;
+    -o-transition:height 200ms ease-in-out;
+    transition:height 200ms ease-in-out;
+
     &.empty {
       height: initial !important;
       min-height: initial !important;

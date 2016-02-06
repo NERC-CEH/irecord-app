@@ -1,10 +1,7 @@
 <div class="info-message">
-  <% if (obj.onDatabase) { %>
   <p>This record has been submitted and cannot be edited within this App.
     Go to the <a href="http://192.171.199.230/irecord7" target="_blank">iRecord website</a> to edit.</p>
-  <% } else { %>
-  <p>This record has been locked for submission and cannot be edited.</p>
-  <% }%>
+
 </div>
 <ul class="table-view core inputs info no-top">
   <li class="table-view-cell species">
@@ -46,8 +43,3 @@
     </div>
   </li>
 </ul>
-
-<% if (!obj.onDatabase) { %>
-<button id="sync-btn" class="btn btn-narrow btn-positive btn-block <%- obj.isSynchronising ? 'icon-plus icon-spin' : '' %>"
-<%- obj.isSynchronising ? 'disabled' : '' %> >Synchronise</button>
-<% } %>

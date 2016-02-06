@@ -1,5 +1,5 @@
 <% if (obj.taxon) { %>
-  <a href="#records/<%- obj.id %><%- obj.saved ? '' : '/edit' %>">
+  <a href="#records/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>">
 <% } else { %>
   <a href="#records/<%- obj.id %>/edit/taxon">
 <% } %>
@@ -12,7 +12,17 @@
       <% } else { %>
          <div class="online-status icon icon-send <%- obj.onDatabase ? 'cloud' : 'local' %>"></div>
       <% } %>
+
       <div class="edit">
+        <% if (!obj.onDatabase && !obj.isSynchronising) { %>
+          <% if (obj.taxon) { %>
+          <div data-attr="date" class="js-attr icon icon-calendar"></div>
+          <div data-attr="location" class="js-attr icon icon-location"></div>
+          <div data-attr="number" class="js-attr icon icon-number"></div>
+          <div data-attr="stage" class="js-attr icon icon-stage"></div>
+          <div data-attr="comment" class="js-attr icon icon-comment"></div>
+          <% } %>
+        <% } %>
         <div id="delete" class="delete icon icon-delete"></div>
       </div>
 

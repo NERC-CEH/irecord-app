@@ -351,3 +351,9 @@ a span.pull-left.icon {
 #common-header h1.title {
   text-transform: capitalize;
 }
+
+//disable element
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
