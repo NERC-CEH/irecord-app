@@ -11,9 +11,10 @@ define([
     'analytics',
     'app-config',
     'common/dialog_region',
+    'common/hideable_region',
     'common/controller'
   ],
-  function ($, Backbone, Marionette, FastClick, Log, BrcArt, Analytics, CONFIG, DialogRegion, CommonController) {
+  function ($, Backbone, Marionette, FastClick, Log, BrcArt, Analytics, CONFIG, DialogRegion, HideableRegion, CommonController) {
     //init Analytics
     Analytics.init();
 
@@ -34,7 +35,8 @@ define([
         el: "#app",
 
         regions: {
-          header: "#header",
+          header: new HideableRegion({el: "#header"}),
+          footer: new HideableRegion({el: "#footer"}),
           main: "#main",
           dialog: DialogRegion
         }
