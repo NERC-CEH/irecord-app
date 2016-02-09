@@ -55,6 +55,9 @@ define([
         })
       });
       App.regions.header.show(headerView);
+
+      //FOOTER
+      App.regions.footer.hide().empty();
     },
 
     _showMainView: function (mainView, that) {

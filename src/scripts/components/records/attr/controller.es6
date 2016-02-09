@@ -57,6 +57,9 @@ define([
 
         //if exit on selection click
         mainView.on('save', onExit);
+
+        //FOOTER
+        App.regions.footer.hide().empty();
       });
     },
 

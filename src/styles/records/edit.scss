@@ -80,3 +80,69 @@
   font-family: icons;
   content: '\e80c';
 }
+
+
+$footer-height: 80px;
+
+#img-picker-array {
+  display: table;
+  height: $footer-height;
+  margin: 0;
+  padding: 0;
+
+  .img-picker {
+    display: table-cell;
+    width: $footer-height;
+    min-height: $footer-height;
+    padding: 0;
+
+    border-right: 1px solid $color-gray;
+
+    color: $color-black;
+
+    //icon to middle
+    &:before {
+      padding-top: 0;
+      top: 30%;
+      left: 50%;
+      margin-left: -12px;
+      position: absolute;
+    }
+
+    input {
+      width: $footer-height;
+      margin-top: 0 !important;
+      height: $footer-height !important;
+    }
+  }
+
+  #img-array {
+    display: table-cell;
+    width: auto;
+
+    white-space: nowrap;
+    overflow: overlay;
+
+    .img {
+      display: inline-block;
+      position: relative;
+
+      //delete X
+      span.delete {
+        position: absolute;
+        right: 0;
+        padding: 0;
+      }
+      
+      img {
+        height: $footer-height;
+      }
+    }
+  }
+}
+
+footer #edit-footer {
+  margin: 0 -5px;
+  background-color: $color-white;
+  border-top: 1px solid $color-gray;
+}

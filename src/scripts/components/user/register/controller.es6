@@ -8,9 +8,11 @@ define([
 ], function (App, Log, CONFIG, userModel, MainView, HeaderView) {
   let API = {
     show: function () {
+      //MAIN
       let mainView = new MainView();
       App.regions.main.show(mainView);
 
+      //HEADER
       let headerView = new HeaderView({
         model: new Backbone.Model({
           title: 'Register'
@@ -55,6 +57,9 @@ define([
           window.history.back();
         });
       })
+
+      //FOOTER
+      App.regions.footer.hide().empty();
     },
 
     /**

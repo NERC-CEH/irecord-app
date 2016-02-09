@@ -41,7 +41,8 @@ define([
         date: recordModel.get('date').print(),
         number: occ.get('number') && occ.get('number').limit(20),
         stage: occ.get('stage') && occ.get('stage').limit(20),
-        comment: occ.get('comment')
+        comment: occ.get('comment'),
+        images: occ.images
       };
     }
 

@@ -13,9 +13,11 @@ define([
         window.history.back();
       }
 
+      //MAIN
       let mainView = new MainView();
       App.regions.main.show(mainView);
 
+      //HEADER
       let headerView = new HeaderView({
         model: new Backbone.Model({
           title: 'Login'
@@ -59,6 +61,9 @@ define([
           window.history.back();
         });
       })
+
+      //FOOTER
+      App.regions.footer.hide().empty();
     },
 
     /**

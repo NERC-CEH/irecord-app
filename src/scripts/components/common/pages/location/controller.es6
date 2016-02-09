@@ -28,6 +28,7 @@ define([
           return;
         }
 
+        //MAIN
         let mainView = new TabsLayout({
           tabs: [
             {
@@ -165,6 +166,9 @@ define([
         //if exit on selection click
         mainView.on('save', onPageExit);
       });
+
+      //FOOTER
+      App.regions.footer.hide().empty();
     }
   };
 

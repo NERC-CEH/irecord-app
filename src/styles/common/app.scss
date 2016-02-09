@@ -357,3 +357,12 @@ a span.pull-left.icon {
   opacity: 0.5;
   pointer-events: none;
 }
+
+.bar {
+  height: inherit;
+  min-height: 44px;
+}
+
+#footer {
+  display: none;
+}

@@ -7,8 +7,9 @@ define([
   'common/user_model',
   './main_view',
   './header_view',
+  './footer_view',
   'common/record_manager'
-], function (Morel, String, Date, App, appModel, userModel, MainView, HeaderView, recordManager) {
+], function (Morel, String, Date, App, appModel, userModel, MainView, HeaderView, FooterView, recordManager) {
   let id;
   let record;
   let API = {
@@ -70,6 +71,21 @@ define([
             });
           }
         });
+
+        //FOOTER
+        let footerView = new FooterView({
+          model: recordModel
+        });
+
+        footerView.on('photo:upload', function (e) {
+          let occurrence = recordModel.occurrences.at(0);
+          //show loader
+          API.photoUpload(occurrence, e.target.files[0], function () {
+            //hide loader
+          });
+        });
+
+        App.regions.footer.show(footerView);
       });
     },
 
@@ -95,6 +111,31 @@ define([
           App.trigger('record:saved');
         }
       })
+    },
+
+    /**
+     * Add a photo to occurrence
+     */
+    photoUpload: function (occurrence, file, callback) {
+      var stringified = function (err, data, fileType) {
+        Morel.Image.resize(data, fileType, 800, 800, function (err, image, data) {
+          if (err) {
+            App.regions.dialog.error(err);
+            return;
+          }
+
+          occurrence.images.add(new Morel.Image({
+            data: data,
+            type: fileType
+          }));
+
+          occurrence.save(function () {
+            callback && callback();
+          })
+        });
+      };
+
+      Morel.Image.toString(file, stringified);
     }
   };
 

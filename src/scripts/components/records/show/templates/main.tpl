@@ -42,4 +42,9 @@
       <p class="descript comment"><%- obj.comment %></p>
     </div>
   </li>
+  <li id="img-array">
+    <% obj.images.each(function (image){ %>
+      <img src="<%- image.attributes.data %>" alt="">
+    <% }) %>
+  </li>
 </ul>
