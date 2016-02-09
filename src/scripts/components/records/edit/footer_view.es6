@@ -18,7 +18,7 @@ define([
     },
 
     delete: function (e) {
-      this.model.destroy();
+      this.trigger('photo:delete', e);
     },
 
     serializeData: function () {

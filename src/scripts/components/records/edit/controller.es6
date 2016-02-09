@@ -85,6 +85,13 @@ define([
           });
         });
 
+        footerView.on('childview:photo:delete', function (view, e) {
+          //show loader
+          view.model.destroy(function () {
+            //hide loader
+          });
+        });
+
         App.regions.footer.show(footerView);
       });
     },
