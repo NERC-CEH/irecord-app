@@ -132,6 +132,10 @@ $footer-height: 80px;
         position: absolute;
         right: 0;
         padding: 0;
+
+        &:before {
+          text-shadow: 1px 1px $color-black;
+        }
       }
       
       img {
