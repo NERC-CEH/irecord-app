@@ -44,12 +44,25 @@ define([
       });
 
       /* New L.TileLayer.OSOpenSpace with API Key */
-      //TODO: replace API_KEY
       let API_KEY = CONFIG.map.API_KEY;
       openspaceLayer = L.tileLayer.OSOpenSpace(API_KEY);
 
       openspaceLayer.on('tileerror', function (tile) {
-        tile.tile.src = tile.tile.src + '&missingTileString';
+        let index = 0;
+        let result = tile.tile.src.match(/missingTileString=(\d+)/i);
+        if (result){
+          index = Number.parseInt(result[1]);
+          index++;
+
+          //don't do it more than few times
+          if (index < 4) {
+            tile.tile.src = tile.tile.src.replace(/missingTileString=(\d+)/i, '&missingTileString=' + index);
+          }
+        } else {
+          if (index === 0) {
+            tile.tile.src = tile.tile.src + '&missingTileString=' + index;
+          }
+        }
       });
 
       map.addLayer(openspaceLayer);
