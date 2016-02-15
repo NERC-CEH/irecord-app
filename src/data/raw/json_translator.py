@@ -33,7 +33,6 @@ for row in reader:
 
         #for each column in row
         for col in row:
-            key = header[colnum]
             if col:
                 row_data.append(col)
             colnum += 1

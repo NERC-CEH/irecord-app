@@ -8,7 +8,7 @@ define([
 ], function (Marionette, Log, JST) {
   'use strict';
 
-  const MIN_SEARCH_LENGTH = 2;
+  const MIN_SEARCH_LENGTH = 3;
 
   let View = Marionette.LayoutView.extend({
     template: JST['common/taxon/layout'],
@@ -109,6 +109,10 @@ define([
             if (e.keyCode === 189 || e.keyCode === 109){
               pressedChar = '-';
             }
+            if (e.keyCode === 190){
+              pressedChar = '.';
+            }
+
             text += pressedChar;
           } else {
             //Backspace - remove a char
@@ -116,7 +120,7 @@ define([
           }
 
           //proceed if minimum length phrase was provided
-          if ((text.length)>= MIN_SEARCH_LENGTH) {
+          if ((text.replace(/\.|\s/g,'').length)>= MIN_SEARCH_LENGTH) {
             text = text.trim();
 
             // Clear previous timeout
@@ -128,7 +132,7 @@ define([
             this.timeout = setTimeout(function () {
               //let controller know
               that.trigger('taxon:searched', text.toLowerCase());
-            }, 200);
+            }, 100);
           }
       }
     }
@@ -162,20 +166,16 @@ define([
      */
     serializeData: function () {
       let templateData = {};
-      let taxon = this.model.get('taxon');
+      let taxon = this.model.get('scientific_name');
       let common_name = this.model.get('common_name');
+      let foundInName = this.model.get('found_in_name');
 
-      //check if found in taxon
-      let common_pos = common_name.toLowerCase().indexOf(this.options.searchPhrase);
-      if (common_pos >= 0 ) {
-        templateData.name = this._prettifyName(common_name, this.options.searchPhrase);
-      } else {
-        templateData.name = this._prettifyName(taxon, this.options.searchPhrase);
-      }
-
-      templateData.removeEditBtn = this.options.removeEditBtn;
-
-      return templateData;
+      let name = this._prettifyName(this.model.get(foundInName), this.options.searchPhrase);
+      name = this.model.get(foundInName);
+      return {
+        name: name,
+        removeEditBtn: this.options.removeEditBtn
+      };
     },
 
     _prettifyName: function (name, searchPhrase) {
@@ -218,7 +218,7 @@ define([
   let NoSuggestionsView = Marionette.ItemView.extend({
     tagName: 'li',
     className: 'table-view-cell empty',
-    template: JST['common/taxon/list-none']
+    template: _.template('No species found with this name')
   });
 
   let SuggestionsView = Marionette.CollectionView.extend({
