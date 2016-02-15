@@ -9,7 +9,6 @@ define([
   let API = {
     show: function () {
       let templateData = new Backbone.Model({
-        useScientificNames: appModel.get('useScientificNames'),
         useGridRef: appModel.get('useGridRef'),
         autosync: appModel.get('autosync')
       });

@@ -13,8 +13,6 @@ define([
     template: JST['app/settings/main'],
 
     events: {
-      'toggle #use-scientific-btn': 'onSettingToggled',
-      'click #use-scientific-btn': 'onSettingToggled',
       'toggle #use-gridref-btn': 'onSettingToggled',
       'click #use-gridref-btn': 'onSettingToggled',
       'toggle #use-autosync-btn': 'onSettingToggled',

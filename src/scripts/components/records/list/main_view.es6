@@ -89,8 +89,7 @@ define([
 
       let appModel = this.options.appModel;
 
-      let taxon = appModel.get('useScientificNames') ?
-        specie.taxon : specie.common_name || specie.taxon;
+      let taxon = specie[specie.found_in_name];
 
       let syncStatus = this.model.getSyncStatus();
 

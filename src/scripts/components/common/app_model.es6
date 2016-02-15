@@ -15,7 +15,6 @@ define([
     defaults: {
       locations: [],
       attrLocks: {},
-      useScientificNames: false,
       autosync: true,
       useGridRef: true
     },

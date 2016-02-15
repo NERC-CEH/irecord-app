@@ -14,7 +14,8 @@ define([
     template: JST['common/taxon/layout'],
 
     events: {
-      'keydown #taxon': '_keydown'
+      'keydown #taxon': '_keydown',
+      'keyup #taxon': '_keyup'
     },
 
     regions: {
@@ -68,11 +69,8 @@ define([
           //find which one is currently selected
           let selectedModel = this.suggestionsCol.at(this.selectedIndex);
 
-          let species = {
-            warehouse_id: selectedModel.get('warehouse_id'),
-            common_name: selectedModel.get('common_name'),
-            taxon: selectedModel.get('taxon')
-          };
+          let species = selectedModel.toJSON();
+          delete species.selected;
           this.trigger('taxon:selected', species, false);
 
           return false;
@@ -118,6 +116,43 @@ define([
             //Backspace - remove a char
             text =  text.slice(0, text.length - 1);
           }
+
+          //proceed if minimum length phrase was provided
+          if ((text.replace(/\.|\s/g,'').length)>= MIN_SEARCH_LENGTH) {
+            text = text.trim();
+
+            // Clear previous timeout
+            if (this.timeout != -1) {
+              clearTimeout(this.timeout);
+            }
+
+            // Set new timeout - don't run if user is typing
+            this.timeout = setTimeout(function () {
+              //let controller know
+              that.trigger('taxon:searched', text.toLowerCase());
+            }, 100);
+          }
+      }
+    },
+
+    _keyup: function (e) {
+      let that = this;
+      let input = e.target.value;
+      if (!input) {
+        return;
+      }
+
+      switch (e.keyCode) {
+        case 13:
+          //press Enter
+        case 38:
+          //Up
+        case 40:
+          //Down
+          break;
+        default:
+          //Other
+          let text = input;
 
           //proceed if minimum length phrase was provided
           if ((text.replace(/\.|\s/g,'').length)>= MIN_SEARCH_LENGTH) {
@@ -194,23 +229,10 @@ define([
 
     select: function (e) {
       Log('taxon: selected.', 'd');
-      let edit = false;
+      let edit = e.target.tagName == "BUTTON";
+      let species = this.model.toJSON();
+      delete species.selected;
 
-      let species = {
-        warehouse_id: e.target.dataset.warehouse_id,
-        common_name: e.target.dataset.common_name,
-        taxon: e.target.dataset.taxon
-      };
-
-      if (!species.warehouse_id) {
-        species = {
-          warehouse_id: e.target.parentElement.dataset.warehouse_id,
-          common_name: e.target.parentElement.dataset.common_name,
-          taxon: e.target.parentElement.dataset.taxon
-        };
-
-        edit = true;
-      }
       this.trigger('taxon:selected', species, edit);
     }
   });
