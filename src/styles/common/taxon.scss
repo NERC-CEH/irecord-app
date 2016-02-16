@@ -15,6 +15,7 @@
     background-color: transparent;
     border: none;
     border-left: 1px $color-gray solid;
+    border-radius: inherit;
   }
 
   h3 {
@@ -26,8 +27,13 @@
   span.group {
     position: absolute;
     right: 22%;
+
+    &.right {
+      right: 2%;
+    }
+
     bottom: -2px;
-    font-weight: 100;
+    font-weight: 200;
     font-size: 14px;
     color: $color-gray-dark;
   }
