@@ -4,8 +4,9 @@
 define([
   'marionette',
   'log',
-  'JST'
-], function (Marionette, Log, JST) {
+  'JST',
+  'data/informal_groups'
+], function (Marionette, Log, JST, informalGroups) {
   'use strict';
 
   const MIN_SEARCH_LENGTH = 2;
@@ -209,7 +210,8 @@ define([
       name = this.model.get(foundInName);
       return {
         name: name,
-        removeEditBtn: this.options.removeEditBtn
+        removeEditBtn: this.options.removeEditBtn,
+        group: informalGroups[this.model.get('group') - 1]
       };
     },
 
