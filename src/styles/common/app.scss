@@ -366,3 +366,24 @@ a span.pull-left.icon {
 #footer {
   display: none;
 }
+
+//mobile swipe edit tools
+.mobile-swipe-edit {
+  height: 100%;
+  width: 50px;
+  position: absolute;
+  top: 0;
+  right: 1px;
+
+  background-color: $color-orange;
+  color: $color-white;
+
+  .delete {
+    height: 100%;
+    width: 100%;
+
+    text-align: center;
+    padding-top: 15px;
+    font-size: 30px;
+  }
+}

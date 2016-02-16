@@ -64,6 +64,11 @@ define([
           recordModel.trigger('change:location');
         };
 
+        let onPastLocationDelete = function (view) {
+          let location = view.model;
+          appModel.removeLocation(location);
+        };
+
         let onGPSClick = function () {
           //turn off if running
           if (recordModel.locating >= 0) {
@@ -108,6 +113,7 @@ define([
           onPageExit();
         });
         mainView.on('childview:location:select:past', onLocationSelect);
+        mainView.on('childview:location:delete', onPastLocationDelete);
         mainView.on('childview:location:select:map', onLocationSelect);
         mainView.on('childview:location:select:gridref', function(view, location) {
           onLocationSelect(view, location);

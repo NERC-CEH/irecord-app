@@ -4,8 +4,10 @@
 define([
   'backbone',
   'backbone.localStorage',
+  'UUID',
+  'location',
   'app-config'
-], function (Backbone, Store, CONFIG) {
+], function (Backbone, Store, UUID, LocHelp, CONFIG) {
 
   'use strict';
 
@@ -37,27 +39,47 @@ define([
      * @param location
      */
     setLocation: function (location = {}) {
-      var MAX_LENGTH = 10; //max number of locations to store
-      var locations = this.get('locations'),
-          exists = false;
+      var locations = this.get('locations');
 
       //check if exists
-      locations.forEach(function (loc) {
-        if (loc.latitude === location.latitude && loc.longitude === location.longitude) {
-          exists = true;
-        }
-      });
+      let exists = this.getLocation(location);
 
       if (!exists) {
         //add
+        location.id = UUID();
         locations.splice(0, 0, location);
-        if (locations.length > MAX_LENGTH) {
-          locations.length = MAX_LENGTH
-        }
+
         this.set('locations', locations);
         this.trigger('change:locations');
         this.save();
       }
+    },
+
+    removeLocation: function(location = {}) {
+      let that = this;
+      var locations = this.get('locations');
+
+      locations.forEach(function (loc, i) {
+        if (loc.id === location.id) {
+          locations.splice(i,1);
+
+          that.set('locations', locations);
+          that.trigger('change:locations');
+          that.save();
+        }
+      });
+    },
+
+    getLocation: function (location = {}) {
+      let locations = this.get('locations'),
+          existing;
+
+      locations.forEach(function (loc) {
+        if (loc.id === location.id) {
+          existing = loc;
+        }
+      });
+      return existing;
     },
 
     /**
@@ -79,6 +101,26 @@ define([
 
       //remove the spaces
       return gref.replace(/ /g, '');
+    },
+
+    printLocation: function (location) {
+      let useGridRef = this.get('useGridRef');
+
+      if (location.latitude && location.longitude){
+        if (useGridRef || location.source === 'gridref') {
+          let accuracy = location.accuracy;
+
+          //cannot be odd
+          if (accuracy % 2 != 0) {
+            //should not be less than 2
+            accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
+          }
+
+          return LocHelp.coord2grid(location, accuracy);
+        } else {
+          return location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
+        }
+      }
     },
 
     setAttrLock: function (attr, value) {

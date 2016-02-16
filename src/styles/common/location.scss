@@ -31,9 +31,24 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
 }
 
 
-
 #user-locations .table-view-cell {
   @include empty-list();
+
+  padding: 0;
+
+  .location {
+    position: relative;
+    z-index: 10;
+    padding: 11px;
+    background-color: $color-white;
+
+    //mobile swipe styles
+    transition: transform 0.3s cubic-bezier(0, 0, 0, 1);
+  }
+
+  .mobile-swipe-edit #delete {
+    padding-top: 7px;
+  }
 }
 
 @media only screen and (max-width: 400px) {

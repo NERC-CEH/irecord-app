@@ -40,6 +40,7 @@
       'log': 'helpers/log',
       'analytics': 'helpers/analytics',
       'gps': 'helpers/gps',
+      'UUID': 'helpers/UUID',
       'browser': 'helpers/browser',
       'validate': 'helpers/validate',
       'location': 'helpers/location',
