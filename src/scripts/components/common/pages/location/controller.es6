@@ -151,12 +151,27 @@ define([
 
           updateTitle: function () {
             let title = this.model.printLocation();
-            this.$el.find('h1').html(title);
+            let location = this.model.get('location');
+
+            let $title = this.$el.find('h1');
+            let $subtitle = this.$el.find('h3');
+
+            $title.html(title);
+
+            if (location.name) {
+              $subtitle.html(location.name);
+              $subtitle.show();
+            } else {
+              $subtitle.hide();
+            }
           },
 
           serializeData: function () {
+            let location = this.model.get('location');
+
             return {
-              title: this.model.printLocation()
+              title: this.model.printLocation(),
+              subtitle: location && location.name
             }
           }
         });
