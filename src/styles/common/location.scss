@@ -48,7 +48,12 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
 
   .mobile-swipe-edit #delete {
     padding-top: 7px;
+
+    &.with-name {
+      padding-top: 15px;
+    }
   }
+
 }
 
 @media only screen and (max-width: 400px) {

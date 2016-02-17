@@ -4,5 +4,5 @@
 </div>
 
 <div class="mobile-swipe-edit">
-  <div id="delete" class="delete icon icon-delete"></div>
+  <div id="delete" class="delete icon icon-delete <%- obj.name ? 'with-name' : '' %>"></div>
 </div>

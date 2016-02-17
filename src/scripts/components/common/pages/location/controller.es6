@@ -159,19 +159,30 @@ define([
             $title.html(title);
 
             if (location.name) {
+              //with subtitle
               $subtitle.html(location.name);
               $subtitle.show();
+              $title.toggleClass('with-subtitle', true);
             } else {
+              //no subtitle
               $subtitle.hide();
+              $title.toggleClass('with-subtitle', false);
             }
           },
 
           serializeData: function () {
             let location = this.model.get('location');
+            let title = this.model.printLocation();
+            let subtitle;
+
+            if (location && location.name) {
+              subtitle = title;
+              title = location && location.name;
+            }
 
             return {
-              title: this.model.printLocation(),
-              subtitle: location && location.name
+              title: title,
+              subtitle: subtitle
             }
           }
         });

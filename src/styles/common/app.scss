@@ -78,6 +78,11 @@ header .pull-left a {
 header .title {
   color: $header-text-color;
   font-weight: bold;
+
+  //lift the title up a bit to make some space
+  &.with-subtitle {
+    margin-top: -8px;
+  }
 }
 
 header .subtitle {
@@ -85,10 +90,10 @@ header .subtitle {
   display: block;
   width: 100%;
 
-  margin-top: 28px;
+  margin-top: 22px;
   margin-left: -30px;
 
-  font-weight: 100;
+  font-weight: 200;
   font-size: 12px;
   text-align: center;
   white-space: nowrap;
