@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "ratchet": "twbs/ratchet#2.0.2",
-    "jquery": "2.1.4",
+    "zepto": "1.1.6",
+    "deferred": "sudhirj/simply-deferred#3.0.0",
     "requirejs": "2.1.16",
     "backbone": "1.1.2",
     "lodash": "3.6.0",
@@ -50,8 +51,11 @@
     "IndexedDBShim": {
       "js": ["dist/IndexedDBShim.js"]
     },
-    "jquery": {
-      "js": ["dist/jquery.js", "dist/jquery.min.js"]
+    "zepto": {
+      "js": ["zepto.js", "zepto.min.js"]
+    },
+    "deferred": {
+      "js": ["deferred.js", "deferred.min.js"]
     },
     "latlon": {
       "js": [

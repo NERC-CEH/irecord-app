@@ -12,7 +12,7 @@
  *
  * Levels values defined in core app module.
  *****************************************************************************/
-define(['app-config'], function (CONFIG) {
+define(['jquery', 'app-config'], function ($, CONFIG) {
   "use strict";
 
   let ERROR = 'e',

@@ -71,9 +71,9 @@ define([
       if (this.model.collection.length >= 1) {
         let that = this;
         this.$el.addClass('shrink');
-        this.$el.fadeOut('fast', function () {
+        setTimeout(function () {
           Marionette.ItemView.prototype.remove.call(that);
-        });
+        }, 300);
       } else {
         Marionette.ItemView.prototype.remove.call(this);
       }

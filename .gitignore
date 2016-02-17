@@ -9,5 +9,6 @@ bower_components
 src/vendor/*
 !src/vendor/datepick/
 !src/vendor/fontello/
+!src/vendor/zepto-custom/
 
 cordova/*

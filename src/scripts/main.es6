@@ -10,7 +10,9 @@
 
       //libraries
       'ratchet': '../vendor/ratchet',
-      'jquery': '../vendor/jquery',
+      'zepto': '../vendor/zepto',
+      'zepto-custom': '../vendor/zepto-custom',
+      'deferred': '../vendor/deferred',
       'IndexedDBShim': '../vendor/IndexedDBShim.min',
       'latlon': '../vendor/osgridref.min',
       'latlon-ellipsoidal': '../vendor/latlon-ellipsoidal.min',
@@ -50,7 +52,18 @@
       'router_extension': 'helpers/router_extension',
       'brcart': 'helpers/brcart'
     },
+    //For using Zepto see this:
+    //http://simonsmith.io/using-zepto-and-jquery-with-requirejs/
+    map: {
+      '*': {
+        'jquery': 'zepto-custom'
+      },
+      'zepto-custom': {
+        'zepto': 'zepto'
+      }
+    },
     shim: {
+      'zepto': {exports: 'Zepto'},
       'latlon': {deps: ['latlon-ellipsoidal']},
       'latlon-ellipsoidal': {deps: ['vector3d', 'dms']},
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
