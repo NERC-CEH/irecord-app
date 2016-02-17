@@ -15,7 +15,7 @@ import pdb
 
 csv_file = open('master_list.csv', 'rt')
 reader = csv.reader(csv_file)
-json_file = open('master_list.json', 'wt')
+json_file = open('master_list.js', 'wt')
 
 data = []
 row_data = {}
@@ -38,15 +38,26 @@ for row in reader:
             colnum += 1
 
         #get last row or create one if no data translated yet
-        last_row = ['$'] * 4
+        genus = False
+        #find genus
         if len(data) != 0:
-           last_row = data[len(data) - 1] #only used to check if matches with current
+            i = len(data) - 1 #get last one
+            while i >= 0:
+                taxon = data[i][2].split()
+                if len(taxon) == 1 and taxon[0] == row_data[2].split()[0]: #does first part of sci name match 
+                    #check if same informal group
+                    if data[i][1] == row_data[1]:
+                        genus = data[i] #current row_data will be attached to this one
+                    i = i - 1
+                else:
+                    break
 
         #check if row belongs to previous genus
-        if last_row[2].split()[0] == row_data[2].split()[0]: #does first part of sci name match 
+        if genus: 
             #remove genus from species name
             if (len(row_data[2].split()) == 1):
                 print ('Warning! Adding genus to genus: ' + row_data[2])
+                continue
             else:
                 row_data[2] = row_data[2].split(' ', 1)[1]
             #remove species group
@@ -58,21 +69,21 @@ for row in reader:
             #make space for row in a genus
             try:
                 #check if genus has a common name 
-                if not isinstance(last_row[species_array_index], (list)):
+                if not isinstance(genus[species_array_index], (list)):
                     species_array_index = species_array_index + 1
                 #check if genus has a synonym
-                if not isinstance(last_row[species_array_index], (list)):
+                if not isinstance(genus[species_array_index], (list)):
                     species_array_index = species_array_index + 1
 
-                last_row[species_array_index]
+                genus[species_array_index]
             except:
-                last_row.append([])
+                genus.append([])
 
             #add row to genus
             try:
-                last_row[species_array_index].append(copy.copy(row_data))
+                genus[species_array_index].append(copy.copy(row_data))
             except AttributeError:
-                print(last_row)
+                print(genus)
         else:
             #add to all row data
             data.append(copy.copy(row_data))
