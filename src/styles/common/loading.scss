@@ -17,7 +17,7 @@
 #loader h3 {
   text-align: center;
   margin-right: -200px;
-  font-weight: 100;
+  font-weight: 200;
   color: $color-green-light;
 }
 
@@ -28,8 +28,8 @@
   color: $color-green;
 }
 
-#loader #animation span{
- font-size: 1em;
+#loader #animation span:before {
+  font-size: 28px;
 }
 
 #loader #animation .error {

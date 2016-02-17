@@ -47,10 +47,10 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
   }
 
   .mobile-swipe-edit #delete {
-    padding-top: 7px;
+    padding-top: 10px;
 
     &.with-name {
-      padding-top: 15px;
+      padding-top: 22px;
     }
   }
 
@@ -60,6 +60,9 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
   #location-header {
     h1 {
       font-size: 13.5px;
+      margin-left: -30px;
+    }
+    h3 {
       margin-left: -30px;
     }
   }

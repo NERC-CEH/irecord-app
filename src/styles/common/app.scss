@@ -6,6 +6,10 @@
 
 body {
   margin: 0;
+  color: $color-black;
+
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: none;
 }
 
 form, body {
@@ -17,7 +21,7 @@ img {
 }
 
 .input-group input {
-  min-height: 43px;
+  min-height: $button-height;
 }
 
 label, form label {
@@ -49,7 +53,11 @@ header, footer {
 
 header a,
 header button {
-  font-size: 20px !important;
+  font-size: 16px !important;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 header a:hover {
@@ -77,7 +85,8 @@ header .pull-left a {
 
 header .title {
   color: $header-text-color;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 17px;
 
   //lift the title up a bit to make some space
   &.with-subtitle {
@@ -93,7 +102,7 @@ header .subtitle {
   margin-top: 22px;
   margin-left: -30px;
 
-  font-weight: 200;
+  font-weight: normal;
   font-size: 12px;
   text-align: center;
   white-space: nowrap;
@@ -106,6 +115,12 @@ header .subtitle {
 .bar {
   border: none;
   padding: 0;
+  height: inherit;
+  min-height: 44px;
+
+  .icon {
+    padding-top: 12px;
+  }
 }
 
 .spin {
@@ -189,11 +204,15 @@ li h3 {
   margin: 10px auto;
 }
 
+.btn {
+  height: $button-height;
+}
+
 .info-message,
 .success-message,
 .warning-message {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: normal;
   margin: 0 (-$main-content-margin);
   border-radius: 0;
   padding: 3px 15px 3px 42px;
@@ -241,6 +260,8 @@ input {
 
 .input-row.search {
   position: relative;
+  height: 47px;
+  padding: 7px 0px;
 }
 
 .input-row.search .icon-search:before {
@@ -256,6 +277,13 @@ input {
   padding-left: 0;
   margin-bottom: 0;
   border: 0;
+}
+
+.input-row.search #delete {
+  position: absolute;
+  right: 0;
+  margin-top: 8px;
+  color: $color-gray;
 }
 
 .toggle.no-yes:before {
@@ -334,6 +362,8 @@ input {
 }
 
 .table-view-cell {
+  padding: 11px 65px 11px 15px;
+
   p {
     color: $color-black;
   }
@@ -377,11 +407,6 @@ a span.pull-left.icon {
   pointer-events: none;
 }
 
-.bar {
-  height: inherit;
-  min-height: 44px;
-}
-
 #footer {
   display: none;
 }
@@ -402,7 +427,19 @@ a span.pull-left.icon {
     width: 100%;
 
     text-align: center;
-    padding-top: 15px;
+    padding-top: 20px;
     font-size: 30px;
   }
+}
+
+[class*=" icon-"]:before, [class^=icon-]:before {
+  font-size: 20px;
+}
+
+button, input, select, textarea {
+  font-size: 14px
+}
+
+.item-radio .item-content {
+  padding: 13px 49px 13px 16px;
 }
