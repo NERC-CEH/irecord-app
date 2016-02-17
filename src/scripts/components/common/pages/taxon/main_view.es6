@@ -16,7 +16,8 @@ define([
 
     events: {
       'keydown #taxon': '_keydown',
-      'keyup #taxon': '_keyup'
+      'keyup #taxon': '_keyup',
+      'click #delete': 'deleteSearch'
     },
 
     regions: {
@@ -30,6 +31,13 @@ define([
     onRender: function () {
       //preselect the input for typing
       this.$el.find('#taxon').select();
+    },
+
+    /**
+     * Clear the search input
+     */
+    deleteSearch: function () {
+      this.$el.find('#taxon').val('');
     },
 
     updateSuggestions: function (suggestions, searchPhrase) {
