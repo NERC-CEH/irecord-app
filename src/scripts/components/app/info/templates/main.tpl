@@ -6,6 +6,12 @@
     </a>
   </li>
   <li class="table-view-cell">
+    <a href="#app/help" class="navigate-right">
+      <span class="media-object pull-left icon icon-help"></span>
+      Help
+    </a>
+  </li>
+  <li class="table-view-cell">
     <a href="#app/privacy" class="navigate-right">
       <span class="media-object pull-left icon icon-lock-closed"></span>
       Privacy Policy

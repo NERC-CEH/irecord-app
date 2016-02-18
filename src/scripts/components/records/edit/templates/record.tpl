@@ -1,65 +1,55 @@
 <ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/taxon" id="species-button" class="navigate-right">
-      <p class="descript"><%- obj.taxon %></p>
+      <span class="media-object pull-right descript"><%- obj.taxon %></span>
     </a>
   </li>
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/location" id="location-button"
        class="<%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
-    <span class="media-object pull-left icon icon-location"></span>
-      <div class="media-body">
-        <h3 class="heading">Location</h3>
-        <% if (obj.location) { %>
-          <p class="descript"><%- obj.location %></p>
-        <% } else { %>
-          <% if (obj.isLocating) { %>
-            <p class="descript warn">Locating...</p>
-          <% } else { %>
-            <p class="descript error">Location missing</p>
-          <% } %>
-        <% } %>
-      </div>
+      <span class="media-object pull-left icon icon-location"></span>
+      <% if (obj.location) { %>
+        <span class="media-object pull-right descript"><%- obj.location %></span>
+      <% } else { %>
+      <% if (obj.isLocating) { %>
+        <span class="media-object pull-right descript warn">Locating...</span>
+      <% } else { %>
+        <span class="media-object pull-right descript error">Location missing</span>
+      <% } %>
+      <% } %>
+      Location
     </a>
   </li>
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/date" id="date-button"
        class="<%- obj.locks['date'] ? 'lock' : 'navigate-right' %>">
-    <span class="media-object pull-left icon icon-calendar"></span>
-      <div class="media-body">
-        <h3 class="heading">Date</h3>
-        <p class="descript"><%- obj.date %></p>
-      </div>
+      <span class="media-object pull-left icon icon-calendar"></span>
+      <span class="media-object pull-right descript"><%- obj.date %></span>
+      Date
     </a>
   </li>
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/number" id="number-button"
        class="<%- obj.locks['number'] ? 'lock' : 'navigate-right' %>">
-    <span class="media-object pull-left icon icon-number"></span>
-      <div class="media-body">
-        <h3 class="heading">Number</h3>
-        <p class="descript"><%- obj.number %></p>
-      </div>
+      <span class="media-object pull-left icon icon-number"></span>
+      <span class="media-object pull-right descript"><%- obj.number %></span>
+      Number
     </a>
   </li>
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/stage" id="stage-button"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-stage"></span>
-      <div class="media-body">
-        <h3 class="heading">Stage</h3>
-        <p class="descript"><%- obj.stage %></p>
-      </div>
+      <span class="media-object pull-right descript"><%- obj.stage %></span>
+      Stage
     </a>
   </li>
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/comment" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
-    <span class="media-object pull-left icon icon-comment"></span>
-      <div class="media-body">
-        <h3 class="heading">Comment</h3>
-        <p class="descript"><%= obj.comment %></p>
-      </div>
+      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-right descript"><%- obj.comment %></span>
+      Comment
     </a>
   </li>
 </ul>

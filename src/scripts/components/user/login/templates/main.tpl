@@ -9,10 +9,16 @@
 
 <ul class="table-view space-top">
   <li class="table-view-cell">
-    <a href="#user/register" class="navigate-right">Create new account</a>
+    <a href="#user/register" class="navigate-right">
+      <span class="media-object pull-left icon icon-user-plus"></span>
+      Create new account
+    </a>
   </li>
   <li class="table-view-cell">
     <a href="http://www.brc.ac.uk/irecord/user/password"
-       class="navigate-right" rel="external">Request new password</a>
+       class="navigate-right" rel="external">
+      <span class="media-object pull-left icon icon-key"></span>
+      Request new password
+    </a>
   </li>
 </ul>

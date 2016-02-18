@@ -17,6 +17,10 @@ define([
           title: 'About', App: App, route: 'app/about/main',
           model: {version: CONFIG.version}
         })},
+      "app/help(/)": function() {
+        CommonController.show({
+          title: 'Help', App: App, route: 'app/help/main'
+        })},
       "app/privacy(/)": function() {
         CommonController.show({
           title: 'Privacy Policy', App: App, route: 'app/privacy/main'
@@ -44,6 +48,13 @@ define([
     CommonController.show({
       title: 'About', App: App, route: 'app/about/main',
       model: {version: CONFIG.version}
+    });
+  });
+
+  App.on("app:help", function() {
+    App.navigate('app/help');
+    CommonController.show({
+      title: 'Help', App: App, route: 'app/help/main'
     });
   });
 
