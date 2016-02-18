@@ -17,7 +17,7 @@ define([
     events: {
       'keydown #taxon': '_keydown',
       'keyup #taxon': '_keyup',
-      'click #delete': 'deleteSearch'
+      'click .delete': 'deleteSearch'
     },
 
     regions: {

@@ -20,7 +20,9 @@ img {
   max-width: 100%;
 }
 
-.input-group input {
+.input-group input,
+.input-row,
+.input-row input {
   min-height: $button-height;
 }
 
@@ -258,33 +260,28 @@ input {
 }
 
 
-.input-row.search {
-  position: relative;
-  height: 47px;
-  padding: 7px 0px;
+//Input with icon
+.input-row {
+  .icon:before {
+    font-size: $button-font-size;
+  }
+
+  label.icon {
+    width: inherit;
+    float: none;
+    padding: 0;
+  }
+
+  label.icon ~ input {
+    float: none;
+  }
+
+  .delete {
+    margin-top: 14px;
+    color: $color-gray;
+  }
 }
 
-.input-row.search .icon-search:before {
-  padding-top: 8px;
-  color: $color-gray;
-  font-size: 15px;
-}
-
-.input-row.search input {
-  position: absolute;
-  left: 28px;
-  width: 100%;
-  padding-left: 0;
-  margin-bottom: 0;
-  border: 0;
-}
-
-.input-row.search #delete {
-  position: absolute;
-  right: 0;
-  margin-top: 8px;
-  color: $color-gray;
-}
 
 .toggle.no-yes:before {
   content: 'no';
@@ -381,10 +378,10 @@ p a {
 }
 
 .icon-spin:before {
-    -webkit-animation: spin 2s infinite linear;
-    -moz-animation: spin 2s infinite linear;
-    -o-animation: spin 2s infinite linear;
-    animation: spin 2s infinite linear;
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
 
 }
 
