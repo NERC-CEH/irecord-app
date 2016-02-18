@@ -18,6 +18,10 @@ cp -R dist/* cordova/www/
 cd cordova
 cordova platforms add ios android
 
-cordova plugin add org.apache.cordova.device
-cordova plugin add org.apache.cordova.console
-cordova plugin add org.apache.cordova.geolocation
+cordova plugin add cordova-plugin-device
+cordova plugin add cordova-plugin-console
+cordova plugin add cordova-plugin-geolocation
+cordova plugin add cordova-plugin-network-information
+cordova plugin add ionic-plugin-keyboard
+cordova plugin add ionic-plugin-statusbar
+
