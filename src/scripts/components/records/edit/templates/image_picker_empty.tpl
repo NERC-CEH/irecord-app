@@ -1,1 +1,1 @@
-Add a photo.
+No photo has been added

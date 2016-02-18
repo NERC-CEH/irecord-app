@@ -45,10 +45,15 @@ define([
       let gridref;
 
       if (location.latitude && location.longitude) {
-        gridref = LocHelp.coord2grid({
-          latitude: location.latitude,
-          longitude: location.longitude
-        }, location.accuracy);
+        var accuracy = location.accuracy;
+
+        //cannot be odd
+        if (accuracy % 2 != 0) {
+          //should not be less than 2
+          accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
+        }
+
+        gridref =  LocHelp.coord2grid(location, accuracy);
       }
 
       return {

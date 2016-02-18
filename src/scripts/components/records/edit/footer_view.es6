@@ -29,7 +29,9 @@ define([
   });
 
   let EmptyView = Marionette.ItemView.extend({
-    template: JST['records/edit/image_picker_empty']
+    template: JST['records/edit/image_picker_empty'],
+    tagName: 'span',
+    className: 'empty'
   });
 
   let ImagePickerArrayView = Marionette.CompositeView.extend({

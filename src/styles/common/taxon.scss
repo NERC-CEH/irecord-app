@@ -14,8 +14,17 @@
 
     background-color: transparent;
     border: none;
-    border-left: 1px $color-gray solid;
-    border-radius: inherit;
+
+    //left line
+    &:after {
+      content: "";
+      background: $color-gray;
+      position: absolute;
+      bottom: 9px;
+      left: 0;
+      height: 63%;
+      width: 1px;
+    }
   }
 
   h3 {

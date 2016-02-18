@@ -1,2 +1,5 @@
 No records to show.
-<a href="#records/new" class="icon icon-plus btn btn-positive btn-outlined">Lets add one!</a>
+<a href="#records/new" class="btn btn-positive btn-outlined">
+  <span class="icon icon-plus"></span>
+  Lets add one!
+</a>

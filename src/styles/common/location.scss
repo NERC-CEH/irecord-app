@@ -4,11 +4,13 @@
 }
 
 .map-marker {
-  margin-left: -32px!important;
-  margin-top: -32px!important;
+  margin-left: -24px!important;
+  margin-top: -24px!important;
   text-shadow: 0px 0px 1px black, 0px 0px 4px black;
   color: $color-red;
-  font-size: 4em;
+  &:before {
+    font-size: 34px;
+  }
 }
 
 input#grid-ref {

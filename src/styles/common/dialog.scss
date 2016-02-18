@@ -44,8 +44,11 @@
   top: 35%;
   left: 50%;
   margin-left: -60px;
-  font-size: 80px;
   color: $color-white ;
+
+  &:before {
+    font-size: 80px;
+  }
 }
 
 .dialog-header {

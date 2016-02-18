@@ -143,6 +143,14 @@ $footer-height: 80px;
         height: $footer-height;
       }
     }
+
+    .empty {
+      float: left;
+      margin-top: 28px;
+      margin-left: 12px;
+      color: $color-gray-dark;
+      font-size: $text-font-size;
+    }
   }
 }
 
