@@ -85,6 +85,23 @@ define([
       };
 
       return templateData
+    },
+
+    onShow: function () {
+      let $input = this.$el.find('input');
+      if (this.options.attr === 'date' && window.cordova) {
+        var options = {
+          date: new Date(this.model.get('date')),
+          mode: 'date',
+          androidTheme: 5,
+          allowOldDates: true,
+          allowFutureDates: false
+        };
+
+        datePicker.show(options,  function(date) {
+          $input.val(new Date(date).toDateInputValue());
+        });
+      }
     }
 
   });

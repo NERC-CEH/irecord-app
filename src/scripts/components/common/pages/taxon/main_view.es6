@@ -28,9 +28,9 @@ define([
       this.selectedIndex = 0;
     },
 
-    onRender: function () {
+    onShow: function () {
       //preselect the input for typing
-      this.$el.find('#taxon').select();
+      this.$el.find('#taxon').focus();
     },
 
     /**

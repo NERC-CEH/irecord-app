@@ -22,6 +22,8 @@ cordova plugin add cordova-plugin-device
 cordova plugin add cordova-plugin-console
 cordova plugin add cordova-plugin-geolocation
 cordova plugin add cordova-plugin-network-information
-cordova plugin add ionic-plugin-keyboard
-cordova plugin add ionic-plugin-statusbar
+cordova plugin add cordova-plugin-datepicker
+cordova plugin add cordova-plugin-keyboard
 
+#cordova plugin add ionic-plugin-keyboard
+cordova plugin add cordova-plugin-statusbar

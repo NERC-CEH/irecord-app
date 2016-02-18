@@ -23,7 +23,8 @@ define([
     var App = new Marionette.Application();
 
     App.navigate = function(route,  options = {}){
-      Backbone.history.navigate(route, options);
+      let defaultOptions = {trigger: true};
+      Backbone.history.navigate(route, $.extend(defaultOptions, options));
     };
 
     App.getCurrentRoute = function(){
@@ -73,6 +74,15 @@ define([
         });
 
         $('#loader').remove();
+
+        if (window.cordova) {
+          StatusBar.overlaysWebView(false);
+          Backbone.history.on('route', function () {
+            if (window.cordova.plugins.Keyboard.isVisible) {
+              Keyboard.hide();
+            }
+          });
+        }
       }
     });
 
