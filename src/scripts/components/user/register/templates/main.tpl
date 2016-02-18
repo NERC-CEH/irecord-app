@@ -1,9 +1,24 @@
 <div class="input-group">
-  <input type="text" placeholder="Email" name="email" >
-  <input type="text" placeholder="Firstname" name="name" >
-  <input type="text" placeholder="Surname" name="surname" >
-  <input type="password" placeholder="Password" name="pass" >
-  <input type="password" placeholder="Confirm password" name="passConf" >
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-mail"></label>
+    <input type="text" placeholder="Email" name="email" >
+  </div>
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-user"></label>
+    <input type="text" placeholder="Firstname" name="name" >
+  </div>
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-user"></label>
+    <input type="text" placeholder="Surname" name="surname" >
+  </div>
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-key"></label>
+    <input type="password" placeholder="Password" name="pass" >
+  </div>
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-key"></label>
+    <input type="password" placeholder="Confirm password" name="passConf" >
+  </div>
 </div>
 
 

@@ -2,8 +2,14 @@
   <p>Please sign in with your iRecord account or register.</p>
 </div>
 <div class="input-group">
-  <input id="email" name="email" type="email" placeholder="Email">
-  <input id="password" name="password" type="password" placeholder="Password">
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-mail"></label>
+    <input id="email" name="email" type="email" placeholder="Email">
+  </div>
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-key"></label>
+    <input id="password" name="password" type="password" placeholder="Password">
+  </div>
 </div>
 <button id="login-button" class="btn btn-narrow btn-positive btn-block">Sign in</button>
 
