@@ -74,10 +74,6 @@ define([
       });
 
       App.regions.main.show(mainView);
-
-      if (window.cordova) {
-        Keyboard.show();
-      }
     },
 
     _onSelected: function (species, edit) {

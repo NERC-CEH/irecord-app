@@ -1,9 +1,9 @@
 # irecord-app
-iRecord offline-mobile first web application
+iRecord mobile application
 
 ## Configuration
 
-App configuration hosted in `scr/conf.js`.
+App configuration hosted in `src/conf.js`.
 
 **Note:** it should be done *before* building the code.
 
@@ -23,7 +23,22 @@ git clone git://github.com/NERC-CEH/irecord-app.git
 cd irecord-app && npm install
 ```
 
-- Build the library:
+
+### Cordova
+
+- Build the project:
+
+```bash
+./pkgbuild.sh
+```
+
+
+### Web
+
+If you are building for the web platform only then:
+
+- Build the project:
+
 `Production`
 
 ```bash
@@ -40,7 +55,7 @@ grunt bower dev
 This will create a `dist` folder with the app code and its dependencies.
 
 
-## Running
+## Running locally
 
 [Express](http://expressjs.com/) framework is provided for a quick launch of a web server.
 

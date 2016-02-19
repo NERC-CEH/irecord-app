@@ -15,9 +15,16 @@
 <!--</div>-->
 
 <div class="table-view-cell">
+  <a href="#app/settings/locations" class="navigate-right">
+    <span class="media-object pull-left icon icon-location"></span>
+    Locations
+  </a>
+</div>
+<div class="table-view-cell">
   Translate coordinates to Gridref
   <div id="use-gridref-btn" data-setting="useGridRef"
        class="toggle no-yes <%- obj.useGridRef ? 'active' : '' %>">
     <div class="toggle-handle"></div>
   </div>
 </div>
+

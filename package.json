@@ -1,8 +1,8 @@
 {
   "name": "irecord-app",
   "title": "iRecord App",
-  "description": "iRecord mobile/offline first web application.",
-  "version": "1.0.0-alpha",
+  "description": "iRecord application.",
+  "version": "1.0.0-beta",
   "homepage": "https://m.irecord.org.uk",
   "author": {
     "name": "Karolis Kazlauskis",

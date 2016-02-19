@@ -15,7 +15,7 @@ define([
     tagName: 'li',
     className: 'table-view-cell',
 
-    template: JST['common/location/past_location'],
+    template: JST['common/past_location'],
 
     events: {
       'click .location': 'onClick'
@@ -121,7 +121,7 @@ define([
   });
 
   let PastView = Marionette.CompositeView.extend({
-    template: JST['common/location/past'],
+    template: JST['common/past_locations'],
 
     childViewContainer: '#user-locations',
 

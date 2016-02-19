@@ -5,8 +5,9 @@ define([
   'app-config',
   'common/controller',
   './info/controller',
-  './settings/controller'
-], function(Marionette, Log, App, CONFIG, CommonController, InfoController, SettingsController) {
+  './settings/controller',
+  'common/past_locations_view'
+], function(Marionette, Log, App, CONFIG, CommonController, InfoController, SettingsController, LocationsView) {
   App.info = {};
 
   App.info.Router = Marionette.AppRouter.extend({
@@ -34,6 +35,12 @@ define([
           title: 'Credits', App: App, route: 'app/credits/main'
         })},
       "app/settings(/)": SettingsController.show,
+      "app/settings/locations(/)": function () {
+        CommonController.show({
+          title: 'Locations', App: App, route: 'app/settings/locations',
+          mainView: LocationsView
+        })
+      },
       "app/*path": function () {App.trigger('404:show')}
     }
   });
@@ -84,6 +91,14 @@ define([
     CommonController.show({
       title: 'Settings', App: App, route: 'app/settings/main'
     });
+  });
+
+  App.on("app:locations", function() {
+    App.navigate('app/settings/locations');
+    CommonController.show({
+      title: 'Locations', App: App, route: 'app/settings/locations',
+      mainView: LocationsView
+    })
   });
 
 

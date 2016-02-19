@@ -10,7 +10,7 @@ define([
   './gps_view',
   './map_view',
   './grid_ref_view',
-  './past_view'
+  'common/past_locations_view'
 ], function (Morel, GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView) {
   let API = {
     show: function (recordID){

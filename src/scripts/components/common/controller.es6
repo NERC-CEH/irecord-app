@@ -9,7 +9,7 @@ define([
     show: function (options) {
       App = options.App || App; //passed when showing 404
 
-      let MainView = Marionette.ItemView.extend({
+      let MainView = options.mainView || Marionette.ItemView.extend({
         template: JST[options.route]
       });
       App.regions.main.show(new MainView({

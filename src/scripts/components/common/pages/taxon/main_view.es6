@@ -30,7 +30,13 @@ define([
 
     onShow: function () {
       //preselect the input for typing
-      this.$el.find('#taxon').focus();
+      let $input = this.$el.find('#taxon').focus();
+      if (window.deviceIsAndroid) {
+        Keyboard.show();
+        $input.focusout(function () {
+          Keyboard.hide();
+        });
+      }
     },
 
     /**
@@ -38,6 +44,7 @@ define([
      */
     deleteSearch: function () {
       this.$el.find('#taxon').val('');
+      this.$el.find('#taxon').focus();
     },
 
     updateSuggestions: function (suggestions, searchPhrase) {

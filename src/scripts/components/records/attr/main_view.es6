@@ -87,20 +87,36 @@ define([
       return templateData
     },
 
-    onShow: function () {
-      let $input = this.$el.find('input');
-      if (this.options.attr === 'date' && window.cordova) {
-        var options = {
-          date: new Date(this.model.get('date')),
-          mode: 'date',
-          androidTheme: 5,
-          allowOldDates: true,
-          allowFutureDates: false
-        };
+    onShow: function ()  {
+      switch (this.options.attr){
+        case 'date':
+          //this.$el.find('input').focus();
+          let $input = this.$el.find('input').focus();
+          if (window.deviceIsAndroid) {
+            var options = {
+              date: new Date(this.model.get('date')),
+              mode: 'date',
+              androidTheme: 5,
+              allowOldDates: true,
+              allowFutureDates: false
+            };
 
-        datePicker.show(options,  function(date) {
-          $input.val(new Date(date).toDateInputValue());
-        });
+            datePicker.show(options,  function(date) {
+              $input.val(new Date(date).toDateInputValue());
+            });
+          }
+          break;
+        case 'comment':
+          //this.$el.find('textarea').focus();
+          let $textarea = this.$el.find('textarea').focus()
+          if (window.deviceIsAndroid) {
+            Keyboard.show();
+            $textarea.focusout(function () {
+              Keyboard.hide();
+            });
+          }
+          break;
+        default:
       }
     }
 

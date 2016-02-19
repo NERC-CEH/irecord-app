@@ -76,12 +76,12 @@ define([
         $('#loader').remove();
 
         if (window.cordova) {
-          StatusBar.overlaysWebView(false);
-          Backbone.history.on('route', function () {
-            if (window.cordova.plugins.Keyboard.isVisible) {
-              Keyboard.hide();
-            }
-          });
+          StatusBar.overlaysWebView(true);
+
+          //iOS make space for statusbar
+          if (window.deviceIsIOS) {
+            $('body').addClass('ios')
+          }
         }
       }
     });

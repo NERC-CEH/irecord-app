@@ -3,8 +3,8 @@
 echo 'Build stared'
 
 #prepare www source
-npm install
-grunt cordova
+#npm install
+#grunt cordova
 
 #init cordova source
 echo 'Initializing cordova'
@@ -13,17 +13,10 @@ cordova create cordova com.ceh.irecord iRecord
 #add www source to cordova
 echo 'Moving dist to cordova'
 rm -R cordova/www/*
-cp -R dist/* cordova/www/ 
+cp -R dist/* cordova/www/
+rm cordova/config.xml
+cp config.xml cordova/
 
 cd cordova
 cordova platforms add ios android
-
-cordova plugin add cordova-plugin-device
-cordova plugin add cordova-plugin-console
-cordova plugin add cordova-plugin-geolocation
-cordova plugin add cordova-plugin-network-information
-cordova plugin add cordova-plugin-datepicker
-cordova plugin add cordova-plugin-keyboard
-
-#cordova plugin add ionic-plugin-keyboard
-cordova plugin add cordova-plugin-statusbar
+cordova build ios android
