@@ -114,9 +114,16 @@ define([
           if (accuracy % 2 != 0) {
             //should not be less than 2
             accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
+          } else if (accuracy === 0) {
+            accuracy = 2;
           }
 
-          return LocHelp.coord2grid(location, accuracy);
+          //check if location is within UK
+          let prettyLocation = LocHelp.coord2grid(location, accuracy);
+          if (!prettyLocation) {
+            prettyLocation = location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
+          }
+          return prettyLocation;
         } else {
           return location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
         }
