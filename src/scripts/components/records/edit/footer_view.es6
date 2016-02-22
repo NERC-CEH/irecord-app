@@ -10,7 +10,7 @@ define([
   'use strict';
 
   let SavedImageView = Marionette.ItemView.extend({
-    template: _.template('<span class="delete icon icon-delete"></span><img src="<%- obj.data %>" alt="">'),
+    template: _.template('<span class="delete icon icon-cancel"></span><img src="<%- obj.data %>" alt="">'),
     className: 'img',
 
     events: {

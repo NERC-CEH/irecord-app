@@ -67,6 +67,12 @@
       "src": "entypo"
     },
     {
+      "uid": "c709da589c923ba3c2ad48d9fc563e93",
+      "css": "cancel",
+      "code": 59421,
+      "src": "entypo"
+    },
+    {
       "uid": "70370693ada58ef0a60fa0984fe8d52a",
       "css": "plus",
       "code": 59396,
@@ -89,12 +95,6 @@
       "css": "logout",
       "code": 59418,
       "src": "entypo"
-    },
-    {
-      "uid": "517522647a556192fbc78aa391b7b0c2",
-      "css": "cancel",
-      "code": 59420,
-      "src": "typicons"
     },
     {
       "uid": "4x5p6fnblkhqsj4ibuc724faotghuiaq",
