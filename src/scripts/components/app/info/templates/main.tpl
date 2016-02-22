@@ -39,6 +39,7 @@
   </li>
 
   <li class="table-view-divider">Account</li>
+
   <% if (obj.surname) { %>
   <li class="table-view-cell">
     <a id="logout-button" class="navigate-right">

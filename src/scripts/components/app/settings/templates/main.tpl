@@ -14,17 +14,29 @@
   <!--</div>-->
 <!--</div>-->
 
-<div class="table-view-cell">
+<li class="table-view-divider">Location</li>
+
+<li class="table-view-cell">
   <a href="#app/settings/locations" class="navigate-right">
     <span class="media-object pull-left icon icon-location"></span>
-    Locations
+    Manage Saved
   </a>
-</div>
-<div class="table-view-cell">
-  Translate coordinates to Gridref
+</li>
+<li class="table-view-cell">
+  Translate to Grid Ref
   <div id="use-gridref-btn" data-setting="useGridRef"
        class="toggle no-yes <%- obj.useGridRef ? 'active' : '' %>">
     <div class="toggle-handle"></div>
   </div>
-</div>
+</li>
+
+
+<li class="table-view-divider">Records</li>
+
+<li class="table-view-cell">
+  <a id="delete-all-btn">
+    <span class="media-object pull-left icon icon-delete"></span>
+    Delete All Saved
+  </a>
+</li>
 

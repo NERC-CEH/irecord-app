@@ -10,6 +10,8 @@ define([
   'use strict';
 
   var View = Marionette.ItemView.extend({
+    tagName: 'ul',
+    className: 'table-view',
     template: JST['app/settings/main'],
 
     events: {
@@ -17,6 +19,10 @@ define([
       'click #use-gridref-btn': 'onSettingToggled',
       'toggle #use-autosync-btn': 'onSettingToggled',
       'click #use-autosync-btn': 'onSettingToggled'
+    },
+
+    triggers: {
+      'click a': 'records:delete:all'
     },
 
     onSettingToggled: function (e) {
