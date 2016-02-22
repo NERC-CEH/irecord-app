@@ -26,7 +26,17 @@ define([
       let specie = occ.get('taxon');
       let appModel = this.model.get('appModel');
 
-      let taxon = specie[specie.found_in_name];
+      //taxon
+      let scientific_name = specie.scientific_name;
+      let common_name = specie[specie.found_in_name];
+      if (specie.found_in_name == 'scientific_name') {
+        //show recommended name
+        if (specie.common_name) {
+          common_name = specie.common_name;
+        } else {
+          common_name = '';
+        }
+      }
 
       let syncStatus = recordModel.getSyncStatus();
 
@@ -35,7 +45,8 @@ define([
       return {
         isSynchronising: syncStatus === Morel.SYNCHRONISING,
         onDatabase: syncStatus === Morel.SYNCED,
-        taxon: taxon,
+        scientific_name: scientific_name,
+        common_name: common_name,
         location: location,
         date: recordModel.get('date').print(),
         number: occ.get('number') && occ.get('number').limit(20),

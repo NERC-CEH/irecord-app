@@ -1,7 +1,10 @@
 <ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
   <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/taxon" id="species-button" class="navigate-right">
-      <span class="media-object pull-right descript"><%- obj.taxon %></span>
+      <% if (obj.common_name) { %>
+        <span class="media-object pull-right descript"><%- obj.common_name %></span>
+      <% } %>
+      <span class="media-object pull-right descript"><i><%- obj.scientific_name %></i></span>
     </a>
   </li>
   <li class="table-view-cell">

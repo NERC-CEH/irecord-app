@@ -23,7 +23,17 @@ define([
       let specie = occ.get('taxon');
       let appModel = this.model.get('appModel');
 
-      let taxon = specie[specie.found_in_name];
+      //taxon
+      let scientific_name = specie.scientific_name;
+      let common_name = specie[specie.found_in_name];
+      if (specie.found_in_name == 'scientific_name') {
+        //show recommended name
+        if (specie.common_name) {
+          common_name = specie.common_name;
+        } else {
+          common_name = '';
+        }
+      }
 
       let location = recordModel.printLocation();
 
@@ -37,7 +47,8 @@ define([
 
       return {
         id: recordModel.id || recordModel.cid,
-        taxon: taxon,
+        scientific_name: scientific_name,
+        common_name: common_name,
         isLocating: recordModel.locating >= 0,
         isSynchronising: recordModel.getSyncStatus() == Morel.SYNCHRONISING,
         location: location,
