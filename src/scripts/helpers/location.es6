@@ -12,7 +12,7 @@ define(['latlon'], function () { //LatLon is global
       var p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);
       var grid = OsGridRef.latLonToOsGrid(p);
 
-      return grid.toString(locationGranularity);
+      return grid.toString(locationGranularity).replace(/\s/g, '');
     },
 
     grid2coord: function (gridref) {
