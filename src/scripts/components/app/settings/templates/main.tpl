@@ -33,7 +33,7 @@
 
 <li class="table-view-divider">Records</li>
 
-<li class="table-view-cell">
+<li class="table-view-cell btn-negative">
   <a id="delete-all-btn">
     <span class="media-object pull-left icon icon-delete"></span>
     Delete All Saved
