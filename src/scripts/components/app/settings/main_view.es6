@@ -22,7 +22,8 @@ define([
     },
 
     triggers: {
-      'click a': 'records:delete:all'
+      'click #delete-all-btn': 'records:delete:all',
+      'click #submit-all-btn': 'records:submit:all'
     },
 
     onSettingToggled: function (e) {

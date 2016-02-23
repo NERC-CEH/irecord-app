@@ -292,6 +292,15 @@ input {
   content: 'yes';
 }
 
+.toggle.active {
+  background-color: $color-green;
+  border: 2px solid $color-green;
+}
+
+.toggle.active .toggle-handle {
+  border-color: $color-green;
+}
+
 .error-404 {
   padding-top: 1em;
   text-align: center;
@@ -362,13 +371,21 @@ input {
 .table-view-cell {
   padding: 11px 65px 11px 15px;
 
-  p {
+  &:hover {
+    border: none;
+    border-bottom: 1px solid $color-gray;
     color: $color-black;
   }
+
   a:hover {
     background-color: $color-gray-light;
   }
+
+  p {
+    color: $color-black;
+  }
 }
+
 
 p a {
   color: $header-color;

@@ -13,7 +13,7 @@ define([
       let mainView = new MainView({model: userModel});
       App.regions.main.show(mainView);
 
-      mainView.on('logout', API.logout);
+      mainView.on('user:logout', API.logout);
 
       let headerView = new HeaderView({
         model: new Backbone.Model({

@@ -23,7 +23,7 @@
           <div data-attr="comment" class="js-attr icon icon-comment"></div>
           <% } %>
         <% } %>
-        <div id="delete" class="delete icon icon-delete"></div>
+        <div id="delete" class="delete icon icon-cancel"></div>
       </div>
 
     <% } else { %>
@@ -36,7 +36,7 @@
         <div data-attr="comment" class="js-attr icon icon-comment"></div>
         <% } %>
 
-        <div id="delete" class="delete icon icon-delete"></div>
+        <div id="delete" class="delete icon icon-cancel"></div>
       </div>
     <% } %>
     </div>

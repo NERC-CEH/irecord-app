@@ -57,19 +57,30 @@ define([
         App.regions.header.show(headerView);
 
         headerView.on('save', function (e) {
-          let invalids = API.setToSend(recordModel);
+          recordModel.setToSend(function (err) {
+            if (err) {
+              let invalids = err;
+              let missing = '';
+              _.each(invalids, function(invalid) {
+                missing += '<b>' + invalid.name + '</b> - ' + invalid.message + '</br>';
+              });
 
-          if (invalids) {
-            let missing = '';
-            _.each(invalids, function(invalid) {
-              missing += '<b>' + invalid.name + '</b> - ' + invalid.message + '</br>';
-            });
+              App.regions.dialog.show({
+                title: 'Sorry',
+                body: missing
+              });
 
-            App.regions.dialog.show({
-              title: 'Sorry',
-              body: missing
-            });
-          }
+              return;
+            }
+
+            if (window.navigator.onLine && !userModel.hasLogIn()) {
+              App.trigger('user:login', {replace: true});
+              return;
+            } else {
+              recordManager.syncAll();
+              App.trigger('record:saved');
+            }
+          });
         });
 
         //FOOTER
@@ -94,30 +105,6 @@ define([
 
         App.regions.footer.show(footerView);
       });
-    },
-
-    /**
-     * Set the record for submission and send it.
-     */
-    setToSend: function (recordModel) {
-      recordModel.metadata.saved = true;
-
-      let invalids = recordModel.validate();
-      if (invalids) {
-        recordModel.metadata.saved = false;
-        return invalids;
-      }
-
-      //save record
-      recordModel.save(function (err) {
-        if (window.navigator.onLine && !userModel.hasLogIn()) {
-          App.trigger('user:login', {replace: true});
-          return;
-        } else {
-          recordManager.syncAll();
-          App.trigger('record:saved');
-        }
-      })
     },
 
     /**

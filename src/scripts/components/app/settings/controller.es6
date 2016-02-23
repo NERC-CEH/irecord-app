@@ -22,32 +22,9 @@ define([
         appModel.save();
       });
 
-      mainView.on('records:delete:all', function () {
-        App.regions.dialog.show({
-          title: 'Delete All',
-          body: 'Are you sure you want to delete all submitted records?',
-          buttons: [
-            {
-              title: 'Delete',
-              class: 'btn-negative',
-              onClick: function () {
-                //delete all
-                recordManager.removeAllSynced(function () {
-                  App.regions.dialog.show({
-                    title: 'Done!'
-                  })
-                });
-              }
-            },
-            {
-              title: 'Cancel',
-              onClick: function () {
-                App.regions.dialog.hide();
-              }
-            }
-          ]
-        });
-      });
+      mainView.on('records:submit:all', API.sendAllRecords);
+
+      mainView.on('records:delete:all', API.deleteAllRecords);
 
       App.regions.main.show(mainView);
 
@@ -57,6 +34,60 @@ define([
         })
       });
       App.regions.header.show(headerView);
+    },
+
+    deleteAllRecords: function () {
+      App.regions.dialog.show({
+        title: 'Delete All',
+        body: 'Are you sure you want to delete all submitted records?',
+        buttons: [
+          {
+            title: 'Delete',
+            class: 'btn-negative',
+            onClick: function () {
+              //delete all
+              recordManager.removeAllSynced(function () {
+                App.regions.dialog.show({
+                  title: 'Done!'
+                })
+              });
+            }
+          },
+          {
+            title: 'Cancel',
+            onClick: function () {
+              App.regions.dialog.hide();
+            }
+          }
+        ]
+      });
+    },
+
+    sendAllRecords: function () {
+      App.regions.dialog.show({
+        title: 'Send All',
+        body: 'Are you sure you want to set all valid records for submission?',
+        buttons: [
+          {
+            title: 'Send All',
+            class: 'btn-positive',
+            onClick: function () {
+              //delete all
+              recordManager.setAllToSend(function () {
+                App.regions.dialog.show({
+                  title: 'Done!'
+                })
+              });
+            }
+          },
+          {
+            title: 'Cancel',
+            onClick: function () {
+              App.regions.dialog.hide();
+            }
+          }
+        ]
+      });
     }
   };
 

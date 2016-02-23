@@ -26,7 +26,7 @@ define([
     },
 
     logout: function () {
-      this.trigger('logout');
+      this.trigger('user:logout');
     }
   });
 

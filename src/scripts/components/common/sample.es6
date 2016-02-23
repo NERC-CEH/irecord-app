@@ -48,6 +48,24 @@ define([
       });
 
       return invalids.length ? invalids : null;
+    },
+
+    /**
+     * Set the record for submission and send it.
+     */
+    setToSend: function (callback) {
+      this.metadata.saved = true;
+
+      let invalids = this.validate();
+      if (invalids) {
+        this.metadata.saved = false;
+
+        callback && callback(invalids);
+        return;
+      }
+
+      //save record
+      this.save(callback)
     }
   });
 
