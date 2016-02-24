@@ -3,8 +3,8 @@
 echo 'Build stared'
 
 #prepare www source
-#npm install
-#grunt cordova
+npm install
+grunt
 
 #init cordova source
 echo 'Initializing cordova'

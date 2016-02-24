@@ -2,7 +2,7 @@ module.exports = function (grunt) {
   var DEST = 'dist/',
       SCRIPTS = 'dist/scripts/',
       MANIFEST_NAME = 'appcache.manifest',
-      CONFIG_NAME = 'config/app',
+      CONFIG_NAME = 'config/main',
       CONFIG_DEV_NAME = 'config/dev';
 
   grunt.option('platform', 'web');
@@ -168,10 +168,6 @@ module.exports = function (grunt) {
           {
             from: /{APP_NAME}/g,
             to: '<%= pkg.name %>'
-          },
-          {
-            from: /{PLATFORM}/g,
-            to: '<%= grunt.option("platform") %>'
           }
         ]
       },
@@ -434,7 +430,8 @@ module.exports = function (grunt) {
     'init',
     'run',
     'replace:config',
-    'requirejs'
+    'requirejs',
+    'clean:dist'
   ]);
 
   //Development run
@@ -442,12 +439,5 @@ module.exports = function (grunt) {
     'run',
     'replace:dev_config',
     'requirejs'
-  ]);
-
-  //Cordova build package
-  grunt.registerTask('cordova', [
-    'set_option:platform:cordova',
-    'init',
-    'dev'
   ]);
 };
