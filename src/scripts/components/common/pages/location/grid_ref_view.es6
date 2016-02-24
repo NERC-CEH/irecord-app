@@ -12,24 +12,25 @@ define([
     },
 
     setGridRef: function () {
-      let location = {
-        source: 'gridref'
-      };
-
       var val = this.$el.find('#grid-ref').val().escape();
       var name = this.$el.find('#location-name').val().escape();
 
       let validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
 
-      if (!validGridRef.test(val.replace(/\s/g, ''))) {
+      val.replace(/\s/g, '');
+      if (!validGridRef.test(val)) {
         return;
       }
 
       var latLon = LocHelp.grid2coord(val);
       if (latLon) {
-        location.latitude = Number.parseFloat(latLon.lat.toFixed(7));
-        location.longitude = Number.parseFloat(latLon.lon.toFixed(7));
-        location.name = name;
+        let location = {
+          source: 'gridref',
+          name: name,
+          gridref: val,
+          latitude: Number.parseFloat(latLon.lat.toFixed(8)),
+          longitude: Number.parseFloat(latLon.lon.toFixed(8))
+        };
 
         //-2 because of gridref letters, 2 because this is min precision
         let accuracy = (val.replace(/\s/g, '').length - 2) || 2;
@@ -45,15 +46,7 @@ define([
       let gridref;
 
       if (location.latitude && location.longitude) {
-        var accuracy = location.accuracy;
-
-        //cannot be odd
-        if (accuracy % 2 != 0) {
-          //should not be less than 2
-          accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
-        }
-
-        gridref =  LocHelp.coord2grid(location, accuracy);
+        gridref =  LocHelp.coord2grid(location, location.accuracy);
       }
 
       return {

@@ -1,15 +1,34 @@
 define([
   'jquery',
   'morel',
+  'browser',
   'app-config',
   'common/sample',
   'common/user_model'
-], function ($, Morel, CONFIG, Sample, userModel) {
+], function ($, Morel, Browser, CONFIG, Sample, userModel) {
   let morelConfiguration = $.extend(CONFIG.morel.manager, {
     Storage: Morel.DatabaseStorage,
     Sample: Sample,
     onSend: function (sample) {
       if (userModel.hasLogIn()) {
+        //attach device
+        let device = '';
+        if (window.cordova) {
+          device = device.platform;
+        } else {
+          if (Browser.isAndroidChrome()) {
+            device = 'Android';
+          } else if (Browser.isIOS()) {
+            device = 'iOS';
+          }
+        }
+        sample.set('device', device);
+
+        //attach device version
+        if (window.cordova) {
+          sample.set('device_version', device.version);
+        }
+
         userModel.appendSampleUser(sample);
       } else {
         //don't send until the user is logged in

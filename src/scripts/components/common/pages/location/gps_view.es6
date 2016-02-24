@@ -2,10 +2,11 @@ define([
   'marionette',
   'JST'
 ], function (Marionette, JST) {
-
-  return Marionette.ItemView.extend({
+  let View =  Marionette.ItemView.extend({
     initialize: function () {
       let that = this;
+      this.locationUpdate; //to store GPS updates
+
       let recordModel = this.model.get('recordModel');
 
       this.template = function () {
@@ -15,7 +16,7 @@ define([
 
         let location = recordModel.get('location');
         //only gps and todays records
-        if (location && location.gps &&
+        if (location && location.source == 'gps' &&
           (new Date(location.updateTime).toDateString() === new Date().toDateString())) {
           return JST['common/location/gps_success'](arguments[0]);
         } else {
@@ -32,19 +33,29 @@ define([
       'click #gps-button': 'gps:click'
     },
 
+    /**
+     * Update the temporary location fix
+     * @param location
+     */
     geolocationUpdate: function (location) {
       this.locationUpdate = location;
       this.render();
     },
 
     geolocationSuccess: function (location) {
-      this.locationSuccess = location;
+      this.locationUpdate = location;
       this.render();
     },
 
     serializeData: function () {
       let recordModel = this.model.get('recordModel');
-      let location = this.locationUpdate || recordModel.get('location');
+      let location = this.locationUpdate;
+      let prevLocation = recordModel.get('location');
+
+      //if not fixed the location but has previous one that is updating
+      if (!location && prevLocation && prevLocation.source === 'gps') {
+        location = prevLocation;
+      }
 
       if (location) {
         return {
@@ -56,4 +67,6 @@ define([
       }
     }
   });
+
+  return View;
 });

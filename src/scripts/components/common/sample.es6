@@ -92,8 +92,9 @@ define([
             return;
           }
 
-          location.gps = true;
+          location.source = 'gps';
           location.updateTime = new Date(); //track when gps was acquired
+          location.gridref = LocHelp.coord2grid(location, location.accuracy);
           that.set('location', location);
           that.save();
 
