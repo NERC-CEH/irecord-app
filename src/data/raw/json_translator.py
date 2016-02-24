@@ -34,6 +34,10 @@ for row in reader:
         #for each column in row
         for col in row:
             if col:
+                try:
+                    col = int(col) #try parsing an integer
+                except ValueError:
+                    col = col
                 row_data.append(col)
             colnum += 1
 
@@ -90,7 +94,7 @@ for row in reader:
     rownum += 1
     
 json_file.write('species_list = ');
-json_file.write(json.dumps(data))
+json_file.write(json.dumps(data,separators=(',', ':')))
 json_file.write(';');
 
 csv_file.close()
