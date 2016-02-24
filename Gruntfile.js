@@ -47,7 +47,7 @@ module.exports = function (grunt) {
           },
           //JS
           {
-            src: "src/vendor/**/js/*", dest: 'dist/vendor/',
+            src: ["src/vendor/**/js/*"], dest: 'dist/vendor/',
             expand: true, flatten: true
           },
           //CSS
@@ -374,7 +374,24 @@ module.exports = function (grunt) {
 
         }
       }
+    },
+
+    clean: {
+      dist: [
+        'dist/vendor/*',
+        '!dist/vendor/require.min.js',
+        //styles
+        'dist/styles/*',
+        '!dist/styles/main.min.css',
+        //scripts
+        'dist/scripts/*',
+        '!dist/scripts/main-built.js',
+        //data
+        '!dist/scripts/data',
+        'dist/scripts/data/raw'
+      ]
     }
+
   });
 
   grunt.loadNpmTasks('grunt-bower-task');
@@ -385,6 +402,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-babel');
 
 
@@ -422,7 +440,8 @@ module.exports = function (grunt) {
   //Development run
   grunt.registerTask('dev', [
     'run',
-    'replace:dev_config'
+    'replace:dev_config',
+    'requirejs'
   ]);
 
   //Cordova build package

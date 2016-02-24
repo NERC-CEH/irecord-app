@@ -10,9 +10,8 @@
 
       //libraries
       'ratchet': '../vendor/ratchet',
-      'zepto': '../vendor/zepto',
-      'zepto-custom': '../vendor/zepto-custom',
-      'deferred': '../vendor/deferred',
+      'zepto': '../vendor/zepto.min',
+      'deferred': '../vendor/deferred.min',
       'IndexedDBShim': '../vendor/IndexedDBShim.min',
       'latlon': '../vendor/osgridref.min',
       'latlon-ellipsoidal': '../vendor/latlon-ellipsoidal.min',
@@ -20,11 +19,11 @@
       'dms': '../vendor/dms.min',
       'fastclick': '../vendor/fastclick.min',
       'morel': '../vendor/morel',
-      'underscore': '../vendor/lodash',
-      'backbone': '../vendor/backbone',
-      'marionette': '../vendor/backbone.marionette',
+      'underscore': '../vendor/lodash.min',
+      'backbone': '../vendor/backbone.min',
+      'marionette': '../vendor/backbone.marionette.min',
       'backbone.localStorage': '../vendor/backbone.localStorage-min',
-      'hammerjs': '../vendor/hammer',
+      'hammerjs': '../vendor/hammer.min',
       'leaflet': '../vendor/leaflet',
       'proj4': '../vendor/proj4',
       'proj4leaflet': '../vendor/proj4leaflet',
@@ -56,14 +55,11 @@
     //http://simonsmith.io/using-zepto-and-jquery-with-requirejs/
     map: {
       '*': {
-        'jquery': 'zepto-custom'
-      },
-      'zepto-custom': {
-        'zepto': 'zepto'
+        'jquery': 'zepto'
       }
     },
     shim: {
-      'zepto': {exports: 'Zepto'},
+      'zepto': {exports: 'Zepto', deps: ['deferred']},
       'latlon': {deps: ['latlon-ellipsoidal']},
       'latlon-ellipsoidal': {deps: ['vector3d', 'dms']},
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
