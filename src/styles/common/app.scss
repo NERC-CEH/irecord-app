@@ -462,3 +462,8 @@ button, input, select, textarea {
 .table-view-divider {
   border-top: none;
 }
+
+//remove top margin on lists
+.content>.table-view:first-child {
+  margin-top: 0;
+}

@@ -9,6 +9,9 @@ define([
   'use strict';
 
   var View = Marionette.ItemView.extend({
+    tagName: 'ul',
+    className: 'table-view buttons',
+    
     template: JST['app/info/main'],
 
     events: {
