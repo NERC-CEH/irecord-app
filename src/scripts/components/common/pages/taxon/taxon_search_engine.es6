@@ -2,10 +2,14 @@
  * Generates UKSI list search suggestions.
  */
 define([
-  'log',
-  'data/master_list'
-], function (Log) {
-  var species = window['species_list'];
+  'jquery',
+  'backbone',
+  'log'
+], function ($, Backbone, Log) {
+  let species;
+  let commonNamePointers;
+
+  var events = $.extend(function () {}, Backbone.Events);
 
   const WAREHOUSE_INDEX = 0,
         GROUP_INDEX = 1,
@@ -15,56 +19,17 @@ define([
         SPECIES_COMMON_SYN_INDEX = 3; //in species and bellow
   const MAX = 20;
 
-  /**
-   * Extract common names as pointers in an array
-   */
-  let commonNamePointers = (function () {
-    let species_list = window['species_list'];
-    let common_names = [];
-
-    for (let i = 1, length = species_list.length; i < length; i++) {
-      let species_entry = species_list[i];
-
-      //find species array
-      let species_array;
-      let j = 0;
-      for (let length = species_entry.length; j < length; j++) {
-        if (species_entry[j] instanceof Array) {
-          species_array = species_entry[j];
-          break;
-        }
-      }
-
-      if (species_array) {
-        for (let k = 0, species_length = species_array.length; k < species_length; k++) {
-          let speciesInArray = species_array[k];
-          if (speciesInArray[SPECIES_COMMON_INDEX]) {
-            common_names.push([i, j, k, SPECIES_COMMON_INDEX]);
-          }
-          if (speciesInArray[SPECIES_COMMON_SYN_INDEX]) {
-            common_names.push([i, j, k, SPECIES_COMMON_SYN_INDEX]);
-          }
-        }
-      }
-    }
-
-    common_names.sort(function (a, b) {
-      let spA = species[a[0]][a[1]][a[2]][a[3]].toLowerCase();
-      let spB = species[b[0]][b[1]][b[2]][b[3]].toLowerCase();
-
-      if (spA > spB) {
-        return 1;
-      } else if(spA < spB) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-
-    return common_names;
-  })();
-
   let API = {
+    init: function () {
+      if (!window['species_list']) {
+        require(['data/master_list'], function () {
+          species = window['species_list'];
+          commonNamePointers = API._makeCommonNameMap();
+          events.trigger('loaded');
+        });
+      }
+    },
+
     /**
      * Returns an array of species in format
      {
@@ -78,10 +43,15 @@ define([
        synonym: "Common name synonym"
      }
      */
-    search: function (searchPhrase) {
-      let results = [];
+    search: function (searchPhrase, callback) {
+      if (!species) {
+        events.once('loaded', function () {
+          API.search(searchPhrase, callback);
+        });
+        return;
+      }
 
-      let timeStart = new Date(); //track search time
+      let results = [];
 
       //check if scientific search
       let isScientific = API._isPhraseScientific(searchPhrase);
@@ -99,11 +69,8 @@ define([
         }
       }
 
-      Log('Search time: ' + (new Date() - timeStart) + 'ms', 'd');
-      Log(results);
-
       //return results in the order
-      return results;
+      callback(results);
     },
 
     /**
@@ -404,6 +371,55 @@ define([
       } else {
         return mid;
       }
+    },
+
+    /**
+     * Extract common names as pointers in an array
+     */
+    _makeCommonNameMap: function () {
+      let species_list = window['species_list'];
+      let common_names = [];
+
+      for (let i = 1, length = species_list.length; i < length; i++) {
+        let species_entry = species_list[i];
+
+        //find species array
+        let species_array;
+        let j = 0;
+        for (let length = species_entry.length; j < length; j++) {
+          if (species_entry[j] instanceof Array) {
+            species_array = species_entry[j];
+            break;
+          }
+        }
+
+        if (species_array) {
+          for (let k = 0, species_length = species_array.length; k < species_length; k++) {
+            let speciesInArray = species_array[k];
+            if (speciesInArray[SPECIES_COMMON_INDEX]) {
+              common_names.push([i, j, k, SPECIES_COMMON_INDEX]);
+            }
+            if (speciesInArray[SPECIES_COMMON_SYN_INDEX]) {
+              common_names.push([i, j, k, SPECIES_COMMON_SYN_INDEX]);
+            }
+          }
+        }
+      }
+
+      common_names.sort(function (a, b) {
+        let spA = species[a[0]][a[1]][a[2]][a[3]].toLowerCase();
+        let spB = species[b[0]][b[1]][b[2]][b[3]].toLowerCase();
+
+        if (spA > spB) {
+          return 1;
+        } else if(spA < spB) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+
+      return common_names;
     }
   };
 

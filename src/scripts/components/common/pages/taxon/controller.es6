@@ -14,6 +14,8 @@ define([
 ], function (Backbone, Morel, Log, GPS, App, appModel, recordManager, Sample, Occurrence, MainView, HeaderView, SpeciesSearchEngine) {
   let API = {
     show: function (recordID){
+      SpeciesSearchEngine.init();
+
       let that = this;
       this.id = recordID;
 
@@ -64,13 +66,9 @@ define([
     _showMainView: function (mainView, that) {
       mainView.on('taxon:selected', API._onSelected, that);
       mainView.on('taxon:searched', function (searchPhrase) {
-        let timeStart = new Date();
-        let selection = SpeciesSearchEngine.search(searchPhrase);
-        Log('MID TIME: ' + (new Date() - timeStart) + 'ms', 'd');
-
-        mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
-        Log('ALL TIME: ' + (new Date() - timeStart) + 'ms', 'd');
-
+        SpeciesSearchEngine.search(searchPhrase, function (selection) {
+          mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
+        });
       });
 
       App.regions.main.show(mainView);
