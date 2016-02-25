@@ -1,4 +1,5 @@
 define([
+  'backbone',
   'marionette',
   'log',
   'app',
@@ -6,8 +7,9 @@ define([
   'common/controller',
   './info/controller',
   './settings/controller',
-  'common/past_locations_view'
-], function(Marionette, Log, App, CONFIG, CommonController, InfoController, SettingsController, LocationsView) {
+  'common/past_locations_view',
+  'common/app_model'
+], function(Backbone, Marionette, Log, App, CONFIG, CommonController, InfoController, SettingsController, LocationsView, appModel) {
   App.info = {};
 
   App.info.Router = Marionette.AppRouter.extend({
@@ -16,7 +18,7 @@ define([
       "app/about(/)": function() {
         CommonController.show({
           title: 'About', App: App, route: 'app/about/main',
-          model: {version: CONFIG.version}
+          model: new Backbone.Model({version: CONFIG.version})
         })},
       "app/help(/)": function() {
         CommonController.show({
@@ -38,7 +40,10 @@ define([
       "app/settings/locations(/)": function () {
         CommonController.show({
           title: 'Locations', App: App, route: 'app/settings/locations',
-          mainView: LocationsView
+          mainView: LocationsView,
+          //needs this wrapper because it is used in location page
+          //where othre tabs require other models
+          model: new Backbone.Model({appModel: appModel})
         })
       },
       "app/*path": function () {App.trigger('404:show')}
@@ -54,7 +59,7 @@ define([
     App.navigate('app/about');
     CommonController.show({
       title: 'About', App: App, route: 'app/about/main',
-      model: {version: CONFIG.version}
+      model: new Backbone.Model({version: CONFIG.version})
     });
   });
 

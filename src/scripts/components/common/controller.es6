@@ -13,7 +13,7 @@ define([
         template: JST[options.route]
       });
       App.regions.main.show(new MainView({
-        model: new Backbone.Model(options.model || {})
+        model: options.model || new Backbone.Model()
       }));
 
       let headerView = new HeaderView({

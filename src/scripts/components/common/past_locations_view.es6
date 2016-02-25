@@ -83,6 +83,9 @@ define([
     },
 
     _swipe: function (e, options) {
+      //only swipe if no scroll up
+      if (Math.abs(e.deltaY) > 10) return;
+
       if (this.docked) {
         this.position = -options.toolsWidth + e.deltaX;
       } else {
@@ -96,6 +99,9 @@ define([
     },
 
     _swipeEnd: function (e, options) {
+      //only swipe if no scroll up and is not in the middle
+      if (Math.abs(e.deltaY) > 10 && !this.position) return;
+
       // if (e.deltaX > options.threshold) {
       if ((-options.toolsWidth + e.deltaX) > -options.toolsWidth) {
         //bring back
