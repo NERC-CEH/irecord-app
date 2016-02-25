@@ -11,6 +11,7 @@
       //libraries
       'ratchet': '../vendor/ratchet',
       'zepto': '../vendor/zepto.min',
+      'zepto-custom': '../vendor/zepto-custom',
       'deferred': '../vendor/deferred.min',
       'IndexedDBShim': '../vendor/IndexedDBShim.min',
       'latlon': '../vendor/osgridref.min',
@@ -55,7 +56,10 @@
     //http://simonsmith.io/using-zepto-and-jquery-with-requirejs/
     map: {
       '*': {
-        'jquery': 'zepto'
+        'jquery': 'zepto-custom'
+      },
+      'zepto-custom': {
+        'zepto': 'zepto'
       }
     },
     shim: {
