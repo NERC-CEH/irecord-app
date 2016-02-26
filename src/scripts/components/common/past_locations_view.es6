@@ -17,17 +17,10 @@ define([
 
     template: JST['common/past_location'],
 
-    events: {
-      'click .location': 'onClick'
-    },
-
     triggers: {
-      'click #delete': 'location:delete'
-    },
-
-    //let the controller know
-    onClick: function () {
-      this.trigger('location:select:past', this.model.toJSON());
+      'click .location': 'location:select',
+      'click #delete': 'location:delete',
+      'click #edit': 'location:edit'
     },
 
     serializeData: function () {
@@ -136,7 +129,7 @@ define([
 
     initialize: function () {
       let that = this;
-      let appModel = this.model.get('appModel');
+      let appModel = this.model;
       let previousLocations = appModel.get('locations');
       this.collection = new Backbone.Collection(previousLocations);
 

@@ -108,7 +108,7 @@ define([
           break;
         case 'comment':
           //this.$el.find('textarea').focus();
-          let $textarea = this.$el.find('textarea').focus()
+          let $textarea = this.$el.find('textarea').focus();
           if (window.deviceIsAndroid) {
             Keyboard.show();
             $textarea.focusout(function () {

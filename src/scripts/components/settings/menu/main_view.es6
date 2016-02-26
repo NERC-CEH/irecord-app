@@ -12,7 +12,7 @@ define([
   var View = Marionette.ItemView.extend({
     tagName: 'ul',
     className: 'table-view',
-    template: JST['app/settings/main'],
+    template: JST['settings/menu/main'],
 
     events: {
       'toggle #use-gridref-btn': 'onSettingToggled',

@@ -48,11 +48,14 @@ define([
         //add
         location.id = UUID();
         locations.splice(0, 0, location);
-
-        this.set('locations', locations);
-        this.trigger('change:locations');
-        this.save();
+      } else {
+        //update location
+        $.extend(exists, location);
       }
+
+      this.set('locations', locations);
+      this.trigger('change:locations');
+      this.save();
     },
 
     removeLocation: function(location = {}) {

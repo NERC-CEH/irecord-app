@@ -429,21 +429,24 @@ a span.pull-left.icon {
 //mobile swipe edit tools
 .mobile-swipe-edit {
   height: 100%;
-  width: 50px;
   position: absolute;
   top: 0;
   right: 1px;
 
-  background-color: $color-orange;
-  color: $color-white;
-
-  .delete {
+  div {
+    //size of the button
     height: 100%;
-    width: 100%;
+    width: 50px;
 
-    text-align: center;
-    padding-top: 20px;
-    font-size: 30px;
+    &.delete, &.edit {
+      text-align: center;
+      font-size: 30px;
+    }
+
+    &.delete {
+      background-color: $color-orange;
+      color: $color-white;
+    }
   }
 }
 

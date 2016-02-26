@@ -46,36 +46,83 @@ define([
       if (!view) return;
 
       if (!(view instanceof Marionette.ItemView)){
+        //create a standard dialog
+        let options = view;
         let that = this;
         this.hideAllowed = typeof view.hideAllowed != 'undefined' ? view.hideAllowed : true ;
 
-        let model = new Backbone.Model({
-          title: view.title || '',
-          body: view.body || '',
-          buttons: view.buttons
-        });
-
-        _.each(model.get('buttons'), function (button) {
-          button.id = button.id || Math.floor(Math.random() * 10000);
-          button.onClick = button.onClick || that.hide
-        });
-
-        view = new Marionette.ItemView({
+        let View = Marionette.LayoutView.extend({
           template: view.template || JST['common/dialog'],
           className: 'content ' + (view.className ? view.className : ''),
 
-          model: model,
+          regions: {
+            header: '.dialog-header',
+            body: '.dialog-body',
+            footer: '.dialog-footer'
+          },
 
-          events: {
-            'click button': function (e) {
-              _.each(this.model.get('buttons'), function (button) {
-                  if (e.target.id == button.id) {
-                    button.onClick();
+          onShow: function () {
+            let that = this;
+            //add header
+            if (options.title) {
+              if (options.title instanceof Marionette.ItemView) {
+                this.header.show(options.title);
+              } else {
+                let title = new Marionette.ItemView({
+                  tagName: 'h3',
+                  template: _.template(options.title)
+                });
+                this.header.show(title);
+              }
+            }
+
+            //add body
+            if (options.body) {
+              if (options.body instanceof Marionette.ItemView) {
+                this.body.show(options.body);
+              } else {
+                let body = new Marionette.ItemView({
+                  template: _.template(options.body)
+                });
+                this.body.show(body);
+              }
+            }
+
+
+            //add buttons
+            if (options.buttons) {
+              if (options.buttons instanceof Marionette.ItemView) {
+                this.footer.show(options.buttons);
+              } else {
+                let ButtonView = Marionette.ItemView.extend({
+                  id: function () {
+                    return this.model.id || Math.floor(Math.random() * 10000)
+                  },
+                  tagName: 'button',
+                  className: function () {
+                    return 'btn ' + this.model.get('class')
+                  },
+                  template: _.template('<%- obj.title %>'),
+                  events: {
+                    'click': function (e) {
+                      let onClick = this.model.attributes.onClick || that.hide;
+                      onClick();
+                    }
                   }
-              });
+                });
+
+                let ButtonsArrayView =  Marionette.CollectionView.extend({
+                  className: 'dialog-buttons',
+                  collection: new Backbone.Collection(options.buttons),
+                  childView: ButtonView
+                });
+
+                this.footer.show(new ButtonsArrayView());
+              }
             }
           }
         });
+        view = new View();
       }
 
       this.$el.fadeIn(300);

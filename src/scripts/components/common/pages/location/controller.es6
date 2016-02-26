@@ -10,8 +10,9 @@ define([
   './gps_view',
   './map_view',
   './grid_ref_view',
-  'common/past_locations_view'
-], function (Morel, GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView) {
+  './past_view',
+  'JST'
+], function (Morel, GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView, JST) {
   let API = {
     show: function (recordID){
       recordManager.get(recordID, function (err, recordModel) {
@@ -64,11 +65,6 @@ define([
           recordModel.trigger('change:location');
         };
 
-        let onPastLocationDelete = function (view) {
-          let location = view.model;
-          appModel.removeLocation(location);
-        };
-
         let onGPSClick = function () {
           //turn off if running
           if (recordModel.locating >= 0) {
@@ -108,12 +104,12 @@ define([
           });
         };
 
-        mainView.on('childview:childview:location:select:past', function (e, view, location) {
+        mainView.on('childview:location:select:past', function (view, location) {
           onLocationSelect(view, location);
           onPageExit();
         });
-        mainView.on('childview:location:select:past', onLocationSelect);
-        mainView.on('childview:location:delete', onPastLocationDelete);
+        mainView.on('childview:location:delete', API.deleteLocation);
+        mainView.on('childview:location:edit', API.editLocation);
         mainView.on('childview:location:select:map', onLocationSelect);
         mainView.on('childview:location:select:gridref', function(view, location) {
           onLocationSelect(view, location);
@@ -201,6 +197,59 @@ define([
 
       //FOOTER
       App.regions.footer.hide().empty();
+    },
+
+    editLocation: function (view, model) {
+      let location = model;
+      let EditView = Marionette.ItemView.extend({
+        template: JST['common/past_location_edit'],
+        getValues: function () {
+          return {
+            name: this.$el.find('#name').val().escape()
+          };
+        },
+
+        onShow: function () {
+          let $input = this.$el.find('#name');
+          $input.focus();
+          if (window.deviceIsAndroid) {
+            Keyboard.show();
+            $input.focusout(function () {
+              Keyboard.hide();
+            });
+          }
+        }
+      });
+
+      editView = new EditView({model: location});
+
+      App.regions.dialog.show({
+        title: 'Edit Location',
+        body: editView,
+        buttons: [
+          {
+            title: 'Save',
+            class: 'btn-positive',
+            onClick: function () {
+              //update location
+              let locationEdit = editView.getValues();
+              appModel.setLocation(location.set(locationEdit).toJSON());
+              App.regions.dialog.hide();
+            }
+          },
+          {
+            title: 'Cancel',
+            onClick: function () {
+              App.regions.dialog.hide();
+            }
+          }
+        ]
+      });
+    },
+
+    deleteLocation: function (view, model) {
+      let location = model;
+      appModel.removeLocation(location);
     }
   };
 

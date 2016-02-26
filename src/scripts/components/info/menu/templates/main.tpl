@@ -1,29 +1,29 @@
 <li class="table-view-cell">
-  <a href="#app/about" class="navigate-right">
+  <a href="#info/about" class="navigate-right">
     <span class="media-object pull-left icon icon-info"></span>
     About
   </a>
 </li>
 <li class="table-view-cell">
-  <a href="#app/help" class="navigate-right">
+  <a href="#info/help" class="navigate-right">
     <span class="media-object pull-left icon icon-help"></span>
     Help
   </a>
 </li>
 <li class="table-view-cell">
-  <a href="#app/privacy" class="navigate-right">
+  <a href="#info/privacy" class="navigate-right">
     <span class="media-object pull-left icon icon-lock-closed"></span>
     Privacy Policy
   </a>
 </li>
 <li class="table-view-cell">
-  <a href="#app/brc-approved" class="navigate-right">
+  <a href="#info/brc-approved" class="navigate-right">
     <span class="media-object pull-left icon icon-thumbs-up"></span>
     BRC Approved
   </a>
 </li>
 <li class="table-view-cell">
-  <a href="#app/credits" class="navigate-right">
+  <a href="#info/credits" class="navigate-right">
     <span class="media-object pull-left icon icon-heart"></span>
     Credits
   </a>
@@ -31,7 +31,7 @@
 
 <li class="table-view-divider">Settings</li>
 <li class="table-view-cell">
-  <a href="#app/settings" class="navigate-right">
+  <a href="#settings" class="navigate-right">
     <span class="media-object pull-left icon icon-settings"></span>
     App
   </a>

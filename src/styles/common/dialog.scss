@@ -53,7 +53,7 @@
 
 .dialog-header {
   padding: 15px 10px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid $color-gray-light;
   text-align: center;
 }
 
@@ -67,8 +67,8 @@
   line-height: 1.2;
 }
 
-.dialog-body {
-  padding: 10px;
+.dialog-body div {
+  margin: 10px 0;
 }
 
 .dialog-buttons {

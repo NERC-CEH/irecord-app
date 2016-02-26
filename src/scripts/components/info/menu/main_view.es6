@@ -12,7 +12,7 @@ define([
     tagName: 'ul',
     className: 'table-view buttons',
     
-    template: JST['app/info/main'],
+    template: JST['info/menu/main'],
 
     events: {
       'click #logout-button': 'logout'

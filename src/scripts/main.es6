@@ -80,7 +80,8 @@
     'app',
     'ratchet',
     'components/records/router',
-    'components/app/router',
+    'components/info/router',
+    'components/settings/router',
     'components/user/router'
   ], function (App) {
     App.start();
