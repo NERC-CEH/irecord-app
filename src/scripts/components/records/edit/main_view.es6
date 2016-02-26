@@ -35,7 +35,8 @@ define([
         }
       }
 
-      let location = recordModel.printLocation();
+      let location_print = recordModel.printLocation();
+      let location = recordModel.get('location') || {};
 
       let attrLocks = {
         date: appModel.isAttrLocked('date', recordModel.get('date')),
@@ -51,7 +52,8 @@ define([
         common_name: common_name,
         isLocating: recordModel.locating >= 0,
         isSynchronising: recordModel.getSyncStatus() == Morel.SYNCHRONISING,
-        location: location,
+        location: location_print,
+        location_name: location.name,
         date: recordModel.get('date').print(),
         number: occ.get('number') && occ.get('number').limit(20),
         stage: occ.get('stage') && occ.get('stage').limit(20),

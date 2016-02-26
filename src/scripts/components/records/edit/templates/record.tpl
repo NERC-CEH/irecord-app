@@ -11,6 +11,13 @@
     <a href="#records/<%- obj.id %>/edit/location" id="location-button"
        class="<%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-location"></span>
+
+      <% if (obj.location_name) { %>
+      <span class="media-object pull-right descript"><%- obj.location_name %></span>
+      <% } else { %>
+      <span class="media-object pull-right descript error">Name missing</span>
+      <% } %>
+
       <% if (obj.location) { %>
         <span class="media-object pull-right descript"><%- obj.location %></span>
       <% } else { %>

@@ -1,4 +1,5 @@
-<div class="info-message" id="map-message">
-  <p>Please tap on the map to select your location. </p>
+<div class="input-row">
+  <label class="media-object pull-left icon icon-address"></label>
+  <input type="text" id="location-name" placeholder="Nearest Named Place" value="<%- obj.name %>"/>
 </div>
 <div id="map"></div>

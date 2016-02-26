@@ -33,6 +33,14 @@ define([
       'click #gps-button': 'gps:click'
     },
 
+    events: {
+      'change #location-name': 'changeName'
+    },
+
+    changeName: function (e) {
+      this.triggerMethod('location:name:change', $(e.target).val())
+    },
+
     /**
      * Update the temporary location fix
      * @param location
@@ -50,20 +58,25 @@ define([
     serializeData: function () {
       let recordModel = this.model.get('recordModel');
       let location = this.locationUpdate;
-      let prevLocation = recordModel.get('location');
+      let prevLocation = recordModel.get('location') || {};
 
       //if not fixed the location but has previous one that is updating
-      if (!location && prevLocation && prevLocation.source === 'gps') {
+      if (!location && prevLocation.source === 'gps') {
         location = prevLocation;
       }
 
       if (location) {
         return {
+          name: prevLocation.name,
           accuracy: location.accuracy,
           latitude: location.latitude,
           longitude: location.longitude,
           accuracyLimit: 100 //TODO: get from GPS
         };
+      } else {
+        return {
+          name: prevLocation.name
+        }
       }
     }
   });

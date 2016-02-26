@@ -74,6 +74,13 @@ define([
           }
         };
 
+        let onLocationNameChange = function (view, name) {
+          let location = recordModel.get('location');
+          location.name = name;
+          recordModel.set('location', location);
+          recordModel.trigger('change:location');
+        };
+
         let currentVal = recordModel.get('location');
         let onPageExit = function () {
           recordModel.save(function () {
@@ -116,6 +123,7 @@ define([
           onPageExit();
         });
         mainView.on('childview:gps:click', onGPSClick);
+        mainView.on('childview:location:name:change', onLocationNameChange);
 
         App.regions.main.show(mainView);
 
@@ -150,35 +158,13 @@ define([
             let location = this.model.get('location');
 
             let $title = this.$el.find('h1');
-            let $subtitle = this.$el.find('h3');
 
             $title.html(title);
-
-            if (location.name) {
-              //with subtitle
-              $subtitle.html(location.name);
-              $subtitle.show();
-              $title.toggleClass('with-subtitle', true);
-            } else {
-              //no subtitle
-              $subtitle.hide();
-              $title.toggleClass('with-subtitle', false);
-            }
           },
 
           serializeData: function () {
-            let location = this.model.get('location');
-            let title = this.model.printLocation();
-            let subtitle;
-
-            if (location && location.name) {
-              subtitle = title;
-              title = location && location.name;
-            }
-
             return {
-              title: title,
-              subtitle: subtitle
+              title: this.model.printLocation()
             }
           }
         });

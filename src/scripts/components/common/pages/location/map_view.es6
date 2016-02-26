@@ -9,6 +9,14 @@ define([
   return Marionette.ItemView.extend({
     template: JST['common/location/map'],
 
+    events: {
+      'change #location-name': 'changeName'
+    },
+
+    changeName: function (e) {
+      this.triggerMethod('location:name:change', $(e.target).val())
+    },
+
     onShow: function () {
       let that = this;
 
@@ -51,7 +59,7 @@ define([
         markerCoords = mapZoomCoords;
       }
 
-      let mapHeight = $(document).height() - $('#map-message').height() - (44 + 38.5);
+      let mapHeight = $(document).height() - (44 + 38.5);
       mapHeight = mapHeight * 0.95;
 
       let container = this.$el.find('#map')[0];
@@ -134,6 +142,14 @@ define([
       }
 
       map.on('click', onMapClick);
+    },
+
+    serializeData: function () {
+      let location = this.model.get('recordModel').get('location') || {};
+
+      return {
+        name: location.name
+      }
     }
   });
 });
