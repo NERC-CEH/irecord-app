@@ -77,6 +77,7 @@ define([
 
         if (window.cordova) {
           StatusBar.overlaysWebView(true);
+          StatusBar.backgroundColorByName('black');
 
           //iOS make space for statusbar
           if (window.deviceIsIOS) {

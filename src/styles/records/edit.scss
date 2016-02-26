@@ -7,10 +7,10 @@
 
 #record-save-btn {
   width: 20% !important;
-  height: 43px;
   color: $header-color;
   float: right;
   border: none;
+  border-bottom: 1px solid $header-color;
   background-color: $color-white;
 }
 

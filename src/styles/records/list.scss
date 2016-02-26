@@ -1,15 +1,14 @@
 //HEADER
 #records-header {
-  height: 45px;
   border-bottom: 1px $header-color solid;
 
   .pull-left {
     margin-left: 2%;
   }
   .pull-right {
-    height: 44px;
     width: 40%;
     background-color: $color-white;
+    border-bottom: 1px solid $header-color;
 
     a {
       width: 45%;

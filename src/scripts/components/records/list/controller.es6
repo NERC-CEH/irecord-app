@@ -34,16 +34,16 @@ define([
             body: body,
             buttons: [
               {
-                title: 'Delete',
-                class: 'btn-negative',
+                title: 'Cancel',
                 onClick: function () {
-                  childView.model.destroy();
                   App.regions.dialog.hide();
                 }
               },
               {
-                title: 'Cancel',
+                title: 'Delete',
+                class: 'btn-negative',
                 onClick: function () {
+                  childView.model.destroy();
                   App.regions.dialog.hide();
                 }
               }
