@@ -26,6 +26,9 @@ img {
 .input-row input {
   min-height: $button-height;
 }
+.input-row input {
+  width: 88%;
+}
 
 label, form label {
   width: auto;

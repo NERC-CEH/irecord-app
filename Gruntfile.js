@@ -431,7 +431,7 @@ module.exports = function (grunt) {
     'run',
     'replace:config',
     'requirejs',
-    'clean:dist'
+   // 'clean:dist'
   ]);
 
   //Development run

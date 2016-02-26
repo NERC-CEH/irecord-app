@@ -21,11 +21,20 @@ define([
       }
 
       //location
-      let location = this.get('location');
-      if (!location || (!location.latitude || !location.longitude)) {
+      let location = this.get('location') || {};
+      if (!location.latitude || !location.longitude) {
         invalids.push({
           sample: true,
           name: 'location',
+          message: 'missing'
+        });
+      }
+
+      //location name
+      if (!location.name) {
+        invalids.push({
+          sample: true,
+          name: 'location name',
           message: 'missing'
         });
       }

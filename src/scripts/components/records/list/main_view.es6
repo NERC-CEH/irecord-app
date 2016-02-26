@@ -93,14 +93,16 @@ define([
 
       let syncStatus = this.model.getSyncStatus();
 
-      let location = recordModel.printLocation();
+      let location_print = recordModel.printLocation();
+      let location = recordModel.get('location') || {};
 
       return {
         id: recordModel.id || recordModel.cid,
         saved: recordModel.metadata.saved,
         onDatabase: syncStatus === Morel.SYNCED,
         isLocating: recordModel.locating >= 0,
-        location: location,
+        location: location_print,
+        location_name: location.name,
         isSynchronising: syncStatus === Morel.SYNCHRONISING,
         date: date,
         taxon: taxon,

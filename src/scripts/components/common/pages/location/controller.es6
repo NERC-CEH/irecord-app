@@ -75,8 +75,12 @@ define([
         };
 
         let onLocationNameChange = function (view, name) {
+          if (!name) {
+            return;
+          }
+
           let location = recordModel.get('location');
-          location.name = name;
+          location.name = name.escape();
           recordModel.set('location', location);
           recordModel.trigger('change:location');
         };
