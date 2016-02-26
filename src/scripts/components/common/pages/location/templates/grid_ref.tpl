@@ -15,4 +15,4 @@
 </div>
 
 <button id="grid-ref-set-btn"
-        class="btn btn-narrow btn-positive btn-block">Set</button>
+        class="btn btn-narrow btn-positive btn-block">Save</button>

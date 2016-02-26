@@ -42,6 +42,12 @@ define([
         body: 'Are you sure you want to delete all submitted records?',
         buttons: [
           {
+            title: 'Cancel',
+            onClick: function () {
+              App.regions.dialog.hide();
+            }
+          },
+          {
             title: 'Delete',
             class: 'btn-negative',
             onClick: function () {
@@ -51,12 +57,6 @@ define([
                   title: 'Done!'
                 })
               });
-            }
-          },
-          {
-            title: 'Cancel',
-            onClick: function () {
-              App.regions.dialog.hide();
             }
           }
         ]
@@ -69,7 +69,13 @@ define([
         body: 'Are you sure you want to set all valid records for submission?',
         buttons: [
           {
-            title: 'Send All',
+            title: 'Cancel',
+            onClick: function () {
+              App.regions.dialog.hide();
+            }
+          },
+          {
+            title: 'OK',
             class: 'btn-positive',
             onClick: function () {
               //delete all
@@ -78,12 +84,6 @@ define([
                   title: 'Done!'
                 })
               });
-            }
-          },
-          {
-            title: 'Cancel',
-            onClick: function () {
-              App.regions.dialog.hide();
             }
           }
         ]

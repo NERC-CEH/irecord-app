@@ -7,6 +7,7 @@
 body {
   margin: 0;
   color: $color-black;
+  font-size: $text-font-size;
 
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: none;
@@ -202,12 +203,14 @@ li h3 {
 }
 
 .btn-narrow {
-  width: 45%;
+  padding: 0 20px;
+  width: auto;
   margin: 10px auto;
 }
 
 .btn {
   height: $button-height;
+  font-size: $button-font-size;
 }
 
 .info-message,
@@ -347,6 +350,18 @@ input {
   margin-right: -5px;
 }
 
+button span {
+  &.pull-left {
+    margin-left: -17px;
+    margin-right: 3px;
+  }
+
+  &.pull-right {
+    margin-right: -17px;
+    margin-left: 3px;
+  }
+}
+
 @mixin empty-list() {
   &.empty {
     font-size: 13.3333px;
@@ -370,6 +385,7 @@ input {
 
 .table-view-cell {
   padding: 11px 65px 11px 15px;
+  font-size: $button-font-size;
 
   &:hover {
     border: none;
@@ -377,8 +393,11 @@ input {
     color: $color-black;
   }
 
-  a:hover {
-    background-color: $color-gray-light;
+  a {
+    font-size: $button-font-size;
+    &:hover {
+      background-color: $color-gray-light;
+    }
   }
 
   p {
@@ -464,6 +483,8 @@ button, input, select, textarea {
 
 .table-view-divider {
   border-top: none;
+  background-color: $color-gray-light;
+  font-size: $button-font-size;
 }
 
 //remove top margin on lists
