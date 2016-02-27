@@ -482,6 +482,14 @@ a span.pull-left.icon {
       background-color: $color-orange;
       color: $color-white;
     }
+
+    //should be white all the time
+    &.edit {
+      background-color: $color-white;
+      &:hover {
+        background-color: $color-white;
+      }
+    }
   }
 }
 

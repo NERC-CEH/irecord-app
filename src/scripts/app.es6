@@ -73,7 +73,7 @@ define([
           });
         });
 
-        $('#loader').remove();
+        $('#loader').hide().remove(); //hide first - Android quirk
 
         if (window.cordova) {
           StatusBar.overlaysWebView(true);
@@ -82,6 +82,11 @@ define([
           //iOS make space for statusbar
           if (window.deviceIsIOS) {
             $('body').addClass('ios')
+          }
+
+          //hide loader
+          if(navigator && navigator.splashscreen){
+            navigator.splashscreen.hide();
           }
         }
       }

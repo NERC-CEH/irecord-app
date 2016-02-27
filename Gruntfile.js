@@ -38,8 +38,8 @@ module.exports = function (grunt) {
             expand: true, flatten: true
           },
           {
-            src: "src/images/**", dest: 'dist/images/',
-            expand: true, flatten: true, filter: 'isFile'
+            src: "**", cwd: 'src/images/', dest: 'dist/images/',
+            expand: true, filter: 'isFile'
           },
           {
             src: "src/images/ajax-loader.gif", dest: 'dist/styles/images/',

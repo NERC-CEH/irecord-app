@@ -19,4 +19,4 @@ cp config.xml cordova/
 
 cd cordova
 cordova platforms add ios android
-cordova build ios android
+#cordova build ios android
