@@ -179,3 +179,43 @@ input:checked + .checkbox-icon:after {
   left: 8px;
   z-index: 3;
   margin-top: -21px; }
+
+
+
+/**
+ * Popup
+ * --------------------------------------------------
+ */
+
+//animations
+@-webkit-keyframes scaleOut {
+  from {
+    -webkit-transform: scale(1);
+    opacity: 1; }
+  to {
+    -webkit-transform: scale(0.8);
+    opacity: 0; } }
+
+@keyframes scaleOut {
+  from {
+    transform: scale(1);
+    opacity: 1; }
+  to {
+    transform: scale(0.8);
+    opacity: 0; } }
+
+@-webkit-keyframes superScaleIn {
+  from {
+    -webkit-transform: scale(1.2);
+    opacity: 0; }
+  to {
+    -webkit-transform: scale(1);
+    opacity: 1; } }
+
+@keyframes superScaleIn {
+  from {
+    transform: scale(1.2);
+    opacity: 0; }
+  to {
+    transform: scale(1);
+    opacity: 1; } }
