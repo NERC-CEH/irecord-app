@@ -3,7 +3,8 @@
  *****************************************************************************/
 
 @import "_variables.scss";
+@import "app.scss";
 
 @import "common/main.scss";
-@import "app/main.scss";
+@import "info/main.scss";
 @import "records/main.scss";

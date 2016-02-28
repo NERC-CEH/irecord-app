@@ -62,6 +62,19 @@ define([
       return {
         isSynchronising: this.model.getSyncStatus() == Morel.SYNCHRONISING
       }
+    },
+
+    onShow: function () {
+      let that = this;
+
+      //create android camera/gallery selection
+      if (window.cordova && deviceIsAndroid) {
+        this.$el.find('.img-picker input').remove();
+
+        this.$el.find('.img-picker').on('click', function () {
+          that.trigger('photo:selection');
+        });
+      }
     }
   });
 

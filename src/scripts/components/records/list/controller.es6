@@ -72,10 +72,12 @@ define([
               title: 'Camera',
               onClick: function () {
                 let options = {
-                  sourceType: Camera.PictureSourceType.CAMERA
+                  sourceType: Camera.PictureSourceType.CAMERA,
+                  destinationType: Camera.DestinationType.DATA_URL
                 };
 
                 let onSuccess = function (imageData) {
+                  imageData = "data:image/jpeg;base64," + imageData;
                   API.photoUpload(imageData, function () {});
                 };
                 let onError = function () {};
@@ -88,10 +90,12 @@ define([
               title: 'Gallery',
               onClick: function () {
                 let options = {
-                  sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                  sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                  destinationType: Camera.DestinationType.DATA_URL
                 };
 
                 let onSuccess = function (imageData) {
+                  imageData = "data:image/jpeg;base64," + imageData;
                   API.photoUpload(imageData, function () {});
                 };
                 let onError = function () {};

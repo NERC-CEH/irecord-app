@@ -54,7 +54,6 @@ define([
         let headerView = new HeaderView({
           model: recordModel
         });
-        App.regions.header.show(headerView);
 
         headerView.on('save', function (e) {
           recordModel.setToSend(function (err) {
@@ -83,46 +82,7 @@ define([
           });
         });
 
-        //android gallery/camera selection
-        headerView.on('photo:selection', function (e) {
-          App.regions.dialog.show({
-            title: 'Choose a method to upload a photo',
-            buttons: [
-              {
-                title: 'Camera',
-                onClick: function () {
-                  let options = {
-                    sourceType: Camera.PictureSourceType.CAMERA
-                  };
-
-                  let onSuccess = function (imageData) {
-                    API.photoUpload(imageData, function () {});
-                  };
-                  let onError = function () {};
-
-                  navigator.camera.getPicture(onSuccess, onError, options);
-                  App.regions.dialog.hide();
-                }
-              },
-              {
-                title: 'Gallery',
-                onClick: function () {
-                  let options = {
-                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY
-                  };
-
-                  let onSuccess = function (imageData) {
-                    API.photoUpload(imageData, function () {});
-                  };
-                  let onError = function () {};
-
-                  navigator.camera.getPicture(onSuccess, onError, options);
-                  App.regions.dialog.hide();
-                }
-              }
-            ]
-          })
-        });
+        App.regions.header.show(headerView);
 
         //FOOTER
         let footerView = new FooterView({
@@ -142,6 +102,54 @@ define([
           view.model.destroy(function () {
             //hide loader
           });
+        });
+
+
+        //android gallery/camera selection
+        footerView.on('photo:selection', function (e) {
+          let occurrence = recordModel.occurrences.at(0);
+
+          App.regions.dialog.show({
+            title: 'Choose a method to upload a photo',
+            buttons: [
+              {
+                title: 'Camera',
+                onClick: function () {
+                  let options = {
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    destinationType: Camera.DestinationType.DATA_URL
+                  };
+
+                  let onSuccess = function (imageData) {
+                    imageData = "data:image/jpeg;base64," + imageData;
+                    API.photoUpload(occurrence, imageData, function () {});
+                  };
+                  let onError = function () {};
+
+                  navigator.camera.getPicture(onSuccess, onError, options);
+                  App.regions.dialog.hide();
+                }
+              },
+              {
+                title: 'Gallery',
+                onClick: function () {
+                  let options = {
+                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                    destinationType: Camera.DestinationType.DATA_URL
+                  };
+
+                  let onSuccess = function (imageData) {
+                    imageData = "data:image/jpeg;base64," + imageData;
+                    API.photoUpload(occurrence, imageData, function () {});
+                  };
+                  let onError = function () {};
+
+                  navigator.camera.getPicture(onSuccess, onError, options);
+                  App.regions.dialog.hide();
+                }
+              }
+            ]
+          })
         });
 
         App.regions.footer.show(footerView);
