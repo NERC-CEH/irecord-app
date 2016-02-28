@@ -1,5 +1,30 @@
 #!/bin/bash
 
+for i in "$@"
+do
+case $i in
+    -u|--update)
+    UPDATE=true
+    shift # past argument=value
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+done
+
+#Update the build only
+if $UPDATE; then
+  echo 'Updating build'
+
+  rm -R cordova/www/*
+  cp -R dist/* cordova/www/
+  rm cordova/config.xml
+  cp config.xml cordova/
+  exit
+fi
+
+#Build from scratch
 echo 'Build stared'
 
 #prepare www source
