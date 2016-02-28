@@ -66,7 +66,8 @@ define([
 
               App.regions.dialog.show({
                 title: 'Sorry',
-                body: missing
+                body: missing,
+                timeout: 2000
               });
 
               return;

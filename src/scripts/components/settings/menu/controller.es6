@@ -54,7 +54,8 @@ define([
               //delete all
               recordManager.removeAllSynced(function () {
                 App.regions.dialog.show({
-                  title: 'Done!'
+                  title: 'Done!',
+                  timeout: 1000
                 })
               });
             }
@@ -81,7 +82,8 @@ define([
               //delete all
               recordManager.setAllToSend(function () {
                 App.regions.dialog.show({
-                  title: 'Done!'
+                  title: 'Done!',
+                  timeout: 1000
                 })
               });
             }

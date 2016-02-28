@@ -1,23 +1,23 @@
-<div class="input-group">
+<div class="input-group form">
   <div class="input-row">
     <label class="media-object pull-left icon icon-mail"></label>
-    <input type="text" placeholder="Email" name="email" >
+    <input id="user-email" type="text" placeholder="Email" name="email" >
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-user"></label>
-    <input type="text" placeholder="Firstname" name="name" >
+    <input id="user-firstname" type="text" placeholder="Firstname" name="firstname" >
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-user"></label>
-    <input type="text" placeholder="Surname" name="surname" >
+    <input id="user-secondname" type="text" placeholder="Surname" name="secondname" >
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-key"></label>
-    <input type="password" placeholder="Password" name="pass" >
+    <input id="user-password" type="password" placeholder="Password" name="password" >
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-key"></label>
-    <input type="password" placeholder="Confirm password" name="passConf" >
+    <input id="user-password-confirm" type="password" placeholder="Confirm password" name="password-confirm" >
   </div>
 </div>
 

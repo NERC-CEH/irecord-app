@@ -30,6 +30,17 @@ img {
   width: 88%;
 }
 
+.input-row.error {
+  height: auto;
+  label {
+    color: $color-orange;
+  }
+}
+
+.input-row .error {
+  color: $color-orange;
+}
+
 label, form label {
   width: auto;
 }

@@ -4,8 +4,9 @@
 define([
   'backbone',
   'backbone.localStorage',
+  'validate',
   'app-config'
-], function (Backbone, Store, CONFIG) {
+], function (Backbone, Store, Validate, CONFIG) {
   'use strict';
 
   var User = Backbone.Model.extend({
@@ -74,6 +75,46 @@ define([
       sample.set('usersecret', this.get('secret'));
 
       return sample;
+    },
+
+    validate: function(attrs, options) {
+      let errors = {};
+
+      if (!attrs.email) {
+        errors.email = "can't be blank";
+      }else{
+        if (!Validate.email(attrs.email)) {
+          errors.email = "invalid";
+        }
+      }
+
+      if (!attrs.firstname) {
+        errors.firstName = "can't be blank";
+      }
+      if (!attrs.secondname) {
+        errors.secondname = "can't be blank";
+      }
+
+      if (!attrs.password) {
+        errors.password = "can't be blank";
+      } else{
+        if (attrs.password.length < 2) {
+          errors.password = "is too short";
+        }
+      }
+
+
+      if (!attrs['password-confirm']) {
+        errors['password-confirm'] = "can't be blank";
+      } else{
+        if (attrs['password-confirm'] !== attrs.password) {
+          errors['password-confirm'] = "passwords are not equal";
+        }
+      }
+
+      if( ! _.isEmpty(errors)){
+        return errors;
+      }
     }
   });
 
