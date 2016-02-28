@@ -16,11 +16,7 @@
     <plugin name="cordova-plugin-device" spec="~1.1.1" />
     <plugin name="cordova-plugin-whitelist" spec="~1.2.1" />
     <plugin name="cordova-plugin-splashscreen" spec="~3.2.0" />
-
     <plugin name="cordova-plugin-camera" spec="~2.1.0" />
-    <plugin name="cordova-plugin-media-capture" spec="~1.2.0" />
-    <plugin name="cordova-plugin-media" spec="~2.2.0" />
-    <plugin name="cordova-plugin-file" spec="~4.1.1" />
 
     <access origin="*" />
     <allow-intent href="http://*/*" />

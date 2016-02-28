@@ -62,6 +62,48 @@ define([
           //hide loader
         });
       });
+
+      //android gallery/camera selection
+      headerView.on('photo:selection', function (e) {
+        App.regions.dialog.show({
+          title: 'Choose a method to upload a photo',
+          buttons: [
+            {
+              title: 'Camera',
+              onClick: function () {
+                let options = {
+                  sourceType: Camera.PictureSourceType.CAMERA
+                };
+
+                let onSuccess = function (imageData) {
+                  API.photoUpload(imageData, function () {});
+                };
+                let onError = function () {};
+
+                navigator.camera.getPicture(onSuccess, onError, options);
+                App.regions.dialog.hide();
+              }
+            },
+            {
+              title: 'Gallery',
+              onClick: function () {
+                let options = {
+                  sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                };
+
+                let onSuccess = function (imageData) {
+                  API.photoUpload(imageData, function () {});
+                };
+                let onError = function () {};
+
+                navigator.camera.getPicture(onSuccess, onError, options);
+                App.regions.dialog.hide();
+              }
+            }
+          ]
+        })
+      });
+
       App.regions.header.show(headerView);
 
       //FOOTER
@@ -105,7 +147,11 @@ define([
         });
       };
 
-      Morel.Image.toString(file, stringified);
+      if (file instanceof File) {
+        Morel.Image.toString(file, stringified);
+      } else {
+        stringified (null, file, 'image/jpg');
+      }
     }
   };
 
