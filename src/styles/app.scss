@@ -297,7 +297,7 @@ input {
 
   label.icon {
     width: inherit;
-    float: none;
+    float: none !important;
     padding: 0;
   }
 
@@ -513,4 +513,9 @@ button, input, select, textarea {
 //remove top margin on lists
 .content>.table-view:first-child {
   margin-top: 0;
+}
+
+
+.bar-footer~.content {
+  padding-bottom: inherit;
 }

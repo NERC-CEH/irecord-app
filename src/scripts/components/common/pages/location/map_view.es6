@@ -59,7 +59,7 @@ define([
         markerCoords = mapZoomCoords;
       }
 
-      let mapHeight = $(document).height() - (44 + 38.5);
+      let mapHeight = $(document).height() - 47 - (44 + 38.5);
       mapHeight = mapHeight * 0.95;
 
       let container = this.$el.find('#map')[0];
