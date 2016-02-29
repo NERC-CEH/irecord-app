@@ -9,10 +9,9 @@
       'app-config': '{CONFIG}', //replaced on build
 
       //libraries
+      'jquery': '../vendor/jquery',
+      'bootstrap': '../vendor/bootstrap',
       'ratchet': '../vendor/ratchet',
-      'zepto': '../vendor/zepto.min',
-      'zepto-custom': '../vendor/zepto-custom',
-      'deferred': '../vendor/deferred.min',
       'IndexedDBShim': '../vendor/IndexedDBShim.min',
       'latlon': '../vendor/osgridref.min',
       'latlon-ellipsoidal': '../vendor/latlon-ellipsoidal.min',
@@ -52,18 +51,10 @@
       'router_extension': 'helpers/router_extension',
       'brcart': 'helpers/brcart'
     },
-    //For using Zepto see this:
-    //http://simonsmith.io/using-zepto-and-jquery-with-requirejs/
-    map: {
-      '*': {
-        'jquery': 'zepto-custom'
-      },
-      'zepto-custom': {
-        'zepto': 'zepto'
-      }
-    },
+
     shim: {
-      'zepto': {exports: 'Zepto', deps: ['deferred']},
+      'bootstrap': {deps: ['jquery']},
+      'ratchet': {deps: ['bootstrap']},
       'latlon': {deps: ['latlon-ellipsoidal']},
       'latlon-ellipsoidal': {deps: ['vector3d', 'dms']},
       'backbone': {deps: ['jquery', 'underscore'], "exports": "Backbone"},
