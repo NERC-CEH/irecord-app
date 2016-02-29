@@ -77,7 +77,7 @@ define([
       return sample;
     },
 
-    validate: function(attrs, options) {
+    validateRegistration: function(attrs, options) {
       let errors = {};
 
       if (!attrs.email) {

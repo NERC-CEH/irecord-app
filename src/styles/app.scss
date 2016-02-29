@@ -38,6 +38,7 @@ img {
 }
 
 .input-row .error {
+  display: block;
   color: $color-orange;
 }
 
@@ -218,19 +219,23 @@ li h3 {
   border: 1px solid $color-green-light;
 }
 
+.btn-outlined.btn-positive {
+  color: $color-green-light;
+}
+
 .btn-positive:active {
   background-color: $color-green;
   border: 1px solid $color-green;
 }
 
 .btn-narrow {
-  padding: 0 20px;
   width: auto;
   margin: 10px auto;
 }
 
 .btn {
   height: $button-height;
+  padding: 0 20px;
   font-size: $button-font-size;
 }
 
@@ -356,16 +361,21 @@ input {
   margin-right: -5px;
 }
 
-button span {
+.btn span {
   &.pull-left {
-    margin-left: -17px;
+    margin-left: -13px;
     margin-right: 3px;
   }
 
   &.pull-right {
-    margin-right: -17px;
+    margin-right: -13px;
     margin-left: 3px;
   }
+}
+
+//todo: should be automatic centering
+a.btn span:before {
+  padding-top: 13px;
 }
 
 @mixin empty-list() {
@@ -492,9 +502,6 @@ button, input, select, textarea {
   font-size: 14px
 }
 
-.item-radio .item-content {
-  padding: 13px 49px 13px 16px;
-}
 
 .table-view-divider {
   border-top: none;
@@ -507,8 +514,3 @@ button, input, select, textarea {
 .content>.table-view:first-child {
   margin-top: 0;
 }
-
-.item {
-  color: $color-black !important;
-}
-
