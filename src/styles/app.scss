@@ -347,26 +347,6 @@ input {
   visibility: hidden;
 }
 
-//ionic framework
-.item {
-  border: 0;
-  border-bottom: 2px solid $color-gray-light;
-}
-
-.checkbox input:before {
-  width: 25px;
-  height: 25px;
-}
-
-.checkbox input:checked:before {
-  background: $header-color;
-  border-color: $header-color;
-}
-
-.radio-icon.icon-check:before {
-  color: $header-color;
-}
-
 .prompt-remove {
   background: rgba(255,255,150,0.4);
   transform:translateX(-140px);
@@ -531,3 +511,4 @@ button, input, select, textarea {
 .item {
   color: $color-black !important;
 }
+

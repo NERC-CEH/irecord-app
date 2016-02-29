@@ -1,0 +1,34 @@
+a:focus, a:hover {
+  text-decoration: none;
+}
+
+ul.accordion {
+  li {
+    a {
+      margin-bottom: 0 !important;
+      border-bottom: 1px solid $color-gray;
+
+      background-color: $color-gray-light;
+
+      &.collapsed {
+        background-color: inherit;
+        border-bottom: none;
+
+        span.icon-collapse {
+          &:before {
+            content: '\e804';
+          }
+        }
+      }
+
+      span.icon-collapse{
+        margin-left: -10px;
+        margin-right: 10px;
+
+        &:before {
+          content: '\e81c';
+        }
+      }
+    }
+  }
+}

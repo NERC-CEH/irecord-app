@@ -333,7 +333,9 @@ module.exports = function (grunt) {
       target: {
         files: [{
           src: [
+            'dist/styles/bootstrap.css',
             'dist/styles/ratchet.css',
+            'dist/styles/ionic.css',
             'dist/styles/leaflet.css',
             'dist/styles/icons.css',
             'dist/styles/main.css'
