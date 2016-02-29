@@ -12,21 +12,21 @@ define([
     onSend: function (sample) {
       if (userModel.hasLogIn()) {
         //attach device
-        let device = '';
+        let devicePlatform = '';
         if (window.cordova) {
-          device = device.platform;
+          devicePlatform = window.device.platform;
         } else {
           if (Browser.isAndroidChrome()) {
-            device = 'Android';
+            devicePlatform = 'Android';
           } else if (Browser.isIOS()) {
-            device = 'iOS';
+            devicePlatform = 'iOS';
           }
         }
-        sample.set('device', device);
+        sample.set('device', devicePlatform);
 
         //attach device version
         if (window.cordova) {
-          sample.set('device_version', device.version);
+          sample.set('device_version', window.device.version);
         }
 
         userModel.appendSampleUser(sample);

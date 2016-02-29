@@ -125,11 +125,10 @@
       color: $color-black;
 
       a {
+        line-height: $button-height;
         position: relative;
         right: 0;
-        height: 36px;
         margin: 31px auto 0;
-        color: $color-green-light;
       }
     }
 

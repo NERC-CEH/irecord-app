@@ -203,6 +203,27 @@ module.exports = function (grunt) {
             from: /src: url\(\"\.\.\/fonts.*;/g,
             to: ''
           }]
+      },
+
+      //Cordova config changes
+      cordova_config: {
+        src: [
+          'config.xml'
+        ],
+        dest: 'config_build.xml',
+        replacements: [{
+          from: /{APP_VER}/g, // string replacement
+          to: '<%= pkg.version %>'
+        },
+          {
+            from: /{APP_TITLE}/g,
+            to: '<%= pkg.title %>'
+          },
+          {
+            from: /{APP_DESCRIPTION}/g,
+            to: '<%= pkg.description %>'
+          }
+        ]
       }
     },
 
@@ -432,6 +453,11 @@ module.exports = function (grunt) {
     'replace:config',
     'requirejs',
    // 'clean:dist'
+  ]);
+
+  grunt.registerTask('cordova', [
+    'default',
+    'replace:cordova_conf'
   ]);
 
   //Development run

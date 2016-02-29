@@ -219,3 +219,40 @@ input:checked + .checkbox-icon:after {
   to {
     transform: scale(1);
     opacity: 1; } }
+
+
+/****************************************************
+/** MY EDITS
+/****************************************************/
+
+.item-radio .item-content {
+  padding: 13px 49px 13px 16px;
+}
+
+.item {
+  color: $color-black !important;
+
+  border: 0;
+  border-bottom: 2px solid $color-gray-light;
+}
+
+//don't show side borders on radio buttons
+//todo: make inline option as well
+.item-radio {
+  border-right: none;
+  border-left: none;
+}
+
+.checkbox input:before {
+  width: 25px;
+  height: 25px;
+}
+
+.checkbox input:checked:before {
+  background: $header-color;
+  border-color: $header-color;
+}
+
+.radio-icon.icon-check:before {
+  color: $header-color;
+}

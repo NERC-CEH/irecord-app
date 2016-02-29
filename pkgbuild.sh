@@ -1,5 +1,6 @@
 #!/bin/bash
 
+UPDATE=false
 for i in "$@"
 do
 case $i in
@@ -20,7 +21,7 @@ if $UPDATE; then
   rm -R cordova/www/*
   cp -R dist/* cordova/www/
   rm cordova/config.xml
-  cp config.xml cordova/
+  cp config_build.xml cordova/config.xml
   exit
 fi
 
@@ -29,18 +30,18 @@ echo 'Build stared'
 
 #prepare www source
 npm install
-grunt
+grunt cordova
 
 #init cordova source
 echo 'Initializing cordova'
-cordova create cordova com.ceh.irecord iRecord
+cordova create cordova
 
 #add www source to cordova
 echo 'Moving dist to cordova'
 rm -R cordova/www/*
 cp -R dist/* cordova/www/
 rm cordova/config.xml
-cp config.xml cordova/
+cp config_build.xml cordova/config.xml
 
 cd cordova
 cordova platforms add ios android

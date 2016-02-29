@@ -31,7 +31,7 @@ define([
         }
 
         App.regions.dialog.showLoader();
-        let validationError = userModel.validate(data);
+        let validationError = userModel.validateRegistration(data);
         if (!validationError) {
           API.register(data, function (err, data) {
             if (err) {
