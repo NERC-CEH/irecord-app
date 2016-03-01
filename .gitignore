@@ -9,6 +9,8 @@ bower_components
 !src/vendor
 src/vendor/*
 !src/vendor/datepick/
+!src/vendor/bootstrap/
+!src/vendor/ionic/
 !src/vendor/fontello/
 !src/vendor/zepto-custom/
 
