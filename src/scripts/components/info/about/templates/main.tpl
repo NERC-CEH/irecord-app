@@ -1,5 +1,5 @@
     <ul class="table-view">
-        <li class="table-view-cell">
+        <li>
           <p>iRecord App is an application that enables you to get involved in
             biological recording. You can contribute your sightings with photos,
             GPS acquired coordinates, descriptions and other information, thus providing
@@ -7,7 +7,7 @@
             nature conservation, planning, research and education.
           </p>
         </li>
-      <li class="table-view-cell">
+      <li>
         <p><strong>Who can use the app?</strong></p>
         <p>We encourage everyone to get involved with recording species as it is
           very easy and quick to submit useful records without specialist knowledge.
@@ -16,16 +16,13 @@
           observations of the natural environment.
         </p>
       </li>
-        <li class="table-view-cell">
+        <li>
             <p><strong>App Development</strong></p>
             <p>This app was developed by the BRC mobile development team. For suggestions and feedback
                 please do not hesitate to <a href='mailto:apps%40ceh.ac.uk?subject=iRecord%20Dragonflies%20Support%26Feedback&body=%0A%0A%0AVersion%3A%20<%- app.VERSION %>%0ABrowser%3A <%- window.navigator.appVersion %>%0A'>contact us</a>.
             </p>
-            <p>
-                This app was part-funded via the Centre for Ecology & Hydrology/Joint Nature Conservation Committee partnership supporting BRC.
-            </p>
         </li>
-        <li class="table-view-cell">
+        <li>
             <p class="app-version">v<%- obj.version %></p>
         </li>
     </ul>

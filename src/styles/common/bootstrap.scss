@@ -5,7 +5,6 @@ a:focus, a:hover {
 ul.accordion {
   li {
     a {
-      margin-bottom: 0 !important;
       border-bottom: 1px solid $color-gray;
 
       background-color: $color-gray-light;
@@ -31,4 +30,14 @@ ul.accordion {
       }
     }
   }
+}
+
+//next sibling should not be hided by the button
+.table-view-cell > a + * {
+  margin-top: 21px;
+}
+
+//full width collapsable elements
+.table-view-cell > a ~ * {
+  margin-right: -53px;
 }

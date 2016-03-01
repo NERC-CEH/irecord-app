@@ -6,7 +6,7 @@
       <span class="icon icon-collapse pull-left"></span>
       How to make a new record
     </a>
-    <p id="c1" class="collapse" 
+    <p id="c1" class="collapse"
        aria-labelledby="headingOne" aria-expanded="false">
       There are two ways to start a record.
       <br>
@@ -54,7 +54,7 @@
       <span class="icon icon-collapse pull-left"></span>
       Sync. with iRecord
     </a>
-    <p id="c3" class="collapse" 
+    <p id="c3" class="collapse"
        aria-labelledby="headingTwo" aria-expanded="false">
       All your saved records will be shown on the home page.
       By default the records are in <i>draft</i> mode until it is set for submission.
@@ -117,7 +117,7 @@
       <span class="icon icon-collapse pull-left"></span>
       How to sign in/out or register
     </a>
-    <p id="c9" class="table-view collapse" aria-labelledby="headingTwo" aria-expanded="false">
+    <p id="c9" class="collapse" aria-labelledby="headingTwo" aria-expanded="false">
       To logout, visit the main menu page <span class="icon icon-menu"></span>
       and click the logout <span class="icon icon-logout"></span> button.
       <br><br>

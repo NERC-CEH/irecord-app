@@ -1,5 +1,5 @@
 <ul class="table-view">
-  <li class="table-view-cell">
+  <li>
     <p><strong>Use of your name</strong></p>
 
     <p>If you choose to create a user account for the app, this will be created on the Biological
@@ -8,7 +8,7 @@
       species. Your name, as specified when you create the account, will appear next to your
       records and will be viewable by other users of iRecord.</p>
   </li>
-  <li class="table-view-cell">
+  <li>
     <p><strong>E-mail address</strong></p>
 
     <p>To create an account you will need to supply your e-mail address, which will be used in order
@@ -17,20 +17,20 @@
       available to the verifying experts if they need to contact you about your sightings. You are
       able to delete your iRecord account or opt out of receiving emails at any time.</p>
   </li>
-  <li class="table-view-cell">
+  <li>
     <p><strong>Other information collected by the application</strong></p>
 
     <p>All records submitted will be stored permanently on a secure server at the Biological Record
       Centre. Records will be made accessible to Local Environmental Record Centres, conservation
       organisations, scientific researchers, the NBN Gateway and the public.</p>
   </li>
-  <li class="table-view-cell">
+  <li>
     <p><strong>How long will my data be stored?</strong></p>
 
     <p>Your submitted records will be stored permanently and used to inform the conservation and study
       of the recorded species in the future.</p>
   </li>
-  <li class="table-view-cell">
+  <li>
     <p><strong>Who will have access to my personal data?</strong></p>
 
     <p>Only those directly involved in developing this app and running this recording scheme
@@ -38,7 +38,7 @@
       Unless required by law, data will not be made available to any third parties unless we have
       obtained your permission to do so.</p>
   </li>
-  <li class="table-view-cell">
+  <li>
     <p><strong>Use of images submitted with the app</strong></p>
 
     <p>By submitting a photograph with this app you:</p>
@@ -61,7 +61,7 @@
       </li>
     </ul>
   </li>
-  <li class="table-view-cell">
+  <li>
     <p>Wherever possible you will receive credit for the reproduction of your work on, or next to, your
       photograph or file, although we reserve the right to exclude a direct attribution where this
       affects the aesthetic of the reproduction.</p>

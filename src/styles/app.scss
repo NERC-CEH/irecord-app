@@ -13,8 +13,16 @@ body {
   -webkit-text-size-adjust: none;
 }
 
+ul, li {
+  font-size: $text-font-size;
+}
+
 form, body {
   background: $background-color !important;
+}
+
+p {
+  color: $color-black;
 }
 
 img {
@@ -202,6 +210,11 @@ header .subtitle {
 
 .table-view.no-top {
   border-top: none;
+}
+
+.table-view > * {
+  padding: 11px 15px 11px 15px;
+  border-bottom: 1px solid $color-gray;
 }
 
 li h3 {
@@ -399,7 +412,7 @@ a.btn span:before {
   }
 }
 
-.table-view-cell {
+li.table-view-cell {
   padding: 11px 65px 11px 15px;
   font-size: $button-font-size;
 
@@ -504,6 +517,8 @@ button, input, select, textarea {
 
 
 .table-view-divider {
+  padding-top: 6px;
+  padding-bottom: 6px;
   border-top: none;
   background-color: $color-gray-light;
   font-size: $button-font-size;
