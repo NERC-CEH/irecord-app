@@ -115,7 +115,7 @@
     <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
        href="#c9" aria-expanded="false" aria-controls="c9">
       <span class="icon icon-collapse pull-left"></span>
-      How to sign in/out or register
+      Sign in/out or register
     </a>
     <p id="c9" class="collapse" aria-labelledby="headingTwo" aria-expanded="false">
       To logout, visit the main menu page <span class="icon icon-menu"></span>
@@ -157,10 +157,10 @@
       Go to application settings page <span class="icon icon-settings"></span> and click on the Reset <span class="icon icon-undo"></span>button.
     </p>
   </li>
+  <li>
+    For more help please visit iRecord <a href="http://www.brc.ac.uk/irecord/forum/26" target="_blank">forum</a>.
+  </li>
 </ul>
-
-For more help please visit iRecord <a href="http://www.brc.ac.uk/irecord/forum/26" target="_blank">forum</a>.
-
 <br>
 
 

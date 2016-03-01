@@ -59,6 +59,7 @@
     "latlon": {
       "js": [
         "latlon-ellipsoidal.js",
+        "latlon-spherical.js",
         "osgridref.js",
         "vector3d.js",
         "dms.js"

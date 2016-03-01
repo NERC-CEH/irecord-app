@@ -15,6 +15,7 @@ define(['latlon'], function () { //LatLon is global
          */
         let digits = Math.log(location.accuracy) / Math.LN10;
         locationGranularity = 10 - digits * 2;
+        locationGranularity = Number((locationGranularity).toFixed(0)); //round the float
       }
 
       //cannot be odd
@@ -26,7 +27,7 @@ define(['latlon'], function () { //LatLon is global
       if (locationGranularity > 10) {
         //no more than 10 digits
         locationGranularity = 10;
-      } else if (locationGranularity > 10) {
+      } else if (locationGranularity < 2) {
         //no less than 2
         locationGranularity = 2;
       }

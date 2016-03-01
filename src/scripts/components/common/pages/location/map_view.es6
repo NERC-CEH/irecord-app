@@ -39,21 +39,37 @@ define([
       if (currentLocation.latitude && currentLocation.longitude) {
         mapZoomCoords = [currentLocation.latitude, currentLocation.longitude];
 
+        //transform location accuracy to map zoom level
         switch (currentLocation.source) {
           case 'map':
-            mapZoomLevel = currentLocation.accuracy || 1;
+            mapZoomLevel = currentLocation.accuracy + 1 || 1;
             //no need to show area as it would be smaller than the marker
             break;
           case 'gps':
-            areaRadius = currentLocation.accuracy;
+            if (currentLocation.accuracy) {
+              let digits = Math.log(currentLocation.accuracy) / Math.LN10;
+              mapZoomLevel = digits ? 11 - digits * 2 : 10; //max zoom 10 (digits == 0)
+              mapZoomLevel = Number((mapZoomLevel).toFixed(0)); //round the float
+            } else {
+              mapZoomLevel = 1;
+            }
             break;
           case 'gridref':
             //todo area
-            mapZoomLevel = currentLocation.accuracy || 1;
+            mapZoomLevel = currentLocation.accuracy + 1;
+
+            // define rectangle geographical bounds
+            var bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
+
+            // create an orange rectangle
+            L.rectangle(bounds, {color: "#ff7800", weight: 1})
             break;
           default:
             mapZoomLevel = L.OSOpenSpace.RESOLUTIONS.length - 3
+        }
 
+        if (mapZoomLevel > 10) {
+          mapZoomLevel = 10;
         }
 
         markerCoords = mapZoomCoords;

@@ -114,7 +114,8 @@ module.exports = function (grunt) {
     replace: {
       // Fix double define problem
       latlon: {
-        src: ['src/vendor/latlon/js/latlon-ellipsoidal.js'],
+        src: ['src/vendor/latlon/js/latlon-ellipsoidal.js',
+          'src/vendor/latlon/js/latlon-spherical.js'],
         overwrite: true,
         replacements: [
           {
@@ -123,6 +124,10 @@ module.exports = function (grunt) {
           },
           {
             from: 'if (typeof define == \'function\' && define.amd) define([], function() { return Vector3d; });',
+            to: ''
+          },
+          {
+            from: 'if (typeof define == \'function\' && define.amd) define([\'Dms\'], function() { return LatLon; });',
             to: ''
           }
         ]
@@ -296,6 +301,19 @@ module.exports = function (grunt) {
           'src/vendor/latlon/js/latlon-ellipsoidal.min.js': ['src/vendor/latlon/js/latlon-ellipsoidal.js']
         }
       },
+      latlon_spherical: {
+        options: {
+          banner:
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n' +
+          '/*  Latitude/longitude spherical geodesy formulae & scripts           (c) Chris Veness 2002-2015  */\n' +
+          '/*   - www.movable-type.co.uk/scripts/latlong.html                                   MIT Licence  */\n' +
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
+        },
+        files: {
+          'src/vendor/latlon/js/latlon-spherical.min.js': ['src/vendor/latlon/js/latlon-spherical.js']
+        }
+      },
+
       osgridref: {
         options: {
           // the banner is inserted at the top of the output
