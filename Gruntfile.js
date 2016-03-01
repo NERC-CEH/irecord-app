@@ -208,9 +208,9 @@ module.exports = function (grunt) {
       //Cordova config changes
       cordova_config: {
         src: [
-          'config.xml'
+          'src/config.xml'
         ],
-        dest: 'config_build.xml',
+        dest: 'src/config_build.xml',
         replacements: [{
           from: /{APP_VER}/g, // string replacement
           to: '<%= pkg.version %>'
@@ -421,7 +421,7 @@ module.exports = function (grunt) {
         stdout: true
       },
       cordova_copy_dist: {
-        command: 'cp -R dist/* cordova/www/ && cp config_build.xml cordova/config.xml',
+        command: 'cp -R dist/* cordova/www/ && cp src/config_build.xml cordova/config.xml',
         stdout: true
       },
       cordova_add_platforms: {
