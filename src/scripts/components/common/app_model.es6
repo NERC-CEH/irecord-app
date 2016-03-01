@@ -56,6 +56,7 @@ define([
       this.set('locations', locations);
       this.trigger('change:locations');
       this.save();
+      return location.id;
     },
 
     removeLocation: function(location = {}) {

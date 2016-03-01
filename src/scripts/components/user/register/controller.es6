@@ -33,6 +33,7 @@ define([
         App.regions.dialog.showLoader();
         let validationError = userModel.validateRegistration(data);
         if (!validationError) {
+          mainView.triggerMethod("form:data:invalid", {}); //update form
           API.register(data, function (err, data) {
             if (err) {
               switch (err.xhr.status) {

@@ -48,6 +48,7 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
     transition: transform 0.3s cubic-bezier(0, 0, 0, 1);
   }
 
+  .mobile-swipe-edit #edit,
   .mobile-swipe-edit #delete {
     padding-top: 10px;
 

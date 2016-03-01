@@ -1,6 +1,7 @@
 define([
   'morel',
   'gps',
+  'validate',
   'app',
   'common/record_manager',
   'common/app_model',
@@ -12,7 +13,8 @@ define([
   './grid_ref_view',
   './past_view',
   'JST'
-], function (Morel, GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView, JST) {
+], function (Morel, GPS, Validate, App, recordManager, appModel, TabsLayout,
+             HeaderView, LockView, GpsView, MapView, GridRefView, PastView, JST) {
   let API = {
     show: function (recordID){
       recordManager.get(recordID, function (err, recordModel) {
@@ -57,9 +59,15 @@ define([
           model: new Backbone.Model({recordModel: recordModel, appModel: appModel})
         });
 
-        let onLocationSelect = function (view, location) {
+        let onLocationSelect = function (view, location, createNew) {
           //we don't need the GPS running and overwriting the selected location
           recordModel.stopGPS();
+
+          if (!createNew) {
+            //extend old location to preserve its previous attributes like name or id
+            let oldLocation = recordModel.get('location') || {};
+            location = $.extend(oldLocation, location);
+          }
 
           recordModel.set('location', location);
           recordModel.trigger('change:location');
@@ -79,23 +87,25 @@ define([
             return;
           }
 
-          let location = recordModel.get('location');
+          let location = recordModel.get('location') || {};
           location.name = name.escape();
           recordModel.set('location', location);
           recordModel.trigger('change:location');
         };
 
-        let currentVal = recordModel.get('location');
+        let currentVal = recordModel.get('location') || {};
         let onPageExit = function () {
           recordModel.save(function () {
             let attr = 'location';
-            let location = recordModel.get('location');
+            let location = recordModel.get('location') || {};
 
             let lockedValue = appModel.getAttrLock(attr);
 
-            if (location) {
+            if (location.latitude && location.longitude) {
               //save to past locations
-              appModel.setLocation(recordModel.get('location'));
+              let locationID = appModel.setLocation(recordModel.get('location'));
+              location.id = locationID;
+              recordModel.set('location', location);
 
               //update locked value if attr is locked
               if (lockedValue) {
@@ -110,13 +120,12 @@ define([
               appModel.setAttrLock(attr, null);
             }
 
-
             window.history.back();
           });
         };
 
         mainView.on('childview:location:select:past', function (view, location) {
-          onLocationSelect(view, location);
+          onLocationSelect(view, location, true);
           onPageExit();
         });
         mainView.on('childview:location:delete', API.deleteLocation);
@@ -159,8 +168,6 @@ define([
 
           updateTitle: function () {
             let title = this.model.printLocation();
-            let location = this.model.get('location');
-
             let $title = this.$el.find('h1');
 
             $title.html(title);
@@ -195,8 +202,13 @@ define([
         template: JST['common/past_location_edit'],
         getValues: function () {
           return {
-            name: this.$el.find('#name').val().escape()
+            name: this.$el.find('#location-name').val().escape()
           };
+        },
+
+        onFormDataInvalid: function (errors) {
+          var $view = this.$el;
+          Validate.updateViewFormErrors($view, errors, "#location-");
         },
 
         onShow: function () {
@@ -223,6 +235,12 @@ define([
             onClick: function () {
               //update location
               let locationEdit = editView.getValues();
+              if (!locationEdit.name) {
+                editView.trigger('form:data:invalid', {
+                  name: 'can\'t be empty'
+                });
+                return;
+              }
               appModel.setLocation(location.set(locationEdit).toJSON());
               App.regions.dialog.hide();
             }

@@ -33,11 +33,14 @@ ul.accordion {
 }
 
 //next sibling should not be hided by the button
-.table-view-cell > a + * {
-  margin-top: 21px;
+.accordion {
+  .table-view-cell > a + * {
+    margin-top: 21px;
+  }
+
+  //full width collapsable elements
+  .table-view-cell > a ~ * {
+    margin-right: -53px;
+  }
 }
 
-//full width collapsable elements
-.table-view-cell > a ~ * {
-  margin-right: -53px;
-}

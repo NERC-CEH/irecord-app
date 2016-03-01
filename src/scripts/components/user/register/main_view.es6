@@ -5,9 +5,10 @@ define([
   'marionette',
   'log',
   'browser',
+  'validate',
   'app',
   'JST'
-], function (Marionette, Log, Browser, App, JST) {
+], function (Marionette, Log, Browser, Validate, App, JST) {
   'use strict';
 
   var View = Marionette.ItemView.extend({
@@ -50,25 +51,7 @@ define([
 
     onFormDataInvalid: function (errors) {
       var $view = this.$el;
-
-      var clearFormErrors = function(){
-        var $form = $view.find(".form");
-        $form.find("span.error").each(function(){
-          $(this).remove();
-        });
-        $form.find(".input-row.error").each(function(){
-          $(this).removeClass("error");
-        });
-      }
-
-      var markErrors = function(value, key){
-        var $controlGroup = $view.find("#user-" + key).parent();
-        var $errorEl = $("<span>", { class: "error", text: value });
-        $controlGroup.append($errorEl).addClass("error");
-      }
-
-      clearFormErrors();
-      _.each(errors, markErrors);
+      Validate.updateViewFormErrors($view, errors, "#user-");
     },
 
     /**

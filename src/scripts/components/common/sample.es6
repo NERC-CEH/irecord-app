@@ -104,6 +104,11 @@ define([
           location.source = 'gps';
           location.updateTime = new Date(); //track when gps was acquired
           location.gridref = LocHelp.coord2grid(location, location.accuracy);
+
+          //extend old location to preserve its previous attributes like name or id
+          let oldLocation = that.get('location');
+          location = $.extend(oldLocation, location);
+
           that.set('location', location);
           that.save();
 

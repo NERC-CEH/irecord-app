@@ -14,9 +14,9 @@ define([
           return JST['common/location/gps_running'](arguments[0]);
         };
 
-        let location = recordModel.get('location');
+        let location = recordModel.get('location') || {};
         //only gps and todays records
-        if (location && location.source == 'gps' &&
+        if (location.source == 'gps' &&
           (new Date(location.updateTime).toDateString() === new Date().toDateString())) {
           return JST['common/location/gps_success'](arguments[0]);
         } else {
