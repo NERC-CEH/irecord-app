@@ -162,11 +162,11 @@ module.exports = function (grunt) {
         ],
         overwrite: true, // overwrite matched source files
         replacements: [{
-          from: /{APP_VER}/g, // string replacement
+          from: /\{APP_VER\}/g, // string replacement
           to: '<%= pkg.version %>'
         },
           {
-            from: /{APP_NAME}/g,
+            from: /\{APP_NAME\}/g,
             to: '<%= pkg.name %>'
           }
         ]
@@ -177,7 +177,7 @@ module.exports = function (grunt) {
         src: [SCRIPTS + 'main.js'],
         overwrite: true,
         replacements: [{
-          from: /{CONFIG}/g,
+          from: /\{CONFIG\}/g,
           to: CONFIG_NAME
         }]
       },
@@ -186,7 +186,7 @@ module.exports = function (grunt) {
         src: [SCRIPTS + 'main.js'],
         overwrite: true,
         replacements: [{
-          from: /{CONFIG}/g,
+          from: /\{CONFIG\}/g,
           to: CONFIG_DEV_NAME
         }]
       },
@@ -212,15 +212,15 @@ module.exports = function (grunt) {
         ],
         dest: 'src/config_build.xml',
         replacements: [{
-          from: /{APP_VER}/g, // string replacement
+          from: /\{APP_VER\}/g, // string replacement
           to: '<%= pkg.version %>'
         },
           {
-            from: /{APP_TITLE}/g,
+            from: /\{APP_TITLE\}/g,
             to: '<%= pkg.title %>'
           },
           {
-            from: /{APP_DESCRIPTION}/g,
+            from: /\{APP_DESCRIPTION\}/g,
             to: '<%= pkg.description %>'
           }
         ]
