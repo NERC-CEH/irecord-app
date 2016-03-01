@@ -13,18 +13,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "41087bc74d4b20b55059c60a33bf4008",
-      "css": "edit",
-      "code": 59424,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "f48ae54adfb27d8ada53d0fd9e34ee10",
-      "css": "delete",
-      "code": 59419,
-      "src": "fontawesome"
-    },
-    {
       "uid": "d61be837c725a299b432dcbee2ecdae6",
       "css": "stage",
       "code": 59412,
@@ -127,6 +115,12 @@
       "src": "typicons"
     },
     {
+      "uid": "ce5e29aa5208417700e7f7012a236c00",
+      "css": "undo",
+      "code": 59427,
+      "src": "iconic"
+    },
+    {
       "uid": "cy7vw87w1slwyalc4vd8cdhrb50asud3",
       "css": "list",
       "code": 59402,
@@ -181,6 +175,12 @@
       "src": "linecons"
     },
     {
+      "uid": "2aeb4987b469d22fcb8b471b6d2cdfff",
+      "css": "edit",
+      "code": 59429,
+      "src": "linecons"
+    },
+    {
       "uid": "5b1a68729f60f8be3769238379d1b8e9",
       "css": "comment",
       "code": 59403,
@@ -190,6 +190,12 @@
       "uid": "1ea8ad6dbe1ae9a73565ad16cf88de19",
       "css": "location",
       "code": 59410,
+      "src": "linecons"
+    },
+    {
+      "uid": "2cc73cc335f054682c04fe63439c4dcb",
+      "css": "delete",
+      "code": 59428,
       "src": "linecons"
     },
     {

@@ -23,7 +23,8 @@ define([
 
     triggers: {
       'click #delete-all-btn': 'records:delete:all',
-      'click #submit-all-btn': 'records:submit:all'
+      'click #submit-all-btn': 'records:submit:all',
+      'click #app-reset-btn': 'app:reset'
     },
 
     onSettingToggled: function (e) {
