@@ -410,7 +410,7 @@ a.btn span:before {
     border-right: none;
   }
 
-  a {
+  &>a {
     font-size: $button-font-size;
     &:hover {
       background-color: $color-gray-light;

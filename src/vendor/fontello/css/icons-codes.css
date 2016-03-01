@@ -26,6 +26,7 @@
 .icon-settings:before { content: '\e818'; } /* '' */
 .icon-heart:before { content: '\e819'; } /* '' */
 .icon-logout:before { content: '\e81a'; } /* '' */
+.icon-edit:before { content: '\e81b'; } /* '' */
 .icon-minus:before { content: '\e81c'; } /* '' */
 .icon-cancel:before { content: '\e81d'; } /* '' */
 .icon-export:before { content: '\e81e'; } /* '' */
@@ -34,4 +35,3 @@
 .icon-user:before { content: '\e822'; } /* '' */
 .icon-undo:before { content: '\e823'; } /* '' */
 .icon-delete:before { content: '\e824'; } /* '' */
-.icon-edit:before { content: '\e825'; } /* '' */
