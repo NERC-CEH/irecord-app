@@ -29,9 +29,14 @@ cd irecord-app && npm install
 - Build the project:
 
 ```bash
-./pkgbuild.sh
+grunt cordova
 ```
 
+- Update Cordova project with new www
+
+```bash
+grunt cordova:update
+```
 
 ### Web
 
