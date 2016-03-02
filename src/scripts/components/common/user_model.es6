@@ -115,6 +115,26 @@ define([
       if( ! _.isEmpty(errors)){
         return errors;
       }
+    },
+
+    validateLogin: function(attrs, options) {
+      let errors = {};
+
+      if (!attrs.email) {
+        errors.email = "can't be blank";
+      }else{
+        if (!Validate.email(attrs.email)) {
+          errors.email = "invalid";
+        }
+      }
+
+      if (!attrs.password) {
+        errors.password = "can't be blank";
+      }
+
+      if( ! _.isEmpty(errors)){
+        return errors;
+      }
     }
   });
 

@@ -201,14 +201,6 @@ define([
       'click': 'select'
     },
 
-    attributes: function () {
-      return {
-        'data-warehouse_id': this.model.get('warehouse_id'),
-        'data-common_name': this.model.get('common_name'),
-        'data-taxon': this.model.get('taxon'),
-      };
-    },
-
     modelEvents: {'change': 'render'},
 
     /**
@@ -223,6 +215,7 @@ define([
 
       let name = this._prettifyName(this.model.get(foundInName), this.options.searchPhrase);
       name = this.model.get(foundInName);
+
       return {
         name: name,
         removeEditBtn: this.options.removeEditBtn,

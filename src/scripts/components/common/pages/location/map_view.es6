@@ -57,12 +57,12 @@ define([
           case 'gridref':
             //todo area
             mapZoomLevel = currentLocation.accuracy + 1;
-
-            // define rectangle geographical bounds
-            var bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
-
-            // create an orange rectangle
-            L.rectangle(bounds, {color: "#ff7800", weight: 1})
+            //
+            //// define rectangle geographical bounds
+            //var bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
+            //
+            //// create an orange rectangle
+            //L.rectangle(bounds, {color: "#ff7800", weight: 1})
             break;
           default:
             mapZoomLevel = L.OSOpenSpace.RESOLUTIONS.length - 3
@@ -71,12 +71,10 @@ define([
         if (mapZoomLevel > 10) {
           mapZoomLevel = 10;
         }
-
         markerCoords = mapZoomCoords;
       }
 
       let mapHeight = $(document).height() - 47 - (44 + 38.5);
-      mapHeight = mapHeight * 0.95;
 
       let container = this.$el.find('#map')[0];
       $(container).height(mapHeight);
@@ -89,7 +87,7 @@ define([
         continuousWorld: false,
         worldCopyJump: false,
         minZoom: 0,
-        maxZoom: L.OSOpenSpace.RESOLUTIONS.length - 1,
+        maxZoom: L.OSOpenSpace.RESOLUTIONS.length - 1
       });
 
       /* New L.TileLayer.OSOpenSpace with API Key */

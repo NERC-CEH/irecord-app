@@ -118,14 +118,13 @@
       Sign in/out or register
     </a>
     <p id="c9" class="collapse" aria-labelledby="headingTwo" aria-expanded="false">
-      To logout, visit the main menu page <span class="icon icon-menu"></span>
-      and click the logout <span class="icon icon-logout"></span> button.
-      <br><br>
       To login, open the main menu page <span class="icon icon-menu"></span>,
       click Login <span class="icon icon-user"></span>
       or Register <span class="icon icon-user-plus"></span> buttons and follow the instructions.
-      <br>
-      <br>
+      <br><br>
+      To logout, visit the main menu page <span class="icon icon-menu"></span>
+      and click the logout <span class="icon icon-logout"></span> button.
+      <br><br>
       <b>Note:</b> after registering a new account you must verify your email
       address by clicking on a verification link send to your email.
     </p>

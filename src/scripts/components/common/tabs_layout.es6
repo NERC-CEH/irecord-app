@@ -50,6 +50,12 @@ define([
       content: '#content'
     },
 
+    childViewOptions: function(model, index) {
+      return {
+        vent: this.options.vent
+      }
+    },
+
     onShow: function() {
       if (!this.options.tabs) {
         return;
@@ -73,7 +79,10 @@ define([
       } else {
         tab = this.options.tabs.filter(tab => tab.id === tabID)[0];
       }
-      let contentView = new tab.ContentView({model: this.model});
+      let contentView = new tab.ContentView({
+        model: this.model,
+        vent: this.options.vent
+      });
       this.content.show(contentView);
     }
 

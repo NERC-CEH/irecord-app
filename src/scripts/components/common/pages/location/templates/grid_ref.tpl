@@ -6,7 +6,7 @@
 <div class="input-group">
   <div class="input-row">
     <label class="media-object pull-left icon icon-location"></label>
-    <input type="text" id="grid-ref" placeholder="Grid Reference" value="<%- obj.gridref %>" />
+    <input type="text" id="location-gridref" placeholder="Grid Reference" value="<%- obj.gridref %>" />
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-address"></label>

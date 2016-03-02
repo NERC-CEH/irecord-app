@@ -214,7 +214,11 @@ header .subtitle {
 
 .table-view > * {
   padding: 11px 15px 11px 15px;
-  border-bottom: 1px solid $color-gray;
+
+  //no border on last item since table-view has a border
+  &:not(:last-child) {
+    border-bottom: 1px solid $color-gray;
+  }
 }
 
 li h3 {

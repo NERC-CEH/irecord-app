@@ -30,10 +30,11 @@ define([
           return;
         }
 
-        App.regions.dialog.showLoader();
         let validationError = userModel.validateRegistration(data);
         if (!validationError) {
           mainView.triggerMethod("form:data:invalid", {}); //update form
+          App.regions.dialog.showLoader();
+
           API.register(data, function (err, data) {
             if (err) {
               switch (err.xhr.status) {
@@ -80,7 +81,6 @@ define([
             });
           });
         } else {
-          App.regions.dialog.hideLoader();
           mainView.triggerMethod("form:data:invalid", validationError);
         }
       });

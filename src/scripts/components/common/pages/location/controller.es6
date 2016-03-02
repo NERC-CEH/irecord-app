@@ -2,6 +2,7 @@ define([
   'morel',
   'gps',
   'validate',
+  'location',
   'app',
   'common/record_manager',
   'common/app_model',
@@ -13,7 +14,7 @@ define([
   './grid_ref_view',
   './past_view',
   'JST'
-], function (Morel, GPS, Validate, App, recordManager, appModel, TabsLayout,
+], function (Morel, GPS, Validate, LocHelp, App, recordManager, appModel, TabsLayout,
              HeaderView, LockView, GpsView, MapView, GridRefView, PastView, JST) {
   let API = {
     show: function (recordID){
@@ -56,7 +57,8 @@ define([
               ContentView: PastView
             }
           ],
-          model: new Backbone.Model({recordModel: recordModel, appModel: appModel})
+          model: new Backbone.Model({recordModel: recordModel, appModel: appModel}),
+          vent: App.vent
         });
 
         let onLocationSelect = function (view, location, createNew) {
@@ -131,9 +133,57 @@ define([
         mainView.on('childview:location:delete', API.deleteLocation);
         mainView.on('childview:location:edit', API.editLocation);
         mainView.on('childview:location:select:map', onLocationSelect);
-        mainView.on('childview:location:select:gridref', function(view, location) {
-          onLocationSelect(view, location);
-          onPageExit();
+        mainView.on('childview:location:select:gridref', function(view, data) {
+          /**
+           * Validates the new location
+           * @param attrs
+           * @returns {{}}
+           */
+          function validate (attrs) {
+            let errors = {};
+
+            if (!attrs.name) {
+              errors.name = "can't be blank";
+            }
+
+            if (!attrs.gridref) {
+              errors.gridref = "can't be blank";
+            } else {
+              let validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
+              let gridref = attrs.gridref.replace(/\s/g, '');
+              if (!validGridRef.test(gridref)) {
+                errors.gridref = 'invalid';
+              } else if (!LocHelp.grid2coord(gridref)) {
+                errors.gridref = 'invalid';
+              }
+            }
+
+            if( ! _.isEmpty(errors)){
+              return errors;
+            }
+          }
+
+          let validationError = validate(data);
+          if (!validationError) {
+            App.vent.trigger("gridref:form:data:invalid", {}); //update form
+            var latLon = LocHelp.grid2coord(data.gridref);
+            let location = {
+              source: 'gridref',
+              name: data.name,
+              gridref: data.gridref,
+              latitude: Number.parseFloat(latLon.lat.toFixed(8)),
+              longitude: Number.parseFloat(latLon.lon.toFixed(8))
+            };
+
+            //-2 because of gridref letters, 2 because this is min precision
+            let accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
+            location.accuracy = accuracy;
+
+            onLocationSelect(view, location);
+            onPageExit();
+          } else {
+            App.vent.trigger("gridref:form:data:invalid", validationError);
+          }
         });
         mainView.on('childview:gps:click', onGPSClick);
         mainView.on('childview:location:name:change', onLocationNameChange);

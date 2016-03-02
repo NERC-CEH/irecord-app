@@ -25,7 +25,7 @@ define([
       });
       App.regions.header.show(headerView);
 
-      mainView.on('login', function (email, password) {
+      mainView.on('form:submit', function (data) {
         if (!navigator.onLine) {
           App.regions.dialog.show({
             title: 'Sorry',
@@ -34,33 +34,39 @@ define([
           return;
         }
 
-        App.regions.dialog.showLoader();
+        let validationError = userModel.validateLogin(data);
+        if (!validationError) {
+          mainView.triggerMethod("form:data:invalid", {}); //update form
+          App.regions.dialog.showLoader();
 
-        API.login(email, password, function (err, data) {
-          if (err) {
-            switch (err.xhr.status) {
-              case 401:
-                //unauthorised
-                break;
-              default:
-                Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+          API.login(data, function (err, data) {
+            if (err) {
+              switch (err.xhr.status) {
+                case 401:
+                  //unauthorised
+                  break;
+                default:
+                  Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+              }
+
+              var response = '';
+              if (err.xhr.responseText && (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0)) {
+                response = 'Bad Username or Password';
+              } else {
+                response = err.xhr.responseText;
+              }
+
+              App.regions.dialog.error({message: response});
+              return;
             }
 
-            var response = '';
-            if (err.xhr.responseText && (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0)) {
-              response = 'Bad Username or Password';
-            } else {
-              response = err.xhr.responseText;
-            }
-
-            App.regions.dialog.error({message: response});
-            return;
-          }
-
-          App.regions.dialog.hideLoader();
-          window.history.back();
-        });
-      })
+            App.regions.dialog.hideLoader();
+            window.history.back();
+          });
+        } else {
+          mainView.triggerMethod("form:data:invalid", validationError);
+        }
+      });
 
       //FOOTER
       App.regions.footer.hide().empty();
@@ -74,12 +80,12 @@ define([
      * It is important that the app authorises itself providing
      * appname and appsecret for the mentioned module.
      */
-    login: function (email, password, callback) {
+    login: function (data, callback) {
       Log('views.login: start.', 'd');
       var person = {
         //user logins
-        'email': email,
-        'password': password,
+        'email': data.email,
+        'password': data.password,
 
         //app logins
         'appname': CONFIG.morel.manager.appname,

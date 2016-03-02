@@ -1,6 +1,17 @@
-#map {
-  height: 76vh;
-  width: 100%;
+#map-container {
+  //container is onlyneeded to
+  //make it full width
+  margin-left: -2%;
+  margin-right: -2%;
+
+  #map {
+    height: 76vh;
+    width: 100%;
+  }
+}
+
+.leaflet-control-scale {
+  display: none;
 }
 
 .map-marker {
