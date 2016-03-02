@@ -21,11 +21,20 @@ define([
       }
 
       //location
-      let location = this.get('location');
-      if (!location || (!location.latitude || !location.longitude)) {
+      let location = this.get('location') || {};
+      if (!location.latitude || !location.longitude) {
         invalids.push({
           sample: true,
           name: 'location',
+          message: 'missing'
+        });
+      }
+
+      //location name
+      if (!location.name) {
+        invalids.push({
+          sample: true,
+          name: 'location name',
           message: 'missing'
         });
       }
@@ -48,6 +57,24 @@ define([
       });
 
       return invalids.length ? invalids : null;
+    },
+
+    /**
+     * Set the record for submission and send it.
+     */
+    setToSend: function (callback) {
+      this.metadata.saved = true;
+
+      let invalids = this.validate();
+      if (invalids) {
+        this.metadata.saved = false;
+
+        callback && callback(invalids);
+        return;
+      }
+
+      //save record
+      this.save(callback)
     }
   });
 
@@ -74,8 +101,14 @@ define([
             return;
           }
 
-          location.gps = true;
+          location.source = 'gps';
           location.updateTime = new Date(); //track when gps was acquired
+          location.gridref = LocHelp.coord2grid(location, location.accuracy);
+
+          //extend old location to preserve its previous attributes like name or id
+          let oldLocation = that.get('location');
+          location = $.extend(oldLocation, location);
+
           that.set('location', location);
           that.save();
 
@@ -105,27 +138,9 @@ define([
      * @returns {string}
      */
     printLocation: function () {
-      let output = '';
-
-      let useGridRef = appModel.get('useGridRef');
-
       let location = this.get('location') || {};
-      if (location.latitude && location.longitude){
-        if (useGridRef || location.source === 'gridref') {
-          let accuracy = location.accuracy;
 
-          //cannot be odd
-          if (accuracy % 2 != 0) {
-            //should not be less than 2
-            accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
-          }
-
-          output = LocHelp.coord2grid(location, accuracy);
-        } else {
-          output =  location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
-        }
-      }
-      return output;
+      return appModel.printLocation(location);
     }
   };
 

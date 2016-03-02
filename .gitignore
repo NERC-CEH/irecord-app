@@ -1,11 +1,20 @@
 .DS_Store
 .idea
 .sass-cache
+.npm-debug.log
 dist
 node_modules
 bower_components
 
+src/config_build.xml
+
 !src/vendor
 src/vendor/*
 !src/vendor/datepick/
+!src/vendor/bootstrap/
+!src/vendor/ionic/
 !src/vendor/fontello/
+!src/vendor/bootstrap/
+!src/vendor/ionic/
+
+cordova/*

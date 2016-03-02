@@ -1,5 +1,8 @@
 define([
+  'morel',
   'gps',
+  'validate',
+  'location',
   'app',
   'common/record_manager',
   'common/app_model',
@@ -9,16 +12,27 @@ define([
   './gps_view',
   './map_view',
   './grid_ref_view',
-  './past_view'
-], function (GPS, App, recordManager, appModel, TabsLayout, HeaderView, LockView, GpsView, MapView, GridRefView, PastView) {
+  './past_view',
+  'JST'
+], function (Morel, GPS, Validate, LocHelp, App, recordManager, appModel, TabsLayout,
+             HeaderView, LockView, GpsView, MapView, GridRefView, PastView, JST) {
   let API = {
     show: function (recordID){
       recordManager.get(recordID, function (err, recordModel) {
+        //Not found
         if (!recordModel) {
-          App.trigger('404:show');
+          App.trigger('404:show', {replace: true});
           return;
         }
 
+        //can't edit a saved one - to be removed when record update
+        //is possible on the server
+        if (recordModel.getSyncStatus() == Morel.SYNCED) {
+          App.trigger('records:show', recordID, {replace: true});
+          return;
+        }
+
+        //MAIN
         let mainView = new TabsLayout({
           tabs: [
             {
@@ -43,12 +57,19 @@ define([
               ContentView: PastView
             }
           ],
-          model: new Backbone.Model({recordModel: recordModel, appModel: appModel})
+          model: new Backbone.Model({recordModel: recordModel, appModel: appModel}),
+          vent: App.vent
         });
 
-        let onLocationSelect = function (view, location) {
+        let onLocationSelect = function (view, location, createNew) {
           //we don't need the GPS running and overwriting the selected location
           recordModel.stopGPS();
+
+          if (!createNew) {
+            //extend old location to preserve its previous attributes like name or id
+            let oldLocation = recordModel.get('location') || {};
+            location = $.extend(oldLocation, location);
+          }
 
           recordModel.set('location', location);
           recordModel.trigger('change:location');
@@ -63,17 +84,30 @@ define([
           }
         };
 
-        let currentVal = recordModel.get('location');
+        let onLocationNameChange = function (view, name) {
+          if (!name) {
+            return;
+          }
+
+          let location = recordModel.get('location') || {};
+          location.name = name.escape();
+          recordModel.set('location', location);
+          recordModel.trigger('change:location');
+        };
+
+        let currentVal = recordModel.get('location') || {};
         let onPageExit = function () {
           recordModel.save(function () {
             let attr = 'location';
-            let location = recordModel.get('location');
+            let location = recordModel.get('location') || {};
 
             let lockedValue = appModel.getAttrLock(attr);
 
-            if (location) {
+            if (location.latitude && location.longitude) {
               //save to past locations
-              appModel.setLocation(recordModel.get('location'));
+              let locationID = appModel.setLocation(recordModel.get('location'));
+              location.id = locationID;
+              recordModel.set('location', location);
 
               //update locked value if attr is locked
               if (lockedValue) {
@@ -88,22 +122,71 @@ define([
               appModel.setAttrLock(attr, null);
             }
 
-
             window.history.back();
           });
         };
 
-        mainView.on('childview:childview:location:select:past', function (e, view, location) {
-          onLocationSelect(view, location);
+        mainView.on('childview:location:select:past', function (view, location) {
+          onLocationSelect(view, location, true);
           onPageExit();
         });
-        mainView.on('childview:location:select:past', onLocationSelect);
+        mainView.on('childview:location:delete', API.deleteLocation);
+        mainView.on('childview:location:edit', API.editLocation);
         mainView.on('childview:location:select:map', onLocationSelect);
-        mainView.on('childview:location:select:gridref', function(view, location) {
-          onLocationSelect(view, location);
-          onPageExit();
+        mainView.on('childview:location:select:gridref', function(view, data) {
+          /**
+           * Validates the new location
+           * @param attrs
+           * @returns {{}}
+           */
+          function validate (attrs) {
+            let errors = {};
+
+            if (!attrs.name) {
+              errors.name = "can't be blank";
+            }
+
+            if (!attrs.gridref) {
+              errors.gridref = "can't be blank";
+            } else {
+              let validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
+              let gridref = attrs.gridref.replace(/\s/g, '');
+              if (!validGridRef.test(gridref)) {
+                errors.gridref = 'invalid';
+              } else if (!LocHelp.grid2coord(gridref)) {
+                errors.gridref = 'invalid';
+              }
+            }
+
+            if( ! _.isEmpty(errors)){
+              return errors;
+            }
+          }
+
+          let validationError = validate(data);
+          if (!validationError) {
+            App.vent.trigger("gridref:form:data:invalid", {}); //update form
+            var latLon = LocHelp.grid2coord(data.gridref);
+            let location = {
+              source: 'gridref',
+              name: data.name,
+              gridref: data.gridref,
+              latitude: Number.parseFloat(latLon.lat.toFixed(8)),
+              longitude: Number.parseFloat(latLon.lon.toFixed(8))
+            };
+
+            //-2 because of gridref letters, 2 because this is min precision
+            let accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
+            location.accuracy = accuracy;
+
+            onLocationSelect(view, location);
+            onPageExit();
+          } else {
+            App.vent.trigger("gridref:form:data:invalid", validationError);
+          }
         });
         mainView.on('childview:gps:click', onGPSClick);
+        mainView.on('childview:location:name:change', onLocationNameChange);
 
         App.regions.main.show(mainView);
 
@@ -135,7 +218,9 @@ define([
 
           updateTitle: function () {
             let title = this.model.printLocation();
-            this.$el.find('h1').html(title);
+            let $title = this.$el.find('h1');
+
+            $title.html(title);
           },
 
           serializeData: function () {
@@ -156,6 +241,73 @@ define([
         //if exit on selection click
         mainView.on('save', onPageExit);
       });
+
+      //FOOTER
+      App.regions.footer.hide().empty();
+    },
+
+    editLocation: function (view, model) {
+      let location = model;
+      let EditView = Marionette.ItemView.extend({
+        template: JST['common/past_location_edit'],
+        getValues: function () {
+          return {
+            name: this.$el.find('#location-name').val().escape()
+          };
+        },
+
+        onFormDataInvalid: function (errors) {
+          var $view = this.$el;
+          Validate.updateViewFormErrors($view, errors, "#location-");
+        },
+
+        onShow: function () {
+          let $input = this.$el.find('#name');
+          $input.focus();
+          if (window.deviceIsAndroid) {
+            Keyboard.show();
+            $input.focusout(function () {
+              Keyboard.hide();
+            });
+          }
+        }
+      });
+
+      editView = new EditView({model: location});
+
+      App.regions.dialog.show({
+        title: 'Edit Location',
+        body: editView,
+        buttons: [
+          {
+            title: 'Save',
+            class: 'btn-positive',
+            onClick: function () {
+              //update location
+              let locationEdit = editView.getValues();
+              if (!locationEdit.name) {
+                editView.trigger('form:data:invalid', {
+                  name: 'can\'t be empty'
+                });
+                return;
+              }
+              appModel.setLocation(location.set(locationEdit).toJSON());
+              App.regions.dialog.hide();
+            }
+          },
+          {
+            title: 'Cancel',
+            onClick: function () {
+              App.regions.dialog.hide();
+            }
+          }
+        ]
+      });
+    },
+
+    deleteLocation: function (view, model) {
+      let location = model;
+      appModel.removeLocation(location);
     }
   };
 

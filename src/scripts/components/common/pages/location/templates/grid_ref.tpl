@@ -4,9 +4,15 @@
 </div>
 
 <div class="input-group">
-  <input type="text" id="grid-ref" placeholder="Grid Reference" value="<%- obj.gridref %>" />
-  <input type="text" id="location-name" placeholder="Location Name (optional)" value="<%- obj.name %>"/>
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-location"></label>
+    <input type="text" id="location-gridref" placeholder="Grid Reference" value="<%- obj.gridref %>" />
+  </div>
+  <div class="input-row">
+    <label class="media-object pull-left icon icon-address"></label>
+    <input type="text" id="location-name" placeholder="Nearest Named Place" value="<%- obj.name %>"/>
+  </div>
 </div>
 
 <button id="grid-ref-set-btn"
-        class="btn btn-narrow btn-positive btn-block">Set</button>
+        class="btn btn-narrow btn-positive btn-block">Save</button>

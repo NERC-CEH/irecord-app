@@ -1,74 +1,36 @@
 define([
   'marionette',
-  'location',
-  'JST'
-], function (Marionette, LocHelp, JST) {
-  let EmptyListView = Marionette.ItemView.extend({
-    tagName: 'li',
-    className: 'table-view-cell empty',
-    template: _.template('No previous locations')
-  });
-
-  let PastLocationView = Marionette.ItemView.extend({
-    tagName: 'li',
-    className: 'table-view-cell',
-
-    template: JST['common/location/past_location'],
-
-    events: {
-      'click': 'onClick'
-    },
-
-    //let the controller know
-    onClick: function () {
-      this.trigger('location:select:past', {
-        latitude: this.model.get('latitude'),
-        longitude: this.model.get('longitude'),
-        accuracy: this.model.get('accuracy'),
-        name: this.model.get('name')
-      });
-    },
-
-    serializeData: function () {
-      let latitude = this.model.get('latitude');
-      let longitude = this.model.get('longitude');
-      let accuracy = this.model.get('accuracy');
-
-      let location = '';
-
-      if (this.options.useGridRef) {
-        location = LocHelp.coord2grid({
-          longitude: longitude,
-          latitude: latitude
-        }, accuracy)
-      } else {
-        location = longitude.toFixed(4) + ', ' + latitude.toFixed(4);
-      }
-
-      return {
-        name: this.model.get('name'),
-        location: location
-      }
-    }
-  });
-
-  let PastView = Marionette.CompositeView.extend({
+  'JST',
+  'common/past_locations_view'
+], function (Marionette, JST, PastLocationsView) {
+  let View = Marionette.LayoutView.extend({
     template: JST['common/location/past'],
 
-    childViewContainer: '#user-locations',
+    regions: {
+      locations: '#locations'
+    },
 
-    childView: PastLocationView,
-    emptyView: EmptyListView,
+    onChildviewLocationSelect: function (view) {
+      this.triggerMethod('location:select:past', view.model.toJSON());
+    },
 
-    initialize: function () {
-      let appModel = this.model.get('appModel');
-      var previousLocations = appModel.get('locations');
-      this.collection = new Backbone.Collection(previousLocations);
-      this.childViewOptions = {
-        useGridRef: appModel.get('useGridRef')
-      }
+    onChildviewLocationDelete: function (view) {
+      this.triggerMethod('location:delete', view.model);
+    },
+
+    onChildviewLocationEdit: function (view) {
+      this.triggerMethod('location:edit', view.model);
+    },
+
+    onShow: function () {
+      let that = this;
+      let pastLocationsView = new PastLocationsView({
+        model: this.model.get('appModel')
+      });
+
+      this.locations.show(pastLocationsView);
     }
   });
 
-  return PastView;
+  return View;
 });

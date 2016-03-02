@@ -1,6 +1,5 @@
 //HEADER
 #records-header {
-  height: 45px;
   border-bottom: 1px $header-color solid;
 
   .pull-left {
@@ -9,6 +8,7 @@
   .pull-right {
     width: 40%;
     background-color: $color-white;
+    border-bottom: 1px solid $header-color;
 
     a {
       width: 45%;
@@ -66,6 +66,7 @@
 //  color: $color-white;
 //  border-color: $color-white;
 //}
+//}
 //
 //.records.subheader a:before {
 //  font-size: 18px;
@@ -99,6 +100,18 @@
     height: 16px;
     line-height: 17.3333px;
 
+    //shrink the size nicely
+    &.shrink {
+      min-height: 0;
+      margin: 0;
+      height: 0;
+      padding: 0;
+    }
+    -webkit-transition:height 200ms ease-in-out;
+    -moz-transition:height 200ms ease-in-out;
+    -o-transition:height 200ms ease-in-out;
+    transition:height 200ms ease-in-out;
+
     &.empty {
       height: initial !important;
       min-height: initial !important;
@@ -112,14 +125,15 @@
       color: $color-black;
 
       a {
-        font-size: 1em;
-        max-width: 115px;
-        display: block;
+        line-height: $button-height;
         position: relative;
         right: 0;
-        margin: 22px auto 0;
-        color: $color-green-light;
+        margin: 31px auto 0;
       }
+    }
+
+    .mobile-swipe-edit #delete {
+      padding-top: 20px;
     }
 
     .photo {
@@ -131,6 +145,7 @@
       img {
         height: 100%;
         width: 100%;
+        object-fit: cover;
       }
     }
 
@@ -235,6 +250,13 @@
           }
         }
 
+        .location {
+          width: 60%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         .attributes {
           clear: both;
         }
@@ -258,27 +280,6 @@
           color: $color-gray-dark;
         }
 
-      }
-    }
-
-    //mobile swipe edit tools
-    .mobile-edit {
-      height: 100%;
-      width: 50px;
-      position: absolute;
-      top: 0;
-      right: 1px;
-
-      background-color: $color-orange;
-      color: $color-white;
-
-      .delete {
-        height: 100%;
-        width: 100%;
-
-        text-align: center;
-        padding-top: 15px;
-        font-size: 30px;
       }
     }
   }

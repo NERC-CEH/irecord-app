@@ -34,13 +34,14 @@
   <link type="text/css" rel="stylesheet" href="styles/main.min.css"/>
 
   <!-- SCRIPTS -->
-  <script src="vendor/require.min.js" data-main="scripts/main" async></script>
+  <script src="cordova.js"></script>
+  <script src="vendor/require.min.js" data-main="scripts/main-built" async></script>
 </head>
 
 <body>
 <div id="loader">
   <h1>iRecord App</h1>
-  <h3>Alpha</h3>
+  <h3>Beta</h3>
   <div id="animation">
     <span class="icon icon-plus spin"></span>&nbsp;
     <div class="error"><!-- Error while loading --></div>
@@ -58,6 +59,7 @@
 
 <div id="app" data-role="page">
   <header id="header" class="bar bar-nav"></header>
+  <footer id="footer" class="bar bar-footer"></footer>
   <div id="main" class="content"></div>
   <div id="dialog"></div>
 </div>

@@ -17,41 +17,21 @@ define([
     },
 
     login: function (e) {
-      //validate
-      var $inputPassword = this.$el.find('#password');
-      var $inputEmail = this.$el.find('#email');
+      var $inputPassword = this.$el.find('#user-password');
+      var $inputEmail = this.$el.find('#user-email');
 
-      let email = $inputEmail.val(),
-        password = $inputPassword.val();
+      let data = {
+        email: $inputEmail.val(),
+        password: $inputPassword.val()
+      };
 
-      //validate
-      if (this.valid($inputEmail, $inputPassword)) {
-        this.trigger('login', email, password);
-      }
+      this.trigger('form:submit', data);
     },
 
-    valid: function ($inputEmail, $inputPassword) {
-      let valid = true;
-      let email = $inputEmail.val(),
-        password = $inputPassword.val();
-
-      if (!password) {
-        $inputPassword.addClass('error');
-        valid = false;
-      } else {
-        $inputPassword.removeClass('error');
-      }
-
-      if (!Validate.email(email)) {
-        $inputEmail.addClass('error');
-        valid = false;
-      } else {
-        $inputEmail.removeClass('error');
-      }
-
-      return valid;
+    onFormDataInvalid: function (errors) {
+      var $view = this.$el;
+      Validate.updateViewFormErrors($view, errors, "#user-");
     }
-
   });
 
   return View;

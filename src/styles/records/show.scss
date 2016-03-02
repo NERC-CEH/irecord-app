@@ -13,4 +13,14 @@
   text-align: left;
   width: auto;
   float: none;
+  margin-left: 8% !important;
+  display: block !important;
+}
+
+#img-array {
+  height: 80px;
+  padding: 0;
+
+  white-space: nowrap;
+  overflow: overlay;
 }

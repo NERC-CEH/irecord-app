@@ -13,9 +13,11 @@ define([
         window.history.back();
       }
 
+      //MAIN
       let mainView = new MainView();
       App.regions.main.show(mainView);
 
+      //HEADER
       let headerView = new HeaderView({
         model: new Backbone.Model({
           title: 'Login'
@@ -23,34 +25,51 @@ define([
       });
       App.regions.header.show(headerView);
 
-      mainView.on('login', function (email, password) {
-        App.regions.dialog.showLoader();
+      mainView.on('form:submit', function (data) {
+        if (!navigator.onLine) {
+          App.regions.dialog.show({
+            title: 'Sorry',
+            body: 'Looks like you are offline!'
+          });
+          return;
+        }
 
-        API.login(email, password, function (err, data) {
-          if (err) {
-            switch (err.xhr.status) {
-              case 401:
-                //unauthorised
-                break;
-              default:
-                Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+        let validationError = userModel.validateLogin(data);
+        if (!validationError) {
+          mainView.triggerMethod("form:data:invalid", {}); //update form
+          App.regions.dialog.showLoader();
+
+          API.login(data, function (err, data) {
+            if (err) {
+              switch (err.xhr.status) {
+                case 401:
+                  //unauthorised
+                  break;
+                default:
+                  Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+              }
+
+              var response = '';
+              if (err.xhr.responseText && (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0)) {
+                response = 'Bad Username or Password';
+              } else {
+                response = err.xhr.responseText;
+              }
+
+              App.regions.dialog.error({message: response});
+              return;
             }
 
-            var response = '';
-            if (err.xhr.responseText && (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0)) {
-              response = 'Bad Username or Password';
-            } else {
-              response = err.xhr.responseText;
-            }
+            App.regions.dialog.hideLoader();
+            window.history.back();
+          });
+        } else {
+          mainView.triggerMethod("form:data:invalid", validationError);
+        }
+      });
 
-            App.regions.dialog.error({message: response});
-            return;
-          }
-
-          App.regions.dialog.hideLoader();
-          window.history.back();
-        });
-      })
+      //FOOTER
+      App.regions.footer.hide().empty();
     },
 
     /**
@@ -61,12 +80,12 @@ define([
      * It is important that the app authorises itself providing
      * appname and appsecret for the mentioned module.
      */
-    login: function (email, password, callback) {
+    login: function (data, callback) {
       Log('views.login: start.', 'd');
       var person = {
         //user logins
-        'email': email,
-        'password': password,
+        'email': data.email,
+        'password': data.password,
 
         //app logins
         'appname': CONFIG.morel.manager.appname,
@@ -114,21 +133,6 @@ define([
         Log('login:extractdetails: problems with received secret.', 'w');
         return null;
       }
-    },
-
-    /**
-     * Logs the user out of the system.
-     */
-    logout: function () {
-      userModel.logOut();
-    },
-
-    /**
-     * Brings the state of the user being logged in.
-     * @returns boolean true if the user is logged in, or false if not
-     */
-    getLoginState: function () {
-      return userModel.hasLogIn();
     }
   };
 

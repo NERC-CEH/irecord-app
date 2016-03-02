@@ -30,58 +30,28 @@ define([
       var data = {};
 
       let $emailInput  = this.$el.find('input[name=email]');
-      let $passwordInput  = this.$el.find('input[name=pass]');
-      let $passwordConfInput = this.$el.find('input[name=passConf]');
-
-      //validate
-      if (!this.valid($emailInput, $passwordInput, $passwordConfInput)) {
-        return;
-      }
+      let $passwordInput  = this.$el.find('input[name=password]');
+      let $passwordConfInput = this.$el.find('input[name=password-confirm]');
 
       //user logins
       this.email = $emailInput.val(); //save it for future
-      var name = this.$el.find('input[name=name]').val();
-      var surname = this.$el.find('input[name=surname]').val();
-      var pass = $passwordInput.val();
-      var passConf = $passwordConfInput.val();
+      var firstname = this.$el.find('input[name=firstname]').val();
+      var secondname = this.$el.find('input[name=secondname]').val();
+      var password = $passwordInput.val();
+      var passwordConfirm = $passwordConfInput.val();
 
       data.email = this.email;
-      data.firstname = name;
-      data.secondname = surname;
-      data.password = pass;
-      data['password-confirm'] = passConf;
+      data.firstname = firstname;
+      data.secondname = secondname;
+      data.password = password;
+      data['password-confirm'] = passwordConfirm;
 
-      this.trigger('register', data);
+      this.trigger('form:submit', data);
     },
 
-    valid: function ($inputEmail, $inputPassword, $inputPasswordConf) {
-      let valid = true;
-      let email = $inputEmail.val(),
-          password = $inputPassword.val(),
-          passwordConf = $inputPasswordConf.val();
-
-      if (password !== passwordConf) {
-        $inputPasswordConf.addClass('error');
-        valid = false;
-      } else {
-        $inputPasswordConf.removeClass('error');
-      }
-
-      if (!password || password.length < 5) {
-        $inputPassword.addClass('error');
-        valid = false;
-      } else {
-        $inputPassword.removeClass('error');
-      }
-
-      if (!Validate.email(email)) {
-        $inputEmail.addClass('error');
-        valid = false;
-      } else {
-        $inputEmail.removeClass('error');
-      }
-
-      return valid;
+    onFormDataInvalid: function (errors) {
+      var $view = this.$el;
+      Validate.updateViewFormErrors($view, errors, "#user-");
     },
 
     /**

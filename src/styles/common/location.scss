@@ -1,14 +1,27 @@
-#map {
-  height: 76vh;
-  width: 100%;
+#map-container {
+  //container is onlyneeded to
+  //make it full width
+  margin-left: -2%;
+  margin-right: -2%;
+
+  #map {
+    height: 76vh;
+    width: 100%;
+  }
+}
+
+.leaflet-control-scale {
+  display: none;
 }
 
 .map-marker {
-  margin-left: -32px!important;
-  margin-top: -32px!important;
+  margin-left: -24px!important;
+  margin-top: -24px!important;
   text-shadow: 0px 0px 1px black, 0px 0px 4px black;
   color: $color-red;
-  font-size: 4em;
+  &:before {
+    font-size: 34px;
+  }
 }
 
 input#grid-ref {
@@ -31,15 +44,39 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
 }
 
 
-
 #user-locations .table-view-cell {
   @include empty-list();
+
+  padding: 0;
+
+  .location {
+    position: relative;
+    z-index: 10;
+    padding: 11px;
+    background-color: $color-white;
+
+    //mobile swipe styles
+    transition: transform 0.3s cubic-bezier(0, 0, 0, 1);
+  }
+
+  .mobile-swipe-edit #edit,
+  .mobile-swipe-edit #delete {
+    padding-top: 10px;
+
+    &.with-name {
+      padding-top: 22px;
+    }
+  }
+
 }
 
 @media only screen and (max-width: 400px) {
   #location-header {
     h1 {
       font-size: 13.5px;
+      margin-left: -30px;
+    }
+    h3 {
       margin-left: -30px;
     }
   }

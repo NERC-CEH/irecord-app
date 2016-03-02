@@ -8,9 +8,11 @@ define([
 ], function (App, Log, CONFIG, userModel, MainView, HeaderView) {
   let API = {
     show: function () {
+      //MAIN
       let mainView = new MainView();
       App.regions.main.show(mainView);
 
+      //HEADER
       let headerView = new HeaderView({
         model: new Backbone.Model({
           title: 'Register'
@@ -19,35 +21,72 @@ define([
       App.regions.header.show(headerView);
 
       //Start registration
-      mainView.on('register', function (data) {
+      mainView.on('form:submit', function (data) {
+        if (!navigator.onLine) {
+          App.regions.dialog.show({
+            title: 'Sorry',
+            body: 'Looks like you are offline!'
+          });
+          return;
+        }
 
-        App.regions.dialog.showLoader();
+        let validationError = userModel.validateRegistration(data);
+        if (!validationError) {
+          mainView.triggerMethod("form:data:invalid", {}); //update form
+          App.regions.dialog.showLoader();
 
-        API.register(data, function (err, data) {
-          if (err) {
-            switch (err.xhr.status) {
-              case 401:
-                //unauthorised
-                break;
-              default:
-                Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+          API.register(data, function (err, data) {
+            if (err) {
+              switch (err.xhr.status) {
+                case 401:
+                  //unauthorised
+                  break;
+                default:
+                  Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+              }
+
+              var response = '';
+              if (err.xhr.responseText && (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0)) {
+                response = 'Bad Username or Password';
+              } else {
+                if ( err.thrownError &&  err.thrownError.indexOf('Unauthorised')) {
+                  //err.xhr.responseText = Invalid password"
+                  //it thinks that the user tries to update its account
+                  response = 'An account with this email exist';
+                } else {
+                  response = err.thrownError;
+                }
+              }
+
+              App.regions.dialog.error({message: response});
+              return;
             }
+            App.regions.dialog.show({
+              title: 'Welcome aboard!',
+              body: 'Before submitting any records please check your email and ' +
+              'click on the verification link.',
+              buttons:[
+                {
+                  title: 'OK, got it',
+                  class: 'btn-positive',
+                  onClick: function () {
+                    App.regions.dialog.hide();
+                    window.history.back();
+                  }
+                }
+              ],
+              onHide: function () {
+                window.history.back();
+              }
+            });
+          });
+        } else {
+          mainView.triggerMethod("form:data:invalid", validationError);
+        }
+      });
 
-            var response = '';
-            if (err.xhr.responseText && (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0)) {
-              response = 'Bad Username or Password';
-            } else {
-              response = err.thrownError;
-            }
-
-            App.regions.dialog.error({message: response});
-            return;
-          }
-          App.regions.dialog.hideLoader();
-
-          window.history.back();
-        });
-      })
+      //FOOTER
+      App.regions.footer.hide().empty();
     },
 
     /**
@@ -115,21 +154,6 @@ define([
         Log('login:extractdetails: problems with received secret.', 'w');
         return null;
       }
-    },
-
-    /**
-     * Logs the user out of the system.
-     */
-    logout: function () {
-      userModel.logOut();
-    },
-
-    /**
-     * Brings the state of the user being logged in.
-     * @returns boolean true if the user is logged in, or false if not
-     */
-    getLoginState: function () {
-      return userModel.hasLogIn();
     }
   };
 

@@ -8,7 +8,7 @@ define([
   './list/controller',
   './show/controller',
   './edit/controller',
-  './edit_attr/controller',
+  './attr/controller',
   'common/pages/location/controller',
   'common/pages/taxon/controller'
 ], function(Marionette, Log, App, recordManager, userModel, appModel, ListController, ShowController, EditController,
@@ -76,6 +76,9 @@ define([
     }
   });
 
+  App.on("record:saved", function () {
+    window.history.back();
+  });
 
   function syncRecords () {
     if (window.navigator.onLine && appModel.get('autosync')) {

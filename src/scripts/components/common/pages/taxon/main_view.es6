@@ -4,8 +4,9 @@
 define([
   'marionette',
   'log',
-  'JST'
-], function (Marionette, Log, JST) {
+  'JST',
+  'data/informal_groups'
+], function (Marionette, Log, JST, informalGroups) {
   'use strict';
 
   const MIN_SEARCH_LENGTH = 2;
@@ -14,7 +15,9 @@ define([
     template: JST['common/taxon/layout'],
 
     events: {
-      'keydown #taxon': '_keydown'
+      'keydown #taxon': '_keydown',
+      'keyup #taxon': '_keyup',
+      'click .delete': 'deleteSearch'
     },
 
     regions: {
@@ -25,9 +28,23 @@ define([
       this.selectedIndex = 0;
     },
 
-    onRender: function () {
+    onShow: function () {
       //preselect the input for typing
-      this.$el.find('#taxon').select();
+      let $input = this.$el.find('#taxon').focus();
+      if (window.deviceIsAndroid) {
+        Keyboard.show();
+        $input.focusout(function () {
+          Keyboard.hide();
+        });
+      }
+    },
+
+    /**
+     * Clear the search input
+     */
+    deleteSearch: function () {
+      this.$el.find('#taxon').val('');
+      this.$el.find('#taxon').focus();
     },
 
     updateSuggestions: function (suggestions, searchPhrase) {
@@ -51,6 +68,7 @@ define([
     },
 
     _keydown: function (e) {
+      let that = this;
       let input = e.target.value;
       if (!input) {
         return;
@@ -67,11 +85,8 @@ define([
           //find which one is currently selected
           let selectedModel = this.suggestionsCol.at(this.selectedIndex);
 
-          let species = {
-            warehouse_id: selectedModel.get('warehouse_id'),
-            common_name: selectedModel.get('common_name'),
-            taxon: selectedModel.get('taxon')
-          };
+          let species = selectedModel.toJSON();
+          delete species.selected;
           this.trigger('taxon:selected', species, false);
 
           return false;
@@ -99,9 +114,6 @@ define([
           break;
         default:
           //Other
-
-          //todo: check time difference
-
           let text = input;
 
           //on keyDOWN need to add the pressed char
@@ -111,6 +123,10 @@ define([
             if (e.keyCode === 189 || e.keyCode === 109){
               pressedChar = '-';
             }
+            if (e.keyCode === 190){
+              pressedChar = '.';
+            }
+
             text += pressedChar;
           } else {
             //Backspace - remove a char
@@ -118,11 +134,56 @@ define([
           }
 
           //proceed if minimum length phrase was provided
-          if ((text.length)>= MIN_SEARCH_LENGTH) {
+          if ((text.replace(/\.|\s/g,'').length)>= MIN_SEARCH_LENGTH) {
             text = text.trim();
 
-            //let controller know
-            this.trigger('taxon:searched', text.toLowerCase());
+            // Clear previous timeout
+            if (this.timeout != -1) {
+              clearTimeout(this.timeout);
+            }
+
+            // Set new timeout - don't run if user is typing
+            this.timeout = setTimeout(function () {
+              //let controller know
+              that.trigger('taxon:searched', text.toLowerCase());
+            }, 100);
+          }
+      }
+    },
+
+    _keyup: function (e) {
+      let that = this;
+      let input = e.target.value;
+      if (!input) {
+        return;
+      }
+
+      switch (e.keyCode) {
+        case 13:
+          //press Enter
+        case 38:
+          //Up
+        case 40:
+          //Down
+          break;
+        default:
+          //Other
+          let text = input;
+
+          //proceed if minimum length phrase was provided
+          if ((text.replace(/\.|\s/g,'').length)>= MIN_SEARCH_LENGTH) {
+            text = text.trim();
+
+            // Clear previous timeout
+            if (this.timeout != -1) {
+              clearTimeout(this.timeout);
+            }
+
+            // Set new timeout - don't run if user is typing
+            this.timeout = setTimeout(function () {
+              //let controller know
+              that.trigger('taxon:searched', text.toLowerCase());
+            }, 100);
           }
       }
     }
@@ -140,14 +201,6 @@ define([
       'click': 'select'
     },
 
-    attributes: function () {
-      return {
-        'data-warehouse_id': this.model.get('warehouse_id'),
-        'data-common_name': this.model.get('common_name'),
-        'data-taxon': this.model.get('taxon'),
-      };
-    },
-
     modelEvents: {'change': 'render'},
 
     /**
@@ -156,20 +209,18 @@ define([
      */
     serializeData: function () {
       let templateData = {};
-      let taxon = this.model.get('taxon');
+      let taxon = this.model.get('scientific_name');
       let common_name = this.model.get('common_name');
+      let foundInName = this.model.get('found_in_name');
 
-      //check if found in taxon
-      let common_pos = common_name.toLowerCase().indexOf(this.options.searchPhrase);
-      if (common_pos >= 0 ) {
-        templateData.name = this._prettifyName(common_name, this.options.searchPhrase);
-      } else {
-        templateData.name = this._prettifyName(taxon, this.options.searchPhrase);
-      }
+      let name = this._prettifyName(this.model.get(foundInName), this.options.searchPhrase);
+      name = this.model.get(foundInName);
 
-      templateData.removeEditBtn = this.options.removeEditBtn;
-
-      return templateData;
+      return {
+        name: name,
+        removeEditBtn: this.options.removeEditBtn,
+        group: informalGroups[this.model.get('group') - 1]
+      };
     },
 
     _prettifyName: function (name, searchPhrase) {
@@ -188,23 +239,10 @@ define([
 
     select: function (e) {
       Log('taxon: selected.', 'd');
-      let edit = false;
+      let edit = e.target.tagName == "BUTTON";
+      let species = this.model.toJSON();
+      delete species.selected;
 
-      let species = {
-        warehouse_id: e.target.dataset.warehouse_id,
-        common_name: e.target.dataset.common_name,
-        taxon: e.target.dataset.taxon
-      };
-
-      if (!species.warehouse_id) {
-        species = {
-          warehouse_id: e.target.parentElement.dataset.warehouse_id,
-          common_name: e.target.parentElement.dataset.common_name,
-          taxon: e.target.parentElement.dataset.taxon
-        };
-
-        edit = true;
-      }
       this.trigger('taxon:selected', species, edit);
     }
   });
@@ -212,7 +250,7 @@ define([
   let NoSuggestionsView = Marionette.ItemView.extend({
     tagName: 'li',
     className: 'table-view-cell empty',
-    template: JST['common/taxon/list-none']
+    template: _.template('No species found with this name')
   });
 
   let SuggestionsView = Marionette.CollectionView.extend({

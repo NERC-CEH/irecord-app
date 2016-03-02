@@ -1,5 +1,5 @@
 <% if (obj.taxon) { %>
-<a href="#records/<%- obj.id %><%- obj.saved ? '' : '/edit' %>" class="mobile">
+<a href="#records/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>" class="mobile">
   <% } else { %>
   <a href="#records/<%- obj.id %>/edit/taxon" class="mobile">
     <% } %>
@@ -28,7 +28,11 @@
       <% } %>
 
       <% if (obj.location) { %>
-        <div class="location"><%= obj.location %></div>
+         <% if (obj.location_name) { %>
+           <div class="location"><%= obj.location_name %></div>
+          <%  } else { %>
+            <div class="location error">No location name</div>
+         <% } %>
       <% } else { %>
         <% if (obj.isLocating) { %>
           <div class="location warn">Locating...</div>
@@ -46,6 +50,6 @@
     </div>
   </a>
 
-  <div class="mobile-edit">
+  <div class="mobile-swipe-edit">
     <div id="delete" class="delete icon icon-delete"></div>
   </div>

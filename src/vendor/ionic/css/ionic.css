@@ -1,0 +1,216 @@
+/**
+* Ionic Framework:
+* http://ionicframework.com/
+*
+* Borrowed some styles :)
+*/
+
+
+/**
+ * Items
+ * --------------------------------------------------
+ */
+.item {
+    border-color: #ddd;
+    background-color: #fff;
+    color: #444;
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: -1px;
+    padding: 16px;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 16px; }
+
+/**
+ * Complex Items
+ * --------------------------------------------------
+ * Adding .item-complex allows the .item to be slidable and
+ * have options underneath the button, but also requires an
+ * additional .item-content element inside .item.
+ * Basically .item-complex removes any default settings which
+ * .item added, so that .item-content looks them as just .item.
+ */
+.item-radio .item-content {
+    position: relative;
+    z-index: 2;
+    padding: 16px 49px 16px 16px;
+    border: none;
+    background-color: #fff;
+}
+
+/**
+ * Lists
+ * --------------------------------------------------
+ */
+.list {
+    position: relative;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 0;
+    margin-bottom: 20px; }
+
+.list:last-child {
+    margin-bottom: 0px; }
+.list:last-child.card {
+    margin-bottom: 40px; }
+
+/**
+ * Radio Button Inputs
+ * --------------------------------------------------
+ */
+.item-radio {
+    padding: 0; }
+.item-radio:hover {
+    cursor: pointer; }
+
+.item-radio .item-content {
+    /* give some room to the right for the checkmark icon */
+    padding-right: 64px; }
+
+.item-radio .radio-icon {
+    /* checkmark icon will be hidden by default */
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    visibility: hidden;
+    padding: 14px;
+    height: 100%;
+    font-size: 24px; }
+
+.item-radio input {
+    /* hide any radio button inputs elements (the ugly circles) */
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0;
+}
+.item-radio input:checked + .radio-content .item-content {
+    /* style the item content when its checked */
+    background: #f7f7f7; }
+.item-radio input:checked + .radio-content .radio-icon {
+    /* show the checkmark icon when its checked */
+    visibility: visible; }
+
+/**
+ * Checkbox
+ * --------------------------------------------------
+ */
+.checkbox {
+    position: relative;
+    display: inline-block;
+    padding: 7px 7px;
+    cursor: pointer; }
+.checkbox input:before {
+    border-color: #ddd; }
+.checkbox input:checked:before {
+    background: #387ef5;
+    border-color: #387ef5; }
+
+.checkbox input:disabled:before {
+    border-color: #ddd; }
+
+.checkbox input:disabled:checked:before {
+    background: #ddd; }
+
+.checkbox input {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    display: block;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none; }
+.checkbox input:before {
+    display: table;
+    width: 100%;
+    height: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 28px;
+    background: #fff;
+    content: ' ';
+    -webkit-transition: background-color 20ms ease-in-out;
+    transition: background-color 20ms ease-in-out; }
+
+.checkbox input:checked:before {
+    border-width: 2px; }
+
+.checkbox input:after {
+    -webkit-transition: opacity 0.05s ease-in-out;
+    transition: opacity 0.05s ease-in-out;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 33%;
+    left: 25%;
+    display: table;
+    width: 14px;
+    height: 6px;
+    border: 1px solid #fff;
+    border-top: 0;
+    border-right: 0;
+    content: ' ';
+    opacity: 0; }
+
+.checkbox input:checked:after,
+input:checked + .checkbox-icon:after {
+    opacity: 1; }
+
+.item-checkbox {
+    padding-left: 60px; }
+.item-checkbox.active {
+    box-shadow: none; }
+
+.item-checkbox .checkbox {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    left: 8px;
+    z-index: 3;
+    margin-top: -21px; }
+
+
+
+/**
+ * Popup
+ * --------------------------------------------------
+ */
+
+/* Animations */
+@-webkit-keyframes scaleOut {
+    from {
+        -webkit-transform: scale(1);
+        opacity: 1; }
+    to {
+        -webkit-transform: scale(0.8);
+        opacity: 0; } }
+
+@keyframes scaleOut {
+    from {
+        transform: scale(1);
+        opacity: 1; }
+    to {
+        transform: scale(0.8);
+        opacity: 0; } }
+
+@-webkit-keyframes superScaleIn {
+    from {
+        -webkit-transform: scale(1.2);
+        opacity: 0; }
+    to {
+        -webkit-transform: scale(1);
+        opacity: 1; } }
+
+@keyframes superScaleIn {
+    from {
+        transform: scale(1.2);
+        opacity: 0; }
+    to {
+        transform: scale(1);
+        opacity: 1; } }

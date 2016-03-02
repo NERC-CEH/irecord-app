@@ -8,16 +8,23 @@ define([
     'fastclick',
     'log',
     'brcart',
+    'analytics',
+    'app-config',
     'common/dialog_region',
+    'common/hideable_region',
     'common/controller'
   ],
-  function ($, Backbone, Marionette, FastClick, Log, BrcArt, DialogRegion, CommonController) {
-    Log(BrcArt, 'i');
+  function ($, Backbone, Marionette, FastClick, Log, BrcArt, Analytics, CONFIG, DialogRegion, HideableRegion, CommonController) {
+    //init Analytics
+    Analytics.init();
+
+    Log(BrcArt, 'i'); //saying hello :)
 
     var App = new Marionette.Application();
 
     App.navigate = function(route,  options = {}){
-      Backbone.history.navigate(route, options);
+      let defaultOptions = {trigger: true};
+      Backbone.history.navigate(route, $.extend(defaultOptions, options));
     };
 
     App.getCurrentRoute = function(){
@@ -29,7 +36,8 @@ define([
         el: "#app",
 
         regions: {
-          header: "#header",
+          header: new HideableRegion({el: "#header"}),
+          footer: new HideableRegion({el: "#footer"}),
           main: "#main",
           dialog: DialogRegion
         }
@@ -65,7 +73,22 @@ define([
           });
         });
 
-        $('#loader').remove();
+        $('#loader').hide().remove(); //hide first - Android quirk
+
+        if (window.cordova) {
+          StatusBar.overlaysWebView(true);
+          StatusBar.backgroundColorByName('black');
+
+          //iOS make space for statusbar
+          if (window.deviceIsIOS) {
+            $('body').addClass('ios')
+          }
+
+          //hide loader
+          if(navigator && navigator.splashscreen){
+            navigator.splashscreen.hide();
+          }
+        }
       }
     });
 

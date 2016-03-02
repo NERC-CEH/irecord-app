@@ -66,6 +66,19 @@ define([
 
     },
 
+    remove: function () {
+      //removing the last element leaves emptyView + fading out entry for a moment
+      if (this.model.collection.length >= 1) {
+        let that = this;
+        this.$el.addClass('shrink');
+        setTimeout(function () {
+          Marionette.ItemView.prototype.remove.call(that);
+        }, 300);
+      } else {
+        Marionette.ItemView.prototype.remove.call(this);
+      }
+    },
+
     serializeData: function () {
       let recordModel = this.model;
       let occ = recordModel.occurrences.at(0);
@@ -76,19 +89,20 @@ define([
 
       let appModel = this.options.appModel;
 
-      let taxon = appModel.get('useScientificNames') ?
-        specie.taxon : specie.common_name || specie.taxon;
+      let taxon = specie[specie.found_in_name];
 
       let syncStatus = this.model.getSyncStatus();
 
-      let location = recordModel.printLocation();
+      let location_print = recordModel.printLocation();
+      let location = recordModel.get('location') || {};
 
       return {
         id: recordModel.id || recordModel.cid,
         saved: recordModel.metadata.saved,
         onDatabase: syncStatus === Morel.SYNCED,
         isLocating: recordModel.locating >= 0,
-        location: location,
+        location: location_print,
+        location_name: location.name,
         isSynchronising: syncStatus === Morel.SYNCHRONISING,
         date: date,
         taxon: taxon,
@@ -100,6 +114,9 @@ define([
     },
 
     _swipe: function (e, options) {
+      //only swipe if no scroll up
+      if (Math.abs(e.deltaY) > 10) return;
+
       if (this.docked) {
         this.position = -options.toolsWidth + e.deltaX;
       } else {
@@ -113,7 +130,9 @@ define([
     },
 
     _swipeEnd: function (e, options) {
-      // if (e.deltaX > options.threshold) {
+      //only swipe if no scroll up and is not in the middle
+      if (Math.abs(e.deltaY) > 10 && !this.position) return;
+
       if ((-options.toolsWidth + e.deltaX) > -options.toolsWidth) {
         //bring back
         this.position = 0;

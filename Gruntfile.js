@@ -2,8 +2,10 @@ module.exports = function (grunt) {
   var DEST = 'dist/',
       SCRIPTS = 'dist/scripts/',
       MANIFEST_NAME = 'appcache.manifest',
-      CONFIG_NAME = 'config/app',
+      CONFIG_NAME = 'config/main',
       CONFIG_DEV_NAME = 'config/dev';
+
+  grunt.option('platform', 'web');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -36,8 +38,8 @@ module.exports = function (grunt) {
             expand: true, flatten: true
           },
           {
-            src: "src/images/**", dest: 'dist/images/',
-            expand: true, flatten: true, filter: 'isFile'
+            src: "**", cwd: 'src/images/', dest: 'dist/images/',
+            expand: true, filter: 'isFile'
           },
           {
             src: "src/images/ajax-loader.gif", dest: 'dist/styles/images/',
@@ -45,7 +47,7 @@ module.exports = function (grunt) {
           },
           //JS
           {
-            src: "src/vendor/**/js/*", dest: 'dist/vendor/',
+            src: ["src/vendor/**/js/*"], dest: 'dist/vendor/',
             expand: true, flatten: true
           },
           //CSS
@@ -112,7 +114,8 @@ module.exports = function (grunt) {
     replace: {
       // Fix double define problem
       latlon: {
-        src: ['src/vendor/latlon/js/latlon-ellipsoidal.js'],
+        src: ['src/vendor/latlon/js/latlon-ellipsoidal.js',
+          'src/vendor/latlon/js/latlon-spherical.js'],
         overwrite: true,
         replacements: [
           {
@@ -121,6 +124,10 @@ module.exports = function (grunt) {
           },
           {
             from: 'if (typeof define == \'function\' && define.amd) define([], function() { return Vector3d; });',
+            to: ''
+          },
+          {
+            from: 'if (typeof define == \'function\' && define.amd) define([\'Dms\'], function() { return LatLon; });',
             to: ''
           }
         ]
@@ -140,6 +147,17 @@ module.exports = function (grunt) {
           }
         ]
       },
+
+      //ratchet's modal functionality is not compatable with spa routing
+      ratchet: {
+        src: ['src/vendor/ratchet/js/ratchet.js'],
+        overwrite: true,
+        replacements: [{
+          from: 'getModal(event)',
+          to: 'null'
+        }]
+      },
+
       //App NAME and VERSION
       main: {
         src: [
@@ -149,11 +167,11 @@ module.exports = function (grunt) {
         ],
         overwrite: true, // overwrite matched source files
         replacements: [{
-          from: /{APP_VER}/g, // string replacement
+          from: /\{APP_VER\}/g, // string replacement
           to: '<%= pkg.version %>'
         },
           {
-            from: /{APP_NAME}/g,
+            from: /\{APP_NAME\}/g,
             to: '<%= pkg.name %>'
           }
         ]
@@ -164,7 +182,7 @@ module.exports = function (grunt) {
         src: [SCRIPTS + 'main.js'],
         overwrite: true,
         replacements: [{
-          from: /{CONFIG}/g,
+          from: /\{CONFIG\}/g,
           to: CONFIG_NAME
         }]
       },
@@ -173,7 +191,7 @@ module.exports = function (grunt) {
         src: [SCRIPTS + 'main.js'],
         overwrite: true,
         replacements: [{
-          from: /{CONFIG}/g,
+          from: /\{CONFIG\}/g,
           to: CONFIG_DEV_NAME
         }]
       },
@@ -190,6 +208,27 @@ module.exports = function (grunt) {
             from: /src: url\(\"\.\.\/fonts.*;/g,
             to: ''
           }]
+      },
+
+      //Cordova config changes
+      cordova_config: {
+        src: [
+          'src/config.xml'
+        ],
+        dest: 'src/config_build.xml',
+        replacements: [{
+          from: /\{APP_VER\}/g, // string replacement
+          to: '<%= pkg.version %>'
+        },
+          {
+            from: /\{APP_TITLE\}/g,
+            to: '<%= pkg.title %>'
+          },
+          {
+            from: /\{APP_DESCRIPTION\}/g,
+            to: '<%= pkg.description %>'
+          }
+        ]
       }
     },
 
@@ -262,6 +301,19 @@ module.exports = function (grunt) {
           'src/vendor/latlon/js/latlon-ellipsoidal.min.js': ['src/vendor/latlon/js/latlon-ellipsoidal.js']
         }
       },
+      latlon_spherical: {
+        options: {
+          banner:
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n' +
+          '/*  Latitude/longitude spherical geodesy formulae & scripts           (c) Chris Veness 2002-2015  */\n' +
+          '/*   - www.movable-type.co.uk/scripts/latlong.html                                   MIT Licence  */\n' +
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
+        },
+        files: {
+          'src/vendor/latlon/js/latlon-spherical.min.js': ['src/vendor/latlon/js/latlon-spherical.js']
+        }
+      },
+
       osgridref: {
         options: {
           // the banner is inserted at the top of the output
@@ -320,7 +372,9 @@ module.exports = function (grunt) {
       target: {
         files: [{
           src: [
+            'dist/styles/bootstrap.css',
             'dist/styles/ratchet.css',
+            'dist/styles/ionic.css',
             'dist/styles/leaflet.css',
             'dist/styles/icons.css',
             'dist/styles/main.css'
@@ -357,9 +411,46 @@ module.exports = function (grunt) {
 
         }
       }
+    },
+
+    clean: {
+      dist: [
+        'dist/vendor/*',
+        '!dist/vendor/require.min.js',
+        //styles
+        'dist/styles/*',
+        '!dist/styles/main.min.css',
+        //scripts
+        'dist/scripts/*',
+        '!dist/scripts/main-built.js',
+        //data
+        '!dist/scripts/data',
+        'dist/scripts/data/raw'
+      ]
+    },
+
+    exec: {
+      cordova_init: {
+          command: 'cordova create cordova',
+          stdout: true
+      },
+      cordova_clean_www: {
+        command: 'rm -R cordova/www/* && rm cordova/config.xml',
+        stdout: true
+      },
+      cordova_copy_dist: {
+        command: 'cp -R dist/* cordova/www/ && cp src/config_build.xml cordova/config.xml',
+        stdout: true
+      },
+      cordova_add_platforms: {
+        command: 'cd cordova && cordova platforms add ios android',
+        stdout: true
+      }
     }
+
   });
 
+  grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -368,14 +459,21 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-babel');
 
+
+  //Grunt Configuration Function
+  grunt.registerTask('set_option', 'Set a option property.', function(name, val) {
+    grunt.option(name, val);
+  });
 
   // the default task can be run just by typing "grunt" on the command line
   grunt.registerTask('init', [
     'bower',
     'replace:indexedDBShim',
     'replace:latlon',
+    'replace:ratchet',
     'replace:ratchet_fonts',
     'uglify',
     'copy'
@@ -393,12 +491,35 @@ module.exports = function (grunt) {
     'init',
     'run',
     'replace:config',
-    'requirejs'
+    'requirejs',
+    // 'clean:dist'
   ]);
+
+  grunt.registerTask('cordova', 'Cordova tasks', function(update) {
+    if (update) {
+      //update only
+      grunt.task.run('exec:cordova_clean_www');
+      grunt.task.run('exec:cordova_copy_dist');
+      return;
+    }
+
+    //prepare www source
+    grunt.task.run('default');
+    grunt.task.run('replace:cordova_config');
+
+    //init cordova source
+    grunt.task.run('exec:cordova_init');
+
+    //add www source to cordova
+    grunt.task.run('exec:cordova_clean_www');
+    grunt.task.run('exec:cordova_copy_dist');
+    grunt.task.run('exec:cordova_add_platforms');
+  });
 
   //Development run
   grunt.registerTask('dev', [
     'run',
-    'replace:dev_config'
+    'replace:dev_config',
+    'requirejs'
   ]);
 };

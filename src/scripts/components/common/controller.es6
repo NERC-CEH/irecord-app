@@ -9,11 +9,11 @@ define([
     show: function (options) {
       App = options.App || App; //passed when showing 404
 
-      let MainView = Marionette.ItemView.extend({
+      let MainView = options.mainView || Marionette.ItemView.extend({
         template: JST[options.route]
       });
       App.regions.main.show(new MainView({
-        model: new Backbone.Model(options.model || {})
+        model: options.model || new Backbone.Model()
       }));
 
       let headerView = new HeaderView({
