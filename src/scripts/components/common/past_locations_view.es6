@@ -29,6 +29,7 @@ define([
 
       return {
         name: this.model.get('name'),
+        source: this.model.get('source'),
         location: location
       }
     },

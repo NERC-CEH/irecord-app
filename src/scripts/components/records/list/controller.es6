@@ -143,7 +143,13 @@ define([
           recordManager.set(sample, function () {
             //check if location attr is not locked
             let locks = appModel.get('attrLocks');
+
             if (!locks.location) {
+              //no previous location
+              sample.startGPS();
+            } else if (!locks.location.latitude || !locks.location.longitude) {
+              //previously locked location was through GPS
+              //so try again
               sample.startGPS();
             }
             callback()

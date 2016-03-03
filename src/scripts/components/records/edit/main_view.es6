@@ -50,7 +50,7 @@ define([
         id: recordModel.id || recordModel.cid,
         scientific_name: scientific_name,
         common_name: common_name,
-        isLocating: recordModel.locating >= 0,
+        isLocating: recordModel.isGPSRunning(),
         isSynchronising: recordModel.getSyncStatus() == Morel.SYNCHRONISING,
         location: location_print,
         location_name: location.name,

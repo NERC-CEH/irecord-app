@@ -1,6 +1,7 @@
 <div id="location" class="location">
   <%= (obj.name ? '<strong>' + obj.name + '</strong>' : '') %>
   <p> <%- obj.location %></p>
+  <span class="location-source">source: <%- obj.source %></span>
 </div>
 
 <div class="mobile-swipe-edit">

@@ -98,7 +98,7 @@ define([
         let index = 0;
         let result = tile.tile.src.match(/missingTileString=(\d+)/i);
         if (result){
-          index = Number.parseInt(result[1]);
+          index = parseInt(result[1]);
           index++;
 
           //don't do it more than few times
@@ -143,8 +143,8 @@ define([
         }
 
         let location = {
-          latitude: Number.parseFloat(e.latlng.lat.toFixed(7)),
-          longitude: Number.parseFloat(e.latlng.lng.toFixed(7)),
+          latitude: parseFloat(e.latlng.lat.toFixed(7)),
+          longitude: parseFloat(e.latlng.lng.toFixed(7)),
           source: 'map',
           accuracy: map.getZoom()
         };

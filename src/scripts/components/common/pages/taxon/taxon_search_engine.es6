@@ -22,7 +22,7 @@ define([
   let API = {
     init: function () {
       if (!window['species_list']) {
-        require(['data/master_list'], function () {
+        require(['species'], function () {
           species = window['species_list'];
           commonNamePointers = API._makeCommonNameMap();
           events.trigger('loaded');
@@ -362,7 +362,7 @@ define([
         return null;
       }
 
-      let mid = Number.parseInt((low + high) / 2);
+      let mid = parseInt((low + high) / 2);
       let campared = comparator(mid);
       if (campared > 0) {
         return API._binarySearch(array, comparator, low, mid - 1);

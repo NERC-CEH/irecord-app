@@ -31,7 +31,7 @@ define([
     onShow: function () {
       //preselect the input for typing
       let $input = this.$el.find('#taxon').focus();
-      if (window.deviceIsAndroid) {
+      if (window.cordova && window.deviceIsAndroid) {
         Keyboard.show();
         $input.focusout(function () {
           Keyboard.hide();

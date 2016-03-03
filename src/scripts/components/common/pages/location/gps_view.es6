@@ -10,7 +10,7 @@ define([
       let recordModel = this.model.get('recordModel');
 
       this.template = function () {
-        if (recordModel.locating) {
+        if (recordModel.isGPSRunning()) {
           return JST['common/location/gps_running'](arguments[0]);
         };
 

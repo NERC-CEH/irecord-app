@@ -100,7 +100,7 @@ define([
         id: recordModel.id || recordModel.cid,
         saved: recordModel.metadata.saved,
         onDatabase: syncStatus === Morel.SYNCED,
-        isLocating: recordModel.locating >= 0,
+        isLocating: recordModel.isGPSRunning(),
         location: location_print,
         location_name: location.name,
         isSynchronising: syncStatus === Morel.SYNCHRONISING,

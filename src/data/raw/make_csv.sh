@@ -6,13 +6,13 @@ csvjoin -v -c "NBN_TAXON_VERSION_KEY_FOR_RECOMMENDED_NAME,search_code" NHM_maste
 #Cut the unneeded columns out:
 csvcut -c "id, INFORMAL_GROUP_ID,RECOMMENDED_SCIENTIFIC_NAME,COMMON_NAME,SYNONYM" master_list_full.csv > master_list.csv && rm master_list_full.csv 
 
-#Clean the master list from '[]' 
+#Clean the master list from '[]'
 sed -i 's/\[.*\]\s//g' master_list.csv
 
 #Remove ',()' - should not start with brackets
-sed -i 's/,(.*)/,/g' master_list.csv 
+sed -i 's/,(.*)/,/g' master_list.csv
 
-#todo: remove non alphanumerics 
+#todo: remove non alphanumerics
 sed -i "s/[^_0-9,A-Za-z \.\-\=\(\)\']//g" master_list.csv
 
 #remove 'a '

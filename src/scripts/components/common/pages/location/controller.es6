@@ -1,6 +1,7 @@
 define([
   'morel',
   'gps',
+  'log',
   'validate',
   'location',
   'app',
@@ -14,7 +15,7 @@ define([
   './grid_ref_view',
   './past_view',
   'JST'
-], function (Morel, GPS, Validate, LocHelp, App, recordManager, appModel, TabsLayout,
+], function (Morel, GPS, Log, Validate, LocHelp, App, recordManager, appModel, TabsLayout,
              HeaderView, LockView, GpsView, MapView, GridRefView, PastView, JST) {
   let API = {
     show: function (recordID){
@@ -77,7 +78,7 @@ define([
 
         let onGPSClick = function () {
           //turn off if running
-          if (recordModel.locating >= 0) {
+          if (recordModel.isGPSRunning()) {
             recordModel.stopGPS();
           } else {
             recordModel.startGPS();
@@ -96,14 +97,18 @@ define([
         };
 
         let currentVal = recordModel.get('location') || {};
+        let locationIsLocked = appModel.isAttrLocked('location', currentVal);
+
         let onPageExit = function () {
           recordModel.save(function () {
             let attr = 'location';
             let location = recordModel.get('location') || {};
+            let lockedValue = appModel.getAttrLock('location');
 
-            let lockedValue = appModel.getAttrLock(attr);
+            if ((location.latitude && location.longitude) || location.name) {
+              //we can lock loaction and name on their own
+              //don't lock GPS though, because it varies more than a map or gridref
 
-            if (location.latitude && location.longitude) {
               //save to past locations
               let locationID = appModel.setLocation(recordModel.get('location'));
               location.id = locationID;
@@ -111,14 +116,22 @@ define([
 
               //update locked value if attr is locked
               if (lockedValue) {
-                if (lockedValue === true ||
-                  (lockedValue.latitude == currentVal.latitude &&
-                  lockedValue.longitude == currentVal.longitude)) {
+                //check if previously the value was locked and we are updating
+                if (locationIsLocked || lockedValue === true) {
+
+                  Log('Updating lock', 'd');
+
+                  if (location.source === 'gps') {
+                    //on GPS don't lock other than name
+                    location = {
+                      name: location.name
+                    };
+                  }
                   appModel.setAttrLock(attr, location);
                 }
               }
             } else if (lockedValue == true) {
-              //reset if no location selected but locked is clicked
+              //reset if no location or location name selected but locked is clicked
               appModel.setAttrLock(attr, null);
             }
 
@@ -171,8 +184,8 @@ define([
               source: 'gridref',
               name: data.name,
               gridref: data.gridref,
-              latitude: Number.parseFloat(latLon.lat.toFixed(8)),
-              longitude: Number.parseFloat(latLon.lon.toFixed(8))
+              latitude: parseFloat(latLon.lat.toFixed(8)),
+              longitude: parseFloat(latLon.lon.toFixed(8))
             };
 
             //-2 because of gridref letters, 2 because this is min precision

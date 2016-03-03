@@ -24,7 +24,7 @@
 
 <div class="table-view-cell">
   I agree to Terms and Conditions
-  <div id="terms-agree-button" class="toggle no-yes">
+  <div id="user-terms-agree" class="toggle no-yes">
     <div class="toggle-handle"></div>
   </div>
 </div>

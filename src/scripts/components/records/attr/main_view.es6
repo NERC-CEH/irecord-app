@@ -109,7 +109,7 @@ define([
         case 'comment':
           //this.$el.find('textarea').focus();
           let $textarea = this.$el.find('textarea').focus();
-          if (window.deviceIsAndroid) {
+          if (window.cordova && window.deviceIsAndroid) {
             Keyboard.show();
             $textarea.focusout(function () {
               Keyboard.hide();

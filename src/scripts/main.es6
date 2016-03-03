@@ -7,6 +7,7 @@
     paths: {
       //config
       'app-config': '{CONFIG}', //replaced on build
+      'species': '{SPECIES}', //replaced on build
 
       //libraries
       'jquery': '../vendor/jquery',

@@ -42,8 +42,7 @@
       For quicker searching of the taxa you can use different shortcuts.
       For example, to find <i>Puffinus puffinus</i> you can type in the search bar:
       <br>
-      <br><i>puf pubr</i>
-      <br><i>pu pu</i>
+      <br><i>puf puf</i>
       <br><i>p puf</i>
       <br><i>p .nus</i>
     </p>
@@ -107,6 +106,26 @@
       with the database. To do that go to settings page
       <span class="icon icon-settings"></span> and click Delete All Saved
       <span class="icon icon-delete"></span> button.
+    </p>
+  </li>
+  <li class="table-view-cell">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+       href="#locks" aria-expanded="false" aria-controls="locks">
+      <span class="icon icon-collapse pull-left"></span>
+      Lock an attribute
+    </a>
+    <p id="locks" class="collapse"
+       aria-labelledby="headingTwo" aria-expanded="false">
+      You can lock record attributes like date, location, number etc, which will
+      preserve your current attribute value for the subsequently added records.
+      <br>
+      To lock an attribute click on the lock <span class="icon icon-lock-open"></span>
+      button in the attribute edit page header. This will then update to locked
+      <span class="icon icon-lock-closed"></span> symbol both on the button and
+      next to the atribute in the record edit page.
+      <br><br>
+      Note: locking a location that was acquired through GPS will only lock its
+      name (if one exists).
     </p>
   </li>
 

@@ -32,9 +32,9 @@ define([
         var location = {
           latitude: position.coords.latitude.toFixed(8),
           longitude: position.coords.longitude.toFixed(8),
-          accuracy: Number.parseInt(position.coords.accuracy),
-          altitude: Number.parseInt(position.coords.altitude),
-          altitudeAccuracy: Number.parseInt(position.coords.altitudeAccuracy)
+          accuracy: parseInt(position.coords.accuracy),
+          altitude: parseInt(position.coords.altitude),
+          altitudeAccuracy: parseInt(position.coords.altitudeAccuracy)
         };
 
         if (location.accuracy <= accuracyLimit) {

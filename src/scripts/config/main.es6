@@ -9,8 +9,6 @@ define([
     version: '{APP_VER}', //replaced on build
     name: '{APP_NAME}', //replaced on build
 
-    platform:'{PLATFORM}', //replaced on build
-
     gps_accuracy_limit: 100,
 
     //logging
@@ -26,7 +24,7 @@ define([
     },
 
     login: {
-      url: 'http://192.171.199.230/irecord7/user/mobile/register',
+      url: 'http://www.brc.ac.uk/irecord/user/mobile/register',
       timeout: 80000
     },
 
@@ -38,11 +36,11 @@ define([
     //morel configuration
     morel:{
       manager: {
-        url: 'http://192.171.199.230/irecord7/mobile/submit',
-        appname: "test",
-        appsecret: "mytest",
+        url: 'http://www.brc.ac.uk/irecord/mobile/submit',
+        appname: "ir",
+        appsecret: "irecordApp123",
         website_id: 23,
-        survey_id: 269
+        survey_id: 374
       },
       sample: {
         location: {
@@ -75,7 +73,7 @@ define([
         location_accuracy: {id: 282},
         location_altitude: {id: 283},
         location_altitude_accuracy: {id: 284},
-        location_source: {id: 578},
+        location_source: {id: 760},
         location_gridref: {id: 335},
 
         device: {
@@ -86,7 +84,7 @@ define([
           }
         },
 
-        device_version: {id: 579},
+        device_version: {id: 759},
 
         date: {
           values: function (date) {
@@ -101,7 +99,7 @@ define([
           }
         },
         number: {
-          id: 379,
+          id: 523,
           values: {
             'default': 671,
             '1': 665,

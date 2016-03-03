@@ -3,7 +3,7 @@ module.exports = function (grunt) {
       SCRIPTS = 'dist/scripts/',
       MANIFEST_NAME = 'appcache.manifest',
       CONFIG_NAME = 'config/main',
-      CONFIG_DEV_NAME = 'config/dev';
+      CONFIG_DEV_NAME = 'config/main_dev';
 
   grunt.option('platform', 'web');
 
@@ -20,7 +20,6 @@ module.exports = function (grunt) {
         }
       }
     },
-
 
     copy: {
       main: {
@@ -184,16 +183,26 @@ module.exports = function (grunt) {
         replacements: [{
           from: /\{CONFIG\}/g,
           to: CONFIG_NAME
-        }]
+        },
+          {
+            from: /\{SPECIES\}/g,
+            to: 'data/master_list'
+          }
+        ]
       },
 
       dev_config: {
-        src: [SCRIPTS + 'main.js'],
+        src: [SCRIPTS + 'main_dev.js'],
         overwrite: true,
         replacements: [{
           from: /\{CONFIG\}/g,
           to: CONFIG_DEV_NAME
-        }]
+        },
+          {
+            from: /\{SPECIES\}/g,
+            to: 'data/master_list_dev'
+          }
+        ]
       },
 
       //need to remove Ratchet's default fonts to work with fontello ones
@@ -431,8 +440,8 @@ module.exports = function (grunt) {
 
     exec: {
       cordova_init: {
-          command: 'cordova create cordova',
-          stdout: true
+        command: 'cordova create cordova',
+        stdout: true
       },
       cordova_clean_www: {
         command: 'rm -R cordova/www/* && rm cordova/config.xml',
@@ -491,8 +500,14 @@ module.exports = function (grunt) {
     'init',
     'run',
     'replace:config',
-    'requirejs',
-    // 'clean:dist'
+    'requirejs'
+  ]);
+
+  //Development run
+  grunt.registerTask('update', [
+    'run',
+    'replace:config',
+    'requirejs'
   ]);
 
   grunt.registerTask('cordova', 'Cordova tasks', function(update) {
@@ -505,6 +520,8 @@ module.exports = function (grunt) {
 
     //prepare www source
     grunt.task.run('default');
+    // 'clean:dist'
+
     grunt.task.run('replace:cordova_config');
 
     //init cordova source
@@ -517,7 +534,7 @@ module.exports = function (grunt) {
   });
 
   //Development run
-  grunt.registerTask('dev', [
+  grunt.registerTask('update:dev', [
     'run',
     'replace:dev_config',
     'requirejs'

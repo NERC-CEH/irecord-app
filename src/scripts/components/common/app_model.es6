@@ -42,16 +42,18 @@ define([
       var locations = this.get('locations');
 
       //check if exists
-      let exists = this.getLocation(location);
-
-      if (!exists) {
-        //add
-        location.id = UUID();
-        locations.splice(0, 0, location);
-      } else {
-        //update location
-        $.extend(exists, location);
+      if (this.locationExists(location)) {
+        //don't duplicate same location
+        return;
+      } else if (!location.latitude || !location.longitude) {
+        //don't add if no lat/long
+        return
       }
+
+
+      //add
+      location.id = UUID();
+      locations.splice(0, 0, location);
 
       this.set('locations', locations);
       this.trigger('change:locations');
@@ -74,16 +76,20 @@ define([
       });
     },
 
-    getLocation: function (location = {}) {
-      let locations = this.get('locations'),
-          existing;
-
+    locationExists: function (location = {}) {
+      let locations = this.get('locations');
+      let exists = false;
       locations.forEach(function (loc) {
-        if (loc.id === location.id) {
-          existing = loc;
+        if (
+          loc.name === location.name &&
+          loc.latitude === location.latitude &&
+          loc.longitude === location.longitude &&
+          loc.source === location.source
+        ) {
+          exists =  true;
         }
       });
-      return existing;
+      return exists;
     },
 
     /**
@@ -155,7 +161,18 @@ define([
 
       switch (attr) {
         case 'location':
-          return value.latitude == lockedVal.latitude && value.longitude == lockedVal.longitude;
+          let locked =
+                  //map or gridref
+                (lockedVal &&
+                (lockedVal.name == value.name &&
+                lockedVal.latitude == value.latitude &&
+                lockedVal.longitude == value.longitude) ||
+
+                  //GPS doesn't lock the location only name
+                (lockedVal.name === value.name && (
+                !lockedVal.latitude && !lockedVal.longitude)));
+
+          return locked;
           break;
         case 'date':
           lockedVal = new Date(lockedVal);

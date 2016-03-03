@@ -133,6 +133,10 @@ define([
       }
     },
 
+    isGPSRunning: function () {
+      return this.locating || this.locating === 0;
+    },
+
     /**
      * Print pretty location.
      * @returns {string}

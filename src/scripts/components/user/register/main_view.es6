@@ -15,14 +15,7 @@ define([
     template: JST['user/register/main'],
 
     events: {
-      'click #register-button': 'register',
-      'click #terms-agree-button': 'toggleRegisterButton',
-      'toggle #terms-agree-button': 'toggleRegisterButton',
-    },
-
-    onRender: function () {
-      this.$registerButton = this.$el.find('#register-button');
-      this.$registerButton.prop('disabled', true);
+      'click #register-button': 'register'
     },
 
     register: function (e) {
@@ -46,30 +39,15 @@ define([
       data.password = password;
       data['password-confirm'] = passwordConfirm;
 
+      var active = $('#user-terms-agree').hasClass('active');
+      data['terms-agree'] = active;
+
       this.trigger('form:submit', data);
     },
 
     onFormDataInvalid: function (errors) {
       var $view = this.$el;
       Validate.updateViewFormErrors($view, errors, "#user-");
-    },
-
-    /**
-     * Shows/hides the registration submit button.
-     *
-     * @param e
-     */
-    toggleRegisterButton: function (e) {
-      //enable 'Create account' button on Terms agreement
-      var active = $(e.currentTarget).hasClass('active');
-
-      if (e.type != 'toggle' && !Browser.isMobile()) {
-        //invert because it takes time to get the class
-        active = !active;
-        $(e.currentTarget).toggleClass('active', active);
-      }
-
-      this.$registerButton.prop('disabled', !active);
     }
   });
 

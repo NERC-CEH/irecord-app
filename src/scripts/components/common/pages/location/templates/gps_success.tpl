@@ -8,5 +8,5 @@
 </div>
 
 <button id="gps-button"
-        class="btn btn-narrow btn-positive btn-block">Update</button>
+        class="btn btn-narrow btn-positive btn-block">Refresh GPS</button>
 

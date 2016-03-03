@@ -112,6 +112,10 @@ define([
         }
       }
 
+      if (!attrs['terms-agree']) {
+        errors['terms-agree'] = "you must agree to the terms";
+      }
+
       if( ! _.isEmpty(errors)){
         return errors;
       }
