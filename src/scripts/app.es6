@@ -73,8 +73,6 @@ define([
           });
         });
 
-        $('#loader').hide().remove(); //hide first - Android quirk
-
         if (window.cordova) {
           StatusBar.overlaysWebView(true);
           StatusBar.backgroundColorByName('black');
@@ -88,6 +86,9 @@ define([
           if(navigator && navigator.splashscreen){
             navigator.splashscreen.hide();
           }
+        } else {
+          //development loader
+          $('#loader').remove();
         }
       }
     });

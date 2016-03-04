@@ -192,7 +192,7 @@ module.exports = function (grunt) {
       },
 
       dev_config: {
-        src: [SCRIPTS + 'main_dev.js'],
+        src: [SCRIPTS + 'main.js'],
         overwrite: true,
         replacements: [{
           from: /\{CONFIG\}/g,
@@ -217,6 +217,16 @@ module.exports = function (grunt) {
             from: /src: url\(\"\.\.\/fonts.*;/g,
             to: ''
           }]
+      },
+
+      //need to remove Ratchet's default fonts to work with fontello ones
+      development_code: {
+        src: ['dist/index.html'],
+        overwrite: true,
+        replacements: [{
+          from: /<!-- DEVELOPMENT -->(.|\n)*<!-- \/DEVELOPMENT -->/g,
+          to: ''
+        }]
       },
 
       //Cordova config changes
@@ -500,14 +510,16 @@ module.exports = function (grunt) {
     'init',
     'run',
     'replace:config',
-    'requirejs'
+    'requirejs',
+    'replace:development_code'
   ]);
 
   //Development run
   grunt.registerTask('update', [
     'run',
     'replace:config',
-    'requirejs'
+    'requirejs',
+    'replace:development_code'
   ]);
 
   grunt.registerTask('cordova', 'Cordova tasks', function(update) {
@@ -533,8 +545,16 @@ module.exports = function (grunt) {
     grunt.task.run('exec:cordova_add_platforms');
   });
 
+  //Development update
+  grunt.registerTask('dev', [
+    'init',
+    'run',
+    'replace:dev_config',
+    'requirejs'
+  ]);
+
   //Development run
-  grunt.registerTask('update:dev', [
+  grunt.registerTask('dev:update', [
     'run',
     'replace:dev_config',
     'requirejs'
