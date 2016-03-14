@@ -96,7 +96,8 @@ define([
     sendAllRecords: function () {
       App.regions.dialog.show({
         title: 'Send All',
-        body: 'Are you sure you want to set all valid records for submission?',
+        body: 'Are you sure you want to set all valid records for submission?' +
+        '</br><i><b>Note:</b> it will not affect already submitted records.</i>',
         buttons: [
           {
             title: 'Cancel',
