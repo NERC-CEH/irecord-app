@@ -39,3 +39,8 @@ keytool -genkey -v -keystore irecord.keystore -alias irecord -keyalg RSA -keysiz
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore irecord.keystore android-release-unaligned.apk irecord
 zipalign -v 4 android-release-unsigned.apk irecord.apk
 ```
+
+Style Guide
+===========
+
+[AirBnB Style Guide](https://github.com/airbnb/javascript)
