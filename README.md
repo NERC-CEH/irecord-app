@@ -1,4 +1,4 @@
-# irecord-app
+# irecord-app [![Build Status](https://travis-ci.org/NERC-CEH/irecord-app.svg?branch=master)](https://travis-ci.org/NERC-CEH/irecord-app)
 iRecord mobile application
 
 ## Configuration

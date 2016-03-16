@@ -1,71 +1,64 @@
-module.exports = function (grunt) {
-  var DEST = 'dist/',
-      SCRIPTS = 'dist/scripts/',
-      MANIFEST_NAME = 'appcache.manifest',
-      CONFIG_NAME = 'config/main',
-      CONFIG_DEV_NAME = 'config/main_dev';
+var webpackConfig = require('./webpack.config.js');
+var webpackConfigDev = require('./webpack.config.dev.js');
+
+module.exports = function exports(grunt) {
+  'use strict';
+
+  const DEST = 'dist/';
+  const SCRIPTS = 'src/scripts/';
+  const CONFIG_NAME = 'config/config';
+  const CONFIG_DEV_NAME = 'config/config_dev';
 
   grunt.option('platform', 'web');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-
     bower: {
       install: {
         options: {
           targetDir: 'src/vendor',
           layout: 'byComponent',
-          cleanBowerDir: false
-        }
-      }
+          cleanBowerDir: false,
+        },
+      },
     },
 
     copy: {
       main: {
         files: [
-          //HTML
+          // HTML
           {
-            src: "src/*.html", dest: 'dist/',
-            expand: true, flatten: true
+            src: 'src/*.html', dest: 'dist/',
+            expand: true, flatten: true,
           },
           {
-            src: ['src/appcache.manifest'], dest: 'dist/appcache.manifest'
+            src: ['src/appcache.manifest'], dest: 'dist/appcache.manifest',
           },
           {
-            src: "src/*.json", dest: 'dist/',
-            expand: true, flatten: true
+            src: 'src/*.json', dest: 'dist/',
+            expand: true, flatten: true,
           },
           {
-            src: "**", cwd: 'src/images/', dest: 'dist/images/',
-            expand: true, filter: 'isFile'
+            src: '**', cwd: 'src/images/', dest: 'dist/images/',
+            expand: true, filter: 'isFile',
           },
           {
-            src: "src/images/ajax-loader.gif", dest: 'dist/styles/images/',
-            expand: true, flatten: true
+            src: 'src/images/ajax-loader.gif', dest: 'dist/styles/images/',
+            expand: true, flatten: true,
           },
-          //JS
+          // CSS
           {
-            src: ["src/vendor/**/js/*"], dest: 'dist/vendor/',
-            expand: true, flatten: true
+            src: 'src/vendor/**/css/*', dest: 'dist/styles/',
+            expand: true, flatten: true,
           },
-          //CSS
+          // FONTS
           {
-            src: "src/vendor/**/css/*", dest: 'dist/styles/',
-            expand: true, flatten: true
+            src: 'src/vendor/fontello/font/*', dest: 'dist/font/',
+            expand: true, flatten: true,
           },
-          //FONTS
-          {
-            src: "src/vendor/fontello/font/*", dest: 'dist/font/',
-            expand: true, flatten: true
-          },
-          //DATA
-          {
-            src: "src/data/*", dest: 'dist/scripts/data/',
-            expand: true, flatten: true
-          }
-        ]
-      }
+        ],
+      },
     },
 
 
@@ -74,39 +67,44 @@ module.exports = function (grunt) {
         options: {
           amd: true,
           namespace: 'JST',
+          templateSettings:
+          {
+            variable: 'obj',
+          },
           prettify: true,
-          processName: function(filepath) {
-            var templatesDir = '/templates';
+          processName(filepath) {
+            const templatesDir = '/templates';
+            let path = filepath;
 
-            //strip all until components folder
-            filepath = filepath.split('src/scripts/components/')[1];
+            // strip all until components folder
+            path = path.split('src/scripts/components/')[1];
 
-            //remove 'pages' from common/pages
-            if (filepath.indexOf('common/pages') >= 0) {
-              filepath = filepath.replace('/pages', '');
+            // remove 'pages' from common/pages
+            if (path.indexOf('common/pages') >= 0) {
+              path = path.replace('/pages', '');
             }
 
-            //remove extension
-            filepath = filepath.split('.')[0];
+            // remove extension
+            path = path.split('.')[0];
 
-            //cut out templates dir
-            var dirIndex = filepath.indexOf(templatesDir);
-            if (dirIndex){
-              filepath = filepath.substr(0, dirIndex) +
-                filepath.substr(dirIndex + templatesDir.length);
+            // cut out templates dir
+            const dirIndex = path.indexOf(templatesDir);
+            if (dirIndex) {
+              path = path.substr(0, dirIndex) +
+                path.substr(dirIndex + templatesDir.length);
             }
 
-            return filepath;
-          }
+            return path;
+          },
         },
         files: {
-          "dist/scripts/JST.js": [
-            "src/scripts/components/**/**/**/**/*.tpl",
-            "src/scripts/components/common/templates/*.tpl",
-            "src/scripts/helpers/templates/*.tpl"
-          ]
-        }
-      }
+          'src/scripts/JST.js': [
+            'src/scripts/components/**/**/**/**/*.tpl',
+            'src/scripts/components/common/templates/*.tpl',
+            'src/scripts/helpers/templates/*.tpl',
+          ],
+        },
+      },
     },
 
 
@@ -118,137 +116,114 @@ module.exports = function (grunt) {
         overwrite: true,
         replacements: [
           {
-            from: 'if (typeof module != \'undefined\' && module.exports) module.exports.Vector3d = Vector3d;',
-            to: ''
+            from: 'if (typeof module != \'undefined\' && module.exports) ' +
+            'module.exports.Vector3d = Vector3d;',
+            to: '',
           },
           {
-            from: 'if (typeof define == \'function\' && define.amd) define([], function() { return Vector3d; });',
-            to: ''
+            from: 'if (typeof define == \'function\' && define.amd) ' +
+            'define([], function() { return Vector3d; });',
+            to: '',
           },
           {
-            from: 'if (typeof define == \'function\' && define.amd) define([\'Dms\'], function() { return LatLon; });',
-            to: ''
-          }
-        ]
+            from: 'if (typeof define == \'function\' && define.amd) ' +
+            'define([\'Dms\'], function() { return LatLon; });',
+            to: '',
+          },
+        ],
       },
-      //Fix iOS 8 readonly broken IndexedDB
+      // Fix iOS 8 readonly broken IndexedDB
       indexedDBShim: {
         src: ['src/vendor/IndexedDBShim/js/IndexedDBShim.js'],
         overwrite: true,
         replacements: [
           {
             from: 'shim(\'indexedDB\', idbModules.shimIndexedDB);',
-            to:  'shim(\'_indexedDB\', idbModules.shimIndexedDB);'
+            to: 'shim(\'_indexedDB\', idbModules.shimIndexedDB);',
           },
           {
             from: 'shim(\'IDBKeyRange\', idbModules.IDBKeyRange);',
-            to:  'shim(\'_IDBKeyRange\', idbModules.IDBKeyRange);'
-          }
-        ]
+            to: 'shim(\'_IDBKeyRange\', idbModules.IDBKeyRange);',
+          },
+        ],
       },
 
-      //ratchet's modal functionality is not compatable with spa routing
+      // ratchet's modal functionality is not compatable with spa routing
       ratchet: {
         src: ['src/vendor/ratchet/js/ratchet.js'],
         overwrite: true,
         replacements: [{
           from: 'getModal(event)',
-          to: 'null'
-        }]
+          to: 'null',
+        }],
       },
 
-      //App NAME and VERSION
+      // App NAME and VERSION
       main: {
         src: [
-          SCRIPTS + CONFIG_NAME + '.js',
-          SCRIPTS + CONFIG_DEV_NAME + '.js',
-          DEST + MANIFEST_NAME
+          `${SCRIPTS + CONFIG_NAME}.js`,
+          `${SCRIPTS + CONFIG_DEV_NAME}.js`,
         ],
-        overwrite: true, // overwrite matched source files
-        replacements: [{
-          from: /\{APP_VER\}/g, // string replacement
-          to: '<%= pkg.version %>'
-        },
+        dest: `${SCRIPTS}`,
+        overwrite: false, // overwrite matched source files
+        replacements: [
+          {
+            from: /\{APP_VER\}/g, // string replacement
+            to: '<%= pkg.version %>',
+          },
           {
             from: /\{APP_NAME\}/g,
-            to: '<%= pkg.name %>'
-          }
-        ]
+            to: '<%= pkg.name %>',
+          },
+        ],
       },
 
-      //App CONFIG
-      config: {
-        src: [SCRIPTS + 'main.js'],
-        overwrite: true,
-        replacements: [{
-          from: /\{CONFIG\}/g,
-          to: CONFIG_NAME
-        },
-          {
-            from: /\{SPECIES\}/g,
-            to: 'data/master_list'
-          }
-        ]
-      },
-
-      dev_config: {
-        src: [SCRIPTS + 'main.js'],
-        overwrite: true,
-        replacements: [{
-          from: /\{CONFIG\}/g,
-          to: CONFIG_DEV_NAME
-        },
-          {
-            from: /\{SPECIES\}/g,
-            to: 'data/master_list_dev'
-          }
-        ]
-      },
-
-      //need to remove Ratchet's default fonts to work with fontello ones
+      // need to remove Ratchet's default fonts to work with fontello ones
       ratchet_fonts: {
         src: ['src/vendor/ratchet/css/ratchet.css'],
         overwrite: true,
-        replacements: [{
-          from: /font-family: Ratchicons;/g,
-          to: ''
-        },
+        replacements: [
+          {
+            from: /font-family: Ratchicons;/g,
+            to: '',
+          },
           {
             from: /src: url\(\"\.\.\/fonts.*;/g,
-            to: ''
-          }]
+            to: '',
+          }],
       },
 
-      //need to remove Ratchet's default fonts to work with fontello ones
+      // need to remove Ratchet's default fonts to work with fontello ones
       development_code: {
         src: ['dist/index.html'],
         overwrite: true,
         replacements: [{
           from: /<!-- DEVELOPMENT -->(.|\n)*<!-- \/DEVELOPMENT -->/g,
-          to: ''
-        }]
+          to: '',
+        }],
       },
 
-      //Cordova config changes
+      // Cordova config changes
       cordova_config: {
         src: [
-          'src/config.xml'
+          'src/config.xml',
         ],
         dest: 'src/config_build.xml',
-        replacements: [{
-          from: /\{APP_VER\}/g, // string replacement
-          to: '<%= pkg.version %>'
-        },
+        replacements: [
+          {
+            from: /\{APP_VER\}/g, // string replacement
+            to: '<%= pkg.version %>',
+          },
           {
             from: /\{APP_TITLE\}/g,
-            to: '<%= pkg.title %>'
+            to: '<%= pkg.title %>',
           },
           {
             from: /\{APP_DESCRIPTION\}/g,
-            to: '<%= pkg.description %>'
-          }
-        ]
-      }
+            to: '<%= pkg.description %>',
+          },
+        ],
+      },
     },
 
 
@@ -259,24 +234,29 @@ module.exports = function (grunt) {
           '/**\n' +
           '* IndexedDBShim\n ' +
           '* https://github.com/axemclion/IndexedDBShim\n ' +
-          '*/\n'
+          '*/\n',
         },
         files: {
-          'src/vendor/IndexedDBShim/js/IndexedDBShim.min.js': ['src/vendor/IndexedDBShim/js/IndexedDBShim.js']
-        }
+          'src/vendor/IndexedDBShim/js/IndexedDBShim.min.js': [
+            'src/vendor/IndexedDBShim/js/IndexedDBShim.js',
+          ],
+        },
       },
       backbone: {
         options: {
           banner:
           '//     Backbone.js 1.1.2\n' +
-          '//     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors\n' +
+          '//     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and ' +
+          'Investigative Reporters & Editors\n' +
           '//     Backbone may be freely distributed under the MIT license.\n' +
           '//     For all details and documentation:\n' +
-          '//     http://backbonejs.org */\n'
+          '//     http://backbonejs.org */\n',
         },
         files: {
-          'src/vendor/backbone/js/backbone.min.js': ['src/vendor/backbone/js/backbone.js']
-        }
+          'src/vendor/backbone/js/backbone.min.js': [
+            'src/vendor/backbone/js/backbone.js',
+          ],
+        },
       },
       fastclick: {
         options: {
@@ -288,103 +268,112 @@ module.exports = function (grunt) {
           '* @codingstandard ftlabs-jsv2 \n' +
           '* @copyright The Financial Times Limited [All Rights Reserved] \n' +
           '* @license MIT License (see LICENSE.txt) \n' +
-          '*/\n'
+          '*/\n',
         },
         files: {
-          'src/vendor/fastclick/js/fastclick.min.js': ['src/vendor/fastclick/js/fastclick.js']
-        }
+          'src/vendor/fastclick/js/fastclick.min.js': ['src/vendor/fastclick/js/fastclick.js'],
+        },
       },
       dms: {
         options: {
           banner:
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n' +
-          '/*  Geodesy representation conversion functions                       (c) Chris Veness 2002-2015  */\n' +
-          '/*   - www.movable-type.co.uk/scripts/latlong.html                                   MIT Licence  */\n' +
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -  */\n' +
+          '/*  Geodesy representation conversion functions  (c) Chris Veness 2002-2015  */\n' +
+          '/*   - www.movable-type.co.uk/scripts/latlong.html              MIT Licence  */\n' +
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - -  */\n',
         },
         files: {
-          'src/vendor/latlon/js/dms.min.js': ['src/vendor/latlon/js/dms.js']
-        }
+          'src/vendor/latlon/js/dms.min.js': ['src/vendor/latlon/js/dms.js'],
+        },
       },
       latlon_ellipsoid: {
         options: {
           banner:
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n' +
-          '/* Geodesy tools for an ellipsoidal earth model         (c) Chris Veness 2005-2015 / MIT Licence  */\n' +
-          '/*                                                                                                */\n' +
-          '/* Includes methods for converting lat/lon coordinates between different coordinate systems.      */\n' +
-          '/*   - www.movable-type.co.uk/scripts/latlong-convert-coords.html                                 */\n' +
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */\n' +
+          '/* Geodesy tools for an ellipsoidal earth model (c) Chris Veness 2005-2015   */\n' +
+          '/* MIT Licence                                                               */\n' +
+          '/* Includes methods for converting lat/lon coordinates between               */\n' +
+          '/* different coordinate systems.                                             */\n' +
+          '/*   - www.movable-type.co.uk/scripts/latlong-convert-coords.html            */\n' +
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */\n',
         },
         files: {
-          'src/vendor/latlon/js/latlon-ellipsoidal.min.js': ['src/vendor/latlon/js/latlon-ellipsoidal.js']
-        }
+          'src/vendor/latlon/js/latlon-ellipsoidal.min.js': [
+            'src/vendor/latlon/js/latlon-ellipsoidal.js',
+          ],
+        },
       },
       latlon_spherical: {
         options: {
           banner:
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n' +
-          '/*  Latitude/longitude spherical geodesy formulae & scripts           (c) Chris Veness 2002-2015  */\n' +
-          '/*   - www.movable-type.co.uk/scripts/latlong.html                                   MIT Licence  */\n' +
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -  */\n' +
+          '/*  Latitude/longitude spherical geodesy formulae & scripts         ' +
+          '  (c) Chris Veness 2002-2015  */\n' +
+          '/*   - www.movable-type.co.uk/scripts/latlong.html              MIT Licence  */\n' +
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - -  */\n',
         },
         files: {
-          'src/vendor/latlon/js/latlon-spherical.min.js': ['src/vendor/latlon/js/latlon-spherical.js']
-        }
+          'src/vendor/latlon/js/latlon-spherical.min.js': [
+            'src/vendor/latlon/js/latlon-spherical.js',
+          ],
+        },
       },
 
       osgridref: {
         options: {
           // the banner is inserted at the top of the output
           banner:
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n' +
-          '/*  Ordnance Survey Grid Reference functions            (c) Chris Veness 2005-2015 / MIT Licence  */\n' +
-          '/*  Formulation implemented here due to Thomas, Redfearn, etc is as published by OS, but is       */\n' +
-          '/*  inferior to Krüger as used by e.g. Karney 2011.                                               */\n' +
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   */\n' +
+          '/*  Ordnance Survey Grid Reference functions            ' +
+          '(c) Chris Veness 2005-2015 / MIT Licence  */\n' +
+          '/*  Formulation implemented here due to Thomas, Redfearn, ' +
+          'etc is as published by OS, but is       */\n' +
+          '/*  inferior to Krüger as used by e.g. Karney 2011.                          */\n' +
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - -  */\n',
         },
         files: {
-          'src/vendor/latlon/js/osgridref.min.js': ['src/vendor/latlon/js/osgridref.js']
-        }
+          'src/vendor/latlon/js/osgridref.min.js': ['src/vendor/latlon/js/osgridref.js'],
+        },
       },
       vector3d: {
         options: {
           // the banner is inserted at the top of the output
           banner:
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n' +
-          '/*  Vector handling functions                           (c) Chris Veness 2011-2015 / MIT Licence  */\n' +
-          '/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */\n'
+          '/* - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - -  */\n' +
+          '/*  Vector handling functions      (c) Chris Veness 2011-2015 / MIT Licence  */\n' +
+          '/* - - - - - - - - - - - - - - - -- - - - - - - - - - - - - - - - - - - - -  */\n',
         },
         files: {
-          'src/vendor/latlon/js/vector3d.min.js': ['src/vendor/latlon/js/vector3d.js']
-        }
+          'src/vendor/latlon/js/vector3d.min.js': ['src/vendor/latlon/js/vector3d.js'],
+        },
       },
       requirejs: {
         options: {
           // the banner is inserted at the top of the output
           banner:
           '/** vim: et:ts=4:sw=4:sts=4\n' +
-          '* @license RequireJS 2.1.16 Copyright (c) 2010-2015, The Dojo Foundation All Rights Reserved.\n' +
+          '* @license RequireJS 2.1.16 Copyright (c) 2010-2015, ' +
+          'The Dojo Foundation All Rights Reserved.\n' +
           '* Available via the MIT or new BSD license.\n' +
           '* see: http://github.com/jrburke/requirejs for details\n' +
-          '*/\n'
+          '*/\n',
         },
         files: {
-          'src/vendor/requirejs/js/require.min.js': ['src/vendor/requirejs/js/require.js']
-        }
-      }
+          'src/vendor/requirejs/js/require.min.js': ['src/vendor/requirejs/js/require.js'],
+        },
+      },
     },
 
     sass: {
       dist: {
         files: {
-          'dist/styles/main.css': 'src/styles/main.scss'
+          'dist/styles/main.css': 'src/styles/main.scss',
         },
         options: {
           sourcemap: 'none',
-          style: 'expanded'
-        }
-      }
+          style: 'expanded',
+        },
+      },
     },
 
     cssmin: {
@@ -396,79 +385,71 @@ module.exports = function (grunt) {
             'dist/styles/ionic.css',
             'dist/styles/leaflet.css',
             'dist/styles/icons.css',
-            'dist/styles/main.css'
+            'dist/styles/main.css',
           ],
-          dest: 'dist/styles/main.min.css'
-        }]
-      }
-    },
-
-    babel: {
-      options: {},
-      files: {
-        expand: true,
-        cwd: 'src',
-        src: ['scripts/**/**/**/*.es6'],
-        dest: 'dist',
-        ext: '.js'
-      }
-    },
-
-    requirejs: {
-      compile: {
-        options: {
-          verbose: true,
-          baseUrl: "dist/scripts/",
-          mainConfigFile: 'dist/scripts/main.js',
-          name: "main",
-          out: "dist/scripts/main-built.js",
-
-          optimize: 'none',
-          paths: {
-            data: 'empty:'
-          }
-
-        }
-      }
+          dest: 'dist/styles/main.min.css',
+        }],
+      },
     },
 
     clean: {
       dist: [
         'dist/vendor/*',
         '!dist/vendor/require.min.js',
-        //styles
+        // styles
         'dist/styles/*',
         '!dist/styles/main.min.css',
-        //scripts
+        // scripts
         'dist/scripts/*',
         '!dist/scripts/main-built.js',
-        //data
+        // data
         '!dist/scripts/data',
-        'dist/scripts/data/raw'
-      ]
+        'dist/scripts/data/raw',
+      ],
     },
 
     exec: {
       cordova_init: {
         command: 'cordova create cordova',
-        stdout: true
+        stdout: true,
       },
       cordova_clean_www: {
         command: 'rm -R cordova/www/* && rm cordova/config.xml',
-        stdout: true
+        stdout: true,
       },
       cordova_copy_dist: {
         command: 'cp -R dist/* cordova/www/ && cp src/config_build.xml cordova/config.xml',
-        stdout: true
+        stdout: true,
       },
       cordova_add_platforms: {
         command: 'cd cordova && cordova platforms add ios android',
-        stdout: true
-      }
-    }
+        stdout: true,
+      },
+    },
 
+    karma: {
+      local: {
+        configFile: 'test/karma.conf.js',
+      },
+      sauce: {
+        configFile: 'test/karma.conf-sauce.js',
+      },
+    },
+
+    webpack: {
+      // Main run
+      main: webpackConfig,
+
+      // Development run
+      dev: webpackConfigDev,
+
+      build: {
+        // configuration for this build
+      },
+    },
   });
 
+  grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-text-replace');
@@ -477,17 +458,16 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jst');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-babel');
+  grunt.loadNpmTasks('grunt-karma');
 
 
-  //Grunt Configuration Function
-  grunt.registerTask('set_option', 'Set a option property.', function(name, val) {
+  // Grunt Configuration Function
+  grunt.registerTask('set_option', 'Set a option property.', (name, val) => {
     grunt.option(name, val);
   });
 
-  // the default task can be run just by typing "grunt" on the command line
+  // the default task can be run just by typing 'grunt' on the command line
   grunt.registerTask('init', [
     'bower',
     'replace:indexedDBShim',
@@ -495,68 +475,65 @@ module.exports = function (grunt) {
     'replace:ratchet',
     'replace:ratchet_fonts',
     'uglify',
-    'copy'
+    'copy',
   ]);
 
   grunt.registerTask('run', [
-    'babel',
     'sass',
     'cssmin',
     'jst',
-    'replace:main'
+    'replace:main',
   ]);
 
   grunt.registerTask('default', [
     'init',
     'run',
-    'replace:config',
-    'requirejs',
-    'replace:development_code'
+    'webpack:main',
+    'replace:development_code',
   ]);
 
-  //Development run
+  // Development run
   grunt.registerTask('update', [
     'run',
-    'replace:config',
-    'requirejs',
-    'replace:development_code'
+    'webpack:main',
+    'replace:development_code',
   ]);
 
-  grunt.registerTask('cordova', 'Cordova tasks', function(update) {
+  grunt.registerTask('cordova', 'Cordova tasks', update => {
     if (update) {
-      //update only
+      // update only
       grunt.task.run('exec:cordova_clean_www');
       grunt.task.run('exec:cordova_copy_dist');
       return;
     }
 
-    //prepare www source
+    // prepare www source
     grunt.task.run('default');
-    // 'clean:dist'
 
     grunt.task.run('replace:cordova_config');
 
-    //init cordova source
+    // init cordova source
     grunt.task.run('exec:cordova_init');
 
-    //add www source to cordova
+    // add www source to cordova
     grunt.task.run('exec:cordova_clean_www');
     grunt.task.run('exec:cordova_copy_dist');
     grunt.task.run('exec:cordova_add_platforms');
   });
 
-  //Development update
+  // Development update
   grunt.registerTask('dev', [
     'init',
     'run',
-    'replace:dev_config',
-    'requirejs'
+    'webpack:dev',
   ]);
 
-  //Development run
+  // Development run
   grunt.registerTask('dev:update', [
     'run',
-    'replace:dev_config',
-    'requirejs'
+    'webpack:dev',
   ]);
+
+  grunt.registerTask('test', ['karma:local']);
+  grunt.registerTask('test:sauce', ['karma:sauce']);
 };

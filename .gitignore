@@ -1,7 +1,11 @@
+/src/scripts/config_dev.js
+/src/scripts/config.js
+/src/scripts/JST.js
 .DS_Store
 .idea
 .sass-cache
 .npm-debug.log
+/config_build.xml
 dist
 node_modules
 bower_components
