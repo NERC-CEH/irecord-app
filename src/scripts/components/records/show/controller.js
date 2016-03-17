@@ -1,4 +1,4 @@
-import Backbone from '../../../../vendor/backbone/js/backbone';
+import Backbone from 'backbone';
 import App from '../../../app';
 import appModel from '../../common/app_model';
 import recordManager from '../../common/record_manager';

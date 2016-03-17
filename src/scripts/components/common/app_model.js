@@ -1,7 +1,7 @@
 /******************************************************************************
  * App model. Persistent.
  *****************************************************************************/
-import Backbone from '../../../vendor/backbone/js/backbone';
+import Backbone from 'backbone';
 import Store from '../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import UUID from '../../helpers/UUID';
 import locHelp from '../../helpers/location';

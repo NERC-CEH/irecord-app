@@ -1,7 +1,7 @@
 /******************************************************************************
  * Welcome page view.
  *****************************************************************************/
-import Marionette from '../../../../../vendor/marionette/js/backbone.marionette';
+import Marionette from 'marionette';
 import JST from '../../../../JST';
 import log from '../../../../helpers/log';
 import informalGroups from './data/informal_groups.data';

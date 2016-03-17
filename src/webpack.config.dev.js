@@ -17,6 +17,8 @@ module.exports = {
     alias: {
       jquery: 'jquery/js/jquery',
       backbone: 'backbone/js/backbone',
+      marionette: 'marionette/js/backbone.marionette',
+      morel: 'morel/js/morel',
       leaflet: 'leaflet/js/leaflet',
       proj4leaflet: 'proj4Leaflet/js/proj4leaflet',
       proj4: 'proj4/js/proj4',

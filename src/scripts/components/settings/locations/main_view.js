@@ -1,4 +1,4 @@
-import Marionette from '../../../../vendor/marionette/js/backbone.marionette';
+import Marionette from 'marionette';
 import PastLocationsView from '../../common/past_locations_view';
 import JST from '../../../JST';
 

@@ -1,4 +1,4 @@
-import Marionette from '../../../../vendor/marionette/js/backbone.marionette';
+import Marionette from 'marionette';
 import validate from '../../../helpers/validate';
 import App from '../../../app';
 import JST from '../../../JST';

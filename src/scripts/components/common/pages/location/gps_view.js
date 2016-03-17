@@ -1,5 +1,5 @@
-import $ from '../../../../../vendor/jquery/js/jquery';
-import Marionette from '../../../../../vendor/marionette/js/backbone.marionette';
+import $ from 'jquery';
+import Marionette from 'marionette';
 import JST from '../../../../JST';
 
 export default Marionette.ItemView.extend({

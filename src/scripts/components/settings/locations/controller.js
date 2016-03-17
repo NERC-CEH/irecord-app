@@ -1,5 +1,5 @@
-import Backbone from '../../../../vendor/backbone/js/backbone';
-import Marionette from '../../../../vendor/marionette/js/backbone.marionette';
+import Backbone from 'backbone';
+import Marionette from 'marionette';
 import App from '../../../app';
 import JST from '../../../JST';
 import appModel from '../../common/app_model';

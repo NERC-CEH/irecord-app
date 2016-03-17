@@ -2,7 +2,7 @@
  * Backbone Router extension.
  *****************************************************************************/
 
-import Backbone from '../../vendor/backbone/js/backbone';
+import Backbone from 'backbone';
 import _ from '../../vendor/lodash';
 
 var leave, leaveArgs;

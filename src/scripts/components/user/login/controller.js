@@ -1,5 +1,7 @@
-  import Backbone from '../../../../vendor/backbone/js/backbone';
+  import $ from 'jquery';
+  import Backbone from 'backbone';
   import App from '../../../app';
+  import log from '../../../helpers/log';
   import CONFIG from 'config'; // Replaced with alias
   import userModel from '../../common/user_model';
   import MainView from './main_view';
@@ -45,7 +47,7 @@
                   //unauthorised
                   break;
                 default:
-                  Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+                  log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
               }
 
               var response = '';
@@ -80,7 +82,7 @@
      * appname and appsecret for the mentioned module.
      */
     login: function (data, callback) {
-      Log('views.login: start.', 'd');
+      log('views.login: start.', 'd');
       var person = {
         //user logins
         'email': data.email,
@@ -129,7 +131,7 @@
           'surname': lines[2]
         };
       } else {
-        Log('login:extractdetails: problems with received secret.', 'w');
+        log('login:extractdetails: problems with received secret.', 'w');
         return null;
       }
     }

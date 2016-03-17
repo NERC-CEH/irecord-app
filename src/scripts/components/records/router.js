@@ -1,4 +1,4 @@
-import Marionette from '../../../vendor/marionette/js/backbone.marionette';
+import Marionette from 'marionette';
 import log from '../../helpers/log';
 import App from '../../app';
 import recordManager from '../common/record_manager';

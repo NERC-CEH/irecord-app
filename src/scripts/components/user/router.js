@@ -1,4 +1,4 @@
-import Marionette from '../../../vendor/marionette/js/backbone.marionette';
+import Marionette from 'marionette';
 import App from '../../app';
 import LoginController from './login/controller';
 import RegisterController from './register/controller';

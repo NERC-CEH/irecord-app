@@ -13,7 +13,7 @@
  * Levels values defined in core app module.
  *****************************************************************************/
 
-import $ from '../../vendor/jquery/js/jquery';
+import $ from 'jquery';
 import CONFIG from 'config'; // Replaced with alias
 
 const ERROR = 'e';

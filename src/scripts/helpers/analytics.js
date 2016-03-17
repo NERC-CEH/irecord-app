@@ -1,7 +1,7 @@
 /**
  * Google analytics to track the page navigation.
  */
-import Backbone from '../../vendor/backbone/js/backbone';
+import Backbone from 'backbone';
 import CONFIG from 'config'; // Replaced with alias
 
 export default {

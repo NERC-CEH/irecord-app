@@ -1,4 +1,4 @@
-import Backbone from '../../../../vendor/backbone/js/backbone';
+import Backbone from 'backbone';
 import App from '../../../app';
 import userModel from '../../common/user_model';
 import MainView from './main_view';

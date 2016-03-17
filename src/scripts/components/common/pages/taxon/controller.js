@@ -1,5 +1,5 @@
-import Backbone from '../../../../../vendor/backbone/js/backbone';
-import Morel from '../../../../../vendor/morel/js/morel';
+import Backbone from 'backbone';
+import Morel from 'morel';
 import GPS from '../../../../helpers/gps';
 import App from '../../../../app';
 import appModel from '../../app_model';

@@ -10,8 +10,10 @@ module.exports = {
     resolve: {
       root: './src/',
       alias: {
-        jquery: 'vendor/jquery/js/jquery',
-        backbone: 'vendor/backbone/js/backbone',
+        jquery: 'jquery/js/jquery',
+        backbone: 'backbone/js/backbone',
+        marionette: 'marionette/js/backbone.marionette',
+        morel: 'morel/js/morel',
         leaflet: 'vendor/leaflet/js/leaflet',
         proj4leaflet: 'vendor/proj4Leaflet/js/proj4leaflet',
         proj4: 'vendor/proj4/js/proj4',

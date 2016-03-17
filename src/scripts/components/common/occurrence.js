@@ -1,5 +1,5 @@
-import $ from '../../../vendor/jquery/js/jquery';
-import Morel from '../../../vendor/morel/js/morel';
+import $ from 'jquery';
+import Morel from 'morel';
 import CONFIG from 'config'; // Replaced with alias
 
 $.extend(true, Morel.Occurrence.keys, CONFIG.morel.occurrence);

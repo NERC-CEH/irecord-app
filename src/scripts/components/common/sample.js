@@ -1,5 +1,5 @@
-import $ from '../../../vendor/jquery/js/jquery';
-import Morel from '../../../vendor/morel/js/morel';
+import $ from 'jquery';
+import Morel from 'morel';
 import GPS from '../../helpers/gps';
 import LocHelp from '../../helpers/location';
 import CONFIG from 'config'; // Replaced with alias

@@ -1,9 +1,9 @@
 /******************************************************************************
  * Messages the user
  *****************************************************************************/
-import $ from '../../../vendor/jquery/js/jquery';
-import Backbone from '../../../vendor/backbone/js/backbone';
-import Marionette from '../../../vendor/marionette/js/backbone.marionette';
+import $ from 'jquery';
+import Backbone from 'backbone';
+import Marionette from 'marionette';
 import _ from '../../../vendor/lodash/js/lodash';
 import JST from '../../JST';
 

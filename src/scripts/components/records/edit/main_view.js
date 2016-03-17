@@ -1,5 +1,5 @@
-import Marionette from '../../../../vendor/marionette/js/backbone.marionette';
-import Morel from '../../../../vendor/morel/js/morel';
+import Marionette from 'marionette';
+import Morel from 'morel';
 import JST from '../../../JST';
 
 export default Marionette.ItemView.extend({

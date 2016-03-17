@@ -1,5 +1,5 @@
-import $ from '../../../vendor/jquery/js/jquery';
-import Morel from '../../../vendor/morel/js/morel';
+import $ from 'jquery';
+import Morel from 'morel';
 import browser from '../../helpers/browser';
 import CONFIG from 'config'; // Replaced with alias
 import Sample from './sample';

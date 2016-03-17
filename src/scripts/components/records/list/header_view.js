@@ -1,7 +1,7 @@
 /******************************************************************************
  * Welcome page view.
  *****************************************************************************/
-import Marionette from '../../../../vendor/marionette/js/backbone.marionette';
+import Marionette from 'marionette';
 import log from '../../../helpers/log';
 import App from '../../../app';
 import JST from '../../../JST';

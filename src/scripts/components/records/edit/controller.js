@@ -1,5 +1,5 @@
-import Backbone from '../../../../vendor/backbone/js/backbone';
-import Morel from '../../../../vendor/morel/js/morel';
+import Backbone from 'backbone';
+import Morel from 'morel';
 import dateExtension from '../../../helpers/date_extension';
 import stringExtension from '../../../helpers/string_extension';
 import App from '../../../app';

@@ -1,4 +1,4 @@
-import $ from '../../vendor/jquery/js/jquery';
+import $ from 'jquery';
 import Error from './error';
 
 const API = {

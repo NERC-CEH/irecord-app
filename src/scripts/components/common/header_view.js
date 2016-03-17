@@ -1,4 +1,4 @@
-import Marionette from '../../../vendor/marionette/js/backbone.marionette';
+import Marionette from 'marionette';
 import JST from '../../JST';
 
 export default Marionette.LayoutView.extend({

@@ -1,9 +1,9 @@
 /******************************************************************************
  * Welcome page view.
  *****************************************************************************/
-import $ from '../../../../vendor/jquery/js/jquery';
-import Marionette from '../../../../vendor/marionette/js/backbone.marionette';
-import Morel from '../../../../vendor/morel/js/morel';
+import $ from 'jquery';
+import Marionette from 'marionette';
+import Morel from 'morel';
 import Hammer from '../../../../vendor/hammerjs/js/hammer';
 import browser from '../../../helpers/browser';
 import dateExtension from '../../../helpers/date_extension';

@@ -1,4 +1,4 @@
-import Morel from '../../../../vendor/morel/js/morel';
+import Morel from 'morel';
 import App from '../../../app';
 import appModel from '../../common/app_model';
 import recordManager from '../../common/record_manager';

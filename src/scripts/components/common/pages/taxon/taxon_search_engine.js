@@ -2,8 +2,8 @@
  * Generates UKSI list search suggestions.
  */
 
-import $ from '../../../../../vendor/jquery/js/jquery';
-import Backbone from '../../../../../vendor/backbone/js/backbone';
+import $ from 'jquery';
+import Backbone from 'backbone';
 
 let species;
 let commonNamePointers;

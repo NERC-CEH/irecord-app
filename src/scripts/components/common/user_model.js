@@ -1,7 +1,7 @@
 /******************************************************************************
  * User model describing the user model on backend. Persistent.
  *****************************************************************************/
-import Backbone from '../../../vendor/backbone/js/backbone';
+import Backbone from 'backbone';
 import Store from '../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import Validate from '../../helpers/validate';
 import CONFIG from 'config'; // Replaced with alias

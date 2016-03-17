@@ -1,9 +1,9 @@
 /******************************************************************************
  * App object.
  *****************************************************************************/
-import $ from '../vendor/jquery/js/jquery';
-import Backbone from '../vendor/backbone/js/backbone';
-import Marionette from '../vendor/marionette/js/backbone.marionette';
+import $ from 'jquery';
+import Backbone from 'backbone';
+import Marionette from 'marionette';
 import FastClick from '../vendor/fastclick/js/fastclick';
 import analytics from './helpers/analytics';
 import log from './helpers/log';

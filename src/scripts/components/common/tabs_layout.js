@@ -1,5 +1,5 @@
-import Backbone from '../../../vendor/backbone/js/backbone';
-import Marionette from '../../../vendor/marionette/js/backbone.marionette';
+import Backbone from 'backbone';
+import Marionette from 'marionette';
 import JST from '../../JST';
 
 let Tab = Marionette.ItemView.extend({
