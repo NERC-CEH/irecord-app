@@ -1,10 +1,9 @@
-var webpackConfig = require('./src/webpack.config.js');
-var webpackConfigDev = require('./src/webpack.config.dev.js');
+const webpackConfig = require('./src/webpack.config.js');
+const webpackConfigDev = require('./src/webpack.config.dev.js');
 
 module.exports = function exports(grunt) {
   'use strict';
 
-  const DEST = 'dist/';
   const SCRIPTS = 'src/scripts/';
   const CONFIG_NAME = 'config/config';
   const CONFIG_DEV_NAME = 'config/config_dev';
@@ -490,6 +489,7 @@ module.exports = function exports(grunt) {
     'run',
     'webpack:main',
     'replace:development_code',
+    'test',
   ]);
 
   // Development run
@@ -497,6 +497,7 @@ module.exports = function exports(grunt) {
     'run',
     'webpack:main',
     'replace:development_code',
+    'test',
   ]);
 
   grunt.registerTask('cordova', 'Cordova tasks', update => {
@@ -526,12 +527,14 @@ module.exports = function exports(grunt) {
     'init',
     'run',
     'webpack:dev',
+    'test',
   ]);
 
   // Development run
   grunt.registerTask('dev:update', [
     'run',
     'webpack:dev',
+    'test',
   ]);
 
   grunt.registerTask('test', ['karma:local']);

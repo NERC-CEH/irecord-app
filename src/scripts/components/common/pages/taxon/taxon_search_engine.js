@@ -26,7 +26,7 @@ const API = {
         species = window['species_list'];
         commonNamePointers = API._makeCommonNameMap();
         events.trigger('loaded');
-      });
+      }, 'data');
     }
   },
 
