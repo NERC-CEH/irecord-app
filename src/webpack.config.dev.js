@@ -12,10 +12,11 @@ module.exports = {
   resolve: {
     root: [
       path.resolve('./src/scripts'),
-      path.resolve('./src/vendor')
+      path.resolve('./src/vendor'),
     ],
     alias: {
       jquery: 'jquery/js/jquery',
+      lodash: 'lodash/js/lodash',
       backbone: 'backbone/js/backbone',
       marionette: 'marionette/js/backbone.marionette',
       morel: 'morel/js/morel',
@@ -23,7 +24,8 @@ module.exports = {
       proj4leaflet: 'proj4Leaflet/js/proj4leaflet',
       proj4: 'proj4/js/proj4',
       config: 'config_dev',
-      'master_list.data': './data/master_list_dev.data',
+      'master_list.data': 'data/master_list_dev.data.js',
+      'informal_groups.data': 'data/informal_groups.data.js',
     },
   },
   module: {

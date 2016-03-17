@@ -3,9 +3,11 @@
  */
 
 import $ from 'jquery';
+import _ from 'lodash';
 import Backbone from 'backbone';
 
 let species;
+let loading = false;
 let commonNamePointers;
 
 var events = $.extend(function () {}, Backbone.Events);
@@ -21,7 +23,9 @@ const MAX = 20;
 const API = {
   init: function () {
     if (!window['species_list']) {
+      loading = true;
       require.ensure([], () => {
+        loading = false;
         require('master_list.data');
         species = window['species_list'];
         commonNamePointers = API._makeCommonNameMap();
@@ -45,6 +49,10 @@ const API = {
    */
   search: function (searchPhrase, callback) {
     if (!species) {
+      if (!loading) {
+        API.init();
+      }
+
       events.once('loaded', function () {
         API.search(searchPhrase, callback);
       });
@@ -53,19 +61,22 @@ const API = {
 
     let results = [];
 
-    //check if scientific search
-    let isScientific = API._isPhraseScientific(searchPhrase);
+    // normalize the search phrase
+    const normSearchPhrase = searchPhrase.toLowerCase();
+
+    // check if scientific search
+    let isScientific = API._isPhraseScientific(normSearchPhrase);
     if (isScientific) {
       //search sci names
-      API.searchSciNames(species, searchPhrase, results);
+      API.searchSciNames(species, normSearchPhrase, results);
     } else {
       //search common names
-      results = API.searchCommonNames(species, commonNamePointers, searchPhrase);
+      results = API.searchCommonNames(species, commonNamePointers, normSearchPhrase);
 
       //if not enough
       if (results.length <= MAX) {
         //search sci names
-        API.searchSciNames(species, searchPhrase, results);
+        API.searchSciNames(species, normSearchPhrase, results);
       }
     }
 
@@ -139,7 +150,7 @@ const API = {
                   array_id: species_array_index,
                   species_id: species_index,
                   found_in_name: 'scientific_name',
-                  warehouse_id: species_entry[WAREHOUSE_INDEX],
+                  warehouse_id: speciesInArray[WAREHOUSE_INDEX],
                   group: species_entry[GROUP_INDEX],
                   scientific_name: species_entry[SCI_NAME_INDEX] + ' ' + speciesInArray[SPECIES_SCI_NAME_INDEX],
                   common_name: speciesInArray[SPECIES_COMMON_INDEX],

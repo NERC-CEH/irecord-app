@@ -4,7 +4,7 @@
 import Marionette from 'marionette';
 import JST from '../../../../JST';
 import log from '../../../../helpers/log';
-import informalGroups from './data/informal_groups.data';
+import informalGroups from 'informal_groups.data';
 
 const MIN_SEARCH_LENGTH = 2;
 

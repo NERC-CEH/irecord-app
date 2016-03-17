@@ -11,6 +11,7 @@ module.exports = {
       root: './src/',
       alias: {
         jquery: 'jquery/js/jquery',
+        lodash: 'lodash/js/lodash',
         backbone: 'backbone/js/backbone',
         marionette: 'marionette/js/backbone.marionette',
         morel: 'morel/js/morel',
