@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = {
   context: './src/scripts',
   entry: {
@@ -8,14 +10,17 @@ module.exports = {
     filename: '[name].js', // Notice we use a variable
   },
   resolve: {
-    root: './src/',
+    root: [
+      path.resolve('./src/scripts'),
+      path.resolve('./src/vendor')
+    ],
     alias: {
-      jquery: 'vendor/jquery/js/jquery',
-      backbone: 'vendor/backbone/js/backbone',
-      leaflet: 'vendor/leaflet/js/leaflet',
-      proj4leaflet: 'vendor/proj4Leaflet/js/proj4leaflet',
-      proj4: 'vendor/proj4/js/proj4',
-      config: 'scripts/config_dev',
+      jquery: 'jquery/js/jquery',
+      backbone: 'backbone/js/backbone',
+      leaflet: 'leaflet/js/leaflet',
+      proj4leaflet: 'proj4Leaflet/js/proj4leaflet',
+      proj4: 'proj4/js/proj4',
+      config: 'config_dev',
       'master_list.data': './data/master_list_dev.data',
     },
   },

@@ -1,5 +1,5 @@
-var webpackConfig = require('./webpack.config.js');
-var webpackConfigDev = require('./webpack.config.dev.js');
+var webpackConfig = require('./src/webpack.config.js');
+var webpackConfigDev = require('./src/webpack.config.dev.js');
 
 module.exports = function exports(grunt) {
   'use strict';
