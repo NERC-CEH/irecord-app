@@ -1,3 +1,4 @@
+/cordova
 /sauce.json
 /src/scripts/config_dev.js
 /src/scripts/config.js
@@ -19,7 +20,3 @@ src/vendor/*
 !src/vendor/bootstrap/
 !src/vendor/ionic/
 !src/vendor/fontello/
-!src/vendor/bootstrap/
-!src/vendor/ionic/
-
-cordova/*
