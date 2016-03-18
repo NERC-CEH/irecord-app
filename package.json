@@ -48,6 +48,8 @@
     "grunt-karma": "latest",
     "grunt-text-replace": "0.3.12",
     "grunt-webpack": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest",
 
     "karma": "latest",
     "karma-chai": "latest",
@@ -58,8 +60,7 @@
     "karma-sauce-launcher": "latest",
     "mocha": "latest",
     "phantomjs-prebuilt": "latest",
-    "webpack": "latest",
-    "webpack-dev-server": "latest"
+    "core-js": "latest"
   },
   "keywords": [
     "irecord",
