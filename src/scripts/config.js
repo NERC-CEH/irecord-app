@@ -4,7 +4,7 @@
 import locHelp from './helpers/location';
 
 export default {
-  version: '1.0.0-beta', // replaced on build
+  version: '1.0.0-beta-2', // replaced on build
   name: 'irecord-app', // replaced on build
 
   gps_accuracy_limit: 100,

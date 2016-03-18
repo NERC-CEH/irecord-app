@@ -33,10 +33,17 @@ Cordova
 =======
 
 Signing
+-------
+
+Generate a key with first one if don't have one
+```bash
+jarsigner -keytool -genkey -v -keystore irecord.keystore -alias irecord -keyalg RSA -keysize 2048 -validity 10000
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore irecord.keystore android-release-unsigned.apk irecord
+```
+
+Zipalign is in sdk build tools. On Mac /Applications/Android/sdk/build-tools/
 
 ```bash
-keytool -genkey -v -keystore irecord.keystore -alias irecord -keyalg RSA -keysize 2048 -validity 10000
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore irecord.keystore android-release-unaligned.apk irecord
 zipalign -v 4 android-release-unsigned.apk irecord.apk
 ```
 

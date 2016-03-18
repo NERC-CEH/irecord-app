@@ -48,6 +48,10 @@ function detect(browserName) {
 }
 
 function isIOS() {
+  if (window.cordova && window.device) {
+    return window.device.platform === 'iOS';
+  }
+
   return isIPad || isIPod || isIPhone;
 }
 
