@@ -12,11 +12,11 @@ export default {
 
   updateViewFormErrors($view, errors, selector) {
     const clearFormErrors = () => {
-      $view.find('span.error').each(() => {
-        $(this).remove();
+      $view.find('span.error').each((int, elem) => {
+        $(elem).remove();
       });
-      $view.find('.input-row.error').each(() => {
-        $(this).removeClass('error');
+      $view.find('.input-row.error').each((int, elem) => {
+        $(elem).removeClass('error');
       });
     };
 

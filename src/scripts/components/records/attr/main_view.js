@@ -34,17 +34,17 @@ export default Marionette.ItemView.extend({
         break;
       case 'number':
         $inputs = this.$el.find('input');
-        $inputs.each(() => {
-          if ($(this).prop('checked')) {
-            values[attr] = $(this).val();
+        $inputs.each((int, elem) => {
+          if ($(elem).prop('checked')) {
+            values[attr] = $(elem).val();
           }
         });
         break;
       case 'stage':
         $inputs = this.$el.find('input');
-        $inputs.each(() => {
-          if ($(this).prop('checked')) {
-            values[attr] = $(this).val();
+        $inputs.each((int, elem) => {
+          if ($(elem).prop('checked')) {
+            values[attr] = $(elem).val();
           }
         });
         break;
