@@ -15,7 +15,7 @@ import pdb
 
 csv_file = open('master_list.csv', 'rt')
 reader = csv.reader(csv_file)
-json_file = open('master_list.js', 'wt')
+json_file = open('master_list.data.js', 'wt')
 
 data = []
 row_data = {}
@@ -56,7 +56,7 @@ for row in reader:
                 else:
                     break
 
-        #check if row belongs to previous genus
+        #check if there is a genus to attach current row
         if genus: 
             #remove genus from species name
             if (len(row_data[2].split()) == 1):
@@ -90,7 +90,10 @@ for row in reader:
                 print(genus)
         else:
             #add to all row data
-            data.append(copy.copy(row_data))
+            if (len(row_data[2].split()) == 2 and row_data[2].split()[0] != 'X'):
+                print ('Warning! Species without genus: ' + row_data[2])
+            else:
+                data.append(copy.copy(row_data))
     rownum += 1
     
 json_file.write('window.species_list = ');

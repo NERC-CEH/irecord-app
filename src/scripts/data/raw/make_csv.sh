@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Join two tables on NBN key:
-csvjoin -v -c "NBN_TAXON_VERSION_KEY_FOR_RECOMMENDED_NAME,search_code" NHM_master_list.csv warehouse_master_list.csv > master_list_full.csv
+csvjoin -v -c "NBN_TAXON_VERSION_KEY_FOR_RECOMMENDED_NAME,search_code" NHM_master_list.csv warehouse_master_list_dev.csv > master_list_full.csv
 
 #Cut the unneeded columns out:
 csvcut -c "id, INFORMAL_GROUP_ID,RECOMMENDED_SCIENTIFIC_NAME,COMMON_NAME,SYNONYM" master_list_full.csv > master_list.csv && rm master_list_full.csv 
@@ -11,6 +11,11 @@ sed -i 's/\[.*\]\s//g' master_list.csv
 
 #Remove ',()' - should not start with brackets
 sed -i 's/,(.*)/,/g' master_list.csv
+
+#Remove ',.*().*,,' - should not have bracketed old Genus
+sed -i 's/\([0-9]*,[0-9]*,.*\)\s(.*)\(.*,.*,.*\)/\1\2/g' master_list.csv
+#Twice to remove ssp. brackets
+sed -i 's/\([0-9]*,[0-9]*,.*\)\s(.*)\(.*,.*,.*\)/\1\2/g' master_list.csv
 
 #todo: remove non alphanumerics
 sed -i "s/[^_0-9,A-Za-z \.\-\=\(\)\']//g" master_list.csv
