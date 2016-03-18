@@ -61,7 +61,13 @@ const API = {
   },
 
   _showMainView(mainView, that) {
-    mainView.on('taxon:selected', API._onSelected, that);
+    mainView.on('taxon:selected', (species, edit) => {
+      API._onSelected(species, edit, (err) => {
+        if (err) {
+          App.regions.dialog.error(err);
+        }
+    });
+    }, that);
     mainView.on('taxon:searched', (searchPhrase) => {
       SpeciesSearchEngine.search(searchPhrase, (selection) => {
         mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
@@ -71,7 +77,7 @@ const API = {
     App.regions.main.show(mainView);
   },
 
-  _onSelected(species, edit) {
+  _onSelected(species, edit, callback) {
     const that = this;
     if (!this.id) {
       // create new sighting
@@ -86,7 +92,12 @@ const API = {
       // add locked attributes
       appModel.appendAttrLocks(sample);
 
-      recordManager.set(sample, () => {
+      recordManager.set(sample, (err) => {
+        if (err) {
+          callback && callback(err);
+          return;
+        }
+
         // check if location attr is not locked
         const locks = appModel.get('attrLocks');
 
@@ -109,8 +120,16 @@ const API = {
     } else {
       // edit existing one
       recordManager.get(this.id, (err, recordModel) => {
+        if (err) {
+          callback && callback(err);
+          return;
+        }
         recordModel.occurrences.at(0).set('taxon', species);
-        recordModel.save(() => {
+        recordModel.save((err) => {
+          if (err) {
+            callback && callback(err);
+            return;
+          }
           if (edit) {
             App.trigger('records:edit', that.id, { replace: true });
           } else {

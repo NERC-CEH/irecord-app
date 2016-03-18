@@ -5,6 +5,7 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import FastClick from '../vendor/fastclick/js/fastclick';
+import IndexedDBShim from '../vendor/IndexedDBShim/js/IndexedDBShim';
 import analytics from './helpers/analytics';
 import log from './helpers/log';
 import device from './helpers/device';
