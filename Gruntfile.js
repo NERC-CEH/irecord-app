@@ -109,6 +109,17 @@ module.exports = function exports(grunt) {
 
     replace: {
       // Fix double define problem
+      bootstrap: {
+        src: ['src/vendor/bootstrap/js/bootstrap.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: 'if (typeof jQuery === \'undefined\') {',
+            to: 'var jQuery = require(\'jquery\'); \nif (false) {',
+          },
+        ],
+      },
+      // Fix double define problem
       latlon: {
         src: ['src/vendor/latlon/js/latlon-ellipsoidal.js',
           'src/vendor/latlon/js/latlon-spherical.js'],
@@ -469,6 +480,7 @@ module.exports = function exports(grunt) {
   // the default task can be run just by typing 'grunt' on the command line
   grunt.registerTask('init', [
     'bower',
+    'replace:bootstrap',
     'replace:indexedDBShim',
     'replace:latlon',
     'replace:ratchet',
