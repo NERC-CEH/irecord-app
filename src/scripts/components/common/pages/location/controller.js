@@ -1,7 +1,9 @@
 import $ from 'jquery';
+import _ from 'lodash';
 import Backbone from 'backbone';
+import Marionette from 'marionette';
 import Morel from 'morel';
-import GPS from '../../../../helpers/gps';
+import device from '../../../../helpers/device';
 import log from '../../../../helpers/log';
 import validate from '../../../../helpers/validate';
 import locHelp from '../../../../helpers/location';
@@ -19,143 +21,143 @@ import MapView from './map_view';
 import GridRefView from './grid_ref_view';
 import PastView from './past_view';
 
-let API = {
-  show: function (recordID){
-    recordManager.get(recordID, function (err, recordModel) {
-      //Not found
+const API = {
+  show(recordID) {
+    recordManager.get(recordID, (err, recordModel) => {
+      // Not found
       if (!recordModel) {
-        App.trigger('404:show', {replace: true});
+        App.trigger('404:show', { replace: true });
         return;
       }
 
-      //can't edit a saved one - to be removed when record update
-      //is possible on the server
-      if (recordModel.getSyncStatus() == Morel.SYNCED) {
-        App.trigger('records:show', recordID, {replace: true});
+      // can't edit a saved one - to be removed when record update
+      // is possible on the server
+      if (recordModel.getSyncStatus() === Morel.SYNCED) {
+        App.trigger('records:show', recordID, { replace: true });
         return;
       }
 
-      //MAIN
-      let mainView = new TabsLayout({
+      // MAIN
+      const mainView = new TabsLayout({
         tabs: [
           {
             active: true,
             id: 'gps',
             title: 'GPS',
-            ContentView: GpsView
+            ContentView: GpsView,
           },
           {
             id: 'map',
             title: 'Map',
-            ContentView: MapView
+            ContentView: MapView,
           },
           {
             id: 'grid-ref',
             title: 'Grid Ref',
-            ContentView: GridRefView
+            ContentView: GridRefView,
           },
           {
             id: 'past',
             title: 'Past',
-            ContentView: PastView
-          }
+            ContentView: PastView,
+          },
         ],
-        model: new Backbone.Model({recordModel: recordModel, appModel: appModel}),
-        vent: App.vent
+        model: new Backbone.Model({ recordModel, appModel }),
+        vent: App.vent,
       });
 
-      let onLocationSelect = function (view, location, createNew) {
-        //we don't need the GPS running and overwriting the selected location
+      function onLocationSelect(view, loc, createNew) {
+        let location = loc;
+        // we don't need the GPS running and overwriting the selected location
         recordModel.stopGPS();
 
         if (!createNew) {
-          //extend old location to preserve its previous attributes like name or id
-          let oldLocation = recordModel.get('location') || {};
+          // extend old location to preserve its previous attributes like name or id
+          const oldLocation = recordModel.get('location') || {};
           location = $.extend(oldLocation, location);
         }
 
         recordModel.set('location', location);
         recordModel.trigger('change:location');
-      };
+      }
 
-      let onGPSClick = function () {
-        //turn off if running
+      function onGPSClick() {
+        // turn off if running
         if (recordModel.isGPSRunning()) {
           recordModel.stopGPS();
         } else {
           recordModel.startGPS();
         }
-      };
+      }
 
-      let onLocationNameChange = function (view, name) {
+      function onLocationNameChange(view, name) {
         if (!name) {
           return;
         }
 
-        let location = recordModel.get('location') || {};
+        const location = recordModel.get('location') || {};
         location.name = name.escape();
         recordModel.set('location', location);
         recordModel.trigger('change:location');
-      };
+      }
 
-      let currentVal = recordModel.get('location') || {};
-      let locationIsLocked = appModel.isAttrLocked('location', currentVal);
+      const currentVal = recordModel.get('location') || {};
+      const locationIsLocked = appModel.isAttrLocked('location', currentVal);
 
-      let onPageExit = function () {
-        recordModel.save(function () {
-          let attr = 'location';
+      function onPageExit() {
+        recordModel.save(() => {
+          const attr = 'location';
           let location = recordModel.get('location') || {};
-          let lockedValue = appModel.getAttrLock('location');
+          const lockedValue = appModel.getAttrLock('location');
 
           if ((location.latitude && location.longitude) || location.name) {
-            //we can lock loaction and name on their own
-            //don't lock GPS though, because it varies more than a map or gridref
+            // we can lock loaction and name on their own
+            // don't lock GPS though, because it varies more than a map or gridref
 
-            //save to past locations
-            let locationID = appModel.setLocation(recordModel.get('location'));
+            // save to past locations
+            const locationID = appModel.setLocation(recordModel.get('location'));
             location.id = locationID;
             recordModel.set('location', location);
 
-            //update locked value if attr is locked
+            // update locked value if attr is locked
             if (lockedValue) {
-              //check if previously the value was locked and we are updating
+              // check if previously the value was locked and we are updating
               if (locationIsLocked || lockedValue === true) {
-
                 log('Updating lock', 'd');
 
                 if (location.source === 'gps') {
-                  //on GPS don't lock other than name
+                  // on GPS don't lock other than name
                   location = {
-                    name: location.name
+                    name: location.name,
                   };
                 }
                 appModel.setAttrLock(attr, location);
               }
             }
-          } else if (lockedValue == true) {
-            //reset if no location or location name selected but locked is clicked
+          } else if (lockedValue === true) {
+            // reset if no location or location name selected but locked is clicked
             appModel.setAttrLock(attr, null);
           }
 
           window.history.back();
         });
-      };
+      }
 
-      mainView.on('childview:location:select:past', function (view, location) {
+      mainView.on('childview:location:select:past', (view, location) => {
         onLocationSelect(view, location, true);
         onPageExit();
       });
       mainView.on('childview:location:delete', API.deleteLocation);
       mainView.on('childview:location:edit', API.editLocation);
       mainView.on('childview:location:select:map', onLocationSelect);
-      mainView.on('childview:location:select:gridref', function(view, data) {
+      mainView.on('childview:location:select:gridref', (view, data) => {
         /**
          * Validates the new location
          * @param attrs
          * @returns {{}}
          */
-        function validate (attrs) {
-          let errors = {};
+        function validate(attrs) {
+          const errors = {};
 
           if (!attrs.name) {
             errors.name = "can't be blank";
@@ -164,8 +166,8 @@ let API = {
           if (!attrs.gridref) {
             errors.gridref = "can't be blank";
           } else {
-            let validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
-            let gridref = attrs.gridref.replace(/\s/g, '');
+            const validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
+            const gridref = attrs.gridref.replace(/\s/g, '');
             if (!validGridRef.test(gridref)) {
               errors.gridref = 'invalid';
             } else if (!locHelp.grid2coord(gridref)) {
@@ -173,31 +175,31 @@ let API = {
             }
           }
 
-          if( ! _.isEmpty(errors)){
+          if (! _.isEmpty(errors)) {
             return errors;
           }
         }
 
-        let validationError = validate(data);
+        const validationError = validate(data);
         if (!validationError) {
-          App.vent.trigger("gridref:form:data:invalid", {}); //update form
-          var latLon = locHelp.grid2coord(data.gridref);
-          let location = {
+          App.vent.trigger('gridref:form:data:invalid', {}); // update form
+          const latLon = locHelp.grid2coord(data.gridref);
+          const location = {
             source: 'gridref',
             name: data.name,
             gridref: data.gridref,
             latitude: parseFloat(latLon.lat.toFixed(8)),
-            longitude: parseFloat(latLon.lon.toFixed(8))
+            longitude: parseFloat(latLon.lon.toFixed(8)),
           };
 
-          //-2 because of gridref letters, 2 because this is min precision
-          let accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
+          // -2 because of gridref letters, 2 because this is min precision
+          const accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
           location.accuracy = accuracy;
 
           onLocationSelect(view, location);
           onPageExit();
         } else {
-          App.vent.trigger("gridref:form:data:invalid", validationError);
+          App.vent.trigger('gridref:form:data:invalid', validationError);
         }
       });
       mainView.on('childview:gps:click', onGPSClick);
@@ -205,19 +207,19 @@ let API = {
 
       App.regions.main.show(mainView);
 
-      //HEADER
-      let lockView = new LockView({
-        model: new Backbone.Model({appModel: appModel, recordModel: recordModel}),
+      // HEADER
+      const lockView = new LockView({
+        model: new Backbone.Model({ appModel, recordModel }),
         attr: 'location',
-        onLockClick:function () {
-          //invert the lock of the attribute
-          //real value will be put on exit
+        onLockClick() {
+          // invert the lock of the attribute
+          // real value will be put on exit
           appModel.setAttrLock('location', !appModel.getAttrLock('location'));
-        }
+        },
       });
 
-      //header view
-      let LocationHeader = HeaderView.extend({
+      // header view
+      const LocationHeader = HeaderView.extend({
         id: 'location-header',
 
         /*
@@ -228,67 +230,67 @@ let API = {
          to the model's "change" events and only update the necessary DOM elements.
          */
         modelEvents: {
-          'change:location': 'updateTitle'
+          'change:location': 'updateTitle',
         },
 
-        updateTitle: function () {
-          let title = this.model.printLocation();
-          let $title = this.$el.find('h1');
+        updateTitle() {
+          const title = this.model.printLocation();
+          const $title = this.$el.find('h1');
 
           $title.html(title);
         },
 
-        serializeData: function () {
+        serializeData() {
           return {
-            title: this.model.printLocation()
-          }
-        }
+            title: this.model.printLocation(),
+          };
+        },
       });
 
-      let headerView = new LocationHeader({
+      const headerView = new LocationHeader({
         onExit: onPageExit,
         rightPanel: lockView,
-        model: recordModel
+        model: recordModel,
       });
 
       App.regions.header.show(headerView);
 
-      //if exit on selection click
+      // if exit on selection click
       mainView.on('save', onPageExit);
     });
 
-    //FOOTER
+    // FOOTER
     App.regions.footer.hide().empty();
   },
 
-  editLocation: function (view, model) {
-    let location = model;
-    let EditView = Marionette.ItemView.extend({
+  editLocation(view, model) {
+    const location = model;
+    const EditView = Marionette.ItemView.extend({
       template: JST['common/past_location_edit'],
-      getValues: function () {
+      getValues() {
         return {
-          name: this.$el.find('#location-name').val().escape()
+          name: this.$el.find('#location-name').val().escape(),
         };
       },
 
-      onFormDataInvalid: function (errors) {
-        var $view = this.$el;
-        validate.updateViewFormErrors($view, errors, "#location-");
+      onFormDataInvalid(errors) {
+        const $view = this.$el;
+        validate.updateViewFormErrors($view, errors, '#location-');
       },
 
-      onShow: function () {
-        let $input = this.$el.find('#name');
+      onShow() {
+        const $input = this.$el.find('#name');
         $input.focus();
-        if (window.deviceIsAndroid) {
-          Keyboard.show();
-          $input.focusout(function () {
-            Keyboard.hide();
+        if (device.isAndroid()) {
+          window.Keyboard.show();
+          $input.focusout(() => {
+            window.Keyboard.hide();
           });
         }
-      }
+      },
     });
 
-    editView = new EditView({model: location});
+    const editView = new EditView({ model: location });
 
     App.regions.dialog.show({
       title: 'Edit Location',
@@ -297,33 +299,33 @@ let API = {
         {
           title: 'Save',
           class: 'btn-positive',
-          onClick: function () {
-            //update location
-            let locationEdit = editView.getValues();
+          onClick() {
+            // update location
+            const locationEdit = editView.getValues();
             if (!locationEdit.name) {
               editView.trigger('form:data:invalid', {
-                name: 'can\'t be empty'
+                name: 'can\'t be empty',
               });
               return;
             }
             appModel.setLocation(location.set(locationEdit).toJSON());
             App.regions.dialog.hide();
-          }
+          },
         },
         {
           title: 'Cancel',
-          onClick: function () {
+          onClick() {
             App.regions.dialog.hide();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
   },
 
-  deleteLocation: function (view, model) {
-    let location = model;
+  deleteLocation(view, model) {
+    const location = model;
     appModel.removeLocation(location);
-  }
+  },
 };
 
 export { API as default };

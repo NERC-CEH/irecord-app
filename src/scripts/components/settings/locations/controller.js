@@ -1,17 +1,17 @@
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import App from '../../../app';
+import device from '../../../helpers/device';
 import JST from '../../../JST';
 import appModel from '../../common/app_model';
-import userModel from '../../common/user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/header_view';
 
-let API = {
-  show: function (id){
-    //MAIN
-    let mainView = new MainView({
-      model: appModel
+const API = {
+  show() {
+    // MAIN
+    const mainView = new MainView({
+      model: appModel,
     });
 
     mainView.on('location:delete', API.deleteLocation);
@@ -19,46 +19,46 @@ let API = {
 
     App.regions.main.show(mainView);
 
-    //HEADER
-    let headerView = new HeaderView({
+    // HEADER
+    const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Locations'
-      })
+        title: 'Locations',
+      }),
     });
     App.regions.header.show(headerView);
 
-    //FOOTER
+    // FOOTER
     App.regions.footer.hide().empty();
   },
 
-  deleteLocation: function (model) {
-    let location = model;
+  deleteLocation(model) {
+    const location = model;
     appModel.removeLocation(location);
   },
 
-  editLocation: function (model) {
-    let location = model;
-    let EditView = Marionette.ItemView.extend({
+  editLocation(model) {
+    const location = model;
+    const EditView = Marionette.ItemView.extend({
       template: JST['common/past_location_edit'],
-      getValues: function () {
+      getValues() {
         return {
           name: this.$el.find('#location-name').val().escape(),
         };
       },
 
-      onShow: function () {
-        let $input = this.$el.find('#location-name');
+      onShow() {
+        const $input = this.$el.find('#location-name');
         $input.focus();
-        if (window.deviceIsAndroid) {
-          Keyboard.show();
-          $input.focusout(function () {
-            Keyboard.hide();
+        if (device.isAndroid()) {
+          window.Keyboard.show();
+          $input.focusout(() => {
+            window.Keyboard.hide();
           });
         }
-      }
+      },
     });
 
-    const editView = new EditView({model: location});
+    const editView = new EditView({ model: location });
 
     App.regions.dialog.show({
       title: 'Edit Location',
@@ -67,22 +67,22 @@ let API = {
         {
           title: 'Save',
           class: 'btn-positive',
-          onClick: function () {
-            //update location
-            let locationEdit = editView.getValues();
+          onClick() {
+            // update location
+            const locationEdit = editView.getValues();
             appModel.setLocation(location.set(locationEdit).toJSON());
             App.regions.dialog.hide();
-          }
+          },
         },
         {
           title: 'Cancel',
-          onClick: function () {
+          onClick() {
             App.regions.dialog.hide();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
-  }
+  },
 };
 
 export { API as default };

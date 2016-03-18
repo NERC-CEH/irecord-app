@@ -2,43 +2,43 @@ import Backbone from 'backbone';
 import Marionette from 'marionette';
 import JST from '../../JST';
 
-let Tab = Marionette.ItemView.extend({
+const Tab = Marionette.ItemView.extend({
   tagName: 'li',
   template: JST['common/tab'],
 
-  className: function () {
+  className() {
     return this.model.get('active') ? 'active' : '';
   },
 
-  attributes: function () {
+  attributes() {
     return {
-      'data-id': this.model.id
+      'data-id': this.model.id,
     };
   },
 
   triggers: {
-    'click': 'openTab'
-  }
+    click: 'openTab',
+  },
 });
 
-let Tabs = Marionette.CollectionView.extend({
+const Tabs = Marionette.CollectionView.extend({
   tagName: 'ul',
   childView: Tab,
 
-  onAddChild: function (childView) {
+  onAddChild(childView) {
     childView.on('openTab', this.tabClicked, this);
   },
 
-  tabClicked: function(e){
-    let tabId = e.view.model.id;
-    let active = this.collection.find(model => model.get('active'));
+  tabClicked(e) {
+    const tabId = e.view.model.id;
+    const active = this.collection.find(model => model.get('active'));
     active.set('active', false);
     e.view.model.set('active', true);
 
     this.render();
 
-    this.trigger("showTab", tabId);
-  }
+    this.trigger('showTab', tabId);
+  },
 });
 
 export default Marionette.LayoutView.extend({
@@ -46,23 +46,23 @@ export default Marionette.LayoutView.extend({
 
   regions: {
     tabs: '#tabs',
-    content: '#content'
+    content: '#content',
   },
 
-  childViewOptions: function(model, index) {
+  childViewOptions() {
     return {
-      vent: this.options.vent
-    }
+      vent: this.options.vent,
+    };
   },
 
-  onShow: function() {
+  onShow() {
     if (!this.options.tabs) {
       return;
     }
 
     this.tabsCollection = new Backbone.Collection(this.options.tabs);
-    let tabsCollectionView = new Tabs({
-      collection: this.tabsCollection
+    const tabsCollectionView = new Tabs({
+      collection: this.tabsCollection,
     });
     this.tabs.show(tabsCollectionView);
 
@@ -71,18 +71,17 @@ export default Marionette.LayoutView.extend({
     this._showContent();
   },
 
-  _showContent: function (tabID) {
+  _showContent(tabID) {
     let tab;
     if (!tabID) {
-      tab = this.options.tabs.filter(tab => tab.active)[0];
+      tab = this.options.tabs.filter(optionsTab => optionsTab.active)[0];
     } else {
-      tab = this.options.tabs.filter(tab => tab.id === tabID)[0];
+      tab = this.options.tabs.filter(optionsTab => optionsTab.id === tabID)[0];
     }
-    let contentView = new tab.ContentView({
+    const contentView = new tab.ContentView({
       model: this.model,
-      vent: this.options.vent
+      vent: this.options.vent,
     });
     this.content.show(contentView);
-  }
-
+  },
 });

@@ -1,12 +1,89 @@
-/******************************************************************************
+/** ****************************************************************************
  * Welcome page view.
  *****************************************************************************/
+import _ from 'lodash';
 import Marionette from 'marionette';
 import JST from '../../../../JST';
 import log from '../../../../helpers/log';
+import device from '../../../../helpers/device';
 import informalGroups from 'informal_groups.data';
 
 const MIN_SEARCH_LENGTH = 2;
+
+const SpeciesView = Marionette.ItemView.extend({
+  tagName: 'li',
+  className() {
+    return `table-view-cell ${(this.model.get('selected') ? 'selected' : '')}`;
+  },
+
+  template: JST['common/taxon/species'],
+
+  events: {
+    click: 'select',
+  },
+
+  modelEvents: { change: 'render' },
+
+  /**
+   * Prepare search results for the view
+   * @returns {{}}
+   */
+  serializeData() {
+    const foundInName = this.model.get('found_in_name');
+
+    let name = this._prettifyName(this.model.get(foundInName), this.options.searchPhrase);
+    name = this.model.get(foundInName);
+
+    return {
+      name,
+      removeEditBtn: this.options.removeEditBtn,
+      group: informalGroups[this.model.get('group') - 1],
+    };
+  },
+
+  _prettifyName(name, searchPhrase) {
+    const searchPos = name.toLowerCase().indexOf(searchPhrase);
+    const prettyName = `${name.slice(0, searchPos)}
+    <b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>
+    ${name.slice(searchPos + searchPhrase.length)}`;
+
+    return prettyName;
+  },
+
+  onRender() {
+    // have to manually repaint
+    this.$el.removeClass().addClass(this.className());
+  },
+
+  select(e) {
+    log('taxon: selected.', 'd');
+    const edit = e.target.tagName === 'BUTTON';
+    const species = this.model.toJSON();
+    delete species.selected;
+
+    this.trigger('taxon:selected', species, edit);
+  },
+});
+
+
+const NoSuggestionsView = Marionette.ItemView.extend({
+  tagName: 'li',
+  className: 'table-view-cell empty',
+  template: _.template('No species found with this name'),
+});
+
+const SuggestionsView = Marionette.CollectionView.extend({
+  tagName: 'ul',
+  className: 'table-view',
+  emptyView: NoSuggestionsView,
+  childView: SpeciesView,
+  childViewOptions() {
+    return {
+      removeEditBtn: this.options.removeEditBtn,
+      searchPhrase: this.options.searchPhrase,
+    };
+  },
+});
 
 export default Marionette.LayoutView.extend({
   template: JST['common/taxon/layout'],
@@ -21,17 +98,17 @@ export default Marionette.LayoutView.extend({
     suggestions: '#suggestions',
   },
 
-  initialize: function (){
+  initialize() {
     this.selectedIndex = 0;
   },
 
-  onShow: function () {
-    //preselect the input for typing
-    let $input = this.$el.find('#taxon').focus();
-    if (window.cordova && window.deviceIsAndroid) {
-      Keyboard.show();
-      $input.focusout(function () {
-        Keyboard.hide();
+  onShow() {
+    // preselect the input for typing
+    const $input = this.$el.find('#taxon').focus();
+    if (window.cordova && device.isAndroid()) {
+      window.Keyboard.show();
+      $input.focusout(() => {
+        window.Keyboard.hide();
       });
     }
   },
@@ -39,24 +116,24 @@ export default Marionette.LayoutView.extend({
   /**
    * Clear the search input
    */
-  deleteSearch: function () {
+  deleteSearch() {
     this.$el.find('#taxon').val('');
     this.$el.find('#taxon').focus();
   },
 
-  updateSuggestions: function (suggestions, searchPhrase) {
+  updateSuggestions(suggestions, searchPhrase) {
     this.suggestionsCol = suggestions;
 
-    //reset selection
+    // reset selection
     this.selectedIndex = this.suggestionsCol.length > 0 ? 0 : -1;
 
-    //select first
+    // select first
     this.suggestionsCol.length && this.suggestionsCol.at(0).set('selected', true);
 
-    let suggestionsColView = new SuggestionsView({
+    const suggestionsColView = new SuggestionsView({
       collection: this.suggestionsCol,
       removeEditBtn: this.options.removeEditBtn,
-      searchPhrase: searchPhrase
+      searchPhrase,
     });
     suggestionsColView.on('childview:taxon:selected',
       (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
@@ -64,31 +141,31 @@ export default Marionette.LayoutView.extend({
     this.suggestions.show(suggestionsColView);
   },
 
-  _keydown: function (e) {
-    let that = this;
-    let input = e.target.value;
+  _keydown(e) {
+    const that = this;
+    const input = e.target.value;
     if (!input) {
       return;
     }
 
     switch (e.keyCode) {
       case 13:
-        //press Enter
+        // press Enter
         e.preventDefault();
 
-        //exit if no suggestions
+        // exit if no suggestions
         if (this.selectedIndex < 0) return;
 
-        //find which one is currently selected
-        let selectedModel = this.suggestionsCol.at(this.selectedIndex);
+        // find which one is currently selected
+        const selectedModel = this.suggestionsCol.at(this.selectedIndex);
 
-        let species = selectedModel.toJSON();
+        const species = selectedModel.toJSON();
         delete species.selected;
         this.trigger('taxon:selected', species, false);
 
         return false;
       case 38:
-        //Up
+        // Up
         e.preventDefault();
 
         if (this.selectedIndex > 0) {
@@ -96,169 +173,93 @@ export default Marionette.LayoutView.extend({
           this.selectedIndex--;
           this.suggestionsCol.at(this.selectedIndex).set('selected', true);
         }
-        //rerender
+        // rerender
         break;
       case 40:
-        //Down
+        // Down
         e.preventDefault();
 
-        if ((this.suggestionsCol && this.suggestionsCol.length) && //initialized
-          this.selectedIndex < this.suggestionsCol.length - 1) { //not out of boundaries
+        if ((this.suggestionsCol && this.suggestionsCol.length) && // initialized
+          this.selectedIndex < this.suggestionsCol.length - 1) { // not out of boundaries
           this.suggestionsCol.at(this.selectedIndex).set('selected', false);
           this.selectedIndex++;
           this.suggestionsCol.at(this.selectedIndex).set('selected', true);
         }
         break;
       default:
-        //Other
+        // Other
         let text = input;
 
-        //on keyDOWN need to add the pressed char
+        // on keyDOWN need to add the pressed char
         let pressedChar = String.fromCharCode(e.keyCode);
         if (e.keyCode != 8) {
-          //http://stackoverflow.com/questions/19278037/javascript-non-unicode-char-code-to-unicode-character
-          if (e.keyCode === 189 || e.keyCode === 109){
+          // http://stackoverflow.com/questions/19278037/javascript-non-unicode-char-code-to-unicode-character
+          if (e.keyCode === 189 || e.keyCode === 109) {
             pressedChar = '-';
           }
-          if (e.keyCode === 190){
+          if (e.keyCode === 190) {
             pressedChar = '.';
           }
 
           text += pressedChar;
         } else {
-          //Backspace - remove a char
-          text =  text.slice(0, text.length - 1);
+          // Backspace - remove a char
+          text = text.slice(0, text.length - 1);
         }
 
-        //proceed if minimum length phrase was provided
-        if ((text.replace(/\.|\s/g,'').length)>= MIN_SEARCH_LENGTH) {
+        // proceed if minimum length phrase was provided
+        if ((text.replace(/\.|\s/g, '').length) >= MIN_SEARCH_LENGTH) {
           text = text.trim();
 
           // Clear previous timeout
-          if (this.timeout != -1) {
+          if (this.timeout !== -1) {
             clearTimeout(this.timeout);
           }
 
           // Set new timeout - don't run if user is typing
           this.timeout = setTimeout(function () {
-            //let controller know
+            // let controller know
             that.trigger('taxon:searched', text.toLowerCase());
           }, 100);
         }
     }
+    return null;
   },
 
-  _keyup: function (e) {
-    let that = this;
-    let input = e.target.value;
+  _keyup(e) {
+    const that = this;
+    const input = e.target.value;
     if (!input) {
       return;
     }
 
     switch (e.keyCode) {
       case 13:
-      //press Enter
+      // press Enter
       case 38:
-      //Up
+      // Up
       case 40:
-        //Down
+        // Down
         break;
       default:
-        //Other
+        // Other
         let text = input;
 
-        //proceed if minimum length phrase was provided
-        if ((text.replace(/\.|\s/g,'').length)>= MIN_SEARCH_LENGTH) {
+        // proceed if minimum length phrase was provided
+        if ((text.replace(/\.|\s/g, '').length) >= MIN_SEARCH_LENGTH) {
           text = text.trim();
 
           // Clear previous timeout
-          if (this.timeout != -1) {
+          if (this.timeout !== -1) {
             clearTimeout(this.timeout);
           }
 
           // Set new timeout - don't run if user is typing
           this.timeout = setTimeout(function () {
-            //let controller know
+            // let controller know
             that.trigger('taxon:searched', text.toLowerCase());
           }, 100);
         }
     }
-  }
-});
-
-let SpeciesView = Marionette.ItemView.extend({
-  tagName: 'li',
-  className: function () {
-    return 'table-view-cell ' + (this.model.get('selected') ? 'selected' : '');
   },
-
-  template: JST['common/taxon/species'],
-
-  events: {
-    'click': 'select'
-  },
-
-  modelEvents: {'change': 'render'},
-
-  /**
-   * Prepare search results for the view
-   * @returns {{}}
-   */
-  serializeData: function () {
-    let templateData = {};
-    let taxon = this.model.get('scientific_name');
-    let common_name = this.model.get('common_name');
-    let foundInName = this.model.get('found_in_name');
-
-    let name = this._prettifyName(this.model.get(foundInName), this.options.searchPhrase);
-    name = this.model.get(foundInName);
-
-    return {
-      name: name,
-      removeEditBtn: this.options.removeEditBtn,
-      group: informalGroups[this.model.get('group') - 1]
-    };
-  },
-
-  _prettifyName: function (name, searchPhrase) {
-    let search_pos = name.toLowerCase().indexOf(searchPhrase);
-    let prettyName = name.slice(0, search_pos) + '<b>' +
-      name.slice(search_pos, search_pos + searchPhrase.length) + '</b>' +
-      name.slice(search_pos + searchPhrase.length);
-
-    return prettyName;
-  },
-
-  onRender: function() {
-    //have to manually repaint
-    this.$el.removeClass().addClass(this.className());
-  },
-
-  select: function (e) {
-    log('taxon: selected.', 'd');
-    let edit = e.target.tagName == "BUTTON";
-    let species = this.model.toJSON();
-    delete species.selected;
-
-    this.trigger('taxon:selected', species, edit);
-  }
-});
-
-let NoSuggestionsView = Marionette.ItemView.extend({
-  tagName: 'li',
-  className: 'table-view-cell empty',
-  template: _.template('No species found with this name')
-});
-
-let SuggestionsView = Marionette.CollectionView.extend({
-  tagName: 'ul',
-  className: 'table-view',
-  emptyView: NoSuggestionsView,
-  childView: SpeciesView,
-  childViewOptions: function () {
-    return {
-      removeEditBtn: this.options.removeEditBtn,
-      searchPhrase: this.options.searchPhrase
-    }
-  }
 });

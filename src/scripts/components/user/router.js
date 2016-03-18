@@ -5,24 +5,24 @@ import RegisterController from './register/controller';
 
 App.user = {};
 
-App.user.Router = Marionette.AppRouter.extend({
+const Router = Marionette.AppRouter.extend({
   routes: {
-    "user/login(/)": LoginController.show,
-    "user/register(/)": RegisterController.show,
-    "user/*path": function () {App.trigger('404:show')}
+    'user/login(/)': LoginController.show,
+    'user/register(/)': RegisterController.show,
+    'user/*path'() {App.trigger('404:show');},
   },
 });
 
-App.on("user:login", function(options) {
+App.on('user:login', (options) => {
   App.navigate('user/login', options);
   LoginController.show();
 });
 
-App.on("user:register", function(options) {
+App.on('user:register', (options) => {
   App.navigate('user/register', options);
   RegisterController.show();
 });
 
-App.on('before:start', function(){
-  new App.user.Router();
+App.on('before:start', () => {
+  App.user.router = new Router();
 });

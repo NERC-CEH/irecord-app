@@ -7,25 +7,25 @@ export default Marionette.ItemView.extend({
   template: JST['records/edit/header'],
 
   events: {
-    'click a[data-rel="back"]': "navigateBack",
+    'click a[data-rel="back"]': 'navigateBack',
   },
 
   triggers: {
-    'click #record-save-btn': 'save'
+    'click #record-save-btn': 'save',
   },
 
   modelEvents: {
-    'sync:request sync:done sync:error': 'render'
+    'sync:request sync:done sync:error': 'render',
   },
 
-  navigateBack: function () {
+  navigateBack() {
     window.history.back();
   },
 
-  serializeData: function () {
+  serializeData() {
     return {
-      isSynchronising: this.model.getSyncStatus() == Morel.SYNCHRONISING
-    }
-  }
+      isSynchronising: this.model.getSyncStatus() === Morel.SYNCHRONISING,
+    };
+  },
 });
 

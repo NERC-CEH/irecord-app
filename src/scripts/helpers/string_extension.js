@@ -1,11 +1,11 @@
-String.prototype.limit = function(char_n) {
+String.prototype.limit = (charNum) => {
   var value = this;
-  var ellipsis = value && value.length > char_n ? '...' : '';
-  return value ? value.substring(0, char_n) + ellipsis : '';
+  var ellipsis = value && value.length > charNum ? '...' : '';
+  return value ? value.substring(0, charNum) + ellipsis : '';
 };
 
-//http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
-String.prototype.escape = function () {
+// http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+String.prototype.escape = () => {
   var value = this;
   var div = document.createElement('div');
   div.appendChild(document.createTextNode(value));

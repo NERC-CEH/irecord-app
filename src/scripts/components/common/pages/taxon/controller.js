@@ -1,6 +1,5 @@
 import Backbone from 'backbone';
 import Morel from 'morel';
-import GPS from '../../../../helpers/gps';
 import App from '../../../../app';
 import appModel from '../../app_model';
 import recordManager from '../../record_manager';
@@ -11,25 +10,25 @@ import HeaderView from '../../header_view';
 import SpeciesSearchEngine from './taxon_search_engine';
 
 const API = {
-  show: function (recordID){
+  show(recordID) {
     SpeciesSearchEngine.init();
 
-    let that = this;
+    const that = this;
     this.id = recordID;
 
     if (recordID) {
-      //check if the record has taxon specified
-      recordManager.get(recordID, function (err, recordModel) {
-        //Not found
+      // check if the record has taxon specified
+      recordManager.get(recordID, (err, recordModel) => {
+        // Not found
         if (!recordModel) {
-          App.trigger('404:show', {replace: true});
+          App.trigger('404:show', { replace: true });
           return;
         }
 
-        //can't edit a saved one - to be removed when record update
-        //is possible on the server
-        if (recordModel.getSyncStatus() == Morel.SYNCED) {
-          App.trigger('records:show', recordID, {replace: true});
+        // can't edit a saved one - to be removed when record update
+        // is possible on the server
+        if (recordModel.getSyncStatus() === Morel.SYNCED) {
+          App.trigger('records:show', recordID, { replace: true });
           return;
         }
 
@@ -38,33 +37,33 @@ const API = {
         if (!recordModel.occurrences.at(0).get('taxon')) {
           mainView = new MainView();
         } else {
-          mainView = new MainView({removeEditBtn: true});
+          mainView = new MainView({ removeEditBtn: true });
         }
         API._showMainView(mainView, that);
       });
     } else {
-      let mainView = new MainView();
+      const mainView = new MainView();
       API._showMainView(mainView, this);
 
-      //should be done in the view
+      // should be done in the view
       App.regions.main.$el.find('#taxon').select();
     }
 
-    let headerView = new HeaderView({
+    const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Species'
-      })
+        title: 'Species',
+      }),
     });
     App.regions.header.show(headerView);
 
-    //FOOTER
+    // FOOTER
     App.regions.footer.hide().empty();
   },
 
-  _showMainView: function (mainView, that) {
+  _showMainView(mainView, that) {
     mainView.on('taxon:selected', API._onSelected, that);
-    mainView.on('taxon:searched', function (searchPhrase) {
-      SpeciesSearchEngine.search(searchPhrase, function (selection) {
+    mainView.on('taxon:searched', (searchPhrase) => {
+      SpeciesSearchEngine.search(searchPhrase, (selection) => {
         mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
       });
     });
@@ -72,56 +71,56 @@ const API = {
     App.regions.main.show(mainView);
   },
 
-  _onSelected: function (species, edit) {
-    var that = this;
+  _onSelected(species, edit) {
+    const that = this;
     if (!this.id) {
-      //create new sighting
-      let occurrence = new Occurrence({
-        'taxon': species
+      // create new sighting
+      const occurrence = new Occurrence({
+        taxon: species,
       });
 
-      let sample = new Sample(null, {
-        occurrences: [occurrence]
+      const sample = new Sample(null, {
+        occurrences: [occurrence],
       });
 
-      //add locked attributes
+      // add locked attributes
       appModel.appendAttrLocks(sample);
 
-      recordManager.set(sample, function () {
-        //check if location attr is not locked
-        let locks = appModel.get('attrLocks');
+      recordManager.set(sample, () => {
+        // check if location attr is not locked
+        const locks = appModel.get('attrLocks');
 
         if (!locks.location) {
-          //no previous location
+          // no previous location
           sample.startGPS();
         } else if (!locks.location.latitude || !locks.location.longitude) {
-          //previously locked location was through GPS
-          //so try again
+          // previously locked location was through GPS
+          // so try again
           sample.startGPS();
         }
 
         if (edit) {
-          App.trigger('records:edit', sample.cid, {replace: true});
+          App.trigger('records:edit', sample.cid, { replace: true });
         } else {
-          //return to previous page
+          // return to previous page
           window.history.back();
         }
       });
     } else {
-      //edit existing one
-      recordManager.get(this.id, function (err, recordModel) {
+      // edit existing one
+      recordManager.get(this.id, (err, recordModel) => {
         recordModel.occurrences.at(0).set('taxon', species);
-        recordModel.save(function (err) {
+        recordModel.save(() => {
           if (edit) {
-            App.trigger('records:edit', that.id, {replace: true});
+            App.trigger('records:edit', that.id, { replace: true });
           } else {
-            //return to previous page
+            // return to previous page
             window.history.back();
           }
         });
       });
     }
-  }
+  },
 };
 
 export { API as default };

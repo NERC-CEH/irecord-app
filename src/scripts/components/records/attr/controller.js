@@ -8,36 +8,36 @@ import MainView from './main_view';
 import HeaderView from '../../common/header_view';
 import LockView from '../../common/attr_lock_view';
 
-let API =  {
+let API = {
   show: function (recordID, attr) {
     recordManager.get(recordID, function (err, recordModel) {
-      //Not found
+      // Not found
       if (!recordModel) {
-        App.trigger('404:show', {replace: true});
+        App.trigger('404:show', { replace: true });
         return;
       }
 
-      //can't edit a saved one - to be removed when record update
-      //is possible on the server
+      // can't edit a saved one - to be removed when record update
+      // is possible on the server
       if (recordModel.getSyncStatus() == Morel.SYNCED) {
-        App.trigger('records:show', recordID, {replace: true});
+        App.trigger('records:show', recordID, { replace: true });
         return;
       }
 
-      //MAIN
+      // MAIN
       let mainView = new MainView({
         attr: attr,
         model: recordModel
       });
       App.regions.main.show(mainView);
 
-      //HEADER
+      // HEADER
       let lockView = new LockView({
-        model: new Backbone.Model({appModel:appModel, recordModel:recordModel}),
+        model: new Backbone.Model({ appModel:appModel, recordModel:recordModel }),
         attr: attr,
         onLockClick: function () {
-          //invert the lock of the attribute
-          //real value will be put on exit
+          // invert the lock of the attribute
+          // real value will be put on exit
           appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
         }
       });
@@ -50,15 +50,15 @@ let API =  {
       let headerView = new HeaderView({
         onExit: onExit,
         rightPanel: lockView,
-        model: new Backbone.Model({title: attr})
+        model: new Backbone.Model({ title: attr })
       });
 
       App.regions.header.show(headerView);
 
-      //if exit on selection click
+      // if exit on selection click
       mainView.on('save', onExit);
 
-      //FOOTER
+      // FOOTER
       App.regions.footer.hide().empty();
     });
   },
@@ -76,7 +76,7 @@ let API =  {
       case 'date':
         currentVal = recordModel.get('date');
 
-        //validate before setting up
+        // validate before setting up
         if (values.date != 'Invalid Date') {
           recordModel.set('date', values.date);
         }
@@ -84,38 +84,38 @@ let API =  {
       case 'number':
         currentVal = occ.get('number');
 
-        //don't save default values
+        // don't save default values
         values.number = values.number === 'default' ? null : values.number;
 
-        //todo:validate before setting up
+        // todo:validate before setting up
         occ.set('number', values.number);
         break;
       case 'stage':
         currentVal = occ.get('stage');
 
-        //don't save default values
+        // don't save default values
         values.stage = values.stage === 'default' ? null : values.stage;
 
-        //todo:validate before setting up
+        // todo:validate before setting up
         occ.set('stage', values.stage);
         break;
       case 'comment':
         currentVal = occ.get('comment');
 
-        //todo:validate before setting up
+        // todo:validate before setting up
         occ.set('comment', values.comment);
         break;
       default:
     }
 
-    //save it
+    // save it
     recordModel.save(function () {
-      //update locked value if attr is locked
+      // update locked value if attr is locked
       let lockedValue = appModel.getAttrLock(attr);
       if (lockedValue) {
         if (values[attr] === 'default') {
           appModel.setAttrLock(attr, null);
-        } else if (attr === 'date' && values[attr].print() == new Date().print()){
+        } else if (attr === 'date' && values[attr].print() == new Date().print()) {
           appModel.setAttrLock(attr, null);
         } else if (lockedValue === true || lockedValue == currentVal) {
           appModel.setAttrLock(attr, values[attr]);
@@ -123,7 +123,7 @@ let API =  {
       }
 
       window.history.back();
-    })
+    });
   }
 };
 

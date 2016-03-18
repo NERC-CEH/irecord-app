@@ -8,20 +8,20 @@ export default Marionette.ItemView.extend({
   template: JST['info/menu/main'],
 
   events: {
-    'click #logout-button': 'logout'
+    'click #logout-button': 'logout',
   },
 
   modelEvents: {
-    'change': 'render'
+    change: 'render',
   },
 
-  serializeDate: function () {
+  serializeDate() {
     return {
-      surname: this.model.get('surname')
-    }
+      surname: this.model.get('surname'),
+    };
   },
 
-  logout: function () {
+  logout() {
     this.trigger('user:logout');
-  }
+  },
 });

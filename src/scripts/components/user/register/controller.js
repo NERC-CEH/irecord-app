@@ -1,90 +1,94 @@
+import $ from 'jquery';
+import _ from 'lodash';
 import Backbone from 'backbone';
 import App from '../../../app';
+import log from '../../../helpers/log';
 import CONFIG from 'config'; // Replaced with alias
 import userModel from '../../common/user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/header_view';
 
-let API = {
-  show: function () {
-    //MAIN
-    let mainView = new MainView();
+const API = {
+  show() {
+    // MAIN
+    const mainView = new MainView();
     App.regions.main.show(mainView);
 
-    //HEADER
-    let headerView = new HeaderView({
+    // HEADER
+    const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Register'
-      })
+        title: 'Register',
+      }),
     });
     App.regions.header.show(headerView);
 
-    //Start registration
-    mainView.on('form:submit', function (data) {
+    // Start registration
+    mainView.on('form:submit', (data) => {
       if (!navigator.onLine) {
         App.regions.dialog.show({
           title: 'Sorry',
-          body: 'Looks like you are offline!'
+          body: 'Looks like you are offline!',
         });
         return;
       }
 
-      let validationError = userModel.validateRegistration(data);
+      const validationError = userModel.validateRegistration(data);
       if (!validationError) {
-        mainView.triggerMethod("form:data:invalid", {}); //update form
+        mainView.triggerMethod('form:data:invalid', {}); // update form
         App.regions.dialog.showLoader();
 
-        API.register(data, function (err, data) {
+        API.register(data, (err) => {
           if (err) {
             switch (err.xhr.status) {
               case 401:
-                //unauthorised
+                // unauthorised
                 break;
               default:
-                Log("login:submit: " + err.xhr.status + " " + err.thrownError + ".", 'e');
+                log(`login:submit: ${err.xhr.status} ${err.thrownError}.`, 'e');
             }
 
-            var response = '';
-            if (err.xhr.responseText && (err.xhr.responseText == "Missing name parameter" || err.xhr.responseText.indexOf('Bad') >= 0)) {
+            let response = '';
+            if (err.xhr.responseText && (err.xhr.responseText === 'Missing name parameter'
+              || err.xhr.responseText.indexOf('Bad') >= 0)) {
               response = 'Bad Username or Password';
             } else {
-              if ( err.thrownError &&  err.thrownError.indexOf('Unauthorised')) {
-                //err.xhr.responseText = Invalid password"
-                //it thinks that the user tries to update its account
+              if (err.thrownError && err.thrownError.indexOf('Unauthorised')) {
+                // err.xhr.responseText = Invalid password"
+                // it thinks that the user tries to update its account
                 response = 'An account with this email exist';
               } else {
                 response = err.thrownError;
               }
             }
 
-            App.regions.dialog.error({message: response});
+            App.regions.dialog.error({ message: response });
             return;
           }
           App.regions.dialog.show({
             title: 'Welcome aboard!',
             body: 'Before submitting any records please check your email and ' +
             'click on the verification link.',
-            buttons:[
+            buttons: [
               {
                 title: 'OK, got it',
                 class: 'btn-positive',
-                onClick: function () {
+                onClick() {
                   App.regions.dialog.hide();
                   window.history.back();
-                }
-              }
+                },
+              },
             ],
-            onHide: function () {
+            onHide() {
               window.history.back();
-            }
+            },
           });
         });
       } else {
-        mainView.triggerMethod("form:data:invalid", validationError);
+        mainView.triggerMethod('form:data:invalid', validationError);
       }
     });
 
-    //FOOTER
+    // FOOTER
     App.regions.footer.hide().empty();
   },
 
@@ -96,17 +100,17 @@ let API = {
    * It is important that the app authorises itself providing
    * appname and appsecret for the mentioned module.
    */
-  register: function (data, callback) {
-    Log('views.login: start.', 'd');
+  register(data, callback) {
+    log('views.login: start.', 'd');
 
-    let formData = new FormData();
+    const formData = new FormData();
 
-    _.forEach(data, function (value, key) {
+    _.forEach(data, (value, key) => {
       formData.append(key, value);
     });
 
 
-    //app logins
+    // app logins
     formData.append('appname', CONFIG.morel.manager.appname);
     formData.append('appsecret', CONFIG.morel.manager.appsecret);
 
@@ -119,20 +123,20 @@ let API = {
       processData: false,
       timeout: CONFIG.login.timeout,
 
-      success: function (response) {
-        var details = API.extractUserDetails(response);
+      success(response) {
+        const details = API.extractUserDetails(response);
         details.email = data.email;
         userModel.logIn(details);
 
         callback(null, details);
       },
-      error: function (xhr, ajaxOptions, thrownError) {
+      error(xhr, ajaxOptions, thrownError) {
         callback({
-          xhr: xhr,
-          ajaxOptions: ajaxOptions,
-          thrownError: thrownError
+          xhr,
+          ajaxOptions,
+          thrownError,
         });
-      }
+      },
     });
   },
 
@@ -141,19 +145,18 @@ let API = {
    * @param data
    * @returns {*}
    */
-  extractUserDetails: function (data) {
-    var lines = (data && data.split(/\r\n|\r|\n/g));
+  extractUserDetails(data) {
+    const lines = (data && data.split(/\r\n|\r|\n/g));
     if (lines && lines.length >= 3 && lines[0].length > 0) {
       return {
-        'secret': lines[0],
-        'name': lines[1],
-        'surname': lines[2]
+        secret: lines[0],
+        name: lines[1],
+        surname: lines[2],
       };
-    } else {
-      Log('login:extractdetails: problems with received secret.', 'w');
-      return null;
     }
-  }
+    log('login:extractdetails: problems with received secret.', 'w');
+    return null;
+  },
 };
 
 export { API as default };

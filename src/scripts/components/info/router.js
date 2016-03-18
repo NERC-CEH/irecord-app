@@ -8,75 +8,75 @@ import InfoMenuController from './menu/controller';
 
 App.info = {};
 
-App.info.Router = Marionette.AppRouter.extend({
+const Router = Marionette.AppRouter.extend({
   routes: {
-    "info(/)": InfoMenuController.show,
-    "info/about(/)": function() {
+    'info(/)': InfoMenuController.show,
+    'info/about(/)'() {
       CommonController.show({
-        title: 'About', App: App, route: 'info/about/main',
-        model: new Backbone.Model({version: CONFIG.version})
-      })},
-    "info/help(/)": function() {
+        title: 'About', App, route: 'info/about/main',
+        model: new Backbone.Model({ version: CONFIG.version }),
+      });},
+    'info/help(/)'() {
       CommonController.show({
-        title: 'Help', App: App, route: 'info/help/main'
-      })},
-    "info/privacy(/)": function() {
+        title: 'Help', App, route: 'info/help/main',
+      });},
+    'info/privacy(/)'() {
       CommonController.show({
-        title: 'Privacy Policy', App: App, route: 'info/privacy/main'
-      })},
-    "info/brc-approved(/)": function() {
+        title: 'Privacy Policy', App, route: 'info/privacy/main',
+      });},
+    'info/brc-approved(/)'() {
       CommonController.show({
-        title: 'BRC Approved', App: App, route: 'info/brc_approved/main'
-      })},
-    "info/credits(/)": function() {
+        title: 'BRC Approved', App, route: 'info/brc_approved/main',
+      });},
+    'info/credits(/)'() {
       CommonController.show({
-        title: 'Credits', App: App, route: 'info/credits/main'
-      })},
-    "info/*path": function () {App.trigger('404:show')}
-  }
+        title: 'Credits', App, route: 'info/credits/main',
+      });},
+    'info/*path'() {App.trigger('404:show');},
+  },
 });
 
-App.on("info", function() {
+App.on('info', () => {
   App.navigate('info');
   InfoMenuController.show();
 });
 
-App.on("info:about", function() {
+App.on('info:about', () => {
   App.navigate('info/about');
   CommonController.show({
-    title: 'About', App: App, route: 'info/about/main',
-    model: new Backbone.Model({version: CONFIG.version})
+    title: 'About', App, route: 'info/about/main',
+    model: new Backbone.Model({ version: CONFIG.version }),
   });
 });
 
-App.on("info:help", function() {
+App.on('info:help', () => {
   App.navigate('info/help');
   CommonController.show({
-    title: 'Help', App: App, route: 'info/help/main'
+    title: 'Help', App, route: 'info/help/main',
   });
 });
 
-App.on("info:privacy", function() {
+App.on('info:privacy', () => {
   App.navigate('info/privacy');
   CommonController.show({
-    title: 'Privacy Policy', App: App, route: 'info/privacy/main'
+    title: 'Privacy Policy', App, route: 'info/privacy/main',
   });
 });
 
-App.on("info:brc-approved", function() {
+App.on('info:brc-approved', () => {
   App.navigate('info/brc-approved');
   CommonController.show({
-    title: 'BRC Approved', App: App, route: 'info/brc_approved/main'
+    title: 'BRC Approved', App, route: 'info/brc_approved/main',
   });
 });
 
-App.on("info:credits", function() {
+App.on('info:credits', () => {
   App.navigate('info/credits');
   CommonController.show({
-    title: 'Credits', App: App, route: 'info/credits/main'
+    title: 'Credits', App, route: 'info/credits/main',
   });
 });
 
-App.on('before:start', function(){
-  new App.info.Router();
+App.on('before:start', () => {
+  App.info.router = new Router();
 });

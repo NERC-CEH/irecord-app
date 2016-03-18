@@ -14,37 +14,37 @@ import LocationController from '../common/pages/location/controller';
 
 App.records = {};
 
-App.records.Router = Marionette.AppRouter.extend({
+const Router = Marionette.AppRouter.extend({
   routes: {
-    "records(/)": ListController.show,
-    "records/new(/)": TaxonController.show,
-    "records/:id": ShowController.show,
-    "records/:id/edit(/)": EditController.show,
-    "records/:id/edit/location(/)": LocationController.show,
-    "records/:id/edit/taxon(/)": TaxonController.show,
-    "records/:id/edit/:attr(/)": EditAttrController.show,
-    "records/*path": function () {App.trigger('404:show')}
-  }
+    'records(/)': ListController.show,
+    'records/new(/)': TaxonController.show,
+    'records/:id': ShowController.show,
+    'records/:id/edit(/)': EditController.show,
+    'records/:id/edit/location(/)': LocationController.show,
+    'records/:id/edit/taxon(/)': TaxonController.show,
+    'records/:id/edit/:attr(/)': EditAttrController.show,
+    'records/*path'() {App.trigger('404:show');},
+  },
 });
 
-App.on("records:list", function(options) {
+App.on('records:list', (options) => {
   App.navigate('records', options);
-  ListController.show(  );
+  ListController.show();
 });
 
-App.on("records:show", function(recordID, options) {
-  App.navigate('records/' + recordID, options);
+App.on('records:show', (recordID, options) => {
+  App.navigate(`records/${recordID}`, options);
   ShowController.show(recordID);
 });
 
-App.on("records:edit", function(recordID, options) {
-  App.navigate('records/' + recordID + '/edit', options);
+App.on('records:edit', (recordID, options) => {
+  App.navigate(`records/${recordID}/edit`, options);
   EditController.show(recordID);
 });
 
-App.on("records:edit:attr", function(recordID, attrID, options) {
-  App.navigate('records/' + recordID + '/edit/' + attrID, options);
-  switch (attrID){
+App.on('records:edit:attr', (recordID, attrID, options) => {
+  App.navigate(`records/${recordID}/edit/${attrID}`, options);
+  switch (attrID) {
     case 'location':
       LocationController.show(recordID);
       break;
@@ -56,13 +56,13 @@ App.on("records:edit:attr", function(recordID, attrID, options) {
   }
 });
 
-App.on("records:new", function(options) {
+App.on('records:new', (options) => {
   App.navigate('records/new', options);
   EditController.show();
 });
 
-App.on("records:new:attr", function(attrID, options) {
-  App.navigate('records/new/' + attrID, options);
+App.on('records:new:attr', (attrID, options) => {
+  App.navigate(`records/new/${attrID}`, options);
   switch (attrID) {
     case 'location':
       LocationController.show();
@@ -75,11 +75,11 @@ App.on("records:new:attr", function(attrID, options) {
   }
 });
 
-App.on("record:saved", function () {
+App.on('record:saved', () => {
   window.history.back();
 });
 
-function syncRecords () {
+function syncRecords() {
   if (window.navigator.onLine && appModel.get('autosync')) {
     recordManager.syncAll();
   }
@@ -87,10 +87,10 @@ function syncRecords () {
 
 userModel.on('login', syncRecords);
 
-App.on('before:start', function(){
+App.on('before:start', () => {
   log('Initializing records', 'd');
 
-  new App.records.Router();
+  App.records.router = new Router();
 
   if (userModel.hasLogIn()) {
     syncRecords();

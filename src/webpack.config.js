@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = {
     context: './src/scripts',
     entry: {
@@ -8,18 +10,22 @@ module.exports = {
       filename: '[name].js', // Notice we use a variable
     },
     resolve: {
-      root: './src/',
+      root: [
+        path.resolve('./src/scripts'),
+        path.resolve('./src/vendor'),
+      ],
       alias: {
         jquery: 'jquery/js/jquery',
         lodash: 'lodash/js/lodash',
         backbone: 'backbone/js/backbone',
         marionette: 'marionette/js/backbone.marionette',
         morel: 'morel/js/morel',
-        leaflet: 'vendor/leaflet/js/leaflet',
-        proj4leaflet: 'vendor/proj4Leaflet/js/proj4leaflet',
-        proj4: 'vendor/proj4/js/proj4',
-        config: 'scripts/config',
-        'master_list.data': './data/master_list.data',
+        leaflet: 'leaflet/js/leaflet',
+        proj4leaflet: 'proj4Leaflet/js/proj4leaflet',
+        proj4: 'proj4/js/proj4',
+        config: 'config',
+        'master_list.data': 'data/master_list.data.js',
+        'informal_groups.data': 'data/informal_groups.data.js',
       },
     },
     module: {

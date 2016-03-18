@@ -1,13 +1,13 @@
 import Marionette from 'marionette';
 
 export default Marionette.Region.extend({
-  show: function () {
+  show() {
     this.$el.show();
     Marionette.Region.prototype.show.apply(this, arguments);
   },
 
-  hide: function () {
+  hide() {
     this.$el.hide();
     return this;
-  }
+  },
 });

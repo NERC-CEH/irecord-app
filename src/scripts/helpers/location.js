@@ -1,13 +1,15 @@
-/******************************************************************************
+/** ****************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
 import LatLon from '../../vendor/latlon/js/latlon-ellipsoidal';
 import OsGridRef from '../../vendor/latlon/js/osgridref';
 
 export default {
-  coord2grid: function (location, locationGranularity) {
-    //adjust grid ref accuracy from gps accuracy
-    if (location.source == 'gps') {
+  coord2grid(location, locGran) {
+    let locationGranularity = locGran;
+
+    // adjust grid ref accuracy from gps accuracy
+    if (location.source === 'gps') {
       /**
        * 1 gridref digits. (10000m)
        * 2 gridref digits. (1000m)
@@ -15,45 +17,39 @@ export default {
        * 4 gridref digits. (10m)
        * 5 gridref digits. (1m)
        */
-      let digits = Math.log(location.accuracy) / Math.LN10;
+      const digits = Math.log(location.accuracy) / Math.LN10;
       locationGranularity = 10 - digits * 2;
-      locationGranularity = Number((locationGranularity).toFixed(0)); //round the float
+      locationGranularity = Number((locationGranularity).toFixed(0)); // round the float
     }
 
-    //cannot be odd
-    if (locationGranularity % 2 != 0) {
-      //should not be less than 2
-      locationGranularity = locationGranularity === 1 ? locationGranularity + 1 : locationGranularity - 1;
+    // cannot be odd
+    if (locationGranularity % 2 !== 0) {
+      // should not be less than 2
+      locationGranularity =
+        locationGranularity === 1 ? locationGranularity + 1 : locationGranularity - 1;
     }
 
     if (locationGranularity > 10) {
-      //no more than 10 digits
+      // no more than 10 digits
       locationGranularity = 10;
     } else if (locationGranularity < 2) {
-      //no less than 2
+      // no less than 2
       locationGranularity = 2;
     }
 
-    var p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);
-    var grid = OsGridRef.latLonToOsGrid(p);
+    const p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);
+    const grid = OsGridRef.latLonToOsGrid(p);
 
     return grid.toString(locationGranularity).replace(/\s/g, '');
   },
 
-  grid2coord: function (gridref) {
-    gridref = OsGridRef.parse(gridref);
-    gridref = normalizeGridRef(gridref);
-
-    if (!isNaN(gridref.easting) && !isNaN(gridref.northing)) {
-      return OsGridRef.osGridToLatLon(gridref, LatLon.datum.WGS84);
-    }
-
-    function normalizeGridRef(gridref) {
+  grid2coord(gridrefString) {
+    function normalizeGridRef(incorrectGridref) {
       // normalise to 1m grid, rounding up to centre of grid square:
-      var e = gridref.easting;
-      var n = gridref.northing;
+      let e = incorrectGridref.easting;
+      let n = incorrectGridref.northing;
 
-      switch (gridref.easting.toString().length) {
+      switch (incorrectGridref.easting.toString().length) {
         case 1: e += '50000'; n += '50000'; break;
         case 2: e += '5000'; n += '5000'; break;
         case 3: e += '500'; n += '500'; break;
@@ -64,18 +60,28 @@ export default {
       }
       return new OsGridRef(e, n);
     }
+
+    let gridref = OsGridRef.parse(gridrefString);
+    gridref = normalizeGridRef(gridref);
+
+    if (!isNaN(gridref.easting) && !isNaN(gridref.northing)) {
+      return OsGridRef.osGridToLatLon(gridref, LatLon.datum.WGS84);
+    }
+
+    return null;
   },
 
-  mapZoom2meters: function (accuracy) {
-    //cannot be odd
-    if (accuracy % 2 != 0) {
-      //should not be less than 2
+  mapZoom2meters(locationAccuracy) {
+    let accuracy = locationAccuracy;
+    // cannot be odd
+    if (accuracy % 2 !== 0) {
+      // should not be less than 2
       accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
     } else if (accuracy === 0) {
       accuracy = 2;
     }
-    accuracy = 5000 / Math.pow(10, accuracy / 2); //meters
+    accuracy = 5000 / Math.pow(10, accuracy / 2); // meters
     return accuracy;
-  }
+  },
 };
 

@@ -1,17 +1,18 @@
 import $ from 'jquery';
+import _ from 'lodash';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import Hammer from '../../../vendor/hammerjs/js/hammer';
 import JST from '../../JST';
-import browser from '../../helpers/browser';
+import device from '../../helpers/device';
 
-let EmptyListView = Marionette.ItemView.extend({
+const EmptyListView = Marionette.ItemView.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
   template: _.template('No previous locations'),
 });
 
-let PastLocationView = Marionette.ItemView.extend({
+const PastLocationView = Marionette.ItemView.extend({
   tagName: 'li',
   className: 'table-view-cell',
 
@@ -20,55 +21,54 @@ let PastLocationView = Marionette.ItemView.extend({
   triggers: {
     'click .location': 'location:select',
     'click #delete': 'location:delete',
-    'click #edit': 'location:edit'
+    'click #edit': 'location:edit',
   },
 
-  serializeData: function () {
-    let appModel = this.options.appModel;
-    let location = appModel.printLocation(this.model.toJSON());
+  serializeData() {
+    const appModel = this.options.appModel;
+    const location = appModel.printLocation(this.model.toJSON());
 
     return {
       name: this.model.get('name'),
       source: this.model.get('source'),
-      location: location,
-    }
+      location,
+    };
   },
 
-  onRender: function () {
-    //early return
-    if (!browser.isMobile()) return;
+  onRender() {
+    // early return
+    if (!device.isMobile()) return;
 
     this.$record = this.$el.find('.location');
     this.docked = false;
     this.position = 0;
 
-    var options = {
+    const options = {
       threshold: 50,
-      toolsWidth: 100
+      toolsWidth: 100,
     };
 
-    var hammertime = new Hammer(this.el, {direction: Hammer.DIRECTION_HORIZONTAL});
-    var that = this;
+    const hammertime = new Hammer(this.el, { direction: Hammer.DIRECTION_HORIZONTAL });
+    const that = this;
 
-    //on tap bring back
+    // on tap bring back
     this.$record.on('tap click', $.proxy(this._swipeHome, this));
 
-    hammertime.on('pan', function(e) {
+    hammertime.on('pan', (e) => {
       e.preventDefault();
       that._swipe(e, options);
     });
-    hammertime.on('panend', function(e) {
+    hammertime.on('panend', (e) => {
       that._swipeEnd(e, options);
     });
-
   },
 
-  remove: function () {
-    //removing the last element leaves emptyView + fading out entry for a moment
+  remove() {
+    // removing the last element leaves emptyView + fading out entry for a moment
     if (this.model.collection.length >= 1) {
-      let that = this;
+      const that = this;
       this.$el.addClass('shrink');
-      setTimeout(function () {
+      setTimeout(() => {
         Marionette.ItemView.prototype.remove.call(that);
       }, 300);
     } else {
@@ -76,8 +76,8 @@ let PastLocationView = Marionette.ItemView.extend({
     }
   },
 
-  _swipe: function (e, options) {
-    //only swipe if no scroll up
+  _swipe(e, options) {
+    // only swipe if no scroll up
     if (Math.abs(e.deltaY) > 10) return;
 
     if (this.docked) {
@@ -86,38 +86,38 @@ let PastLocationView = Marionette.ItemView.extend({
       this.position = e.deltaX;
     }
 
-    //protection of swipeing right too much
+    // protection of swipeing right too much
     if (this.position > 0) this.position = 0;
 
-    this.$record.css('transform', 'translateX(' + this.position + 'px)');
+    this.$record.css('transform', `translateX(${this.position}px)`);
   },
 
-  _swipeEnd: function (e, options) {
-    //only swipe if no scroll up and is not in the middle
+  _swipeEnd(e, options) {
+    // only swipe if no scroll up and is not in the middle
     if (Math.abs(e.deltaY) > 10 && !this.position) return;
 
     // if (e.deltaX > options.threshold) {
     if ((-options.toolsWidth + e.deltaX) > -options.toolsWidth) {
-      //bring back
+      // bring back
       this.position = 0;
       this.docked = false;
     } else {
-      //open tools
+      // open tools
       this.docked = true;
       this.position = -options.toolsWidth;
     }
 
-    this.$record.css('transform', 'translateX(' + this.position + 'px)');
+    this.$record.css('transform', `translateX(${this.position}px)`);
   },
 
-  _swipeHome: function (e) {
+  _swipeHome(e) {
     if (this.docked) {
       e.preventDefault();
       this.position = 0;
-      this.$record.css('transform', 'translateX(' + this.position + 'px)');
+      this.$record.css('transform', `translateX(${this.position}px)`);
       this.docked = false;
     }
-  }
+  },
 });
 
 export default Marionette.CompositeView.extend({
@@ -128,21 +128,20 @@ export default Marionette.CompositeView.extend({
   childView: PastLocationView,
   emptyView: EmptyListView,
 
-  initialize: function () {
-    let that = this;
-    let appModel = this.model;
-    let previousLocations = appModel.get('locations');
+  initialize() {
+    const that = this;
+    const appModel = this.model;
+    const previousLocations = appModel.get('locations');
     this.collection = new Backbone.Collection(previousLocations);
 
-    this.listenTo(appModel, 'change:locations', function () {
-      let previousLocations = appModel.get('locations');
-      that.collection = new Backbone.Collection(previousLocations);
-
+    this.listenTo(appModel, 'change:locations', () => {
+      const prevLoc = appModel.get('locations');
+      that.collection = new Backbone.Collection(prevLoc);
       that.render();
     });
 
     this.childViewOptions = {
-      appModel: appModel
-    }
-  }
+      appModel,
+    };
+  },
 });

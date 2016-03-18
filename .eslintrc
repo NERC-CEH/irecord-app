@@ -1,1 +1,11 @@
-"extends": "airbnb/base"
+{
+  "extends": "airbnb/base",
+  "rules": {
+     "no-unused-expressions": [2,
+        {
+          allowShortCircuit: true, // eg. a || a()
+          allowTernary: true // eg. a ? b() : c()
+        }
+     ]
+  }
+}

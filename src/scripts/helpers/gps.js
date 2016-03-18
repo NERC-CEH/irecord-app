@@ -2,37 +2,37 @@ import $ from 'jquery';
 import Error from './error';
 
 const API = {
-  GPS_ACCURACY_LIMIT: 100, //meters
+  GPS_ACCURACY_LIMIT: 100, // meters
   TIMEOUT: 120000,
 
   running: false,
 
-  start: function (options = {}) {
+  start(options = {}) {
+    const callback = options.callback;
+    const onUpdate = options.onUpdate;
+    const accuracyLimit = options.accuracyLimit || API.GPS_ACCURACY_LIMIT;
+
     // Early return if geolocation not supported.
     if (!navigator.geolocation) {
-      var error = new Error('Geolocation is not supported.');
+      const error = new Error('Geolocation is not supported.');
       callback && callback(error);
       return;
     }
 
-    let onUpdate = options.onUpdate;
-    let callback = options.callback;
-    let accuracyLimit = options.accuracyLimit || API.GPS_ACCURACY_LIMIT;
-
-    //geolocation config
-    let GPSoptions = {
+    // geolocation config
+    const GPSoptions = {
       enableHighAccuracy: true,
       maximumAge: 0,
-      timeout: API.TIMEOUT
+      timeout: API.TIMEOUT,
     };
 
-    var onSuccess = function (position) {
+    var onSuccess = (position) => {
       var location = {
         latitude: position.coords.latitude.toFixed(8),
         longitude: position.coords.longitude.toFixed(8),
         accuracy: parseInt(position.coords.accuracy),
         altitude: parseInt(position.coords.altitude),
-        altitudeAccuracy: parseInt(position.coords.altitudeAccuracy)
+        altitudeAccuracy: parseInt(position.coords.altitudeAccuracy),
       };
 
       if (location.accuracy <= accuracyLimit) {
@@ -42,19 +42,19 @@ const API = {
       }
     };
 
-    //Callback if geolocation fails
-    var onError = function (err) {
+    // Callback if geolocation fails
+    var onError = (err) => {
       var error = new Error(err.message);
       callback && callback(error);
     };
 
-    let watchID = navigator.geolocation.watchPosition(onSuccess, onError, GPSoptions);
-    return watchID
+    const watchID = navigator.geolocation.watchPosition(onSuccess, onError, GPSoptions);
+    return watchID;
   },
 
-  stop: function (id) {
+  stop(id) {
     navigator.geolocation.clearWatch(id);
-  }
+  },
 };
 
 export { API as default };

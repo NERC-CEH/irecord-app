@@ -503,6 +503,10 @@ module.exports = function exports(grunt) {
   grunt.registerTask('cordova', 'Cordova tasks', update => {
     if (update) {
       // update only
+      // replace dev splashscreen
+      grunt.task.run('replace:development_code');
+
+      // update www
       grunt.task.run('exec:cordova_clean_www');
       grunt.task.run('exec:cordova_copy_dist');
       return;

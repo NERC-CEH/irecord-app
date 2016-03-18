@@ -4,17 +4,14 @@ import userModel from '../../common/user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/header_view';
 
-let infoModel;
-
-let API = {
-  show: function () {
-
-    let mainView = new MainView({ model: userModel });
+const API = {
+  show() {
+    const mainView = new MainView({ model: userModel });
     App.regions.main.show(mainView);
 
     mainView.on('user:logout', API.logout);
 
-    let headerView = new HeaderView({
+    const headerView = new HeaderView({
       model: new Backbone.Model({
         title: 'Info',
       }),
@@ -22,9 +19,9 @@ let API = {
     App.regions.header.show(headerView);
   },
 
-  logout: function () {
+  logout() {
     userModel.logOut();
-  }
+  },
 };
 
 export { API as default };

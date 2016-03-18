@@ -1,30 +1,32 @@
 import $ from 'jquery';
 import Marionette from 'marionette';
+import device from '../../../helpers/device';
+import log from '../../../helpers/log';
 import JST from '../../../JST';
 
 export default Marionette.ItemView.extend({
-  initialize: function (options) {
-    this.template =  JST['records/attr/' + options.attr];
+  initialize(options) {
+    this.template = JST[`records/attr/${options.attr}`];
   },
 
-  triggers: function () {
+  triggers() {
     switch (this.options.attr) {
       case 'stage':
-      //fallthrough
+      // fallthrough
       case 'number':
         return {
-          'click input': 'save'
+          'click input': 'save',
         };
-        break;
       default:
     }
+    return null;
   },
 
-  getValues: function () {
-    let values = {},
-        value,
-        attr = this.options.attr,
-        $inputs;
+  getValues() {
+    const values = {};
+    let value;
+    const attr = this.options.attr;
+    let $inputs;
     switch (attr) {
       case 'date':
         value = this.$el.find('input').val();
@@ -32,7 +34,7 @@ export default Marionette.ItemView.extend({
         break;
       case 'number':
         $inputs = this.$el.find('input');
-        $inputs.each(function () {
+        $inputs.each(() => {
           if ($(this).prop('checked')) {
             values[attr] = $(this).val();
           }
@@ -40,7 +42,7 @@ export default Marionette.ItemView.extend({
         break;
       case 'stage':
         $inputs = this.$el.find('input');
-        $inputs.each(function () {
+        $inputs.each(() => {
           if ($(this).prop('checked')) {
             values[attr] = $(this).val();
           }
@@ -56,9 +58,9 @@ export default Marionette.ItemView.extend({
     return values;
   },
 
-  serializeData:  function () {
-    let templateData = {};
-    let occ = this.model.occurrences.at(0);
+  serializeData() {
+    const templateData = {};
+    const occ = this.model.occurrences.at(0);
 
     switch (this.options.attr) {
       case 'date':
@@ -68,51 +70,50 @@ export default Marionette.ItemView.extend({
         templateData[occ.get('number')] = true;
         break;
       case 'stage':
-        templateData[occ.get('stage')] =  true;
+        templateData[occ.get('stage')] = true;
         break;
       case 'comment':
         templateData.comment = occ.get('comment');
         break;
       default:
-        Log('No such attribute', 'e');
-        return;
-    };
+        log('No such attribute', 'e');
+        return null;
+    }
 
-    return templateData
+    return templateData;
   },
 
-  onShow: function ()  {
-    switch (this.options.attr){
+  onShow() {
+    switch (this.options.attr) {
       case 'date':
-        //this.$el.find('input').focus();
-        let $input = this.$el.find('input').focus();
-        if (window.deviceIsAndroid) {
-          var options = {
+        // this.$el.find('input').focus();
+        const $input = this.$el.find('input').focus();
+        if (device.isAndroid()) {
+          const options = {
             date: new Date(this.model.get('date')),
             mode: 'date',
             androidTheme: 5,
             allowOldDates: true,
-            allowFutureDates: false
+            allowFutureDates: false,
           };
 
-          datePicker.show(options,  function(date) {
+          window.datePicker.show(options, function (date) {
             $input.val(new Date(date).toDateInputValue());
           });
         }
         break;
       case 'comment':
-        //this.$el.find('textarea').focus();
-        let $textarea = this.$el.find('textarea').focus();
-        if (window.cordova && window.deviceIsAndroid) {
-          Keyboard.show();
-          $textarea.focusout(function () {
-            Keyboard.hide();
+        // this.$el.find('textarea').focus();
+        const $textarea = this.$el.find('textarea').focus();
+        if (window.cordova && device.isAndroid()) {
+          window.Keyboard.show();
+          $textarea.focusout(() => {
+            window.Keyboard.hide();
           });
         }
         break;
       default:
     }
-  }
-
+  },
 });
 

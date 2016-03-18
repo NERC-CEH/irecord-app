@@ -13,11 +13,11 @@ let commonNamePointers;
 var events = $.extend(function () {}, Backbone.Events);
 
 const WAREHOUSE_INDEX = 0,
-      GROUP_INDEX = 1,
-      SCI_NAME_INDEX = 2, //in genera and above
-      SPECIES_SCI_NAME_INDEX = 1, //in species and bellow
-      SPECIES_COMMON_INDEX = 2, //in species and bellow
-      SPECIES_COMMON_SYN_INDEX = 3; //in species and bellow
+  GROUP_INDEX = 1,
+  SCI_NAME_INDEX = 2, // in genera and above
+  SPECIES_SCI_NAME_INDEX = 1, // in species and bellow
+  SPECIES_COMMON_INDEX = 2, // in species and bellow
+  SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
 const MAX = 20;
 
 const API = {
@@ -67,20 +67,20 @@ const API = {
     // check if scientific search
     let isScientific = API._isPhraseScientific(normSearchPhrase);
     if (isScientific) {
-      //search sci names
+      // search sci names
       API.searchSciNames(species, normSearchPhrase, results);
     } else {
-      //search common names
+      // search common names
       results = API.searchCommonNames(species, commonNamePointers, normSearchPhrase);
 
-      //if not enough
+      // if not enough
       if (results.length <= MAX) {
-        //search sci names
+        // search sci names
         API.searchSciNames(species, normSearchPhrase, results);
       }
     }
 
-    //return results in the order
+    // return results in the order
     callback(results);
   },
 
@@ -93,12 +93,12 @@ const API = {
   searchSciNames: function (species, searchPhrase, results = [], maxResults = MAX) {
     let searchWords = searchPhrase.split(' ');
 
-    //prepare first word regex
+    // prepare first word regex
     let firstWord = API._normalizeFirstWord(searchWords[0]);
     let firstWordRegexStr = API._getFirstWordRegexString(firstWord);
     let firstWordRegex = new RegExp(firstWordRegexStr, 'i');
 
-    //prepare other words regex
+    // prepare other words regex
     let otherWords = searchWords.splice(1).join(' ');
     let otherWordsRegex;
     if (otherWords) {
@@ -106,18 +106,18 @@ const API = {
       otherWordsRegex = new RegExp('^' + API._getOtherWordsRegexString(otherWords), 'i');
     }
 
-    //find first match in array
+    // find first match in array
     let species_array_index = API._findFirstMatching(species, firstWord);
 
-    //go through all
+    // go through all
     let speciesArrayLength = species.length;
     while (species_array_index && species_array_index < speciesArrayLength && results.length < maxResults) {
       let species_entry = species[species_array_index];
-      //check if matches
+      // check if matches
       if (firstWordRegex.test(species_entry[SCI_NAME_INDEX])) {
-        //find species array
+        // find species array
         let species_array;
-        for (let j=0, length = species_entry.length; j < length; j++) {
+        for (let j = 0, length = species_entry.length; j < length; j++) {
           if (species_entry[j] instanceof Array) {
             species_array = species_entry[j];
           }
@@ -125,7 +125,7 @@ const API = {
 
         let fullRes;
         if (!otherWordsRegex) {
-          //no need to add genus if searching for species
+          // no need to add genus if searching for species
           fullRes = {
             array_id: species_array_index,
             found_in_name: 'scientific_name',
@@ -136,16 +136,16 @@ const API = {
           results.push(fullRes);
         }
 
-        //if this is genus
+        // if this is genus
         if (species_array) {
-          //go through all species
+          // go through all species
           for (let species_index = 0, length = species_array.length; species_index < length && results.length < maxResults; species_index++) {
             let speciesInArray = species_array[species_index];
             if (otherWordsRegex) {
-              //if search through species
-              //check if matches
+              // if search through species
+              // check if matches
               if (otherWordsRegex.test(speciesInArray[SPECIES_SCI_NAME_INDEX])) {
-                //add full sci name
+                // add full sci name
                 fullRes = {
                   array_id: species_array_index,
                   species_id: species_index,
@@ -159,7 +159,7 @@ const API = {
                 results.push(fullRes);
               }
             } else {
-              //if only genus search add its species
+              // if only genus search add its species
               fullRes = {
                 array_id: species_array_index,
                 species_id: species_index,
@@ -175,7 +175,7 @@ const API = {
           }
         }
       } else {
-        //stop looking further if not found
+        // stop looking further if not found
         break;
       }
       species_array_index++;
@@ -187,7 +187,7 @@ const API = {
     return phrase.replace('.', '');
   },
 
-  //todo: change èéöüáöëïåß -> eeou..
+  // todo: change èéöüáöëïåß -> eeou..
   _getFirstWordRegexString: function (phrase) {
     phrase = API._escapeRegExp(phrase);
     return '^' + phrase + '.*';
@@ -198,16 +198,16 @@ const API = {
     let words = phrase.split(' ');
 
     _.each(words, function (word, i) {
-      //check if word is ssp. var. etc
+      // check if word is ssp. var. etc
 
-      //remove leading dot with .*
+      // remove leading dot with .*
       let leading = word.replace(/\\\.([a-zA-Z]*)\b/i, '.*$1');
       if (leading) {
         word = leading;
       }
 
-      word = word.replace(/\b\\\./i, ''); //remove trailing dot
-      word = word.replace(/.*/i, '\\b$&.*'); //make \b word .*
+      word = word.replace(/\b\\\./i, ''); // remove trailing dot
+      word = word.replace(/.*/i, '\\b$&.*'); // make \b word .*
 
       words[i] = word;
     });
@@ -225,35 +225,35 @@ const API = {
   searchCommonNames: function (species, commonNamePointers, searchPhrase, results = [], maxResults = MAX) {
     let searchWords = searchPhrase.split(' ');
 
-    //prepare first word regex
+    // prepare first word regex
     let firstWord = API._normalizeFirstWord(searchWords[0]);
     let firstWordRegexStr = API._getFirstWordRegexString(firstWord);
     let firstWordRegex = new RegExp(firstWordRegexStr, 'i');
 
-    //prepare other words regex
+    // prepare other words regex
     let otherWords = searchWords.splice(1).join(' ');
     let otherWordsRegexStr;
     if (otherWords) {
-      otherWordsRegexStr =  API._getOtherWordsRegexString(otherWords);
+      otherWordsRegexStr = API._getOtherWordsRegexString(otherWords);
     }
 
-    let regex = new RegExp(firstWordRegexStr + (otherWordsRegexStr ? otherWordsRegexStr : ''), "i");
+    let regex = new RegExp(firstWordRegexStr + (otherWordsRegexStr ? otherWordsRegexStr : ''), 'i');
 
     let pointerArrayLength = commonNamePointers.length;
 
-    //find first match in array
+    // find first match in array
     let pointers_array_index = API._findFirstMatching(commonNamePointers, searchPhrase, true);
 
-    //go through all pointers
+    // go through all pointers
     while (pointers_array_index && pointers_array_index < pointerArrayLength && results.length < maxResults) {
       let p = commonNamePointers[pointers_array_index];
       let species_genus = species[p[0]];
       let species_entry = species_genus[p[1]][p[2]];
 
-      //carry on while it matches the first name
+      // carry on while it matches the first name
       let found_in_name = p[3] == SPECIES_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
       if (firstWordRegex.test(species_entry[p[3]])) {
-        //check if matches full phrase
+        // check if matches full phrase
         if (regex.test(species_entry[p[3]])) {
           let fullRes = {
             array_id: p[0],
@@ -268,7 +268,7 @@ const API = {
           results.push(fullRes);
         }
       } else {
-        //stop looking further if not found
+        // stop looking further if not found
         break;
       }
       pointers_array_index++;
@@ -282,8 +282,8 @@ const API = {
    * @returns {*}
    * @private
    */
-  _escapeRegExp: function (string){
-    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  _escapeRegExp: function (string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   },
 
   /**
@@ -298,7 +298,7 @@ const API = {
       ' nothovar\.? '
     ];
 
-    let re = new RegExp(check.join("|"), "i");
+    let re = new RegExp(check.join('|'), 'i');
     return re.test(searchPhrase);
   },
 
@@ -314,14 +314,14 @@ const API = {
       let AFTER = -1, BEFORE = 1, EQUAL = 0;
       let value, prevValue;
 
-      //get values to compare
-      if (!commonName){
+      // get values to compare
+      if (!commonName) {
         value = searchArray[index][SCI_NAME_INDEX].toLowerCase();
         if (index > 0) {
           prevValue = searchArray[index - 1][SCI_NAME_INDEX].toLowerCase();
         }
       } else {
-        //common name from pointer
+        // common name from pointer
         searchPhrase = searchPhrase.split(' ')[0];
         let p = searchArray[index];
         value = species[p[0]][p[1]][p[2]][p[3]].toLowerCase();
@@ -331,31 +331,31 @@ const API = {
         }
       }
 
-      //check if found first entry in array
+      // check if found first entry in array
       let matchRe = new RegExp('^' + searchPhrase, 'i');
       if (matchRe.test(value)) {
-        //check if prev entry matches
+        // check if prev entry matches
         if (prevValue) {
           if (matchRe.test(prevValue)) {
-            return BEFORE; //matches but not the first match
+            return BEFORE; // matches but not the first match
           } else {
-            return EQUAL; //found first entry
+            return EQUAL; // found first entry
           }
         } else {
-          //no prev entry
-          return EQUAL; //found first entry
+          // no prev entry
+          return EQUAL; // found first entry
         }
       }
 
-      //compare
+      // compare
       if (searchPhrase > value) {
         return AFTER;
       } else {
         return BEFORE;
       }
-    }
+    };
 
-    return  API._binarySearch(searchArray, comparator);
+    return API._binarySearch(searchArray, comparator);
   },
 
   /**
@@ -364,11 +364,11 @@ const API = {
    * O(Log n) (30K - lookup 14 times)
    */
   _binarySearch: function (array, comparator, low, high) {
-    //initial set up
+    // initial set up
     low = low || 0;
     high = high || array.length;
 
-    //checkup
+    // checkup
     if (high < low) {
       return null;
     }
@@ -394,7 +394,7 @@ const API = {
     for (let i = 1, length = species_list.length; i < length; i++) {
       let species_entry = species_list[i];
 
-      //find species array
+      // find species array
       let species_array;
       let j = 0;
       for (let length = species_entry.length; j < length; j++) {
@@ -423,7 +423,7 @@ const API = {
 
       if (spA > spB) {
         return 1;
-      } else if(spA < spB) {
+      } else if (spA < spB) {
         return -1;
       } else {
         return 0;

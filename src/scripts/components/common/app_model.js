@@ -1,4 +1,4 @@
-/******************************************************************************
+/** ****************************************************************************
  * App model. Persistent.
  *****************************************************************************/
 import Backbone from 'backbone';
@@ -25,7 +25,7 @@ const AppModel = Backbone.Model.extend({
   initialize: function () {
     this.fetch();
     if (!this.get('appVer')) {
-      this.save ('appVer', CONFIG.version);
+      this.save('appVer', CONFIG.version);
     }
   },
 
@@ -37,17 +37,17 @@ const AppModel = Backbone.Model.extend({
   setLocation: function (location = {}) {
     var locations = this.get('locations');
 
-    //check if exists
+    // check if exists
     if (this.locationExists(location)) {
-      //don't duplicate same location
+      // don't duplicate same location
       return;
     } else if (!location.latitude || !location.longitude) {
-      //don't add if no lat/long
-      return
+      // don't add if no lat/long
+      return;
     }
 
 
-    //add
+    // add
     location.id = UUID();
     locations.splice(0, 0, location);
 
@@ -57,13 +57,13 @@ const AppModel = Backbone.Model.extend({
     return location.id;
   },
 
-  removeLocation: function(location = {}) {
+  removeLocation: function (location = {}) {
     let that = this;
     var locations = this.get('locations');
 
     locations.forEach(function (loc, i) {
       if (loc.id === location.id) {
-        locations.splice(i,1);
+        locations.splice(i, 1);
 
         that.set('locations', locations);
         that.trigger('change:locations');
@@ -82,7 +82,7 @@ const AppModel = Backbone.Model.extend({
         loc.longitude === location.longitude &&
         loc.source === location.source
       ) {
-        exists =  true;
+        exists = true;
       }
     });
     return exists;
@@ -95,36 +95,36 @@ const AppModel = Backbone.Model.extend({
    * @returns {*}
    */
   getLocationSref: function (location) {
-    var LOCATION_GRANULARITY = 2; //Precision of returned grid reference (6 digits = metres).
+    var LOCATION_GRANULARITY = 2; // Precision of returned grid reference (6 digits = metres).
 
     location = location || this.get('locations')[0];
     if (!location) {
       return null;
     }
 
-    //get translated location
+    // get translated location
     var gref = locHelp.coord2grid(location, LOCATION_GRANULARITY);
 
-    //remove the spaces
+    // remove the spaces
     return gref.replace(/ /g, '');
   },
 
   printLocation: function (location) {
     let useGridRef = this.get('useGridRef');
 
-    if (location.latitude && location.longitude){
+    if (location.latitude && location.longitude) {
       if (useGridRef || location.source === 'gridref') {
         let accuracy = location.accuracy;
 
-        //cannot be odd
+        // cannot be odd
         if (accuracy % 2 != 0) {
-          //should not be less than 2
+          // should not be less than 2
           accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
         } else if (accuracy === 0) {
           accuracy = 2;
         }
 
-        //check if location is within UK
+        // check if location is within UK
         let prettyLocation = locHelp.coord2grid(location, accuracy);
         if (!prettyLocation) {
           prettyLocation = location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
@@ -152,19 +152,19 @@ const AppModel = Backbone.Model.extend({
 
   isAttrLocked: function (attr, value = {}) {
     let lockedVal = this.getAttrLock(attr);
-    if (!lockedVal) return false; //has not been locked
-    if (lockedVal === true) return true; //has been locked
+    if (!lockedVal) return false; // has not been locked
+    if (lockedVal === true) return true; // has been locked
 
     switch (attr) {
       case 'location':
         let locked =
-              //map or gridref
+              // map or gridref
               (lockedVal &&
               (lockedVal.name == value.name &&
               lockedVal.latitude == value.latitude &&
               lockedVal.longitude == value.longitude) ||
 
-                //GPS doesn't lock the location only name
+                // GPS doesn't lock the location only name
               (lockedVal.name === value.name && (
               !lockedVal.latitude && !lockedVal.longitude)));
 
@@ -186,7 +186,7 @@ const AppModel = Backbone.Model.extend({
     let occurrence = sample.occurrences.at(0);
 
     _.each(locks, function (value, key) {
-      //false or undefined
+      // false or undefined
       if (!value) {
         return;
       }
@@ -196,7 +196,7 @@ const AppModel = Backbone.Model.extend({
           sample.set('location', value);
           break;
         case 'date':
-          //parse stringified date
+          // parse stringified date
           sample.set('date', new Date(value));
           break;
         case 'number':

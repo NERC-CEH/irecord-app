@@ -1,4 +1,4 @@
-/******************************************************************************
+/** ****************************************************************************
  * App object.
  *****************************************************************************/
 import $ from 'jquery';
@@ -12,28 +12,6 @@ import brcArt from './helpers/brcart';
 import DialogRegion from './components/common/dialog_region';
 import HideableRegion from './components/common/hideable_region';
 
-
-
-
-//    'common/controller'
-//  'components/records/router',
-//  'components/info/router',
-//  'components/settings/router',
-//  'components/user/router'
-
-
-//define([
-//    'jquery',
-//    'backbone',
-//    'marionette',
-//    'fastclick',
-//    'log',
-//    'brcart',
-//    'analytics',
-//    'app-config',
-
-
-
 // init Analytics
 analytics.init();
 
@@ -41,23 +19,23 @@ log(brcArt, 'i'); // saying hello :)
 
 const App = new Marionette.Application();
 
-App.navigate = function(route,  options = {}){
-  let defaultOptions = {trigger: true};
+App.navigate = function (route, options = {}) {
+  let defaultOptions = { trigger: true };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
 
-App.getCurrentRoute = function(){
-  return Backbone.history.fragment
+App.getCurrentRoute = function () {
+  return Backbone.history.fragment;
 };
 
-App.on("before:start", function(){
+App.on('before:start', function () {
   var RegionContainer = Marionette.LayoutView.extend({
-    el: "#app",
+    el: '#app',
 
     regions: {
-      header: new HideableRegion({el: "#header"}),
-      footer: new HideableRegion({el: "#footer"}),
-      main: "#main",
+      header: new HideableRegion({ el: "#header" }),
+      footer: new HideableRegion({ el: "#footer" }),
+      main: '#main',
       dialog: DialogRegion
     }
   });
@@ -65,7 +43,7 @@ App.on("before:start", function(){
   App.regions = new RegionContainer();
 });
 
-App.on("start", function () {
+App.on('start', function () {
   // Init for the first time
   // download appcache
   // set up DB
@@ -73,7 +51,7 @@ App.on("start", function () {
 
   FastClick.attach(document.body);
 
-  //turn off the loading splash screen
+  // turn off the loading splash screen
   $('div.loading').css('display', 'none');
   $('body').removeClass('loading');
 
@@ -86,27 +64,30 @@ App.on("start", function () {
 
     App.on('404:show', function () {
       CommonController.show({
-        App: App,
+        App,
         route: 'common/404',
-        title: 404
+        title: 404,
       });
     });
 
     if (window.cordova) {
-      StatusBar.overlaysWebView(true);
-      StatusBar.backgroundColorByName('black');
+      // Although StatusB  ar in the global scope, it is not available until after the deviceready event.
+      $(document).on('deviceready', () => {
+        window.StatusBar.overlaysWebView(true);
+        window.StatusBar.backgroundColorByName('black');
 
-      //iOS make space for statusbar
+        // hide loader
+        if (navigator && navigator.splashscreen) {
+          navigator.splashscreen.hide();
+        }
+      });
+
+      // iOS make space for statusbar
       if (window.deviceIsIOS) {
-        $('body').addClass('ios')
-      }
-
-      //hide loader
-      if(navigator && navigator.splashscreen){
-        navigator.splashscreen.hide();
+        $('body').addClass('ios');
       }
     } else {
-      //development loader
+      // development loader
       $('#loader').remove();
     }
   }

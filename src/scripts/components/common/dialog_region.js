@@ -1,4 +1,4 @@
-/******************************************************************************
+/** ****************************************************************************
  * Messages the user
  *****************************************************************************/
 import $ from 'jquery';
@@ -32,7 +32,7 @@ let StandardDialogView = Marionette.LayoutView.extend({
   onShow: function () {
     let that = this;
 
-    //add header
+    // add header
     if (this.options.title) {
       if (this.options.title instanceof Marionette.ItemView) {
         this.header.show(this.options.title);
@@ -45,7 +45,7 @@ let StandardDialogView = Marionette.LayoutView.extend({
       }
     }
 
-    //add body
+    // add body
     if (this.options.body) {
       if (this.options.body instanceof Marionette.ItemView) {
         this.body.show(this.options.body);
@@ -57,19 +57,19 @@ let StandardDialogView = Marionette.LayoutView.extend({
       }
     }
 
-    //add buttons
+    // add buttons
     if (this.options.buttons) {
       if (this.options.buttons instanceof Marionette.ItemView) {
         this.footer.show(this.options.buttons);
       } else {
         let ButtonView = Marionette.ItemView.extend({
           id: function () {
-            return this.model.id || Math.floor(Math.random() * 10000)
+            return this.model.id || Math.floor(Math.random() * 10000);
           },
           tagName: 'button',
           className: function () {
             let className = this.model.get('class');
-            return 'btn ' + (className ? className : '')
+            return 'btn ' + (className ? className : '');
           },
           template: _.template('<%- obj.title %>'),
           events: {
@@ -80,7 +80,7 @@ let StandardDialogView = Marionette.LayoutView.extend({
           }
         });
 
-        let ButtonsArrayView =  Marionette.CollectionView.extend({
+        let ButtonsArrayView = Marionette.CollectionView.extend({
           className: 'dialog-buttons',
           collection: new Backbone.Collection(this.options.buttons),
           childView: ButtonView
@@ -95,20 +95,20 @@ let StandardDialogView = Marionette.LayoutView.extend({
 export default Marionette.Region.extend({
   el: '#dialog',
 
-  constructor: function(){
+  constructor: function () {
     _.bindAll(this);
     Marionette.Region.prototype.constructor.apply(this, arguments);
 
-    //attach events
-    this.on("view:show", this.showModal, this);
+    // attach events
+    this.on('view:show', this.showModal, this);
     this.$el.on('click #dialog', this._onContainerClick);
   },
 
-  hideAllowed: true, //hide the dialog on clicking the container
+  hideAllowed: true, // hide the dialog on clicking the container
 
-  getEl: function(selector){
+  getEl: function (selector) {
     var $el = $(selector);
-    $el.on("hidden", this.close);
+    $el.on('hidden', this.close);
     return $el;
   },
 
@@ -136,10 +136,10 @@ export default Marionette.Region.extend({
     this.onHide = options.onHide;
     this.hideAllowed = typeof options.hideAllowed != 'undefined' ? options.hideAllowed : true;
 
-    if (!options.view || !(options.view instanceof Marionette.ItemView)){
-      //create a standard dialog
+    if (!options.view || !(options.view instanceof Marionette.ItemView)) {
+      // create a standard dialog
       if (options.timeout) {
-        this.timeout = setTimeout(function() {
+        this.timeout = setTimeout(function () {
           that.hide();
         }, options.timeout);
       }
@@ -147,13 +147,13 @@ export default Marionette.Region.extend({
       view = new StandardDialogView(options);
       view.on('hide', this.hide);
     } else {
-      //passed a view so lets just show it
+      // passed a view so lets just show it
       view = options.view;
     }
 
     this.$el.fadeIn(300);
 
-    view.on("close", this.hide, this);
+    view.on('close', this.hide, this);
     Marionette.Region.prototype.show.call(this, view);
   },
 
@@ -162,7 +162,7 @@ export default Marionette.Region.extend({
       return;
     }
 
-    //turn off timeout
+    // turn off timeout
     if (this.timeout) {
       this.timeout = clearTimeout(this.timeout);
     }
@@ -177,7 +177,7 @@ export default Marionette.Region.extend({
       template: _.template('<span class="icon icon-plus spin"></span>')
     });
 
-    this.show({view: view, hideAllowed: false});
+    this.show({ view: view, hideAllowed: false });
   },
 
   hideLoader: function () {
@@ -195,7 +195,7 @@ export default Marionette.Region.extend({
         title: 'OK',
         onClick: this.hide
       }]
-    }
+    };
     this.show(options);
   },
 

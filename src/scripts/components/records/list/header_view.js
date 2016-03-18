@@ -1,36 +1,31 @@
-/******************************************************************************
- * Welcome page view.
- *****************************************************************************/
 import Marionette from 'marionette';
-import log from '../../../helpers/log';
-import App from '../../../app';
 import JST from '../../../JST';
-
+import device from '../../../helpers/device';
 
 export default Marionette.ItemView.extend({
-  id: "records-header",
+  id: 'records-header',
   tagName: 'nav',
   template: JST['records/list/header'],
 
   events: {
-    'change input': 'photoUpload'
+    'change input': 'photoUpload',
   },
 
-  photoUpload: function (e) {
+  photoUpload(e) {
     this.trigger('photo:upload', e);
   },
 
-  onShow: function () {
-    let that = this;
+  onShow() {
+    const that = this;
 
-    //create android camera/gallery selection
-    if (window.cordova && deviceIsAndroid) {
+    // create android camera/gallery selection
+    if (window.cordova && device.isAndroid()) {
       this.$el.find('.img-picker input').remove();
 
-      this.$el.find('.img-picker').on('click', function () {
+      this.$el.find('.img-picker').on('click', () => {
         that.trigger('photo:selection');
       });
     }
-  }
+  },
 });
 

@@ -1,21 +1,21 @@
-/******************************************************************************
+/** ****************************************************************************
  * Main app configuration file.
  *****************************************************************************/
 import locHelp from './helpers/location';
 
 export default {
-  version: '1.0.0-beta', //replaced on build
-  name: 'irecord-app', //replaced on build
+  version: '1.0.0-beta', // replaced on build
+  name: 'irecord-app', // replaced on build
 
   gps_accuracy_limit: 100,
 
-  //logging
+  // logging
   log: {
-    states: ['e', 'w', 'i', 'd'], //see log helper
+    states: ['e', 'w', 'i', 'd'], // see log helper
     ga_error: true
   },
 
-  //google analytics
+  // google analytics
   ga: {
     status: true,
     ID: 'UA-58378803-4'
@@ -26,24 +26,24 @@ export default {
     timeout: 80000
   },
 
-  //mapping
+  // mapping
   map: {
     API_KEY: '28994B5673A86451E0530C6CA40A91A5'
   },
 
-  //morel configuration
+  // morel configuration
   morel:{
     manager: {
       url: 'https://www.brc.ac.uk/irecord/mobile/submit',
-      appname: "ir",
-      appsecret: "irecordApp123",
+      appname: 'ir',
+      appsecret: 'irecordApp123',
       website_id: 23,
       survey_id: 374
     },
     sample: {
       location: {
         values: function (location, options) {
-          //convert accuracy for map and gridref sources
+          // convert accuracy for map and gridref sources
           let accuracy = location.accuracy;
           if (location.source !== 'gps') {
             if (location.source === 'map') {
@@ -62,17 +62,17 @@ export default {
             location_accuracy: accuracy
           };
 
-          //add other location related attributes
+          // add other location related attributes
           options.flattener(attributes, options);
 
           return location.latitude + ', ' + location.longitude;
         }
       },
-      location_accuracy: {id: 282},
-      location_altitude: {id: 283},
-      location_altitude_accuracy: {id: 284},
-      location_source: {id: 760},
-      location_gridref: {id: 335},
+      location_accuracy: { id: 282 },
+      location_altitude: { id: 283 },
+      location_altitude_accuracy: { id: 284 },
+      location_source: { id: 760 },
+      location_gridref: { id: 335 },
 
       device: {
         id: 273,
@@ -82,7 +82,7 @@ export default {
         }
       },
 
-      device_version: {id: 759},
+      device_version: { id: 759 },
 
       date: {
         values: function (date) {

@@ -1,4 +1,4 @@
-/******************************************************************************
+/** ****************************************************************************
  * Takes care of application execution logging.
  *
  * Depends on morel.
@@ -21,6 +21,49 @@ const WARNING = 'w';
 const INFO = 'i';
 const DEBUG = 'd';
 
+
+/**
+ * Prints and posts an error to the mobile authentication log.
+ *
+ * @param error Object holding a 'message', and optionally 'url' and 'line' fields.
+ *              String holding a 'message
+ * @private
+ */
+function error(errorMessage) {
+  let err = errorMessage;
+  if (typeof err === 'string' || err instanceof String) {
+    err = {
+      message: err,
+    };
+  }
+  console.error(err.message, err.url, err.line, err.column, err.obj);
+
+  // todo: clean this up
+  $('#loader #animation span.icon').remove();
+  $('#loader #animation .error').html(
+    `<center><b>Oh no, Error! </b></center><br/>${err.message}
+    [${err.line}, ${err.column}] ${err.obj}`);
+
+  // google analytics error logging
+  if ((CONFIG.ga && CONFIG.ga.status) &&
+    (CONFIG.log && CONFIG.log.ga_error)) {
+
+    // require(['ga'], function (ga) {
+    //  //check if the error did not occur before the analytics is loaded
+    //  if (ga) {
+    //    ga('send', 'exception', {
+    //      'exDescription':
+    //      err.message + ' ' +
+    //      err.url + ' ' +
+    //      err.line + ' ' +
+    //      err.column + ' ' +
+    //      err.obj
+    //    });
+    //  }
+    // });
+  }
+}
+
 function log(message, type = DEBUG) {
   // do nothing if logging turned off
   if (!(CONFIG.log && CONFIG.log.states)) {
@@ -41,7 +84,7 @@ function log(message, type = DEBUG) {
       case DEBUG:
       /* falls through */
       default:
-        //IE does not support console.debug
+        // IE does not support console.debug
         if (!console.debug) {
           console.log(message);
           break;
@@ -51,52 +94,9 @@ function log(message, type = DEBUG) {
   }
 }
 
-
-/**
- * Prints and posts an error to the mobile authentication log.
- *
- * @param error Object holding a 'message', and optionally 'url' and 'line' fields.
- *              String holding a 'message
- * @private
- */
-function error(error) {
-  "use strict";
-  if (typeof error === 'string' || error instanceof String) {
-    error = {
-      message: error
-    }
-  }
-  console.error(error.message, error.url, error.line, error.column, error.obj);
-
-  //todo: clean this up
-  $('#loader #animation span.icon').remove();
-  $('#loader #animation .error').html(
-    '<center><b>Oh no, Error! </b></center><br/>' + error.message +
-    ' [' +  error.line + ', '  + error.column + '] ' +
-    error.obj);
-
-  //google analytics error logging
-  if ((CONFIG.ga && CONFIG.ga.status) &&
-    (CONFIG.log && CONFIG.log.ga_error)){
-
-    //require(['ga'], function (ga) {
-    //  //check if the error did not occur before the analytics is loaded
-    //  if (ga) {
-    //    ga('send', 'exception', {
-    //      'exDescription':
-    //      error.message + ' ' +
-    //      error.url + ' ' +
-    //      error.line + ' ' +
-    //      error.column + ' ' +
-    //      error.obj
-    //    });
-    //  }
-    //});
-  }
-}
 //
-////Hook into window.error function
-//window.onerror = function (message, url, line, column, obj) {
+// //Hook into window.error function
+// window.onerror = function (message, url, line, column, obj) {
 //  "use strict";
 //  window.onerror = null;
 //
@@ -112,6 +112,6 @@ function error(error) {
 //
 //  window.onerror = this; // turn on error handling again
 //  return true; // suppress normal error reporting
-//};
+// };
 
 export { log as default };

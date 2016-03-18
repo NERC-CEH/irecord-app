@@ -1,49 +1,51 @@
 import $ from 'jquery';
+import _ from 'lodash';
 import Morel from 'morel';
-import browser from '../../helpers/browser';
+import device from '../../helpers/device';
 import CONFIG from 'config'; // Replaced with alias
 import Sample from './sample';
 import userModel from './user_model';
 
-let morelConfiguration = $.extend(CONFIG.morel.manager, {
+const morelConfiguration = $.extend(CONFIG.morel.manager, {
   Storage: Morel.DatabaseStorage,
-  Sample: Sample,
-  onSend: function (sample) {
+  Sample,
+  onSend(sample) {
     if (userModel.hasLogIn()) {
-      //attach device
+      // attach device
       let devicePlatform = '';
       if (window.cordova) {
         devicePlatform = window.device.platform;
       } else {
-        if (browser.isAndroidChrome()) {
+        if (device.isAndroidChrome()) {
           devicePlatform = 'Android';
-        } else if (browser.isIOS()) {
+        } else if (device.isIOS()) {
           devicePlatform = 'iOS';
         }
       }
       sample.set('device', devicePlatform);
 
-      //attach device version
+      // attach device version
       if (window.cordova) {
         sample.set('device_version', window.device.version);
       }
 
       userModel.appendSampleUser(sample);
     } else {
-      //don't send until the user is logged in
+      // don't send until the user is logged in
       return true;
     }
-  }
+    return null;
+  },
 });
 
-//todo: make it more specific
-Morel.Collection.prototype.comparator = function (a, b) {
+// todo: make it more specific
+Morel.Collection.prototype.comparator = function comparator(a, b) {
   return a.get('date') > b.get('date');
 };
 
 _.extend(Morel.Manager.prototype, {
-  removeAllSynced: function (callback) {
-    this.getAll(function (err, records) {
+  removeAllSynced(callback) {
+    this.getAll((err, records) => {
       let toRemove = 0;
       let noneUsed = true;
       if (err) {
@@ -51,11 +53,11 @@ _.extend(Morel.Manager.prototype, {
         return;
       }
 
-      records.each(function (record) {
+      records.each((record) => {
         if (record.getSyncStatus() === Morel.SYNCED) {
           noneUsed = false;
           toRemove++;
-          record.destroy(function () {
+          record.destroy(() => {
             toRemove--;
             if (toRemove === 0) {
               callback && callback();
@@ -70,34 +72,33 @@ _.extend(Morel.Manager.prototype, {
     });
   },
 
-  setAllToSend: function (callback) {
-    let that = this;
+  setAllToSend(callback) {
+    const that = this;
     let noneUsed = true;
     let saving = 0;
 
-    this.getAll(function (err, records) {
+    this.getAll((err, records) => {
       if (err) {
         callback && callback(err);
         return;
       }
-      records.each(function(record) {
-          noneUsed = false;
-          saving++;
-          record.setToSend(function () {
-            saving--;
-            if (saving === 0) {
-              that.syncAll();
-              callback && callback();
-            }
-          });
-        }
-      )
+      records.each((record) => {
+        noneUsed = false;
+        saving++;
+        record.setToSend(() => {
+          saving--;
+          if (saving === 0) {
+            that.syncAll();
+            callback && callback();
+          }
+        });
+      });
 
       if (noneUsed) {
         callback && callback();
       }
-    })
-  }
+    });
+  },
 });
 
 const recordManager = new Morel.Manager(morelConfiguration);

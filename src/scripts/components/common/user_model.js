@@ -1,12 +1,13 @@
-/******************************************************************************
+/** ****************************************************************************
  * User model describing the user model on backend. Persistent.
  *****************************************************************************/
+import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from '../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import Validate from '../../helpers/validate';
 import CONFIG from 'config'; // Replaced with alias
 
-var User = Backbone.Model.extend({
+const User = Backbone.Model.extend({
   id: 'user',
 
   defaults: {
@@ -21,14 +22,14 @@ var User = Backbone.Model.extend({
   /**
    * Initializes the user.
    */
-  initialize: function () {
+  initialize() {
     this.fetch();
   },
 
   /**
    * Resets the user login information.
    */
-  logOut: function () {
+  logOut() {
     this.set('email', '');
     this.set('secret', '');
     this.set('name', '');
@@ -43,7 +44,7 @@ var User = Backbone.Model.extend({
    *
    * @param user User object or empty object
    */
-  logIn: function (user) {
+  logIn(user) {
     this.set('secret', user.secret || '');
     this.setContactDetails(user);
     this.save();
@@ -53,7 +54,7 @@ var User = Backbone.Model.extend({
   /**
    * Sets user contact information.
    */
-  setContactDetails: function (user) {
+  setContactDetails(user) {
     this.set('email', user.email || '');
     this.set('name', user.name || '');
     this.set('surname', user.surname || '');
@@ -63,25 +64,25 @@ var User = Backbone.Model.extend({
   /**
    * Returns user contact information.
    */
-  hasLogIn: function () {
+  hasLogIn() {
     return this.get('secret');
   },
 
-  appendSampleUser: function (sample) {
+  appendSampleUser(sample) {
     sample.set('email', this.get('email'));
     sample.set('usersecret', this.get('secret'));
 
     return sample;
   },
 
-  validateRegistration: function(attrs, options) {
-    let errors = {};
+  validateRegistration(attrs) {
+    const errors = {};
 
     if (!attrs.email) {
       errors.email = "can't be blank";
-    }else{
+    } else {
       if (!Validate.email(attrs.email)) {
-        errors.email = "invalid";
+        errors.email = 'invalid';
       }
     }
 
@@ -94,38 +95,40 @@ var User = Backbone.Model.extend({
 
     if (!attrs.password) {
       errors.password = "can't be blank";
-    } else{
+    } else {
       if (attrs.password.length < 2) {
-        errors.password = "is too short";
+        errors.password = 'is too short';
       }
     }
 
 
     if (!attrs['password-confirm']) {
       errors['password-confirm'] = "can't be blank";
-    } else{
+    } else {
       if (attrs['password-confirm'] !== attrs.password) {
-        errors['password-confirm'] = "passwords are not equal";
+        errors['password-confirm'] = 'passwords are not equal';
       }
     }
 
     if (!attrs['terms-agree']) {
-      errors['terms-agree'] = "you must agree to the terms";
+      errors['terms-agree'] = 'you must agree to the terms';
     }
 
-    if( ! _.isEmpty(errors)){
+    if (! _.isEmpty(errors)) {
       return errors;
     }
+
+    return null;
   },
 
-  validateLogin: function(attrs, options) {
-    let errors = {};
+  validateLogin(attrs) {
+    const errors = {};
 
     if (!attrs.email) {
       errors.email = "can't be blank";
-    }else{
+    } else {
       if (!Validate.email(attrs.email)) {
-        errors.email = "invalid";
+        errors.email = 'invalid';
       }
     }
 
@@ -133,10 +136,12 @@ var User = Backbone.Model.extend({
       errors.password = "can't be blank";
     }
 
-    if( ! _.isEmpty(errors)){
+    if (! _.isEmpty(errors)) {
       return errors;
     }
-  }
+
+    return null;
+  },
 });
 
 const userModel = new User();

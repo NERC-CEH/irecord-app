@@ -6,7 +6,7 @@ import CONFIG from 'config'; // Replaced with alias
 
 export default {
   init() {
-    //http://veithen.github.io/2015/02/14/requirejs-google-analytics.html
+    // http://veithen.github.io/2015/02/14/requirejs-google-analytics.html
     if (CONFIG.ga.status) {
       window.GoogleAnalyticsObject = '__ga__';
       window.__ga__ = {
@@ -17,18 +17,18 @@ export default {
         ]],
         l: Date.now(),
       };
-      //require(['ga'], function(ga) {
+      // require(['ga'], function(ga) {
       //  ga('set', 'appName', CONFIG.name);
       //  ga('set', 'appVersion', CONFIG.version);
-      //});
+      // });
     }
 
-    //listen for page change
-    Backbone.history.on('route', function () {
-      const gaTrackPageview =  function () {
+    // listen for page change
+    Backbone.history.on('route', () => {
+      const gaTrackPageview = () => {
         // Google Analytics
         if (CONFIG.ga.status) {
-          //require(['ga'], function(ga) {
+          // require(['ga'], function(ga) {
           //  var url = Backbone.history.getFragment();
           //
           //  // Add a slash if neccesary
@@ -39,7 +39,7 @@ export default {
           //    'hitType': 'pageview',
           //    'page': url
           //  });
-          //});
+          // });
         }
       };
 

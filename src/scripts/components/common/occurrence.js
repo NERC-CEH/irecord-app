@@ -5,19 +5,19 @@ import CONFIG from 'config'; // Replaced with alias
 $.extend(true, Morel.Occurrence.keys, CONFIG.morel.occurrence);
 
 export default Morel.Occurrence.extend({
-  validate: function() {
-    let invalids = [];
+  validate() {
+    const invalids = [];
 
-    //species
-    let taxon = this.get('taxon');
+    // species
+    const taxon = this.get('taxon');
     if (!taxon || (!taxon.warehouse_id)) {
       invalids.push({
         sample: true,
         name: 'species',
-        message: 'missing'
+        message: 'missing',
       });
     }
 
     return invalids.length ? invalids : null;
-  }
+  },
 });

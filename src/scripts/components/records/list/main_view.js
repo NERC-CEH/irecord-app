@@ -1,11 +1,11 @@
-/******************************************************************************
+/** ****************************************************************************
  * Welcome page view.
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
 import Morel from 'morel';
 import Hammer from '../../../../vendor/hammerjs/js/hammer';
-import browser from '../../../helpers/browser';
+import device from '../../../helpers/device';
 import dateExtension from '../../../helpers/date_extension';
 import JST from '../../../JST';
 
@@ -15,61 +15,60 @@ const RecordView = Marionette.ItemView.extend({
   className: 'table-view-cell',
 
   triggers: {
-    'click #delete': 'record:delete'
+    'click #delete': 'record:delete',
   },
 
   events: {
     // need to pass the attribute therefore 'triggers' method does not suit
-    'click .js-attr': function (e) {
+    'click .js-attr'(e) {
       e.preventDefault();
-      this.trigger('record:edit:attr', $(e.target).data('attr'))
-    }
+      this.trigger('record:edit:attr', $(e.target).data('attr'));
+    },
   },
 
   modelEvents: {
     'sync:request sync:done sync:error': 'render',
-    'geolocation': 'render'
+    geolocation: 'render',
   },
 
-  initialize: function () {
-    this.template = JST['records/list/record' + (browser.isMobile() ? '_mobile': '')];
+  initialize() {
+    this.template = JST[`records/list/record${(device.isMobile() ? '_mobile' : '')}`];
   },
 
-  onRender: function () {
+  onRender() {
     // early return
-    if (!browser.isMobile()) return;
+    if (!device.isMobile()) return;
 
     this.$record = this.$el.find('a');
     this.docked = false;
     this.position = 0;
 
-    var options = {
+    const options = {
       threshold: 50,
-      toolsWidth: 100
+      toolsWidth: 100,
     };
 
-    var hammertime = new Hammer(this.el, {direction: Hammer.DIRECTION_HORIZONTAL});
-    var that = this;
+    const hammertime = new Hammer(this.el, { direction: Hammer.DIRECTION_HORIZONTAL });
+    const that = this;
 
-    //on tap bring back
+    // on tap bring back
     this.$record.on('tap click', $.proxy(this._swipeHome, this));
 
-    hammertime.on('pan', function(e) {
+    hammertime.on('pan', (e) => {
       e.preventDefault();
       that._swipe(e, options);
     });
-    hammertime.on('panend', function(e) {
+    hammertime.on('panend', (e) => {
       that._swipeEnd(e, options);
     });
-
   },
 
-  remove: function () {
-    //removing the last element leaves emptyView + fading out entry for a moment
+  remove() {
+    // removing the last element leaves emptyView + fading out entry for a moment
     if (this.model.collection.length >= 1) {
-      let that = this;
+      const that = this;
       this.$el.addClass('shrink');
-      setTimeout(function () {
+      setTimeout(() => {
         Marionette.ItemView.prototype.remove.call(that);
       }, 300);
     } else {
@@ -77,42 +76,40 @@ const RecordView = Marionette.ItemView.extend({
     }
   },
 
-  serializeData: function () {
-    let recordModel = this.model;
-    let occ = recordModel.occurrences.at(0);
-    let date = recordModel.get('date').print(),
-        specie = occ.get('taxon') || {},
-        images = occ.images;
-    let img = images.length && images.at(0).get('data');
+  serializeData() {
+    const recordModel = this.model;
+    const occ = recordModel.occurrences.at(0);
+    const date = recordModel.get('date').print();
+    const specie = occ.get('taxon') || {};
+    const images = occ.images;
+    const img = images.length && images.at(0).get('data');
 
-    let appModel = this.options.appModel;
+    const taxon = specie[specie.found_in_name];
 
-    let taxon = specie[specie.found_in_name];
+    const syncStatus = this.model.getSyncStatus();
 
-    let syncStatus = this.model.getSyncStatus();
-
-    let location_print = recordModel.printLocation();
-    let location = recordModel.get('location') || {};
+    const locationPrint = recordModel.printLocation();
+    const location = recordModel.get('location') || {};
 
     return {
       id: recordModel.id || recordModel.cid,
       saved: recordModel.metadata.saved,
       onDatabase: syncStatus === Morel.SYNCED,
       isLocating: recordModel.isGPSRunning(),
-      location: location_print,
+      location: locationPrint,
       location_name: location.name,
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
-      date: date,
-      taxon: taxon,
+      date,
+      taxon,
       number: occ.get('number') && occ.get('number').limit(20),
       stage: occ.get('stage') && occ.get('stage').limit(20),
       comment: occ.get('comment'),
-      img: img ? '<img src="' + img + '"/>' : ''
+      img: img ? `<img src="${img}"/>` : '',
     };
   },
 
-  _swipe: function (e, options) {
-    //only swipe if no scroll up
+  _swipe(e, options) {
+    // only swipe if no scroll up
     if (Math.abs(e.deltaY) > 10) return;
 
     if (this.docked) {
@@ -121,43 +118,43 @@ const RecordView = Marionette.ItemView.extend({
       this.position = e.deltaX;
     }
 
-    //protection of swipeing right too much
+    // protection of swipeing right too much
     if (this.position > 0) this.position = 0;
 
-    this.$record.css('transform', 'translateX(' + this.position + 'px)');
+    this.$record.css('transform', `translateX(${this.position}px)`);
   },
 
-  _swipeEnd: function (e, options) {
-    //only swipe if no scroll up and is not in the middle
+  _swipeEnd(e, options) {
+    // only swipe if no scroll up and is not in the middle
     if (Math.abs(e.deltaY) > 10 && !this.position) return;
 
     if ((-options.toolsWidth + e.deltaX) > -options.toolsWidth) {
-      //bring back
+      // bring back
       this.position = 0;
       this.docked = false;
     } else {
-      //open tools
+      // open tools
       this.docked = true;
       this.position = -options.toolsWidth;
     }
 
-    this.$record.css('transform', 'translateX(' + this.position + 'px)');
+    this.$record.css('transform', `translateX(${this.position}px)`);
   },
 
-  _swipeHome: function (e) {
+  _swipeHome(e) {
     if (this.docked) {
       e.preventDefault();
       this.position = 0;
-      this.$record.css('transform', 'translateX(' + this.position + 'px)');
+      this.$record.css('transform', `translateX(${this.position}px)`);
       this.docked = false;
     }
-  }
+  },
 });
 
-let NoRecordsView = Marionette.ItemView.extend({
+const NoRecordsView = Marionette.ItemView.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: JST['records/list/list-none']
+  template: JST['records/list/list-none'],
 });
 
 export default Marionette.CollectionView.extend({
@@ -167,14 +164,14 @@ export default Marionette.CollectionView.extend({
   emptyView: NoRecordsView,
   childView: RecordView,
 
-  //inverse the collection
-  attachHtml: function(collectionView, childView, index){
+  // inverse the collection
+  attachHtml(collectionView, childView) {
     collectionView.$el.prepend(childView.el);
   },
 
-  childViewOptions: function () {
+  childViewOptions() {
     return {
-      appModel: this.options.appModel
-    }
-  }
+      appModel: this.options.appModel,
+    };
+  },
 });

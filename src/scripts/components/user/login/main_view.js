@@ -6,24 +6,24 @@ export default Marionette.ItemView.extend({
   template: JST['user/login/main'],
 
   events: {
-    'click #login-button': 'login'
+    'click #login-button': 'login',
   },
 
-  login: function (e) {
-    var $inputPassword = this.$el.find('#user-password');
-    var $inputEmail = this.$el.find('#user-email');
+  login() {
+    const $inputPassword = this.$el.find('#user-password');
+    const $inputEmail = this.$el.find('#user-email');
 
-    let data = {
+    const data = {
       email: $inputEmail.val(),
-      password: $inputPassword.val()
+      password: $inputPassword.val(),
     };
 
     this.trigger('form:submit', data);
   },
 
-  onFormDataInvalid: function (errors) {
-    var $view = this.$el;
-    validate.updateViewFormErrors($view, errors, "#user-");
-  }
+  onFormDataInvalid(errors) {
+    const $view = this.$el;
+    validate.updateViewFormErrors($view, errors, '#user-');
+  },
 });
 
