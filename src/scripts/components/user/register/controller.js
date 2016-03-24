@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import App from '../../../app';
 import log from '../../../helpers/log';
+import device from '../../../helpers/device';
 import CONFIG from 'config'; // Replaced with alias
 import userModel from '../../common/user_model';
 import MainView from './main_view';
@@ -27,7 +28,7 @@ const API = {
 
     // Start registration
     mainView.on('form:submit', (data) => {
-      if (!navigator.onLine) {
+      if (!device.isOnline()) {
         App.regions.dialog.show({
           title: 'Sorry',
           body: 'Looks like you are offline!',

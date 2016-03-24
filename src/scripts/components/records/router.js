@@ -3,6 +3,7 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import log from '../../helpers/log';
+import device from '../../helpers/device';
 import App from '../../app';
 import recordManager from '../common/record_manager';
 import userModel from '../common/user_model';
@@ -83,7 +84,7 @@ App.on('record:saved', () => {
 });
 
 function syncRecords() {
-  if (window.navigator.onLine && appModel.get('autosync')) {
+  if (device.isOnline() && appModel.get('autosync')) {
     recordManager.syncAll();
   }
 }

@@ -85,6 +85,13 @@ function isAndroid() {
   return is('android');
 }
 
+function isOnline() {
+  if (window.cordova && window.device) {
+    return window.navigator.connection.type !== window.Connection.NONE;
+  }
+  return window.navigator.onLine;
+}
+
 export default {
   is,
   detect,
@@ -95,5 +102,6 @@ export default {
   getIOSVersion,
   isHomeMode,
   isAndroid,
+  isOnline,
 };
 

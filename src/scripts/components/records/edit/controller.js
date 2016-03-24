@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Morel from 'morel';
 import dateExtension from '../../../helpers/date_extension';
 import stringExtension from '../../../helpers/string_extension';
+import device from '../../../helpers/device';
 import App from '../../../app';
 import appModel from '../../common/app_model';
 import userModel from '../../common/user_model';
@@ -77,7 +78,7 @@ const API = {
             return;
           }
 
-          if (window.navigator.onLine && !userModel.hasLogIn()) {
+          if (device.isOnline() && !userModel.hasLogIn()) {
             App.trigger('user:login', { replace: true });
             return;
           }

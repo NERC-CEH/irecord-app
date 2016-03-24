@@ -3,6 +3,7 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import App from '../../../app';
+import device from '../../../helpers/device';
 import appModel from '../../common/app_model';
 import userModel from '../../common/user_model';
 import recordManager from '../../common/record_manager';
@@ -43,7 +44,7 @@ const API = {
   },
 
   syncRecord(recordModel) {
-    if (window.navigator.onLine) {
+    if (device.isOnline()) {
       if (!userModel.hasLogIn()) {
         App.trigger('user:login');
         return;
