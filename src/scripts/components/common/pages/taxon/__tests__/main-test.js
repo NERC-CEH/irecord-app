@@ -76,10 +76,16 @@ describe('Taxon Search Engine', () => {
         it(`should find ${species[NAME]} (${species[WAREHOUSE_ID]})`, (done) => {
           searchEngine.search(species[NAME], (results) => {
             expect(results).to.not.be.empty;
-            expect(results).to.not.be.empty;
-            const result = results[0];
 
-            expect(result.warehouse_id).to.be.equal(species[WAREHOUSE_ID]);
+            //check all results
+            let found = false;
+            results.forEach((result) => {
+              if (result.warehouse_id === species[WAREHOUSE_ID]) {
+                found = true;
+              }
+            });
+
+            expect(found).to.be.true;
             done();
           });
         });
