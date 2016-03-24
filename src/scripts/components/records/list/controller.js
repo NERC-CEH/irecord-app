@@ -32,9 +32,11 @@ const API = {
       mainView.on('childview:record:delete', (childView) => {
         const recordModel = childView.model;
         const syncStatus = recordModel.getSyncStatus();
-        let body = 'Are you sure you want to remove this record from your device?';
+        let body = 'This record hasn\'t been saved to iRecord yet, ' +
+          'are you sure you want to remove it from your device?';
 
         if (syncStatus === Morel.SYNCED) {
+          body = 'Are you sure you want to remove this record from your device?';
           body += '</br><i><b>Note:</b> it will remain on the server.</i>';
         }
         App.regions.dialog.show({
