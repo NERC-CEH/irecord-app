@@ -71,18 +71,18 @@ App.on('start', function () {
       // Although StatusB  ar in the global scope, it is not available until after the deviceready event.
       document.addEventListener('deviceready', () => {
         log('Showing the app.', 'd');
-      window.StatusBar.overlaysWebView(true);
-      window.StatusBar.backgroundColorByName('black');
+        window.StatusBar.overlaysWebView(true);
+        window.StatusBar.backgroundColorByName('black');
 
-      // iOS make space for statusbar
-      if (device.isIOS()) {
-        $('body').addClass('ios');
-      }
+        // iOS make space for statusbar
+        if (device.isIOS()) {
+          $('body').addClass('ios');
+        }
 
-      // hide loader
-      if (navigator && navigator.splashscreen) {
-        navigator.splashscreen.hide();
-      }
+        // hide loader
+        if (navigator && navigator.splashscreen) {
+          navigator.splashscreen.hide();
+        }
       }, false);
     } else {
       // development loader

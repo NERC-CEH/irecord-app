@@ -232,6 +232,10 @@ module.exports = function exports(grunt) {
             from: /\{APP_DESCRIPTION\}/g,
             to: '<%= pkg.description %>',
           },
+          {
+            from: /\{BUNDLE_VER\}/g,
+            to: '<%= pkg.build %>',
+          },
         ],
       },
     },
