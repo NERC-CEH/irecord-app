@@ -80,6 +80,22 @@ describe('Taxon Search Engine', () => {
       });
     });
 
+    describe('genus', () => {
+      it('should add all species belonging to it', (done) => {
+        searchEngine.search('Puffinus', (results) => {
+          expect(results.length).to.be.equal(9);
+          const genus = results[0];
+          expect(genus.warehouse_id).to.be.equal(141974);
+          expect(genus.scientific_name).to.be.equal('Puffinus');
+
+          const puffinusAsimilis = results[1];
+          expect(puffinusAsimilis.warehouse_id).to.be.equal(160697);
+          expect(puffinusAsimilis.scientific_name).to.be.equal('Puffinus assimilis');
+          done();
+        });
+      });
+    });
+
     describe('random taxa search', () => {
       // random search of 100 names
       const speciesToSearch = [];

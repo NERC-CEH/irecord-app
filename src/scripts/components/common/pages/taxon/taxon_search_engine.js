@@ -176,7 +176,7 @@ const API = {
                 array_id: speciesArrayIndex,
                 species_id: species_index,
                 found_in_name: 'scientific_name',
-                warehouse_id: speciesEntry[WAREHOUSE_INDEX],
+                warehouse_id: speciesInArray[WAREHOUSE_INDEX],
                 group: speciesEntry[GROUP_INDEX],
                 scientific_name: speciesEntry[SCI_NAME_INDEX] + ' ' + speciesInArray[SPECIES_SCI_NAME_INDEX],
                 common_name: speciesInArray[SPECIES_COMMON_INDEX],
