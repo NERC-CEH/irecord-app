@@ -501,7 +501,6 @@ module.exports = function exports(grunt) {
     'run',
     'webpack:main',
     'replace:development_code',
-    'test',
   ]);
 
   // Development run

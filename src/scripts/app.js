@@ -5,8 +5,10 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import FastClick from '../vendor/fastclick/js/fastclick';
+import IndexedDBShim from '../vendor/IndexedDBShim/js/IndexedDBShim';
 import analytics from './helpers/analytics';
 import log from './helpers/log';
+import device from './helpers/device';
 import brcArt from './helpers/brcart';
 
 import DialogRegion from './components/common/dialog_region';
@@ -45,15 +47,10 @@ App.on('before:start', function () {
 
 App.on('start', function () {
   // Init for the first time
-  // download appcache
   // set up DB
   // when done - carry on with showing pages
 
   FastClick.attach(document.body);
-
-  // turn off the loading splash screen
-  $('div.loading').css('display', 'none');
-  $('body').removeClass('loading');
 
   if (Backbone.history) {
     Backbone.history.start();
@@ -72,20 +69,21 @@ App.on('start', function () {
 
     if (window.cordova) {
       // Although StatusB  ar in the global scope, it is not available until after the deviceready event.
-      $(document).on('deviceready', () => {
-        window.StatusBar.overlaysWebView(true);
-        window.StatusBar.backgroundColorByName('black');
-
-        // hide loader
-        if (navigator && navigator.splashscreen) {
-          navigator.splashscreen.hide();
-        }
-      });
+      document.addEventListener('deviceready', () => {
+        log('Showing the app.', 'd');
+      window.StatusBar.overlaysWebView(true);
+      window.StatusBar.backgroundColorByName('black');
 
       // iOS make space for statusbar
-      if (window.deviceIsIOS) {
+      if (device.isIOS()) {
         $('body').addClass('ios');
       }
+
+      // hide loader
+      if (navigator && navigator.splashscreen) {
+        navigator.splashscreen.hide();
+      }
+      }, false);
     } else {
       // development loader
       $('#loader').remove();
