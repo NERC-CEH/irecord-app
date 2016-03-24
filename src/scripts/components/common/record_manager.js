@@ -38,11 +38,6 @@ const morelConfiguration = $.extend(CONFIG.morel.manager, {
   },
 });
 
-// todo: make it more specific
-Morel.Collection.prototype.comparator = function comparator(a, b) {
-  return a.get('date') > b.get('date');
-};
-
 _.extend(Morel.Manager.prototype, {
   removeAllSynced(callback) {
     this.getAll((err, records) => {
