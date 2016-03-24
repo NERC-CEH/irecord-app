@@ -51,6 +51,22 @@ describe('Taxon Search Engine', () => {
         });
       });
     });
+
+    it('should treat non alpha numeric characters as spaces', (done) => {
+      // todo: check "Wakely's Dowd"
+      searchEngine.search('Isle-of-Man Cabbage', (results) => {
+        searchEngine.search('Isle of Man Cabbage', (resultsDash) => {
+          expect(results).to.deep.equal(resultsDash);
+
+          searchEngine.search('Perfoliate (Cotswold) Pennycress', (results) => {
+            searchEngine.search('Perfoliate Cotswold Pennycress', (resultsBracket) => {
+              expect(results).to.deep.equal(resultsBracket);
+              done();
+            });
+          });
+        });
+      });
+    });
     it('should accept hybrids', (done) => {
       searchEngine.search('Caryopteris incana x mongholica =', (results) => {
         expect(results).to.be.an('array');

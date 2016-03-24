@@ -196,17 +196,26 @@ const API = {
   },
 
   _normalizeFirstWord: function (phrase) {
+    // replace all non alphanumerics with open character
+
     return phrase.replace('.', '');
+  },
+
+  _removeNonAlphanumerics(phrase) {
+    return phrase.replace(/\\[\-\'\"()\\]/g, '.?');
   },
 
   // todo: change èéöüáöëïåß -> eeou..
   _getFirstWordRegexString: function (phrase) {
     phrase = API._escapeRegExp(phrase);
+    phrase = API._removeNonAlphanumerics(phrase);
     return '^' + phrase + '.*';
   },
 
   _getOtherWordsRegexString: function (phrase) {
     phrase = API._escapeRegExp(phrase);
+    phrase = API._removeNonAlphanumerics(phrase);
+
     let words = phrase.split(' ');
 
     _.each(words, function (word, i) {
@@ -301,7 +310,7 @@ const API = {
    * @private
    */
   _escapeRegExp: function (string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return string.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&');
   },
 
   /**
