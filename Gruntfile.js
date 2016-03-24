@@ -514,6 +514,8 @@ module.exports = function exports(grunt) {
   grunt.registerTask('cordova', 'Cordova tasks', update => {
     if (update) {
       // update only
+
+      grunt.task.run('replace:cordova_config');
       // replace dev splashscreen
       grunt.task.run('replace:development_code');
 
