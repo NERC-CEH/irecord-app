@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Record Edit header view.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import Morel from 'morel';
 import JST from '../../../JST';

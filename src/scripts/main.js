@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * App start.
+ *****************************************************************************/
 import Bootstrap from '../vendor/bootstrap/js/bootstrap';
 import Ratchet from '../vendor/ratchet/js/ratchet';
 import App from './app';

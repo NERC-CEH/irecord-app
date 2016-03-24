@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Main app configuration file.
+ * Main app development configuration file.
  *****************************************************************************/
 import locHelp from './helpers/location';
 

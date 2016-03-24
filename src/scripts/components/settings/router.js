@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Settings router.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import App from '../../app';
 import CommonController from '../common/controller';

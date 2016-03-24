@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Record Edit main view.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import Morel from 'morel';
 import JST from '../../../JST';

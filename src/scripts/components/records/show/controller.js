@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Record Show controller.
+ *****************************************************************************/
 import Backbone from 'backbone';
 import App from '../../../app';
 import appModel from '../../common/app_model';

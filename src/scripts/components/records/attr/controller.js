@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Record Attribute controller.
+ *****************************************************************************/
 import Backbone from 'backbone';
 import Morel from 'morel';
 import dateExtension from '../../../helpers/date_extension';

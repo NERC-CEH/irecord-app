@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * User router.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import App from '../../app';
 import LoginController from './login/controller';

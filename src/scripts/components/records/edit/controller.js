@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Record Edit controller.
+ *****************************************************************************/
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Morel from 'morel';

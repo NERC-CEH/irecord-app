@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Record Edit footer view.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import _ from 'lodash';
 import Morel from 'morel';

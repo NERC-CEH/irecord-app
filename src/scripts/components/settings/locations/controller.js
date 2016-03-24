@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Settings Locations controller.
+ *****************************************************************************/
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import App from '../../../app';

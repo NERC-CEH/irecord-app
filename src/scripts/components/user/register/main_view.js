@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * User Register main view.
+ *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
 import validate from '../../../helpers/validate';

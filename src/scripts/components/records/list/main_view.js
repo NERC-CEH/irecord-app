@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Welcome page view.
+ * Record List main view.
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';

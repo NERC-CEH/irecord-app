@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Setting Menu main view.
+ *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
 import device from '../../../helpers/device';

@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * User Login main view.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import validate from '../../../helpers/validate';
 import JST from '../../../JST';
