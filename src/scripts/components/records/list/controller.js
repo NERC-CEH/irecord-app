@@ -10,7 +10,12 @@ import HeaderView from './header_view';
 
 const API = {
   show() {
-    recordManager.getAll((err, recordsCollection) => {
+    recordManager.getAll((getError, recordsCollection) => {
+      if (getError) {
+        App.regions.dialog.error(getError);
+        return;
+      }
+
       // MAIN
       const mainView = new MainView({
         collection: recordsCollection,
@@ -100,8 +105,11 @@ const API = {
 
               const onSuccess = (imageData) => {
                 const fullImageData = `data:image/jpeg;base64,${imageData}`;
-                API.photoUpload(fullImageData, () => {
-
+                API.photoUpload(fullImageData, (err) => {
+                  if (err) {
+                    App.regions.dialog.error(err);
+                    return;
+                  }
                 });
               };
               const onError = () => {
@@ -148,7 +156,11 @@ const API = {
         // append locked attributes
         appModel.appendAttrLocks(sample);
 
-        recordManager.set(sample, () => {
+        recordManager.set(sample, (saveError) => {
+          if (saveError) {
+            callback(saveError);
+            return;
+          }
           // check if location attr is not locked
           const locks = appModel.get('attrLocks');
 

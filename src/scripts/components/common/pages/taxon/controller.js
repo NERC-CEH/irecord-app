@@ -18,7 +18,12 @@ const API = {
 
     if (recordID) {
       // check if the record has taxon specified
-      recordManager.get(recordID, (err, recordModel) => {
+      recordManager.get(recordID, (getError, recordModel) => {
+        if (getError) {
+          App.regions.dialog.error(getError);
+          return;
+        }
+
         // Not found
         if (!recordModel) {
           App.trigger('404:show', { replace: true });
@@ -61,7 +66,23 @@ const API = {
   },
 
   _showMainView(mainView, that) {
-    mainView.on('taxon:selected', API._onSelected, that);
+    const sampleID = that.id;
+    mainView.on('taxon:selected', (taxon, edit) => {
+      API.updateTaxon(sampleID, taxon, (err, sample) => {
+        if (err) {
+          App.regions.dialog.error(err);
+          return;
+        }
+
+        if (edit) {
+          const updatedSampleID = sample.id || sample.cid;
+          App.trigger('records:edit', updatedSampleID, { replace: true });
+        } else {
+          // return to previous page
+          window.history.back();
+        }
+      });
+    }, that);
     mainView.on('taxon:searched', (searchPhrase) => {
       SpeciesSearchEngine.search(searchPhrase, (selection) => {
         mainView.updateSuggestions(new Backbone.Collection(selection), searchPhrase);
@@ -71,12 +92,12 @@ const API = {
     App.regions.main.show(mainView);
   },
 
-  _onSelected(species, edit) {
+  updateTaxon(sampleID, taxon, callback) {
     const that = this;
-    if (!this.id) {
+    if (!sampleID) {
       // create new sighting
       const occurrence = new Occurrence({
-        taxon: species,
+        taxon,
       });
 
       const sample = new Sample(null, {
@@ -86,7 +107,12 @@ const API = {
       // add locked attributes
       appModel.appendAttrLocks(sample);
 
-      recordManager.set(sample, () => {
+      recordManager.set(sample, (saveError) => {
+        if (saveError) {
+          callback(saveError);
+          return;
+        }
+
         // check if location attr is not locked
         const locks = appModel.get('attrLocks');
 
@@ -99,24 +125,24 @@ const API = {
           sample.startGPS();
         }
 
-        if (edit) {
-          App.trigger('records:edit', sample.cid, { replace: true });
-        } else {
-          // return to previous page
-          window.history.back();
-        }
+        callback(null, sample);
       });
     } else {
       // edit existing one
-      recordManager.get(this.id, (err, recordModel) => {
-        recordModel.occurrences.at(0).set('taxon', species);
-        recordModel.save(() => {
-          if (edit) {
-            App.trigger('records:edit', that.id, { replace: true });
-          } else {
-            // return to previous page
-            window.history.back();
+      recordManager.get(sampleID, (getError, recordModel) => {
+        if (getError) {
+          callback(getError);
+          return;
+        }
+
+        recordModel.occurrences.at(0).set('taxon', taxon);
+        recordModel.save((saveError) => {
+          if (saveError) {
+            callback(saveError);
+            return;
           }
+
+          callback(null, that);
         });
       });
     }
