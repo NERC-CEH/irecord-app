@@ -3,11 +3,13 @@
   border-bottom: 1px $header-color solid;
 
   .pull-right {
+    width: 45%;
+    max-width: 200px;
     background-color: $color-white;
     border-bottom: 1px solid $header-color;
 
     a {
-      width: 45%;
+      width: 48%;
       max-width: none;
 
       &:hover {

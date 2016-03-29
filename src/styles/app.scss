@@ -110,12 +110,20 @@ button {
 }
 
 header {
+  .pull-left {
+    text-align: left;
+  }
+  .pull-right {
+    text-align: right;
+  }
+
   .pull-left, .pull-right {
     height: 44px ;
-    width: 40%;
+    width: 35%;
 
-    a {
-      width: 37%;
+    //if has any text then leave it auto width
+    a:empty {
+      width: 45%;
       max-width: 55px;
       margin-left: 0;
 

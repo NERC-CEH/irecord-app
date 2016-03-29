@@ -6,11 +6,12 @@
 }
 
 #record-save-btn {
-  width: 20% !important;
+  width: 70% !important;
+  max-width: 100px;
   color: $header-color;
   float: right;
   border: none;
-  border-bottom: 1px solid $header-color;
+  border-bottom: 1px solid $color-white;
   background-color: $color-white;
 }
 
