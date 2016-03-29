@@ -112,11 +112,19 @@ button {
 header {
   .pull-left, .pull-right {
     height: 44px ;
+    width: 40%;
+
+    a {
+      width: 37%;
+      max-width: 55px;
+      margin-left: 0;
+
+      text-align: center;
+    }
   }
 
-  a.pull-left,
-  .pull-left a {
-    margin-left: 3px;
+  .pull-left {
+    margin-left: -5px;
   }
 }
 

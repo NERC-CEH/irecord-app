@@ -1,4 +1,6 @@
-<a href="#info" class="icon icon-menu pull-left"></a>
+<div class="pull-left">
+  <a href="#info" class="icon icon-menu"></a>
+</div>
 <div class="pull-right">
   <div class="img-picker icon icon-camera">
     <input type="file" accept="image/*"/>

@@ -2,17 +2,13 @@
 #records-header {
   border-bottom: 1px $header-color solid;
 
-  .pull-left {
-    margin-left: 2%;
-  }
   .pull-right {
-    width: 40%;
     background-color: $color-white;
     border-bottom: 1px solid $header-color;
 
     a {
       width: 45%;
-      text-align: center;
+      max-width: none;
 
       &:hover {
         text-shadow: 0px 0px 0px $header-color, 0px 0px 0px $header-color;
