@@ -1,3 +1,3 @@
 <div class="input-group">
-  <input type="date" value="<%- obj.date %>" max="<%- new Date().toDateInputValue() %>"/>
+  <input type="date" value="<%- obj.date %>" max="<%- obj.maxDate %>"/>
 </div>

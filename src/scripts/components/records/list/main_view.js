@@ -6,7 +6,8 @@ import Marionette from 'marionette';
 import Morel from 'morel';
 import Hammer from '../../../../vendor/hammerjs/js/hammer';
 import device from '../../../helpers/device';
-import dateExtension from '../../../helpers/date_extension';
+import dateHelpers from '../../../helpers/date';
+import stringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 
 
@@ -79,7 +80,7 @@ const RecordView = Marionette.ItemView.extend({
   serializeData() {
     const recordModel = this.model;
     const occ = recordModel.occurrences.at(0);
-    const date = recordModel.get('date').print();
+    const date = dateHelpers.print(recordModel.get('date'));
     const specie = occ.get('taxon') || {};
     const images = occ.images;
     const img = images.length && images.at(0).get('data');
@@ -101,8 +102,8 @@ const RecordView = Marionette.ItemView.extend({
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
       date,
       taxon,
-      number: occ.get('number') && occ.get('number').limit(20),
-      stage: occ.get('stage') && occ.get('stage').limit(20),
+      number: occ.get('number') && stringHelp.limit(occ.get('number')),
+      stage: occ.get('stage') && stringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
       img: img ? `<img src="${img}"/>` : '',
     };

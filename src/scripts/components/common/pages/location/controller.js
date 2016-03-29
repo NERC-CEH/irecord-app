@@ -9,6 +9,7 @@ import Morel from 'morel';
 import device from '../../../../helpers/device';
 import log from '../../../../helpers/log';
 import validate from '../../../../helpers/validate';
+import stringHelp from '../../../../helpers/string';
 import locHelp from '../../../../helpers/location';
 import App from '../../../../app';
 import JST from '../../../../JST';
@@ -99,7 +100,7 @@ const API = {
         }
 
         const location = recordModel.get('location') || {};
-        location.name = name.escape();
+        location.name = stringHelp.escape(name);
         recordModel.set('location', location);
         recordModel.trigger('change:location');
       }
@@ -272,7 +273,7 @@ const API = {
       template: JST['common/past_location_edit'],
       getValues() {
         return {
-          name: this.$el.find('#location-name').val().escape(),
+          name: stringHelp.escape(this.$el.find('#location-name').val()),
         };
       },
 

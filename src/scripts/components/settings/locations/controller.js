@@ -5,6 +5,7 @@ import Backbone from 'backbone';
 import Marionette from 'marionette';
 import App from '../../../app';
 import device from '../../../helpers/device';
+import stringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 import appModel from '../../common/app_model';
 import MainView from './main_view';
@@ -45,7 +46,7 @@ const API = {
       template: JST['common/past_location_edit'],
       getValues() {
         return {
-          name: this.$el.find('#location-name').val().escape(),
+          name: stringHelp.escape(this.$el.find('#location-name').val()),
         };
       },
 

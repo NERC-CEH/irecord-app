@@ -2,6 +2,7 @@
  * Main app configuration file.
  *****************************************************************************/
 import locHelp from './helpers/location';
+import dateHelpers from './helpers/date';
 
 export default {
   version: '{APP_VER}', // replaced on build
@@ -86,7 +87,7 @@ export default {
 
       date: {
         values: function (date) {
-          return date.print();
+          return dateHelpers.print(date);
         }
       }
     },

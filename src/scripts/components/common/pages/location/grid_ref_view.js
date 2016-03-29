@@ -4,6 +4,7 @@
 import Marionette from 'marionette';
 import JST from '../../../../JST';
 import locHelp from '../../../../helpers/location';
+import stringHelp from '../../../../helpers/string';
 import validate from '../../../../helpers/validate';
 
 export default Marionette.ItemView.extend({
@@ -18,8 +19,8 @@ export default Marionette.ItemView.extend({
   },
 
   setGridRef() {
-    const val = this.$el.find('#location-gridref').val().escape();
-    const name = this.$el.find('#location-name').val().escape();
+    const val = stringHelp.escape(this.$el.find('#location-gridref').val());
+    const name = stringHelp.escape(this.$el.find('#location-name').val());
 
     const data = {
       gridref: val,

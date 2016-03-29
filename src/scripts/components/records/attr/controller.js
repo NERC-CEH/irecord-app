@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import Morel from 'morel';
-import dateExtension from '../../../helpers/date_extension';
+import dateHelpers from '../../../helpers/date';
 import App from '../../../app';
 import appModel from '../../common/app_model';
 import recordManager from '../../common/record_manager';
@@ -118,7 +118,8 @@ let API = {
       if (lockedValue) {
         if (values[attr] === 'default') {
           appModel.setAttrLock(attr, null);
-        } else if (attr === 'date' && values[attr].print() == new Date().print()) {
+        } else if (attr === 'date' &&
+          dateHelpers.print(values[attr]) === dateHelpers.print(new Date())) {
           appModel.setAttrLock(attr, null);
         } else if (lockedValue === true || lockedValue == currentVal) {
           appModel.setAttrLock(attr, values[attr]);
