@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Location GridRef view.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import JST from '../../../../JST';
 import locHelp from '../../../../helpers/location';

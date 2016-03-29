@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Location Past view.
+ *****************************************************************************/
 import Marionette from 'marionette';
 import JST from '../../../../JST';
 import PastLocationsView from '../../past_locations_view';

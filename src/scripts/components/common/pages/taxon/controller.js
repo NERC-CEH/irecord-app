@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Taxon controller.
+ *****************************************************************************/
 import Backbone from 'backbone';
 import Morel from 'morel';
 import App from '../../../../app';
@@ -93,7 +96,6 @@ const API = {
   },
 
   updateTaxon(sampleID, taxon, callback) {
-    const that = this;
     if (!sampleID) {
       // create new sighting
       const occurrence = new Occurrence({
@@ -136,13 +138,13 @@ const API = {
         }
 
         recordModel.occurrences.at(0).set('taxon', taxon);
-        recordModel.save((saveError) => {
+        recordModel.save((saveError, sample) => {
           if (saveError) {
             callback(saveError);
             return;
           }
 
-          callback(null, that);
+          callback(null, sample);
         });
       });
     }

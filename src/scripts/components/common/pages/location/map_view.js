@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * Location main view.
+ *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
 import L from '../../../../../vendor/leaflet/js/leaflet';

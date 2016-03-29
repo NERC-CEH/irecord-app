@@ -1,6 +1,6 @@
-/**
+/** ****************************************************************************
  * Generates UKSI list search suggestions.
- */
+ *****************************************************************************/
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';

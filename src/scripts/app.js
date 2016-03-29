@@ -11,6 +11,7 @@ import log from './helpers/log';
 import device from './helpers/device';
 import brcArt from './helpers/brcart';
 
+import CommonController from './components/common/controller';
 import DialogRegion from './components/common/dialog_region';
 import HideableRegion from './components/common/hideable_region';
 
