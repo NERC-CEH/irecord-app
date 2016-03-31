@@ -3,9 +3,12 @@ import imageURI from './imageURI';
 import Controller from '../controller';
 import recordManager from '../../../common/record_manager';
 
-describe('Controller', () => {
-  describe('photo picker', () => {
 
+describe('Controller', function () {
+  // it can take time to add/remove records
+  this.timeout(10000);
+
+  describe('photo picker', () => {
     before((done) => {
       recordManager.clear(done);
     });
@@ -14,7 +17,7 @@ describe('Controller', () => {
       recordManager.clear(done);
     });
 
-    const RECORDS_COUNT = 5;
+    const RECORDS_COUNT = 10;
 
     it(`should create a new record with a photo (${RECORDS_COUNT})`, (done) => {
       let recordsToAddCount = RECORDS_COUNT;
