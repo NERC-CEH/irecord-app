@@ -512,7 +512,6 @@ module.exports = function exports(grunt) {
     'run',
     'webpack:main',
     'replace:development_code',
-    'test',
   ]);
 
   grunt.registerTask('cordova', 'Cordova tasks', update => {
@@ -548,14 +547,12 @@ module.exports = function exports(grunt) {
     'init',
     'run',
     'webpack:dev',
-    'test',
   ]);
 
   // Development run
   grunt.registerTask('dev:update', [
     'run',
     'webpack:dev',
-    'test',
   ]);
 
   grunt.registerTask('test', ['karma:local']);

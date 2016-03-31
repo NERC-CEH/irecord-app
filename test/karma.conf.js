@@ -13,13 +13,13 @@ module.exports = function exports(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
     frameworks: ['mocha', 'chai'],
 
     files: [
       { pattern: 'test/mocks.js', watched: false },
-      { pattern: 'tests.webpack.js', watched: false },
+      { pattern: 'tests.webpack.js', watched: true },
     ],
 
     preprocessors: {
@@ -33,12 +33,12 @@ module.exports = function exports(config) {
     },
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['mocha'],
 
     // web server port
     port: 9876,
@@ -48,6 +48,6 @@ module.exports = function exports(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+    singleRun: false,
   });
 };

@@ -56,6 +56,7 @@
     "karma-chai": "latest",
     "karma-webpack": "latest",
     "karma-chrome-launcher": "latest",
+    "karma-mocha-reporter": "latest",
     "karma-mocha": "latest",
     "karma-phantomjs-launcher": "latest",
     "karma-sauce-launcher": "latest",

@@ -4,6 +4,7 @@
 import Morel from 'morel';
 import App from '../../../app';
 import log from '../../../helpers/log';
+import Error from '../../../helpers/error';
 import appModel from '../../common/app_model';
 import recordManager from '../../common/record_manager';
 import Sample from '../../common/sample';
@@ -166,6 +167,11 @@ const API = {
    * Creates a new record with an image passed as an argument.
    */
   createNewRecord(image, callback) {
+    if (!image) {
+      const err = new Error('Missing image.');
+      callback(err);
+      return;
+    }
     const occurrence = new Occurrence();
     occurrence.images.set(image);
 

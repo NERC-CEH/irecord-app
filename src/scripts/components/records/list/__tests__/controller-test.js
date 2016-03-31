@@ -13,12 +13,11 @@ describe('Controller', function () {
       recordManager.clear(done);
     });
 
-    after((done) => {
+    afterEach((done) => {
       recordManager.clear(done);
     });
 
-    const RECORDS_COUNT = 10;
-
+    const RECORDS_COUNT = 50;
     it(`should create a new record with a photo (${RECORDS_COUNT})`, (done) => {
       let recordsToAddCount = RECORDS_COUNT;
 
@@ -56,12 +55,34 @@ describe('Controller', function () {
       }
     });
 
-    it('should handle adding large photos', (done) => {
-      done();
+    it('should throw error if no image is provided', (done) => {
+      Controller.createNewRecord(null, (err) => {
+        expect(err).to.not.be.null;
+        done();
+      });
     });
 
-    it('should throw error if no image provided', (done) => {
-      done();
+    it('should accept large images', (done) => {
+      //8MB
+      let largeImageURI = 'data:image/jpeg;base64,';
+      for (let i = 0; i < 1000 * 1000 * 8; i++) {
+        largeImageURI += (Math.random() * 10 ).toFixed(0);
+      }
+
+      const image = new Morel.Image({
+        data: largeImageURI,
+        type: 'image/png',
+      });
+
+      Controller.createNewRecord(image, (err) => {
+        recordManager.storage.size((sizeErr, size) => {
+          if (sizeErr) throw sizeErr.message;
+
+          expect(size).to.be.equal(1);
+          expect()
+          done();
+        });
+      });
     });
   });
 });
