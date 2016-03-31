@@ -18,6 +18,7 @@ module.exports = function exports(config) {
     frameworks: ['mocha', 'chai'],
 
     files: [
+      { pattern: 'test/mocks.js', watched: false },
       { pattern: 'tests.webpack.js', watched: false },
     ],
 

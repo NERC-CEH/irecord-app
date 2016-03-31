@@ -88,8 +88,8 @@ const API = {
 
               const onSuccess = (imageData) => {
                 const fullImageData = `data:image/jpeg;base64,${imageData}`;
-                API.photoUpload(fullImageData, () => {
-
+                API.photoUpload(fullImageData, (err) => {
+                  App.regions.dialog.error(err);
                 });
               };
               const onError = () => {
@@ -139,46 +139,19 @@ const API = {
    * Create new record with a photo
    */
   photoUpload(file, callback) {
-    const occurrence = new Occurrence();
-
     // create and add new record
     const stringified = (err, data, fileType) => {
       Morel.Image.resize(data, fileType, 800, 800, (imgErr, image, imgData) => {
         if (imgErr) {
-          App.regions.dialog.error(imgErr);
+          callback(imgErr);
           return;
         }
-
-        occurrence.images.set(new Morel.Image({
+        const imageModel = new Morel.Image({
           data: imgData,
           type: fileType,
-        }));
-
-        const sample = new Sample(null, {
-          occurrences: [occurrence],
         });
 
-        // append locked attributes
-        appModel.appendAttrLocks(sample);
-
-        recordManager.set(sample, (saveError) => {
-          if (saveError) {
-            callback(saveError);
-            return;
-          }
-          // check if location attr is not locked
-          const locks = appModel.get('attrLocks');
-
-          if (!locks.location) {
-            // no previous location
-            sample.startGPS();
-          } else if (!locks.location.latitude || !locks.location.longitude) {
-            // previously locked location was through GPS
-            // so try again
-            sample.startGPS();
-          }
-          callback();
-        });
+        API.createNewRecord(imageModel, callback);
       });
     };
 
@@ -187,6 +160,40 @@ const API = {
     } else {
       stringified(null, file, 'image/jpg');
     }
+  },
+
+  /**
+   * Creates a new record with an image passed as an argument.
+   */
+  createNewRecord(image, callback) {
+    const occurrence = new Occurrence();
+    occurrence.images.set(image);
+
+    const sample = new Sample(null, {
+      occurrences: [occurrence],
+    });
+
+    // append locked attributes
+    appModel.appendAttrLocks(sample);
+
+    recordManager.set(sample, (saveErr) => {
+      if (saveErr) {
+        callback(saveErr);
+        return;
+      }
+      // check if location attr is not locked
+      const locks = appModel.get('attrLocks');
+
+      if (!locks.location) {
+        // no previous location
+        sample.startGPS();
+      } else if (!locks.location.latitude || !locks.location.longitude) {
+        // previously locked location was through GPS
+        // so try again
+        sample.startGPS();
+      }
+      callback();
+    });
   },
 };
 

@@ -53,6 +53,11 @@ const API = {
   },
 
   stop(id) {
+    // Early return if geolocation not supported.
+    if (!navigator.geolocation) {
+      return;
+    }
+
     navigator.geolocation.clearWatch(id);
   },
 };

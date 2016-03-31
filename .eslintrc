@@ -7,5 +7,12 @@
           allowTernary: true // eg. a ? b() : c()
         }
      ]
+  },
+  "globals": {
+    "before": true,
+    "after": true,
+    "describe": true,
+    "it": true,
+    "expect": true,
   }
 }
