@@ -15,7 +15,7 @@ module.exports = function exports(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
 
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
     files: [
       { pattern: 'test/mocks.js', watched: false },

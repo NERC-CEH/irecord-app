@@ -519,8 +519,6 @@ module.exports = function exports(grunt) {
       // update only
 
       grunt.task.run('replace:cordova_config');
-      // replace dev splashscreen
-      grunt.task.run('replace:development_code');
 
       // update www
       grunt.task.run('exec:cordova_clean_www');

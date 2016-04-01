@@ -85,6 +85,7 @@ App.on('record:saved', () => {
 
 function syncRecords() {
   if (device.isOnline() && appModel.get('autosync')) {
+    log('Records:router: syncing all records');
     recordManager.syncAll();
   }
 }
@@ -92,7 +93,7 @@ function syncRecords() {
 userModel.on('login', syncRecords);
 
 App.on('before:start', () => {
-  log('Initializing records', 'd');
+  log('Records:router: initializing');
 
   App.records.router = new Router();
 

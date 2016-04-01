@@ -4,7 +4,7 @@
 import Marionette from 'marionette';
 import Morel from 'morel';
 import JST from '../../../JST';
-import dateHelpers from '../../../helpers/date';
+import dateHelp from '../../../helpers/date';
 import stringHelp from '../../../helpers/string';
 
 export default Marionette.ItemView.extend({
@@ -47,7 +47,7 @@ export default Marionette.ItemView.extend({
       commonName,
       location: locationPrint,
       location_name: location.name,
-      date: dateHelpers.print(recordModel.get('date')),
+      date: dateHelp.print(recordModel.get('date')),
       number: occ.get('number') && stringHelp.limit(occ.get('number')),
       stage: occ.get('stage') && stringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),

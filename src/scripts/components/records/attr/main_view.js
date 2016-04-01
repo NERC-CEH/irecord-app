@@ -4,7 +4,8 @@
 import $ from 'jquery';
 import Marionette from 'marionette';
 import device from '../../../helpers/device';
-import dateHelpers from '../../../helpers/date';
+import dateHelp from '../../../helpers/date';
+import stringHelp from '../../../helpers/string';
 import log from '../../../helpers/log';
 import JST from '../../../JST';
 
@@ -68,8 +69,8 @@ export default Marionette.ItemView.extend({
 
     switch (this.options.attr) {
       case 'date':
-        templateData.date = dateHelpers.toDateInputValue(this.model.get('date'));
-        templateData.maxDate = dateHelpers.toDateInputValue(new Date());
+        templateData.date = dateHelp.toDateInputValue(this.model.get('date'));
+        templateData.maxDate = dateHelp.toDateInputValue(new Date());
         break;
       case 'number':
         templateData[occ.get('number')] = true;
@@ -103,7 +104,7 @@ export default Marionette.ItemView.extend({
           };
 
           window.datePicker.show(options, function (date) {
-            $input.val(dateHelpers.toDateInputValue(new Date(date)));
+            $input.val(dateHelp.toDateInputValue(new Date(date)));
           });
         }
         break;

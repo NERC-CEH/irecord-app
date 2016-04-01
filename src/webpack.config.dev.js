@@ -4,6 +4,7 @@ module.exports = {
   context: './src/scripts',
   entry: {
     app: './main.js',
+    testing: '../../test/manual-testing.js',
   },
   output: {
     path: 'dist',

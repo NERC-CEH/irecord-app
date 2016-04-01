@@ -1,6 +1,6 @@
 export default {
   limit(string, charNum = 20) {
-    const value = string;
+    const value = string.toString();
     const ellipsis = value && value.length > charNum ? '...' : '';
     return value ? value.substring(0, charNum) + ellipsis : '';
   },
@@ -8,7 +8,7 @@ export default {
 // http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
   escape(string) {
     const div = document.createElement('div');
-    div.appendChild(document.createTextNode(string));
+    div.appendChild(document.createTextNode(string.toString()));
     return div.innerHTML;
   },
 };

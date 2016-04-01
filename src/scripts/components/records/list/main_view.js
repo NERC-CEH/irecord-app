@@ -5,8 +5,9 @@ import $ from 'jquery';
 import Marionette from 'marionette';
 import Morel from 'morel';
 import Hammer from '../../../../vendor/hammerjs/js/hammer';
+import log from '../../../helpers/log';
 import device from '../../../helpers/device';
-import dateHelpers from '../../../helpers/date';
+import dateHelp from '../../../helpers/date';
 import stringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 
@@ -37,6 +38,9 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   onRender() {
+    log('Records:MainView: rendering a record');
+
+    // add mobile swipe events
     // early return
     if (!device.isMobile()) return;
 
@@ -80,7 +84,7 @@ const RecordView = Marionette.ItemView.extend({
   serializeData() {
     const recordModel = this.model;
     const occ = recordModel.occurrences.at(0);
-    const date = dateHelpers.print(recordModel.get('date'));
+    const date = dateHelp.print(recordModel.get('date'));
     const specie = occ.get('taxon') || {};
     const images = occ.images;
     const img = images.length && images.at(0).get('data');

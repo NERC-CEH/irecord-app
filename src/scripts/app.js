@@ -71,7 +71,8 @@ App.on('start', function () {
     if (window.cordova) {
       // Although StatusB  ar in the global scope, it is not available until after the deviceready event.
       document.addEventListener('deviceready', () => {
-        log('Showing the app.', 'd');
+        log('Showing the app.');
+
         window.StatusBar.overlaysWebView(true);
         window.StatusBar.backgroundColorByName('black');
 
@@ -79,6 +80,9 @@ App.on('start', function () {
         if (device.isIOS()) {
           $('body').addClass('ios');
         }
+
+        // development loader
+        $('#loader').remove();
 
         // hide loader
         if (navigator && navigator.splashscreen) {
