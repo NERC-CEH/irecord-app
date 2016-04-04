@@ -90,8 +90,10 @@ App.on('start', function () {
         }
       }, false);
     } else {
-      // development loader
-      $('#loader').remove();
+      $(document).ready(() => {
+        // development loader
+        $('#loader').remove();
+      });
     }
   }
 });
