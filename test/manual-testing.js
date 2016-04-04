@@ -31,25 +31,29 @@ testing.resetRecordsStatus = function () {
 /**
  * Add a Dummy Record.
  */
-testing.addDummyRecord = function (count = 0) {
-  // create random image
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  const imgData = ctx.createImageData(1000, 1000); //px
+testing.addDummyRecord = function (count = 0, imageData) {
+  if (!imageData) {
+    // create random image
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const imgData = ctx.createImageData(1000, 1000); //px
 
-  for (let i = 0; i < imgData.data.length; i += 4) {
-    imgData.data[i+0] = (Math.random() * 100).toFixed(0);
-    imgData.data[i+1] = (Math.random() * 100).toFixed(0);
-    imgData.data[i+2] = (Math.random() * 100).toFixed(0);
-    imgData.data[i+3] = 105;
+    for (let i = 0; i < imgData.data.length; i += 4) {
+      imgData.data[i] = (Math.random() * 100).toFixed(0);
+      imgData.data[i + 1] = (Math.random() * 100).toFixed(0);
+      imgData.data[i + 2] = (Math.random() * 100).toFixed(0);
+      imgData.data[i + 3] = 105;
+    }
+    ctx.putImageData(imgData, 0, 0);
+    imageData = canvas.toDataURL('jpeg');
   }
-  ctx.putImageData(imgData, 10, 10);
-  let data = canvas.toDataURL('jpeg');
 
   const image = new Morel.Image({
-    data,
+    data: imageData,
     type: 'image/png',
   });
+
+  const testID = 'test ' + (Math.random() * 1000).toFixed(0);
 
   // create occurrence
   const occurrence = new Occurrence({
@@ -63,12 +67,23 @@ testing.addDummyRecord = function (count = 0) {
       synonym: "Fyfield Pea",
       warehouse_id: 113813,
     },
-    comment: (Math.random() * 1000).toFixed(0),
+    comment: testID,
   });
   occurrence.images.set(image);
 
   // create sample
-  const sample = new Sample(null, {
+  const sample = new Sample({
+    date: new Date(),
+    location_type: 'latlon',
+    location: {
+      accuracy: 1,
+      gridref: "SD75",
+      latitude: 54.0310862,
+      longitude: -2.3106393,
+      name: testID,
+      source: "map",
+    },
+  }, {
     occurrences: [occurrence],
   });
 
@@ -83,7 +98,7 @@ testing.addDummyRecord = function (count = 0) {
 
     if (--count) {
       console.log(`Adding: ${count}`);
-      testing.addDummyRecord(count);
+      testing.addDummyRecord(count, imageData);
     } else {
       console.log('Finished Adding');
     }
