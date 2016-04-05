@@ -91,7 +91,9 @@ App.on('start', function () {
       }, false);
     } else {
       // development loader
-      $('#loader').remove();
+      $(document).ready(() => {
+        $('#loader').remove();
+      });
     }
   }
 });

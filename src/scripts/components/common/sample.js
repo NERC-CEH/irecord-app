@@ -1,14 +1,23 @@
+/** ****************************************************************************
+ * Morel Sample.
+ *****************************************************************************/
 import $ from 'jquery';
 import Morel from 'morel';
 import GPS from '../../helpers/gps';
 import LocHelp from '../../helpers/location';
 import CONFIG from 'config'; // Replaced with alias
+import recordManager from './record_manager';
 import Occurrence from './occurrence';
 import appModel from './app_model';
 
 $.extend(true, Morel.Sample.keys, CONFIG.morel.sample);
 
 export default Morel.Sample.extend({
+  constructor() {
+    this.manager = recordManager;
+    Morel.Sample.prototype.constructor.apply(this, arguments);
+  },
+
   Occurrence,
 
   validate() {
@@ -74,7 +83,14 @@ export default Morel.Sample.extend({
     }
 
     // save record
-    this.save(callback);
+    this.save(null, {
+      success: () => {
+        callback();
+      },
+      error: (err) => {
+        callback(err);
+      },
+    });
   },
 });
 

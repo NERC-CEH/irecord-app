@@ -109,41 +109,43 @@ const API = {
       const locationIsLocked = appModel.isAttrLocked('location', currentVal);
 
       function onPageExit() {
-        recordModel.save(() => {
-          const attr = 'location';
-          let location = recordModel.get('location') || {};
-          const lockedValue = appModel.getAttrLock('location');
+        recordModel.save(null, {
+          success: () => {
+            const attr = 'location';
+            let location = recordModel.get('location') || {};
+            const lockedValue = appModel.getAttrLock('location');
 
-          if ((location.latitude && location.longitude) || location.name) {
-            // we can lock loaction and name on their own
-            // don't lock GPS though, because it varies more than a map or gridref
+            if ((location.latitude && location.longitude) || location.name) {
+              // we can lock loaction and name on their own
+              // don't lock GPS though, because it varies more than a map or gridref
 
-            // save to past locations
-            const locationID = appModel.setLocation(recordModel.get('location'));
-            location.id = locationID;
-            recordModel.set('location', location);
+              // save to past locations
+              const locationID = appModel.setLocation(recordModel.get('location'));
+              location.id = locationID;
+              recordModel.set('location', location);
 
-            // update locked value if attr is locked
-            if (lockedValue) {
-              // check if previously the value was locked and we are updating
-              if (locationIsLocked || lockedValue === true) {
-                log('Updating lock', 'd');
+              // update locked value if attr is locked
+              if (lockedValue) {
+                // check if previously the value was locked and we are updating
+                if (locationIsLocked || lockedValue === true) {
+                  log('Updating lock', 'd');
 
-                if (location.source === 'gps') {
-                  // on GPS don't lock other than name
-                  location = {
-                    name: location.name,
-                  };
+                  if (location.source === 'gps') {
+                    // on GPS don't lock other than name
+                    location = {
+                      name: location.name,
+                    };
+                  }
+                  appModel.setAttrLock(attr, location);
                 }
-                appModel.setAttrLock(attr, location);
               }
+            } else if (lockedValue === true) {
+              // reset if no location or location name selected but locked is clicked
+              appModel.setAttrLock(attr, null);
             }
-          } else if (lockedValue === true) {
-            // reset if no location or location name selected but locked is clicked
-            appModel.setAttrLock(attr, null);
-          }
 
-          window.history.back();
+            window.history.back();
+          },
         });
       }
 

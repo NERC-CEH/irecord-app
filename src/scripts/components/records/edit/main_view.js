@@ -12,7 +12,7 @@ export default Marionette.ItemView.extend({
 
   initialize() {
     const recordModel = this.model.get('recordModel');
-    this.listenTo(recordModel, 'sync:request sync:done sync:error', this.render);
+    this.listenTo(recordModel, 'request sync error', this.render);
   },
 
   serializeData() {

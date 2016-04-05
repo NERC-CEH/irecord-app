@@ -138,13 +138,13 @@ const API = {
         }
 
         recordModel.occurrences.at(0).set('taxon', taxon);
-        recordModel.save((saveError, sample) => {
-          if (saveError) {
+        recordModel.save(null, {
+          success: (saveError, sample) => {
+            callback(null, sample);
+          },
+          error: (saveError) => {
             callback(saveError);
-            return;
-          }
-
-          callback(null, sample);
+          },
         });
       });
     }
