@@ -31,7 +31,7 @@ testing.resetRecordsStatus = function () {
 /**
  * Add a Dummy Record.
  */
-testing.addDummyRecord = function (count = 0, imageData) {
+testing.addDummyRecord = function (count = 0, imageData, testID) {
   if (!imageData) {
     // create random image
     const canvas = document.createElement("canvas");
@@ -48,12 +48,16 @@ testing.addDummyRecord = function (count = 0, imageData) {
     imageData = canvas.toDataURL('jpeg');
   }
 
+  if (!testID) {
+    testID = (Math.random() * 10).toFixed(0);
+  }
+
   const image = new Morel.Image({
     data: imageData,
     type: 'image/png',
   });
 
-  const testID = 'test ' + (Math.random() * 1000).toFixed(0);
+  const sampleTestID = `test ${testID} - ${count}`;
 
   // create occurrence
   const occurrence = new Occurrence({
@@ -67,7 +71,7 @@ testing.addDummyRecord = function (count = 0, imageData) {
       synonym: "Fyfield Pea",
       warehouse_id: 113813,
     },
-    comment: testID,
+    comment: sampleTestID,
   });
   occurrence.images.set(image);
 
@@ -80,7 +84,7 @@ testing.addDummyRecord = function (count = 0, imageData) {
       gridref: "SD75",
       latitude: 54.0310862,
       longitude: -2.3106393,
-      name: testID,
+      name: sampleTestID,
       source: "map",
     },
   }, {
@@ -98,7 +102,7 @@ testing.addDummyRecord = function (count = 0, imageData) {
 
     if (--count) {
       console.log(`Adding: ${count}`);
-      testing.addDummyRecord(count, imageData);
+      testing.addDummyRecord(count, imageData, testID);
     } else {
       console.log('Finished Adding');
     }
