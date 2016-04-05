@@ -9,7 +9,7 @@ describe('Record Manager', () => {
   });
 
   it('should be a Morel Manager', () => {
-    expect(recordManager).to.be.instanceOf(Morel.Manager);
+    expect(recordManager).to.be.instanceOf(Morel);
   });
 
   const RECORD_COUNT = 1;

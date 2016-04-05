@@ -11,7 +11,7 @@ export default Marionette.ItemView.extend({
   template: JST['records/show/main'],
 
   initialize() {
-    this.listenTo(this.model.get('recordModel'), 'sync:request sync:done sync:error', this.render);
+    this.listenTo(this.model.get('recordModel'), 'request sync error', this.render);
   },
 
   triggers: {

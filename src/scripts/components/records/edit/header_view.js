@@ -18,7 +18,7 @@ export default Marionette.ItemView.extend({
   },
 
   modelEvents: {
-    'sync:request sync:done sync:error': 'render',
+    'request sync error': 'render',
   },
 
   navigateBack() {

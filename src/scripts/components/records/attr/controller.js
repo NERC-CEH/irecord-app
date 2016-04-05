@@ -45,7 +45,7 @@ let API = {
         }
       });
 
-      let onExit = function () {
+      let onExit = () => {
         let values = mainView.getValues();
         API.save(attr, values, recordModel);
       };
@@ -112,23 +112,25 @@ let API = {
     }
 
     // save it
-    recordModel.save(function () {
-      // update locked value if attr is locked
-      let lockedValue = appModel.getAttrLock(attr);
-      if (lockedValue) {
-        if (values[attr] === 'default') {
-          appModel.setAttrLock(attr, null);
-        } else if (attr === 'date' &&
-          dateHelp.print(values[attr]) === dateHelp.print(new Date())) {
-          appModel.setAttrLock(attr, null);
-        } else if (lockedValue === true || lockedValue == currentVal) {
-          appModel.setAttrLock(attr, values[attr]);
+    recordModel.save(null, {
+      success: () => {
+        // update locked value if attr is locked
+        let lockedValue = appModel.getAttrLock(attr);
+        if (lockedValue) {
+          if (values[attr] === 'default') {
+            appModel.setAttrLock(attr, null);
+          } else if (attr === 'date' &&
+            dateHelp.print(values[attr]) === dateHelp.print(new Date())) {
+            appModel.setAttrLock(attr, null);
+          } else if (lockedValue === true || lockedValue == currentVal) {
+            appModel.setAttrLock(attr, values[attr]);
+          }
         }
-      }
 
-      window.history.back();
+        window.history.back();
+      },
     });
-  }
+  },
 };
 
 export { API as default };

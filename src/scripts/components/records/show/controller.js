@@ -50,11 +50,14 @@ const API = {
         return;
       }
 
-      recordManager.sync(recordModel, (err) => {
-        if (err) {
+      recordModel.save(null, {
+        remote: true,
+        success: () => {
+
+        },
+        error: (err) => {
           App.regions.dialog.error(err);
-          return;
-        }
+        },
       });
     } else {
       App.regions.dialog.error({

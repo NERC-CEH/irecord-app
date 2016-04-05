@@ -46,10 +46,10 @@ const API = {
           return;
         }
       }
-      recordModel.on('sync:request sync:done sync:error', checkIfSynced);
+      recordModel.on('request sync error', checkIfSynced);
       mainView.on('destroy', () => {
         // unbind when page destroyed
-        recordModel.off('sync:request sync:done sync:error', checkIfSynced);
+        recordModel.off('request sync error', checkIfSynced);
       });
 
 

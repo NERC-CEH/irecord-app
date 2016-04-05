@@ -38,7 +38,7 @@ const morelConfiguration = $.extend(CONFIG.morel.manager, {
   },
 });
 
-_.extend(Morel.Manager.prototype, {
+_.extend(Morel.prototype, {
   removeAllSynced(callback) {
     this.getAll((err, records) => {
       let toRemove = 0;
@@ -96,5 +96,5 @@ _.extend(Morel.Manager.prototype, {
   },
 });
 
-const recordManager = new Morel.Manager(morelConfiguration);
+const recordManager = new Morel(morelConfiguration);
 export { recordManager as default };
