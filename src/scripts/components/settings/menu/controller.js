@@ -12,6 +12,8 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
+    log('Settings:Menu:Controller: showing');
+
     const templateData = new Backbone.Model({
       useGridRef: appModel.get('useGridRef'),
       autosync: appModel.get('autosync'),
@@ -21,6 +23,8 @@ const API = {
       model: templateData,
     });
     mainView.on('setting:toggled', (setting, on) => {
+      log('Settings:Menu:Controller: setting toggled');
+
       appModel.set(setting, on);
       appModel.save();
     });
@@ -82,6 +86,8 @@ const API = {
           title: 'Delete',
           class: 'btn-negative',
           onClick() {
+            log('Settings:Menu:Controller: deleting all records');
+
             // delete all
             recordManager.removeAllSynced(() => {
               App.regions.dialog.show({
@@ -110,6 +116,8 @@ const API = {
           title: 'OK',
           class: 'btn-positive',
           onClick() {
+            log('Settings:Menu:Controller: sending all records');
+
             // delete all
             recordManager.setAllToSend(() => {
               App.regions.dialog.show({
@@ -124,7 +132,8 @@ const API = {
   },
 
   resetApp(callback) {
-    log('Resetting the application!', 'w');
+    log('Settings:Menu:Controller: resetting the application!', 'w');
+
     appModel.clear().set(appModel.defaults);
     appModel.save();
 

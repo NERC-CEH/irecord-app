@@ -4,6 +4,7 @@
 import Backbone from 'backbone';
 import Morel from 'morel';
 import dateHelp from '../../../helpers/date';
+import log from '../../../helpers/log';
 import App from '../../../app';
 import appModel from '../../common/app_model';
 import recordManager from '../../common/record_manager';
@@ -13,9 +14,15 @@ import LockView from '../../common/attr_lock_view';
 
 let API = {
   show: function (recordID, attr) {
+    log('Records:Attr:Controller: showing');
     recordManager.get(recordID, function (err, recordModel) {
+      if (err) {
+        log(err, 'e');
+      }
+
       // Not found
       if (!recordModel) {
+        log('No record model found.', 'e');
         App.trigger('404:show', { replace: true });
         return;
       }
@@ -39,6 +46,7 @@ let API = {
         model: new Backbone.Model({ appModel:appModel, recordModel:recordModel }),
         attr: attr,
         onLockClick: function () {
+          log('Records:Attr:Controller: lock clicked');
           // invert the lock of the attribute
           // real value will be put on exit
           appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
@@ -46,6 +54,7 @@ let API = {
       });
 
       let onExit = () => {
+        log('Records:Edit:Controller: exiting');
         let values = mainView.getValues();
         API.save(attr, values, recordModel);
       };

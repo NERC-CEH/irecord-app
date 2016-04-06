@@ -4,6 +4,7 @@
 import Backbone from 'backbone';
 import Morel from 'morel';
 import App from '../../../../app';
+import log from '../../../../helpers/log';
 import appModel from '../../app_model';
 import recordManager from '../../record_manager';
 import Sample from '../../sample';
@@ -73,6 +74,7 @@ const API = {
     mainView.on('taxon:selected', (taxon, edit) => {
       API.updateTaxon(sampleID, taxon, (err, sample) => {
         if (err) {
+          log(err, 'e');
           App.regions.dialog.error(err);
           return;
         }

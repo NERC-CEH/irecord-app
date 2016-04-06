@@ -3,6 +3,7 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import App from '../../app';
+import log from '../../helpers/log';
 import CommonController from '../common/controller';
 import MenuController from './menu/controller';
 import LocationsController from './locations/controller';
@@ -29,7 +30,7 @@ App.on('settings:locations', () => {
   LocationsController.show();
 });
 
-
 App.on('before:start', () => {
+  log('Settings:router: initializing');
   App.settings.router = new Router();
 });

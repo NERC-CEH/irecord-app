@@ -4,6 +4,7 @@
 import Backbone from 'backbone';
 import App from '../../../app';
 import device from '../../../helpers/device';
+import log from '../../../helpers/log';
 import appModel from '../../common/app_model';
 import userModel from '../../common/user_model';
 import recordManager from '../../common/record_manager';
@@ -12,9 +13,15 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show(id) {
+    log('Records:Show:Controller: showing');
     recordManager.get(id, (err, recordModel) => {
+      if (err) {
+        log(err, 'e');
+      }
+
       // Not found
       if (!recordModel) {
+        log('No record model found', 'e');
         App.trigger('404:show', { replace: true });
         return;
       }
@@ -22,10 +29,6 @@ const API = {
       // MAIN
       const mainView = new MainView({
         model: new Backbone.Model({ recordModel, appModel }),
-      });
-
-      mainView.on('sync:init', () => {
-        API.syncRecord(recordModel);
       });
 
       App.regions.main.show(mainView);
@@ -52,10 +55,9 @@ const API = {
 
       recordModel.save(null, {
         remote: true,
-        success: () => {
-
-        },
+        success: () => {},
         error: (err) => {
+          log(err, 'e');
           App.regions.dialog.error(err);
         },
       });

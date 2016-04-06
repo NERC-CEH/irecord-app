@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import Error from './error';
+import log from './log';
 
 const API = {
   GPS_ACCURACY_LIMIT: 100, // meters
@@ -15,6 +16,7 @@ const API = {
     // Early return if geolocation not supported.
     if (!navigator.geolocation) {
       const error = new Error('Geolocation is not supported.');
+      log(error, 'e');
       callback && callback(error);
       return;
     }

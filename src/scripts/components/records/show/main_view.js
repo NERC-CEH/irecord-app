@@ -10,14 +10,6 @@ import stringHelp from '../../../helpers/string';
 export default Marionette.ItemView.extend({
   template: JST['records/show/main'],
 
-  initialize() {
-    this.listenTo(this.model.get('recordModel'), 'request sync error', this.render);
-  },
-
-  triggers: {
-    'click #sync-btn': 'sync:init',
-  },
-
   serializeData() {
     const recordModel = this.model.get('recordModel');
     const occ = recordModel.occurrences.at(0);

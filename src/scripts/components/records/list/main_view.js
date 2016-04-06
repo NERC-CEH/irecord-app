@@ -38,7 +38,7 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   onRender() {
-    log('Records:MainView: rendering a record');
+    log('Records:List:MainView: rendering a record');
 
     // add mobile swipe events
     // early return
@@ -69,6 +69,7 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   remove() {
+    log('Records:MainView: removing a record');
     // removing the last element leaves emptyView + fading out entry for a moment
     if (this.model.collection.length >= 1) {
       const that = this;

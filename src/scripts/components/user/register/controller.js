@@ -14,6 +14,7 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
+    log('User:Register:Controller: showing');
     // MAIN
     const mainView = new MainView();
     App.regions.main.show(mainView);
@@ -43,6 +44,7 @@ const API = {
 
         API.register(data, (err) => {
           if (err) {
+            log(err, 'e');
             switch (err.xhr.status) {
               case 401:
                 // unauthorised
@@ -105,7 +107,7 @@ const API = {
    * appname and appsecret for the mentioned module.
    */
   register(data, callback) {
-    log('views.login: start.', 'd');
+    log('User:Register:Controller: registering');
 
     const formData = new FormData();
 
@@ -158,7 +160,7 @@ const API = {
         surname: lines[2],
       };
     }
-    log('login:extractdetails: problems with received secret.', 'w');
+    log('User:Register:Controller: problems with received secret.', 'e');
     return null;
   },
 };

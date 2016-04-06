@@ -23,6 +23,7 @@ log(brcArt, 'i'); // saying hello :)
 const App = new Marionette.Application();
 
 App.navigate = function (route, options = {}) {
+  log('App: navigating to ' + route);
   let defaultOptions = { trigger: true };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
@@ -32,6 +33,7 @@ App.getCurrentRoute = function () {
 };
 
 App.on('before:start', function () {
+  log('App: initializing main regions');
   var RegionContainer = Marionette.LayoutView.extend({
     el: '#app',
 
@@ -47,6 +49,8 @@ App.on('before:start', function () {
 });
 
 App.on('start', function () {
+  log('App: starting');
+
   // Init for the first time
   // set up DB
   // when done - carry on with showing pages
@@ -69,6 +73,8 @@ App.on('start', function () {
     });
 
     if (window.cordova) {
+      log('App: cordova setup');
+
       // Although StatusB  ar in the global scope, it is not available until after the deviceready event.
       document.addEventListener('deviceready', () => {
         log('Showing the app.');

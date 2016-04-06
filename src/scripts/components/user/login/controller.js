@@ -13,6 +13,7 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
+    log('User:Register:Controller: showing');
     // don't show if logged in
     if (userModel.hasLogIn()) {
       window.history.back();
@@ -46,6 +47,8 @@ const API = {
 
         API.login(data, (err) => {
           if (err) {
+            log(err, 'e');
+
             switch (err.xhr.status) {
               case 401:
                 // unauthorised
@@ -87,7 +90,7 @@ const API = {
    * appname and appsecret for the mentioned module.
    */
   login(data, callback) {
-    log('views.login: start.', 'd');
+    log('User:Login:Controller: logging in');
     const person = {
       // user logins
       email: data.email,

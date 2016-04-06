@@ -17,7 +17,7 @@ describe('Controller', function () {
       recordManager.clear(done);
     });
 
-    const RECORDS_COUNT = 50;
+    const RECORDS_COUNT = 10;
     it(`should create a new record with a photo (${RECORDS_COUNT})`, (done) => {
       let recordsToAddCount = RECORDS_COUNT;
 

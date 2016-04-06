@@ -3,6 +3,7 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import App from '../../app';
+import log from '../../helpers/log';
 import LoginController from './login/controller';
 import RegisterController from './register/controller';
 
@@ -27,5 +28,6 @@ App.on('user:register', (options) => {
 });
 
 App.on('before:start', () => {
+  log('User:router: initializing');
   App.user.router = new Router();
 });

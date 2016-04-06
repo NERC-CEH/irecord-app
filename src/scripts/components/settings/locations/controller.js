@@ -5,6 +5,7 @@ import Backbone from 'backbone';
 import Marionette from 'marionette';
 import App from '../../../app';
 import device from '../../../helpers/device';
+import log from '../../../helpers/log';
 import stringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 import appModel from '../../common/app_model';
@@ -13,6 +14,8 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
+    log('Settings:Locations:Controller: showing');
+
     // MAIN
     const mainView = new MainView({
       model: appModel,
@@ -36,11 +39,15 @@ const API = {
   },
 
   deleteLocation(model) {
+    log('Settings:Locations:Controller: deleting location');
+
     const location = model;
     appModel.removeLocation(location);
   },
 
   editLocation(model) {
+    log('Settings:Locations:Controller: editing location');
+
     const location = model;
     const EditView = Marionette.ItemView.extend({
       template: JST['common/past_location_edit'],

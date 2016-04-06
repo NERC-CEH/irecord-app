@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import App from '../../../app';
+import log from '../../../helpers/log';
 import userModel from '../../common/user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/header_view';
@@ -20,6 +21,7 @@ const API = {
   },
 
   logout() {
+    log('Info:Menu:Controller: logging out');
     userModel.logOut();
   },
 };

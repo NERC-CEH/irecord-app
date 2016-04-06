@@ -94,7 +94,6 @@ userModel.on('login', syncRecords);
 
 App.on('before:start', () => {
   log('Records:router: initializing');
-
   App.records.router = new Router();
 
   if (userModel.hasLogIn()) {

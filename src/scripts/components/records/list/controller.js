@@ -15,7 +15,9 @@ import HeaderView from './header_view';
 const API = {
   show() {
     recordManager.getAll((getError, recordsCollection) => {
+      log('Records:List:Controller: showing');
       if (getError) {
+        log(getError, 'e');
         App.regions.dialog.error(getError);
         return;
       }
@@ -31,6 +33,8 @@ const API = {
       });
 
       mainView.on('childview:record:delete', (childView) => {
+        log('Records:List:Controller: deleting record');
+
         const recordModel = childView.model;
         const syncStatus = recordModel.getSyncStatus();
         let body = 'This record hasn\'t been saved to iRecord yet, ' +
@@ -68,6 +72,8 @@ const API = {
     const headerView = new HeaderView();
 
     headerView.on('photo:upload', (e) => {
+      log('Records:List:Controller: photo upload');
+
       // show loader
       API.photoUpload(e.target.files[0], () => {
         // hide loader
@@ -76,6 +82,8 @@ const API = {
 
     // android gallery/camera selection
     headerView.on('photo:selection', () => {
+      log('Records:List:Controller: photo select');
+
       App.regions.dialog.show({
         title: 'Choose a method to upload a photo',
         buttons: [
@@ -113,6 +121,7 @@ const API = {
                 const fullImageData = `data:image/jpeg;base64,${imageData}`;
                 API.photoUpload(fullImageData, (err) => {
                   if (err) {
+                    log(err, 'e');
                     App.regions.dialog.error(err);
                     return;
                   }

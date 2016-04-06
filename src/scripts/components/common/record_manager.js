@@ -2,6 +2,7 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Morel from 'morel';
 import device from '../../helpers/device';
+import log from '../../helpers/log';
 import CONFIG from 'config'; // Replaced with alias
 import Sample from './sample';
 import userModel from './user_model';
@@ -41,12 +42,14 @@ const morelConfiguration = $.extend(CONFIG.morel.manager, {
 _.extend(Morel.prototype, {
   removeAllSynced(callback) {
     this.getAll((err, records) => {
-      let toRemove = 0;
-      let noneUsed = true;
       if (err) {
+        log(err, 'e');
         callback && callback(err);
         return;
       }
+
+      let toRemove = 0;
+      let noneUsed = true;
 
       records.each((record) => {
         if (record.getSyncStatus() === Morel.SYNCED) {
@@ -74,6 +77,7 @@ _.extend(Morel.prototype, {
 
     this.getAll((err, records) => {
       if (err) {
+        log(err, 'e');
         callback && callback(err);
         return;
       }
