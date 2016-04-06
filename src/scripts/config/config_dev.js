@@ -13,12 +13,12 @@ export default {
   // logging
   log: {
     states: ['e', 'w', 'i', 'd'], // see log helper
-    ga_error: true
+    ga_error: false,
   },
 
   // google analytics
   ga: {
-    status: true,
+    status: false,
     ID: 'UA-58378803-4'
   },
 

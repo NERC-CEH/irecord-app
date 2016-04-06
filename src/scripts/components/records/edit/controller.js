@@ -63,9 +63,16 @@ const API = {
           if (setError) {
             const invalids = setError;
             let missing = '';
-            _.each(invalids, (invalid) => {
-              missing += '<b>' + invalid.name + '</b> - ' + invalid.message + '</br>';
-            });
+            if (invalids.occurrences) {
+              _.each(invalids.occurrences, (message, invalid) => {
+                missing += '<b>' + invalid + '</b> - ' + message + '</br>';
+              });
+            }
+            if (invalids.sample) {
+              _.each(invalids.sample, (message, invalid) => {
+                missing += '<b>' + invalid + '</b> - ' + message + '</br>';
+              });
+            }
 
             App.regions.dialog.show({
               title: 'Sorry',

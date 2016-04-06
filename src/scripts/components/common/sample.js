@@ -20,8 +20,11 @@ export default Morel.Sample.extend({
 
   Occurrence,
 
-  validate() {
-    const invalids = [];
+  validate(attributes) {
+    const attrs = _.extend({}, this.attributes, attributes);
+
+    const sample = {};
+    const occurrences = {};
 
     // todo: remove this bit once sample DB update is possible
     // check if saved
@@ -30,42 +33,52 @@ export default Morel.Sample.extend({
     }
 
     // location
-    const location = this.get('location') || {};
+    const location = attrs.location || {};
     if (!location.latitude || !location.longitude) {
-      invalids.push({
-        sample: true,
-        name: 'location',
-        message: 'missing',
-      });
+      sample.location = 'missing';
     }
-
     // location name
     if (!location.name) {
-      invalids.push({
-        sample: true,
-        name: 'location name',
-        message: 'missing',
-      });
+      sample['location name'] = 'missing';
     }
 
     // date
-    let date = this.get('date');
-    date = new Date(date);
-    if (date === 'Invalid Date' || date > new Date()) {
-      const message = (new Date(date) > new Date) ? 'future date' : 'missing';
-      invalids.push({
-        sample: true,
-        name: 'date',
-        message,
+    if (!attrs.date) {
+      sample.date = 'missing';
+    } else {
+      const date = new Date(attrs.date);
+      if (date === 'Invalid Date' || date > new Date()) {
+        sample.date = (new Date(date) > new Date) ? 'future date' : 'invalid';
+      }
+    }
+
+    // location type
+    if (!attrs.location_type) {
+      sample.location_type = 'can\'t be blank';
+    }
+
+    // occurrences
+    if (this.occurrences.length === 0) {
+      sample.occurrences = 'no occurrences';
+    } else {
+      this.occurrences.each((occurrence) => {
+        const errors = occurrence.validate();
+        if (errors) {
+          const occurrenceID = occurrence.id || occurrence.cid;
+          occurrences[occurrenceID] = errors;
+        }
       });
     }
 
-    this.occurrences.each((occurrence) => {
-      const occInvalids = occurrence.validate();
-      invalids.concat(occInvalids);
-    });
+    if (! _.isEmpty(sample) || ! _.isEmpty(occurrences)) {
+      const errors = {
+        sample,
+        occurrences,
+      };
+      return errors;
+    }
 
-    return invalids.length ? invalids : null;
+    return null;
   },
 
   /**
