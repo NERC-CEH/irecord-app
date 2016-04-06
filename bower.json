@@ -4,7 +4,7 @@
   "dependencies": {
     "jquery": "2.2.1",
     "ratchet": "twbs/ratchet#2.0.2",
-    "requirejs": "2.1.16",
+    "scriptjs": "2.5.8",
     "backbone": "1.1.2",
     "lodash": "3.6.0",
     "marionette": "2.4.3",
@@ -29,8 +29,8 @@
         "dist/fonts/ratchicons.woff"
       ]
     },
-    "requirejs": {
-      "js": "require.js"
+    "scriptjs": {
+      "js": "dist/script.min.js"
     },
     "backbone": {
       "js": "backbone.js"

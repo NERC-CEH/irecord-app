@@ -48,19 +48,17 @@ function error(errorMessage) {
   if ((CONFIG.ga && CONFIG.ga.status) &&
     (CONFIG.log && CONFIG.log.ga_error)) {
 
-    // require(['ga'], function (ga) {
-    //  //check if the error did not occur before the analytics is loaded
-    //  if (ga) {
-    //    ga('send', 'exception', {
-    //      'exDescription':
-    //      err.message + ' ' +
-    //      err.url + ' ' +
-    //      err.line + ' ' +
-    //      err.column + ' ' +
-    //      err.obj
-    //    });
-    //  }
-    // });
+    // check if the error did not occur before the analytics is loaded
+    if (window.ga) {
+      ga('send', 'exception', {
+        'exDescription':
+        err.message + ' ' +
+        err.url + ' ' +
+        err.line + ' ' +
+        err.column + ' ' +
+        err.obj
+      });
+    }
   }
 }
 
@@ -94,24 +92,23 @@ function log(message, type = DEBUG) {
   }
 }
 
-//
-// //Hook into window.error function
-// window.onerror = function (message, url, line, column, obj) {
-//  "use strict";
-//  window.onerror = null;
-//
-//  var err = {
-//    'message': message,
-//    'url': url || '',
-//    'line': line || -1,
-//    'column': column || -1,
-//    'obj': obj || ''
-//  };
-//
-//  error(err);
-//
-//  window.onerror = this; // turn on error handling again
-//  return true; // suppress normal error reporting
-// };
+//Hook into window.error function
+window.onerror = (message, url, line, column, obj) => {
+  const onerror = window.onerror;
+  window.onerror = null;
+
+  const err = {
+    'message': message,
+    'url': url || '',
+    'line': line || -1,
+    'column': column || -1,
+    'obj': obj || ''
+  };
+
+  error(err);
+
+  window.onerror = onerror; // turn on error handling again
+  return true; // suppress normal error reporting
+};
 
 export { log as default };

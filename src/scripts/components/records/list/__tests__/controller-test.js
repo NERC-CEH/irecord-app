@@ -62,35 +62,5 @@ describe('Controller', function () {
       });
     });
 
-    it('should accept large images', (done) => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      const imgData = ctx.createImageData(4500, 4500); //px
-
-      console.log(imgData.data.length);
-      for (let i = 0; i < imgData.data.length; i += 4) {
-        imgData.data[i+0] = (Math.random() * 100).toFixed(0);
-        imgData.data[i+1] = (Math.random() * 100).toFixed(0);
-        imgData.data[i+2] = (Math.random() * 100).toFixed(0);
-        imgData.data[i+3] = 105;
-      }
-      ctx.putImageData(imgData, 10, 10);
-      let largeImageURI = canvas.toDataURL('jpeg')
-
-      const image = new Morel.Image({
-        data: largeImageURI,
-        type: 'image/png',
-      });
-
-      Controller.createNewRecord(image, (err) => {
-        recordManager.storage.size((sizeErr, size) => {
-          if (sizeErr) throw sizeErr.message;
-
-          expect(size).to.be.equal(1);
-          expect()
-          done();
-        });
-      });
-    });
   });
 });

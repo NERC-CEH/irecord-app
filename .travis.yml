@@ -10,8 +10,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 script:
   - grunt
-  - grunt test
-#  - grunt test:sauce
+  - grunt test:sauce
 notifications:
   email: true
 sudo: false

@@ -18,6 +18,7 @@ module.exports = {
     alias: {
       jquery: 'jquery/js/jquery',
       lodash: 'lodash/js/lodash',
+      script: 'scriptjs/js/script.min',
       underscore: 'lodash/js/lodash',
       backbone: 'backbone/js/backbone',
       marionette: 'marionette/js/backbone.marionette',
