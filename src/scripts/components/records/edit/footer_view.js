@@ -66,8 +66,8 @@ export default Marionette.CompositeView.extend({
   onShow() {
     const that = this;
 
-    // create android camera/gallery selection
-    if (window.cordova && device.isAndroid()) {
+    // create camera/gallery selection
+    if (window.cordova) {
       this.$el.find('.img-picker input').remove();
 
       this.$el.find('.img-picker').on('click', () => {

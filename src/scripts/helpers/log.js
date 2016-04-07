@@ -29,7 +29,7 @@ const DEBUG = 'd';
  *              String holding a 'message
  * @private
  */
-function error(errorMessage) {
+function error(errorMessage = {}) {
   let err = errorMessage;
   if (typeof err === 'string' || err instanceof String) {
     err = {

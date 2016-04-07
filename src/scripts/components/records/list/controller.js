@@ -93,10 +93,12 @@ const API = {
               const options = {
                 sourceType: window.Camera.PictureSourceType.CAMERA,
                 destinationType: window.Camera.DestinationType.DATA_URL,
+                encodingType : window.Camera.EncodingType.PNG,
+                correctOrientation: true,
               };
 
               const onSuccess = (imageData) => {
-                const fullImageData = `data:image/jpeg;base64,${imageData}`;
+                const fullImageData = `data:image/png;base64,${imageData}`;
                 API.photoUpload(fullImageData, (err) => {
                   App.regions.dialog.error(err);
                 });
@@ -113,12 +115,14 @@ const API = {
             title: 'Gallery',
             onClick() {
               const options = {
-                sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
+                sourceType: window.Camera.PictureSourceType.CAMERA,
                 destinationType: window.Camera.DestinationType.DATA_URL,
+                encodingType : window.Camera.EncodingType.PNG,
+                correctOrientation: true,
               };
 
               const onSuccess = (imageData) => {
-                const fullImageData = `data:image/jpeg;base64,${imageData}`;
+                const fullImageData = `data:image/png;base64,${imageData}`;
                 API.photoUpload(fullImageData, (err) => {
                   if (err) {
                     log(err, 'e');
