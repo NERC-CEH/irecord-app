@@ -55,10 +55,12 @@ _.extend(Morel.prototype, {
         if (record.getSyncStatus() === Morel.SYNCED) {
           noneUsed = false;
           toRemove++;
-          record.destroy(() => {
-            toRemove--;
-            if (toRemove === 0) {
-              callback && callback();
+          record.destroy({
+            success: () => {
+              toRemove--;
+              if (toRemove === 0) {
+                callback && callback();
+              }
             }
           });
         }
@@ -84,11 +86,12 @@ _.extend(Morel.prototype, {
       records.each((record) => {
         noneUsed = false;
         saving++;
-        record.setToSend(() => {
+        record.setToSend((error) => {
+          // todo: error
           saving--;
           if (saving === 0) {
-            that.syncAll();
             callback && callback();
+            that.syncAll();
           }
         });
       });

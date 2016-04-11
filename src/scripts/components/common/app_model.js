@@ -128,11 +128,13 @@ const AppModel = Backbone.Model.extend({
         // check if location is within UK
         let prettyLocation = locHelp.coord2grid(location, accuracy);
         if (!prettyLocation) {
-          prettyLocation = location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
+          prettyLocation = parseFloat(location.latitude).toFixed(4) + ', ' +
+            parseFloat(location.longitude).toFixed(4);
         }
         return prettyLocation;
       } else {
-        return location.latitude.toFixed(4) + ', ' + location.longitude.toFixed(4);
+        return parseFloat(location.latitude).toFixed(4) + ', ' +
+          parseFloat(location.longitude).toFixed(4);
       }
     }
   },

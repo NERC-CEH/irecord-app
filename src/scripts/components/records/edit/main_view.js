@@ -12,7 +12,7 @@ export default Marionette.ItemView.extend({
 
   initialize() {
     const recordModel = this.model.get('recordModel');
-    this.listenTo(recordModel, 'request sync error', this.render);
+    this.listenTo(recordModel, 'request sync error geolocation', this.render);
   },
 
   serializeData() {

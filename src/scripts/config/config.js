@@ -6,6 +6,7 @@ import dateHelpers from './helpers/date';
 
 export default {
   version: '{APP_VER}', // replaced on build
+  build: '{APP_BUILD}', // replaced on build
   name: '{APP_NAME}', // replaced on build
 
   gps_accuracy_limit: 100,
@@ -23,7 +24,7 @@ export default {
   },
 
   login: {
-    url: 'https://www.brc.ac.uk/irecord/user/mobile/register',
+    url: 'http://www.brc.ac.uk/irecord/user/mobile/register',
     timeout: 80000
   },
 
@@ -35,7 +36,7 @@ export default {
   // morel configuration
   morel:{
     manager: {
-      url: 'https://www.brc.ac.uk/irecord/mobile/submit',
+      url: 'http://www.brc.ac.uk/irecord/mobile/submit',
       appname: 'ir',
       appsecret: 'irecordApp123',
       website_id: 23,

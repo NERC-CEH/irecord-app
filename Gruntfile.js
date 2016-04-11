@@ -185,6 +185,10 @@ module.exports = function exports(grunt) {
             from: /\{APP_NAME\}/g,
             to: '<%= pkg.name %>',
           },
+          {
+            from: /\{APP_BUILD\}/g,
+            to: '<%= pkg.build %>',
+          },
         ],
       },
 
@@ -359,21 +363,6 @@ module.exports = function exports(grunt) {
         },
         files: {
           'src/vendor/latlon/js/vector3d.min.js': ['src/vendor/latlon/js/vector3d.js'],
-        },
-      },
-      requirejs: {
-        options: {
-          // the banner is inserted at the top of the output
-          banner:
-          '/** vim: et:ts=4:sw=4:sts=4\n' +
-          '* @license RequireJS 2.1.16 Copyright (c) 2010-2015, ' +
-          'The Dojo Foundation All Rights Reserved.\n' +
-          '* Available via the MIT or new BSD license.\n' +
-          '* see: http://github.com/jrburke/requirejs for details\n' +
-          '*/\n',
-        },
-        files: {
-          'src/vendor/requirejs/js/require.min.js': ['src/vendor/requirejs/js/require.js'],
         },
       },
     },

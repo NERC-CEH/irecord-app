@@ -88,7 +88,12 @@ const RecordView = Marionette.ItemView.extend({
     const date = dateHelp.print(recordModel.get('date'));
     const specie = occ.get('taxon') || {};
     const images = occ.images;
-    const img = images.length && images.at(0).get('data');
+    let img = images.length && images.at(0).get('thumbnail');
+
+    if (!img) {
+      //backwards compatibility
+      img = images.length && images.at(0).get('data');
+    }
 
     const taxon = specie[specie.found_in_name];
 

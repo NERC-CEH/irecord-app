@@ -104,9 +104,8 @@ const API = {
         taxon,
       });
 
-      const sample = new Sample(null, {
-        occurrences: [occurrence],
-      });
+      const sample = new Sample();
+      sample.addOccurrence(occurrence);
 
       // add locked attributes
       appModel.appendAttrLocks(sample);
@@ -141,7 +140,7 @@ const API = {
 
         recordModel.occurrences.at(0).set('taxon', taxon);
         recordModel.save(null, {
-          success: (saveError, sample) => {
+          success: (sample) => {
             callback(null, sample);
           },
           error: (saveError) => {

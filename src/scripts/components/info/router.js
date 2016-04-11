@@ -18,7 +18,10 @@ const Router = Marionette.AppRouter.extend({
     'info/about(/)'() {
       CommonController.show({
         title: 'About', App, route: 'info/about/main',
-        model: new Backbone.Model({ version: CONFIG.version }),
+        model: new Backbone.Model({
+          version: CONFIG.version,
+          build: CONFIG.build,
+        }),
       });},
     'info/help(/)'() {
       CommonController.show({

@@ -140,7 +140,15 @@ const API = {
     userModel.clear().set(appModel.defaults);
     userModel.save();
 
-    recordManager.clear(callback);
+    recordManager.getAll((err, samples) => {
+      if (window.cordova) {
+        // we need to remove the images from file system
+        samples.each((sample) => {
+          sample.trigger('destroy');
+        });
+      }
+      recordManager.clear(callback);
+    });
   },
 };
 

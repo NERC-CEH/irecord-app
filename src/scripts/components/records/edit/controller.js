@@ -5,6 +5,7 @@ import Backbone from 'backbone';
 import _ from 'lodash';
 import Morel from 'morel';
 import device from '../../../helpers/device';
+import ImageHelp from '../../../helpers/image';
 import log from '../../../helpers/log';
 import App from '../../../app';
 import appModel from '../../common/app_model';
@@ -114,7 +115,7 @@ const API = {
 
         const occurrence = recordModel.occurrences.at(0);
         // show loader
-        API.photoUpload(occurrence, e.target.files[0], () => {
+        API.addPhoto(occurrence, e.target.files[0], () => {
           // hide loader
         });
       });
@@ -141,48 +142,20 @@ const API = {
             {
               title: 'Camera',
               onClick() {
-                const options = {
-                  sourceType: window.Camera.PictureSourceType.CAMERA,
-                  destinationType: window.Camera.DestinationType.DATA_URL,
-                  encodingType : window.Camera.EncodingType.PNG,
-                  correctOrientation: true,
-                };
-
-                const onSuccess = (imageData) => {
-                  const fullImageData = `data:image/png;base64,${imageData}`;
-                  API.photoUpload(occurrence, fullImageData, () => {
-
-                  });
-                };
-                const onError = () => {
-
-                };
-
-                navigator.camera.getPicture(onSuccess, onError, options);
+                ImageHelp.getImage((entry) => {
+                  API.addPhoto(occurrence, entry.nativeURL, ()=>{});
+                });
                 App.regions.dialog.hide();
               },
             },
             {
               title: 'Gallery',
               onClick() {
-                const options = {
-                  sourceType: window.Camera.PictureSourceType.CAMERA,
-                  destinationType: window.Camera.DestinationType.DATA_URL,
-                  encodingType : window.Camera.EncodingType.PNG,
-                  correctOrientation: true,
-                };
-
-                const onSuccess = (imageData) => {
-                  const fullImageData = `data:image/png;base64,${imageData}`;
-                  API.photoUpload(occurrence, fullImageData, () => {
-
-                  });
-                };
-                const onError = () => {
-
-                };
-
-                navigator.camera.getPicture(onSuccess, onError, options);
+                ImageHelp.getImage((entry) => {
+                  API.addPhoto(occurrence, entry.nativeURL, ()=>{});
+                }, {
+                  sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY
+                });
                 App.regions.dialog.hide();
               },
             },
@@ -195,32 +168,23 @@ const API = {
   },
 
   /**
-   * Add a photo to occurrence
+   * Adds a new image to occurrence.
    */
-  photoUpload(occurrence, file, callback) {
-    const stringified = (err, data, fileType) => {
-      Morel.Image.resize(data, fileType, 800, 800, (imgErr, image, imgData) => {
-        if (imgErr) {
-          App.regions.dialog.error(imgErr);
-          return;
-        }
+  addPhoto(occurrence, photo, callback) {
+    ImageHelp.getImageModel(photo, (err, image) => {
+      if (err || !image) {
+        const err = new Error('Missing image.');
+        callback(err);
+        return;
+      }
+      occurrence.addImage(image);
 
-        occurrence.images.add(new Morel.Image({
-          data: imgData,
-          type: fileType,
-        }));
-
-        occurrence.save(() => {
+      occurrence.save(null, {
+        success: () => {
           callback && callback();
-        });
+        }
       });
-    };
-
-    if (file instanceof File) {
-      Morel.Image.toString(file, stringified);
-    } else {
-      stringified(null, file, 'image/jpg');
-    }
+    });
   },
 };
 

@@ -5,15 +5,20 @@ import Morel from 'morel';
 import App from '../../../app';
 import log from '../../../helpers/log';
 import Error from '../../../helpers/error';
+import ImageHelp from '../../../helpers/image';
 import appModel from '../../common/app_model';
 import recordManager from '../../common/record_manager';
 import Sample from '../../common/sample';
 import Occurrence from '../../common/occurrence';
 import MainView from './main_view';
 import HeaderView from './header_view';
+import LoaderView from '../../common/loader_view';
 
 const API = {
   show() {
+    const loaderView = new LoaderView();
+    App.regions.main.show(loaderView);
+
     recordManager.getAll((getError, recordsCollection) => {
       log('Records:List:Controller: showing');
       if (getError) {
@@ -75,7 +80,7 @@ const API = {
       log('Records:List:Controller: photo upload');
 
       // show loader
-      API.photoUpload(e.target.files[0], () => {
+      API.createNewRecord(e.target.files[0], () => {
         // hide loader
       });
     });
@@ -90,52 +95,20 @@ const API = {
           {
             title: 'Camera',
             onClick() {
-              const options = {
-                sourceType: window.Camera.PictureSourceType.CAMERA,
-                destinationType: window.Camera.DestinationType.DATA_URL,
-                encodingType : window.Camera.EncodingType.PNG,
-                correctOrientation: true,
-              };
-
-              const onSuccess = (imageData) => {
-                const fullImageData = `data:image/png;base64,${imageData}`;
-                API.photoUpload(fullImageData, (err) => {
-                  App.regions.dialog.error(err);
-                });
-              };
-              const onError = () => {
-                log('Error capturing photo', 'e');
-              };
-
-              navigator.camera.getPicture(onSuccess, onError, options);
+              ImageHelp.getImage((entry) => {
+                API.createNewRecord(entry.nativeURL, ()=>{});
+              });
               App.regions.dialog.hide();
             },
           },
           {
             title: 'Gallery',
             onClick() {
-              const options = {
-                sourceType: window.Camera.PictureSourceType.CAMERA,
-                destinationType: window.Camera.DestinationType.DATA_URL,
-                encodingType : window.Camera.EncodingType.PNG,
-                correctOrientation: true,
-              };
-
-              const onSuccess = (imageData) => {
-                const fullImageData = `data:image/png;base64,${imageData}`;
-                API.photoUpload(fullImageData, (err) => {
-                  if (err) {
-                    log(err, 'e');
-                    App.regions.dialog.error(err);
-                    return;
-                  }
-                });
-              };
-              const onError = () => {
-                log('Error capturing photo', 'e');
-              };
-
-              navigator.camera.getPicture(onSuccess, onError, options);
+              ImageHelp.getImage((entry) => {
+                API.createNewRecord(entry.nativeURL, ()=>{});
+              }, {
+                sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY
+              });
               App.regions.dialog.hide();
             },
           },
@@ -150,68 +123,42 @@ const API = {
   },
 
   /**
-   * Create new record with a photo
-   */
-  photoUpload(file, callback) {
-    // create and add new record
-    const stringified = (err, data, fileType) => {
-      Morel.Image.resize(data, fileType, 800, 800, (imgErr, image, imgData) => {
-        if (imgErr) {
-          callback(imgErr);
-          return;
-        }
-        const imageModel = new Morel.Image({
-          data: imgData,
-          type: fileType,
-        });
-
-        API.createNewRecord(imageModel, callback);
-      });
-    };
-
-    if (file instanceof File) {
-      Morel.Image.toString(file, stringified);
-    } else {
-      stringified(null, file, 'image/jpg');
-    }
-  },
-
-  /**
    * Creates a new record with an image passed as an argument.
    */
-  createNewRecord(image, callback) {
-    if (!image) {
-      const err = new Error('Missing image.');
-      callback(err);
-      return;
-    }
-    const occurrence = new Occurrence();
-    occurrence.images.set(image);
-
-    const sample = new Sample(null, {
-      occurrences: [occurrence],
-    });
-
-    // append locked attributes
-    appModel.appendAttrLocks(sample);
-
-    recordManager.set(sample, (saveErr) => {
-      if (saveErr) {
-        callback(saveErr);
+  createNewRecord(photo, callback) {
+    ImageHelp.getImageModel(photo, (err, image) => {
+      if (err || !image) {
+        const err = new Error('Missing image.');
+        callback(err);
         return;
       }
-      // check if location attr is not locked
-      const locks = appModel.get('attrLocks');
+      const occurrence = new Occurrence();
+      occurrence.addImage(image);
 
-      if (!locks.location) {
-        // no previous location
-        sample.startGPS();
-      } else if (!locks.location.latitude || !locks.location.longitude) {
-        // previously locked location was through GPS
-        // so try again
-        sample.startGPS();
-      }
-      callback();
+      const sample = new Sample();
+      sample.addOccurrence(occurrence);
+
+      // append locked attributes
+      appModel.appendAttrLocks(sample);
+
+      recordManager.set(sample, (saveErr) => {
+        if (saveErr) {
+          callback(saveErr);
+          return;
+        }
+        // check if location attr is not locked
+        const locks = appModel.get('attrLocks');
+
+        if (!locks.location) {
+          // no previous location
+          sample.startGPS();
+        } else if (!locks.location.latitude || !locks.location.longitude) {
+          // previously locked location was through GPS
+          // so try again
+          sample.startGPS();
+        }
+        callback();
+      });
     });
   },
 };

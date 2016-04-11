@@ -217,6 +217,14 @@ header .subtitle {
 .content {
   padding-left: 2%;
   padding-right: 2%;
+
+  // on iPhone transform blanks the content when swiping up/down quickly
+  & > * {
+    z-index: 0;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+  }
 }
 
 .navigate-right:after, .push-right:after {
@@ -249,6 +257,17 @@ li h3 {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.centered {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 50%;
+  text-align: center;
+}
+
+.color-positive {
+  color: $color-green-light;
 }
 
 .btn-positive {
