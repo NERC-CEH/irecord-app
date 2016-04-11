@@ -2,6 +2,7 @@
  * App model. Persistent.
  *****************************************************************************/
 import Backbone from 'backbone';
+import _ from 'lodash';
 import Store from '../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import UUID from '../../helpers/UUID';
 import locHelp from '../../helpers/location';
@@ -137,9 +138,10 @@ const AppModel = Backbone.Model.extend({
   },
 
   setAttrLock: function (attr, value) {
+    const val = _.cloneDeep(value);
     let locks = this.get('attrLocks');
 
-    locks[attr] = value;
+    locks[attr] = val;
     this.set(locks);
     this.trigger('change:attrLocks');
     this.save();
@@ -191,22 +193,24 @@ const AppModel = Backbone.Model.extend({
         return;
       }
 
+      const val = _.cloneDeep(value);
+
       switch (key) {
         case 'location':
-          sample.set('location', value);
+          sample.set('location', val);
           break;
         case 'date':
           // parse stringified date
-          sample.set('date', new Date(value));
+          sample.set('date', new Date(val));
           break;
         case 'number':
-          occurrence.set('number', value);
+          occurrence.set('number', val);
           break;
         case 'stage':
-          occurrence.set('stage', value);
+          occurrence.set('stage', val);
           break;
         case 'comment':
-          occurrence.set('comment', value);
+          occurrence.set('comment', val);
           break;
         default:
       }
