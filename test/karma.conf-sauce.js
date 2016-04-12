@@ -12,37 +12,31 @@ delete webpackConfigDev.context;
 delete webpackConfigDev.entry;
 delete webpackConfigDev.output;
 
-// Browsers to run on Sauce Labs platforms
 var sauceBrowsers = _.reduce([
+  ['firefox', '45'],
   ['firefox', '44'],
+  ['firefox', '43'],
   ['firefox', '42'],
-  ['firefox', '40'],
-  ['firefox', '38'],
+  ['firefox', '41'],
 
-  ['chrome', '48'],
-  ['chrome', '46'],
-  ['chrome', '44'],
-  ['chrome', '42'],
+  ['chrome', '40'],
+  ['chrome', '39'],
+  ['chrome', '30'],
 
   ['microsoftedge', '20.10240', 'Windows 10'],
   ['internet explorer', '11', 'Windows 10'],
   ['internet explorer', '10', 'Windows 8'],
 
-  ['opera', '12'],
-  ['opera', '11'],
-
   ['android', '5.1'],
-  ['android', '5.0'],
+  ['android', '5'],
   ['android', '4.4'],
   ['android', '4.3'],
-  ['android', '4.2'],
   ['android', '4.1'],
 
-  ['safari', '9.2'],
-  ['safari', '9.1'],
-  ['safari', '9.0'],
+  ['safari', '9'],
   ['safari', '8.0', 'OS X 10.10'],
-], (memo, platform) => {
+
+], function (memo, platform) {
   // internet explorer -> ie
   var label = platform[0].split(' ');
   if (label.length > 1) {
@@ -50,15 +44,15 @@ var sauceBrowsers = _.reduce([
   }
   label = (label.join('') + '_v' + platform[1]).replace(' ', '_').toUpperCase();
   memo[label] = _.pick({
-    base: 'SauceLabs',
-    browserName: platform[0],
-    version: platform[1],
-    platform: platform[2],
+    'base': 'SauceLabs',
+    'browserName': platform[0],
+    'version': platform[1],
+    'platform': platform[2]
   }, Boolean);
   return memo;
 }, {});
 
-module.exports = function e(config) {
+module.exports = function (config) {
   // Use ENV vars on Travis and sauce.json locally to get credentials
   if (!process.env.SAUCE_USERNAME) {
     if (!fs.existsSync('./test/sauce.json')) {
@@ -94,19 +88,18 @@ module.exports = function e(config) {
     // Number of sauce tests to start in parallel
     concurrency: 9,
 
-    // test results reporter to use
+      // test results reporter to use
     reporters: ['dots', 'saucelabs'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
     sauceLabs: {
-      build: process.env.TRAVIS_JOB_ID || Date.now(),
+      build: 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')',
       startConnect: false,
-     // tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
     },
 
     captureTimeout: 120000,
-
     customLaunchers: sauceBrowsers,
 
     // Browsers to launch, commented out to prevent karma from starting
