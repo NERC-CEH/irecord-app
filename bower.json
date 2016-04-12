@@ -34,7 +34,7 @@
       "js": "dist/script.min.js"
     },
     "jquery": {
-      "js": "jquery.js"
+      "js": ["dist/jquery.js", "dist/jquery.min.js"]
     },
     "backbone": {
       "js": "backbone.js"
