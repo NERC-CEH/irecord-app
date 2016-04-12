@@ -33,6 +33,9 @@
     "scriptjs": {
       "js": "dist/script.min.js"
     },
+    "jquery": {
+      "js": "jquery.js"
+    },
     "backbone": {
       "js": "backbone.js"
     },
