@@ -9,16 +9,12 @@ import IndexedDBShim from '../vendor/IndexedDBShim/js/IndexedDBShim';
 import analytics from './helpers/analytics';
 import log from './helpers/log';
 import device from './helpers/device';
-import brcArt from './helpers/brcart';
-
 import CommonController from './components/common/controller';
 import DialogRegion from './components/common/dialog_region';
 import HideableRegion from './components/common/hideable_region';
 
 // init Analytics
 analytics.init();
-
-log(brcArt, 'i'); // saying hello :)
 
 const App = new Marionette.Application();
 
