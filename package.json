@@ -57,7 +57,7 @@
     "karma-mocha-reporter": "latest",
     "karma-phantomjs-launcher": "latest",
     "karma-sauce-launcher": "latest",
-    "karma-sinon": "^1.0.4",
+    "karma-sinon": "latest",
     "karma-webpack": "latest",
     "mocha": "latest",
     "phantomjs-prebuilt": "latest",
