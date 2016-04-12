@@ -107,7 +107,8 @@ const API = {
               ImageHelp.getImage((entry) => {
                 API.createNewRecord(entry.nativeURL, ()=>{});
               }, {
-                sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY
+                sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
+                saveToPhotoAlbum: false,
               });
               App.regions.dialog.hide();
             },

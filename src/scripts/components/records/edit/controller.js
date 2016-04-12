@@ -154,7 +154,8 @@ const API = {
                 ImageHelp.getImage((entry) => {
                   API.addPhoto(occurrence, entry.nativeURL, ()=>{});
                 }, {
-                  sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY
+                  sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
+                  saveToPhotoAlbum: false,
                 });
                 App.regions.dialog.hide();
               },
