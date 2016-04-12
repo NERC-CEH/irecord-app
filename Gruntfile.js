@@ -388,6 +388,8 @@ module.exports = function exports(grunt) {
             'dist/styles/ionic.css',
             'dist/styles/leaflet.css',
             'dist/styles/icons.css',
+            'dist/styles/photoswipe.css',
+            'dist/styles/default-skin.css',
             'dist/styles/main.css',
           ],
           dest: 'dist/styles/main.min.css',

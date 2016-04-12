@@ -4,6 +4,7 @@
 import Marionette from 'marionette';
 import _ from 'lodash';
 import Morel from 'morel';
+import Gallery from '../../common/gallery';;
 import JST from '../../../JST';
 import device from '../../../helpers/device';
 
@@ -14,6 +15,11 @@ const SavedImageView = Marionette.ItemView.extend({
 
   events: {
     'click span.delete': 'delete',
+    'click img': 'photoView',
+  },
+
+  photoView(e) {
+    this.trigger('photo:view', e);
   },
 
   delete(e) {
@@ -61,6 +67,25 @@ export default Marionette.CompositeView.extend({
     return {
       isSynchronising: this.model.getSyncStatus() === Morel.SYNCHRONISING,
     };
+  },
+
+  onChildviewPhotoView(view, e) {
+    const items = [];
+    const options = {};
+
+    this.collection.each((image, index) => {
+      if (image.cid === view.model.cid) options.index = index;
+
+      items.push({
+        src: image.get('data'),
+        w: image.get('width'),
+        h: image.get('height'),
+      });
+    });
+
+// Initializes and opens PhotoSwipe
+    var gallery = new Gallery(items, options);
+    gallery.init();
   },
 
   onShow() {

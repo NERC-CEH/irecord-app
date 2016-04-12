@@ -13,6 +13,7 @@
     "latlon": "chrisveness/geodesy#d50580b5054b562f0d1c94441f74a9d0bf8ba710",
     "IndexedDBShim": "axemclion/IndexedDBShim#3d1f549f106a9a078a6f7448796a241eee7f9a76",
     "fastclick": "1.0.3",
+    "photoswipe": "4.1.1",
     "hammerjs": "hammerjs/hammer.js",
     "proj4": "latest",
     "proj4Leaflet": "kartena/Proj4Leaflet#0.7.2",
@@ -63,6 +64,18 @@
         "osgridref.js",
         "vector3d.js",
         "dms.js"
+      ]
+    },
+    "photoswipe": {
+      "js": [
+        "dist/photoswipe-ui-default.min.js",
+        "dist/photoswipe-ui-default.js",
+        "dist/photoswipe.min.js",
+        "dist/photoswipe.js"
+      ],
+      "css": [
+        "dist/photoswipe.css",
+        "dist/default-skin/*"
       ]
     },
     "lodash": {

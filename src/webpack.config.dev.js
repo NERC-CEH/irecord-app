@@ -26,6 +26,8 @@ module.exports = {
       leaflet: 'leaflet/js/leaflet',
       proj4leaflet: 'proj4Leaflet/js/proj4leaflet',
       proj4: 'proj4/js/proj4',
+      'photoswipe-lib': 'photoswipe/js/photoswipe',
+      'photoswipe-ui-default': 'photoswipe/js/photoswipe-ui-default',
       config: 'config_dev',
       'master_list.data': 'data/master_list_dev.data.js',
       'informal_groups.data': 'data/informal_groups.data.js',

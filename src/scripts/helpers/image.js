@@ -76,13 +76,18 @@ const Image = {
    */
   getImageModel(file, callback) {
     // create and add new record
-    const success = (err, data, type) => {
+    const success = (err, data, type, width, height) => {
       if (err) {
         callback(err);
         return;
       }
 
-      const imageModel = new ImageModel({ data, type });
+      const imageModel = new ImageModel({
+        data,
+        type,
+        width,
+        height,
+      });
       imageModel.addThumbnail((err) => {
         if (err) {
           log(err, 'e');
@@ -93,12 +98,12 @@ const Image = {
     };
 
     if (window.cordova){
-      success(null, file, 'jpeg');
-    } else if (file instanceof File) {
-      Morel.Image.getDataURI(file, success, {
-        width: 800,
-        height: 800,
+      // don't resize, only get width and height
+      Morel.Image.getDataURI(file, (err, type, width, height) => {
+        success(null, file, 'jpeg', width, height);
       });
+    } else if (file instanceof File) {
+      Morel.Image.getDataURI(file, success);
     }
   },
 };

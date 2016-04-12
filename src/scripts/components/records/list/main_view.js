@@ -8,6 +8,7 @@ import Hammer from '../../../../vendor/hammerjs/js/hammer';
 import log from '../../../helpers/log';
 import device from '../../../helpers/device';
 import dateHelp from '../../../helpers/date';
+import Gallery from '../../common/gallery';;
 import stringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 
@@ -26,6 +27,7 @@ const RecordView = Marionette.ItemView.extend({
       e.preventDefault();
       this.trigger('record:edit:attr', $(e.target).data('attr'));
     },
+    'click img': 'photoView',
   },
 
   modelEvents: {
@@ -35,6 +37,24 @@ const RecordView = Marionette.ItemView.extend({
 
   initialize() {
     this.template = JST[`records/list/record${(device.isMobile() ? '_mobile' : '')}`];
+  },
+
+  photoView(e) {
+    e.preventDefault();
+
+    const items = [];
+
+    this.model.occurrences.at(0).images.each((image, index) => {
+      items.push({
+        src: image.get('data'),
+        w: image.get('width'),
+        h: image.get('height'),
+      });
+    });
+
+// Initializes and opens PhotoSwipe
+    var gallery = new Gallery(items);
+    gallery.init();
   },
 
   onRender() {

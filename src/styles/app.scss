@@ -577,3 +577,10 @@ button, input, select, textarea {
 .bar-footer~.content {
   padding-bottom: inherit;
 }
+
+// Gallery
+pswp__button--share,
+pswp__button--zoom,
+pswp__button--fs {
+  display: none;
+}
