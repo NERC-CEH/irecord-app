@@ -579,8 +579,15 @@ button, input, select, textarea {
 }
 
 // Gallery
-pswp__button--share,
-pswp__button--zoom,
-pswp__button--fs {
-  display: none;
+.ios .pswp__top-bar {
+  margin-top: 20px;
+}
+
+.pswp__button--arrow--left,
+.pswp__button--arrow--right,
+.pswp__button--share,
+.pswp__button--zoom,
+.pswp__button--fs {
+  display: none !important;
+
 }
