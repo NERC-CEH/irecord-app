@@ -92,7 +92,7 @@ module.exports = function (config) {
     reporters: ['dots', 'saucelabs'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_WARN,
     sauceLabs: {
       build: 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')',
       startConnect: false,
