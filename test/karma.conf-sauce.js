@@ -67,7 +67,7 @@ module.exports = function (config) {
   config.set({
     basePath: '../',
 
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
     files: [
       { pattern: 'tests.webpack.js', watched: false },
