@@ -32,7 +32,7 @@ const Image = {
     let cameraOptions = {
       sourceType: window.Camera.PictureSourceType.CAMERA,
       //allow edit is unpredictable on Android and it should not be used!
-      allowEdit : device.isAndroid() ? false : true,
+      allowEdit: false,
       destinationType: window.Camera.DestinationType.FILE_URI,
       encodingType : window.Camera.EncodingType.JPEG,
       saveToPhotoAlbum: true,
@@ -65,6 +65,13 @@ const Image = {
       function fail(error) {
         callback(error);
       }
+      // for some reason when selecting from Android gallery
+      // the prefix is missing
+      if (device.isAndroid() &&
+        options.sourceType === window.Camera.PictureSourceType.PHOTOLIBRARY) {
+        fileURI = `file://${fileURI}`;
+      }
+
       window.resolveLocalFileSystemURL(fileURI, copyFile, fail);
     }
 
@@ -99,7 +106,7 @@ const Image = {
 
     if (window.cordova){
       // don't resize, only get width and height
-      Morel.Image.getDataURI(file, (err, type, width, height) => {
+      Morel.Image.getDataURI(file, (err, data, type, width, height) => {
         success(null, file, 'jpeg', width, height);
       });
     } else if (file instanceof File) {
