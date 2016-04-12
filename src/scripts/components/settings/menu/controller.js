@@ -103,7 +103,7 @@ const API = {
 
   sendAllRecords() {
     App.regions.dialog.show({
-      title: 'Send All',
+      title: 'Submit All',
       body: 'Are you sure you want to set all valid records for submission?',
       buttons: [
         {

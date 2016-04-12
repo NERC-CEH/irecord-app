@@ -20,7 +20,7 @@
       </ul>
     </p>
     <p>
-      This app was part-funded via the Centre for Ecology & Hydrology/Joint Nature Conservation Committee partnership supporting BRC.
+      This app was part-funded by the Centre for Ecology & Hydrology/Joint Nature Conservation Committee partnership supporting BRC.
     </p>
   </li>
 </ul>
