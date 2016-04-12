@@ -89,11 +89,15 @@
         <splash src="www/images/android/splash/drawable-land-ldpi-screen.png" density="land-ldpi"/>
         <splash src="www/images/android/splash/drawable-land-mdpi-screen.png" density="land-mdpi"/>
         <splash src="www/images/android/splash/drawable-land-xhdpi-screen.png" density="land-xhdpi"/>
+        <splash src="www/images/android/splash/drawable-land-xxhdpi-screen.png" density="land-xxxhdpi"/>
+        <splash src="www/images/android/splash/drawable-land-xxxhdpi-screen.png" density="land-xxxhdpi"/>
 
         <splash src="www/images/android/splash/drawable-port-hdpi-screen.png" density="port-hdpi"/>
         <splash src="www/images/android/splash/drawable-port-ldpi-screen.png" density="port-ldpi"/>
         <splash src="www/images/android/splash/drawable-port-mdpi-screen.png" density="port-mdpi"/>
         <splash src="www/images/android/splash/drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
+        <splash src="www/images/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
+        <splash src="www/images/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
     </platform>
     <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
     <!--see https://calendee.com/2015/03/03/polish-app-launch-with-cordova-splashscreen-plugin/-->
