@@ -19,8 +19,12 @@ var sauceBrowsers = _.reduce([
   ['firefox', '42'],
   ['firefox', '41'],
 
+  ['chrome', '48'],
+  ['chrome', '46'],
+  ['chrome', '44'],
+  ['chrome', '42'],
   ['chrome', '40'],
-  ['chrome', '39'],
+  ['chrome', '38'],
   ['chrome', '30'],
 
   ['microsoftedge', '20.10240', 'Windows 10'],
@@ -31,6 +35,7 @@ var sauceBrowsers = _.reduce([
   ['android', '5'],
   ['android', '4.4'],
   ['android', '4.3'],
+  ['android', '4.2'],
   ['android', '4.1'],
 
   ['safari', '9'],
