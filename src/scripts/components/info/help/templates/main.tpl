@@ -60,7 +60,6 @@
     <p id="c3" class="collapse"
        aria-labelledby="headingTwo" aria-expanded="false">
       All your saved records will be shown on the home page.
-      By default the records are in <i>draft</i> mode until they are set for submission.
       By default a record is in <i>draft</i> mode until it is set for submission.
       While it is in <i>draft</i> mode the application will not synchronise your
       record with the database. To set it for sending,
