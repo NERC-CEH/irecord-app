@@ -43,7 +43,7 @@
 <li class="table-view-cell">
   <a id="logout-button" class="navigate-right">
     <span class="media-object pull-left icon icon-logout"></span>
-    Logout: <%- obj.surname %>
+    Logout: <%- obj.name %> <%- obj.surname %>
   </a>
 </li>
 <% } else { %>
