@@ -96,33 +96,34 @@ describe('Taxon Search Engine', () => {
       });
     });
 
-    describe('random taxa search', () => {
-      // random search of 100 names
-      const speciesToSearch = [];
-      for (let i = 0; i < 100; i++) {
-        speciesToSearch.push(getRandomSpecies());
-      }
-
-      // go through selected species names
-      speciesToSearch.forEach(function(species) {
-        it(`should find ${species[NAME]} (${species[WAREHOUSE_ID]})`, (done) => {
-          searchEngine.search(species[NAME], (results) => {
-            expect(results).to.not.be.empty;
-
-            //check all results
-            let found = false;
-            results.forEach((result) => {
-              if (result.warehouse_id === species[WAREHOUSE_ID]) {
-                found = true;
-              }
-            });
-
-            expect(found).to.be.true;
-            done();
-          });
-        });
-      });
-    });
+    //const SEARCH_TIMES = 10000;
+    //describe(`random taxa search ${SEARCH_TIMES}`, () => {
+    //  // random search of 100 names
+    //  const speciesToSearch = [];
+    //  for (let i = 0; i < SEARCH_TIMES; i++) {
+    //    speciesToSearch.push(getRandomSpecies());
+    //  }
+    //
+    //  // go through selected species names
+    //  speciesToSearch.forEach(function(species) {
+    //    it(`should find ${species[NAME]} (${species[WAREHOUSE_ID]})`, (done) => {
+    //      searchEngine.search(species[NAME], (results) => {
+    //        expect(results).to.not.be.empty;
+    //
+    //        //check all results
+    //        let found = false;
+    //        results.forEach((result) => {
+    //          if (result.warehouse_id === species[WAREHOUSE_ID]) {
+    //            found = true;
+    //          }
+    //        });
+    //
+    //        expect(found).to.be.true;
+    //        done();
+    //      });
+    //    });
+    //  });
+    //});
 
     it('should work with selected taxa', (done) => {
       searchEngine.search('Phytomyza ilicis', (results) => {
