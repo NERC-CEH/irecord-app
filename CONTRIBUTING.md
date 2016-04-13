@@ -58,10 +58,10 @@ The app is structured in such a way:
 
 * App **components** - a group of page-like components (sub components) providing similar
  functionality eg. records, maping, information pages. 
- Components should work independently between each other, for example mapping should
+ Components should work independently between each other, so that for example mapping should
  have no dependencies on record components.
 
-* App **sub components** - page-like components, for example *records* component 
+* App **sub components** - page-like components. For example *records* component 
 includes: list, edit, attribute, show sub components.  
 
 * Common files or pages between components are placed in *common* folder.
@@ -81,13 +81,13 @@ folder within common folder.
 
 *App* object holds the app component APIs;
 
-For clarity, Libraries and Helper libs must be imported as variables 
-with capital (+ App).
+For clarity reasons, Libraries and Helper code must be imported as capitalized 
+variables: App, Backbone, Device, GPS etc.
 
 
 # Continous Integration and Testing
 
-New functionality should be provided with tests in *__tests__* folder next to the 
+New functionality should be provided with tests in *\_\_tests\_\_* folder next to the 
 code that is being tested. It is important to test any new code on as many devices
 as possible so for that we are using Travis CI. It detects new repository 
 commits and runs the app tests on 20+ browsers using Sauce Labs. To see the build
