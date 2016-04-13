@@ -12,7 +12,7 @@ App web demo page: [development demo](http://dev.irecord.org.uk).
 ## Contribution
 
 Think you've found a bug or have a new feature to suggest?
-[Let us know!](https://github.com/NERC-CEH/irecord-app/issues).
+[Let us know!](https://github.com/NERC-CEH/irecord-app/issues)
 
 In the spirit of open source software development, we'd love for you to contribute
 to our source code and make it better than it is today! To help you get started
@@ -31,9 +31,7 @@ If you have any questions, please feel free to ask on the
 
 ## Configuration
 
-App configuration is hosted in `src/conf.js`.
-
-**Note:** it should be done *before* building the code.
+App configuration is hosted in `src/conf.js`. **Note:** it should be done *before* building the code.
 
 
 ## Building
@@ -69,8 +67,6 @@ grunt cordova:update
 ### Web app
 
 If you are building for the web platform only:
-
-- Build the project:
 
 `Production`
 
