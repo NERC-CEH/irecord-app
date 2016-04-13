@@ -6,6 +6,7 @@ import dateHelpers from './helpers/date';
 
 export default {
   version: '{APP_VER}', // replaced on build
+  build: '{APP_BUILD}', // replaced on build
   name: '{APP_NAME}', // replaced on build
 
   gps_accuracy_limit: 100,
