@@ -6,7 +6,7 @@ import Marionette from 'marionette';
 import L from '../../../../../vendor/leaflet/js/leaflet';
 import OSLeaflet from '../../../../../vendor/os-leaflet/js/OSOpenSpace';
 import JST from '../../../../JST';
-import locHelp from '../../../../helpers/location';
+import LocHelp from '../../../../helpers/location';
 import CONFIG from 'config'; // Replaced with alias
 
 export default Marionette.ItemView.extend({
@@ -151,7 +151,7 @@ export default Marionette.ItemView.extend({
         accuracy: map.getZoom(),
       };
 
-      location.gridref = locHelp.coord2grid(location, location.accuracy);
+      location.gridref = LocHelp.coord2grid(location, location.accuracy);
 
       // trigger won't work to bubble up
       that.triggerMethod('location:select:map', location);

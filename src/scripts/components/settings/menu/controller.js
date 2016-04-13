@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import App from '../../../app';
-import log from '../../../helpers/log';
+import Log from '../../../helpers/log';
 import appModel from '../../common/app_model';
 import userModel from '../../common/user_model';
 import recordManager from '../../common/record_manager';
@@ -12,7 +12,7 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
-    log('Settings:Menu:Controller: showing');
+    Log('Settings:Menu:Controller: showing');
 
     const templateData = new Backbone.Model({
       useGridRef: appModel.get('useGridRef'),
@@ -23,7 +23,7 @@ const API = {
       model: templateData,
     });
     mainView.on('setting:toggled', (setting, on) => {
-      log('Settings:Menu:Controller: setting toggled');
+      Log('Settings:Menu:Controller: setting toggled');
 
       appModel.set(setting, on);
       appModel.save();
@@ -86,7 +86,7 @@ const API = {
           title: 'Delete',
           class: 'btn-negative',
           onClick() {
-            log('Settings:Menu:Controller: deleting all records');
+            Log('Settings:Menu:Controller: deleting all records');
 
             // delete all
             recordManager.removeAllSynced(() => {
@@ -116,7 +116,7 @@ const API = {
           title: 'OK',
           class: 'btn-positive',
           onClick() {
-            log('Settings:Menu:Controller: sending all records');
+            Log('Settings:Menu:Controller: sending all records');
 
             // delete all
             recordManager.setAllToSend(() => {
@@ -132,7 +132,7 @@ const API = {
   },
 
   resetApp(callback) {
-    log('Settings:Menu:Controller: resetting the application!', 'w');
+    Log('Settings:Menu:Controller: resetting the application!', 'w');
 
     appModel.clear().set(appModel.defaults);
     appModel.save();

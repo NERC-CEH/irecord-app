@@ -1,13 +1,13 @@
 import Morel from 'morel';
 import recordManger from '../record_manager';
 import Sample from '../sample';
-import dateHelp from 'helpers/date';
+import DateHelp from 'helpers/date';
 
 describe('Sample', () => {
   it('should have current date by default', () => {
       const sample = new Sample();
       const date = sample.get('date');
 
-      expect(dateHelp.print(date)).to.be.equal(dateHelp.print(new Date()));
+      expect(DateHelp.print(date)).to.be.equal(DateHelp.print(new Date()));
   });
 });

@@ -5,8 +5,8 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
 import App from '../../../app';
-import log from '../../../helpers/log';
-import device from '../../../helpers/device';
+import Log from '../../../helpers/log';
+import Device from '../../../helpers/device';
 import CONFIG from 'config'; // Replaced with alias
 import userModel from '../../common/user_model';
 import MainView from './main_view';
@@ -14,7 +14,7 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
-    log('User:Register:Controller: showing');
+    Log('User:Register:Controller: showing');
     // MAIN
     const mainView = new MainView();
     App.regions.main.show(mainView);
@@ -29,7 +29,7 @@ const API = {
 
     // Start registration
     mainView.on('form:submit', (data) => {
-      if (!device.isOnline()) {
+      if (!Device.isOnline()) {
         App.regions.dialog.show({
           title: 'Sorry',
           body: 'Looks like you are offline!',
@@ -44,13 +44,13 @@ const API = {
 
         API.register(data, (err) => {
           if (err) {
-            log(err, 'e');
+            Log(err, 'e');
             switch (err.xhr.status) {
               case 401:
                 // unauthorised
                 break;
               default:
-                log(`login:submit: ${err.xhr.status} ${err.thrownError}.`, 'e');
+                Log(`login:submit: ${err.xhr.status} ${err.thrownError}.`, 'e');
             }
 
             let response = '';
@@ -107,7 +107,7 @@ const API = {
    * appname and appsecret for the mentioned module.
    */
   register(data, callback) {
-    log('User:Register:Controller: registering');
+    Log('User:Register:Controller: registering');
 
     const formData = new FormData();
 
@@ -160,7 +160,7 @@ const API = {
         surname: lines[2],
       };
     }
-    log('User:Register:Controller: problems with received secret.', 'e');
+    Log('User:Register:Controller: problems with received secret.', 'e');
     return null;
   },
 };

@@ -3,7 +3,6 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import JST from '../../../JST';
-import device from '../../../helpers/device';
 
 export default Marionette.ItemView.extend({
   id: 'records-header',

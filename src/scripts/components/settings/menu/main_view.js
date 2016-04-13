@@ -3,7 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
-import device from '../../../helpers/device';
+import Device from '../../../helpers/device';
 import JST from '../../../JST';
 
 export default Marionette.ItemView.extend({
@@ -28,8 +28,8 @@ export default Marionette.ItemView.extend({
     const setting = $(e.currentTarget).data('setting');
     let active = $(e.currentTarget).hasClass('active');
 
-    if (e.type !== 'toggle' && !device.isMobile()) {
-      // device.isMobile() android generates both swipe and click
+    if (e.type !== 'toggle' && !Device.isMobile()) {
+      // Device.isMobile() android generates both swipe and click
 
       active = !active; // invert because it takes time to get the class
       $(e.currentTarget).toggleClass('active', active);

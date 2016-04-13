@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Morel from 'morel';
-import device from '../../helpers/device';
-import log from '../../helpers/log';
+import Device from '../../helpers/device';
+import Log from '../../helpers/log';
 import CONFIG from 'config'; // Replaced with alias
 import Sample from './sample';
 import userModel from './user_model';
@@ -12,27 +12,13 @@ const morelConfiguration = $.extend(CONFIG.morel.manager, {
   Sample,
   onSend(sample) {
     if (userModel.hasLogIn()) {
-      // attach device
-      let devicePlatform = '';
-      if (window.cordova) {
-        devicePlatform = window.device.platform;
-      } else {
-        if (device.isAndroidChrome()) {
-          devicePlatform = 'Android';
-        } else if (device.isIOS()) {
-          devicePlatform = 'iOS';
-        }
-      }
-      sample.set('device', devicePlatform);
-
-      // attach device version
-      if (window.cordova) {
-        sample.set('device_version', window.device.version);
-      }
+      // attach device information
+      sample.set('device', Device.getPlatform());
+      sample.set('device_version', Device.getVersion());
 
       userModel.appendSampleUser(sample);
     } else {
-      // don't send until the user is logged in
+      // don't send until the user has logged in
       return true;
     }
     return null;
@@ -43,7 +29,7 @@ _.extend(Morel.prototype, {
   removeAllSynced(callback) {
     this.getAll((err, records) => {
       if (err) {
-        log(err, 'e');
+        Log(err, 'e');
         callback && callback(err);
         return;
       }
@@ -79,7 +65,7 @@ _.extend(Morel.prototype, {
 
     this.getAll((err, records) => {
       if (err) {
-        log(err, 'e');
+        Log(err, 'e');
         callback && callback(err);
         return;
       }

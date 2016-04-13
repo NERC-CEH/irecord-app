@@ -5,7 +5,7 @@ import Backbone from 'backbone';
 import _ from 'lodash';
 import Store from '../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import UUID from '../../helpers/UUID';
-import locHelp from '../../helpers/location';
+import LocHelp from '../../helpers/location';
 import CONFIG from 'config'; // Replaced with alias
 
 const AppModel = Backbone.Model.extend({
@@ -104,7 +104,7 @@ const AppModel = Backbone.Model.extend({
     }
 
     // get translated location
-    var gref = locHelp.coord2grid(location, LOCATION_GRANULARITY);
+    var gref = LocHelp.coord2grid(location, LOCATION_GRANULARITY);
 
     // remove the spaces
     return gref.replace(/ /g, '');
@@ -126,7 +126,7 @@ const AppModel = Backbone.Model.extend({
         }
 
         // check if location is within UK
-        let prettyLocation = locHelp.coord2grid(location, accuracy);
+        let prettyLocation = LocHelp.coord2grid(location, accuracy);
         if (!prettyLocation) {
           prettyLocation = parseFloat(location.latitude).toFixed(4) + ', ' +
             parseFloat(location.longitude).toFixed(4);

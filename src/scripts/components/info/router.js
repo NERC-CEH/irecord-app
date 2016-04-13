@@ -4,7 +4,7 @@
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import App from '../../app';
-import log from '../../helpers/log';
+import Log from '../../helpers/log';
 import CONFIG from 'config'; // Replaced with alias
 
 import CommonController from '../common/controller';
@@ -85,6 +85,6 @@ App.on('info:credits', () => {
 });
 
 App.on('before:start', () => {
-  log('Info:router: initializing');
+  Log('Info:router: initializing');
   App.info.router = new Router();
 });

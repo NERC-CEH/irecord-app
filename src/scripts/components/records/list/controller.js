@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Morel from 'morel';
 import App from '../../../app';
-import log from '../../../helpers/log';
+import Log from '../../../helpers/log';
 import Error from '../../../helpers/error';
 import ImageHelp from '../../../helpers/image';
 import appModel from '../../common/app_model';
@@ -20,9 +20,9 @@ const API = {
     App.regions.main.show(loaderView);
 
     recordManager.getAll((getError, recordsCollection) => {
-      log('Records:List:Controller: showing');
+      Log('Records:List:Controller: showing');
       if (getError) {
-        log(getError, 'e');
+        Log(getError, 'e');
         App.regions.dialog.error(getError);
         return;
       }
@@ -38,7 +38,7 @@ const API = {
       });
 
       mainView.on('childview:record:delete', (childView) => {
-        log('Records:List:Controller: deleting record');
+        Log('Records:List:Controller: deleting record');
 
         const recordModel = childView.model;
         const syncStatus = recordModel.getSyncStatus();
@@ -77,7 +77,7 @@ const API = {
     const headerView = new HeaderView();
 
     headerView.on('photo:upload', (e) => {
-      log('Records:List:Controller: photo upload');
+      Log('Records:List:Controller: photo upload');
 
       // show loader
       API.createNewRecord(e.target.files[0], () => {
@@ -87,7 +87,7 @@ const API = {
 
     // android gallery/camera selection
     headerView.on('photo:selection', () => {
-      log('Records:List:Controller: photo select');
+      Log('Records:List:Controller: photo select');
 
       App.regions.dialog.show({
         title: 'Choose a method to upload a photo',

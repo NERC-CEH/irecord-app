@@ -3,8 +3,8 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import App from '../../../app';
-import device from '../../../helpers/device';
-import log from '../../../helpers/log';
+import Device from '../../../helpers/device';
+import Log from '../../../helpers/log';
 import appModel from '../../common/app_model';
 import userModel from '../../common/user_model';
 import recordManager from '../../common/record_manager';
@@ -13,15 +13,15 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show(id) {
-    log('Records:Show:Controller: showing');
+    Log('Records:Show:Controller: showing');
     recordManager.get(id, (err, recordModel) => {
       if (err) {
-        log(err, 'e');
+        Log(err, 'e');
       }
 
       // Not found
       if (!recordModel) {
-        log('No record model found', 'e');
+        Log('No record model found', 'e');
         App.trigger('404:show', { replace: true });
         return;
       }
@@ -47,7 +47,7 @@ const API = {
   },
 
   syncRecord(recordModel) {
-    if (device.isOnline()) {
+    if (Device.isOnline()) {
       if (!userModel.hasLogIn()) {
         App.trigger('user:login');
         return;
@@ -57,7 +57,7 @@ const API = {
         remote: true,
         success: () => {},
         error: (err) => {
-          log(err, 'e');
+          Log(err, 'e');
           App.regions.dialog.error(err);
         },
       });

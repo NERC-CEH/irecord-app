@@ -3,7 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
-import validate from '../../../helpers/validate';
+import Validate from '../../../helpers/validate';
 import JST from '../../../JST';
 
 export default Marionette.ItemView.extend({
@@ -42,6 +42,6 @@ export default Marionette.ItemView.extend({
 
   onFormDataInvalid(errors) {
     const $view = this.$el;
-    validate.updateViewFormErrors($view, errors, '#user-');
+    Validate.updateViewFormErrors($view, errors, '#user-');
   },
 });

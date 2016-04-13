@@ -6,11 +6,11 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import Morel from 'morel';
-import device from '../../../../helpers/device';
-import log from '../../../../helpers/log';
-import validate from '../../../../helpers/validate';
-import stringHelp from '../../../../helpers/string';
-import locHelp from '../../../../helpers/location';
+import Device from '../../../../helpers/device';
+import Log from '../../../../helpers/log';
+import Validate from '../../../../helpers/validate';
+import StringHelp from '../../../../helpers/string';
+import LocHelp from '../../../../helpers/location';
 import App from '../../../../app';
 import JST from '../../../../JST';
 
@@ -100,7 +100,7 @@ const API = {
         }
 
         const location = recordModel.get('location') || {};
-        location.name = stringHelp.escape(name);
+        location.name = StringHelp.escape(name);
         recordModel.set('location', location);
         recordModel.trigger('change:location');
       }
@@ -128,7 +128,7 @@ const API = {
               if (lockedValue) {
                 // check if previously the value was locked and we are updating
                 if (locationIsLocked || lockedValue === true) {
-                  log('Updating lock', 'd');
+                  Log('Updating lock', 'd');
 
                   if (location.source === 'gps') {
                     // on GPS don't lock other than name
@@ -172,11 +172,10 @@ const API = {
           if (!attrs.gridref) {
             errors.gridref = "can't be blank";
           } else {
-            const validGridRef = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
             const gridref = attrs.gridref.replace(/\s/g, '');
-            if (!validGridRef.test(gridref)) {
+            if (!Validate.gridRef(gridref)) {
               errors.gridref = 'invalid';
-            } else if (!locHelp.grid2coord(gridref)) {
+            } else if (!LocHelp.grid2coord(gridref)) {
               errors.gridref = 'invalid';
             }
           }
@@ -189,7 +188,7 @@ const API = {
         const validationError = validate(data);
         if (!validationError) {
           App.vent.trigger('gridref:form:data:invalid', {}); // update form
-          const latLon = locHelp.grid2coord(data.gridref);
+          const latLon = LocHelp.grid2coord(data.gridref);
           const location = {
             source: 'gridref',
             name: data.name,
@@ -275,19 +274,19 @@ const API = {
       template: JST['common/past_location_edit'],
       getValues() {
         return {
-          name: stringHelp.escape(this.$el.find('#location-name').val()),
+          name: StringHelp.escape(this.$el.find('#location-name').val()),
         };
       },
 
       onFormDataInvalid(errors) {
         const $view = this.$el;
-        validate.updateViewFormErrors($view, errors, '#location-');
+        Validate.updateViewFormErrors($view, errors, '#location-');
       },
 
       onShow() {
         const $input = this.$el.find('#name');
         $input.focus();
-        if (device.isAndroid()) {
+        if (Device.isAndroid()) {
           window.Keyboard.show();
           $input.focusout(() => {
             window.Keyboard.hide();

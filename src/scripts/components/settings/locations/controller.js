@@ -4,9 +4,9 @@
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import App from '../../../app';
-import device from '../../../helpers/device';
-import log from '../../../helpers/log';
-import stringHelp from '../../../helpers/string';
+import Device from '../../../helpers/device';
+import Log from '../../../helpers/log';
+import StringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 import appModel from '../../common/app_model';
 import MainView from './main_view';
@@ -14,7 +14,7 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
-    log('Settings:Locations:Controller: showing');
+    Log('Settings:Locations:Controller: showing');
 
     // MAIN
     const mainView = new MainView({
@@ -39,28 +39,28 @@ const API = {
   },
 
   deleteLocation(model) {
-    log('Settings:Locations:Controller: deleting location');
+    Log('Settings:Locations:Controller: deleting location');
 
     const location = model;
     appModel.removeLocation(location);
   },
 
   editLocation(model) {
-    log('Settings:Locations:Controller: editing location');
+    Log('Settings:Locations:Controller: editing location');
 
     const location = model;
     const EditView = Marionette.ItemView.extend({
       template: JST['common/past_location_edit'],
       getValues() {
         return {
-          name: stringHelp.escape(this.$el.find('#location-name').val()),
+          name: StringHelp.escape(this.$el.find('#location-name').val()),
         };
       },
 
       onShow() {
         const $input = this.$el.find('#location-name');
         $input.focus();
-        if (device.isAndroid()) {
+        if (Device.isAndroid()) {
           window.Keyboard.show();
           $input.focusout(() => {
             window.Keyboard.hide();

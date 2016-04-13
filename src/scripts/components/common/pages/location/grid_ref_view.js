@@ -3,9 +3,9 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import JST from '../../../../JST';
-import locHelp from '../../../../helpers/location';
-import stringHelp from '../../../../helpers/string';
-import validate from '../../../../helpers/validate';
+import LocHelp from '../../../../helpers/location';
+import StringHelp from '../../../../helpers/string';
+import Validate from '../../../../helpers/validate';
 
 export default Marionette.ItemView.extend({
   template: JST['common/location/grid_ref'],
@@ -19,8 +19,8 @@ export default Marionette.ItemView.extend({
   },
 
   setGridRef() {
-    const val = stringHelp.escape(this.$el.find('#location-gridref').val());
-    const name = stringHelp.escape(this.$el.find('#location-name').val());
+    const val = StringHelp.escape(this.$el.find('#location-gridref').val());
+    const name = StringHelp.escape(this.$el.find('#location-name').val());
 
     const data = {
       gridref: val,
@@ -32,7 +32,7 @@ export default Marionette.ItemView.extend({
 
   onFormDataInvalid(errors) {
     const $view = this.$el;
-    validate.updateViewFormErrors($view, errors, '#location-');
+    Validate.updateViewFormErrors($view, errors, '#location-');
   },
 
   serializeData() {
@@ -40,7 +40,7 @@ export default Marionette.ItemView.extend({
     let gridref;
 
     if (location.latitude && location.longitude) {
-      gridref = locHelp.coord2grid(location, location.accuracy);
+      gridref = LocHelp.coord2grid(location, location.accuracy);
     }
 
     return {

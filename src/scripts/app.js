@@ -6,20 +6,20 @@ import Backbone from 'backbone';
 import Marionette from 'marionette';
 import FastClick from '../vendor/fastclick/js/fastclick';
 import IndexedDBShim from '../vendor/IndexedDBShim/js/IndexedDBShim';
-import analytics from './helpers/analytics';
-import log from './helpers/log';
-import device from './helpers/device';
+import Analytics from './helpers/analytics';
+import Log from './helpers/log';
+import Device from './helpers/device';
 import CommonController from './components/common/controller';
 import DialogRegion from './components/common/dialog_region';
 import HideableRegion from './components/common/hideable_region';
 
 // init Analytics
-analytics.init();
+Analytics.init();
 
 const App = new Marionette.Application();
 
 App.navigate = function (route, options = {}) {
-  log('App: navigating to ' + route);
+  Log('App: navigating to ' + route);
   let defaultOptions = { trigger: true };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
@@ -29,7 +29,7 @@ App.getCurrentRoute = function () {
 };
 
 App.on('before:start', function () {
-  log('App: initializing main regions');
+  Log('App: initializing main regions');
   var RegionContainer = Marionette.LayoutView.extend({
     el: '#app',
 
@@ -45,7 +45,7 @@ App.on('before:start', function () {
 });
 
 App.on('start', function () {
-  log('App: starting');
+  Log('App: starting');
 
   // Init for the first time
   // set up DB
@@ -69,17 +69,17 @@ App.on('start', function () {
     });
 
     if (window.cordova) {
-      log('App: cordova setup');
+      Log('App: cordova setup');
 
       // Although StatusB  ar in the global scope, it is not available until after the deviceready event.
       document.addEventListener('deviceready', () => {
-        log('Showing the app.');
+        Log('Showing the app.');
 
         window.StatusBar.overlaysWebView(true);
         window.StatusBar.backgroundColorByName('black');
 
         // iOS make space for statusbar
-        if (device.isIOS()) {
+        if (Device.isIOS()) {
           $('body').addClass('ios');
         }
 

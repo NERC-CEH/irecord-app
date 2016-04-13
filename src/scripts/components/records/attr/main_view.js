@@ -3,10 +3,10 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
-import device from '../../../helpers/device';
-import dateHelp from '../../../helpers/date';
-import stringHelp from '../../../helpers/string';
-import log from '../../../helpers/log';
+import Device from '../../../helpers/device';
+import DateHelp from '../../../helpers/date';
+import StringHelp from '../../../helpers/string';
+import Log from '../../../helpers/log';
 import JST from '../../../JST';
 
 export default Marionette.ItemView.extend({
@@ -55,7 +55,7 @@ export default Marionette.ItemView.extend({
         break;
       case 'comment':
         value = this.$el.find('textarea').val();
-        values[attr] = stringHelp.escape(value);
+        values[attr] = StringHelp.escape(value);
         break;
       default:
     }
@@ -69,8 +69,8 @@ export default Marionette.ItemView.extend({
 
     switch (this.options.attr) {
       case 'date':
-        templateData.date = dateHelp.toDateInputValue(this.model.get('date'));
-        templateData.maxDate = dateHelp.toDateInputValue(new Date());
+        templateData.date = DateHelp.toDateInputValue(this.model.get('date'));
+        templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
       case 'number':
         templateData[occ.get('number')] = true;
@@ -82,7 +82,7 @@ export default Marionette.ItemView.extend({
         templateData.comment = occ.get('comment');
         break;
       default:
-        log('No such attribute', 'e');
+        Log('No such attribute', 'e');
         return null;
     }
 
@@ -94,7 +94,7 @@ export default Marionette.ItemView.extend({
       case 'date':
         // this.$el.find('input').focus();
         const $input = this.$el.find('input').focus();
-        if (device.isAndroid()) {
+        if (Device.isAndroid()) {
           const options = {
             date: new Date(this.model.get('date')),
             mode: 'date',
@@ -104,14 +104,14 @@ export default Marionette.ItemView.extend({
           };
 
           window.datePicker.show(options, function (date) {
-            $input.val(dateHelp.toDateInputValue(new Date(date)));
+            $input.val(DateHelp.toDateInputValue(new Date(date)));
           });
         }
         break;
       case 'comment':
         // this.$el.find('textarea').focus();
         const $textarea = this.$el.find('textarea').focus();
-        if (window.cordova && device.isAndroid()) {
+        if (window.cordova && Device.isAndroid()) {
           window.Keyboard.show();
           $textarea.focusout(() => {
             window.Keyboard.hide();

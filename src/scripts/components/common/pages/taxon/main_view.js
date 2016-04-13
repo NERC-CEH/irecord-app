@@ -4,8 +4,8 @@
 import _ from 'lodash';
 import Marionette from 'marionette';
 import JST from '../../../../JST';
-import log from '../../../../helpers/log';
-import device from '../../../../helpers/device';
+import Log from '../../../../helpers/log';
+import Device from '../../../../helpers/device';
 import informalGroups from 'informal_groups.data';
 
 const MIN_SEARCH_LENGTH = 2;
@@ -56,7 +56,7 @@ const SpeciesView = Marionette.ItemView.extend({
   },
 
   select(e) {
-    log('taxon: selected.', 'd');
+    Log('taxon: selected.', 'd');
     const edit = e.target.tagName === 'BUTTON';
     const species = this.model.toJSON();
     delete species.selected;
@@ -105,7 +105,7 @@ export default Marionette.LayoutView.extend({
   onShow() {
     // preselect the input for typing
     const $input = this.$el.find('#taxon').focus();
-    if (window.cordova && device.isAndroid()) {
+    if (window.cordova && Device.isAndroid()) {
       window.Keyboard.show();
       $input.focusout(() => {
         window.Keyboard.hide();

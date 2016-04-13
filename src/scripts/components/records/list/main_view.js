@@ -5,11 +5,11 @@ import $ from 'jquery';
 import Marionette from 'marionette';
 import Morel from 'morel';
 import Hammer from '../../../../vendor/hammerjs/js/hammer';
-import log from '../../../helpers/log';
-import device from '../../../helpers/device';
-import dateHelp from '../../../helpers/date';
+import Log from '../../../helpers/log';
+import Device from '../../../helpers/device';
+import DateHelp from '../../../helpers/date';
 import Gallery from '../../common/gallery';;
-import stringHelp from '../../../helpers/string';
+import StringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 
 
@@ -36,7 +36,7 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   initialize() {
-    this.template = JST[`records/list/record${(device.isMobile() ? '_mobile' : '')}`];
+    this.template = JST[`records/list/record${(Device.isMobile() ? '_mobile' : '')}`];
   },
 
   photoView(e) {
@@ -58,11 +58,11 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   onRender() {
-    log('Records:List:MainView: rendering a record');
+    Log('Records:List:MainView: rendering a record');
 
     // add mobile swipe events
     // early return
-    if (!device.isMobile()) return;
+    if (!Device.isMobile()) return;
 
     this.$record = this.$el.find('a');
     this.docked = false;
@@ -89,7 +89,7 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   remove() {
-    log('Records:MainView: removing a record');
+    Log('Records:MainView: removing a record');
     // removing the last element leaves emptyView + fading out entry for a moment
     if (this.model.collection.length >= 1) {
       const that = this;
@@ -105,7 +105,7 @@ const RecordView = Marionette.ItemView.extend({
   serializeData() {
     const recordModel = this.model;
     const occ = recordModel.occurrences.at(0);
-    const date = dateHelp.print(recordModel.get('date'));
+    const date = DateHelp.print(recordModel.get('date'));
     const specie = occ.get('taxon') || {};
     const images = occ.images;
     let img = images.length && images.at(0).get('thumbnail');
@@ -132,8 +132,8 @@ const RecordView = Marionette.ItemView.extend({
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
       date,
       taxon,
-      number: occ.get('number') && stringHelp.limit(occ.get('number')),
-      stage: occ.get('stage') && stringHelp.limit(occ.get('stage')),
+      number: occ.get('number') && StringHelp.limit(occ.get('number')),
+      stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
       img: img ? `<img src="${img}"/>` : '',
     };

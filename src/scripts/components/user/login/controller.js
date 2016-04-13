@@ -4,8 +4,8 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import App from '../../../app';
-import log from '../../../helpers/log';
-import device from '../../../helpers/device';
+import Log from '../../../helpers/log';
+import Device from '../../../helpers/device';
 import CONFIG from 'config'; // Replaced with alias
 import userModel from '../../common/user_model';
 import MainView from './main_view';
@@ -13,7 +13,7 @@ import HeaderView from '../../common/header_view';
 
 const API = {
   show() {
-    log('User:Register:Controller: showing');
+    Log('User:Register:Controller: showing');
     // don't show if logged in
     if (userModel.hasLogIn()) {
       window.history.back();
@@ -32,7 +32,7 @@ const API = {
     App.regions.header.show(headerView);
 
     mainView.on('form:submit', (data) => {
-      if (!device.isOnline()) {
+      if (!Device.isOnline()) {
         App.regions.dialog.show({
           title: 'Sorry',
           body: 'Looks like you are offline!',
@@ -47,14 +47,14 @@ const API = {
 
         API.login(data, (err) => {
           if (err) {
-            log(err, 'e');
+            Log(err, 'e');
 
             switch (err.xhr.status) {
               case 401:
                 // unauthorised
                 break;
               default:
-                log(`login:submit: ${err.xhr.status} ${err.thrownError}.`, 'e');
+                Log(`login:submit: ${err.xhr.status} ${err.thrownError}.`, 'e');
             }
 
             let response = '';
@@ -90,7 +90,7 @@ const API = {
    * appname and appsecret for the mentioned module.
    */
   login(data, callback) {
-    log('User:Login:Controller: logging in');
+    Log('User:Login:Controller: logging in');
     const person = {
       // user logins
       email: data.email,
@@ -139,7 +139,7 @@ const API = {
         surname: lines[2],
       };
     }
-    log('login:extractdetails: problems with received secret.', 'w');
+    Log('login:extractdetails: problems with received secret.', 'w');
     return null;
   },
 };

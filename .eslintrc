@@ -14,5 +14,9 @@
     "describe": true,
     "it": true,
     "expect": true,
+
+    "cordova": true,
+    "StatusBar": true,
+    "splashscreen": true,
   }
 }

@@ -7,7 +7,7 @@
  * Note: Chrome has to have and ID of both Chrome and Safari therefore
  * Safari has to have an ID of only Safari and not Chrome
  *****************************************************************************/
-import log from './log';
+import Log from './log';
 
 const ua = navigator.userAgent.toLowerCase();
 
@@ -74,7 +74,7 @@ function isHomeMode() {
 
     return iOS || IE;
   } catch (err) {
-    log(err, 'e');
+    Log(err, 'e');
 
     return false;
   }
@@ -94,6 +94,27 @@ function isOnline() {
   return window.navigator.onLine;
 }
 
+function getVersion() {
+  if (window.cordova) {
+    return window.device.version;
+  }
+  return '';
+}
+
+function getPlatform() {
+  let devicePlatform;
+  if (window.cordova) {
+    devicePlatform = window.device.platform;
+  } else {
+    if (isAndroidChrome()) {
+      devicePlatform = 'Android';
+    } else if (isIOS()) {
+      devicePlatform = 'iOS';
+    }
+  }
+  return devicePlatform;
+}
+
 export default {
   is,
   detect,
@@ -105,5 +126,7 @@ export default {
   isHomeMode,
   isAndroid,
   isOnline,
+  getVersion,
+  getPlatform,
 };
 

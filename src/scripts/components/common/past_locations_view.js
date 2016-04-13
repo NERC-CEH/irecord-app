@@ -4,7 +4,7 @@ import Backbone from 'backbone';
 import Marionette from 'marionette';
 import Hammer from '../../../vendor/hammerjs/js/hammer';
 import JST from '../../JST';
-import device from '../../helpers/device';
+import Device from '../../helpers/device';
 
 const EmptyListView = Marionette.ItemView.extend({
   tagName: 'li',
@@ -37,7 +37,7 @@ const PastLocationView = Marionette.ItemView.extend({
 
   onRender() {
     // early return
-    if (!device.isMobile()) return;
+    if (!Device.isMobile()) return;
 
     this.$record = this.$el.find('.location');
     this.docked = false;

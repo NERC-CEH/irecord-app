@@ -4,9 +4,9 @@
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Morel from 'morel';
-import device from '../../../helpers/device';
+import Device from '../../../helpers/device';
 import ImageHelp from '../../../helpers/image';
-import log from '../../../helpers/log';
+import Log from '../../../helpers/log';
 import App from '../../../app';
 import appModel from '../../common/app_model';
 import userModel from '../../common/user_model';
@@ -19,16 +19,16 @@ let id;
 let record;
 const API = {
   show(recordID) {
-    log('Records:Edit:Controller: showing');
+    Log('Records:Edit:Controller: showing');
     id = recordID;
     recordManager.get(recordID, (err, recordModel) => {
       if (err) {
-        log(err, 'e');
+        Log(err, 'e');
       }
 
       // Not found
       if (!recordModel) {
-        log('No record model found', 'e');
+        Log('No record model found', 'e');
         App.trigger('404:show', { replace: true });
         return;
       }
@@ -67,7 +67,7 @@ const API = {
       });
 
       headerView.on('save', () => {
-        log('Records:Edit:Controller: save clicked');
+        Log('Records:Edit:Controller: save clicked');
 
         recordModel.setToSend((setError) => {
           if (setError) {
@@ -93,7 +93,7 @@ const API = {
             return;
           }
 
-          if (device.isOnline() && !userModel.hasLogIn()) {
+          if (Device.isOnline() && !userModel.hasLogIn()) {
             App.trigger('user:login', { replace: true });
             return;
           }
@@ -111,7 +111,7 @@ const API = {
       });
 
       footerView.on('photo:upload', (e) => {
-        log('Records:Edit:Controller: photo uploaded');
+        Log('Records:Edit:Controller: photo uploaded');
 
         const occurrence = recordModel.occurrences.at(0);
         // show loader
@@ -121,7 +121,7 @@ const API = {
       });
 
       footerView.on('childview:photo:delete', (view) => {
-        log('Records:Edit:Controller: photo deleted');
+        Log('Records:Edit:Controller: photo deleted');
 
         // show loader
         view.model.destroy(() => {
@@ -132,7 +132,7 @@ const API = {
 
       // android gallery/camera selection
       footerView.on('photo:selection', () => {
-        log('Records:Edit:Controller: photo selection');
+        Log('Records:Edit:Controller: photo selection');
 
         const occurrence = recordModel.occurrences.at(0);
 

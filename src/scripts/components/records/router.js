@@ -2,8 +2,8 @@
  * Record rounter.
  *****************************************************************************/
 import Marionette from 'marionette';
-import log from '../../helpers/log';
-import device from '../../helpers/device';
+import Log from '../../helpers/log';
+import Device from '../../helpers/device';
 import App from '../../app';
 import recordManager from '../common/record_manager';
 import userModel from '../common/user_model';
@@ -84,8 +84,8 @@ App.on('record:saved', () => {
 });
 
 function syncRecords() {
-  if (device.isOnline() && appModel.get('autosync')) {
-    log('Records:router: syncing all records');
+  if (Device.isOnline() && appModel.get('autosync')) {
+    Log('Records:router: syncing all records');
     recordManager.syncAll();
   }
 }
@@ -93,7 +93,7 @@ function syncRecords() {
 userModel.on('login', syncRecords);
 
 App.on('before:start', () => {
-  log('Records:router: initializing');
+  Log('Records:router: initializing');
   App.records.router = new Router();
 
   if (userModel.hasLogIn()) {

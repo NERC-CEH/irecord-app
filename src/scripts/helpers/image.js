@@ -3,14 +3,14 @@
  *****************************************************************************/
 import Morel from 'morel';
 import ImageModel from '../components/common/image';
-import log from './log';
+import Log from './log';
 import Error from './error';
 import device from './device';
 
 const Image = {
   deleteInternalStorage(name, callback) {
     let errorHandler = function (err) {
-      log(err, 'e');
+      Log(err, 'e');
       callback(err);
     }
     const dir = cordova.file.dataDirectory + (device.isIOS ? '' : 'files/');
@@ -20,7 +20,7 @@ const Image = {
         if (!fileEntry) return callback();
 
         fileEntry.remove(function() {
-          log('Helpers:Image: removed.');
+          Log('Helpers:Image: removed.');
           callback();
         }, errorHandler);
 
@@ -97,7 +97,7 @@ const Image = {
       });
       imageModel.addThumbnail((err) => {
         if (err) {
-          log(err, 'e');
+          Log(err, 'e');
           return;
         }
         callback(null, imageModel);

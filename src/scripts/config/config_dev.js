@@ -1,8 +1,8 @@
 /** ****************************************************************************
  * Main app development configuration file.
  *****************************************************************************/
-import locHelp from './helpers/location';
-import dateHelpers from './helpers/date';
+import LocHelp from './helpers/location';
+import DateHelp from './helpers/date';
 
 export default {
   version: '{APP_VER}', // replaced on build
@@ -49,7 +49,7 @@ export default {
           let accuracy = location.accuracy;
           if (location.source !== 'gps') {
             if (location.source === 'map') {
-              accuracy = locHelp.mapZoom2meters(location.accuracy);
+              accuracy = LocHelp.mapZoom2meters(location.accuracy);
             } else {
               accuracy = null;
             }
@@ -88,7 +88,7 @@ export default {
 
       date: {
         values: function (date) {
-          return dateHelpers.print(date);
+          return DateHelp.print(date);
         }
       }
     },

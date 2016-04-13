@@ -10,6 +10,11 @@ export default {
     return re.test(email);
   },
 
+  gridRef(gridref) {
+    const re = /^[A-Za-z]{1,2}\d{2}(?:(?:\d{2}){0,4})?$/;
+    return re.test(gridref);
+  },
+
   updateViewFormErrors($view, errors, selector) {
     const clearFormErrors = () => {
       $view.find('span.error').each((int, elem) => {
