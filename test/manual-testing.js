@@ -31,7 +31,7 @@ testing.resetRecordsStatus = function () {
 /**
  * Add a Dummy Record.
  */
-testing.addDummyRecord = function (count = 0, imageData, testID) {
+testing.addDummyRecord = function (count = 1, imageData, testID) {
   if (!imageData) {
     // create random image
     const canvas = document.createElement("canvas");
