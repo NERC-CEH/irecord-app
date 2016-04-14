@@ -37,6 +37,12 @@ App configuration is hosted in `src/conf.js`. **Note:** it should be done *befor
 ## Building
 
 - Install [NodeJS](http://nodejs.org/)
+- Install SASS 
+
+```bash
+gem install sass
+```
+
 - Get a copy of the code by running:
 
 ```bash
