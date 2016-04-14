@@ -36,6 +36,9 @@ const Image = {
       sourceType: window.Camera.PictureSourceType.CAMERA,
       // allow edit is unpredictable on Android and it should not be used!
       allowEdit: false,
+      quality: 40,
+      targetWidth: 1000,
+      targetHeight: 1000,
       destinationType: window.Camera.DestinationType.FILE_URI,
       encodingType: window.Camera.EncodingType.JPEG,
       saveToPhotoAlbum: true,
