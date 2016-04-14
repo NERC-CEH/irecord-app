@@ -1,4 +1,34 @@
-# Intro
+# Issues
+
+
+## Reporting a Bug
+1. Update to the most recent app version if possible. We may have already
+fixed your bug.
+
+2. Search for similar issues. It's possible somebody has encountered
+this bug already.
+
+The more information you provide, the easier it is for us to validate that
+there is a bug and the faster we'll be able to take action. In order to best help out with bugs, we need to know the following information in your bug submission:
+
+* **App version**: App Menu -> About (bottom of the page)
+* Your **device model** eg. Samsung Galaxy S7 
+* The **operating system** on the device eg. Android 4.4.1, iOS 9.2.1
+
+
+## Requesting a Feature
+
+1. Search for existing feature requests.
+
+2. Provide a clear and detailed explanation of the feature you want and why
+it's important to add.
+
+3. After discussing the feature you may choose to attempt a Pull Request. If
+you're at all able, start writing some code, that will speed the process
+along.
+
+
+# Development
 
 Here is some important information about the project workings and its development.
 
