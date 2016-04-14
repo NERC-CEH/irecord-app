@@ -3,7 +3,6 @@ node_js:
   - "4.1"
 before_install:
   - gem install sass
-  - npm install -g grunt-cli
   - npm install
 before_script:
   - "export DISPLAY=:99.0"
