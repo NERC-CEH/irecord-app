@@ -219,8 +219,8 @@ header .subtitle {
   padding-right: 2%;
 
   // on iPhone transform blanks the content when swiping up/down quickly
+  z-index: 0;
   & > * {
-    z-index: 0;
     -webkit-transform: none;
     -ms-transform: none;
     transform: none;
