@@ -2,6 +2,7 @@
  * Functions to work with images.
  *****************************************************************************/
 import Morel from 'morel';
+import _ from 'lodash';
 import ImageModel from '../components/common/image';
 import Log from './log';
 import Error from './error';
@@ -9,70 +10,74 @@ import device from './device';
 
 const Image = {
   deleteInternalStorage(name, callback) {
-    let errorHandler = function (err) {
+    function errorHandler(err) {
       Log(err, 'e');
       callback(err);
     }
     const dir = cordova.file.dataDirectory + (device.isIOS ? '' : 'files/');
-    window.resolveLocalFileSystemURL(dir, function(fileSystem) {
-      let relativePath = name.replace(fileSystem.nativeURL, '');
-      fileSystem.getFile(relativePath, {create:false}, function(fileEntry){
-        if (!fileEntry) return callback();
+    window.resolveLocalFileSystemURL(dir, (fileSystem) => {
+      const relativePath = name.replace(fileSystem.nativeURL, '');
+      fileSystem.getFile(relativePath, { create: false }, (fileEntry) => {
+        if (!fileEntry) {
+          callback();
+          return;
+        }
 
-        fileEntry.remove(function() {
+        fileEntry.remove(() => {
           Log('Helpers:Image: removed.');
           callback();
         }, errorHandler);
-
       }, errorHandler);
     }, errorHandler);
   },
 
   getImage(callback, options = {}) {
-    let cameraOptions = {
+    const cameraOptions = {
       sourceType: window.Camera.PictureSourceType.CAMERA,
-      //allow edit is unpredictable on Android and it should not be used!
+      // allow edit is unpredictable on Android and it should not be used!
       allowEdit: false,
       destinationType: window.Camera.DestinationType.FILE_URI,
-      encodingType : window.Camera.EncodingType.JPEG,
+      encodingType: window.Camera.EncodingType.JPEG,
       saveToPhotoAlbum: true,
       correctOrientation: true,
     };
 
     _.extend(cameraOptions, options);
 
-    const onError = () => {
+    function onError() {
       const error = Error('Error capturing photo');
       callback(error);
-    };
+    }
+
+    function fail(error) {
+      callback(error);
+    }
 
     function onSuccess(fileURI) {
+      let URI = fileURI;
       function copyFile(fileEntry) {
-        const name = Date.now() + '.jpeg';
+        const name = `${Date.now()}.jpeg`;
         const dir = cordova.file.dataDirectory + (device.isIOS ? '' : 'files/');
-        window.resolveLocalFileSystemURL(dir, function(fileSystem) {
-            // copy to app data directory
-            fileEntry.copyTo(
-              fileSystem,
-              name,
-              callback,
-              fail
-            );
-          },
-          fail);
+        window.resolveLocalFileSystemURL(dir, (fileSystem) => {
+          // copy to app data directory
+          fileEntry.copyTo(
+            fileSystem,
+            name,
+            callback,
+            fail
+          );
+        },
+        fail);
       }
 
-      function fail(error) {
-        callback(error);
-      }
       // for some reason when selecting from Android gallery
       // the prefix is missing
       if (device.isAndroid() &&
         options.sourceType === window.Camera.PictureSourceType.PHOTOLIBRARY) {
-        fileURI = `file://${fileURI}`;
+        URI = `file://${URI}`;
       }
 
-      window.resolveLocalFileSystemURL(fileURI, copyFile, fail);
+      window.resolveLocalFileSystemURL(URI, copyFile, fail);
     }
 
     navigator.camera.getPicture(onSuccess, onError, cameraOptions);
@@ -95,16 +100,17 @@ const Image = {
         width,
         height,
       });
-      imageModel.addThumbnail((err) => {
-        if (err) {
-          Log(err, 'e');
+
+      imageModel.addThumbnail((thumbErr) => {
+        if (thumbErr) {
+          Log(thumbErr, 'e');
           return;
         }
         callback(null, imageModel);
       });
     };
 
-    if (window.cordova){
+    if (window.cordova) {
       // don't resize, only get width and height
       Morel.Image.getDataURI(file, (err, data, type, width, height) => {
         success(null, file, 'jpeg', width, height);
