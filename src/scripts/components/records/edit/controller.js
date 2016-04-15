@@ -115,20 +115,42 @@ const API = {
 
         const occurrence = recordModel.occurrences.at(0);
         // show loader
-        API.addPhoto(occurrence, e.target.files[0], () => {
+        API.addPhoto(occurrence, e.target.files[0], (err) => {
           // hide loader
+          if (err) {
+            App.regions.dialog.error('Problem saving the occurrence.');
+          }
         });
       });
 
       footerView.on('childview:photo:delete', (view) => {
-        Log('Records:Edit:Controller: photo deleted');
+        App.regions.dialog.show({
+          title: 'Delete',
+          body: 'Are you sure you want to remove this photo from the record?' +
+          '</br><i><b>Note:</b> it will remain in the gallery.</i>',
+          buttons: [
+            {
+              title: 'Cancel',
+              onClick() {
+                App.regions.dialog.hide();
+              },
+            },
+            {
+              title: 'Delete',
+              class: 'btn-negative',
+              onClick() {
+                // show loader
+                view.model.destroy().then(() => {
+                  Log('Records:Edit:Controller: photo deleted');
 
-        // show loader
-        view.model.destroy(() => {
-          // hide loader
+                  // hide loader
+                  App.regions.dialog.hide();
+                });
+              },
+            },
+          ],
         });
       });
-
 
       // android gallery/camera selection
       footerView.on('photo:selection', () => {
@@ -143,7 +165,11 @@ const API = {
               title: 'Camera',
               onClick() {
                 ImageHelp.getImage((entry) => {
-                  API.addPhoto(occurrence, entry.nativeURL, ()=>{});
+                  API.addPhoto(occurrence, entry.nativeURL, (err) => {
+                    if (err) {
+                      App.regions.dialog.error('Problem saving the occurrence.');
+                    }
+                  });
                 });
                 App.regions.dialog.hide();
               },
@@ -152,7 +178,11 @@ const API = {
               title: 'Gallery',
               onClick() {
                 ImageHelp.getImage((entry) => {
-                  API.addPhoto(occurrence, entry.nativeURL, ()=>{});
+                  API.addPhoto(occurrence, entry.nativeURL, (err) => {
+                    if (err) {
+                      App.regions.dialog.error('Problem saving the occurrence.');
+                    }
+                  });
                 }, {
                   sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
                   saveToPhotoAlbum: false,
@@ -182,8 +212,12 @@ const API = {
 
       occurrence.save(null, {
         success: () => {
-          callback && callback();
-        }
+          callback();
+        },
+        error: (err) => {
+          Log(err, 'e');
+          callback(err);
+        },
       });
     });
   },

@@ -146,6 +146,10 @@ const API = {
 
             window.history.back();
           },
+          error: (err) => {
+            Log(err, 'e');
+            App.regions.dialog.error('Problem saving the sample.');
+          },
         });
       }
 
