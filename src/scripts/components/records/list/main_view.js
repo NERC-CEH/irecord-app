@@ -47,8 +47,8 @@ const RecordView = Marionette.ItemView.extend({
     this.model.occurrences.at(0).images.each((image, index) => {
       items.push({
         src: image.get('data'),
-        w: image.get('width'),
-        h: image.get('height'),
+        w: image.get('width') || 800,
+        h: image.get('height') || 800,
       });
     });
 

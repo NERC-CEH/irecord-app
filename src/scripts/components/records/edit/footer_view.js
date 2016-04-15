@@ -77,8 +77,8 @@ export default Marionette.CompositeView.extend({
 
       items.push({
         src: image.get('data'),
-        w: image.get('width'),
-        h: image.get('height'),
+        w: image.get('width') || 800,
+        h: image.get('height') || 800,
       });
     });
 

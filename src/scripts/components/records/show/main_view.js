@@ -6,9 +6,32 @@ import Morel from 'morel';
 import JST from '../../../JST';
 import DateHelp from '../../../helpers/date';
 import StringHelp from '../../../helpers/string';
+import Gallery from '../../common/gallery';
 
 export default Marionette.ItemView.extend({
   template: JST['records/show/main'],
+
+  events: {
+    'click img': 'photoView',
+  },
+
+  photoView(e) {
+    e.preventDefault();
+
+    const items = [];
+    const recordModel = this.model.get('recordModel');
+    recordModel.occurrences.at(0).images.each((image, index) => {
+      items.push({
+        src: image.get('data'),
+        w: image.get('width') || 800,
+        h: image.get('height') || 800,
+      });
+    });
+
+// Initializes and opens PhotoSwipe
+    var gallery = new Gallery(items);
+    gallery.init();
+  },
 
   serializeData() {
     const recordModel = this.model.get('recordModel');

@@ -580,7 +580,8 @@ button, input, select, textarea {
 
 // Gallery
 .ios .pswp__top-bar {
-  margin-top: 20px;
+  padding-top: 20px;
+  height: 64px;
 }
 
 .pswp__button--arrow--left,
