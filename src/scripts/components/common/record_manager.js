@@ -87,7 +87,10 @@ class Manager extends Morel {
         noneUsed = false;
         saving++;
         record.setToSend((error) => {
-          // todo: error
+          if (error) {
+            callback && callback(error);
+            return;
+          }
           saving--;
           if (saving === 0) {
             callback && callback();

@@ -119,7 +119,11 @@ const API = {
             Log('Settings:Menu:Controller: sending all records');
 
             // delete all
-            recordManager.setAllToSend(() => {
+            recordManager.setAllToSend((err) => {
+              if (err) {
+                App.regions.dialog.error(err);
+                return;
+              }
               App.regions.dialog.show({
                 title: 'Done!',
                 timeout: 1000,
