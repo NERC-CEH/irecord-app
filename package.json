@@ -3,7 +3,7 @@
   "title": "iRecord App",
   "description": "iRecord application.",
   "version": "1.0.0",
-  "build": "5",
+  "build": "6",
   "homepage": "https://m.irecord.org.uk",
   "author": {
     "name": "Karolis Kazlauskis",
