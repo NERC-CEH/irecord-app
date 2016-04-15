@@ -94,6 +94,13 @@ function isOnline() {
   return window.navigator.onLine;
 }
 
+function connectionWifi() {
+  if (window.cordova && window.device) {
+    return window.navigator.connection.type === window.Connection.WIFI;
+  }
+  return window.navigator.onLine;
+}
+
 function getVersion() {
   if (window.cordova) {
     return window.device.version;
@@ -126,6 +133,7 @@ export default {
   isHomeMode,
   isAndroid,
   isOnline,
+  connectionWifi,
   getVersion,
   getPlatform,
 };

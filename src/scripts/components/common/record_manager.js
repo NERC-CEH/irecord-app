@@ -25,7 +25,21 @@ const morelConfiguration = $.extend(CONFIG.morel.manager, {
   },
 });
 
-_.extend(Morel.prototype, {
+class Manager extends Morel {
+  syncAll(method, collection, options) {
+    if(!Device.connectionWifi()) {
+      options.timeout = 180000; // 3 min
+    }
+    Morel.prototype.syncAll.apply(this, arguments);
+  }
+
+  sync(method, collection, options) {
+    if(!Device.connectionWifi()) {
+      options.timeout = 180000; // 3 min
+    }
+    Morel.prototype.sync.apply(this, arguments);
+  }
+
   removeAllSynced(callback) {
     this.getAll((err, records) => {
       if (err) {
@@ -56,7 +70,7 @@ _.extend(Morel.prototype, {
         callback && callback();
       }
     });
-  },
+  }
 
   setAllToSend(callback) {
     const that = this;
@@ -86,8 +100,8 @@ _.extend(Morel.prototype, {
         callback && callback();
       }
     });
-  },
-});
+  }
+};
 
-const recordManager = new Morel(morelConfiguration);
+const recordManager = new Manager(morelConfiguration);
 export { recordManager as default };

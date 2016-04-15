@@ -98,7 +98,7 @@ const API = {
             return;
           }
 
-          recordManager.syncAll();
+          recordModel.save(null, { remote: true });
           App.trigger('record:saved');
         });
       });
