@@ -74,10 +74,12 @@ const Image = {
       }
 
       // for some reason when selecting from Android gallery
-      // the prefix is missing
+      // the prefix is sometimes missing
       if (device.isAndroid() &&
         options.sourceType === window.Camera.PictureSourceType.PHOTOLIBRARY) {
-        URI = `file://${URI}`;
+        if (!(/file:\/\//).test(URI)) {
+          URI = `file://${URI}`;
+        }
       }
 
       window.resolveLocalFileSystemURL(URI, copyFile, fail);
