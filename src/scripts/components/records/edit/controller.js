@@ -140,12 +140,14 @@ const API = {
               class: 'btn-negative',
               onClick() {
                 // show loader
-                view.model.destroy().then(() => {
-                  Log('Records:Edit:Controller: photo deleted');
+                view.model.destroy({
+                  success: () => {
+                    Log('Records:Edit:Controller: photo deleted');
 
-                  // hide loader
-                  App.regions.dialog.hide();
+                    // hide loader
+                  },
                 });
+                App.regions.dialog.hide();
               },
             },
           ],
