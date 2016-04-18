@@ -50,11 +50,16 @@ let API = {
           // invert the lock of the attribute
           // real value will be put on exit
           if (attr === 'number') {
-            appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
+            if (appModel.getAttrLock(attr)) {
+              appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
+            } else {
+              appModel.setAttrLock('number-ranges',
+                !appModel.getAttrLock('number-ranges'));
+            }
           } else {
-            appModel.setAttrLock('number-ranges',
-              !appModel.getAttrLock('number-ranges'));
+            appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
           }
+
         }
       });
 
