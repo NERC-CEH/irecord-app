@@ -75,6 +75,11 @@
 
 </div>
 
+<div class="range">
+  <input type="range" id="range" name="number" min="1" max="100" defaultValue="1">
+  <input type="number" id="rangeVal">
+</div>
+
 <!--<ul class="list">-->
 
   <!--<li class="item item-checkbox">-->

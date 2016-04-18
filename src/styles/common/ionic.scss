@@ -26,3 +26,11 @@
 .radio-icon.icon-check:before {
   color: $header-color;
 }
+
+// Range number input
+.range input[type="number"] {
+  flex: 0 0 50px;
+  background: none;
+  padding-left: 5px;
+  padding-right: 0;
+}
