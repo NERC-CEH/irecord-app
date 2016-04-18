@@ -49,12 +49,17 @@ let API = {
           Log('Records:Attr:Controller: lock clicked');
           // invert the lock of the attribute
           // real value will be put on exit
-          appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
+          if (attr === 'number') {
+            appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
+          } else {
+            appModel.setAttrLock('number-ranges',
+              !appModel.getAttrLock('number-ranges'));
+          }
         }
       });
 
       let onExit = () => {
-        Log('Records:Edit:Controller: exiting');
+        Log('Records:Attr:Controller: exiting');
         let values = mainView.getValues();
         API.save(attr, values, recordModel);
       };
@@ -96,11 +101,19 @@ let API = {
       case 'number':
         currentVal = occ.get('number');
 
-        // don't save default values
-        values.number = values.number === 'default' ? null : values.number;
-
         // todo:validate before setting up
-        occ.set('number', values.number);
+        if (values.number) {
+          occ.set('number', values.number);
+          occ.unset('number-ranges');
+        } else {
+
+          // don't save default values
+          values['number-ranges'] = values['number-ranges'] === 'default' ?
+            null : values['number-ranges'];
+
+          occ.set('number-ranges', values['number-ranges']);
+          occ.unset('number');
+        }
         break;
       case 'stage':
         currentVal = occ.get('stage');
@@ -125,15 +138,25 @@ let API = {
       success: () => {
         // update locked value if attr is locked
         let lockedValue = appModel.getAttrLock(attr);
-        if (lockedValue) {
-          if (values[attr] === 'default') {
-            appModel.setAttrLock(attr, null);
-          } else if (attr === 'date' &&
-            DateHelp.print(values[attr]) === DateHelp.print(new Date())) {
-            appModel.setAttrLock(attr, null);
-          } else if (lockedValue === true || lockedValue == currentVal) {
-            appModel.setAttrLock(attr, values[attr]);
+        if (lockedValue && values[attr] === 'default') {
+          appModel.setAttrLock(attr, null);
+        } else if (lockedValue && attr === 'date' &&
+          DateHelp.print(values[attr]) === DateHelp.print(new Date())) {
+          appModel.setAttrLock(attr, null);
+        } else if (attr === 'number') {
+          lockedValue = appModel.getAttrLock(attr);
+          if (!lockedValue) {
+            lockedValue = appModel.getAttrLock('number-ranges');
           }
+          if (lockedValue && values[attr]) {
+            appModel.setAttrLock(attr, values[attr]);
+            appModel.setAttrLock('number-ranges', null);
+          } else if (lockedValue) {
+            appModel.setAttrLock(attr, null);
+            appModel.setAttrLock('number-ranges', values['number-ranges']);
+          }
+        } else if (lockedValue && lockedValue === true || lockedValue == currentVal) {
+          appModel.setAttrLock(attr, values[attr]);
         }
 
         window.history.back();

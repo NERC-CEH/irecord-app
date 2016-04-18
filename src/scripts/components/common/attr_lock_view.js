@@ -18,6 +18,7 @@ export default Marionette.ItemView.extend({
     const appModel = this.model.get('appModel');
     const recordModel = this.model.get('recordModel');
     const occ = recordModel.occurrences.at(0);
+    let attr = this.options.attr;
 
     let value;
 
@@ -27,6 +28,13 @@ export default Marionette.ItemView.extend({
         // sample
         value = recordModel.get(this.options.attr);
         break;
+      case 'number':
+        value = occ.get(attr);
+        if (!appModel.isAttrLocked(attr, value)){
+          attr = 'number-ranges';
+          value = occ.get(attr);
+        }
+        break;
       default:
         // occurrence
         value = occ.get(this.options.attr);
@@ -34,8 +42,7 @@ export default Marionette.ItemView.extend({
 
     let locked = false;
     // check if the same value has been locked
-    locked = appModel.isAttrLocked(this.options.attr, value);
-
+    locked = appModel.isAttrLocked(attr, value);
 
     return {
       locked,

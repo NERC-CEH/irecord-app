@@ -55,6 +55,11 @@ export default Marionette.ItemView.extend({
     const locationPrint = recordModel.printLocation();
     const location = recordModel.get('location') || {};
 
+    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
+    if (!number) {
+      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+    }
+
     return {
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
       onDatabase: syncStatus === Morel.SYNCED,
@@ -63,7 +68,7 @@ export default Marionette.ItemView.extend({
       location: locationPrint,
       location_name: location.name,
       date: DateHelp.print(recordModel.get('date')),
-      number: occ.get('number') && StringHelp.limit(occ.get('number')),
+      number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
       images: occ.images,

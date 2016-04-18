@@ -99,6 +99,9 @@ export default {
         }
       },
       number: {
+        id: 16,
+      },
+      'number-ranges': {
         id: 379,
         values: {
           'default': 671,

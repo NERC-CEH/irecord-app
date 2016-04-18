@@ -39,21 +39,16 @@ export default Marionette.ItemView.extend({
   },
 
   events: {
+    'click input[type="radio"]': 'saveNumber',
     'input input[type="range"]': 'updateRangeInputValue',
     'change input[type="number"]': 'updateRangeSliderValue',
   },
 
-  triggers() {
-    switch (this.options.attr) {
-      case 'stage':
-      // fallthrough
-      case 'number':
-        return {
-          'click input[type="radio"]': 'save',
-        };
-      default:
-    }
-    return null;
+  saveNumber() {
+    // unset slider val
+    const $rangeOutput = this.$el.find('#rangeVal')
+    $rangeOutput.val('');
+    this.trigger('save');
   },
 
   getValues() {
@@ -67,12 +62,19 @@ export default Marionette.ItemView.extend({
         values[attr] = new Date(value);
         break;
       case 'number':
-        $inputs = this.$el.find('input');
-        $inputs.each((int, elem) => {
-          if ($(elem).prop('checked')) {
-            values[attr] = $(elem).val();
-          }
-        });
+        value = this.$el.find('#rangeVal').val();
+        if (value) {
+          // slider
+          values[attr] = value;
+        } else {
+          // ranges selection
+          $inputs = this.$el.find('input[type="radio"]');
+          $inputs.each((int, elem) => {
+            if ($(elem).prop('checked')) {
+              values['number-ranges'] = $(elem).val();
+            }
+          });
+        }
         break;
       case 'stage':
         $inputs = this.$el.find('input');
@@ -102,7 +104,13 @@ export default Marionette.ItemView.extend({
         templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
       case 'number':
-        templateData[occ.get('number')] = true;
+        const number = occ.get('number');
+        if (number) {
+          templateData.number = number;
+          templateData.numberPosition = logsl.position(number).toFixed(0);
+        } else {
+          templateData[occ.get('number-ranges')] = true;
+        }
         break;
       case 'stage':
         templateData[occ.get('stage')] = true;
@@ -124,14 +132,30 @@ export default Marionette.ItemView.extend({
 
     let value = logsl.position($input.val()).toFixed(0);
     $rangeOutput.val(value);
+
+    // unset ranges selection
+    const $inputs = this.$el.find('input[type="radio"]');
+    $inputs.each((int, elem) => {
+      $(elem).prop('checked', false);
+    });
   },
 
   updateRangeInputValue(e) {
     const $input = $(e.target);
+    if (!$input.val()) {
+      // no need to do anything on input clear
+      return;
+    }
     const $rangeOutput = this.$el.find('#rangeVal')
 
     let value = logsl.value($input.val()).toFixed(0);
     $rangeOutput.val(value);
+
+    // unset ranges selection
+    const $inputs = this.$el.find('input[type="radio"]');
+    $inputs.each((int, elem) => {
+      $(elem).prop('checked', false);
+    });
   },
 
   onShow() {
