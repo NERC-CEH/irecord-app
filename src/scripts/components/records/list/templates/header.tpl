@@ -2,6 +2,7 @@
   <a href="#info" class="icon icon-menu"></a>
 </div>
 <div class="pull-right">
+  <a href="#activities" class="icon icon-user-plus"></a>
   <div class="img-picker icon icon-camera">
     <input type="file" accept="image/*"/>
   </div>
