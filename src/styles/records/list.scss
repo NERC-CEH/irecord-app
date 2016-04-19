@@ -4,12 +4,12 @@
 
   .pull-right {
     width: 45%;
-    max-width: 200px;
+    max-width: 300px;
     background-color: $color-white;
     border-bottom: 1px solid $header-color;
 
     a {
-      width: 48%;
+      width: 31%;
       max-width: none;
 
       &:hover {
@@ -24,7 +24,7 @@
 }
 
 .img-picker {
-  width: 45%;
+  width: 31%;
   display: inline-block;
   text-align: center;
 
