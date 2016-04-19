@@ -80,6 +80,22 @@ describe('Taxon Search Engine', () => {
       });
     });
 
+    it('should find genus common names', (done) => {
+      searchEngine.search('Willow', (results) => {
+        expect(results).to.be.an('array');
+        let found = false;
+        results.forEach((result) => {
+          if (result.common_name === 'Willow') found = true;
+        });
+        expect(found).to.be.true;
+        searchEngine.search('Jumping spiders', (results) => {
+          expect(results).to.be.an('array');
+          expect(results.length).to.equal(1);
+          done();
+        });
+      });
+    });
+
     describe('genus', () => {
       it('should add all species belonging to it', (done) => {
         searchEngine.search('Puffinus', (results) => {
