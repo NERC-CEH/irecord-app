@@ -1,4 +1,4 @@
-import searchEngine from '../taxon_search_engine';
+import searchEngine from '../search/taxon_search_engine';
 import species_list from 'master_list.data';
 
 const NAME = 1;

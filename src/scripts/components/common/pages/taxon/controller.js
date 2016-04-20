@@ -11,7 +11,7 @@ import Sample from '../../sample';
 import Occurrence from '../../occurrence';
 import MainView from './main_view';
 import HeaderView from '../../header_view';
-import SpeciesSearchEngine from './taxon_search_engine';
+import SpeciesSearchEngine from './search/taxon_search_engine';
 
 const API = {
   show(recordID) {
