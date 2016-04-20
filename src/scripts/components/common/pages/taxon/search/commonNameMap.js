@@ -24,17 +24,18 @@ export default function () {
     }
   }
 
+  // go through all taxa in array
   for (let i = 1, length = species.length; i < length; i++) {
     const speciesEntry = species[i];
 
-    // if genus
+    // if genus or above
     if (typeof speciesEntry[GENUS_COMMON_INDEX] === 'string') {
       // genus has a common name
       addWord(speciesEntry[GENUS_COMMON_INDEX], i, GENUS_COMMON_INDEX);
       continue;
     }
 
-    // find species array
+    // find species array within genus object
     let speciesArray;
     let j = 0;
     for (let total = speciesEntry.length; j < total; j++) {
@@ -47,11 +48,13 @@ export default function () {
     if (speciesArray) {
       for (let k = 0, speciesLength = speciesArray.length; k < speciesLength; k++) {
         const speciesInArray = speciesArray[k];
+        // add common names
         if (speciesInArray[SPECIES_COMMON_INDEX]) {
           addWord(speciesInArray[SPECIES_COMMON_INDEX], i, j, k, SPECIES_COMMON_INDEX);
         }
+        // add synonyms
         if (speciesInArray[SPECIES_COMMON_SYN_INDEX]) {
-          addWord(speciesInArray[SPECIES_COMMON_INDEX], i, j, k, SPECIES_COMMON_SYN_INDEX);
+          addWord(speciesInArray[SPECIES_COMMON_SYN_INDEX], i, j, k, SPECIES_COMMON_SYN_INDEX);
         }
       }
     }

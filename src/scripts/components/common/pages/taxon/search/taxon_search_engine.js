@@ -15,12 +15,12 @@ const MAX = 20;
 const API = {
   init(callback) {
     function _prep() {
-      species = window['species_list'];
+      species = window.species_list;
       commonNamePointers = makeCommonNameMap();
       callback && callback();
     }
 
-    if (!window['species_list']) {
+    if (!window.species_list) {
       loading = true;
       require.ensure([], () => {
         loading = false;
