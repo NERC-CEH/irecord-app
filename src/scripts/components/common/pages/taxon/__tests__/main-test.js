@@ -52,6 +52,16 @@ describe('Taxon Search Engine', () => {
       });
     });
 
+    describe('common names', () => {
+      it('should look into middle names', (done) => {
+        searchEngine.search('woodpecker', (results) => {
+          expect(results).to.be.an('array');
+          expect(results.length  > 0).to.be.true;
+          done();
+        });
+      });
+    });
+
     it('should treat non alpha numeric characters as spaces', (done) => {
       // todo: check "Wakely's Dowd"
       searchEngine.search('Isle-of-Man Cabbage', (results) => {
@@ -175,7 +185,7 @@ describe('Taxon Search Engine', () => {
       it('should be an array', (done) => {
         searchEngine.search('blackbird', (results) => {
           expect(results).to.be.an('array');
-          expect(results.length).to.equal(1);
+          expect(results.length).to.equal(4);
           done();
         });
       });

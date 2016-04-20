@@ -250,54 +250,69 @@ const API = {
    * @param searchPhrase
    * @returns {Array}
    */
-  searchCommonNames: function (species, commonNamePointers, searchPhrase, results = [], maxResults = MAX) {
-    let searchWords = searchPhrase.split(' ');
+  searchCommonNames: function (species, commonNamePointersArray, searchPhrase, results = [], maxResults = MAX) {
+    const searchWords = searchPhrase.split(' ');
 
     // prepare first word regex
-    let firstWord = API._normalizeFirstWord(searchWords[0]);
-    let firstWordRegexStr = API._getFirstWordRegexString(firstWord);
-    let firstWordRegex = new RegExp(firstWordRegexStr, 'i');
+    const firstWord = API._normalizeFirstWord(searchWords[0]);
+    const firstWordRegexStr = API._getFirstWordRegexString(firstWord);
+    const firstWordRegex = new RegExp(firstWordRegexStr, 'i');
 
     // prepare other words regex
-    let otherWords = searchWords.splice(1).join(' ');
+    const otherWords = searchWords.splice(1).join(' ');
     let otherWordsRegexStr;
+    let otherWordsRegex;
     if (otherWords) {
       otherWordsRegexStr = API._getOtherWordsRegexString(otherWords);
+      otherWordsRegex = new RegExp(otherWordsRegexStr, 'i');
     }
 
-    let regex = new RegExp(firstWordRegexStr + (otherWordsRegexStr ? otherWordsRegexStr : ''), 'i');
+    // for each word
+    for (let wordCount = 0;
+         wordCount < commonNamePointersArray.length  && results.length < maxResults;
+         wordCount++) {
+      let commonNamePointers = commonNamePointersArray[wordCount];
+      let pointerArrayLength = commonNamePointers.length;
 
-    let pointerArrayLength = commonNamePointers.length;
+      // find first match in array
+      let pointers_array_index = API._findFirstMatching(commonNamePointers, searchPhrase, wordCount);
 
-    // find first match in array
-    let pointers_array_index = API._findFirstMatching(commonNamePointers, searchPhrase, true);
+      // go through all common name pointers
+      while (pointers_array_index &&
+      pointers_array_index < pointerArrayLength &&
+      results.length < maxResults) {
+        let p = commonNamePointers[pointers_array_index];
+        if (API._isGenusPointer(p)) {
+          let species_genus = species[p[0]];
+          let name = species_genus[p[1]];
+          name = name.split(/\s+/).slice(wordCount).join(' ');
+          // stop looking further if first name does not match
+          if (!firstWordRegex.test(name)) break;
 
-    // go through all pointers
-    while (pointers_array_index && pointers_array_index < pointerArrayLength && results.length < maxResults) {
-      let p = commonNamePointers[pointers_array_index];
-      if (API._isGenusPointer(p)) {
-        let genus = species[p[0]];
-        if (regex.test(genus[GENUS_COMMON_INDEX])) {
-          // check if matches full phrase
+          if (!otherWordsRegex || otherWordsRegex.test(name)) {
+            // check if matches full phrase
             let fullRes = {
               array_id: p[0],
               found_in_name: 'common_name',
-              warehouse_id: genus[WAREHOUSE_INDEX],
-              group: genus[GROUP_INDEX],
-              scientific_name: genus[SCI_NAME_INDEX],
-              common_name: genus[GENUS_COMMON_INDEX],
+              warehouse_id: species_genus[WAREHOUSE_INDEX],
+              group: species_genus[GROUP_INDEX],
+              scientific_name: species_genus[SCI_NAME_INDEX],
+              common_name: species_genus[GENUS_COMMON_INDEX],
             };
             results.push(fullRes);
+          }
+        } else {
+          let species_genus = species[p[0]];
+          let speciesEntry = species_genus[p[1]][p[2]];
+          // carry on while it matches the first name
+          let found_in_name = p[3] === SPECIES_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
+          let name = speciesEntry[p[3]];
+          name = name.split(/\s+/).slice(wordCount).join(' ');
 
-        }
-      } else {
-        let species_genus = species[p[0]];
-        let speciesEntry = species_genus[p[1]][p[2]];
-        // carry on while it matches the first name
-        let found_in_name = p[3] == SPECIES_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
-        if (firstWordRegex.test(speciesEntry[p[3]])) {
-          // check if matches full phrase
-          if (regex.test(speciesEntry[p[3]])) {
+          // stop looking further if first name does not match
+          if (!firstWordRegex.test(name)) break;
+
+          if (!otherWordsRegex || otherWordsRegex.test(name)) {
             let fullRes = {
               array_id: p[0],
               species_id: p[1],
@@ -306,16 +321,13 @@ const API = {
               group: species_genus[GROUP_INDEX],
               scientific_name: species_genus[SCI_NAME_INDEX] + ' ' + speciesEntry[SPECIES_SCI_NAME_INDEX],
               common_name: speciesEntry[SPECIES_COMMON_INDEX],
-              synonym: speciesEntry[SPECIES_COMMON_SYN_INDEX]
+              synonym: speciesEntry[SPECIES_COMMON_SYN_INDEX],
             };
             results.push(fullRes);
           }
-        } else {
-          // stop looking further if not found
-          break;
         }
+        pointers_array_index++;
       }
-      pointers_array_index++;
     }
     return results;
   },
@@ -353,26 +365,32 @@ const API = {
    * @param commonName true/false if provided common name pointer array
    * @returns index of the first match in the array
    */
-  _findFirstMatching: function (searchArray, searchPhrase, commonName = false) {
+  _findFirstMatching: function (searchArray, searchPhrase, wordCount) {
     let comparator = function (index) {
       let AFTER = -1, BEFORE = 1, EQUAL = 0;
       let value, prevValue;
 
       // get values to compare
-      if (!commonName) {
-        value = searchArray[index][SCI_NAME_INDEX].toLowerCase();
-        if (index > 0) {
-          prevValue = searchArray[index - 1][SCI_NAME_INDEX].toLowerCase();
-        }
-      } else {
+      if (wordCount >= 0 ) {
         // common name from pointer
         searchPhrase = searchPhrase.split(' ')[0];
         let p = searchArray[index];
 
         value = API._getCommonName(p);
+        // select word
+        value = value.split(' ')[wordCount];
+
+        // get a previous entry to compare against
         if (index > 0) {
           p = searchArray[index - 1];
           prevValue = API._getCommonName(p);
+          // select word
+          prevValue = prevValue.split(' ')[wordCount];
+        }
+      } else {
+        value = searchArray[index][SCI_NAME_INDEX].toLowerCase();
+        if (index > 0) {
+          prevValue = searchArray[index - 1][SCI_NAME_INDEX].toLowerCase();
         }
       }
 
@@ -411,7 +429,9 @@ const API = {
   _binarySearch: function (array, comparator, low, high) {
     // initial set up
     low = low || 0;
-    high = high || array.length;
+    if (high !== 0 && !high) {
+      high = array.length - 1;
+    }
 
     // checkup
     if (high < low) {
@@ -452,8 +472,21 @@ const API = {
    * Extract common names as pointers in an array
    */
   _makeCommonNameMap: function () {
-    let species_list = window['species_list'];
-    let common_names = [];
+    const species_list = window['species_list'];
+    const common_names = []; // eg. first second third
+
+    /**
+     * Splits a word and adds it to common names array
+     * @param word
+     * @param index
+     */
+    function addWord(word, ...index) {
+      const words = word.split(' ');
+      for (let i = 0; i < words.length; i++) {
+        common_names[i] = common_names[i] || [];
+        common_names[i].push(index)
+      }
+    }
 
     for (let i = 1, length = species_list.length; i < length; i++) {
       let speciesEntry = species_list[i];
@@ -461,7 +494,7 @@ const API = {
       // if genus
       if (typeof speciesEntry[GENUS_COMMON_INDEX] === 'string') {
         // genus has a common name
-        common_names.push([i, GENUS_COMMON_INDEX]);
+        addWord(speciesEntry[GENUS_COMMON_INDEX], i, GENUS_COMMON_INDEX);
         continue;
       }
 
@@ -479,27 +512,33 @@ const API = {
         for (let k = 0, species_length = species_array.length; k < species_length; k++) {
           let speciesInArray = species_array[k];
           if (speciesInArray[SPECIES_COMMON_INDEX]) {
-            common_names.push([i, j, k, SPECIES_COMMON_INDEX]);
+            addWord(speciesInArray[SPECIES_COMMON_INDEX], i, j, k, SPECIES_COMMON_INDEX);
           }
           if (speciesInArray[SPECIES_COMMON_SYN_INDEX]) {
-            common_names.push([i, j, k, SPECIES_COMMON_SYN_INDEX]);
+            addWord(speciesInArray[SPECIES_COMMON_INDEX], i, j, k, SPECIES_COMMON_SYN_INDEX);
           }
         }
       }
     }
 
-    common_names.sort(function (a, b) {
-      let spA = API._getCommonName(a);
-      let spB = API._getCommonName(b);
+    for (let nameCount = 0; nameCount < common_names.length; nameCount++) {
+      common_names[nameCount].sort(function (a, b) {
+        let spA = API._getCommonName(a);
+        let spB = API._getCommonName(b);
 
-      if (spA > spB) {
-        return 1;
-      } else if (spA < spB) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+        // sort by name count
+        spA = spA.split(' ')[nameCount];
+        spB = spB.split(' ')[nameCount];
+
+        if (spA > spB) {
+          return 1;
+        } else if (spA < spB) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    }
 
     return common_names;
   }
