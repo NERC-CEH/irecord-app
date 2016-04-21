@@ -30,14 +30,14 @@ class Manager extends Morel {
     if(!Device.connectionWifi()) {
       options.timeout = 180000; // 3 min
     }
-    Morel.prototype.syncAll.apply(this, arguments);
+    return Morel.prototype.syncAll.apply(this, arguments);
   }
 
   sync(method, collection, options) {
     if(!Device.connectionWifi()) {
       options.timeout = 180000; // 3 min
     }
-    Morel.prototype.sync.apply(this, arguments);
+    return Morel.prototype.sync.apply(this, arguments);
   }
 
   removeAllSynced(callback) {

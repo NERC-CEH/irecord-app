@@ -1,4 +1,4 @@
-import searchEngine from '../taxon_search_engine';
+import searchEngine from '../search/taxon_search_engine';
 import species_list from 'master_list.data';
 
 const NAME = 1;
@@ -52,6 +52,16 @@ describe('Taxon Search Engine', () => {
       });
     });
 
+    describe('common names', () => {
+      it('should look into middle names', (done) => {
+        searchEngine.search('woodpecker', (results) => {
+          expect(results).to.be.an('array');
+          expect(results.length  > 0).to.be.true;
+          done();
+        });
+      });
+    });
+
     it('should treat non alpha numeric characters as spaces', (done) => {
       // todo: check "Wakely's Dowd"
       searchEngine.search('Isle-of-Man Cabbage', (results) => {
@@ -73,6 +83,22 @@ describe('Taxon Search Engine', () => {
         expect(results.length).to.equal(1);
 
         searchEngine.search('X Cupressocyparis', (results) => {
+          expect(results).to.be.an('array');
+          expect(results.length).to.equal(1);
+          done();
+        });
+      });
+    });
+
+    it('should find genus common names', (done) => {
+      searchEngine.search('Willow', (results) => {
+        expect(results).to.be.an('array');
+        let found = false;
+        results.forEach((result) => {
+          if (result.common_name === 'Willow') found = true;
+        });
+        expect(found).to.be.true;
+        searchEngine.search('Jumping spiders', (results) => {
           expect(results).to.be.an('array');
           expect(results.length).to.equal(1);
           done();
@@ -149,7 +175,15 @@ describe('Taxon Search Engine', () => {
             expect(result.warehouse_id).to.be.equal(208098);
             expect(result.common_name).to.be.equal('Giant Blackberry');
             expect(result.scientific_name).to.be.equal('Rubus armeniacus');
-            done();
+            searchEngine.search('cockle', (results) => {
+              expect(results).to.not.be.empty;
+              let found = false;
+              results.forEach((species) => {
+                if (species.common_name === 'Heart Cockle') found = true;
+              });
+              expect(found).to.be.true;
+              done();
+            });
           });
         });
       });
@@ -159,7 +193,7 @@ describe('Taxon Search Engine', () => {
       it('should be an array', (done) => {
         searchEngine.search('blackbird', (results) => {
           expect(results).to.be.an('array');
-          expect(results.length).to.equal(1);
+          expect(results.length).to.equal(5);
           done();
         });
       });
