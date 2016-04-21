@@ -104,12 +104,13 @@ export default Marionette.ItemView.extend({
         templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
       case 'number':
-        const number = occ.get('number');
+        let number = occ.get('number');
         if (number) {
           templateData.number = number;
           templateData.numberPosition = logsl.position(number).toFixed(0);
         } else {
-          templateData[occ.get('number-ranges')] = true;
+          number = occ.get('number-ranges') || 'default';
+          templateData[number] = true;
         }
         break;
       case 'stage':
