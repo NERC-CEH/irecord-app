@@ -25,7 +25,7 @@ export default {
 
   login: {
     url: 'http://www.brc.ac.uk/irecord/user/mobile/register',
-    timeout: 80000
+    timeout: 30000
   },
 
   // mapping
