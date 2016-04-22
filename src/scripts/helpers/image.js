@@ -14,7 +14,7 @@ const Image = {
       Log(err, 'e');
       callback(err);
     }
-    const dir = cordova.file.dataDirectory + (device.isIOS ? '' : 'files/');
+    const dir = cordova.file.dataDirectory;
     window.resolveLocalFileSystemURL(dir, (fileSystem) => {
       const relativePath = name.replace(fileSystem.nativeURL, '');
       fileSystem.getFile(relativePath, { create: false }, (fileEntry) => {
@@ -60,7 +60,7 @@ const Image = {
       let URI = fileURI;
       function copyFile(fileEntry) {
         const name = `${Date.now()}.jpeg`;
-        const dir = cordova.file.dataDirectory + (device.isIOS ? '' : 'files/');
+        const dir = cordova.file.dataDirectory;
         window.resolveLocalFileSystemURL(dir, (fileSystem) => {
           // copy to app data directory
           fileEntry.copyTo(
