@@ -26,6 +26,7 @@
 .icon-settings:before { content: '\e818'; } /* '' */
 .icon-heart:before { content: '\e819'; } /* '' */
 .icon-logout:before { content: '\e81a'; } /* '' */
+.icon-users:before { content: '\e81b'; } /* '' */
 .icon-minus:before { content: '\e81c'; } /* '' */
 .icon-cancel:before { content: '\e81d'; } /* '' */
 .icon-export:before { content: '\e81e'; } /* '' */

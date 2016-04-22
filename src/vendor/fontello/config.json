@@ -221,6 +221,12 @@
       "css": "key",
       "code": 59398,
       "src": "linecons"
+    },
+    {
+      "uid": "ecf8edb95c3f45eb433b4cce7ba9f740",
+      "css": "users",
+      "code": 59419,
+      "src": "entypo"
     }
   ]
 }
