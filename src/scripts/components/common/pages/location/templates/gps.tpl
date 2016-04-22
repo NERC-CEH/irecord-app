@@ -8,7 +8,7 @@
 </div>
 
 <div class="warning-message">
-  <p>Locking GPS location will lock the location name only.</p>
+  <p>Locking a GPS sourced location will lock the location name only.</p>
 </div>
 
 <div class="input-row">
