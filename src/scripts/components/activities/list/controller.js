@@ -1,32 +1,77 @@
 /*******************************************************************************
  * Activities List controller.
  ******************************************************************************/
+import $ from 'jquery';
 import Backbone from 'backbone';
 import Log from '../../../helpers/log';
 import App from '../../../app';
 import MainView from './main_view';
 import HeaderView from '../../common/header_view';
 import appModel from '../../common/app_model';
+import userModel from '../../common/user_model';
+import CONFIG from 'config'; // Replaced with alias
+import LoaderView from '../../common/loader_view';
 
 var ActivityRecord = Backbone.Model.extend({
   defaults: {
-    title: 'My activity default'
+    id: null,
+    title: '',
+    description: '',
+    type: '',
+    initiallyChecked: false
   }
 });
 
 const API = {
   show() {
     Log('Activities:Controller: showing');
+    const loaderView = new LoaderView();
+    App.regions.main.show(loaderView);
 
     // MAIN
-    var activitiesList = new Backbone.Collection();
-    const mainView = new MainView({
-      collection: activitiesList,
-      appModel
+    var data = {
+      "report": "library/groups/groups_for_page.xml",
+      "currentUser": 3, // userModel.,
+      "path": "enter-record-list",
+      "email": userModel.email,
+      "appname": CONFIG.morel.manager.appname,
+      "appsecret": CONFIG.morel.manager.appsecret
+    };
+    $.ajax({
+      url: CONFIG.report.url,
+      type: 'POST',
+      data: data,
+      dataType: 'JSON',
+      timeout: CONFIG.report.timeout,
+      success(receivedData) {
+        var activitiesList = new Backbone.Collection(),
+          currentGroupId = appModel.get('groupId');
+        const mainView = new MainView({
+          collection: activitiesList
+        });
+        activitiesList.add(new ActivityRecord({
+          title:"iRecord",
+          description:"Submit records to iRecord which are not part of any specific activity",
+          initiallyChecked: !currentGroupId
+        }));
+        $.each(receivedData, function() {
+          this.initiallyChecked = currentGroupId===this.id;
+          activitiesList.add(new ActivityRecord(this));
+        });
+        App.regions.main.show(mainView);
+        let onExit = () => {
+          Log('Activities:List:Controller: exiting');
+          let groupId = mainView.getGroupId();
+          API.save(groupId);
+        };
+        // if exit on selection click
+        mainView.on('save', onExit);
+        headerView.onExit = onExit;
+      },
+      error(xhr, ajaxOptions, thrownError) {
+        Log('Activities load failed');
+      },
     });
-    activitiesList.add(new ActivityRecord({title:"iRecord"}));
-    activitiesList.add(new ActivityRecord({title:"Garden Bioblitz 2016"}));
-    App.regions.main.show(mainView);
 
     // HEADER
     const headerView = new HeaderView({
@@ -38,6 +83,11 @@ const API = {
 
     // FOOTER
     App.regions.footer.hide().empty();
+  },
+
+  save: function (groupId) {
+    appModel.set('groupId', groupId);
+    appModel.save();
   }
 };
 

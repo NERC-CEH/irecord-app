@@ -2,39 +2,43 @@
  * Activities main view.
  *****************************************************************************/
 import Marionette from 'marionette';
-import PastLocationsView from '../../common/activities_view';
 import JST from '../../../JST';
+import $ from 'jquery';
 
 const ActivityView = Marionette.ItemView.extend({
   tagName: 'li',
   className: 'table-view-cell',
-
-  initialize() {
-    this.template = JST['activities/list/activity'];
-  },
+  template: JST['activities/list/activity']
 });
 
 const NoActivitiesView = Marionette.ItemView.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: JST['activities/list/list-none'],
+  template: JST['activities/list/list-none']
 });
 
-export default Marionette.CollectionView.extend({
+export default Marionette.CompositeView.extend({
   id: 'activities-list',
-  tagName: 'ul',
   className: 'table-view no-top',
   emptyView: NoActivitiesView,
   childView: ActivityView,
+  template: JST['activities/list/wrapper'],
+  childViewContainer: "ul",
 
-  // inverse the collection
-  attachHtml(collectionView, childView) {
-    collectionView.$el.prepend(childView.el);
-  },
-
-  childViewOptions() {
+  triggers() {
     return {
-      appModel: this.options.appModel,
+      'click input': 'save',
     };
   },
+
+  getGroupId() {
+    let $inputs, groupId = null;
+    $inputs = this.$el.find('input');
+    $inputs.each((int, elem) => {
+      if ($(elem).prop('checked')) {
+        groupId = $(elem).val();
+      }
+    });
+    return groupId;
+  }
 });

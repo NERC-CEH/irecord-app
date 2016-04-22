@@ -1,0 +1,7 @@
+<div class="info-message">
+  <p>Click on the activity below which you would like to participate in. Any
+  records you add from now on will be submitted to the chosen activity. You can
+  join in with more activities by logging in to iRecord and visiting the Record
+  &gt; Activities page</p>
+</div>
+<ul></ul>

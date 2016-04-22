@@ -28,6 +28,11 @@ export default {
     timeout: 80000
   },
 
+  report: {
+    url: 'http://www.brc.ac.uk/irecord/mobile/report',
+    timeout: 80000
+  },
+
   // mapping
   map: {
     API_KEY: '28994B5673A86451E0530C6CA40A91A5'

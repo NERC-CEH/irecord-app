@@ -15,7 +15,8 @@ const AppModel = Backbone.Model.extend({
     locations: [],
     attrLocks: {},
     autosync: true,
-    useGridRef: true
+    useGridRef: true,
+    groupId: ''
   },
 
   localStorage: new Store(CONFIG.name),
@@ -217,7 +218,7 @@ const AppModel = Backbone.Model.extend({
         default:
       }
     });
-  },
+  }
 });
 
 const appModel = new AppModel();
