@@ -73,7 +73,7 @@ const API = {
 
   deleteAllRecords() {
     let body = 'Are you sure you want to delete all submitted records?';
-    body += '</br><i><b>Note:</b> unsent and submitted ones will remain on the server.</i>';
+    body += '</br><i><b>Note:</b> submitted ones will remain on the server.</i>';
 
     App.regions.dialog.show({
       title: 'Delete All',
