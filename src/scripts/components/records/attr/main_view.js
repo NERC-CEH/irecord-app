@@ -9,22 +9,46 @@ import StringHelp from '../../../helpers/string';
 import Log from '../../../helpers/log';
 import JST from '../../../JST';
 
+// http://stackoverflow.com/questions/846221/logarithmic-slider
+function LogSlider(options) {
+  options = options || {};
+  this.minpos = options.minpos || 0;
+  this.maxpos = options.maxpos || 100;
+  this.minlval = Math.log(options.minval || 1);
+  this.maxlval = Math.log(options.maxval || 100000);
+
+  this.scale = (this.maxlval - this.minlval) / (this.maxpos - this.minpos);
+}
+
+LogSlider.prototype = {
+  // Calculate value from a slider position
+  value: function(position) {
+    return Math.exp((position - this.minpos) * this.scale + this.minlval);
+  },
+  // Calculate slider position from a value
+  position: function(value) {
+    return this.minpos + (Math.log(value) - this.minlval) / this.scale;
+  }
+};
+
+var logsl = new LogSlider({maxpos: 100, minval: 1, maxval: 500});
+
 export default Marionette.ItemView.extend({
   initialize(options) {
     this.template = JST[`records/attr/${options.attr}`];
   },
 
-  triggers() {
-    switch (this.options.attr) {
-      case 'stage':
-      // fallthrough
-      case 'number':
-        return {
-          'click input': 'save',
-        };
-      default:
-    }
-    return null;
+  events: {
+    'click input[type="radio"]': 'saveNumber',
+    'input input[type="range"]': 'updateRangeInputValue',
+    'change input[type="number"]': 'updateRangeSliderValue',
+  },
+
+  saveNumber() {
+    // unset slider val
+    const $rangeOutput = this.$el.find('#rangeVal')
+    $rangeOutput.val('');
+    this.trigger('save');
   },
 
   getValues() {
@@ -38,12 +62,19 @@ export default Marionette.ItemView.extend({
         values[attr] = new Date(value);
         break;
       case 'number':
-        $inputs = this.$el.find('input');
-        $inputs.each((int, elem) => {
-          if ($(elem).prop('checked')) {
-            values[attr] = $(elem).val();
-          }
-        });
+        value = this.$el.find('#rangeVal').val();
+        if (value) {
+          // slider
+          values[attr] = value;
+        } else {
+          // ranges selection
+          $inputs = this.$el.find('input[type="radio"]');
+          $inputs.each((int, elem) => {
+            if ($(elem).prop('checked')) {
+              values['number-ranges'] = $(elem).val();
+            }
+          });
+        }
         break;
       case 'stage':
         $inputs = this.$el.find('input');
@@ -73,7 +104,14 @@ export default Marionette.ItemView.extend({
         templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
       case 'number':
-        templateData[occ.get('number')] = true;
+        let number = occ.get('number');
+        if (number) {
+          templateData.number = number;
+          templateData.numberPosition = logsl.position(number).toFixed(0);
+        } else {
+          number = occ.get('number-ranges') || 'default';
+          templateData[number] = true;
+        }
         break;
       case 'stage':
         templateData[occ.get('stage')] = true;
@@ -89,7 +127,40 @@ export default Marionette.ItemView.extend({
     return templateData;
   },
 
+  updateRangeSliderValue(e) {
+    const $input = $(e.target);
+    const $rangeOutput = this.$el.find('#range')
+
+    let value = logsl.position($input.val()).toFixed(0);
+    $rangeOutput.val(value);
+
+    // unset ranges selection
+    const $inputs = this.$el.find('input[type="radio"]');
+    $inputs.each((int, elem) => {
+      $(elem).prop('checked', false);
+    });
+  },
+
+  updateRangeInputValue(e) {
+    const $input = $(e.target);
+    if (!$input.val()) {
+      // no need to do anything on input clear
+      return;
+    }
+    const $rangeOutput = this.$el.find('#rangeVal')
+
+    let value = logsl.value($input.val()).toFixed(0);
+    $rangeOutput.val(value);
+
+    // unset ranges selection
+    const $inputs = this.$el.find('input[type="radio"]');
+    $inputs.each((int, elem) => {
+      $(elem).prop('checked', false);
+    });
+  },
+
   onShow() {
+    const that = this;
     switch (this.options.attr) {
       case 'date':
         // this.$el.find('input').focus();

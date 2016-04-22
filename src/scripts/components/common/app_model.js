@@ -210,6 +210,9 @@ const AppModel = Backbone.Model.extend({
         case 'number':
           occurrence.set('number', val);
           break;
+        case 'number-ranges':
+          occurrence.set('number-ranges', val);
+          break;
         case 'stage':
           occurrence.set('stage', val);
           break;

@@ -36,13 +36,23 @@ export default Marionette.ItemView.extend({
     const locationPrint = recordModel.printLocation();
     const location = recordModel.get('location') || {};
 
+    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
+    if (!numberLock) {
+      numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
+    }
+
     const attrLocks = {
       date: appModel.isAttrLocked('date', recordModel.get('date')),
       location: appModel.isAttrLocked('location', recordModel.get('location')),
-      number: appModel.isAttrLocked('number', occ.get('number')),
+      number: numberLock,
       stage: appModel.isAttrLocked('stage', occ.get('stage')),
       comment: appModel.isAttrLocked('comment', occ.get('comment')),
     };
+
+    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
+    if (!number) {
+      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+    }
 
     return {
       id: recordModel.id || recordModel.cid,
@@ -53,7 +63,7 @@ export default Marionette.ItemView.extend({
       location: locationPrint,
       location_name: location.name,
       date: DateHelp.print(recordModel.get('date')),
-      number: occ.get('number') && StringHelp.limit(occ.get('number')),
+      number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
       locks: attrLocks,

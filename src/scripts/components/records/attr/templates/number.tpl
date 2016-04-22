@@ -1,10 +1,14 @@
 <div class="info-message">
   <p>How many individuals of this type?</p>
 </div>
-
+<div class="range">
+  <input type="range" id="range" name="number" min="1" max="100" value="<%- obj.numberPosition || 1 %>">
+  <input type="number" id="rangeVal" value="<%- obj.number %>">
+</div>
 <div class="list">
   <label class="item item-radio">
-    <input type="radio" name="group" value="default" <%- !_.keys(obj).length || obj['default'] ? 'checked' : ''%>>
+    <input type="radio" name="group" value="default"
+    <%- !_.keys(obj).length || obj['default'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
         Present

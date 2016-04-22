@@ -122,6 +122,11 @@ const RecordView = Marionette.ItemView.extend({
     const locationPrint = recordModel.printLocation();
     const location = recordModel.get('location') || {};
 
+    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
+    if (!number) {
+      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+    }
+
     return {
       id: recordModel.id || recordModel.cid,
       saved: recordModel.metadata.saved,
@@ -132,7 +137,7 @@ const RecordView = Marionette.ItemView.extend({
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
       date,
       taxon,
-      number: occ.get('number') && StringHelp.limit(occ.get('number')),
+      number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
       img: img ? `<img src="${img}"/>` : '',
