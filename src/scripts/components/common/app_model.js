@@ -16,7 +16,8 @@ const AppModel = Backbone.Model.extend({
     attrLocks: {},
     autosync: true,
     useGridRef: true,
-    groupId: ''
+    groupId: '',
+    activities: null
   },
 
   localStorage: new Store(CONFIG.name),

@@ -28,51 +28,6 @@ const API = {
     const loaderView = new LoaderView();
     App.regions.main.show(loaderView);
 
-    // MAIN
-    var data = {
-      "report": "library/groups/groups_for_page.xml",
-      "currentUser": 3, // userModel.,
-      "path": "enter-record-list",
-      "email": userModel.email,
-      "appname": CONFIG.morel.manager.appname,
-      "appsecret": CONFIG.morel.manager.appsecret
-    };
-    $.ajax({
-      url: CONFIG.report.url,
-      type: 'POST',
-      data: data,
-      dataType: 'JSON',
-      timeout: CONFIG.report.timeout,
-      success(receivedData) {
-        var activitiesList = new Backbone.Collection(),
-          currentGroupId = appModel.get('groupId');
-        const mainView = new MainView({
-          collection: activitiesList
-        });
-        activitiesList.add(new ActivityRecord({
-          title:"iRecord",
-          description:"Submit records to iRecord which are not part of any specific activity",
-          initiallyChecked: !currentGroupId
-        }));
-        $.each(receivedData, function() {
-          this.initiallyChecked = currentGroupId===this.id;
-          activitiesList.add(new ActivityRecord(this));
-        });
-        App.regions.main.show(mainView);
-        let onExit = () => {
-          Log('Activities:List:Controller: exiting');
-          let groupId = mainView.getGroupId();
-          API.save(groupId);
-        };
-        // if exit on selection click
-        mainView.on('save', onExit);
-        headerView.onExit = onExit;
-      },
-      error(xhr, ajaxOptions, thrownError) {
-        Log('Activities load failed');
-      },
-    });
-
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
@@ -83,6 +38,69 @@ const API = {
 
     // FOOTER
     App.regions.footer.hide().empty();
+
+    // MAIN
+    /**
+     * Method for loading the activities into the view, either from the warehouse
+     * or the copy cached in the app model.
+     * @param activitiesData Array of activity objects with id, description and title.
+     */
+    var showActivities = function(activitiesData) {
+      var activitiesList = new Backbone.Collection(),
+        currentGroupId = appModel.get('groupId');
+      const mainView = new MainView({
+        collection: activitiesList
+      });
+      activitiesList.add(new ActivityRecord({
+        title:"iRecord",
+        description:"Submit records to iRecord which are not part of any specific activity",
+        initiallyChecked: !currentGroupId
+      }));
+      $.each(activitiesData, function() {
+        this.initiallyChecked = currentGroupId===this.id;
+        activitiesList.add(new ActivityRecord(this));
+      });
+      App.regions.main.show(mainView);
+      let onExit = () => {
+        Log('Activities:List:Controller: exiting');
+        let groupId = mainView.getGroupId();
+        API.save(groupId);
+      };
+      // if exit on selection click
+      mainView.on('save', onExit);
+      headerView.onExit = onExit;
+    };
+
+    // Don't reload the activities if the user has already loaded them
+    var activitiesData = appModel.get('activities');
+    if (activitiesData===null) {
+      var data = {
+        "report": "library/groups/groups_for_page.xml",
+        "currentUser": 3, // userModel.,
+        "path": "enter-record-list",
+        "email": userModel.email,
+        "appname": CONFIG.morel.manager.appname,
+        "appsecret": CONFIG.morel.manager.appsecret
+      };
+
+      $.ajax({
+        url: CONFIG.report.url,
+        type: 'POST',
+        data: data,
+        dataType: 'JSON',
+        timeout: CONFIG.report.timeout,
+        success(receivedData) {
+          showActivities(receivedData);
+          appModel.set('activities', receivedData);
+          appModel.save();
+        },
+        error(xhr, ajaxOptions, thrownError) {
+          Log('Activities load failed');
+        },
+      });
+    } else {
+      showActivities(activitiesData);
+    }
   },
 
   save: function (groupId) {
