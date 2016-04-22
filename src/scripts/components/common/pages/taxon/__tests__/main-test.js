@@ -175,6 +175,8 @@ describe('Taxon Search Engine', () => {
             expect(result.warehouse_id).to.be.equal(208098);
             expect(result.common_name).to.be.equal('Giant Blackberry');
             expect(result.scientific_name).to.be.equal('Rubus armeniacus');
+
+           // specific cases
             searchEngine.search('cockle', (results) => {
               expect(results).to.not.be.empty;
               let found = false;
@@ -182,7 +184,16 @@ describe('Taxon Search Engine', () => {
                 if (species.common_name === 'Heart Cockle') found = true;
               });
               expect(found).to.be.true;
-              done();
+
+              searchEngine.search('blackthorn', (results) => {
+                expect(results).to.not.be.empty;
+                let found = false;
+                results.forEach((species) => {
+                  if (species.common_name === 'Blackthorn') found = true;
+                });
+                expect(found).to.be.true;
+                done();
+              });
             });
           });
         });
