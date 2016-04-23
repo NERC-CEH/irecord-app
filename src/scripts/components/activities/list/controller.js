@@ -105,7 +105,12 @@ const API = {
 
   save: function (groupId) {
     appModel.set('groupId', groupId);
-    appModel.save();
+    appModel.save(null, {
+      success: () => {
+        window.history.back();
+      }
+    });
+
   }
 };
 
