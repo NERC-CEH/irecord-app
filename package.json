@@ -1,10 +1,11 @@
 {
   "name": "irecord-app",
+  "id": "uk.ac.ceh.ir",
   "title": "iRecord App",
   "description": "iRecord application.",
   "version": "1.0.0",
   "build": "7",
-  "homepage": "https://m.irecord.org.uk",
+  "homepage": "https://irecord.org.uk",
   "author": {
     "name": "Karolis Kazlauskis",
     "email": "karkaz@ceh.ac.uk",
