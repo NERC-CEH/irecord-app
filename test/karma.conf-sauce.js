@@ -29,17 +29,16 @@ var sauceBrowsers = _.reduce([
 
   ['microsoftedge', '20.10240', 'Windows 10'],
   ['internet explorer', '11', 'Windows 10'],
-  ['internet explorer', '10', 'Windows 8'],
 
   ['android', '5.1'],
   ['android', '5'],
   ['android', '4.4'],
-  ['android', '4.3'],
-  ['android', '4.2'],
-  ['android', '4.1'],
+  //['android', '4.3'],
+  //['android', '4.2'],
+  //['android', '4.1'],
 
-  ['safari', '9'],
-  ['safari', '8.0', 'OS X 10.10'],
+  //['safari', '9'],
+  //['safari', '8.0', 'OS X 10.10'],
 
 ], function (memo, platform) {
   // internet explorer -> ie
