@@ -24,8 +24,8 @@ export default {
   },
 
   login: {
-    url: 'http://www.brc.ac.uk/irecord/user/mobile/register',
-    timeout: 80000
+    url: 'https://www.brc.ac.uk/irecord/user/mobile/register',
+    timeout: 30000
   },
 
   report: {
@@ -41,7 +41,7 @@ export default {
   // morel configuration
   morel:{
     manager: {
-      url: 'http://www.brc.ac.uk/irecord/mobile/submit',
+      url: 'https://www.brc.ac.uk/irecord/mobile/submit',
       appname: 'ir',
       appsecret: 'irecordApp123',
       website_id: 23,

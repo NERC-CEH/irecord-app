@@ -90,13 +90,12 @@ export default Morel.Sample.extend({
     const invalids = this.validate();
     if (invalids) {
       this.metadata.saved = false;
-
-      callback && callback(invalids);
-      return;
+      callback && callback(); // no error for invalid
+      return invalids;
     }
 
     // save record
-    this.save(null, {
+     return this.save(null, {
       success: () => {
         callback();
       },

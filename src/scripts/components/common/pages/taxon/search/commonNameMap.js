@@ -32,7 +32,6 @@ export default function () {
     if (typeof speciesEntry[GENUS_COMMON_INDEX] === 'string') {
       // genus has a common name
       addWord(speciesEntry[GENUS_COMMON_INDEX], i, GENUS_COMMON_INDEX);
-      continue;
     }
 
     // find species array within genus object
