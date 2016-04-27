@@ -136,7 +136,7 @@ const API = {
       const occurrence = new Occurrence();
       occurrence.addImage(image);
 
-      const sample = new Sample();
+      const sample = new Sample({"group": appModel.get('groupId')});
       sample.addOccurrence(occurrence);
 
       // append locked attributes
