@@ -47,7 +47,7 @@ const API = {
      */
     var showActivities = function(activitiesData) {
       var activitiesList = new Backbone.Collection(),
-        currentGroupId = appModel.get('groupId');
+          currentGroupId = appModel.get('groupId');
       const mainView = new MainView({
         collection: activitiesList
       });
