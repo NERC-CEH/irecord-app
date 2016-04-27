@@ -15,6 +15,21 @@ $.extend(true, Morel.Sample.keys, CONFIG.morel.sample);
 export default Morel.Sample.extend({
   constructor() {
     this.manager = recordManager;
+    // Attach the current group/activity name to the sample
+    // @todo Check with Karolis, does this cause performance issues, and is
+    // it OK to chuck group_title into the sample attributes like this?
+    if (arguments.length && arguments[0]['group'] && appModel.get('activities')) {
+      let activities = appModel.get('activities'),
+          group = arguments[0]['group'],
+          group_title = typeof arguments[0]['group_title']!=="undefined" ?
+              arguments[0]['group_title'] : 'unknown';
+      $.each(activities, function() {
+        if (this.id===group) {
+          group_title = this.title;
+        }
+      });
+      arguments[0]['group_title'] = group_title;
+    }
     Morel.Sample.prototype.constructor.apply(this, arguments);
   },
 
