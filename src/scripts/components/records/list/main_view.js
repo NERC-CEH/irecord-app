@@ -91,7 +91,7 @@ const RecordView = Marionette.ItemView.extend({
   remove() {
     Log('Records:MainView: removing a record');
     // removing the last element leaves emptyView + fading out entry for a moment
-    if (this.model.collection.length >= 1) {
+    if (this.model.collection && this.model.collection.length >= 1) {
       const that = this;
       this.$el.addClass('shrink');
       setTimeout(() => {
