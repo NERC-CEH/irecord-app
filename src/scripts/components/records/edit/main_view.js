@@ -54,6 +54,13 @@ export default Marionette.ItemView.extend({
       number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
+    // show activity title. If activities available but nothing assigned to this record
+    // set the title to iRecord so that the user can change this.
+    let group_title = recordModel.get('group_title');
+    if (!group_title && appModel.get('activities').length) {
+      group_title = 'iRecord';
+    }
+
     return {
       id: recordModel.id || recordModel.cid,
       scientificName,
@@ -66,6 +73,7 @@ export default Marionette.ItemView.extend({
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
+      group_title: group_title,
       locks: attrLocks,
     };
   },
