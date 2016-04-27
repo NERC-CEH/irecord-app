@@ -10,6 +10,7 @@ import Analytics from './helpers/analytics';
 import Log from './helpers/log';
 import Device from './helpers/device';
 import CommonController from './components/common/controller';
+import recordManager from './components/common/record_manager';
 import DialogRegion from './components/common/dialog_region';
 import HideableRegion from './components/common/hideable_region';
 
@@ -97,6 +98,11 @@ App.on('start', function () {
         $('#loader').remove();
       });
     }
+
+    //$(document).ready(() => {
+    //  // For screenshots capture only
+    //  window.testing.screenshotsPopulate(recordManager);
+    //});
   }
 });
 
