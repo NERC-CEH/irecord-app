@@ -22,7 +22,7 @@ export default Marionette.ItemView.extend({
     const recordModel = this.model.get('recordModel');
     recordModel.occurrences.at(0).images.each((image, index) => {
       items.push({
-        src: image.get('data'),
+        src: image.getURL(),
         w: image.get('width') || 800,
         h: image.get('height') || 800,
       });
