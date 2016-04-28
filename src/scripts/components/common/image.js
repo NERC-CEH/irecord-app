@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import Morel from 'morel';
+import CONFIG from 'config';
 import ImageHelp from '../../helpers/image';
 import Device from '../../helpers/device';
 
@@ -19,7 +20,13 @@ export default Morel.Image.extend({
   getURL() {
     let URL = this.get('data');
     if (window.cordova && Device.isIOS()) {
-      URL = cordova.file.dataDirectory + URL;
+      if (CONFIG.build >= 8 && URL.search('file://') >= 0) {
+        // fix previous versions
+        const pathArray = URL.split('/');
+        URL = cordova.file.dataDirectory + pathArray[pathArray.length - 1];
+      } else {
+        URL = cordova.file.dataDirectory + URL;
+      }
     }
 
     return URL
