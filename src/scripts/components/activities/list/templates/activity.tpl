@@ -1,6 +1,6 @@
 <div class="activity">
   <label class="item item-radio">
-    <input type="radio" name="group" value="<%= obj.id %>" <%- obj.initiallyChecked ? 'checked' : ''%> />
+    <input type="radio" name="group" value="<%= obj.id %>" <%- obj.checked ? 'checked' : ''%> />
     <div class="radio-content">
       <div class="item-content">
         <%= obj.title %>
