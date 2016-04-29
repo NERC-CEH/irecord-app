@@ -2,20 +2,17 @@
  * Morel Sample.
  *****************************************************************************/
 import $ from 'jquery';
+import _ from 'lodash';
 import Morel from 'morel';
-import GPS from '../../helpers/gps';
-import LocHelp from '../../helpers/location';
 import CONFIG from 'config'; // Replaced with alias
 import recordManager from './record_manager';
 import Occurrence from './occurrence';
-import appModel from './app_model';
+import GeolocExtension from './sample_geoloc_ext';
 
-$.extend(true, Morel.Sample.keys, CONFIG.morel.sample);
-
-export default Morel.Sample.extend({
-  constructor() {
+let Sample = Morel.Sample.extend({
+  constructor(...args) {
     this.manager = recordManager;
-    Morel.Sample.prototype.constructor.apply(this, arguments);
+    Morel.Sample.prototype.constructor.apply(this, args);
   },
 
   Occurrence,
@@ -95,7 +92,7 @@ export default Morel.Sample.extend({
     }
 
     // save record
-     return this.save(null, {
+    return this.save(null, {
       success: () => {
         callback();
       },
@@ -106,75 +103,6 @@ export default Morel.Sample.extend({
   },
 });
 
-/**
- *
- * Sample geolocation events:
- * start, update, error, success, stop
- */
-const GPSextension = {
-  startGPS(accuracyLimit) {
-    const that = this;
-    const options = {
-      accuracyLimit,
-      onUpdate(location) {
-        that.trigger('geolocation', location);
-        that.trigger('geolocation:update', location);
-      },
-
-      callback(error, loc) {
-        let location = loc;
-        GPSextension.stopGPS.call(that, { silent: true });
-
-        if (error) {
-          that.trigger('geolocation:error', location);
-          return;
-        }
-
-        location.source = 'gps';
-        location.updateTime = new Date(); // track when gps was acquired
-        location.gridref = LocHelp.coord2grid(location, location.accuracy);
-
-        // extend old location to preserve its previous attributes like name or id
-        const oldLocation = that.get('location');
-        location = $.extend(oldLocation, location);
-
-        that.set('location', location);
-        that.save();
-
-        that.trigger('change:location');
-        that.trigger('geolocation', location);
-        that.trigger('geolocation:success', location);
-      },
-    };
-
-    this.locating = GPS.start(options);
-    that.trigger('geolocation');
-    that.trigger('geolocation:start');
-  },
-
-  stopGPS(options = {}) {
-    GPS.stop(this.locating);
-    delete this.locating;
-
-    if (!options.silent) {
-      this.trigger('geolocation');
-      this.trigger('geolocation:stop');
-    }
-  },
-
-  isGPSRunning() {
-    return this.locating || this.locating === 0;
-  },
-
-  /**
-   * Print pretty location.
-   * @returns {string}
-   */
-  printLocation() {
-    const location = this.get('location') || {};
-
-    return appModel.printLocation(location);
-  },
-};
-
-$.extend(true, Morel.Sample.prototype, GPSextension);
+Sample = Sample.extend(GeolocExtension);
+$.extend(true, Morel.Sample.keys, CONFIG.morel.sample);
+export { Sample as default };
