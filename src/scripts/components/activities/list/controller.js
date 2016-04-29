@@ -50,6 +50,10 @@ const API = {
     });
   },
 
+  /**
+   * Loads the list of available activities from the warehouse then updates the
+   * collection in the main view.
+   */
   loadActivities: function() {
     const loaderView = new LoaderView();
     App.regions.main.show(loaderView, {preventDestroy: true});
@@ -71,6 +75,8 @@ const API = {
       timeout: CONFIG.report.timeout,
       success(receivedData) {
         API.showActivities(receivedData);
+        // Cache the actities list in the app model to avoid hitting the web
+        // services on every page visit.
         appModel.set('activities', receivedData);
         appModel.save();
         App.regions.main.show(API.mainView);
@@ -123,7 +129,7 @@ const API = {
     API.mainView.on('save', onExit);
     headerView.onExit = onExit;
 
-    // Don't reload the activities if the user has already loaded them
+    // Don't reload the activities if the already cached in the app model.
     var activitiesData = appModel.get('activities');
     if (activitiesData===null) {
       API.loadActivities();
@@ -137,6 +143,7 @@ const API = {
     appModel.set('groupId', groupId);
     appModel.save(null, {
       success: () => {
+        // return to previous page after save
         window.history.back();
       }
     });
