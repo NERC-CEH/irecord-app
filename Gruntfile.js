@@ -225,6 +225,10 @@ module.exports = function exports(grunt) {
         dest: 'src/config_build.xml',
         replacements: [
           {
+            from: /\{ID\}/g, // string replacement
+            to: '<%= pkg.id %>',
+          },
+          {
             from: /\{APP_VER\}/g, // string replacement
             to: '<%= pkg.version %>',
           },
@@ -466,11 +470,6 @@ module.exports = function exports(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-karma');
 
-
-  // Grunt Configuration Function
-  grunt.registerTask('set_option', 'Set a option property.', (name, val) => {
-    grunt.option(name, val);
-  });
 
   // the default task can be run just by typing 'grunt' on the command line
   grunt.registerTask('init', [

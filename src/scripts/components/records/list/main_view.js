@@ -46,7 +46,7 @@ const RecordView = Marionette.ItemView.extend({
 
     this.model.occurrences.at(0).images.each((image, index) => {
       items.push({
-        src: image.get('data'),
+        src: image.getURL(),
         w: image.get('width') || 800,
         h: image.get('height') || 800,
       });
@@ -91,7 +91,7 @@ const RecordView = Marionette.ItemView.extend({
   remove() {
     Log('Records:MainView: removing a record');
     // removing the last element leaves emptyView + fading out entry for a moment
-    if (this.model.collection.length >= 1) {
+    if (this.model.collection && this.model.collection.length >= 1) {
       const that = this;
       this.$el.addClass('shrink');
       setTimeout(() => {
@@ -112,7 +112,7 @@ const RecordView = Marionette.ItemView.extend({
 
     if (!img) {
       //backwards compatibility
-      img = images.length && images.at(0).get('data');
+      img = images.length && images.at(0).getURL();
     }
 
     const taxon = specie[specie.found_in_name];

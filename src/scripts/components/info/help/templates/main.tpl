@@ -73,7 +73,7 @@
       (synced to the database). Once it has successfully reached
       the database the record becomes unavailable for new edits.
       To further edit it
-      please use the <a href="irecord.org.uk">iRecord Website</a>.
+      please use the <a href="http://irecord.org.uk">iRecord Website</a>.
       <br>
       <br>
       <b>Note:</b> you have to be signed in to your iRecord account and have a network connection,

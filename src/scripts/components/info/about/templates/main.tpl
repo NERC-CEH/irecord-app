@@ -23,6 +23,6 @@
             </p>
         </li>
         <li>
-            <p class="app-version">v<%- obj.version %> (beta <%- obj.build %>)</p>
+            <p class="app-version">v<%- obj.version %> (<%- obj.build %>)</p>
         </li>
     </ul>

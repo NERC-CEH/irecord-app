@@ -1,6 +1,6 @@
 <div class="info-message">
   <p>This record has been submitted and cannot be edited within this App.
-    Go to the <a href="http://192.171.199.230/irecord7" target="_blank">iRecord website</a> to edit.</p>
+    Go to the <a href="http://irecord.org.uk" target="_blank">iRecord website</a> to edit.</p>
 
 </div>
 <ul class="table-view core inputs info no-top">
@@ -38,7 +38,7 @@
   </li>
   <li id="img-array">
     <% obj.images.each(function (image){ %>
-      <img src="<%- image.attributes.data %>" alt="">
+      <img src="<%- image.getURL() %>" alt="">
     <% }) %>
   </li>
 </ul>

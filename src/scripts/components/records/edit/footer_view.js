@@ -27,7 +27,7 @@ const SavedImageView = Marionette.ItemView.extend({
 
   serializeData() {
     return {
-      data: this.model.get('data'),
+      data: this.model.getURL(),
     };
   },
 });
@@ -76,7 +76,7 @@ export default Marionette.CompositeView.extend({
       if (image.cid === view.model.cid) options.index = index;
 
       items.push({
-        src: image.get('data'),
+        src: image.getURL(),
         w: image.get('width') || 800,
         h: image.get('height') || 800,
       });

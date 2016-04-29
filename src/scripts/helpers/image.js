@@ -6,7 +6,7 @@ import _ from 'lodash';
 import ImageModel from '../components/common/image';
 import Log from './log';
 import Error from './error';
-import device from './device';
+import Device from './device';
 
 const Image = {
   deleteInternalStorage(name, callback) {
@@ -14,8 +14,7 @@ const Image = {
       Log(err, 'e');
       callback(err);
     }
-    const dir = cordova.file.dataDirectory;
-    window.resolveLocalFileSystemURL(dir, (fileSystem) => {
+    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (fileSystem) => {
       const relativePath = name.replace(fileSystem.nativeURL, '');
       fileSystem.getFile(relativePath, { create: false }, (fileEntry) => {
         if (!fileEntry) {
@@ -31,6 +30,11 @@ const Image = {
     }, errorHandler);
   },
 
+  /**
+   *
+   * @param callback
+   * @param options
+   */
   getImage(callback, options = {}) {
     const cameraOptions = {
       sourceType: window.Camera.PictureSourceType.CAMERA,
@@ -60,22 +64,21 @@ const Image = {
       let URI = fileURI;
       function copyFile(fileEntry) {
         const name = `${Date.now()}.jpeg`;
-        const dir = cordova.file.dataDirectory;
-        window.resolveLocalFileSystemURL(dir, (fileSystem) => {
-          // copy to app data directory
-          fileEntry.copyTo(
-            fileSystem,
-            name,
-            callback,
-            fail
-          );
-        },
-        fail);
+        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (fileSystem) => {
+            // copy to app data directory
+            fileEntry.copyTo(
+              fileSystem,
+              name,
+              callback,
+              fail
+            );
+          },
+          fail);
       }
 
       // for some reason when selecting from Android gallery
       // the prefix is sometimes missing
-      if (device.isAndroid() &&
+      if (Device.isAndroid() &&
         options.sourceType === window.Camera.PictureSourceType.PHOTOLIBRARY) {
         if (!(/file:\/\//).test(URI)) {
           URI = `file://${URI}`;
@@ -118,7 +121,15 @@ const Image = {
     if (window.cordova) {
       // don't resize, only get width and height
       Morel.Image.getDataURI(file, (err, data, type, width, height) => {
-        success(null, file, 'jpeg', width, height);
+        let fileName = file;
+
+        if (Device.isIOS()) {
+          // save only the file name or iOS, because the app UUID changes
+          // on every app update
+          const pathArray = file.split('/');
+          fileName = pathArray[pathArray.length - 1];
+        }
+        success(null, fileName, 'jpeg', width, height);
       });
     } else if (file instanceof File) {
       Morel.Image.getDataURI(file, success);
