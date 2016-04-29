@@ -4,8 +4,8 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
-import _ from '../../../vendor/lodash/js/lodash';
-import JST from '../../JST';
+import _ from '../../../../vendor/lodash/js/lodash';
+import JST from '../../../JST';
 
 let StandardDialogView = Marionette.LayoutView.extend({
   template: JST['common/dialog'],

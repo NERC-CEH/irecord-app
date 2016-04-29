@@ -5,7 +5,7 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Morel from 'morel';
 import CONFIG from 'config'; // Replaced with alias
-import recordManager from './record_manager';
+import recordManager from '../record_manager';
 import Occurrence from './occurrence';
 import GeolocExtension from './sample_geoloc_ext';
 
@@ -103,6 +103,8 @@ let Sample = Morel.Sample.extend({
   },
 });
 
+// add geolocation functionality
 Sample = Sample.extend(GeolocExtension);
+
 $.extend(true, Morel.Sample.keys, CONFIG.morel.sample);
 export { Sample as default };

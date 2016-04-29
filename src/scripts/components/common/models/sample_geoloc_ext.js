@@ -6,8 +6,8 @@
  *****************************************************************************/
 import $ from 'jquery';
 import appModel from './app_model';
-import GPS from '../../helpers/gps';
-import LocHelp from '../../helpers/location';
+import GPS from '../../../helpers/gps';
+import LocHelp from '../../../helpers/location';
 
 const extension = {
   startGPS(accuracyLimit) {

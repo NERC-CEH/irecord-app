@@ -15,10 +15,10 @@ import App from '../../../../app';
 import JST from '../../../../JST';
 
 import recordManager from '../../record_manager';
-import appModel from '../../app_model';
-import TabsLayout from '../../tabs_layout';
-import HeaderView from '../../header_view';
-import LockView from '../../attr_lock_view';
+import appModel from '../../models/app_model';
+import TabsLayout from '../../views/tabs_layout';
+import HeaderView from '../../views/header_view';
+import LockView from '../../views/attr_lock_view';
 
 import GpsView from './gps_view';
 import MapView from './map_view';

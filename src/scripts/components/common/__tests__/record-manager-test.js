@@ -1,8 +1,8 @@
 import Morel from 'morel';
 import Backbone from 'backbone';
 import recordManager from '../record_manager';
-import Sample from '../sample';
-import Occurrence from '../occurrence';
+import Sample from '../models/sample';
+import Occurrence from '../models/occurrence';
 
 describe('Record Manager', () => {
   let server;

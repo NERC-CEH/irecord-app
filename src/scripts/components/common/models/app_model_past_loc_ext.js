@@ -2,8 +2,8 @@
  * App Model past locations functions.
  *****************************************************************************/
 import _ from 'lodash';
-import UUID from '../../helpers/UUID';
-import LocHelp from '../../helpers/location';
+import UUID from '../../../helpers/UUID';
+import LocHelp from '../../../helpers/location';
 
 export default {
   /**

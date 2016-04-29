@@ -6,8 +6,8 @@ import Log from '../../helpers/log';
 import Device from '../../helpers/device';
 import App from '../../app';
 import recordManager from '../common/record_manager';
-import userModel from '../common/user_model';
-import appModel from '../common/app_model';
+import userModel from '../common/models/user_model';
+import appModel from '../common/models/app_model';
 
 import ListController from './list/controller';
 import ShowController from './show/controller';

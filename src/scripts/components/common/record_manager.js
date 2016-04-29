@@ -4,8 +4,8 @@ import Morel from 'morel';
 import Device from '../../helpers/device';
 import Log from '../../helpers/log';
 import CONFIG from 'config'; // Replaced with alias
-import Sample from './sample';
-import userModel from './user_model';
+import Sample from './models/sample';
+import userModel from './models/user_model';
 
 const morelConfiguration = $.extend(CONFIG.morel.manager, {
   Storage: Morel.DatabaseStorage,

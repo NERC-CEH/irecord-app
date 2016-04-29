@@ -3,8 +3,8 @@
  *****************************************************************************/
 import _ from 'lodash';
 import Backbone from 'backbone';
-import Store from '../../../vendor/backbone.localStorage/js/backbone.localStorage';
-import Validate from '../../helpers/validate';
+import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
+import Validate from '../../../helpers/validate';
 import CONFIG from 'config'; // Replaced with alias
 
 const UserModel = Backbone.Model.extend({

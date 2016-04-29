@@ -11,8 +11,8 @@ import Log from './helpers/log';
 import Device from './helpers/device';
 import CommonController from './components/common/controller';
 import recordManager from './components/common/record_manager';
-import DialogRegion from './components/common/dialog_region';
-import HideableRegion from './components/common/hideable_region';
+import DialogRegion from './components/common/views/dialog_region';
+import HideableRegion from './components/common/views/hideable_region';
 
 // init Analytics
 Analytics.init();

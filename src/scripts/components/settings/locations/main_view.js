@@ -2,7 +2,7 @@
  * Settings Locations main view.
  *****************************************************************************/
 import Marionette from 'marionette';
-import PastLocationsView from '../../common/past_locations_view';
+import PastLocationsView from '../../common/views/past_locations_view';
 import JST from '../../../JST';
 
 export default Marionette.LayoutView.extend({
