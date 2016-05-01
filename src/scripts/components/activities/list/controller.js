@@ -22,7 +22,9 @@ var ActivityRecord = Backbone.Model.extend({
     title: '',
     description: '',
     type: '',
-    checked: false
+    checked: false,
+    from_date: null,
+    to_date: null
   }
 });
 
@@ -37,16 +39,40 @@ const API = {
    * @param activitiesData Array of activity objects with id, description and title.
    */
   showActivities: function(activitiesData) {
-    var currentGroupId = appModel.get('groupId');
-    API.activitiesList.reset();
-    API.activitiesList.add(new ActivityRecord({
+    let currentGroupId = appModel.get('groupId');
+    let defaultActivity = new ActivityRecord({
       title:"iRecord",
       description:"Submit records to iRecord which are not part of any specific activity",
       checked: !currentGroupId
-    }));
+    });
+    let today = new Date().setHours(0,0,0,0);
+    API.activitiesList.reset();
+    API.activitiesList.add(defaultActivity);
     $.each(activitiesData, function() {
       this.checked = currentGroupId===this.id;
-      API.activitiesList.add(new ActivityRecord(this));
+      if ((this.from_date && new Date(this.from_date).setHours(0,0,0,0) > today)
+          || (this.to_date && new Date(this.to_date).setHours(0,0,0,0) < today)) {
+        // activity is out of allowed date range
+        if (this.checked) {
+          // this is the selected activity, so revert to the defaultActivity
+          defaultActivity.attributes.checked = true;
+          appModel.set('groupId', null);
+          appModel.save();
+          App.regions.dialog.show({
+            title: 'Information',
+            body: 'The previously selected activity is no longer available so the default ' +
+                'activity has been selected for you.',
+            buttons: [{
+              id: 'ok',
+              title: 'OK',
+              onClick: App.regions.dialog.hide
+            }]
+          });
+        }
+      } else {
+        API.activitiesList.add(new ActivityRecord(this));
+      }
+
     });
   },
 
