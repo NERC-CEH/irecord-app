@@ -2,9 +2,9 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
-import Hammer from '../../../vendor/hammerjs/js/hammer';
-import JST from '../../JST';
-import Device from '../../helpers/device';
+import Hammer from '../../../../vendor/hammerjs/js/hammer';
+import JST from '../../../JST';
+import Device from '../../../helpers/device';
 
 const EmptyListView = Marionette.ItemView.extend({
   tagName: 'li',

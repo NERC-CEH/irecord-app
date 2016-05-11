@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 import Marionette from 'marionette';
-import JST from '../../JST';
+import JST from '../../../JST';
 
 const Tab = Marionette.ItemView.extend({
   tagName: 'li',

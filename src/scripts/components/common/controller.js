@@ -3,7 +3,7 @@ import Marionette from 'marionette';
 import App from '../../app';
 import Log from '../../helpers/log';
 import JST from '../../JST';
-import HeaderView from './header_view';
+import HeaderView from './views/header_view';
 
 const API = {
   show(options) {

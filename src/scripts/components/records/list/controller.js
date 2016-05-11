@@ -6,13 +6,13 @@ import App from '../../../app';
 import Log from '../../../helpers/log';
 import Error from '../../../helpers/error';
 import ImageHelp from '../../../helpers/image';
-import appModel from '../../common/app_model';
+import appModel from '../../common/models/app_model';
 import recordManager from '../../common/record_manager';
-import Sample from '../../common/sample';
-import Occurrence from '../../common/occurrence';
+import Sample from '../../common/models/sample';
+import Occurrence from '../../common/models/occurrence';
 import MainView from './main_view';
 import HeaderView from './header_view';
-import LoaderView from '../../common/loader_view';
+import LoaderView from '../../common/views/loader_view';
 
 const API = {
   show() {

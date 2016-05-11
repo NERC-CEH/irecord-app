@@ -3,11 +3,11 @@
  *****************************************************************************/
 import _ from 'lodash';
 import Backbone from 'backbone';
-import Store from '../../../vendor/backbone.localStorage/js/backbone.localStorage';
-import Validate from '../../helpers/validate';
+import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
+import Validate from '../../../helpers/validate';
 import CONFIG from 'config'; // Replaced with alias
 
-const User = Backbone.Model.extend({
+const UserModel = Backbone.Model.extend({
   id: 'user',
 
   defaults: {
@@ -144,5 +144,5 @@ const User = Backbone.Model.extend({
   },
 });
 
-const userModel = new User();
-export { userModel as default };
+const userModel = new UserModel();
+export {userModel as default, UserModel};

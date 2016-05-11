@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Morel from 'morel';
 import _ from 'lodash';
-import ImageModel from '../components/common/image';
+import ImageModel from '../components/common/models/image';
 import Log from './log';
 import Error from './error';
 import Device from './device';

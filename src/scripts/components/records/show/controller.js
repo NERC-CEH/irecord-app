@@ -5,11 +5,11 @@ import Backbone from 'backbone';
 import App from '../../../app';
 import Device from '../../../helpers/device';
 import Log from '../../../helpers/log';
-import appModel from '../../common/app_model';
-import userModel from '../../common/user_model';
+import appModel from '../../common/models/app_model';
+import userModel from '../../common/models/user_model';
 import recordManager from '../../common/record_manager';
 import MainView from './main_view';
-import HeaderView from '../../common/header_view';
+import HeaderView from '../../common/views/header_view';
 
 const API = {
   show(id) {

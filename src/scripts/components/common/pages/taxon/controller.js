@@ -5,12 +5,12 @@ import Backbone from 'backbone';
 import Morel from 'morel';
 import App from '../../../../app';
 import Log from '../../../../helpers/log';
-import appModel from '../../app_model';
+import appModel from '../../models/app_model';
 import recordManager from '../../record_manager';
-import Sample from '../../sample';
-import Occurrence from '../../occurrence';
+import Sample from '../../models/sample';
+import Occurrence from '../../models/occurrence';
 import MainView from './main_view';
-import HeaderView from '../../header_view';
+import HeaderView from '../../views/header_view';
 import SpeciesSearchEngine from './search/taxon_search_engine';
 
 const API = {

@@ -8,9 +8,9 @@ import App from '../../../app';
 import Log from '../../../helpers/log';
 import Device from '../../../helpers/device';
 import CONFIG from 'config'; // Replaced with alias
-import userModel from '../../common/user_model';
+import userModel from '../../common/models/user_model';
 import MainView from './main_view';
-import HeaderView from '../../common/header_view';
+import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {

@@ -6,11 +6,11 @@ import Morel from 'morel';
 import DateHelp from '../../../helpers/date';
 import Log from '../../../helpers/log';
 import App from '../../../app';
-import appModel from '../../common/app_model';
+import appModel from '../../common/models/app_model';
 import recordManager from '../../common/record_manager';
 import MainView from './main_view';
-import HeaderView from '../../common/header_view';
-import LockView from '../../common/attr_lock_view';
+import HeaderView from '../../common/views/header_view';
+import LockView from '../../common/views/attr_lock_view';
 
 let API = {
   show: function (recordID, attr) {

@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import JST from '../../../../JST';
-import PastLocationsView from '../../past_locations_view';
+import PastLocationsView from '../../views/past_locations_view';
 
 
 export default Marionette.LayoutView.extend({
