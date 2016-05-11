@@ -136,6 +136,7 @@ const API = {
       const occurrence = new Occurrence();
       occurrence.addImage(image);
 
+      appModel.checkCurrentActivityExpiry();
       const sample = new Sample({"group": appModel.get('currentActivityId')});
       sample.addOccurrence(occurrence);
 
