@@ -22,8 +22,8 @@ var ActivityRecord = Backbone.Model.extend({
     title: '',
     description: '',
     type: '',
-    from_date: null,
-    to_date: null,
+    group_from_date: null,
+    group_to_date: null,
     checked: false
   }
 });
@@ -54,6 +54,7 @@ const API = {
    * @param activitiesData Array of activity objects with id, description and title.
    */
   showActivities: function(activitiesData) {
+    appModel.checkCurrentActivityExpiry();
     let currentActivityId = appModel.get('currentActivityId');
     let defaultActivity = new ActivityRecord({
       title:"iRecord",
@@ -65,32 +66,15 @@ const API = {
     API.activitiesList.reset();
     API.activitiesList.add(defaultActivity);
     $.each(activitiesData, function() {
-      // safety check that the activity is in date.
-      if (currentActivityId===this.id && (
-          (this.from_date && new Date(this.from_date).setHours(0,0,0,0) > today) ||
-          (this.to_date && new Date(this.to_date).setHours(0,0,0,0) < today)
-          )) {
-        // activity is out of allowed date range
-        // this is the selected activity, so revert to the defaultActivity
-        defaultActivity.attributes.checked = true;
-        API.expireCurrentActivity();
-      } else {
-        this.checked = currentActivityId===this.id;
-        foundOneToCheck = foundOneToCheck || this.checked;
-        // shorten the description to the first sentence if necessary
-        let maxlen = 100;
-        if (this.description.length > maxlen ) {
-          this.description = this.description.split('.')[0] + '.';
-        }
-        API.activitiesList.add(new ActivityRecord(this));
+      this.checked = currentActivityId===this.id;
+      foundOneToCheck = foundOneToCheck || this.checked;
+      // shorten the description to the first sentence if necessary
+      let maxlen = 100;
+      if (this.description.length > maxlen ) {
+        this.description = this.description.split('.')[0] + '.';
       }
+      API.activitiesList.add(new ActivityRecord(this));
     });
-    // activities which expire won't be returned by the report, so if the currentActivityId
-    // is gone it must be expired.
-    if (currentActivityId && !foundOneToCheck) {
-      defaultActivity.attributes.checked = true;
-      API.expireCurrentActivity();
-    }
   },
 
   /**
@@ -136,11 +120,11 @@ const API = {
       dataType: 'JSON',
       timeout: CONFIG.report.timeout,
       success(receivedData) {
-        API.showActivities(receivedData);
         // Cache the actities list in the app model to avoid hitting the web
         // services on every page visit.
         appModel.set('activities', receivedData);
         appModel.save();
+        API.showActivities(receivedData);
         App.regions.main.show(API.mainView);
       },
       error(xhr, ajaxOptions, thrownError) {

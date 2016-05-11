@@ -104,6 +104,7 @@ const API = {
         taxon,
       });
 
+      appModel.checkCurrentActivityExpiry();
       const sample = new Sample({"group": appModel.get('currentActivityId')});
       sample.addOccurrence(occurrence);
 
