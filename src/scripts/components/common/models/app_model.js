@@ -43,7 +43,7 @@ let AppModel = Backbone.Model.extend({
     if (this.get('currentActivityId')) {
       // test the activity is not expired
       let activity = this.getActivityById(this.get('currentActivityId')),
-          today = new Date().setHours(23,0,0,0);
+          today = new Date().setHours(0,0,0,0);
       // activity not found in available list, or activity found but out of date range
       if (!activity ||
          (activity.group_from_date && new Date(activity.group_from_date).setHours(0,0,0,0) > today) ||

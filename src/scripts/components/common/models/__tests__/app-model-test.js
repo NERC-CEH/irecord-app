@@ -37,6 +37,32 @@ describe('App Model', () => {
     expect(appModel.get('activities')).to.be.null;
   });
 
+  describe('Activities support', () => {
+    it('has functions', () => {
+      const appModel = new AppModel();
+      expect(appModel.getActivityById).to.be.a('function');
+      expect(appModel.checkCurrentActivityExpiry).to.be.a('function');
+    });
+    it('should retrieve activity by id', () => {
+      const appModel = new AppModel();
+      appModel.set('activities', [
+        {"id":1,"title":"Activity 1"},
+        {"id":2,"title":"Activity 2"}
+      ]);
+      let activity2 = appModel.getActivityById(2);
+      expect(activity2.title).to.be.equal("Activity 2");
+    });
+    it('should check activity expiry', () => {
+      const appModel = new AppModel();
+      appModel.set('activities', [
+        {"id":1,"title":"Activity 1","group_from_date":"2015-01-01"}
+      ]);
+      appModel.set('currentActivityId', 1);
+      appModel.checkCurrentActivityExpiry();
+      expect(appModel.get('currentActivityId')).to.be.null;
+    });
+  });
+
   describe('Past locations extension', () => {
     it('has functions', () => {
       const appModel = new AppModel();
