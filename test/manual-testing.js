@@ -1,10 +1,10 @@
 /** ********************************************************************
  * Manual testing functions.
  *********************************************************************/
-import appModel from 'components/common/app_model';
+import appModel from 'components/common/models/app_model';
 import recordManager from 'components/common/record_manager';
-import Sample from 'components/common/sample';
-import Occurrence from 'components/common/occurrence';
+import Sample from 'components/common/models/sample';
+import Occurrence from 'components/common/models/occurrence';
 import Morel from 'morel';
 
 const testing = {};
