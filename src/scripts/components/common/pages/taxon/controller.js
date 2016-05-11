@@ -104,7 +104,7 @@ const API = {
         taxon,
       });
 
-      const sample = new Sample({"group": appModel.get('groupId')});
+      const sample = new Sample({"group": appModel.get('currentActivityId')});
       sample.addOccurrence(occurrence);
 
       // add locked attributes

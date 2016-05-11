@@ -9,8 +9,8 @@ import $ from 'jquery';
  * Single activity item view
  */
 const ActivityView = Marionette.ItemView.extend({
-  tagName: 'li',
-  className: 'table-view-cell',
+  tagName: 'div',
+  className: 'activity',
   template: JST['activities/list/activity']
 });
 
@@ -18,8 +18,8 @@ const ActivityView = Marionette.ItemView.extend({
  * View used if the list is empty
  */
 const NoActivitiesView = Marionette.ItemView.extend({
-  tagName: 'li',
-  className: 'table-view-cell empty',
+  tagName: 'div',
+  className: 'empty',
   template: JST['activities/list/list-none']
 });
 
@@ -32,7 +32,7 @@ export default Marionette.CompositeView.extend({
   emptyView: NoActivitiesView,
   childView: ActivityView,
   template: JST['activities/list/wrapper'],
-  childViewContainer: "ul",
+  childViewContainer: "div.list",
 
   // Checking an item fires save and closes the page
   triggers() {
@@ -41,14 +41,14 @@ export default Marionette.CompositeView.extend({
     };
   },
 
-  getGroupId() {
-    let $inputs, groupId = null;
+  getActivityId() {
+    let $inputs, activityId = null;
     $inputs = this.$el.find('input');
     $inputs.each((int, elem) => {
       if ($(elem).prop('checked')) {
-        groupId = $(elem).val();
+        activityId = $(elem).val();
       }
     });
-    return groupId;
+    return activityId;
   }
 });

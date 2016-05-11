@@ -16,7 +16,7 @@ const AppModel = Backbone.Model.extend({
     attrLocks: {},
     autosync: true,
     useGridRef: true,
-    groupId: '',
+    currentActivityId: null,
     activities: null
   },
 
@@ -222,6 +222,22 @@ const AppModel = Backbone.Model.extend({
         default:
       }
     });
+  },
+
+  /**
+   * Lookup an activity definition using the ID.
+   * @return object Data stored for his activity
+   */
+  getActivityById(activityId) {
+    let activity = null;
+    let activities = this.get('activities');
+    $.each(activities, function() {
+      if (this['id'] == activityId) {
+        activity = this;
+        return false; // from $.each
+      }
+    });
+    return activity;
   }
 });
 

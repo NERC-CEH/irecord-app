@@ -22,9 +22,9 @@ var ActivityRecord = Backbone.Model.extend({
     title: '',
     description: '',
     type: '',
-    checked: false,
     from_date: null,
-    to_date: null
+    to_date: null,
+    checked: false
   }
 });
 
@@ -33,47 +33,64 @@ const API = {
 
   mainView: null,
 
+  expireCurrentActivity: function() {
+    appModel.set('currentActivityId', null);
+    appModel.save();
+    App.regions.dialog.show({
+      title: 'Information',
+      body: 'The previously selected activity is no longer available so the default ' +
+          'activity has been selected for you.',
+      buttons: [{
+        id: 'ok',
+        title: 'OK',
+        onClick: App.regions.dialog.hide
+      }]
+    });
+  },
+
   /**
    * Method for loading the activities into the view, either from the warehouse
    * or the copy cached in the app model.
    * @param activitiesData Array of activity objects with id, description and title.
    */
   showActivities: function(activitiesData) {
-    let currentGroupId = appModel.get('groupId');
+    let currentActivityId = appModel.get('currentActivityId');
     let defaultActivity = new ActivityRecord({
       title:"iRecord",
       description:"Submit records to iRecord which are not part of any specific activity",
-      checked: !currentGroupId
+      checked: !currentActivityId
     });
     let today = new Date().setHours(0,0,0,0);
+    let foundOneToCheck = false;
     API.activitiesList.reset();
     API.activitiesList.add(defaultActivity);
     $.each(activitiesData, function() {
-      this.checked = currentGroupId===this.id;
-      if ((this.from_date && new Date(this.from_date).setHours(0,0,0,0) > today)
-          || (this.to_date && new Date(this.to_date).setHours(0,0,0,0) < today)) {
+      // safety check that the activity is in date.
+      if (currentActivityId===this.id && (
+          (this.from_date && new Date(this.from_date).setHours(0,0,0,0) > today) ||
+          (this.to_date && new Date(this.to_date).setHours(0,0,0,0) < today)
+          )) {
         // activity is out of allowed date range
-        if (this.checked) {
-          // this is the selected activity, so revert to the defaultActivity
-          defaultActivity.attributes.checked = true;
-          appModel.set('groupId', null);
-          appModel.save();
-          App.regions.dialog.show({
-            title: 'Information',
-            body: 'The previously selected activity is no longer available so the default ' +
-                'activity has been selected for you.',
-            buttons: [{
-              id: 'ok',
-              title: 'OK',
-              onClick: App.regions.dialog.hide
-            }]
-          });
-        }
+        // this is the selected activity, so revert to the defaultActivity
+        defaultActivity.attributes.checked = true;
+        API.expireCurrentActivity();
       } else {
+        this.checked = currentActivityId===this.id;
+        foundOneToCheck = foundOneToCheck || this.checked;
+        // shorten the description to the first sentence if necessary
+        let maxlen = 100;
+        if (this.description.length > maxlen ) {
+          this.description = this.description.split('.')[0] + '.';
+        }
         API.activitiesList.add(new ActivityRecord(this));
       }
-
     });
+    // activities which expire won't be returned by the report, so if the currentActivityId
+    // is gone it must be expired.
+    if (currentActivityId && !foundOneToCheck) {
+      defaultActivity.attributes.checked = true;
+      API.expireCurrentActivity();
+    }
   },
 
   /**
@@ -82,15 +99,34 @@ const API = {
    */
   loadActivities: function() {
     const loaderView = new LoaderView();
+    if (userModel.get('email')==='') {
+      App.regions.dialog.show({
+        title: 'Information',
+        body: 'Please log in to the app before selecting an alternative ' +
+            'activity for your records.',
+        buttons: [{
+          id: 'ok',
+          title: 'OK',
+          onClick: App.regions.dialog.hide
+        }]
+      });
+      API.showActivities([]);
+      return;
+    }
     App.regions.main.show(loaderView, {preventDestroy: true});
     // @todo How to display loader view now without destroying main view?
     var data = {
-      "report": "library/groups/groups_for_page.xml",
-      "currentUser": 3, // userModel.,
+      "report": "library/groups/groups_for_app.xml",
+      // user_id filled in by iform_mobile_auth proxy
+      // @todo Fill in the correct form path once it is known
+
+       // @todo USER ID NOT FILLING IN PROPERLY
+
       "path": "enter-record-list",
-      "email": userModel.email,
+      "email": userModel.get('email'),
       "appname": CONFIG.morel.manager.appname,
-      "appsecret": CONFIG.morel.manager.appsecret
+      "appsecret": CONFIG.morel.manager.appsecret,
+      "usersecret": userModel.get('secret'),
     };
 
     $.ajax({
@@ -148,8 +184,8 @@ const API = {
 
     let onExit = () => {
       Log('Activities:List:Controller: exiting');
-      let groupId = API.mainView.getGroupId();
-      API.save(groupId);
+      let activityId = API.mainView.getActivityId();
+        API.save(activityId);
     };
     // if exit on selection click
     API.mainView.on('save', onExit);
@@ -165,8 +201,8 @@ const API = {
     }
   },
 
-  save: function (groupId) {
-    appModel.set('groupId', groupId);
+  save: function (activityId) {
+    appModel.set('currentActivityId', activityId);
     appModel.save(null, {
       success: () => {
         // return to previous page after save
