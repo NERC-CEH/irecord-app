@@ -28,11 +28,13 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(4);
+    expect(_.keys(appModel.attributes).length).to.be.equal(6);
     expect(appModel.get('locations')).to.be.an.array;
     expect(appModel.get('attrLocks')).to.be.an.object;
     expect(appModel.get('autosync')).to.be.equal.true;
     expect(appModel.get('useGridRef')).to.be.equal.true;
+    expect(appModel.get('currentActivityId')).to.be.null;
+    expect(appModel.get('activities')).to.be.null;
   });
 
   describe('Past locations extension', () => {
