@@ -51,16 +51,18 @@ let AppModel = Backbone.Model.extend({
         // unset the activity as it's now expired
         this.set('currentActivityId', null);
         this.save();
-        App.regions.dialog.show({
-          title: 'Information',
-          body: 'The previously selected activity is no longer available so the default ' +
-              'activity has been selected for you.',
-          buttons: [{
-            id: 'ok',
-            title: 'OK',
-            onClick: App.regions.dialog.hide
-          }]
-        });
+        if (typeof App.regions!=="undefined") {
+          App.regions.dialog.show({
+            title: 'Information',
+            body: 'The previously selected activity is no longer available so the default ' +
+                'activity has been selected for you.',
+            buttons: [{
+              id: 'ok',
+              title: 'OK',
+              onClick: App.regions.dialog.hide
+            }]
+          });
+        }
       }
     }
   },
