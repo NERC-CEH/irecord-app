@@ -8,6 +8,7 @@ import CONFIG from 'config'; // Replaced with alias
 import recordManager from '../record_manager';
 import Occurrence from './occurrence';
 import GeolocExtension from './sample_geoloc_ext';
+import appModel from './app_model';
 
 let Sample = Morel.Sample.extend({
   constructor(...args) {
