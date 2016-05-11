@@ -1,13 +1,10 @@
-<div class="activity">
-  <label class="item item-radio">
-    <input type="radio" name="group" value="<%= obj.id %>" <%- obj.checked ? 'checked' : ''%> />
-    <div class="radio-content">
-      <div class="item-content">
-        <%= obj.title %>
-        <p><%= obj.description %></p>
-        <p><%= obj.type %></p>
-      </div>
-      <span class="radio-icon icon-check"></span>
+<label class="item item-radio">
+  <input type="radio" name="group" value="<%= obj.id %>" <%- obj.checked ? 'checked' : ''%> />
+  <div class="radio-content">
+    <div class="item-content">
+      <%= obj.title %>
+      <p><%= obj.description %><% if (obj.type) { %>[<%= obj.type %>]<% } %></p>
     </div>
-  </label>
-</div>
+    <i class="radio-icon icon-check"></i>
+  </div>
+</label>
