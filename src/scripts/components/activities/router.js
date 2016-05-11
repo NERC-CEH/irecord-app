@@ -5,8 +5,8 @@
 import Marionette from 'marionette';
 import App from '../../app';
 import Log from '../../helpers/log';
-import userModel from '../common/user_model';
-import appModel from '../common/app_model';
+import userModel from '../common/models/user_model';
+import appModel from '../common/models/app_model';
 
 import ListController from './list/controller';
 

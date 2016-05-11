@@ -6,12 +6,12 @@ import Backbone from 'backbone';
 import Log from '../../../helpers/log';
 import App from '../../../app';
 import MainView from './main_view';
-import HeaderView from '../../common/header_view';
+import HeaderView from '../../common/views/header_view';
 import RefreshView from './refresh_view';
-import appModel from '../../common/app_model';
-import userModel from '../../common/user_model';
+import appModel from '../../common/models/app_model';
+import userModel from '../../common/models/user_model';
 import CONFIG from 'config'; // Replaced with alias
-import LoaderView from '../../common/loader_view';
+import LoaderView from '../../common/views/loader_view';
 
 /**
  * Model to hold details of an activity (group entity)
