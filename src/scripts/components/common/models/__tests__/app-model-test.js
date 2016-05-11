@@ -55,9 +55,13 @@ describe('App Model', () => {
     it('should check activity expiry', () => {
       const appModel = new AppModel();
       appModel.set('activities', [
-        {"id":1,"title":"Activity 1","group_from_date":"2015-01-01"}
+        {"id":1,"title":"Activity 1","group_to_date":"2015-01-01"},
+        {"id":2,"title":"Activity 1","group_from_date":"2100-01-01"},
       ]);
       appModel.set('currentActivityId', 1);
+      appModel.checkCurrentActivityExpiry();
+      expect(appModel.get('currentActivityId')).to.be.null;
+      appModel.set('currentActivityId', 2);
       appModel.checkCurrentActivityExpiry();
       expect(appModel.get('currentActivityId')).to.be.null;
     });
