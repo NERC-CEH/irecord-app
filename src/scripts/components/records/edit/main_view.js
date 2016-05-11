@@ -57,9 +57,6 @@ export default Marionette.ItemView.extend({
     // show activity title. If activities available but nothing assigned to this record
     // set the title to iRecord so that the user can change this.
     let group_title = recordModel.get('group_title');
-    if (!group_title && appModel.get('activities').length) {
-      group_title = 'iRecord';
-    }
 
     return {
       id: recordModel.id || recordModel.cid,

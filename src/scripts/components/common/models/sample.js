@@ -20,7 +20,7 @@ let Sample = Morel.Sample.extend({
       let activities = appModel.get('activities'),
           group = args[0]['group'],
           group_title = typeof args[0]['group_title']!=="undefined" ?
-              args[0]['group_title'] : 'unknown';
+              args[0]['group_title'] : null;
       $.each(activities, function() {
         if (this.id===group) {
           group_title = this.title;
