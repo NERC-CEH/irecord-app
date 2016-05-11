@@ -40,7 +40,7 @@ describe('App Model', () => {
   describe('Activities support', () => {
     it('has functions', () => {
       const appModel = new AppModel();
-      expect(appModel.getActivityById).to.be.a('function');
+      expect(appModel.getActivity).to.be.a('function');
       expect(appModel.checkCurrentActivityExpiry).to.be.a('function');
     });
     it('should retrieve activity by id', () => {
@@ -49,7 +49,7 @@ describe('App Model', () => {
         {"id":1,"title":"Activity 1"},
         {"id":2,"title":"Activity 2"}
       ]);
-      let activity2 = appModel.getActivityById(2);
+      let activity2 = appModel.getActivity(2);
       expect(activity2.title).to.be.equal("Activity 2");
     });
     it('should check activity expiry', () => {

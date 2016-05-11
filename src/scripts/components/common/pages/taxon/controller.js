@@ -105,7 +105,7 @@ const API = {
       });
 
       appModel.checkCurrentActivityExpiry();
-      const sample = new Sample({"group": appModel.get('currentActivityId')});
+      const sample = new Sample({"group": appModel.getActivity()});
       sample.addOccurrence(occurrence);
 
       // add locked attributes

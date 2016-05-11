@@ -25,9 +25,14 @@ let AppModel = Backbone.Model.extend({
 
   /**
    * Lookup an activity definition using the ID.
+   * @param integer activityId Optional ID of the activity to retrieve. Default
+   * is the currently selected activity.
    * @return object Data stored for his activity
    */
-   getActivityById: function(activityId) {
+  getActivity: function(activityId) {
+    if (typeof activityId==="undefined") {
+      activityId = this.get('currentActivityId');
+    }
     let activity = null;
     let activities = this.get('activities');
     $.each(activities, function() {
@@ -42,7 +47,7 @@ let AppModel = Backbone.Model.extend({
   checkCurrentActivityExpiry: function() {
     if (this.get('currentActivityId')) {
       // test the activity is not expired
-      let activity = this.getActivityById(this.get('currentActivityId')),
+      let activity = this.getActivity(),
           today = new Date().setHours(0,0,0,0);
       // activity not found in available list, or activity found but out of date range
       if (!activity ||

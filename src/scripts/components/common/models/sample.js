@@ -11,27 +11,6 @@ import GeolocExtension from './sample_geoloc_ext';
 import appModel from './app_model';
 
 let Sample = Morel.Sample.extend({
-  constructor(...args) {
-    this.manager = recordManager;
-    // Attach the current group/activity name to the sample
-    // @todo Check with Karolis, does this cause performance issues, and is
-    // it OK to chuck group_title into the sample attributes like this?
-    if (arguments.length && args[0]['group'] && appModel.get('activities')) {
-      let activities = appModel.get('activities'),
-          group = args[0]['group'],
-          group_title = typeof args[0]['group_title']==="undefined" ?
-              null : args[0]['group_title'];
-      $.each(activities, function() {
-        if (this.id===group) {
-          group_title = this.title;
-        }
-      });
-      if (args[0]['group']) {
-        args[0]['group_title'] = group_title;
-      }
-    }
-    Morel.Sample.prototype.constructor.apply(this, args);
-  },
 
   Occurrence,
 

@@ -54,9 +54,8 @@ export default Marionette.ItemView.extend({
       number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
-    // show activity title. If activities available but nothing assigned to this record
-    // set the title to iRecord so that the user can change this.
-    let group_title = recordModel.get('group_title');
+    // show activity title.
+    let group = recordModel.get('group');
 
     return {
       id: recordModel.id || recordModel.cid,
@@ -70,7 +69,7 @@ export default Marionette.ItemView.extend({
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
-      group_title: group_title,
+      group_title: group ? group.title : null,
       locks: attrLocks,
     };
   },

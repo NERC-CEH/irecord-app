@@ -95,6 +95,12 @@ export default {
         values: function (date) {
           return DateHelp.print(date);
         }
+      },
+
+      group: {
+        values: function(group) {
+          return group.id;
+        }
       }
     },
     occurrence: {
