@@ -30,7 +30,7 @@ let Sample = Morel.Sample.extend({
     // todo: remove this bit once sample DB update is possible
     // check if saved
     if (!this.metadata.saved) {
-      return true;
+      sample.send = false;
     }
 
     // location
@@ -88,22 +88,24 @@ let Sample = Morel.Sample.extend({
   setToSend(callback) {
     this.metadata.saved = true;
 
-    const invalids = this.validate();
-    if (invalids) {
+    if (!this.isValid()) {
+      // since the sample was invalid and so was not saved
+      // we need to revert it's status
       this.metadata.saved = false;
-      callback && callback(); // no error for invalid
-      return invalids;
+      return false;
     }
 
     // save record
-    return this.save(null, {
+    const promise = this.save(null, {
       success: () => {
-        callback();
+        callback && callback();
       },
       error: (err) => {
-        callback(err);
+        callback && callback(err);
       },
     });
+
+    return promise;
   },
 });
 

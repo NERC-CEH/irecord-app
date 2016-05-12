@@ -1,6 +1,28 @@
 import Sample from '../sample';
 import Occurrence from '../occurrence';
+import recordManager from '../../record_manager';
 import DateHelp from 'helpers/date';
+
+
+function getRandomSample() {
+  const occurrence = new Occurrence({
+    taxon: { warehouse_id: 166205 },
+  });
+  const sample = new Sample({
+    location: {
+      latitude: 12.12,
+      longitude: -0.23,
+      name: 'automatic test'},
+  }, {
+    occurrences: [occurrence],
+    manager: recordManager,
+    onSend: () => {}, // overwrite manager's one checking for user login
+  });
+
+  sample.metadata.saved = true;
+
+  return sample;
+}
 
 describe('Sample', () => {
   it('should have current date by default', () => {
@@ -11,13 +33,13 @@ describe('Sample', () => {
   });
 
   describe('validation', () => {
-    it('should return true if not saved', () => {
+    it('should return sample send false invalid if not saved', () => {
       const sample = new Sample();
       expect(sample.validate).to.be.a('function');
       sample.clear();
 
-      const notSaved = sample.validate({});
-      expect(notSaved).to.be.true;
+      const invalids = sample.validate();
+      expect(invalids.sample.send).to.be.false;
     });
 
     it('should return sample and occurrence objects with invalids', () => {
@@ -48,6 +70,29 @@ describe('Sample', () => {
       invalids = sample.validate();
       expect(invalids.occurrences).to.not.be.empty;
       expect(invalids.occurrences).to.have.property(occurrence.cid);
+    });
+  });
+
+  describe('setToSend', () => {
+    it('should set the saved flag in sample metadata', () => {
+      const sample = getRandomSample();
+      const promise = sample.setToSend();
+      expect(sample.metadata.saved).to.be.true;
+    });
+
+    it('should return a promise', () => {
+      const sample = getRandomSample();
+      const promise = sample.setToSend();
+      expect(promise).to.be.an('object');
+    });
+
+    it('should not send if invalid, but set validationError', () => {
+      const sample = new Sample();
+      const valid = sample.setToSend();
+      expect(valid).to.be.false;
+
+      expect(sample.validationError).to.be.an('object');
+      expect(sample.metadata.saved).to.be.false;
     });
   });
 
