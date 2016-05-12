@@ -1,12 +1,30 @@
-import Morel from 'morel';
-import imageURI from './imageURI';
-import Controller from '../controller';
+import API from '../controller';
 import recordManager from '../../../common/record_manager';
 
 
-describe('Controller', function () {
+describe('List Controller', function () {
   // it can take time to add/remove records
   this.timeout(10000);
+
+  it('should have a show method', () => {
+    expect(API.show).to.be.a('function');
+  });
+
+  it('should have a recordDelete method', () => {
+    expect(API.recordDelete).to.be.a('function');
+  });
+
+  it('should have a photoUpload method', () => {
+    expect(API.photoUpload).to.be.a('function');
+  });
+
+  it('should have a photoSelect method', () => {
+    expect(API.photoSelect).to.be.a('function');
+  });
+
+  it('should have a recordDelete method', () => {
+    expect(API.recordDelete).to.be.a('function');
+  });
 
   describe('photo picker', () => {
     before((done) => {

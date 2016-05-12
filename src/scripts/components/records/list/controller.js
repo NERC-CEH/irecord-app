@@ -38,37 +38,8 @@ const API = {
       });
 
       mainView.on('childview:record:delete', (childView) => {
-        Log('Records:List:Controller: deleting record');
-
         const recordModel = childView.model;
-        const syncStatus = recordModel.getSyncStatus();
-        let body = 'This record hasn\'t been saved to iRecord yet, ' +
-          'are you sure you want to remove it from your device?';
-
-        if (syncStatus === Morel.SYNCED) {
-          body = 'Are you sure you want to remove this record from your device?';
-          body += '</br><i><b>Note:</b> it will remain on the server.</i>';
-        }
-        App.regions.dialog.show({
-          title: 'Delete',
-          body,
-          buttons: [
-            {
-              title: 'Cancel',
-              onClick() {
-                App.regions.dialog.hide();
-              },
-            },
-            {
-              title: 'Delete',
-              class: 'btn-negative',
-              onClick() {
-                childView.model.destroy();
-                App.regions.dialog.hide();
-              },
-            },
-          ],
-        });
+        API.recordDelete(recordModel);
       });
       App.regions.main.show(mainView);
     });
@@ -77,50 +48,90 @@ const API = {
     const headerView = new HeaderView();
 
     headerView.on('photo:upload', (e) => {
-      Log('Records:List:Controller: photo upload');
-
-      // show loader
-      API.createNewRecord(e.target.files[0], () => {
-        // hide loader
-      });
+      const photo = e.target.files[0];
+      API.photoUpload(photo);
     });
 
     // android gallery/camera selection
-    headerView.on('photo:selection', () => {
-      Log('Records:List:Controller: photo select');
-
-      App.regions.dialog.show({
-        title: 'Choose a method to upload a photo',
-        buttons: [
-          {
-            title: 'Camera',
-            onClick() {
-              ImageHelp.getImage((entry) => {
-                API.createNewRecord(entry.nativeURL, ()=>{});
-              });
-              App.regions.dialog.hide();
-            },
-          },
-          {
-            title: 'Gallery',
-            onClick() {
-              ImageHelp.getImage((entry) => {
-                API.createNewRecord(entry.nativeURL, ()=>{});
-              }, {
-                sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
-                saveToPhotoAlbum: false,
-              });
-              App.regions.dialog.hide();
-            },
-          },
-        ],
-      });
-    });
+    headerView.on('photo:selection', API.photoSelect);
 
     App.regions.header.show(headerView);
 
     // FOOTER
     App.regions.footer.hide().empty();
+  },
+
+  recordDelete(recordModel) {
+    Log('Records:List:Controller: deleting record');
+
+    const syncStatus = recordModel.getSyncStatus();
+    let body = 'This record hasn\'t been saved to iRecord yet, ' +
+      'are you sure you want to remove it from your device?';
+
+    if (syncStatus === Morel.SYNCED) {
+      body = 'Are you sure you want to remove this record from your device?';
+      body += '</br><i><b>Note:</b> it will remain on the server.</i>';
+    }
+    App.regions.dialog.show({
+      title: 'Delete',
+      body,
+      buttons: [
+        {
+          title: 'Cancel',
+          onClick() {
+            App.regions.dialog.hide();
+          },
+        },
+        {
+          title: 'Delete',
+          class: 'btn-negative',
+          onClick() {
+            recordModel.destroy();
+            App.regions.dialog.hide();
+          },
+        },
+      ],
+    });
+  },
+
+  photoUpload(photo) {
+    Log('Records:List:Controller: photo upload');
+
+    // show loader
+    API.createNewRecord(photo, () => {
+      // hide loader
+    });
+  },
+
+  photoSelect() {
+    Log('Records:List:Controller: photo select');
+
+    App.regions.dialog.show({
+      title: 'Choose a method to upload a photo',
+      buttons: [
+        {
+          title: 'Camera',
+          onClick() {
+            ImageHelp.getImage((entry) => {
+              API.createNewRecord(entry.nativeURL, ()=>{});
+            });
+            App.regions.dialog.hide();
+          },
+        },
+        {
+          title: 'Gallery',
+          onClick() {
+            ImageHelp.getImage((entry) => {
+              API.createNewRecord(entry.nativeURL, ()=>{});
+            }, {
+              sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
+              saveToPhotoAlbum: false,
+            });
+            App.regions.dialog.hide();
+          },
+        },
+      ],
+    });
   },
 
   /**

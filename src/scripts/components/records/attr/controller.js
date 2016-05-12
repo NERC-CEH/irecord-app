@@ -12,10 +12,10 @@ import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 import LockView from '../../common/views/attr_lock_view';
 
-let API = {
-  show: function (recordID, attr) {
+const API = {
+  show(recordID, attr) {
     Log('Records:Attr:Controller: showing');
-    recordManager.get(recordID, function (err, recordModel) {
+    recordManager.get(recordID, (err, recordModel) => {
       if (err) {
         Log(err, 'e');
       }
@@ -29,60 +29,65 @@ let API = {
 
       // can't edit a saved one - to be removed when record update
       // is possible on the server
-      if (recordModel.getSyncStatus() == Morel.SYNCED) {
+      if (recordModel.getSyncStatus() === Morel.SYNCED) {
         App.trigger('records:show', recordID, { replace: true });
         return;
       }
 
       // MAIN
-      let mainView = new MainView({
-        attr: attr,
-        model: recordModel
+      const mainView = new MainView({
+        attr,
+        model: recordModel,
       });
       App.regions.main.show(mainView);
 
       // HEADER
-      let lockView = new LockView({
-        model: new Backbone.Model({ appModel:appModel, recordModel:recordModel }),
-        attr: attr,
-        onLockClick: function () {
-          Log('Records:Attr:Controller: lock clicked');
-          // invert the lock of the attribute
-          // real value will be put on exit
-          if (attr === 'number') {
-            if (appModel.getAttrLock(attr)) {
-              appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
-            } else {
-              appModel.setAttrLock('number-ranges',
-                !appModel.getAttrLock('number-ranges'));
-            }
-          } else {
-            appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
-          }
-
-        }
+      const lockView = new LockView({
+        model: new Backbone.Model({ appModel, recordModel }),
+        attr,
+        onLockClick: API.onLockCLick,
       });
 
-      let onExit = () => {
-        Log('Records:Attr:Controller: exiting');
-        let values = mainView.getValues();
-        API.save(attr, values, recordModel);
-      };
-
-      let headerView = new HeaderView({
-        onExit: onExit,
+      const headerView = new HeaderView({
+        onExit() {
+          API.onExit(mainView, recordModel, attr);
+        },
         rightPanel: lockView,
-        model: new Backbone.Model({ title: attr })
+        model: new Backbone.Model({ title: attr }),
       });
 
       App.regions.header.show(headerView);
 
       // if exit on selection click
-      mainView.on('save', onExit);
+      mainView.on('save', () => {
+        API.onExit(mainView, recordModel, attr);
+      });
 
       // FOOTER
       App.regions.footer.hide().empty();
     });
+  },
+
+  onLockClick(attr) {
+    Log('Records:Attr:Controller: lock clicked');
+    // invert the lock of the attribute
+    // real value will be put on exit
+    if (attr === 'number') {
+      if (appModel.getAttrLock(attr)) {
+        appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
+      } else {
+        appModel.setAttrLock('number-ranges',
+          !appModel.getAttrLock('number-ranges'));
+      }
+    } else {
+      appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
+    }
+  },
+
+  onExit(mainView, recordModel, attr) {
+    Log('Records:Attr:Controller: exiting');
+    const values = mainView.getValues();
+    API.save(attr, values, recordModel);
   },
 
   /**
@@ -90,9 +95,9 @@ let API = {
    * @param values
    * @param recordModel
    */
-  save: function (attr, values, recordModel) {
+  save(attr, values, recordModel) {
     let currentVal;
-    let occ = recordModel.occurrences.at(0);
+    const occ = recordModel.occurrences.at(0);
 
     switch (attr) {
       case 'date':
