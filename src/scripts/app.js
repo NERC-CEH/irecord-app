@@ -53,7 +53,7 @@ App.on('start', () => {
   if (Backbone.history) {
     Backbone.history.start();
 
-    if (this.getCurrentRoute() === '') {
+    if (App.getCurrentRoute() === '') {
       App.trigger('records:list');
     }
 

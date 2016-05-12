@@ -29,15 +29,15 @@ let AppModel = Backbone.Model.extend({
    * is the currently selected activity.
    * @return object Data stored for his activity
    */
-  getActivity: function(activityId) {
-    if (typeof activityId==="undefined") {
+  getActivity(activityId) {
+    if (!activityId) {
       activityId = this.get('currentActivityId');
     }
     let activity = null;
     let activities = this.get('activities');
-    $.each(activities, function() {
-      if (this['id'] == activityId) {
-        activity = this;
+    $.each(activities, (index, activ) => {
+      if (activ.id == activityId) {
+        activity = activ;
         return false; // from $.each
       }
     });

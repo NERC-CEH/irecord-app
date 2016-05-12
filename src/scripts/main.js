@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * App start.
  *****************************************************************************/
-import Bootstrap from 'bootstrap';
+import Bootstrap from '../vendor/bootstrap/js/bootstrap';
 import Ratchet from '../vendor/ratchet/js/ratchet';
 import IndexedDBShim from '../vendor/IndexedDBShim/js/IndexedDBShim';
 

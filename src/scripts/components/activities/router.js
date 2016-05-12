@@ -28,9 +28,3 @@ App.on('before:start', () => {
   Log('Activities:router: initializing');
   App.activities.router = new Router();
 });
-
-// Login or out resets activity setup
-userModel.on('login logout', function() {
-  appModel.set(currentActivityId, null)
-  appModel.set('activities', null);
-});
