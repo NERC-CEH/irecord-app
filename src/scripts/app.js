@@ -5,12 +5,10 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import FastClick from '../vendor/fastclick/js/fastclick';
-import IndexedDBShim from '../vendor/IndexedDBShim/js/IndexedDBShim';
 import Analytics from './helpers/analytics';
 import Log from './helpers/log';
 import Device from './helpers/device';
 import CommonController from './components/common/controller';
-import recordManager from './components/common/record_manager';
 import DialogRegion from './components/common/views/dialog_region';
 import HideableRegion from './components/common/views/hideable_region';
 
@@ -19,33 +17,31 @@ Analytics.init();
 
 const App = new Marionette.Application();
 
-App.navigate = function (route, options = {}) {
-  Log('App: navigating to ' + route);
-  let defaultOptions = { trigger: true };
+App.navigate = (route, options = {}) => {
+  Log(`App: navigating to ${route}`);
+  const defaultOptions = { trigger: true };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
 
-App.getCurrentRoute = function () {
-  return Backbone.history.fragment;
-};
+App.getCurrentRoute = () => Backbone.history.fragment;
 
-App.on('before:start', function () {
+App.on('before:start', () => {
   Log('App: initializing main regions');
-  var RegionContainer = Marionette.LayoutView.extend({
+  const RegionContainer = Marionette.LayoutView.extend({
     el: '#app',
 
     regions: {
-      header: new HideableRegion({ el: "#header" }),
-      footer: new HideableRegion({ el: "#footer" }),
+      header: new HideableRegion({ el: '#header' }),
+      footer: new HideableRegion({ el: '#footer' }),
       main: '#main',
-      dialog: DialogRegion
-    }
+      dialog: DialogRegion,
+    },
   });
 
   App.regions = new RegionContainer();
 });
 
-App.on('start', function () {
+App.on('start', () => {
   Log('App: starting');
 
   // Init for the first time
@@ -61,7 +57,7 @@ App.on('start', function () {
       App.trigger('records:list');
     }
 
-    App.on('404:show', function () {
+    App.on('404:show', () => {
       CommonController.show({
         App,
         route: 'common/404',
@@ -72,7 +68,8 @@ App.on('start', function () {
     if (window.cordova) {
       Log('App: cordova setup');
 
-      // Although StatusB  ar in the global scope, it is not available until after the deviceready event.
+      // Although StatusB  ar in the global scope,
+      // it is not available until after the deviceready event.
       document.addEventListener('deviceready', () => {
         Log('Showing the app.');
 
@@ -99,10 +96,13 @@ App.on('start', function () {
       });
     }
 
-    //$(document).ready(() => {
-    //  // For screenshots capture only
-    //  window.testing.screenshotsPopulate(recordManager);
-    //});
+    /**
+     import recordManager from './components/common/record_manager';
+     $(document).ready(() => {
+      // For screenshots capture only
+      window.testing.screenshotsPopulate(recordManager);
+    });
+     */
   }
 });
 
