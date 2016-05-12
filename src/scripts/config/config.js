@@ -45,7 +45,8 @@ export default {
       appname: 'ir',
       appsecret: 'irecordApp123',
       website_id: 23,
-      survey_id: 374
+      survey_id: 374,
+      input_form: 'enter-app-record'
     },
     sample: {
       location: {

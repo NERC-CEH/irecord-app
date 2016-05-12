@@ -11,6 +11,13 @@ import GeolocExtension from './sample_geoloc_ext';
 import appModel from './app_model';
 
 let Sample = Morel.Sample.extend({
+  constructor(...args) {
+    this.manager = recordManager;
+    if (arguments.length) {
+      args[0]['form'] = CONFIG.morel.manager.input_form;
+    }
+    Morel.Sample.prototype.constructor.apply(this, args);
+  },
 
   Occurrence,
 

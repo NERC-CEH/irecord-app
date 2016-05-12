@@ -45,7 +45,8 @@ export default {
       appname: 'test',
       appsecret: 'mytest',
       website_id: 23,
-      survey_id: 269
+      survey_id: 269,
+      input_form: 'enter-app-record'
     },
     sample: {
       location: {
