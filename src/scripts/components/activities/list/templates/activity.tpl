@@ -4,7 +4,7 @@
     <div class="item-content">
       <%= obj.title %>
       <% if (obj.description) { %>
-        <p><%= obj.description %><% if (obj.type) { %>[<%= obj.type %>]<% } %></p>
+        <p class="activity-description"><%= obj.description %><% if (obj.type) { %>[<%= obj.type %>]<% } %></p>
       <% } %>
     </div>
     <i class="radio-icon icon-check"></i>
