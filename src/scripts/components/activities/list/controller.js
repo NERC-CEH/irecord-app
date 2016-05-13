@@ -49,15 +49,6 @@ const API = {
       model: new Backbone.Model({ appModel }),
     });
 
-    refreshView.on('refreshClick', () => {
-      Log('Activities:List:Controller: refresh clicked');
-      if (!userModel.hasLogIn()) {
-        App.trigger('user:login');
-        return;
-      }
-      API.initActivities(activitiesCollection, true);
-    });
-
     const headerView = new HeaderView({
       rightPanel: refreshView,
       model: new Backbone.Model({
@@ -91,17 +82,36 @@ const API = {
         }
 
         const activity = recordModel.get('group');
-        API.initActivities(activitiesCollection, activity.id);
+        API.initActivities(activitiesCollection, false, activity.id);
 
         onExit = () => {
           Log('Activities:List:Controller: exiting');
           const newActivity = mainView.getActivity();
           API.save(newActivity, recordModel);
         };
+
+        refreshView.on('refreshClick', () => {
+          Log('Activities:List:Controller: refresh clicked');
+          if (!userModel.hasLogIn()) {
+            App.trigger('user:login');
+            return;
+          }
+          API.initActivities(activitiesCollection, true, activity.id);
+        });
       });
     } else {
       API.initActivities(activitiesCollection);
+
+      refreshView.on('refreshClick', () => {
+        Log('Activities:List:Controller: refresh clicked');
+        if (!userModel.hasLogIn()) {
+          App.trigger('user:login');
+          return;
+        }
+        API.initActivities(activitiesCollection, true);
+      });
     }
+
 
     // if exit on selection click
     mainView.on('save', onExit);
@@ -165,11 +175,9 @@ const API = {
 
     const activitiesData = appModel.get('activities');
     $.each(activitiesData, (index, activity) => {
-      activity.checked = currentActivityId == activity.id; //todo:  server '71' == local 71
+      activity.checked = currentActivityId == activity.id; // todo:  server '71' == local 71
       foundOneToCheck = foundOneToCheck || activity.checked;
 
-      // shorten the description to the first sentence if necessary
-      activity.description = StringHelp.limit(activity.description);
       activitiesCollection.add(new ActivityRecord(activity));
     });
   },
