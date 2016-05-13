@@ -54,6 +54,9 @@ export default Marionette.ItemView.extend({
       number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
+    // show activity title.
+    let group = recordModel.get('group');
+
     return {
       id: recordModel.id || recordModel.cid,
       scientificName,
@@ -66,6 +69,7 @@ export default Marionette.ItemView.extend({
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
+      group_title: group ? group.title : null,
       locks: attrLocks,
     };
   },

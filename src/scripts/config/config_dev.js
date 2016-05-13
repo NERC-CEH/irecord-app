@@ -28,6 +28,11 @@ export default {
     timeout: 80000
   },
 
+  report: {
+    url: 'http://192.171.199.230/irecord7/mobile/report',
+    timeout: 80000
+  },
+
   // mapping
   map: {
     API_KEY: '28994B5673A86451E0530C6CA40A91A5'
@@ -40,7 +45,8 @@ export default {
       appname: 'test',
       appsecret: 'mytest',
       website_id: 23,
-      survey_id: 269
+      survey_id: 269,
+      input_form: 'enter-app-record'
     },
     sample: {
       location: {
@@ -90,6 +96,12 @@ export default {
         values: function (date) {
           return DateHelp.print(date);
         }
+      },
+
+      group: {
+        values: function(group) {
+          return group.id;
+        }
       }
     },
     occurrence: {
@@ -125,4 +137,3 @@ export default {
     }
   }
 };
-

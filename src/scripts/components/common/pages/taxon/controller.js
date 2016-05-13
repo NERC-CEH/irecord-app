@@ -104,7 +104,8 @@ const API = {
         taxon,
       });
 
-      const sample = new Sample();
+      appModel.checkCurrentActivityExpiry();
+      const sample = new Sample({ group: appModel.getActivity() });
       sample.addOccurrence(occurrence);
 
       // add locked attributes

@@ -62,4 +62,13 @@
       Comment
     </a>
   </li>
+  <% if (obj.group_title) { %>
+  <li class="table-view-cell">
+    <a href="#records/<%- obj.id %>/edit/activity" id="activity-button">
+      <span class="media-object pull-left icon icon-users"></span>
+      <span class="media-object pull-right descript"><%- obj.group_title %></span>
+      Activity
+    </a>
+  </li>
+  <% } %>
 </ul>

@@ -28,6 +28,11 @@ export default {
     timeout: 30000
   },
 
+  report: {
+    url: 'http://www.brc.ac.uk/irecord/mobile/report',
+    timeout: 80000
+  },
+
   // mapping
   map: {
     API_KEY: '28994B5673A86451E0530C6CA40A91A5'
@@ -40,7 +45,8 @@ export default {
       appname: 'ir',
       appsecret: 'irecordApp123',
       website_id: 23,
-      survey_id: 374
+      survey_id: 374,
+      input_form: 'enter-app-record'
     },
     sample: {
       location: {
@@ -89,6 +95,12 @@ export default {
       date: {
         values: function (date) {
           return DateHelp.print(date);
+        }
+      },
+
+      group: {
+        values: function(group) {
+          return group.id;
         }
       }
     },

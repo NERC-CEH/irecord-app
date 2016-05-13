@@ -28,11 +28,43 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(4);
+    expect(_.keys(appModel.attributes).length).to.be.equal(6);
     expect(appModel.get('locations')).to.be.an.array;
     expect(appModel.get('attrLocks')).to.be.an.object;
     expect(appModel.get('autosync')).to.be.equal.true;
     expect(appModel.get('useGridRef')).to.be.equal.true;
+    expect(appModel.get('currentActivityId')).to.be.null;
+    expect(appModel.get('activities')).to.be.null;
+  });
+
+  describe('Activities support', () => {
+    it('has functions', () => {
+      const appModel = new AppModel();
+      expect(appModel.getActivity).to.be.a('function');
+      expect(appModel.checkCurrentActivityExpiry).to.be.a('function');
+    });
+    it('should retrieve activity by id', () => {
+      const appModel = new AppModel();
+      appModel.set('activities', [
+        {"id":1,"title":"Activity 1"},
+        {"id":2,"title":"Activity 2"}
+      ]);
+      let activity2 = appModel.getActivity(2);
+      expect(activity2.title).to.be.equal("Activity 2");
+    });
+    it('should check activity expiry', () => {
+      const appModel = new AppModel();
+      appModel.set('activities', [
+        {"id":1,"title":"Activity 1","group_to_date":"2015-01-01"},
+        {"id":2,"title":"Activity 1","group_from_date":"2100-01-01"},
+      ]);
+      appModel.set('currentActivityId', 1);
+      appModel.checkCurrentActivityExpiry();
+      expect(appModel.get('currentActivityId')).to.be.null;
+      appModel.set('currentActivityId', 2);
+      appModel.checkCurrentActivityExpiry();
+      expect(appModel.get('currentActivityId')).to.be.null;
+    });
   });
 
   describe('Past locations extension', () => {
