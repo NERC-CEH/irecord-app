@@ -44,7 +44,7 @@ let AppModel = Backbone.Model.extend({
     return activity;
   },
 
-  checkCurrentActivityExpiry: function() {
+  checkCurrentActivityExpiry() {
     if (this.get('currentActivityId')) {
       // test the activity is not expired
       let activity = this.getActivity(),

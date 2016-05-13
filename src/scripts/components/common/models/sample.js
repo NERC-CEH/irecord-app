@@ -14,7 +14,7 @@ let Sample = Morel.Sample.extend({
   constructor(...args) {
     this.manager = recordManager;
     if (arguments.length) {
-      args[0]['form'] = CONFIG.morel.manager.input_form;
+      args[0].form = CONFIG.morel.manager.input_form;
     }
     Morel.Sample.prototype.constructor.apply(this, args);
   },

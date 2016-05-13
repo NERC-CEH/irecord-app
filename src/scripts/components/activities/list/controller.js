@@ -112,7 +112,6 @@ const API = {
       });
     }
 
-
     // if exit on selection click
     mainView.on('save', onExit);
     App.regions.main.show(mainView);
@@ -121,8 +120,10 @@ const API = {
   },
 
   /**
-   * Initializes the activites collection either with existing data or fresh server.
-   * @param activitiesCollection
+   * Initializes the activites collection either with existing data or fresh server pull.
+   * @param activitiesCollection a collection to update with existing/new activities
+   * @param refresh get fresh list from website
+   * @param recordActivityId current record activity ID
    */
   initActivities(activitiesCollection, refresh, recordActivityId) {
     const activitiesData = appModel.get('activities');
@@ -158,11 +159,13 @@ const API = {
   /**
    * Method for loading the activities into the view, either from the warehouse
    * or the copy cached in the app model.
-   * @param activitiesData Array of activity objects with id, description and title.
+   * @param activitiesCollection a collection to update with existing/new activities
+   * @param currentActivityId currently selected activity ID
    */
   _updateActivitiesCollection(activitiesCollection, currentActivityId) {
     appModel.checkCurrentActivityExpiry();
 
+    // add default activity
     const defaultActivity = new ActivityRecord({
       title: 'Default',
       description: '',
@@ -173,6 +176,7 @@ const API = {
     activitiesCollection.reset();
     activitiesCollection.add(defaultActivity);
 
+    // add user activities
     const activitiesData = appModel.get('activities');
     $.each(activitiesData, (index, activity) => {
       activity.checked = currentActivityId == activity.id; // todo:  server '71' == local 71
