@@ -194,9 +194,7 @@ const API = {
     const data = {
       report: 'library/groups/groups_for_app.xml',
       // user_id filled in by iform_mobile_auth proxy
-      // @todo Fill in the correct form path once it is known
-      // @todo USER ID NOT FILLING IN PROPERLY
-      path: 'enter-record-list',
+      path: CONFIG.morel.manager.input_form,
       email: userModel.get('email'),
       appname: CONFIG.morel.manager.appname,
       appsecret: CONFIG.morel.manager.appsecret,
