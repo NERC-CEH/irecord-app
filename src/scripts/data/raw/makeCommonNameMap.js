@@ -1,14 +1,37 @@
 /** ****************************************************************************
  * Extract common names as pointers in an array.
  *****************************************************************************/
-import helpers from './searchHelpers';
+'use strict';
+
+const fs = require('fs');
+const species = require('./master_list.data');
 
 const GENUS_COMMON_INDEX = 3;
 const SPECIES_COMMON_INDEX = 2; // in species and bellow
 const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
 
-export default function () {
-  const species = window.species_list;
+const helpers = {
+  /**
+   * Return common name from common names array pointer
+   * @param p array pointer
+   */
+  getCommonName(species, p) {
+    let name;
+    if (helpers.isGenusPointer(p)) {
+      // genus common name
+      name = species[p[0]][p[1]];
+    } else {
+      name = species[p[0]][p[1]][p[2]][p[3]];
+    }
+    return name.toLowerCase();
+  },
+
+  isGenusPointer(p) {
+    return p.length === 2;
+  },
+};
+
+function make() {
   const commonNames = []; // eg. first second third
 
   /**
@@ -79,3 +102,13 @@ export default function () {
 
   return commonNames;
 }
+
+const map = make();
+
+fs.writeFile('./common_names.data.json', JSON.stringify(map), function(err) {
+  if(err) {
+    return console.log(err);
+  }
+
+  console.log('Done.');
+});

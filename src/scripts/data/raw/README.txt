@@ -10,3 +10,6 @@ run make_csv.sh
 4. Transform Master_list.csv to Master_list.json:
 run json_translator.py
 
+5. Create common name map
+node --harmony makeCommonNameMap.js
+

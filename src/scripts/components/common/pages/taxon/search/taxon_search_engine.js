@@ -1,7 +1,6 @@
 /** ****************************************************************************
  * Generates UKSI list search suggestions.
  *****************************************************************************/
-import makeCommonNameMap from './commonNameMap';
 import searchCommonNames from './commonNamesSearch';
 import searchSciNames from './scientificNamesSearch';
 import helpers from './searchHelpers';
@@ -15,24 +14,15 @@ const MAX = 20;
 
 const API = {
   init(callback) {
-    function _prep() {
-      Log('Taxon search engine: initializing common name map');
-      species = window.species_list;
-      if (!commonNamePointers) commonNamePointers = makeCommonNameMap();
-      callback && callback();
-    }
+    Log('Taxon search engine: initializing');
 
-    if (!window.species_list) {
-      Log('Taxon search engine: initializing');
-      loading = true;
-      require.ensure([], () => {
-        loading = false;
-        require('master_list.data');
-        _prep();
-      }, 'data');
-    } else {
-      _prep();
-    }
+    loading = true;
+    require.ensure([], () => {
+      loading = false;
+      species = require('master_list.data');
+      commonNamePointers = require('common_names.data');
+      callback && callback();
+    }, 'data');
   },
 
   /**

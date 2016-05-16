@@ -28,7 +28,8 @@ module.exports = {
         config: 'config',
         'photoswipe-lib': 'photoswipe/js/photoswipe.min',
         'photoswipe-ui-default': 'photoswipe/js/photoswipe-ui-default.min',
-        'master_list.data': 'data/master_list.data.js',
+        'common_names.data': 'data/common_names.data.json',
+        'master_list.data': 'data/master_list.data.json',
         'informal_groups.data': 'data/informal_groups.data.js',
       },
     },
@@ -39,6 +40,7 @@ module.exports = {
           exclude: /(node_modules|bower_components|vendor)/,
           loader: 'babel-loader',
         },
+        { test: /\.json/, loader: 'json' },
       ],
     },
   };

@@ -31,6 +31,7 @@
   "devDependencies": {
     "babel-core": "latest",
     "babel-loader": "latest",
+    "json-loader": "latest",
     "babel-preset-es2015": "^6.3.13",
     "bower": "latest",
     "chai": "latest",

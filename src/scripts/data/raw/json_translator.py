@@ -15,7 +15,7 @@ import pdb
 
 csv_file = open('master_list.csv', 'rt')
 reader = csv.reader(csv_file)
-json_file = open('master_list.data.js', 'wt')
+json_file = open('master_list.data.json', 'wt')
 
 data = []
 row_data = {}
@@ -96,9 +96,7 @@ for row in reader:
                 data.append(copy.copy(row_data))
     rownum += 1
     
-json_file.write('window.species_list = ');
 json_file.write(json.dumps(data,separators=(',', ':')))
-json_file.write(';');
 
 csv_file.close()
 json_file.close()
