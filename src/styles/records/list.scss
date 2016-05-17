@@ -21,6 +21,12 @@
       color: $header-color;
     }
   }
+
+  .pull-left {
+    #activities-btn {
+      max-width: 96px;
+    }
+  }
 }
 
 .img-picker {
