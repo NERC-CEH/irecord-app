@@ -11,10 +11,14 @@
   },
   "globals": {
     "before": true,
+    "beforeEach": true,
     "after": true,
+    "afterEach": true,
     "describe": true,
     "it": true,
     "expect": true,
+
+    "parseInt": true,
 
     "cordova": true,
     "StatusBar": true,
