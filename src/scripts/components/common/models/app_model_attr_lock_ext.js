@@ -2,6 +2,7 @@
  * App Model attribute lock functions.
  *****************************************************************************/
 import _ from 'lodash';
+import userModel from './user_model';
 
 export default {
   setAttrLock(attr, value) {
@@ -10,8 +11,16 @@ export default {
 
     locks[attr] = val;
     this.set(locks);
-    this.trigger('change:attrLocks');
     this.save();
+    this.trigger('change:attrLocks');
+  },
+
+  unsetAttrLock(attr) {
+    const locks = this.get('attrLocks');
+    delete locks[attr];
+    this.set(locks);
+    this.save();
+    this.trigger('change:attrLocks');
   },
 
   getAttrLock(attr) {
@@ -25,17 +34,19 @@ export default {
     if (lockedVal === true) return true; // has been locked
     let locked;
     switch (attr) {
+      case 'activity':
+        return lockedVal.id === value.id;
       case 'location':
         locked =
-              // map or gridref
-              (lockedVal &&
-              (lockedVal.name === value.name &&
-              lockedVal.latitude === value.latitude &&
-              lockedVal.longitude === value.longitude) ||
+          // map or gridref
+          (lockedVal &&
+          (lockedVal.name === value.name &&
+          lockedVal.latitude === value.latitude &&
+          lockedVal.longitude === value.longitude) ||
 
-                // GPS doesn't lock the location only name
-              (lockedVal.name === value.name && (
-              !lockedVal.latitude && !lockedVal.longitude)));
+            // GPS doesn't lock the location only name
+          (lockedVal.name === value.name && (
+          !lockedVal.latitude && !lockedVal.longitude)));
 
         return locked;
       case 'date':
@@ -61,6 +72,14 @@ export default {
       const val = _.cloneDeep(value);
 
       switch (key) {
+        case 'activity':
+          if (!userModel.hasActivityExpired(val)) {
+            sample.set('group', val);
+          } else {
+            // unset the activity as it's now expired
+            this.unsetAttrLock('activity');
+          }
+          break;
         case 'location':
           sample.set('location', val);
           break;
@@ -82,6 +101,19 @@ export default {
           break;
         default:
       }
+    });
+  },
+
+  checkExpiredAttrLocks() {
+    const that = this;
+    const locks = this.get('attrLocks');
+    if (locks.activity) {
+      if (userModel.hasActivityExpired(locks.activity)) {
+        this.unsetAttrLock('activity');
+      }
+    }
+    userModel.on('logout', () => {
+      that.unsetAttrLock('activity'); // remove locked activity
     });
   },
 };

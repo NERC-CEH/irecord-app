@@ -1,10 +1,12 @@
 import Marionette from 'marionette';
+import Log from '../../../helpers/log';
 import JST from '../../../JST';
 
 export default Marionette.ItemView.extend({
-  template: JST['records/attr/lock'],
+  template: JST['common/lock'],
 
   initialize() {
+    Log('AttrLock:View: initializing');
     this.onLockClick = this.options.onLockClick;
     const appModel = this.model.get('appModel');
     this.listenTo(appModel, 'change:attrLocks', this.render);

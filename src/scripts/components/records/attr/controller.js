@@ -45,7 +45,7 @@ const API = {
       const lockView = new LockView({
         model: new Backbone.Model({ appModel, recordModel }),
         attr,
-        onLockClick: API.onLockCLick,
+        onLockClick: API.onLockClick,
       });
 
       const headerView = new HeaderView({
@@ -68,8 +68,9 @@ const API = {
     });
   },
 
-  onLockClick(attr) {
+  onLockClick(options) {
     Log('Records:Attr:Controller: lock clicked');
+    const attr = options.view.options.attr;
     // invert the lock of the attribute
     // real value will be put on exit
     if (attr === 'number') {

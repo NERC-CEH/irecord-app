@@ -1,8 +1,16 @@
+import $ from 'jquery';
+import Morel from 'morel';
 import Sample from '../sample';
 import Occurrence from '../occurrence';
-import recordManager from '../../record_manager';
+import userModel from '../user_model';
+import { recordManager, Manager as RecordManager } from '../../record_manager';
 import DateHelp from 'helpers/date';
+import CONFIG from 'config'; // Replaced with alias
 
+const morelConfiguration = $.extend(CONFIG.morel.manager, {
+  Storage: Morel.DatabaseStorage,
+  Sample,
+});
 
 function getRandomSample() {
   const occurrence = new Occurrence({
@@ -12,7 +20,7 @@ function getRandomSample() {
     location: {
       latitude: 12.12,
       longitude: -0.23,
-      name: 'automatic test'},
+      name: 'automatic test' },
   }, {
     occurrences: [occurrence],
     manager: recordManager,
@@ -76,7 +84,7 @@ describe('Sample', () => {
   describe('setToSend', () => {
     it('should set the saved flag in sample metadata', () => {
       const sample = getRandomSample();
-      const promise = sample.setToSend();
+      sample.setToSend();
       expect(sample.metadata.saved).to.be.true;
     });
 
@@ -93,6 +101,62 @@ describe('Sample', () => {
 
       expect(sample.validationError).to.be.an('object');
       expect(sample.metadata.saved).to.be.false;
+    });
+  });
+
+  describe('Activities support', () => {
+    function getRandActivity() {
+      const activity = {
+        id: (Math.random() * 100).toFixed(0),
+        name: '',
+        description: '',
+        type: '',
+        group_from_date: '2015-01-01',
+        group_to_date: '2020-01-01',
+      };
+      return activity;
+    }
+    it('has functions', () => {
+      const sample = new Sample();
+      expect(sample.checkExpiredGroup).to.be.a('function');
+    });
+
+    it('should remove expired activities on init', (done) => {
+      const sample = getRandomSample();
+      const activity = getRandActivity();
+      userModel.set('activities', [activity]);
+      userModel.save();
+      sample.set('group', activity);
+      sample.save().then(() => {
+        expect(sample.get('group')).to.be.an('object');
+
+        // expire activities
+        userModel.set('activities', []);
+        userModel.save();
+
+        // get the same sample - fresh
+        const newManager = new RecordManager(morelConfiguration);
+        newManager.get(sample, (err, newSample) => {
+          expect(newSample.get('group')).to.be.undefined;
+          done();
+        });
+      });
+    });
+
+    it('should remove expired activities on activities sync', () => {
+      const sample = getRandomSample();
+      const activity = getRandActivity();
+
+      // OK
+      userModel.set('activities', [activity]);
+      sample.set('group', activity);
+      userModel.trigger('sync:activities:end');
+      expect(sample.get('group')).to.be.an('object');
+
+      // expire
+      userModel.set('activities', []);
+      userModel.trigger('sync:activities:end');
+      expect(sample.get('group')).to.be.undefined;
     });
   });
 

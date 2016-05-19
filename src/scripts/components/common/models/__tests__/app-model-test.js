@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Occurrence from '../occurrence';
 import Sample from '../sample';
-import {default as appModel, AppModel} from '../app_model';
+import { AppModel } from '../app_model';
 
 describe('App Model', () => {
   function getRandomSample() {
@@ -12,7 +12,7 @@ describe('App Model', () => {
       location: {
         latitude: 12.12,
         longitude: -0.23,
-        name: 'automatic test'},
+        name: 'automatic test' },
     }, {
       occurrences: [occurrence],
       onSend: () => {}, // overwrite manager's one checking for user login
@@ -28,43 +28,11 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(6);
+    expect(_.keys(appModel.attributes).length).to.be.equal(4);
     expect(appModel.get('locations')).to.be.an.array;
     expect(appModel.get('attrLocks')).to.be.an.object;
     expect(appModel.get('autosync')).to.be.equal.true;
     expect(appModel.get('useGridRef')).to.be.equal.true;
-    expect(appModel.get('currentActivityId')).to.be.null;
-    expect(appModel.get('activities')).to.be.null;
-  });
-
-  describe('Activities support', () => {
-    it('has functions', () => {
-      const appModel = new AppModel();
-      expect(appModel.getActivity).to.be.a('function');
-      expect(appModel.checkCurrentActivityExpiry).to.be.a('function');
-    });
-    it('should retrieve activity by id', () => {
-      const appModel = new AppModel();
-      appModel.set('activities', [
-        {"id":1,"title":"Activity 1"},
-        {"id":2,"title":"Activity 2"}
-      ]);
-      let activity2 = appModel.getActivity(2);
-      expect(activity2.title).to.be.equal("Activity 2");
-    });
-    it('should check activity expiry', () => {
-      const appModel = new AppModel();
-      appModel.set('activities', [
-        {"id":1,"title":"Activity 1","group_to_date":"2015-01-01"},
-        {"id":2,"title":"Activity 1","group_from_date":"2100-01-01"},
-      ]);
-      appModel.set('currentActivityId', 1);
-      appModel.checkCurrentActivityExpiry();
-      expect(appModel.get('currentActivityId')).to.be.null;
-      appModel.set('currentActivityId', 2);
-      appModel.checkCurrentActivityExpiry();
-      expect(appModel.get('currentActivityId')).to.be.null;
-    });
   });
 
   describe('Past locations extension', () => {
@@ -88,6 +56,8 @@ describe('App Model', () => {
     });
 
     it('should sample append locked attributes', () => {
+      const appModel = new AppModel();
+
       // lock some attributes
       appModel.setAttrLock('number', 123);
 
@@ -101,6 +71,8 @@ describe('App Model', () => {
     });
 
     it('should copy new attributes and not references', () => {
+      const appModel = new AppModel();
+
       // lock some attributes
       const numberObject = { num: 1 };
       appModel.setAttrLock('number', numberObject);
@@ -132,6 +104,32 @@ describe('App Model', () => {
 
       number = sample2.occurrences.at(0).get('number');
       expect(number).to.deep.equal({ num: 1 });
+    });
+  });
+
+  describe('Activities support', () => {
+    function getRandActivity() {
+      const activity = {
+        id: (Math.random() * 100).toFixed(0),
+        name: '',
+        description: '',
+        type: '',
+        group_from_date: '2015-01-01',
+        group_to_date: '2020-01-01',
+      };
+      return activity;
+    }
+
+    it('should remove expired activity lock', () => {
+      let appModel = new AppModel();
+      const activity = getRandActivity();
+      activity.group_to_date = '2000-01-01';
+      appModel.setAttrLock('activity', activity);
+      appModel.save();
+      expect(appModel.getAttrLock('activity')).to.be.an('object');
+
+      appModel = new AppModel();
+      expect(appModel.getAttrLock('activity')).to.be.undefined;
     });
   });
 });

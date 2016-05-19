@@ -144,7 +144,7 @@ const API = {
     appModel.clear().set(appModel.defaults);
     appModel.save();
 
-    userModel.clear().set(appModel.defaults);
+    userModel.clear().set(userModel.defaults);
     userModel.save();
 
     recordManager.getAll((err, samples) => {

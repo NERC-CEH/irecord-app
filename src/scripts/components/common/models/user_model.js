@@ -4,10 +4,11 @@
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
+import activitiesExtension from './user_model_activities_ext';
 import Validate from '../../../helpers/validate';
 import CONFIG from 'config'; // Replaced with alias
 
-const UserModel = Backbone.Model.extend({
+let UserModel = Backbone.Model.extend({
   id: 'user',
 
   defaults: {
@@ -15,6 +16,7 @@ const UserModel = Backbone.Model.extend({
     surname: '',
     email: '',
     secret: '',
+    activities: [],
   },
 
   localStorage: new Store(CONFIG.name),
@@ -24,6 +26,7 @@ const UserModel = Backbone.Model.extend({
    */
   initialize() {
     this.fetch();
+    this.syncActivities();
   },
 
   /**
@@ -34,6 +37,9 @@ const UserModel = Backbone.Model.extend({
     this.set('secret', '');
     this.set('name', '');
     this.set('surname', '');
+
+    this.resetActivities();
+
     this.save();
     this.trigger('logout');
   },
@@ -49,6 +55,7 @@ const UserModel = Backbone.Model.extend({
     this.setContactDetails(user);
     this.save();
     this.trigger('login');
+    this.syncActivities();
   },
 
   /**
@@ -144,5 +151,8 @@ const UserModel = Backbone.Model.extend({
   },
 });
 
+// add activities management
+UserModel = UserModel.extend(activitiesExtension);
+
 const userModel = new UserModel();
-export {userModel as default, UserModel};
+export { userModel as default, UserModel };

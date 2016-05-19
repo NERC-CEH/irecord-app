@@ -147,8 +147,7 @@ const API = {
       const occurrence = new Occurrence();
       occurrence.addImage(image);
 
-      appModel.checkCurrentActivityExpiry();
-      const sample = new Sample({"group": appModel.getActivity()});
+      const sample = new Sample();
       sample.addOccurrence(occurrence);
 
       // append locked attributes

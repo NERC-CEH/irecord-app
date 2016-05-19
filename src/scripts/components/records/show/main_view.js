@@ -60,6 +60,10 @@ export default Marionette.ItemView.extend({
       number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
+
+    // show activity title.
+    const group = recordModel.get('group');
+
     return {
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
       onDatabase: syncStatus === Morel.SYNCED,
@@ -71,6 +75,7 @@ export default Marionette.ItemView.extend({
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
+      group_title: group ? group.title : null,
       images: occ.images,
     };
   },

@@ -36,6 +36,13 @@
     Comment
     <span class="comment descript"><%- obj.comment %></span>
   </li>
+  <% if (obj.group_title) { %>
+  <li class="table-view-cell">
+    <span class="media-object pull-left icon icon-users"></span>
+    <span class="media-object pull-right descript"><%- obj.group_title %></span>
+    Activity
+  </li>
+  <% } %>
   <li id="img-array">
     <% obj.images.each(function (image){ %>
       <img src="<%- image.getURL() %>" alt="">

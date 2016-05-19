@@ -1,9 +1,7 @@
 /** ****************************************************************************
  * App model. Persistent.
  *****************************************************************************/
-import $ from 'jquery';
 import Backbone from 'backbone';
-import App from '../../../app';
 import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import pastLocationsExtension from './app_model_past_loc_ext';
 import attributeLockExtension from './app_model_attr_lock_ext';
@@ -17,66 +15,16 @@ let AppModel = Backbone.Model.extend({
     attrLocks: {},
     autosync: true,
     useGridRef: true,
-    currentActivityId: null,
-    activities: null,
   },
 
   localStorage: new Store(CONFIG.name),
-
-  /**
-   * Lookup an activity definition using the ID.
-   * @param integer activityId Optional ID of the activity to retrieve. Default
-   * is the currently selected activity.
-   * @return object Data stored for his activity
-   */
-  getActivity(activityId) {
-    if (!activityId) {
-      activityId = this.get('currentActivityId');
-    }
-    let activity = null;
-    let activities = this.get('activities');
-    $.each(activities, (index, activ) => {
-      if (activ.id == activityId) {
-        activity = activ;
-        return false; // from $.each
-      }
-    });
-    return activity;
-  },
-
-  checkCurrentActivityExpiry() {
-    if (this.get('currentActivityId')) {
-      // test the activity is not expired
-      let activity = this.getActivity(),
-          today = new Date().setHours(0,0,0,0);
-      // activity not found in available list, or activity found but out of date range
-      if (!activity ||
-         (activity.group_from_date && new Date(activity.group_from_date).setHours(0,0,0,0) > today) ||
-         (activity.group_to_date && new Date(activity.group_to_date).setHours(0,0,0,0) < today)) {
-        // unset the activity as it's now expired
-        this.set('currentActivityId', null);
-        this.save();
-        if (typeof App.regions!=="undefined") {
-          App.regions.dialog.show({
-            title: 'Information',
-            body: 'The previously selected activity is no longer available so the default ' +
-                'activity has been selected for you.',
-            buttons: [{
-              id: 'ok',
-              title: 'OK',
-              onClick: App.regions.dialog.hide
-            }]
-          });
-        }
-      }
-    }
-  },
 
   /**
    * Initializes the object.
    */
   initialize() {
     this.fetch();
+    this.checkExpiredAttrLocks();
   },
 });
 

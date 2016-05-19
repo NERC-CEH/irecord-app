@@ -1,10 +1,11 @@
-/******************************************************************************
+/** ****************************************************************************
  * Activities main view.
  *****************************************************************************/
-import Marionette from 'marionette';
-import JST from '../../../JST';
 import $ from 'jquery';
-import LoaderView from '../../common/views/loader_view';
+import _ from 'lodash';
+import Marionette from 'marionette';
+import JST from '../../../../JST';
+import LoaderView from '../../views/loader_view';
 
 /**
  * Single activity item view
@@ -12,7 +13,7 @@ import LoaderView from '../../common/views/loader_view';
 const ActivityView = Marionette.ItemView.extend({
   tagName: 'div',
   className: 'activity',
-  template: JST['activities/list/activity'],
+  template: JST['common/activities/activity'],
 });
 
 /**
@@ -23,7 +24,7 @@ export default Marionette.CompositeView.extend({
   className: 'no-top',
   emptyView: LoaderView,
   childView: ActivityView,
-  template: JST['activities/list/wrapper'],
+  template: JST['common/activities/wrapper'],
   childViewContainer: 'div.list',
 
   // Checking an item fires save and closes the page
@@ -33,6 +34,10 @@ export default Marionette.CompositeView.extend({
     };
   },
 
+  /**
+   * Gets the new user selected activity.
+   * @returns {*}
+   */
   getActivity() {
     const that = this;
     const $inputs = this.$el.find('input');
@@ -43,7 +48,8 @@ export default Marionette.CompositeView.extend({
         const filtered = that.collection.filter((a) => a.id == activityId);
         if (filtered.length) {
           // should be only one activity in the array matching the id
-          activity = filtered[0].attributes;
+          activity = _.cloneDeep(filtered[0].attributes);
+          delete activity.checked;
         }
       }
     });

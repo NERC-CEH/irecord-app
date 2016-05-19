@@ -13,7 +13,7 @@ import ListController from './list/controller';
 import ShowController from './show/controller';
 import EditController from './edit/controller';
 import EditAttrController from './attr/controller';
-import ActivityController from '../activities/list/controller';
+import ActivitiesController from '../common/pages/activities/controller';
 import TaxonController from '../common/pages/taxon/controller';
 import LocationController from '../common/pages/location/controller';
 
@@ -26,7 +26,7 @@ const Router = Marionette.AppRouter.extend({
     'records/:id': ShowController.show,
     'records/:id/edit(/)': EditController.show,
     'records/:id/edit/location(/)': LocationController.show,
-    'records/:id/edit/activity(/)': ActivityController.show,
+    'records/:id/edit/activity(/)': ActivitiesController.show,
     'records/:id/edit/taxon(/)': TaxonController.show,
     'records/:id/edit/:attr(/)': EditAttrController.show,
     'records/*path'() {App.trigger('404:show');},

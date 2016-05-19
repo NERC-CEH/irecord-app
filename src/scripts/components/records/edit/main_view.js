@@ -47,6 +47,7 @@ export default Marionette.ItemView.extend({
       number: numberLock,
       stage: appModel.isAttrLocked('stage', occ.get('stage')),
       comment: appModel.isAttrLocked('comment', occ.get('comment')),
+      activity: appModel.isAttrLocked('activity', recordModel.get('group')),
     };
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
@@ -55,7 +56,7 @@ export default Marionette.ItemView.extend({
     }
 
     // show activity title.
-    let group = recordModel.get('group');
+    const group = recordModel.get('group');
 
     return {
       id: recordModel.id || recordModel.cid,
