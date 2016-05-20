@@ -49,9 +49,11 @@
     Activity
   </li>
   <% } %>
-  <li id="img-array">
-    <% obj.images.each(function (image){ %>
-      <img src="<%- image.getURL() %>" alt="">
-    <% }) %>
-  </li>
+  <% if (obj.images.length) { %>
+    <li id="img-array">
+      <% obj.images.each(function (image){ %>
+        <img src="<%- image.getURL() %>" alt="">
+      <% }) %>
+    </li>
+  <% } %>
 </ul>
