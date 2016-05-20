@@ -10,8 +10,9 @@ module.exports = function exports(grunt) {
 
   grunt.option('platform', 'web');
 
+  const pkg = grunt.file.readJSON('package.json');
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: pkg,
 
     bower: {
       install: {
@@ -243,6 +244,12 @@ module.exports = function exports(grunt) {
           {
             from: /\{BUNDLE_VER\}/g,
             to: '<%= pkg.build %>',
+          },
+          {
+            from: /\{ANDROID_BUNDLE_VER\}/g,
+            to: function () {
+              return pkg.version.replace(/\./g,'') + pkg.build;
+            },
           },
         ],
       },

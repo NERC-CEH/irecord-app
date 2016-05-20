@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="{ID}" version="{APP_VER}"
-        android-versionCode="100{BUNDLE_VER}009"
+        android-versionCode="1900{ANDROID_BUNDLE_VER}"
         ios-CFBundleVersion="{BUNDLE_VER}"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
