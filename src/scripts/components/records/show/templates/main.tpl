@@ -21,21 +21,27 @@
     <span class="media-object pull-right descript"><%- obj.date %></span>
     Date
   </li>
-  <li class="table-view-cell">
-    <span class="media-object pull-left icon icon-number"></span>
-    <span class="media-object pull-right descript"><%- obj.number %></span>
-    Number
-  </li>
-  <li class="table-view-cell">
-    <span class="media-object pull-left icon icon-stage"></span>
-    <span class="media-object pull-right descript"><%- obj.stage %></span>
-    Stage
-  </li>
-  <li class="table-view-cell">
-    <span class="media-object pull-left icon icon-comment"></span>
-    Comment
-    <span class="comment descript"><%- obj.comment %></span>
-  </li>
+  <% if (obj.number) { %>
+    <li class="table-view-cell">
+      <span class="media-object pull-left icon icon-number"></span>
+      <span class="media-object pull-right descript"><%- obj.number %></span>
+      Number
+    </li>
+  <% } %>
+  <% if (obj.stage) { %>
+    <li class="table-view-cell">
+      <span class="media-object pull-left icon icon-stage"></span>
+      <span class="media-object pull-right descript"><%- obj.stage %></span>
+      Stage
+    </li>
+  <% } %>
+  <% if (obj.comment) { %>
+    <li class="table-view-cell">
+      <span class="media-object pull-left icon icon-comment"></span>
+      Comment
+      <span class="comment descript"><%- obj.comment %></span>
+    </li>
+  <% } %>
   <% if (obj.group_title) { %>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-users"></span>
