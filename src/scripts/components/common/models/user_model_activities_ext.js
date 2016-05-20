@@ -119,8 +119,8 @@ export default {
           title: '',
           description: '',
           group_type: '',
-          group_from_date: null,
-          group_to_date: null,
+          group_from_date: '',
+          group_to_date: '',
         };
 
         receivedData.forEach((activity) => {
@@ -128,14 +128,18 @@ export default {
           fullActivity.id = parseInt(fullActivity.id);
 
           // from
-          let date = new Date(fullActivity.group_from_date);
-          fullActivity.group_from_date = date.toString();
+          let date;
+          if (fullActivity.group_from_date) {
+            date = new Date(fullActivity.group_from_date);
+            fullActivity.group_from_date = date.toString();
+          }
 
           // to
-          date = new Date(fullActivity.group_to_date);
-          date.setDate(date.getDate() + 1); // include the last day
-          fullActivity.group_to_date = date.toString();
-
+          if (fullActivity.group_to_date) {
+            date = new Date(fullActivity.group_to_date);
+            date.setDate(date.getDate() + 1); // include the last day
+            fullActivity.group_to_date = date.toString();
+          }
           activities.push(fullActivity);
         });
 
