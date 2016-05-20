@@ -25,6 +25,7 @@ export default {
       for (let i = activities.length - 1; i >= 0; i--) {
         const activity = activities[i];
         if (this.hasActivityExpired(activity)) {
+          Log('UserModel: removing expired activity');
           activities.splice(i, 1);
         }
       }
@@ -33,8 +34,9 @@ export default {
   },
 
   resetActivities() {
-    // activities
+    Log('UserModel: fetching activities');
     this.set('activities', []);
+    this.save();
   },
 
   hasActivity(activity) {
@@ -69,11 +71,11 @@ export default {
     // check if out of range
     const today = new Date();
     let tooLate = false;
-    if (activity.group_from_date) {
+    if (activity.group_to_date) {
       tooLate = new Date(activity.group_to_date) < today;
     }
     let tooEarly = false;
-    if (activity.group_to_date) {
+    if (activity.group_from_date) {
       tooEarly = new Date(activity.group_from_date) > today;
     }
 
@@ -90,6 +92,7 @@ export default {
    * collection in the main view.
    */
   fetchActivities(callback) {
+    Log('UserModel: fetching activities');
     this.trigger('sync:activities:start');
     const that = this;
     const data = {
@@ -123,6 +126,15 @@ export default {
         receivedData.forEach((activity) => {
           const fullActivity = $.extend({}, defaultActivity, activity);
           fullActivity.id = parseInt(fullActivity.id);
+
+          // from
+          let date = new Date(fullActivity.group_from_date);
+          fullActivity.group_from_date = date.toString();
+
+          // to
+          date = new Date(fullActivity.group_to_date);
+          date.setDate(date.getDate() + 1); // include the last day
+          fullActivity.group_to_date = date.toString();
 
           activities.push(fullActivity);
         });
@@ -160,6 +172,4 @@ export default {
 
     return false;
   },
-
-
 };
