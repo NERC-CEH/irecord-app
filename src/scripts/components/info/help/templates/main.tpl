@@ -153,6 +153,21 @@
       address by clicking on a verification link sent to your email.
     </p>
   </li>
+  <li class="table-view-cell">
+    <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+       href="#activities-help" aria-expanded="false" aria-controls="activities-help">
+      <span class="icon icon-collapse pull-left"></span>
+      Activities
+    </a>
+    <p id="activities-help" class="collapse" aria-labelledby="headingTwo" aria-expanded="false">
+      To send records to a specific activity you can select it in the Activities
+      <span class="icon icon-users"></span> page.
+      <br><br>
+      <b>Note:</b> only the activities that allow this mobile app records and only
+      the ones that you have joined on the
+      iRecord website will be available to select.
+    </p>
+  </li>
 
   <li class="table-view-divider">Other</li>
   <li class="table-view-cell">
