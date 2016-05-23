@@ -40,11 +40,6 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
     this.updateActivitiesCollection();
 
-    // if loading have empty collection
-    if (userModel.synchronizingActivities) {
-      this.reset();
-    }
-
     this.listenTo(userModel, 'sync:activities:start', () => {
       Log('Activities:Controller: reseting collection for sync');
       that.reset();
@@ -54,6 +49,12 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
   updateActivitiesCollection() {
     Log('Activities:Controller: updating collection');
+
+    // if loading have empty collection
+    if (userModel.synchronizingActivities) {
+      this.reset();
+      return;
+    }
 
     const that = this;
     const lockedActivity = appModel.getAttrLock('activity');
