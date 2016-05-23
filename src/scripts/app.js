@@ -88,6 +88,8 @@ App.on('start', () => {
         if (navigator && navigator.splashscreen) {
           navigator.splashscreen.hide();
         }
+
+        Analytics.trackEvent('App', 'initialized');
       }, false);
     } else {
       // development loader

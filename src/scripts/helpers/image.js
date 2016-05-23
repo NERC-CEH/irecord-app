@@ -5,6 +5,7 @@ import Morel from 'morel';
 import _ from 'lodash';
 import ImageModel from '../components/common/models/image';
 import Log from './log';
+import Analytics from './analytics';
 import Error from './error';
 import Device from './device';
 
@@ -89,6 +90,7 @@ const Image = {
     }
 
     navigator.camera.getPicture(onSuccess, onError, cameraOptions);
+    Analytics.trackEvent('Image', 'get', cameraOptions.sourceType);
   },
 
   /**

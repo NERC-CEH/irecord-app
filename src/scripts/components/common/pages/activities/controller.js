@@ -5,6 +5,7 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Log from '../../../../helpers/log';
+import Analytics from '../../../../helpers/analytics';
 import App from '../../../../app';
 import MainView from './main_view';
 import HeaderView from '../../views/header_view';
@@ -173,6 +174,7 @@ const API = {
 
   refreshActivities() {
     userModel.syncActivities(true);
+    Analytics.trackEvent('Activities', 'refresh');
   },
 
   save(activity = {}) {

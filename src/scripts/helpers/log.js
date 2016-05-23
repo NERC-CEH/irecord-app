@@ -14,6 +14,7 @@
  *****************************************************************************/
 
 import $ from 'jquery';
+import Analytics from './analytics';
 import CONFIG from 'config'; // Replaced with alias
 
 const ERROR = 'e';
@@ -44,22 +45,7 @@ function error(errorMessage = {}) {
     `<center><b>Oh no, Error! </b></center><br/>${err.message}
     [${err.line}, ${err.column}] ${err.obj}`);
 
-  // google analytics error logging
-  if ((CONFIG.ga && CONFIG.ga.status) &&
-    (CONFIG.log && CONFIG.log.ga_error)) {
-
-    // check if the error did not occur before the analytics is loaded
-    if (window.ga) {
-      ga('send', 'exception', {
-        'exDescription':
-        err.message + ' ' +
-        err.url + ' ' +
-        err.line + ' ' +
-        err.column + ' ' +
-        err.obj
-      });
-    }
-  }
+  Analytics.trackException(err);
 }
 
 function log(message, type = DEBUG) {
@@ -92,17 +78,17 @@ function log(message, type = DEBUG) {
   }
 }
 
-//Hook into window.error function
+// Hook into window.error function
 window.onerror = (message, url, line, column, obj) => {
   const onerror = window.onerror;
   window.onerror = null;
 
   const err = {
-    'message': message,
-    'url': url || '',
-    'line': line || -1,
-    'column': column || -1,
-    'obj': obj || ''
+    message,
+    url: url || '',
+    line: line || -1,
+    column: column || -1,
+    obj: obj || '',
   };
 
   error(err);

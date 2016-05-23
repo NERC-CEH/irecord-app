@@ -4,6 +4,7 @@
 import Backbone from 'backbone';
 import App from '../../../app';
 import Log from '../../../helpers/log';
+import Analytics from '../../../helpers/analytics';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
 import recordManager from '../../common/record_manager';
@@ -98,6 +99,7 @@ const API = {
                 timeout: 1000,
               });
             });
+            Analytics.trackEvent('Settings', 'delete all');
           },
         },
       ],
@@ -132,6 +134,7 @@ const API = {
                 timeout: 1000,
               });
             });
+            Analytics.trackEvent('Settings', 'send all');
           },
         },
       ],
@@ -156,6 +159,7 @@ const API = {
       }
       recordManager.clear(callback);
     });
+    Analytics.trackEvent('Settings', 'reset app');
   },
 };
 

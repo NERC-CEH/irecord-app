@@ -6,6 +6,7 @@ import Backbone from 'backbone';
 import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import activitiesExtension from './user_model_activities_ext';
 import Validate from '../../../helpers/validate';
+import Analytics from '../../../helpers/analytics';
 import CONFIG from 'config'; // Replaced with alias
 
 let UserModel = Backbone.Model.extend({
@@ -42,6 +43,7 @@ let UserModel = Backbone.Model.extend({
 
     this.save();
     this.trigger('logout');
+    Analytics.trackEvent('User', 'logout');
   },
 
   /**
@@ -56,6 +58,7 @@ let UserModel = Backbone.Model.extend({
     this.save();
     this.trigger('login');
     this.syncActivities();
+    Analytics.trackEvent('User', 'login');
   },
 
   /**

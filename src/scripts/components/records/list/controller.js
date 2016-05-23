@@ -6,6 +6,7 @@ import App from '../../../app';
 import Log from '../../../helpers/log';
 import Error from '../../../helpers/error';
 import ImageHelp from '../../../helpers/image';
+import Analytics from '../../../helpers/analytics';
 import appModel from '../../common/models/app_model';
 import recordManager from '../../common/record_manager';
 import Sample from '../../common/models/sample';
@@ -88,6 +89,7 @@ const API = {
           onClick() {
             recordModel.destroy();
             App.regions.dialog.hide();
+            Analytics.trackEvent('List', 'record remove');
           },
         },
       ],

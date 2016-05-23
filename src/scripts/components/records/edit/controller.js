@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Morel from 'morel';
 import Device from '../../../helpers/device';
 import ImageHelp from '../../../helpers/image';
+import Analytics from '../../../helpers/analytics';
 import Log from '../../../helpers/log';
 import App from '../../../app';
 import appModel from '../../common/models/app_model';
@@ -192,6 +193,7 @@ const API = {
               },
             });
             App.regions.dialog.hide();
+            Analytics.trackEvent('Record', 'photo remove');
           },
         },
       ],
