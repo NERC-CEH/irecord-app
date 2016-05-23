@@ -65,6 +65,7 @@ export default Marionette.ItemView.extend({
     const group = recordModel.get('group');
 
     return {
+      id: occ.cid,
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
       onDatabase: syncStatus === Morel.SYNCED,
       scientific_name: scientificName,
