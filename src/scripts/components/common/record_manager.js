@@ -86,7 +86,7 @@ class Manager extends Morel {
       records.each((record) => {
         noneUsed = false;
         saving++;
-        record.setToSend((error) => {
+        const valid = record.setToSend((error) => {
           if (error) {
             callback && callback(error);
             return;
@@ -97,9 +97,13 @@ class Manager extends Morel {
             that.syncAll();
           }
         });
+
+        if (!valid) {
+          saving--;
+        }
       });
 
-      if (noneUsed) {
+      if (noneUsed || saving === 0) {
         callback && callback();
       }
     });
