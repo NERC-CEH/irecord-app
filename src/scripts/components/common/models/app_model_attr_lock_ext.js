@@ -3,6 +3,7 @@
  *****************************************************************************/
 import _ from 'lodash';
 import Log from '../../../helpers/log';
+import Analytics from '../../../helpers/analytics';
 import userModel from './user_model';
 
 export default {
@@ -14,6 +15,10 @@ export default {
     this.set(locks);
     this.save();
     this.trigger('change:attrLocks');
+
+    if (value) {
+      Analytics.trackEvent('Lock', attr);
+    }
   },
 
   unsetAttrLock(attr) {

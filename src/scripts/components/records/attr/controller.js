@@ -98,6 +98,7 @@ const API = {
    */
   save(attr, values, recordModel) {
     let currentVal;
+    let newVal;
     const occ = recordModel.occurrences.at(0);
 
     switch (attr) {
@@ -105,41 +106,44 @@ const API = {
         currentVal = recordModel.get('date');
 
         // validate before setting up
-        if (values.date != 'Invalid Date') {
-          recordModel.set('date', values.date);
+        if (values.date !== 'Invalid Date') {
+          newVal = values.date;
+          recordModel.set('date', newVal);
         }
         break;
       case 'number':
         currentVal = occ.get('number');
 
-        // todo:validate before setting up
+        // todo: validate before setting up
         if (values.number) {
-          occ.set('number', values.number);
+          // specific number
+          newVal = values.number;
+          occ.set('number', newVal);
           occ.unset('number-ranges');
         } else {
-
+          // number ranges
+          attr = 'number-ranges';
           // don't save default values
-          values['number-ranges'] = values['number-ranges'] === 'default' ?
+          newVal = values['number-ranges'] === 'default' ?
             null : values['number-ranges'];
-
-          occ.set('number-ranges', values['number-ranges']);
+          occ.set('number-ranges', newVal);
           occ.unset('number');
         }
         break;
       case 'stage':
         currentVal = occ.get('stage');
 
-        // don't save default values
-        values.stage = values.stage === 'default' ? null : values.stage;
-
         // todo:validate before setting up
-        occ.set('stage', values.stage);
+        // don't save default values
+        newVal = values.stage === 'default' ? null : values.stage;
+        occ.set('stage', newVal);
         break;
       case 'comment':
         currentVal = occ.get('comment');
 
         // todo:validate before setting up
-        occ.set('comment', values.comment);
+        newVal = values.comment;
+        occ.set('comment', newVal);
         break;
       default:
     }
@@ -148,27 +152,7 @@ const API = {
     recordModel.save(null, {
       success: () => {
         // update locked value if attr is locked
-        let lockedValue = appModel.getAttrLock(attr);
-        if (lockedValue && values[attr] === 'default') {
-          appModel.setAttrLock(attr, null);
-        } else if (lockedValue && attr === 'date' &&
-          DateHelp.print(values[attr]) === DateHelp.print(new Date())) {
-          appModel.setAttrLock(attr, null);
-        } else if (attr === 'number') {
-          lockedValue = appModel.getAttrLock(attr);
-          if (!lockedValue) {
-            lockedValue = appModel.getAttrLock('number-ranges');
-          }
-          if (lockedValue && values[attr]) {
-            appModel.setAttrLock(attr, values[attr]);
-            appModel.setAttrLock('number-ranges', null);
-          } else if (lockedValue) {
-            appModel.setAttrLock(attr, null);
-            appModel.setAttrLock('number-ranges', values['number-ranges']);
-          }
-        } else if (lockedValue && lockedValue === true || lockedValue == currentVal) {
-          appModel.setAttrLock(attr, values[attr]);
-        }
+        API.updateLock(attr, newVal, currentVal);
 
         window.history.back();
       },
@@ -177,6 +161,41 @@ const API = {
         App.regions.dialog.error('Problem saving the sample.');
       },
     });
+  },
+
+  updateLock(attr, newVal, currentVal) {
+    let lockedValue = appModel.getAttrLock(attr);
+
+    switch (attr) {
+      case 'date':
+        if (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date())) {
+          appModel.setAttrLock(attr, null);
+        }
+        break;
+      case 'number-ranges':
+        if (!lockedValue) {
+          lockedValue = appModel.getAttrLock('number');
+        }
+      case 'number':
+        if (!lockedValue) {
+          lockedValue = appModel.getAttrLock('number-ranges');
+        }
+
+        if (!lockedValue) return; // nothing was locked
+
+        if (attr === 'number-ranges') {
+          appModel.setAttrLock(attr, newVal);
+          appModel.setAttrLock('number', null);
+        } else {
+          appModel.setAttrLock(attr, newVal);
+          appModel.setAttrLock('number-ranges', null);
+        }
+        break;
+      default:
+        if (lockedValue && (lockedValue === true || lockedValue === currentVal)) {
+          appModel.setAttrLock(attr, newVal);
+        }
+    }
   },
 };
 
