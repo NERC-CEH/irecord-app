@@ -144,3 +144,12 @@ Zipalign is in sdk build tools. On Mac /Applications/Android/sdk/build-tools/
 ```bash
 zipalign -v 4 android-release-unsigned.apk irecord.apk
 ```
+
+### Android
+
+Add crosswalk to older platforms.
+```bash
+cordova plugin add cordova-plugin-crosswalk-webview
+```
+
+Change config.xml, sdk version and build version starting 19->14.
