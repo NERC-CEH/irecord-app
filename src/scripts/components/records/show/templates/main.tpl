@@ -57,3 +57,5 @@
     </li>
   <% } %>
 </ul>
+
+<div id="occurrence-id"><%- obj.id %></div>
