@@ -19,7 +19,7 @@ export default Morel.Image.extend({
 
   getURL() {
     let URL = this.get('data');
-    if (window.cordova && Device.isIOS()) {
+    if (window.cordova && Device.isIOS() && !window.testing) {
       if (CONFIG.build >= 8 && URL.search('file://') >= 0) {
         // fix previous versions
         const pathArray = URL.split('/');
@@ -29,6 +29,6 @@ export default Morel.Image.extend({
       }
     }
 
-    return URL
-  }
+    return URL;
+  },
 });
