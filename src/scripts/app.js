@@ -6,6 +6,7 @@ import Backbone from 'backbone';
 import Marionette from 'marionette';
 import FastClick from '../vendor/fastclick/js/fastclick';
 import Analytics from './helpers/analytics';
+import Update from './helpers/update';
 import Log from './helpers/log';
 import Device from './helpers/device';
 import CommonController from './components/common/controller';
@@ -44,9 +45,7 @@ App.on('before:start', () => {
 App.on('start', () => {
   Log('App: starting');
 
-  // Init for the first time
-  // set up DB
-  // when done - carry on with showing pages
+  Update();
 
   FastClick.attach(document.body);
 
