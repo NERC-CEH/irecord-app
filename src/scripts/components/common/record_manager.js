@@ -26,18 +26,18 @@ const morelConfiguration = $.extend(CONFIG.morel.manager, {
 });
 
 class Manager extends Morel {
-  syncAll(method, collection, options) {
+  syncAll(method, collection, options = {}) {
     if(!Device.connectionWifi()) {
       options.timeout = 180000; // 3 min
     }
-    return Morel.prototype.syncAll.apply(this, arguments);
+    return Morel.prototype.syncAll.apply(this, [method, collection, options]);
   }
 
-  sync(method, collection, options) {
+  sync(method, model, options = {}) {
     if(!Device.connectionWifi()) {
       options.timeout = 180000; // 3 min
     }
-    return Morel.prototype.sync.apply(this, arguments);
+    return Morel.prototype.sync.apply(this, [method, model, options]);
   }
 
   removeAllSynced(callback) {
