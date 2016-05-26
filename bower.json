@@ -2,9 +2,8 @@
   "name": "irecord-app",
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "2.2.1",
+    "jquery": "latest",
     "ratchet": "twbs/ratchet#2.0.2",
-    "scriptjs": "2.5.8",
     "backbone": "1.1.2",
     "lodash": "3.6.0",
     "marionette": "2.4.3",
@@ -29,9 +28,6 @@
         "dist/fonts/ratchicons.ttf",
         "dist/fonts/ratchicons.woff"
       ]
-    },
-    "scriptjs": {
-      "js": "dist/script.min.js"
     },
     "jquery": {
       "js": ["dist/jquery.js", "dist/jquery.min.js"]

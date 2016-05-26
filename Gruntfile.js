@@ -33,19 +33,12 @@ module.exports = function exports(grunt) {
             expand: true, flatten: true,
           },
           {
-            src: ['src/appcache.manifest'], dest: 'dist/appcache.manifest',
-          },
-          {
             src: 'src/*.json', dest: 'dist/',
             expand: true, flatten: true,
           },
           {
             src: '**', cwd: 'src/images/', dest: 'dist/images/',
             expand: true, filter: 'isFile',
-          },
-          {
-            src: 'src/images/ajax-loader.gif', dest: 'dist/styles/images/',
-            expand: true, flatten: true,
           },
           // CSS
           {
