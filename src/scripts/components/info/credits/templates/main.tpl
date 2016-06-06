@@ -5,7 +5,7 @@
         create this app:</strong>
     </p>
     <p>
-    <ul class="list-style-type: none;">
+    <ul style="list-style-type: none;">
       <li>David Roy (CEH)</li>
       <li>Karolis Kazlauskis (CEH)</li>
       <li>John van Breda (Biodiverse IT)</li>
