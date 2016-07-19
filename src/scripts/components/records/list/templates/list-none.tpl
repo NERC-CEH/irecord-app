@@ -2,5 +2,5 @@
 
 <a href="#records/new" class="btn btn-positive btn-outlined">
   <span class="icon icon-plus pull-left"></span>
-  Lets add one!
+  Let's add one!
 </a>
