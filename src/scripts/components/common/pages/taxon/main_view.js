@@ -154,7 +154,7 @@ export default Marionette.LayoutView.extend({
         e.preventDefault();
 
         // exit if no suggestions
-        if (this.selectedIndex < 0) return;
+        if (this.selectedIndex < 0 || !this.suggestionsCol) return;
 
         // find which one is currently selected
         const selectedModel = this.suggestionsCol.at(this.selectedIndex);
