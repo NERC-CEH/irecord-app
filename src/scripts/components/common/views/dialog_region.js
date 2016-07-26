@@ -5,6 +5,7 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'marionette';
 import _ from '../../../../vendor/lodash/js/lodash';
+import App from '../../../app';
 import JST from '../../../JST';
 
 const StandardDialogView = Marionette.LayoutView.extend({
@@ -181,17 +182,26 @@ export default Marionette.Region.extend({
     this.hide();
   },
 
-  error(error) {
-    const options = {
+  error: function error(error = {}) {
+    var options = {
       class: 'error',
-      title: 'Error',
-      body: error.message,
+      title: 'Yikes!',
+      body: error.message || error,
       buttons: [{
         id: 'ok',
         title: 'OK',
         onClick: this.hide,
       }],
     };
+
+    // lookup for codes
+    if (error.code) {
+      var tableErrorOptions = errorsTable[error.code];
+      if (tableErrorOptions) {
+        options = _.extend(options, tableErrorOptions);
+      }
+    }
+
     this.show(options);
   },
 
@@ -202,3 +212,14 @@ export default Marionette.Region.extend({
   },
 });
 
+const errorsTable = {
+  25: {
+    body: 'Sorry, looks like there was a problem with the internal database.</br> ' + '<b>Please close the app and start it again.</b>',
+    buttons: [{
+      title: 'Restart',
+      onClick: function onClick() {
+        App.restart();
+      }
+    }]
+  },
+};

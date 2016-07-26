@@ -8,7 +8,7 @@
     "lodash": "3.6.0",
     "marionette": "2.4.3",
     "backbone.localStorage": "jeromegn/Backbone.localStorage#1.1.16",
-    "morel": "Indicia-Team/morel#3.1.0",
+    "morel": "Indicia-Team/morel#3.1.3",
     "latlon": "chrisveness/geodesy#d50580b5054b562f0d1c94441f74a9d0bf8ba710",
     "IndexedDBShim": "axemclion/IndexedDBShim#3d1f549f106a9a078a6f7448796a241eee7f9a76",
     "fastclick": "1.0.3",

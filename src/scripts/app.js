@@ -24,6 +24,10 @@ App.navigate = (route, options = {}) => {
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
 
+App.restart = () => {
+  window.location.href = '/';
+};
+
 App.getCurrentRoute = () => Backbone.history.fragment;
 
 App.on('before:start', () => {

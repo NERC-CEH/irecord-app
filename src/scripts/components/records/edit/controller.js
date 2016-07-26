@@ -163,7 +163,7 @@ const API = {
     API.addPhoto(occurrence, photo, (occErr) => {
       // hide loader
       if (occErr) {
-        App.regions.dialog.error('Problem saving the occurrence.');
+        App.regions.dialog.error(occErr);
       }
     });
   },
@@ -214,7 +214,7 @@ const API = {
             ImageHelp.getImage((entry) => {
               API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
                 if (occErr) {
-                  App.regions.dialog.error('Problem saving the occurrence.');
+                  App.regions.dialog.error(occErr);
                 }
               });
             });
@@ -227,7 +227,7 @@ const API = {
             ImageHelp.getImage((entry) => {
               API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
                 if (occErr) {
-                  App.regions.dialog.error('Problem saving the occurrence.');
+                  App.regions.dialog.error(occErr);
                 }
               });
             }, {

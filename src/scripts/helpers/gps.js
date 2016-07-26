@@ -45,7 +45,7 @@ const API = {
     };
 
     // Callback if geolocation fails
-    var onError = (err) => {
+    var onError = (err = {}) => {
       var error = new Error(err.message);
       callback && callback(error);
     };

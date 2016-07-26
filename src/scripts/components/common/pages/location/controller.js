@@ -148,7 +148,7 @@ const API = {
           },
           error: (err) => {
             Log(err, 'e');
-            App.regions.dialog.error('Problem saving the sample.');
+            App.regions.dialog.error(err);
           },
         });
       }

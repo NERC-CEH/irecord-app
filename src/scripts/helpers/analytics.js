@@ -60,7 +60,7 @@ const API = {
     window.analytics.trackEvent(category, event);
   },
 
-  trackException(err, fatal = false) {
+  trackException(err = {}, fatal = false) {
     if (!initialized || !CONFIG.log.ga_error) return;
 
     const description = `${err.message} ${err.url}

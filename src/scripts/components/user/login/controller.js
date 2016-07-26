@@ -47,16 +47,6 @@ const API = {
 
         API.login(data, (err) => {
           if (err) {
-            Log(err, 'e');
-
-            switch (err.xhr.status) {
-              case 401:
-                // unauthorised
-                break;
-              default:
-                Log(`login:submit: ${err.xhr.status} ${err.thrownError}.`, 'e');
-            }
-
             let response = '';
             if (err.xhr.responseText && (err.xhr.responseText === 'Missing name parameter'
               || err.xhr.responseText.indexOf('Bad') >= 0)) {
