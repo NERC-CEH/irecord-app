@@ -63,6 +63,9 @@ const API = {
   trackException(err = {}, fatal = false) {
     if (!initialized || !CONFIG.log.ga_error) return;
 
+    // todo: remove this excheption when fixed
+    if (err.message.indexOf('ViewDestroyedError') >= 0) return;
+
     const description = `${err.message} ${err.url}
       ${err.line} ${err.column} ${err.obj}`;
 

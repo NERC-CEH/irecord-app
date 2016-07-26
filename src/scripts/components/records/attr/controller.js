@@ -106,7 +106,7 @@ const API = {
         currentVal = recordModel.get('date');
 
         // validate before setting up
-        if (values.date !== 'Invalid Date') {
+        if (values.date && values.date.toString() !== 'Invalid Date') {
           newVal = values.date;
           recordModel.set('date', newVal);
         }
@@ -169,7 +169,10 @@ const API = {
     switch (attr) {
       case 'date':
         if (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date())) {
+          // don't lock current day
           appModel.setAttrLock(attr, null);
+        } else {
+          appModel.setAttrLock(attr, newVal);
         }
         break;
       case 'number-ranges':

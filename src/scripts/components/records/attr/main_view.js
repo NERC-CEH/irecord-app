@@ -59,7 +59,10 @@ export default Marionette.ItemView.extend({
     switch (attr) {
       case 'date':
         value = this.$el.find('input').val();
-        values[attr] = new Date(value);
+        const date = new Date(value);
+        if (date.toString() !== 'Invalid Date') {
+          values[attr] = new Date(date);
+        }
         break;
       case 'number':
         value = this.$el.find('#rangeVal').val();
