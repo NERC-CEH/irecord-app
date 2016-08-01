@@ -121,7 +121,7 @@ const helpers = {
       }
 
       // check if found first entry in array
-      const matchRe = new RegExp(`^${searchPhrase}`, 'i');
+      const matchRe = new RegExp(`^${helpers.escapeRegExp(searchPhrase)}`, 'i');
       if (matchRe.test(value)) {
         // check if prev entry matches
         if (prevValue) {
