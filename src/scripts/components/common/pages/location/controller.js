@@ -71,6 +71,12 @@ const API = {
       });
 
       function onLocationSelect(view, loc, createNew) {
+        if (typeof loc !== 'object') {
+          // jQuery event object bug fix
+          Log('Location:Controller:onLocationSelect: loc is not an object', 'e');
+          return;
+        }
+
         let location = loc;
         // we don't need the GPS running and overwriting the selected location
         recordModel.stopGPS();

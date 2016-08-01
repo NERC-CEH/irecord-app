@@ -56,7 +56,7 @@ const API = {
     if (!this.initialized || !CONFIG.log.ga_error) return;
 
     // todo: remove this excheption when fixed
-    if (err.message.indexOf('ViewDestroyedError') >= 0) return;
+    if (err.message && err.message.indexOf('ViewDestroyedError') >= 0) return;
 
     // build exception descriptor
     let description = `"${(new Date()).toString()}", "${err.message}", "${err.url}", "${err.line}", "${err.column}"`;
