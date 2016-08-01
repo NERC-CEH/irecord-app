@@ -28,7 +28,8 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(4);
+    expect(_.keys(appModel.attributes).length).to.be.equal(5);
+    // should set the exact value checks in the modules requiring them
     expect(appModel.get('locations')).to.be.an.array;
     expect(appModel.get('attrLocks')).to.be.an.object;
     expect(appModel.get('autosync')).to.be.equal.true;

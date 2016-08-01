@@ -11,6 +11,8 @@ let AppModel = Backbone.Model.extend({
   id: 'app',
 
   defaults: {
+    exceptions: [],
+
     locations: [],
     attrLocks: {},
     autosync: true,

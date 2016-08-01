@@ -2,16 +2,18 @@
  * Google analytics to track the page navigation.
  */
 import Backbone from 'backbone';
+import Device from './device';
+import appModel from '../components/common/models/app_model';
 import CONFIG from 'config'; // Replaced with alias
-
-let initialized = false;
 
 // todo: do not track connection is not WIFI or 3G/4G
 
 const API = {
+  initialized: false,
+
   init() {
     // initialize only once
-    if (initialized) return;
+    if (this.initialized) return;
 
     if (window.cordova && CONFIG.ga.status) {
       document.addEventListener('deviceready', () => {
@@ -21,7 +23,7 @@ const API = {
         // listen for page change
         Backbone.history.on('route', () => { API.trackView(); });
 
-        initialized = true;
+        this.initialized = true;
       });
     }
   },
@@ -31,7 +33,7 @@ const API = {
    * @param view
    */
   trackView(view) {
-    if (!initialized) return;
+    if (!this.initialized) return;
 
     // submit the passed view
     if (view) {
@@ -55,21 +57,51 @@ const API = {
   },
 
   trackEvent(category, event) {
-    if (!initialized) return;
+    if (!this.initialized) return;
 
     window.analytics.trackEvent(category, event);
   },
 
   trackException(err = {}, fatal = false) {
-    if (!initialized || !CONFIG.log.ga_error) return;
+    if (!this.initialized || !CONFIG.log.ga_error) return;
 
     // todo: remove this excheption when fixed
     if (err.message.indexOf('ViewDestroyedError') >= 0) return;
 
-    const description = `${err.message} ${err.url}
-      ${err.line} ${err.column} ${err.obj}`;
+    // build exception descriptor
+    let description = `${err.message} ${err.url}
+      ${err.line} ${err.column}`;
 
-    window.analytics.trackException(description, fatal);
+    if (err.obj && err.obj.stack) {
+      description += ` ${err.obj.stack}`;
+    }
+
+    if (Device.isOnline()) {
+      // send error
+      window.analytics.trackException(description, fatal);
+      this.sendAllExceptions();
+    } else {
+      // store for offline
+      this.saveException(description);
+    }
+  },
+
+  sendAllExceptions() {
+    const offlineExceptions = appModel.get('exceptions');
+    if (offlineExceptions.length && Device.isOnline()) {
+      offlineExceptions.forEach((exceptionDescription) => {
+        window.analytics.trackException(exceptionDescription, false);
+      });
+      appModel.set('exceptions', []);
+      appModel.save();
+    }
+  },
+
+  saveException(description) {
+    const offlineExceptions = appModel.get('exceptions');
+    offlineExceptions.push(description);
+    appModel.set('exceptions', offlineExceptions);
+    appModel.save();
   },
 };
 

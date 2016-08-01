@@ -30,21 +30,13 @@ const DEBUG = 'd';
  *              String holding a 'message
  * @private
  */
-function error(errorMessage = {}) {
-  let err = errorMessage;
+function error(err = {}) {
   if (typeof err === 'string' || err instanceof String) {
     err = {
       message: err,
     };
   }
   console.error(err.message, err.url, err.line, err.column, err.obj);
-
-  // todo: clean this up
-  $('#loader #animation span.icon').remove();
-  $('#loader #animation .error').html(
-    `<center><b>Oh no, Error! </b></center><br/>${err.message}
-    [${err.line}, ${err.column}] ${err.obj}`);
-
   Analytics.trackException(err);
 }
 
@@ -83,15 +75,7 @@ window.onerror = (message, url, line, column, obj) => {
   const onerror = window.onerror;
   window.onerror = null;
 
-  const err = {
-    message,
-    url: url || '',
-    line: line || -1,
-    column: column || -1,
-    obj: obj || '',
-  };
-
-  error(err);
+  error({ message, url, line, column, obj });
 
   window.onerror = onerror; // turn on error handling again
   return true; // suppress normal error reporting
