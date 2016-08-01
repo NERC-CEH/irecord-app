@@ -42,17 +42,7 @@ const API = {
     }
 
     // get current view
-    let url = Backbone.history.getFragment();
-
-    // Add a slash if neccesary
-    if (!/^\//.test(url)) url = `/${url}`;
-
-    // remove specific UUIDs
-    url = url.replace(
-      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
-      'UUID'
-    );
-
+    const url = this._getURL();
     window.analytics.trackView(url);
   },
 
@@ -69,12 +59,13 @@ const API = {
     if (err.message.indexOf('ViewDestroyedError') >= 0) return;
 
     // build exception descriptor
-    let description = `${err.message} ${err.url}
-      ${err.line} ${err.column}`;
+    let description = `"${(new Date()).toString()}", "${err.message}", "${err.url}", "${err.line}", "${err.column}"`;
 
-    if (err.obj && err.obj.stack) {
-      description += ` ${err.obj.stack}`;
-    }
+    // append trace stack
+    description += (err.obj && err.obj.stack) ? `, "${err.obj.stack}"` : ', ""';
+
+    // clean up
+    description = this._removeUUID(description);
 
     if (Device.isOnline()) {
       // send error
@@ -98,10 +89,30 @@ const API = {
   },
 
   saveException(description) {
+    description += ', 1'; // append offline mark
+
     const offlineExceptions = appModel.get('exceptions');
     offlineExceptions.push(description);
     appModel.set('exceptions', offlineExceptions);
     appModel.save();
+  },
+
+  _getURL() {
+    let url = Backbone.history.getFragment();
+
+    // Add a slash if neccesary
+    if (!/^\//.test(url)) url = `/${url}`;
+
+    url = this._removeUUID(url);
+    return url;
+    },
+
+  _removeUUID(string) {
+    // remove specific UUIDs
+    return string.replace(
+      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
+      'UUID'
+    );
   },
 };
 
