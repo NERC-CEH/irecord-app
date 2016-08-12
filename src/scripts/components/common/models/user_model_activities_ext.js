@@ -20,7 +20,7 @@ export default {
         that.synchronizingActivities = false;
       });
     } else {
-      const activities = this.get('activities');
+      const activities = this.get('activities') || [];
       // remove expired activities
       for (let i = activities.length - 1; i >= 0; i--) {
         const activity = activities[i];

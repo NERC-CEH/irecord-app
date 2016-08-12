@@ -22,12 +22,21 @@ export default {
     // update existing
     const existingLocationIndex = this._locationIndex(location);
     if (existingLocationIndex >= 0) {
-      locations.splice(existingLocationIndex, 0, location);
+      locations.splice(existingLocationIndex, 1, location);
       this.trigger('change:locations');
       this.save();
 
-      return null;
+      return location;
     }
+
+    // check if not duplicating existing location without id
+    let duplication = false;
+    locations.forEach((loc) => {
+      if (this._isIdentical(loc, location)){
+        duplication = true;
+      }
+    });
+    if (duplication) return;
 
     // add new one
     location.id = UUID();
@@ -36,7 +45,8 @@ export default {
     this.set('locations', locations);
     this.trigger('change:locations');
     this.save();
-    return location.id;
+
+    return location;
   },
 
   removeLocation(location = {}) {
@@ -51,6 +61,14 @@ export default {
     that.set('locations', locations);
     that.trigger('change:locations');
     that.save();
+
+    return location;
+  },
+
+  _isIdentical(loc, location) {
+    return loc.name === location.name &&
+      loc.latitude === location.latitude &&
+      loc.longitude === location.longitude;
   },
 
   _locationIndex(location = {}) {
@@ -62,27 +80,6 @@ export default {
       }
     });
     return index;
-  },
-
-  /**
-   * Returns device location as Grid Reference.
-   *
-   * @param geoloc
-   * @returns {*}
-   */
-  getLocationSref(location) {
-    const LOCATION_GRANULARITY = 2; // Precision of returned grid reference (6 digits = metres).
-
-    const loc = location || this.get('locations')[0];
-    if (!location) {
-      return null;
-    }
-
-    // get translated location
-    const gref = LocHelp.coord2grid(loc, LOCATION_GRANULARITY);
-
-    // remove the spaces
-    return gref.replace(/ /g, '');
   },
 
   printLocation(location) {
