@@ -14,12 +14,15 @@
 
 <li class="table-view-divider">Location</li>
 <li class="table-view-cell">
-  Use Grid Ref  <div id="use-gridref-btn" data-setting="useGridRef" class="toggle no-yes <%- obj.useGridRef ? 'active' : '' %>">
+  Use Grid Ref
+  <span class="media-object pull-left icon icon-grid"></span>
+  <div id="use-gridref-btn" data-setting="useGridRef" class="toggle no-yes <%- obj.useGridRef ? 'active' : '' %>">
     <div class="toggle-handle"></div>
   </div>
 </li>
 <li id="use-gridmap-btn-parent" class="table-view-cell  <%- obj.useGridRef ? '' : 'disabled' %>">
   Show Map Grid
+  <span class="media-object pull-left icon icon-grid"></span>
   <div id="use-gridmap-btn" data-setting="useGridMap"
        class="toggle no-yes <%- obj.useGridMap ? 'active' : '' %>">
     <div class="toggle-handle"></div>

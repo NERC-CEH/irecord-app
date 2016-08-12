@@ -245,6 +245,12 @@
       "css": "star",
       "code": 59432,
       "src": "entypo"
+    },
+    {
+      "uid": "o1c30odwfvgcvi5b4jsg95sur8v6ghsp",
+      "css": "grid",
+      "code": 59431,
+      "src": "modernpics"
     }
   ]
 }

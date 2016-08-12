@@ -54,6 +54,7 @@ const API = {
       getValues() {
         return {
           name: StringHelp.escape(this.$el.find('#location-name').val()),
+          favourite: this.$el.find('#favourite-btn').hasClass('active'),
         };
       },
 

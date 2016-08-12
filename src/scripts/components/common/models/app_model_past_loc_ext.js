@@ -15,16 +15,21 @@ export default {
     const location = _.cloneDeep(origLocation);
     const locations = this.get('locations');
 
-    // check if exists
-    if (this.locationExists(location)) {
-      // don't duplicate same location
-      return null;
-    } else if (!location.latitude || !location.longitude) {
-      // don't add if no lat/long
+    if (!location.latitude || !location.longitude) {
       return null;
     }
 
-    // add
+    // update existing
+    const existingLocationIndex = this._locationIndex(location);
+    if (existingLocationIndex >= 0) {
+      locations.splice(existingLocationIndex, 0, location);
+      this.trigger('change:locations');
+      this.save();
+
+      return null;
+    }
+
+    // add new one
     location.id = UUID();
     locations.splice(0, 0, location);
 
@@ -41,28 +46,22 @@ export default {
     locations.forEach((loc, i) => {
       if (loc.id === location.id) {
         locations.splice(i, 1);
-
-        that.set('locations', locations);
-        that.trigger('change:locations');
-        that.save();
       }
     });
+    that.set('locations', locations);
+    that.trigger('change:locations');
+    that.save();
   },
 
-  locationExists(location = {}) {
+  _locationIndex(location = {}) {
     const locations = this.get('locations');
-    let exists = false;
-    locations.forEach((loc) => {
-      if (
-        loc.name === location.name &&
-        loc.latitude === location.latitude &&
-        loc.longitude === location.longitude &&
-        loc.source === location.source
-      ) {
-        exists = true;
+    let index = -1;
+    locations.forEach((loc, i) => {
+      if (loc.id === location.id) {
+        index = i;
       }
     });
-    return exists;
+    return index;
   },
 
   /**

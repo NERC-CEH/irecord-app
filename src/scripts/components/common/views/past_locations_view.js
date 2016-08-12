@@ -30,6 +30,7 @@ const PastLocationView = Marionette.ItemView.extend({
 
     return {
       name: this.model.get('name'),
+      favourite: this.model.get('favourite'),
       source: this.model.get('source'),
       location,
     };
@@ -132,7 +133,23 @@ export default Marionette.CompositeView.extend({
     const that = this;
     const appModel = this.model;
     const previousLocations = appModel.get('locations');
-    this.collection = new Backbone.Collection(previousLocations);
+    this.collection = new Backbone.Collection(previousLocations, {
+      /**
+       * Sort the past locations placing favourites to the top.
+       */
+      comparator(a, b) {
+        const aFav = a.get('favourite');
+        const bFav = b.get('favourite');
+        if (aFav || bFav) {
+          if (aFav && !bFav) {
+            return -1;
+          } else if (!aFav && bFav) {
+            return 1;
+          }
+        }
+        return -1;
+      },
+    });
 
     this.listenTo(appModel, 'change:locations', () => {
       const prevLoc = appModel.get('locations');

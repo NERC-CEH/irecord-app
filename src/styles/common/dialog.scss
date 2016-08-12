@@ -83,7 +83,7 @@
   max-height: 70%;
   overflow: scroll;
 
-  div {
+  div:not(.toggle .toggle-handle) {
     margin: 10px 0;
   }
 }
