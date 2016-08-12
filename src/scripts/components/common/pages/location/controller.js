@@ -92,7 +92,8 @@ const API = {
 
         if (!createNew) {
           // extend old location to preserve its previous attributes like name or id
-          const oldLocation = recordModel.get('location') || {};
+          let oldLocation = recordModel.get('location');
+          if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
           location = $.extend(oldLocation, location);
         }
 
@@ -110,7 +111,7 @@ const API = {
       }
 
       function onLocationNameChange(view, name) {
-        if (!name) {
+        if (!name || typeof name !== 'string') {
           return;
         }
 

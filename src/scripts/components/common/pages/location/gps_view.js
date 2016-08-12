@@ -6,6 +6,7 @@ import Marionette from 'marionette';
 import JST from '../../../../JST';
 import Typeahead from 'typeahead';
 import locationNameFinder from './location_name_search';
+import CONFIG from 'config';
 
 export default Marionette.ItemView.extend({
   initialize() {
@@ -92,7 +93,7 @@ export default Marionette.ItemView.extend({
         accuracy: location.accuracy,
         latitude: location.latitude,
         longitude: location.longitude,
-        accuracyLimit: 100, // TODO: get from GPS
+        accuracyLimit: CONFIG.gps_accuracy_limit, // TODO: get from GPS
       };
     }
     return {
