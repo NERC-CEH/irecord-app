@@ -12,8 +12,10 @@ export default Marionette.ItemView.extend({
   template: JST['settings/menu/main'],
 
   events: {
-    'toggle #use-gridref-btn': 'onSettingToggled',
-    'click #use-gridref-btn': 'onSettingToggled',
+    'toggle #use-gridref-btn': 'useGridRef',
+    'click #use-gridref-btn': 'useGridRef',
+    'toggle #use-gridmap-btn': 'onSettingToggled',
+    'click #use-gridmap-btn': 'onSettingToggled',
     'toggle #use-autosync-btn': 'onSettingToggled',
     'click #use-autosync-btn': 'onSettingToggled',
   },
@@ -22,6 +24,16 @@ export default Marionette.ItemView.extend({
     'click #delete-all-btn': 'records:delete:all',
     'click #submit-all-btn': 'records:submit:all',
     'click #app-reset-btn': 'app:reset',
+  },
+
+  useGridRef(e) {
+    this.onSettingToggled(e);
+
+    // toggle the child options
+    const appModel = this.model;
+    const useGridRef = appModel.get('useGridRef');
+    const $element = $('#use-gridmap-btn-parent');
+    $element.toggleClass('disabled', !useGridRef);
   },
 
   onSettingToggled(e) {
@@ -36,5 +48,14 @@ export default Marionette.ItemView.extend({
     }
 
     this.trigger('setting:toggled', setting, active);
+  },
+
+  serializeData() {
+    const appModel = this.model;
+    return {
+      useGridRef: appModel.get('useGridRef'),
+      useGridMap: appModel.get('useGridMap'),
+      autosync: appModel.get('autosync'),
+    };
   },
 });

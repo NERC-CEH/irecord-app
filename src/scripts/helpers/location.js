@@ -4,38 +4,9 @@
 import LatLon from '../../vendor/latlon/js/latlon-ellipsoidal';
 import OsGridRef from '../../vendor/latlon/js/osgridref';
 
-export default {
-  coord2grid(location, locGran) {
-    let locationGranularity = locGran;
-
-    // adjust grid ref accuracy from gps accuracy
-    if (location.source === 'gps') {
-      /**
-       * 1 gridref digits. (10000m)
-       * 2 gridref digits. (1000m)
-       * 3 gridref digits. (100m)
-       * 4 gridref digits. (10m)
-       * 5 gridref digits. (1m)
-       */
-      const digits = Math.log(location.accuracy) / Math.LN10;
-      locationGranularity = 10 - digits * 2;
-      locationGranularity = Number((locationGranularity).toFixed(0)); // round the float
-    }
-
-    // cannot be odd
-    if (locationGranularity % 2 !== 0) {
-      // should not be less than 2
-      locationGranularity =
-        locationGranularity === 1 ? locationGranularity + 1 : locationGranularity - 1;
-    }
-
-    if (locationGranularity > 10) {
-      // no more than 10 digits
-      locationGranularity = 10;
-    } else if (locationGranularity < 2) {
-      // no less than 2
-      locationGranularity = 2;
-    }
+const helpers = {
+  coord2grid(location) {
+    const locationGranularity = helpers._getGRgranularity(location);
 
     const p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);
     const grid = OsGridRef.latLonToOsGrid(p);
@@ -43,7 +14,7 @@ export default {
     return grid.toString(locationGranularity).replace(/\s/g, '');
   },
 
-  grid2coord(gridrefString) {
+  parseGrid(gridrefString) {
     function normalizeGridRef(incorrectGridref) {
       // normalise to 1m grid, rounding up to centre of grid square:
       let e = incorrectGridref.easting;
@@ -64,6 +35,11 @@ export default {
     let gridref = OsGridRef.parse(gridrefString);
     gridref = normalizeGridRef(gridref);
 
+    return gridref;
+  },
+
+  grid2coord(gridrefString) {
+    const gridref = helpers.parseGrid(gridrefString);
     if (!isNaN(gridref.easting) && !isNaN(gridref.northing)) {
       return OsGridRef.osGridToLatLon(gridref, LatLon.datum.WGS84);
     }
@@ -71,17 +47,87 @@ export default {
     return null;
   },
 
-  mapZoom2meters(locationAccuracy) {
-    let accuracy = locationAccuracy;
-    // cannot be odd
-    if (accuracy % 2 !== 0) {
-      // should not be less than 2
-      accuracy = accuracy === 1 ? accuracy + 1 : accuracy - 1;
-    } else if (accuracy === 0) {
-      accuracy = 2;
+  /**
+   * 1 gridref digits. (10000m)  -> < 4 map zoom lvl
+   * 2 gridref digits. (1000m)   -> 7
+   * 3 gridref digits. (100m)    -> 10
+   * 4 gridref digits. (10m)     -> 12
+   * 5 gridref digits. (1m)      ->
+   */
+  mapZoom2meters(accuracy) {
+    let updated = accuracy;
+    if (updated <= 4) {
+      updated = 0;
+    } else if (updated <= 7) {
+      updated = 1;
+    } else if (updated <= 10) {
+      updated = 2;
+    } else if (updated <= 12) {
+      updated = 3;
+    } else {
+      updated = 4;
     }
-    accuracy = 5000 / Math.pow(10, accuracy / 2); // meters
-    return accuracy;
+
+    updated = 5000 / Math.pow(10, updated); // meters
+    return updated < 1 ? 1 : updated;
+  },
+
+  /**
+   * 1 gridref digits. (10000m)
+   * 2 gridref digits. (1000m)
+   * 3 gridref digits. (100m)
+   * 4 gridref digits. (10m)
+   * 5 gridref digits. (1m)
+   */
+  _getGRgranularity(location) {
+    let locationGranularity;
+    let accuracy = location.accuracy;
+
+    // don't need to recalculate if exists
+    if (location.source === 'gridref') {
+      return accuracy;
+    }
+
+    // normalize to meters
+    if (location.source === 'map') {
+      accuracy = helpers.mapZoom2meters(accuracy);
+    }
+
+    // calculate granularity
+    const digits = Math.log(accuracy) / Math.LN10;
+    locationGranularity = 10 - digits * 2; // MAX GR ACC -
+    locationGranularity = Number((locationGranularity).toFixed(0)); // round the float
+
+    // normalize granularity
+    // cannot be odd
+    if (locationGranularity % 2 !== 0) {
+      // should not be less than 2
+      locationGranularity =
+        locationGranularity === 1 ? locationGranularity + 1 : locationGranularity - 1;
+    }
+
+    if (locationGranularity > 10) {
+      // no more than 10 digits
+      locationGranularity = 10;
+    } else if (locationGranularity < 2) {
+      // no less than 2
+      locationGranularity = 2;
+    }
+    return locationGranularity;
+  },
+
+  isInUK(location) {
+    if (!location.latitude || !location.longitude) return null;
+
+    let gridref = location.gridref;
+    if (!gridref) {
+      gridref = helpers.coord2grid(location);
+    }
+
+    if (gridref) return true;
+
+    return false;
   },
 };
 
+export default helpers;

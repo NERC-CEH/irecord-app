@@ -6,6 +6,8 @@ import JST from '../../../../JST';
 import LocHelp from '../../../../helpers/location';
 import StringHelp from '../../../../helpers/string';
 import Validate from '../../../../helpers/validate';
+import Typeahead from 'typeahead';
+import locationNameFinder from './location_name_search';
 
 export default Marionette.ItemView.extend({
   template: JST['common/location/grid_ref'],
@@ -16,6 +18,23 @@ export default Marionette.ItemView.extend({
 
   initialize(options) {
     this.listenTo(options.vent, 'gridref:form:data:invalid', this.onFormDataInvalid);
+  },
+
+  onShow() {
+    this.addLocationNameSearch();
+  },
+
+  addLocationNameSearch() {
+    this.$el.find('.typeahead').typeahead({
+        hint: false,
+        highlight: false,
+        minLength: 0,
+      },
+      {
+        limit: 3,
+        name: 'names',
+        source: locationNameFinder(3),
+      });
   },
 
   setGridRef() {
@@ -40,7 +59,7 @@ export default Marionette.ItemView.extend({
     let gridref;
 
     if (location.latitude && location.longitude) {
-      gridref = LocHelp.coord2grid(location, location.accuracy);
+      gridref = LocHelp.coord2grid(location);
     }
 
     return {

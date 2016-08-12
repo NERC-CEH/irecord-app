@@ -24,7 +24,10 @@ module.exports = {
       marionette: 'marionette/js/backbone.marionette',
       morel: 'morel/js/morel',
       leaflet: 'leaflet/js/leaflet',
+      'Leaflet.GridRef': 'leaflet.gridref/js/L.GridRef',
       proj4leaflet: 'proj4Leaflet/js/proj4leaflet',
+      LatLon: 'latlon/js/latlon-ellipsoidal',
+      OsGridRef: 'latlon/js/osgridref',
       proj4: 'proj4/js/proj4',
       'photoswipe-lib': 'photoswipe/js/photoswipe',
       'photoswipe-ui-default': 'photoswipe/js/photoswipe-ui-default',
@@ -32,6 +35,7 @@ module.exports = {
       'master_list.data': 'data/master_list_dev.data.json',
       'common_names.data': 'data/common_names_dev.data.json',
       'informal_groups.data': 'data/informal_groups.data.js',
+      typeahead: 'typeahead.js/js/typeahead.jquery',
     },
   },
   module: {

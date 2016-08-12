@@ -1,2 +1,2 @@
-<div id="tabs"></div>
-<div id="content"></div>
+<div class="tabs"></div>
+<div class="content"></div>

@@ -36,7 +36,7 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   initialize() {
-    this.template = JST[`records/list/record${(Device.isMobile() ? '_mobile' : '')}`];
+    this.template = JST[`records/list/record`];
   },
 
   photoView(e) {

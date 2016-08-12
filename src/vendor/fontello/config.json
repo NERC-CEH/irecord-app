@@ -151,12 +151,6 @@
       "src": "mfglabs"
     },
     {
-      "uid": "9725db89b610135dc76cd8a21afffa83",
-      "css": "search",
-      "code": 59397,
-      "src": "linecons"
-    },
-    {
       "uid": "91bac16b22827347e9ee20477f0b44d2",
       "css": "mail",
       "code": 59394,
@@ -233,6 +227,24 @@
       "css": "arrows-cw",
       "code": 59429,
       "src": "fontawesome"
+    },
+    {
+      "uid": "8663320a860b00f26e94d3d15c9ba99a",
+      "css": "clock",
+      "code": 59430,
+      "src": "entypo"
+    },
+    {
+      "uid": "7222571caa5c15f83dcfd447c58d68d9",
+      "css": "search",
+      "code": 59397,
+      "src": "entypo"
+    },
+    {
+      "uid": "25b34dea4784f72c710454f32ff8fa2b",
+      "css": "star",
+      "code": 59432,
+      "src": "entypo"
     }
   ]
 }

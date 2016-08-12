@@ -18,9 +18,11 @@ import FooterView from './footer_view';
 
 let id;
 let record;
+
 const API = {
   show(recordID) {
     Log('Records:Edit:Controller: showing');
+
     id = recordID;
     recordManager.get(recordID, (err, recordModel) => {
       if (err) {
@@ -125,6 +127,7 @@ const API = {
         return;
       }
 
+      // sync
       // todo: call callback
       recordModel.save(null, { remote: true });
       App.trigger('record:saved');

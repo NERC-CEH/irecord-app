@@ -6,6 +6,7 @@ import Backbone from 'backbone';
 import Marionette from 'marionette';
 import FastClick from '../vendor/fastclick/js/fastclick';
 import Analytics from './helpers/analytics';
+import RouterExt from './components/common/router_extension';
 import Update from './helpers/update';
 import Log from './helpers/log';
 import Device from './helpers/device';

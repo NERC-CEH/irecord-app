@@ -2,16 +2,11 @@
 @media only screen and (min-width: $app-max-width) {
   #app {
     max-width: $app-max-width;
-    margin: 0 auto;
-    overflow: hidden;
 
     box-shadow: 0 0 10px rgba(0,0,0,.4);
     -webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
   }
 
-  html {
-    overflow-y: scroll;
-  }
 
   footer, header {
     width: $app-max-width;
@@ -19,12 +14,23 @@
     left: 50% !important;
   }
 
-  body {
-    position: static !important;
-  }
 
-  .content {
-    min-height: 100vh;
-    position: relative !important;
-  }
+}
+
+#app {
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  position: static !important;
+}
+
+.content {
+  height: 100vh;
+  position: relative !important;
 }

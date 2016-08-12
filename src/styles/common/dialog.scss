@@ -14,6 +14,8 @@
 
 #dialog .content {
   width: 80%;
+  height: initial;
+  max-height: 70%;
   min-height: 0;
   background-color: $color-white;
   color: $color-black;
@@ -21,7 +23,7 @@
   top: 20%;
   left: 50%;
   margin-left: -40%;
-  overflow: hidden;
+  overflow: scroll;
 
   //ionic animations
   -webkit-animation-name: superScaleIn;
@@ -77,8 +79,13 @@
   line-height: 1.2;
 }
 
-.dialog-body div {
-  margin: 10px 0;
+.dialog-body {
+  max-height: 70%;
+  overflow: scroll;
+
+  div {
+    margin: 10px 0;
+  }
 }
 
 .dialog-buttons {

@@ -17,11 +17,9 @@ export default {
 
   updateViewFormErrors($view, errors, selector) {
     const clearFormErrors = () => {
-      $view.find('span.error').each((int, elem) => {
-        $(elem).remove();
-      });
       $view.find('.input-row.error').each((int, elem) => {
         $(elem).removeClass('error');
+        $(elem).attr('error-message', null);
       });
     };
 
@@ -29,8 +27,8 @@ export default {
 
     _.each(errors, (value, key) => {
       const $controlGroup = $view.find(selector + key).parent();
-      const $errorEl = $('<span>', { class: 'error', text: value });
-      $controlGroup.append($errorEl).addClass('error');
+      $controlGroup.addClass('error');
+      $controlGroup.attr('error-message', value);
     });
   },
 };

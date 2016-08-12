@@ -123,7 +123,7 @@ export default Marionette.ItemView.extend({
         templateData.comment = occ.get('comment');
         break;
       default:
-        Log('No such attribute', 'e');
+        Log('Records:Attribute:MainView: no such attribute', 'e');
         return null;
     }
 

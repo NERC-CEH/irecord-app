@@ -22,6 +22,7 @@ form, body {
 }
 
 p {
+  margin: 0.6em 0;
   color: $color-black;
 }
 
@@ -29,29 +30,40 @@ img {
   max-width: 100%;
 }
 
+.input-row {
+  position: relative;
+
+  input {
+    width: 88%;
+  }
+}
+
 .input-group input,
 .input-row,
 .input-row input {
   min-height: $button-height;
 }
-.input-row input {
-  width: 88%;
-}
 
 .input-row.error {
   height: auto;
+  border-bottom: 1px solid $color-orange;
+  transition: border 0.2s ease-in-out;
+
   label {
     color: $color-orange;
   }
-}
 
-.input-row .error {
-  display: block;
-  color: $color-orange;
-}
-
-span.error {
-  color: $color-orange;
+  &::after {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    font-size: 0.75em;
+    color: $color-orange;
+    content: attr(error-message);
+    white-space: nowrap;
+    transition: content 0.2s ease-in-out;
+  }
 }
 
 label, form label {
@@ -111,28 +123,34 @@ button {
 
 header {
   .pull-left {
+    margin-right: 2px;
+    margin-left: -5px;
     text-align: left;
   }
   .pull-right {
+    margin-left: 2px;
+    margin-right: -5px;
     text-align: right;
   }
 
   .pull-left, .pull-right {
     height: 44px ;
-    width: 35%;
+    width: 40%;
+
+    button, a {
+      margin-left: 2px;
+      margin-right: 2px;
+    }
 
     //if has any text then leave it auto width
+    button:empty,
     a:empty {
-      width: 45%;
+      width: 50%;
       max-width: 55px;
       margin-left: 0;
 
       text-align: center;
     }
-  }
-
-  .pull-left {
-    margin-left: -5px;
   }
 }
 
@@ -169,7 +187,6 @@ header .subtitle {
   border: none;
   padding: 0;
   height: inherit;
-  min-height: 44px;
 
   .icon {
     padding-top: 12px;
@@ -307,11 +324,6 @@ li h3 {
   line-height: 1.4em;
   text-shadow: none;
   text-align: center;
-
-  a {
-    color: $color-white;
-    font-style: italic;
-  }
 }
 
 
@@ -320,6 +332,11 @@ li h3 {
 .warning-message p {
   margin: 13px 22px 13px 0;
   color: $color-white;
+
+  a {
+    color: $color-white;
+    font-weight: bold;
+  }
 }
 
 .info-message {
@@ -363,11 +380,12 @@ input {
   }
 
   .delete {
+    width: 5%;
     position: absolute;
     top: 0;
     right: 0;
 
-    margin-right: -3px;
+    margin-right: 3px;
     margin-top: 14px;
 
     color: $color-gray;
@@ -412,10 +430,6 @@ input {
 .prompt-remove {
   background: rgba(255,255,150,0.4);
   transform:translateX(-140px);
-}
-
-.pull-right {
-  margin-right: -5px;
 }
 
 .btn span {
@@ -474,8 +488,13 @@ li.table-view-cell {
     }
   }
 
+  & > p {
+    margin-bottom: 0; // overwrite the 'table-view-cell p {}'
+  }
+
   p {
     color: $color-black;
+    margin-bottom: 0.65em;
   }
 }
 
@@ -591,4 +610,77 @@ button, input, select, textarea {
 .pswp__button--zoom,
 .pswp__button--fs {
   display: none !important;
+}
+
+
+
+.control-item {
+  font-size: $button-font-size;
+}
+
+.no-border {
+  &.segmented-control {
+    border: none;
+  }
+}
+
+.segmented-control .control-item.active {
+  background-color: none;
+}
+
+.control-item.icon:before {
+  font-size: $button-font-size;
+  float: right;
+  margin-right: 15px;
+}
+
+.table-view-cell > a.btn-small {
+  height: 34px;
+  padding: 5px 65px 5px 15px;
+  font-size: $text-font-size;
+
+  span:before {
+    padding-top: 3px;
+    font-size: $text-font-size;
+  }
+}
+
+.item-small {
+  &.item-checkbox {
+    padding-top: 7px;
+    height: 37px;
+    font-style: $text-font-size!important;
+  }
+
+  &.item-radio {
+    .radio-content {
+      margin: 7px 0;
+    }
+
+    .item-content {
+      margin: 0;
+      padding: 5px;
+      font-size: $text-font-size;
+    }
+
+    .radio-icon.icon-check {
+      padding-top: 5px;
+    }
+  }
+}
+
+header .pull-right {
+  a {
+    padding-right: 5px;
+    padding-left: 5px;
+
+    &:before {
+      margin-right: 0.4em;
+    }
+  }
+}
+
+// increase margin on pull left list items
+.table-view .media-object.pull-left {
+  margin-right: 15px;
 }

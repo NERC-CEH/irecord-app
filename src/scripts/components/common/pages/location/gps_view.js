@@ -4,6 +4,8 @@
 import $ from 'jquery';
 import Marionette from 'marionette';
 import JST from '../../../../JST';
+import Typeahead from 'typeahead';
+import locationNameFinder from './location_name_search';
 
 export default Marionette.ItemView.extend({
   initialize() {
@@ -30,12 +32,30 @@ export default Marionette.ItemView.extend({
     this.listenTo(recordModel, 'geolocation:success', this.geolocationSuccess);
   },
 
+  onShow() {
+    this.addLocationNameSearch();
+  },
+
+  addLocationNameSearch() {
+    this.$el.find('.typeahead').typeahead({
+        hint: false,
+        highlight: false,
+        minLength: 0,
+      },
+      {
+        limit: 3,
+        name: 'names',
+        source: locationNameFinder(3),
+      });
+  },
+
   triggers: {
     'click #gps-button': 'gps:click',
   },
 
   events: {
     'change #location-name': 'changeName',
+    'typeahead:select #location-name': 'changeName',
   },
 
   changeName(e) {

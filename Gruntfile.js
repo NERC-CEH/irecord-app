@@ -45,6 +45,11 @@ module.exports = function exports(grunt) {
             src: 'src/vendor/**/css/*', dest: 'dist/styles/',
             expand: true, flatten: true,
           },
+          // IMAGES
+          {
+            src: 'src/vendor/**/images/*', dest: 'dist/styles/images/',
+            expand: true, flatten: true,
+          },
           // FONTS
           {
             src: 'src/vendor/fontello/font/*', dest: 'dist/font/',

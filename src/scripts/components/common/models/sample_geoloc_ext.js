@@ -24,13 +24,14 @@ const extension = {
         extension.stopGPS.call(that, { silent: true });
 
         if (error) {
+          that.trigger('geolocation', location);
           that.trigger('geolocation:error', location);
           return;
         }
 
         location.source = 'gps';
         location.updateTime = new Date(); // track when gps was acquired
-        location.gridref = LocHelp.coord2grid(location, location.accuracy);
+        location.gridref = LocHelp.coord2grid(location);
 
         // extend old location to preserve its previous attributes like name or id
         const oldLocation = that.get('location');

@@ -1,10 +1,11 @@
 import Backbone from 'backbone';
+import _ from 'lodash';
 import Marionette from 'marionette';
 import JST from '../../../JST';
 
 const Tab = Marionette.ItemView.extend({
   tagName: 'li',
-  template: JST['common/tab'],
+  template: _.template('<%= obj.title %>'),
 
   className() {
     return this.model.get('active') ? 'active' : '';
@@ -44,9 +45,11 @@ const Tabs = Marionette.CollectionView.extend({
 export default Marionette.LayoutView.extend({
   template: JST['common/tabs_container'],
 
+  className: 'tabs-container',
+
   regions: {
-    tabs: '#tabs',
-    content: '#content',
+    tabs: '.tabs',
+    content: '.content',
   },
 
   childViewOptions() {

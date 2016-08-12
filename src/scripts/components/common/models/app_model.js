@@ -17,6 +17,7 @@ let AppModel = Backbone.Model.extend({
     attrLocks: {},
     autosync: true,
     useGridRef: true,
+    useGridMap: true,
   },
 
   localStorage: new Store(CONFIG.name),

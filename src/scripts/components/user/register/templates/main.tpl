@@ -22,7 +22,7 @@
 </div>
 
 
-<div class="table-view-cell">
+<div class="table-view-cell input-row">
   I agree to Terms and Conditions
   <div id="user-terms-agree" class="toggle no-yes">
     <div class="toggle-handle"></div>

@@ -34,3 +34,20 @@
   padding-left: 5px;
   padding-right: 0;
 }
+
+label.item-input-wrapper{
+  width: 90%;
+  height: 35px;
+  margin: 5px;
+  padding: 5px;
+
+  span {
+    color: $color-gray;
+  }
+
+  input {
+    margin-left: 5px;
+    background: transparent;
+    font-size: 14px;
+  }
+}

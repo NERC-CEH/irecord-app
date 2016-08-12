@@ -24,6 +24,7 @@
 
   .pull-left {
     #activities-btn {
+      width: 45%;
       max-width: 96px;
     }
   }
@@ -119,7 +120,7 @@
     &.empty {
       height: initial !important;
       min-height: initial !important;
-      padding: 13px 0 0;
+      padding: 13px 0;
       border: none;
       margin: 0;
 

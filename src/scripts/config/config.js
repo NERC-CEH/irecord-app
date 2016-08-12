@@ -35,7 +35,10 @@ export default {
 
   // mapping
   map: {
-    API_KEY: '28994B5673A86451E0530C6CA40A91A5'
+    os_api_key: '28994B5673A86451E0530C6CA40A91A5',
+    mapbox_api_key: 'pk.eyJ1IjoiY2VoYXBwcyIsImEiOiJjaXBxdTZyOWYwMDZoaWVuYjI3Y3Z0a2x5In0.YXrZA_DgWCdjyE0vnTCrmw',
+    mapbox_osm_id: 'cehapps.0fenl1fe',
+    mapbox_satellite_id: 'cehapps.0femh3mh',
   },
 
   // morel configuration
