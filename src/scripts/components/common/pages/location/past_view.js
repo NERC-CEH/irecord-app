@@ -14,9 +14,10 @@ export default Marionette.LayoutView.extend({
   },
 
   onChildviewLocationSelect(view) {
-    // remove location id - make it a new location
+    // remove location id and favourite - make it a new location
     const location = view.model.toJSON();
     delete location.id;
+    delete location.favourite;
     this.triggerMethod('location:select:past', location);
   },
 
