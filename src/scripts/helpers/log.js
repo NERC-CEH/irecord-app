@@ -66,6 +66,7 @@ function log(message, type = DEBUG) {
           break;
         }
         console.debug(message);
+        if (typeof console.trace === 'function') console.trace();
     }
   }
 }
