@@ -138,6 +138,14 @@ const API = {
         newVal = values.stage === 'default' ? null : values.stage;
         occ.set('stage', newVal);
         break;
+      case 'identifiers':
+        currentVal = occ.get('identifiers');
+
+        // todo:validate before setting up
+        // don't save default values
+        newVal = values.identifiers;
+        occ.set('identifiers', newVal);
+        break;
       case 'comment':
         currentVal = occ.get('comment');
 

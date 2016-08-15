@@ -87,6 +87,10 @@ export default Marionette.ItemView.extend({
           }
         });
         break;
+      case 'identifiers':
+        value = this.$el.find('input').val();
+        values[attr] = StringHelp.escape(value);
+        break;
       case 'comment':
         value = this.$el.find('textarea').val();
         values[attr] = StringHelp.escape(value);
@@ -118,6 +122,9 @@ export default Marionette.ItemView.extend({
         break;
       case 'stage':
         templateData[occ.get('stage')] = true;
+        break;
+      case 'identifiers':
+        templateData.identifiers = occ.get('identifiers');
         break;
       case 'comment':
         templateData.comment = occ.get('comment');

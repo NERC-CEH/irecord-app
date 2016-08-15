@@ -48,7 +48,7 @@ export default {
       appname: 'test',
       appsecret: 'mytest',
       website_id: 23,
-      survey_id: 269,
+      survey_id: 374,
       input_form: 'enter-app-record'
     },
     sample: {
@@ -82,7 +82,7 @@ export default {
       location_accuracy: { id: 282 },
       location_altitude: { id: 283 },
       location_altitude_accuracy: { id: 284 },
-      location_source: { id: 578 },
+      location_source: { id: 760 },
       location_gridref: { id: 335 },
 
       device: {
@@ -93,7 +93,7 @@ export default {
         }
       },
 
-      device_version: { id: 579 },
+      device_version: { id: 759 },
 
       date: {
         values: function (date) {
@@ -117,7 +117,7 @@ export default {
         id: 16,
       },
       'number-ranges': {
-        id: 379,
+        id: 523,
         values: {
           'default': 671,
           '1': 665,
@@ -136,6 +136,9 @@ export default {
           'Pre-adult': 1951,
           'Other': 1952
         }
+      },
+      identifiers: {
+        id: 18
       }
     }
   }

@@ -46,6 +46,7 @@ export default Marionette.ItemView.extend({
       location: appModel.isAttrLocked('location', recordModel.get('location')),
       number: numberLock,
       stage: appModel.isAttrLocked('stage', occ.get('stage')),
+      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
       comment: appModel.isAttrLocked('comment', occ.get('comment')),
       activity: appModel.isAttrLocked('activity', recordModel.get('group')),
     };
@@ -69,6 +70,7 @@ export default Marionette.ItemView.extend({
       date: DateHelp.print(recordModel.get('date')),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
+      identifiers: occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
       group_title: group ? group.title : null,
       locks: attrLocks,

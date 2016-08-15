@@ -104,6 +104,9 @@ export default {
         case 'stage':
           occurrence.set('stage', val);
           break;
+        case 'identifiers':
+          occurrence.set('identifiers', val);
+          break;
         case 'comment':
           occurrence.set('comment', val);
           break;

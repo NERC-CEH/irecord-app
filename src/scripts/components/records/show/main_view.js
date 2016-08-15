@@ -75,6 +75,7 @@ export default Marionette.ItemView.extend({
       date: DateHelp.print(recordModel.get('date')),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
+      identifiers: occ.get('identifiers'),
       comment: occ.get('comment'),
       group_title: group ? group.title : null,
       images: occ.images,
