@@ -55,19 +55,19 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#records/<%- obj.id %>/edit/identifiers" id="identifiers-button"
-       class="<%- obj.locks['identifiers'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-user-plus"></span>
-      <span class="media-object pull-right descript"><%- obj.identifiers %></span>
-      Identifiers
-    </a>
-  </li>
-  <li class="table-view-cell">
     <a href="#records/<%- obj.id %>/edit/comment" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-comment"></span>
       <span class="media-object pull-right descript"><%- obj.comment %></span>
       Comment
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#records/<%- obj.id %>/edit/identifiers" id="identifiers-button"
+       class="<%- obj.locks['identifiers'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-user-plus"></span>
+      <span class="media-object pull-right descript"><%- obj.identifiers %></span>
+      Identifiers
     </a>
   </li>
   <% if (obj.group_title) { %>

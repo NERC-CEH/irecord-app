@@ -35,19 +35,19 @@
       Stage
     </li>
   <% } %>
-  <% if (obj.identifiers) { %>
-  <li class="table-view-cell">
-    <span class="media-object pull-left icon icon-user-plus"></span>
-    Identifiers
-    <span class="comment descript"><%- obj.identifiers %></span>
-  </li>
-  <% } %>
   <% if (obj.comment) { %>
     <li class="table-view-cell">
       <span class="media-object pull-left icon icon-comment"></span>
       Comment
       <span class="comment descript"><%- obj.comment %></span>
     </li>
+  <% } %>
+  <% if (obj.identifiers) { %>
+  <li class="table-view-cell">
+    <span class="media-object pull-left icon icon-user-plus"></span>
+    Identifiers
+    <span class="comment descript"><%- obj.identifiers %></span>
+  </li>
   <% } %>
   <% if (obj.group_title) { %>
   <li class="table-view-cell">

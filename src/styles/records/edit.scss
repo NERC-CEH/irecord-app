@@ -16,6 +16,9 @@
 }
 
 //MAIN
+ul.table-view.inputs {
+  margin-bottom: 80px; // to account the floating photo picker for scrolling
+}
 .inputs span.icon {
   color: $button-black;
 }
