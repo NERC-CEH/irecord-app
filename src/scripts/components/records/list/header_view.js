@@ -29,5 +29,11 @@ export default Marionette.ItemView.extend({
       });
     }
   },
+
+  serializeData() {
+    return {
+      activityOn: this.model.getAttrLock('activity'),
+    };
+  },
 });
 

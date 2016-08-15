@@ -26,6 +26,10 @@
     #activities-btn {
       width: 45%;
       max-width: 96px;
+
+      &.on {
+        color: $color-yellow;
+      }
     }
   }
 }
@@ -49,40 +53,6 @@
     cursor: pointer;
   }
 }
-
-
-//SUBHEADER
-//.records.subheader {
-//  height: 30px;
-//  margin-top: -1px;
-//  padding: 0 10px;
-//  background-color: $color-green-light;
-//}
-//
-//.records.subheader .segmented-control {
-//  width: 90px;
-//  top: 5px;
-//  background-color: transparent;
-//  border-color: $color-white;
-//}
-//
-//.records.subheader .segmented-control a{
-//  padding: 0;
-//  color: $color-white;
-//  border-color: $color-white;
-//}
-//}
-//
-//.records.subheader a:before {
-//  font-size: 18px;
-//}
-//
-//#list-search-btn,
-//#list-filter-btn {
-//  background-color: transparent;
-//  padding: 5px 0;
-//  border: none;
-//}
 
 //LIST
 #records-list {
@@ -211,6 +181,17 @@
         }
       }
 
+      //pull right
+      .group-status {
+        position: absolute;
+        top: 30px;
+        right: 40px;
+
+        &.icon:before {
+          font-size: 15px;
+        }
+      }
+
       .edit {
         display: none;
         padding-top: 13px;
@@ -235,6 +216,11 @@
           font-size: 15px;
           font-weight: 700;
           color: $button-black;
+
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
           &.error {
             color: $color-orange;
           }

@@ -46,7 +46,7 @@ const API = {
     });
 
     // HEADER
-    const headerView = new HeaderView();
+    const headerView = new HeaderView({ model: appModel });
 
     headerView.on('photo:upload', (e) => {
       const photo = e.target.files[0];

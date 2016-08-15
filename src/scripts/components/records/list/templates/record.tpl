@@ -12,6 +12,9 @@
       <div class="online-status icon icon-send <%- obj.onDatabase ? 'cloud' : 'local' %>"></div>
       <% } %>
       <% } %>
+      <% if (obj.group) { %>
+      <div class="group-status icon icon-users"></div>
+      <% } %>
     </div>
 
     <div class="media-body">

@@ -127,6 +127,8 @@ const RecordView = Marionette.ItemView.extend({
       number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
+    const group = recordModel.get('group');
+
     return {
       id: recordModel.id || recordModel.cid,
       saved: recordModel.metadata.saved,
@@ -140,6 +142,7 @@ const RecordView = Marionette.ItemView.extend({
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
+      group,
       img: img ? `<img src="${img}"/>` : '',
     };
   },

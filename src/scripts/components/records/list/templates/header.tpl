@@ -1,6 +1,6 @@
 <div class="pull-left">
   <a href="#info" class="icon icon-menu"></a>
-  <a href="#user/activities" id="activities-btn" class="icon icon-users"></a>
+  <a href="#user/activities" id="activities-btn" class="icon icon-users <%- obj.activityOn ? 'on' : '' %>"></a>
 </div>
 <div class="pull-right">
   <div class="img-picker icon icon-camera">
