@@ -168,7 +168,8 @@ const API = {
 
     switch (attr) {
       case 'date':
-        if (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date())) {
+        if (!lockedValue ||
+          (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date()))) {
           // don't lock current day
           appModel.setAttrLock(attr, null);
         } else {
