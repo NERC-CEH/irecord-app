@@ -11,6 +11,7 @@ import Log from '../../../../helpers/log';
 import Validate from '../../../../helpers/validate';
 import StringHelp from '../../../../helpers/string';
 import LocHelp from '../../../../helpers/location';
+import PastLocationsController from '../../../settings/locations/controller';
 import App from '../../../../app';
 import JST from '../../../../JST';
 
@@ -173,8 +174,12 @@ const API = {
         onLocationSelect(view, location, true);
         onPageExit();
       });
-      mainView.on('childview:location:delete', API.deleteLocation);
-      mainView.on('childview:location:edit', API.editLocation);
+      mainView.on('childview:location:delete', (view, model) => {
+        PastLocationsController.deleteLocation(model);
+      });
+      mainView.on('childview:location:edit', (view, model) => {
+        PastLocationsController.editLocation(model);
+      });
       mainView.on('childview:location:select:map', onLocationSelect);
       mainView.on('childview:location:select:gridref', (view, data) => {
         /**
@@ -286,70 +291,6 @@ const API = {
 
     // FOOTER
     App.regions.footer.hide().empty();
-  },
-
-  editLocation(view, model) {
-    const location = model;
-    const EditView = Marionette.ItemView.extend({
-      template: JST['common/past_location_edit'],
-      getValues() {
-        return {
-          name: StringHelp.escape(this.$el.find('#location-name').val()),
-        };
-      },
-
-      onFormDataInvalid(errors) {
-        const $view = this.$el;
-        Validate.updateViewFormErrors($view, errors, '#location-');
-      },
-
-      onShow() {
-        const $input = this.$el.find('#name');
-        $input.focus();
-        if (Device.isAndroid()) {
-          window.Keyboard.show();
-          $input.focusout(() => {
-            window.Keyboard.hide();
-          });
-        }
-      },
-    });
-
-    const editView = new EditView({ model: location });
-
-    App.regions.dialog.show({
-      title: 'Edit Location',
-      body: editView,
-      buttons: [
-        {
-          title: 'Save',
-          class: 'btn-positive',
-          onClick() {
-            // update location
-            const locationEdit = editView.getValues();
-            if (!locationEdit.name) {
-              editView.trigger('form:data:invalid', {
-                name: 'can\'t be empty',
-              });
-              return;
-            }
-            appModel.setLocation(location.set(locationEdit).toJSON());
-            App.regions.dialog.hide();
-          },
-        },
-        {
-          title: 'Cancel',
-          onClick() {
-            App.regions.dialog.hide();
-          },
-        },
-      ],
-    });
-  },
-
-  deleteLocation(view, model) {
-    const location = model;
-    appModel.removeLocation(location);
   },
 };
 
