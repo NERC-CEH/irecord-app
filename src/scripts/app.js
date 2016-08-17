@@ -48,68 +48,70 @@ App.on('before:start', () => {
 });
 
 App.on('start', () => {
-  Log('App: starting');
+  // update app first
+  Update.run(() => {
+    // release the beast
+    Log('App: starting');
 
-  Update.run();
+    FastClick.attach(document.body);
 
-  FastClick.attach(document.body);
+    if (Backbone.history) {
+      Backbone.history.start();
 
-  if (Backbone.history) {
-    Backbone.history.start();
+      if (App.getCurrentRoute() === '') {
+        App.trigger('records:list');
+      }
 
-    if (App.getCurrentRoute() === '') {
-      App.trigger('records:list');
-    }
-
-    App.on('404:show', () => {
-      CommonController.show({
-        App,
-        route: 'common/404',
-        title: 404,
+      App.on('404:show', () => {
+        CommonController.show({
+          App,
+          route: 'common/404',
+          title: 404,
+        });
       });
-    });
 
-    if (window.cordova) {
-      Log('App: cordova setup');
+      if (window.cordova) {
+        Log('App: cordova setup');
 
-      // Although StatusB  ar in the global scope,
-      // it is not available until after the deviceready event.
-      document.addEventListener('deviceready', () => {
-        Log('Showing the app.');
+        // Although StatusB  ar in the global scope,
+        // it is not available until after the deviceready event.
+        document.addEventListener('deviceready', () => {
+          Log('Showing the app.');
 
-        window.StatusBar.overlaysWebView(true);
-        window.StatusBar.backgroundColorByName('black');
+          window.StatusBar.overlaysWebView(true);
+          window.StatusBar.backgroundColorByName('black');
 
-        // iOS make space for statusbar
-        if (Device.isIOS()) {
-          $('body').addClass('ios');
-        }
+          // iOS make space for statusbar
+          if (Device.isIOS()) {
+            $('body').addClass('ios');
+          }
 
+          // development loader
+          $('#loader').remove();
+
+          // hide loader
+          if (navigator && navigator.splashscreen) {
+            navigator.splashscreen.hide();
+          }
+
+          Analytics.trackEvent('App', 'initialized');
+        }, false);
+      } else {
         // development loader
-        $('#loader').remove();
+        $(document).ready(() => {
+          $('#loader').remove();
+        });
+      }
 
-        // hide loader
-        if (navigator && navigator.splashscreen) {
-          navigator.splashscreen.hide();
-        }
-
-        Analytics.trackEvent('App', 'initialized');
-      }, false);
-    } else {
-      // development loader
-      $(document).ready(() => {
-        $('#loader').remove();
-      });
+      /**
+       import recordManager from './components/common/record_manager';
+       $(document).ready(() => {
+         // For screenshots capture only
+          window.testing.screenshotsPopulate(recordManager);
+        });
+       */
     }
-
-    /**
-     import recordManager from './components/common/record_manager';
-     $(document).ready(() => {
-      // For screenshots capture only
-      window.testing.screenshotsPopulate(recordManager);
-    });
-     */
-  }
+  });
 });
 
 export { App as default };
