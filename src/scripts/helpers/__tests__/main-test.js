@@ -19,6 +19,10 @@ describe('Analytics', () => {
     analytics.initialized = true;
   });
 
+  after(() => {
+    analytics.initialized = false;
+  });
+
   beforeEach(() => {
     window.analytics = {
       trackException(){},

@@ -50,7 +50,7 @@ App.on('before:start', () => {
 App.on('start', () => {
   Log('App: starting');
 
-  Update();
+  Update.run();
 
   FastClick.attach(document.body);
 
