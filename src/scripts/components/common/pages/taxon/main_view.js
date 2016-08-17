@@ -2,6 +2,7 @@
  * Taxon main view.
  *****************************************************************************/
 import _ from 'lodash';
+import Backbone from 'backbone';
 import Marionette from 'marionette';
 import JST from '../../../../JST';
 import Log from '../../../../helpers/log';
@@ -110,6 +111,13 @@ export default Marionette.LayoutView.extend({
       $input.focusout(() => {
         window.Keyboard.hide();
       });
+    }
+
+    const userModel = this.model;
+    const statistics = userModel.get('statistics') || { species: [] };
+    const favouriteSpecies = statistics.species;
+    if (favouriteSpecies.length) {
+      this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
     }
   },
 

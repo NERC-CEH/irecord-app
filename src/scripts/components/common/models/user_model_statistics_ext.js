@@ -4,6 +4,7 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Log from '../../../helpers/log';
+import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 import CONFIG from 'config';
 
 export default {
@@ -61,22 +62,32 @@ export default {
       timeout: CONFIG.report.timeout,
       success(receivedData) {
         const species = [];
+        const toWait = [];
 
         receivedData.forEach((stat) => {
-          species.push({
-            taxon_meaning_id: parseInt(stat.taxon_meaning_id),
-            taxon: stat.taxon,
-            common: stat.common,
-            count: parseInt(stat.count),
-          });
+          const promise = new $.Deferred();
+          toWait.push(promise);
+
+          // turn it to a full species descriptor from species data set
+          SpeciesSearchEngine.search(stat.taxon, (results) => {
+            if (results.length && results[0].scientific_name === stat.taxon) {
+              species.push(results[0]);
+            }
+            promise.resolve();
+          }, 1, true);
         });
 
-        statistics.species = species;
+        const dfd = $.when.apply($, toWait);
+        dfd.then(() => {
+          statistics.species = species;
 
-        that.set('statistics', statistics);
-        that.save();
-        callback();
-        that.trigger('sync:statistics:species:end');
+          console.log('Aaaaaaaaaaaaaaaaaa')
+          console.log(species)
+          that.set('statistics', statistics);
+          that.save();
+          callback();
+          that.trigger('sync:statistics:species:end');
+        });
       },
       error(err) {
         Log('Stats load failed');

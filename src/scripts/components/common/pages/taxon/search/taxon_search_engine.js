@@ -1,6 +1,8 @@
 /** ****************************************************************************
  * Generates UKSI list search suggestions.
  *****************************************************************************/
+import Backbone from 'backbone';
+import _ from 'lodash';
 import searchCommonNames from './commonNamesSearch';
 import searchSciNames from './scientificNamesSearch';
 import helpers from './searchHelpers';
@@ -15,12 +17,14 @@ const MAX = 20;
 const API = {
   init(callback) {
     Log('Taxon search engine: initializing');
+    const that = this;
 
     loading = true;
     require.ensure([], () => {
       loading = false;
       species = require('master_list.data');
       commonNamePointers = require('common_names.data');
+      that.trigger('data:loaded');
       callback && callback();
     }, 'data');
   },
@@ -38,12 +42,18 @@ const API = {
      synonym: "Common name synonym"
    }
    */
-  search(searchPhrase, callback) {
+  search(searchPhrase, callback, maxResults = MAX, scientificOnly) {
     if (!species) {
+      // initialize
+      function proceed() {
+        API.search(searchPhrase, callback, maxResults, scientificOnly);
+      }
+
       if (!loading) {
-        API.init(() => {
-          API.search(searchPhrase, callback);
-        });
+        API.init(proceed);
+      } else {
+        // the process has started, wait until done
+        this.on('data:loaded', proceed);
       }
       return;
     }
@@ -55,9 +65,9 @@ const API = {
 
     // check if scientific search
     const isScientific = helpers.isPhraseScientific(normSearchPhrase);
-    if (isScientific) {
+    if (isScientific || scientificOnly) {
       // search sci names
-      searchSciNames(species, normSearchPhrase, results);
+      searchSciNames(species, normSearchPhrase, results, maxResults);
     } else {
       // search common names
       results = searchCommonNames(species, commonNamePointers, normSearchPhrase);
@@ -73,5 +83,7 @@ const API = {
     callback(results);
   },
 };
+
+_.extend(API, Backbone.Events);
 
 export { API as default };

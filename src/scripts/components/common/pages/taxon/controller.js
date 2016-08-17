@@ -6,6 +6,7 @@ import Morel from 'morel';
 import App from '../../../../app';
 import Log from '../../../../helpers/log';
 import appModel from '../../models/app_model';
+import userModel from '../../models/user_model';
 import recordManager from '../../record_manager';
 import Sample from '../../models/sample';
 import Occurrence from '../../models/occurrence';
@@ -51,7 +52,7 @@ const API = {
         API._showMainView(mainView, that);
       });
     } else {
-      const mainView = new MainView();
+      const mainView = new MainView({ model: userModel});
       API._showMainView(mainView, this);
 
       // should be done in the view
