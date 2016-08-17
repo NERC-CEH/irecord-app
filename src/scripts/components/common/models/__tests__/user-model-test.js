@@ -10,12 +10,10 @@ describe('User Model', () => {
 
   it('has default values', () => {
     const userModel = new UserModel();
-    expect(_.keys(userModel.attributes).length).to.be.equal(5);
     expect(userModel.get('name')).to.be.equal('');
     expect(userModel.get('surname')).to.be.equal('');
     expect(userModel.get('email')).to.be.equal('');
     expect(userModel.get('secret')).to.be.equal('');
-    expect(userModel.get('activities')).to.be.an('array');
   });
 
   describe('Activities support', () => {
@@ -60,6 +58,11 @@ describe('User Model', () => {
       expect(userModel.syncActivities).to.be.a('function');
       expect(userModel.getActivity).to.be.a('function');
       expect(userModel.hasActivity).to.be.a('function');
+    });
+
+    it('should have attributes', () => {
+      const userModel = new UserModel();
+      expect(userModel.get('activities')).to.be.an('array');
     });
 
     it('should sync activities from server', () => {

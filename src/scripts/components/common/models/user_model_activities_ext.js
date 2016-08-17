@@ -34,7 +34,7 @@ export default {
   },
 
   resetActivities() {
-    Log('UserModel: fetching activities');
+    Log('UserModel: resetting activities');
     this.set('activities', []);
     this.save();
   },

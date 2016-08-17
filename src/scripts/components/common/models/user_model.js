@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
 import activitiesExtension from './user_model_activities_ext';
+import statisticsExtension from './user_model_statistics_ext';
 import Validate from '../../../helpers/validate';
 import Analytics from '../../../helpers/analytics';
 import CONFIG from 'config'; // Replaced with alias
@@ -18,6 +19,12 @@ let UserModel = Backbone.Model.extend({
     email: '',
     secret: '',
     activities: [],
+
+    statistics: {
+      synced_on: null,
+      records: -1,
+      species: [],
+    },
   },
 
   localStorage: new Store(CONFIG.name),
@@ -28,6 +35,7 @@ let UserModel = Backbone.Model.extend({
   initialize() {
     this.fetch();
     this.syncActivities();
+    this.syncStats();
   },
 
   /**
@@ -156,6 +164,9 @@ let UserModel = Backbone.Model.extend({
 
 // add activities management
 UserModel = UserModel.extend(activitiesExtension);
+
+// add statistics management
+UserModel = UserModel.extend(statisticsExtension);
 
 const userModel = new UserModel();
 export { userModel as default, UserModel };
