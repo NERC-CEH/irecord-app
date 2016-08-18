@@ -45,14 +45,14 @@ const API = {
         let mainView;
 
         if (!recordModel.occurrences.at(0).get('taxon')) {
-          mainView = new MainView();
+          mainView = new MainView({ model: userModel });
         } else {
-          mainView = new MainView({ removeEditBtn: true });
+          mainView = new MainView({ removeEditBtn: true, model: userModel });
         }
         API._showMainView(mainView, that);
       });
     } else {
-      const mainView = new MainView({ model: userModel});
+      const mainView = new MainView({ model: userModel });
       API._showMainView(mainView, this);
 
       // should be done in the view
