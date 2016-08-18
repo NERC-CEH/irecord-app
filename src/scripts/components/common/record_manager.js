@@ -27,14 +27,14 @@ const morelConfiguration = $.extend(CONFIG.morel.manager, {
 
 class Manager extends Morel {
   syncAll(method, collection, options = {}) {
-    if(!Device.connectionWifi()) {
+    if (!Device.connectionWifi()) {
       options.timeout = 180000; // 3 min
     }
     return Morel.prototype.syncAll.apply(this, [method, collection, options]);
   }
 
   sync(method, model, options = {}) {
-    if(!Device.connectionWifi()) {
+    if (!Device.connectionWifi()) {
       options.timeout = 180000; // 3 min
     }
     return Morel.prototype.sync.apply(this, [method, model, options]);
@@ -61,7 +61,7 @@ class Manager extends Morel {
               if (toRemove === 0) {
                 callback && callback();
               }
-            }
+            },
           });
         }
       });
@@ -106,6 +106,19 @@ class Manager extends Morel {
       if (noneUsed || saving === 0) {
         callback && callback();
       }
+    });
+  }
+
+  clearAll(local, callback) {
+    const that = this;
+    this.getAll((err, samples) => {
+      if (window.cordova) {
+        // we need to remove the images from file system
+        samples.each((sample) => {
+          sample.trigger('destroy');
+        });
+      }
+      that.clear(callback);
     });
   }
 };
