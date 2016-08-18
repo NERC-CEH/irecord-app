@@ -251,6 +251,12 @@
       "css": "grid",
       "code": 59431,
       "src": "modernpics"
+    },
+    {
+      "uid": "7184d8171b6a9b18eabbace94cca21db",
+      "css": "statistics",
+      "code": 59433,
+      "src": "entypo"
     }
   ]
 }

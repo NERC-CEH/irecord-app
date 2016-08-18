@@ -39,10 +39,6 @@ const API = {
 
     refreshView.on('refreshClick', () => {
       Log('User:Statistics:Controller: refresh clicked');
-      if (!userModel.hasLogIn()) {
-        App.trigger('user:login');
-        return;
-      }
       API.refresh();
     });
   },

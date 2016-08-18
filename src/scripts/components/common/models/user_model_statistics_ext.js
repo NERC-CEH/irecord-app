@@ -2,7 +2,6 @@
  * App Model statistics functions.
  *****************************************************************************/
 import $ from 'jquery';
-import _ from 'lodash';
 import Log from '../../../helpers/log';
 import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 import CONFIG from 'config';
@@ -13,10 +12,11 @@ export default {
     if (this.synchronizingStatistics) {
       return;
     }
-    this.synchronizingStatistics = true;
 
     if (this.hasLogIn() && this._lastStatsSyncExpired() || force) {
       // init or refresh
+      this.synchronizingStatistics = true;
+
       this.fetchStatsSpecies(() => {
         that.synchronizingStatistics = false;
       });
@@ -83,6 +83,8 @@ export default {
 
         const dfd = $.when.apply($, toWait);
         dfd.then(() => {
+          // save and exit
+          statistics.synced_on = new Date().toString();
           statistics.species = species;
           statistics.speciesRaw = receivedData;
           that.set('statistics', statistics);
