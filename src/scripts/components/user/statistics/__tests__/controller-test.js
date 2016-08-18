@@ -5,7 +5,7 @@ describe('Activities Controller', () => {
     expect(API.show).to.be.a('function');
   });
 
-  it('should have a refreshStats method', () => {
-    expect(API.refreshStats).to.be.a('function');
+  it('should have a refresh method', () => {
+    expect(API.refresh).to.be.a('function');
   });
 });

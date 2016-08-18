@@ -46,7 +46,7 @@ const API = {
     if (!species) {
       // initialize
       function proceed() {
-        API.search(searchPhrase, callback, maxResults, scientificOnly);
+        API.search(searchPhrase || '', callback, maxResults, scientificOnly);
       }
 
       if (!loading) {

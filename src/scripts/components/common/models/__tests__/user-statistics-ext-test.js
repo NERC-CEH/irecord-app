@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { UserModel } from '../user_model';
 
 describe('User statistics extension', () => {
@@ -14,8 +13,6 @@ describe('User statistics extension', () => {
 
     const stats = userModel.get('statistics');
     expect(stats).to.be.an('object');
-    expect(stats.records).to.be.a('number');
     expect(stats.species).to.be.an('array');
   });
-
 });
