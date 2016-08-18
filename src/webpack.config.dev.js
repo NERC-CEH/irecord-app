@@ -43,7 +43,10 @@ module.exports = {
       {
         test: /^((?!data\.).)*\.js$/,
         exclude: /(node_modules|bower_components|vendor)/,
-        loader: 'babel-loader',
+        loader: 'babel',
+        query: {
+          cacheDirectory: true,
+        },
       },
       { test: /\.json/, loader: 'json' },
     ],
