@@ -70,8 +70,12 @@ export default {
 
           // turn it to a full species descriptor from species data set
           SpeciesSearchEngine.search(stat.taxon, (results) => {
-            if (results.length && results[0].scientific_name === stat.taxon) {
-              species.push(results[0]);
+            const foundedSpecies = results[0];
+            if (results.length && foundedSpecies.scientific_name === stat.taxon) {
+              if (foundedSpecies.common_name) {
+                foundedSpecies.found_in_name = 'common_name';
+              }
+              species.push(foundedSpecies);
             }
             promise.resolve();
           }, 1, true);
@@ -80,9 +84,7 @@ export default {
         const dfd = $.when.apply($, toWait);
         dfd.then(() => {
           statistics.species = species;
-
-          console.log('Aaaaaaaaaaaaaaaaaa')
-          console.log(species)
+          statistics.speciesRaw = receivedData;
           that.set('statistics', statistics);
           that.save();
           callback();

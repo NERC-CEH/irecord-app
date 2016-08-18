@@ -18,12 +18,13 @@ let UserModel = Backbone.Model.extend({
     surname: '',
     email: '',
     secret: '',
+
     activities: [],
 
     statistics: {
       synced_on: null,
-      records: -1,
       species: [],
+      speciesRaw: [],
     },
   },
 
@@ -48,6 +49,7 @@ let UserModel = Backbone.Model.extend({
     this.set('surname', '');
 
     this.resetActivities();
+    this.resetStats();
 
     this.save();
     this.trigger('logout');
@@ -66,6 +68,7 @@ let UserModel = Backbone.Model.extend({
     this.save();
     this.trigger('login');
     this.syncActivities();
+    this.syncStats();
     Analytics.trackEvent('User', 'login');
   },
 

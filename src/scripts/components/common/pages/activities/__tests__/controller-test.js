@@ -1,7 +1,4 @@
-import Backbone from 'backbone';
 import API from '../controller';
-import appModel from '../../../models/app_model';
-import userModel from '../../../models/user_model';
 
 describe('Activities Controller', () => {
   it('should have a show method', () => {
