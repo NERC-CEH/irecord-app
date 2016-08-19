@@ -183,7 +183,7 @@ export default Marionette.Region.extend({
   },
 
   error: function error(error = {}) {
-    var options = {
+    let options = {
       class: 'error',
       title: 'Yikes!',
       body: error.message || error,
@@ -196,7 +196,7 @@ export default Marionette.Region.extend({
 
     // lookup for codes
     if (error.code) {
-      var tableErrorOptions = errorsTable[error.code];
+      const tableErrorOptions = errorsTable[error.code];
       if (tableErrorOptions) {
         options = _.extend(options, tableErrorOptions);
       }
@@ -219,7 +219,7 @@ const errorsTable = {
       title: 'Restart',
       onClick: function onClick() {
         App.restart();
-      }
-    }]
+      },
+    }],
   },
 };

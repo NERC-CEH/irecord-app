@@ -105,7 +105,7 @@ const API = {
 
     url = this._removeUUID(url);
     return url;
-    },
+  },
 
   _removeUUID(string) {
     // remove specific UUIDs

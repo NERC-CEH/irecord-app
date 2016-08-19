@@ -7,7 +7,7 @@ describe('Occurrence', () => {
       expect(occurrence.validate).to.be.a('function');
       occurrence.clear();
 
-      let invalids = occurrence.validate({});
+      const invalids = occurrence.validate({});
       expect(invalids).to.be.an('object')
         .and.have.property('taxon');
     });

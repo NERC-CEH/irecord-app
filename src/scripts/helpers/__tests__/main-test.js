@@ -25,7 +25,7 @@ describe('Analytics', () => {
 
   beforeEach(() => {
     window.analytics = {
-      trackException(){},
+      trackException() {},
     };
 
     sinon.spy(window.analytics, 'trackException');

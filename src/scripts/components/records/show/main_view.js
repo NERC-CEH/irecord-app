@@ -29,7 +29,7 @@ export default Marionette.ItemView.extend({
     });
 
 // Initializes and opens PhotoSwipe
-    var gallery = new Gallery(items);
+    const gallery = new Gallery(items);
     gallery.init();
   },
 

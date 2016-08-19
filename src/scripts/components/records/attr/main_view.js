@@ -22,16 +22,16 @@ function LogSlider(options) {
 
 LogSlider.prototype = {
   // Calculate value from a slider position
-  value: function(position) {
+  value(position) {
     return Math.exp((position - this.minpos) * this.scale + this.minlval);
   },
   // Calculate slider position from a value
-  position: function(value) {
+  position(value) {
     return this.minpos + (Math.log(value) - this.minlval) / this.scale;
-  }
+  },
 };
 
-var logsl = new LogSlider({maxpos: 100, minval: 1, maxval: 500});
+const logsl = new LogSlider({ maxpos: 100, minval: 1, maxval: 500 });
 
 export default Marionette.ItemView.extend({
   initialize(options) {
@@ -46,7 +46,7 @@ export default Marionette.ItemView.extend({
 
   saveNumber() {
     // unset slider val
-    const $rangeOutput = this.$el.find('#rangeVal')
+    const $rangeOutput = this.$el.find('#rangeVal');
     $rangeOutput.val('');
     this.trigger('save');
   },
@@ -139,9 +139,9 @@ export default Marionette.ItemView.extend({
 
   updateRangeSliderValue(e) {
     const $input = $(e.target);
-    const $rangeOutput = this.$el.find('#range')
+    const $rangeOutput = this.$el.find('#range');
 
-    let value = logsl.position($input.val()).toFixed(0);
+    const value = logsl.position($input.val()).toFixed(0);
     $rangeOutput.val(value);
 
     // unset ranges selection
@@ -157,9 +157,9 @@ export default Marionette.ItemView.extend({
       // no need to do anything on input clear
       return;
     }
-    const $rangeOutput = this.$el.find('#rangeVal')
+    const $rangeOutput = this.$el.find('#rangeVal');
 
-    let value = logsl.value($input.val()).toFixed(0);
+    const value = logsl.value($input.val()).toFixed(0);
     $rangeOutput.val(value);
 
     // unset ranges selection

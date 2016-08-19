@@ -26,10 +26,10 @@ export default Marionette.ItemView.extend({
 
   addLocationNameSearch() {
     this.$el.find('.typeahead').typeahead({
-        hint: false,
-        highlight: false,
-        minLength: 0,
-      },
+      hint: false,
+      highlight: false,
+      minLength: 0,
+    },
       {
         limit: 3,
         name: 'names',

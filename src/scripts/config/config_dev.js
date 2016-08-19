@@ -20,17 +20,17 @@ export default {
   // google analytics
   ga: {
     status: false,
-    ID: 'UA-58378803-4'
+    ID: 'UA-58378803-4',
   },
 
   login: {
     url: 'http://192.171.199.230/irecord7/user/mobile/register',
-    timeout: 80000
+    timeout: 80000,
   },
 
   report: {
     url: 'http://192.171.199.230/irecord7/mobile/report',
-    timeout: 80000
+    timeout: 80000,
   },
 
   // mapping
@@ -42,18 +42,18 @@ export default {
   },
 
   // morel configuration
-  morel:{
+  morel: {
     manager: {
       url: 'http://192.171.199.230/irecord7/mobile/submit',
       appname: 'test',
       appsecret: 'mytest',
       website_id: 23,
       survey_id: 374,
-      input_form: 'enter-app-record'
+      input_form: 'enter-app-record',
     },
     sample: {
       location: {
-        values: function (location, options) {
+        values(location, options) {
           // convert accuracy for map and gridref sources
           let accuracy = location.accuracy;
           if (location.source !== 'gps') {
@@ -64,20 +64,20 @@ export default {
             }
           }
 
-          let attributes = {
+          const attributes = {
             location_name: location.name,
             location_source: location.source,
             location_gridref: location.gridref,
             location_altitude: location.altitude,
             location_altitude_accuracy: location.altitudeAccuracy,
-            location_accuracy: accuracy
+            location_accuracy: accuracy,
           };
 
           // add other location related attributes
           options.flattener(attributes, options);
 
           return location.latitude + ', ' + location.longitude;
-        }
+        },
       },
       location_accuracy: { id: 282 },
       location_altitude: { id: 283 },
@@ -89,29 +89,29 @@ export default {
         id: 273,
         values: {
           iOS: 2398,
-          Android: 2399
-        }
+          Android: 2399,
+        },
       },
 
       device_version: { id: 759 },
 
       date: {
-        values: function (date) {
+        values(date) {
           return DateHelp.print(date);
-        }
+        },
       },
 
       group: {
-        values: function(group) {
+        values(group) {
           return group.id;
-        }
-      }
+        },
+      },
     },
     occurrence: {
       taxon: {
-        values: function (taxon) {
+        values(taxon) {
           return taxon.warehouse_id;
-        }
+        },
       },
       number: {
         id: 16,
@@ -125,8 +125,8 @@ export default {
           '6-20': 667,
           '21-100': 668,
           '101-500': 669,
-          '500+': 670
-        }
+          '500+': 670,
+        },
       },
       stage: {
         id: 106,
@@ -134,12 +134,12 @@ export default {
           'default': 1949,
           'Adult': 1950,
           'Pre-adult': 1951,
-          'Other': 1952
-        }
+          'Other': 1952,
+        },
       },
       identifiers: {
-        id: 18
-      }
-    }
-  }
+        id: 18,
+      },
+    },
+  },
 };

@@ -36,16 +36,15 @@ describe('List Controller', function () {
     });
 
     it('should create a new record with a photo', (done) => {
-        done();
-    });
-
-    it('should throw error if no image is provided', (done) => {
-      //Controller.createNewRecord(null, (err) => {
-      //  expect(err).to.not.be.null;
-      //  done();
-      //});
       done();
     });
 
+    it('should throw error if no image is provided', (done) => {
+      // Controller.createNewRecord(null, (err) => {
+      //  expect(err).to.not.be.null;
+      //  done();
+      // });
+      done();
+    });
   });
 });

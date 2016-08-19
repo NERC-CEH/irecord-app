@@ -32,7 +32,7 @@ export default Marionette.ItemView.extend({
         break;
       case 'number':
         value = occ.get(attr);
-        if (!appModel.isAttrLocked(attr, value)){
+        if (!appModel.isAttrLocked(attr, value)) {
           attr = 'number-ranges';
           value = occ.get(attr);
         }

@@ -205,7 +205,7 @@ const API = {
             }
           }
 
-          if (! _.isEmpty(errors)) {
+          if (!_.isEmpty(errors)) {
             return errors;
           }
         }

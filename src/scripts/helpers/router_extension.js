@@ -5,14 +5,14 @@
 import Backbone from 'backbone';
 import _ from '../../vendor/lodash';
 
-var leave, leaveArgs;
+let leave, leaveArgs;
 
 _.extend(Backbone.Router.prototype, Backbone.Events, {
-  route : function (route, name, callback) {
+  route(route, name, callback) {
     if (!callback)
       callback = name;
 
-    var before
+    let before
       , fn = callback
       , after;
 
@@ -31,7 +31,7 @@ _.extend(Backbone.Router.prototype, Backbone.Events, {
     }
 
     Backbone.history.route(route, _.bind(function (fragment) {
-      var args = this._extractParameters(route, fragment);
+      const args = this._extractParameters(route, fragment);
 
       if (leave) {
         if (leave.apply(this, leaveArgs) === false)
@@ -57,5 +57,5 @@ _.extend(Backbone.Router.prototype, Backbone.Events, {
     }, this));
 
     return this;
-  }
+  },
 });

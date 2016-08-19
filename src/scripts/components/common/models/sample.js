@@ -76,7 +76,7 @@ let Sample = Morel.Sample.extend({
       });
     }
 
-    if (! _.isEmpty(sample) || ! _.isEmpty(occurrences)) {
+    if (!_.isEmpty(sample) || !_.isEmpty(occurrences)) {
       const errors = {
         sample,
         occurrences,

@@ -163,7 +163,7 @@ describe('User Model', () => {
 
       // check old updated one
       activity = getRandActivity();
-      let notUpdatedActivity = _.cloneDeep(activity);
+      const notUpdatedActivity = _.cloneDeep(activity);
       activity.name = 'new name';
       userModel.set('activities', [activity]);
       expired = userModel.hasActivityExpired(notUpdatedActivity);
@@ -232,11 +232,11 @@ describe('User Model', () => {
         expect(parsedActivity).to.be.an('object');
         expect(typeof parsedActivity.id).be.equal('number');
         expect(parsedActivity.title).to.be.a('string');
-        //expect(parsedActivity.description).to.be.a('string');
-        //expect(parsedActivity.type).to.be.a('string');
-        //expect(parsedActivity.group_from_date).to.be.a('string');
-        //expect(parsedActivity.group_to_date).to.be.a('string');
-        //expect(parsedActivity.synced_on).to.be.a('string');
+        // expect(parsedActivity.description).to.be.a('string');
+        // expect(parsedActivity.type).to.be.a('string');
+        // expect(parsedActivity.group_from_date).to.be.a('string');
+        // expect(parsedActivity.group_to_date).to.be.a('string');
+        // expect(parsedActivity.synced_on).to.be.a('string');
       });
 
       it('should complain on unfamiliar server serponse', () => {

@@ -34,7 +34,7 @@ export default {
     // check if not duplicating existing location without id
     let duplication = false;
     locations.forEach((loc) => {
-      if (this._isIdentical(loc, location)){
+      if (this._isIdentical(loc, location)) {
         duplication = true;
       }
     });

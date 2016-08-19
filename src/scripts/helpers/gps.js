@@ -28,8 +28,8 @@ const API = {
       timeout: API.TIMEOUT,
     };
 
-    var onSuccess = (position) => {
-      var location = {
+    const onSuccess = (position) => {
+      const location = {
         latitude: position.coords.latitude.toFixed(8),
         longitude: position.coords.longitude.toFixed(8),
         accuracy: parseInt(position.coords.accuracy),
@@ -45,8 +45,8 @@ const API = {
     };
 
     // Callback if geolocation fails
-    var onError = (err = {}) => {
-      var error = new Error(err.message);
+    const onError = (err = {}) => {
+      const error = new Error(err.message);
       callback && callback(error);
     };
 

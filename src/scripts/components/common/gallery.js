@@ -7,7 +7,7 @@ const defaultOptions = {
   mainClass: 'pswp--minimal--dark',
   barsSize: {
     top: 0,
-    bottom: 0
+    bottom: 0,
   },
   index: 0,
   captionEl: false,
@@ -25,10 +25,10 @@ const defaultOptions = {
 const photoSwipeContainer = JST['common/gallery']();
 $('body').append(photoSwipeContainer);
 
-function Gallery (items, options = {}) {
-  const fullOptions = _.extend(defaultOptions, options)
-  var pswpElement = document.querySelectorAll('.pswp')[0];
-  return new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+function Gallery(items, options = {}) {
+  const fullOptions = _.extend(defaultOptions, options);
+  const pswpElement = document.querySelectorAll('.pswp')[0];
+  return new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
 }
 
 export { Gallery as default };

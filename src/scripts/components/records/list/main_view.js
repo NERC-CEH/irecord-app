@@ -8,7 +8,7 @@ import Hammer from '../../../../vendor/hammerjs/js/hammer';
 import Log from '../../../helpers/log';
 import Device from '../../../helpers/device';
 import DateHelp from '../../../helpers/date';
-import Gallery from '../../common/gallery';;
+import Gallery from '../../common/gallery';
 import StringHelp from '../../../helpers/string';
 import JST from '../../../JST';
 
@@ -23,7 +23,7 @@ const RecordView = Marionette.ItemView.extend({
 
   events: {
     // need to pass the attribute therefore 'triggers' method does not suit
-    'click .js-attr'(e) {
+    'click .js-attr': function (e) {
       e.preventDefault();
       this.trigger('record:edit:attr', $(e.target).data('attr'));
     },
@@ -36,7 +36,7 @@ const RecordView = Marionette.ItemView.extend({
   },
 
   initialize() {
-    this.template = JST[`records/list/record`];
+    this.template = JST['records/list/record'];
   },
 
   photoView(e) {
@@ -53,7 +53,7 @@ const RecordView = Marionette.ItemView.extend({
     });
 
 // Initializes and opens PhotoSwipe
-    var gallery = new Gallery(items);
+    const gallery = new Gallery(items);
     gallery.init();
   },
 
@@ -111,7 +111,7 @@ const RecordView = Marionette.ItemView.extend({
     let img = images.length && images.at(0).get('thumbnail');
 
     if (!img) {
-      //backwards compatibility
+      // backwards compatibility
       img = images.length && images.at(0).getURL();
     }
 

@@ -83,7 +83,7 @@ export default Marionette.CompositeView.extend({
     });
 
 // Initializes and opens PhotoSwipe
-    var gallery = new Gallery(items, options);
+    const gallery = new Gallery(items, options);
     gallery.init();
   },
 

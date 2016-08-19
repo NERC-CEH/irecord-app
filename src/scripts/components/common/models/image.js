@@ -8,7 +8,7 @@ export default Morel.Image.extend({
   destroy(options) {
     // remove from internal storage
     if (window.cordova) {
-      let URL = this.getURL();
+      const URL = this.getURL();
       ImageHelp.deleteInternalStorage(URL, () => {
         Morel.Image.prototype.destroy.apply(this, arguments);
       });

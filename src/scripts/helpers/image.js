@@ -67,13 +67,13 @@ const Image = {
         const name = `${Date.now()}.jpeg`;
         window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (fileSystem) => {
             // copy to app data directory
-            fileEntry.copyTo(
+          fileEntry.copyTo(
               fileSystem,
               name,
               callback,
               fail
             );
-          },
+        },
           fail);
       }
 

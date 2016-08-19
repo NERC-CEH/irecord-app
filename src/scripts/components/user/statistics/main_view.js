@@ -34,4 +34,4 @@ export default Marionette.ItemView.extend({
       species: statistics.speciesRaw || [],
     };
   },
-});;
+});

@@ -158,7 +158,7 @@ const marker = {
     return dimensions;
   },
 
-  _setCircleLocation(loc){
+  _setCircleLocation(loc) {
     let newMarkerCoords = [];
     if (loc.latitude && loc.longitude) {
       newMarkerCoords = [loc.latitude, loc.longitude];

@@ -55,10 +55,10 @@ const MapView = Marionette.ItemView.extend({
 
   addLocationNameSearch() {
     this.$el.find('.typeahead').typeahead({
-        hint: false,
-        highlight: false,
-        minLength: 0,
-      },
+      hint: false,
+      highlight: false,
+      minLength: 0,
+    },
       {
         limit: 3,
         name: 'names',
@@ -181,9 +181,9 @@ const MapView = Marionette.ItemView.extend({
     const that = this;
 
     function getColor() {
-      "use strict";
+      'use strict';
       let color;
-      switch (that.currentLayer){
+      switch (that.currentLayer) {
         case 'OS':
           color = '#08b7e8';
           break;
@@ -205,7 +205,7 @@ const MapView = Marionette.ItemView.extend({
       if (that.currentLayer === 'OS') zoom += OS_ZOOM_DIFF;
 
       const bounds = that.map.getBounds();
-      let granularity = gridRef._getGranularity(zoom);
+      const granularity = gridRef._getGranularity(zoom);
       const step = GRID_STEP / granularity;
 
       const polylinePoints = gridRef._calcGraticule(step, bounds);

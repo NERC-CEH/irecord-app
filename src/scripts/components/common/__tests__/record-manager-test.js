@@ -31,7 +31,7 @@ describe('Record Manager', () => {
       location: {
         latitude: 12.12,
         longitude: -0.23,
-        name: 'automatic test'},
+        name: 'automatic test' },
     }, {
       occurrences: [occurrence],
       manager: recordManager,
@@ -59,8 +59,7 @@ describe('Record Manager', () => {
         done();
       });
 
-     server.respondWith('POST', 'http://192.171.199.230/irecord7/mobile/submit', okResponse);
-     server.respond();
+    server.respondWith('POST', 'http://192.171.199.230/irecord7/mobile/submit', okResponse);
+    server.respond();
   });
-
 });

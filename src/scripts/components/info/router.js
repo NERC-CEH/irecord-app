@@ -1,4 +1,4 @@
-/******************************************************************************
+/** ****************************************************************************
  * Info router.
  *****************************************************************************/
 import Backbone from 'backbone';
@@ -15,31 +15,31 @@ App.info = {};
 const Router = Marionette.AppRouter.extend({
   routes: {
     'info(/)': InfoMenuController.show,
-    'info/about(/)'() {
+    'info/about(/)': function () {
       CommonController.show({
         title: 'About', App, route: 'info/about/main',
         model: new Backbone.Model({
           version: CONFIG.version,
           build: CONFIG.build,
         }),
-      });},
-    'info/help(/)'() {
+      }); },
+    'info/help(/)': function () {
       CommonController.show({
         title: 'Help', App, route: 'info/help/main',
-      });},
-    'info/privacy(/)'() {
+      }); },
+    'info/privacy(/)': function () {
       CommonController.show({
         title: 'Privacy Policy', App, route: 'info/privacy/main',
-      });},
-    'info/brc-approved(/)'() {
+      }); },
+    'info/brc-approved(/)': function () {
       CommonController.show({
         title: 'BRC Approved', App, route: 'info/brc_approved/main',
-      });},
-    'info/credits(/)'() {
+      }); },
+    'info/credits(/)': function () {
       CommonController.show({
         title: 'Credits', App, route: 'info/credits/main',
-      });},
-    'info/*path'() {App.trigger('404:show');},
+      }); },
+    'info/*path': function () { App.trigger('404:show'); },
   },
 });
 

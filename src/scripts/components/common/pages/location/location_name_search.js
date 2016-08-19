@@ -4,9 +4,9 @@
 import _ from 'lodash';
 import appModel from '../../models/app_model';
 
-var substringMatcher = function(strs, max) {
+const substringMatcher = function (strs, max) {
   return function findMatches(q, cb) {
-    var matches, substrRegex;
+    let matches, substrRegex;
 
     // an array that will be populated with substring matches
     matches = [];
@@ -17,10 +17,9 @@ var substringMatcher = function(strs, max) {
     // iterate through the pool of strings and for any string that
     // contains the substring `q`, add it to the `matches` array
     for (let length = strs.length, i = 0; i < length && matches.length < max; i++) {
-      let str = strs[i];
+      const str = strs[i];
       if (str.name && substrRegex.test(str.name)) {
-
-        //check if not duplicate
+        // check if not duplicate
         if (_.indexOf(matches, str.name) < 0) {
           matches.push(str.name);
         }

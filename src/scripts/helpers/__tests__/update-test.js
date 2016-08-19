@@ -5,16 +5,16 @@ import CONFIG from 'config'; // Replaced with alias
 Update.updatesSeq = ['3.0.0', '3.1.2', '3.2.0', '4.0.0'];
 
 Update.updates = {
-  '3.0.0'(callback) {
+  '3.0.0': function (callback) {
     callback();
   },
-  '3.1.2'(callback) {
+  '3.1.2': function (callback) {
     callback();
   },
-  '3.2.0'(callback) {
+  '3.2.0': function (callback) {
     callback();
   },
-  '4.0.0'(callback) {
+  '4.0.0': function (callback) {
     callback();
   },
 };

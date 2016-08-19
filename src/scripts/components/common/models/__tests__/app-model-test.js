@@ -75,14 +75,14 @@ describe('App Model', () => {
       appModel.appendAttrLocks(sample2);
 
       // check if references with saved lock attributes
-      let lockNum = appModel.getAttrLock('number');
+      const lockNum = appModel.getAttrLock('number');
       lockNum.num = 2;
 
       let number = sample2.occurrences.at(0).get('number');
       expect(number).to.deep.equal({ num: 1 });
 
       // check if references between samples
-      let num = sample.occurrences.at(0).get('number');
+      const num = sample.occurrences.at(0).get('number');
       num.num = 3;
 
       number = sample2.occurrences.at(0).get('number');

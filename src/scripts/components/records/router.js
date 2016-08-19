@@ -1,4 +1,4 @@
-/******************************************************************************
+/** ****************************************************************************
  * Record router.
  *****************************************************************************/
 import Marionette from 'marionette';
@@ -46,7 +46,7 @@ const Router = Marionette.AppRouter.extend({
     'records/:id/edit/activity(/)': ActivitiesController.show,
     'records/:id/edit/taxon(/)': TaxonController.show,
     'records/:id/edit/:attr(/)': EditAttrController.show,
-    'records/*path'() {App.trigger('404:show');},
+    'records/*path': function () { App.trigger('404:show'); },
   },
 });
 

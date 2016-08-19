@@ -121,7 +121,7 @@ class Manager extends Morel {
       that.clear(callback);
     });
   }
-};
+}
 
 const recordManager = new Manager(morelConfiguration);
 export { recordManager as default, Manager };

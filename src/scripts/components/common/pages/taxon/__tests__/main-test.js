@@ -56,7 +56,7 @@ describe('Taxon Search Engine', () => {
       it('should look into middle names', (done) => {
         searchEngine.search('woodpecker', (results) => {
           expect(results).to.be.an('array');
-          expect(results.length  > 0).to.be.true;
+          expect(results.length > 0).to.be.true;
           done();
         });
       });
@@ -122,8 +122,8 @@ describe('Taxon Search Engine', () => {
       });
     });
 
-    //const SEARCH_TIMES = 10000;
-    //describe(`random taxa search ${SEARCH_TIMES}`, () => {
+    // const SEARCH_TIMES = 10000;
+    // describe(`random taxa search ${SEARCH_TIMES}`, () => {
     //  // random search of 100 names
     //  const speciesToSearch = [];
     //  for (let i = 0; i < SEARCH_TIMES; i++) {
@@ -149,7 +149,7 @@ describe('Taxon Search Engine', () => {
     //      });
     //    });
     //  });
-    //});
+    // });
 
     it('should work with selected taxa', (done) => {
       searchEngine.search('Phytomyza ilicis', (results) => {

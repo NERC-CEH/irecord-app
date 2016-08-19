@@ -115,7 +115,7 @@ const API = {
           title: 'Camera',
           onClick() {
             ImageHelp.getImage((entry) => {
-              API.createNewRecord(entry.nativeURL, ()=>{});
+              API.createNewRecord(entry.nativeURL, () => {});
             });
             App.regions.dialog.hide();
           },
@@ -124,7 +124,7 @@ const API = {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage((entry) => {
-              API.createNewRecord(entry.nativeURL, ()=>{});
+              API.createNewRecord(entry.nativeURL, () => {});
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,

@@ -17,7 +17,7 @@ const Router = Marionette.AppRouter.extend({
     'user/activities(/)': ActivitiesController.show,
     'user/statistics(/)': StatisticsController.show,
     'user/register(/)': RegisterController.show,
-    'user/*path'() {App.trigger('404:show');},
+    'user/*path': function () { App.trigger('404:show'); },
   },
 });
 

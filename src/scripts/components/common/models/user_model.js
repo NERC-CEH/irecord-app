@@ -135,7 +135,7 @@ let UserModel = Backbone.Model.extend({
       errors['terms-agree'] = 'you must agree to the terms';
     }
 
-    if (! _.isEmpty(errors)) {
+    if (!_.isEmpty(errors)) {
       return errors;
     }
 
@@ -157,7 +157,7 @@ let UserModel = Backbone.Model.extend({
       errors.password = "can't be blank";
     }
 
-    if (! _.isEmpty(errors)) {
+    if (!_.isEmpty(errors)) {
       return errors;
     }
 
