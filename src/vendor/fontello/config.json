@@ -61,12 +61,6 @@
       "src": "entypo"
     },
     {
-      "uid": "70370693ada58ef0a60fa0984fe8d52a",
-      "css": "plus",
-      "code": 59396,
-      "src": "entypo"
-    },
-    {
       "uid": "1256e3054823e304d7e452a589cf8bb8",
       "css": "minus",
       "code": 59420,
@@ -257,6 +251,20 @@
       "css": "statistics",
       "code": 59433,
       "src": "entypo"
+    },
+    {
+      "uid": "fe49f4923e162bb9a1098475d1766285",
+      "css": "plus",
+      "code": 59396,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M82 467.4L457.2 467.4 457.2 88.5 541.1 88.5 541.1 467.4 917.7 467.4 917.7 550.4 541.1 550.4 541.1 925.1 457.2 925.1 457.2 550.4 82 550.4 82 467.4Z",
+        "width": 1000
+      },
+      "search": [
+        "plus"
+      ]
     }
   ]
 }
