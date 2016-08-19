@@ -234,10 +234,23 @@ const MapView = Marionette.ItemView.extend({
           // no need to show area as it would be smaller than the marker
           break;
         case 'gps':
+          /**
+           * 1 gridref digits. (10000m)  -> 4 OS map zoom lvl
+           * 2 gridref digits. (1000m)   -> 8 OS
+           * 3 gridref digits. (100m)    -> 16 OSM
+           * 4 gridref digits. (10m)     -> 18 OSM
+           * 5 gridref digits. (1m)      ->
+           */
           if (currentLocation.accuracy) {
-            const digits = Math.log(currentLocation.accuracy) / Math.LN10;
-            mapZoomLevel = digits ? 11 - digits * 2 : 10; // max zoom 10 (digits == 0)
-            mapZoomLevel = Number((mapZoomLevel).toFixed(0)); // round the float
+            if (currentLocation.accuracy > 1000) {
+              mapZoomLevel = 4;
+            } else if (currentLocation.accuracy > 100) {
+              mapZoomLevel = 8;
+            } else if (currentLocation.accuracy > 10) {
+              mapZoomLevel = 16;
+            } else {
+              mapZoomLevel = 18;
+            }
           } else {
             mapZoomLevel = 1;
           }
