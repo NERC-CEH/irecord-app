@@ -1,4 +1,7 @@
 {
+  "env": {
+    "browser": true
+  },
   "extends": "airbnb/base",
   "rules": {
      "no-unused-expressions": [2, {
@@ -23,5 +26,12 @@
     "cordova": true,
     "StatusBar": true,
     "splashscreen": true
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "src/webpack.config.dev.js"
+      }
+    }
   }
 }

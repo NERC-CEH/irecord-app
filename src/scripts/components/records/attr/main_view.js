@@ -10,8 +10,7 @@ import Log from '../../../helpers/log';
 import JST from '../../../JST';
 
 // http://stackoverflow.com/questions/846221/logarithmic-slider
-function LogSlider(options) {
-  options = options || {};
+function LogSlider(options = {}) {
   this.minpos = options.minpos || 0;
   this.maxpos = options.maxpos || 100;
   this.minlval = Math.log(options.minval || 1);
@@ -23,11 +22,11 @@ function LogSlider(options) {
 LogSlider.prototype = {
   // Calculate value from a slider position
   value(position) {
-    return Math.exp((position - this.minpos) * this.scale + this.minlval);
+    return Math.exp(((position - this.minpos) * this.scale) + this.minlval);
   },
   // Calculate slider position from a value
   position(value) {
-    return this.minpos + (Math.log(value) - this.minlval) / this.scale;
+    return this.minpos + ((Math.log(value) - this.minlval) / this.scale);
   },
 };
 
@@ -57,13 +56,14 @@ export default Marionette.ItemView.extend({
     const attr = this.options.attr;
     let $inputs;
     switch (attr) {
-      case 'date':
+      case 'date': {
         value = this.$el.find('input').val();
         const date = new Date(value);
         if (date.toString() !== 'Invalid Date') {
           values[attr] = new Date(date);
         }
         break;
+      }
       case 'number':
         value = this.$el.find('#rangeVal').val();
         if (value) {
@@ -110,7 +110,7 @@ export default Marionette.ItemView.extend({
         templateData.date = DateHelp.toDateInputValue(this.model.get('date'));
         templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
-      case 'number':
+      case 'number': {
         let number = occ.get('number');
         if (number) {
           templateData.number = number;
@@ -120,6 +120,7 @@ export default Marionette.ItemView.extend({
           templateData[number] = true;
         }
         break;
+      }
       case 'stage':
         templateData[occ.get('stage')] = true;
         break;
@@ -170,7 +171,6 @@ export default Marionette.ItemView.extend({
   },
 
   onShow() {
-    const that = this;
     let $input;
     switch (this.options.attr) {
       case 'date':
@@ -184,7 +184,7 @@ export default Marionette.ItemView.extend({
             allowFutureDates: false,
           };
 
-          window.datePicker.show(options, function (date) {
+          window.datePicker.show(options, (date) => {
             $input.val(DateHelp.toDateInputValue(new Date(date)));
           });
         }
