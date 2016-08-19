@@ -17,7 +17,7 @@
     "proj4": "latest",
     "proj4Leaflet": "kartena/Proj4Leaflet#0.7.2",
     "leaflet": "latest",
-    "leaflet.gridref": "kazlauskis/Leaflet.GridRef#7bc9684879803a8fc50f68fa92125e361d5218c0",
+    "leaflet.gridref": "kazlauskis/Leaflet.GridRef#598fd97c876d373622da17cd9ab31a2fe6db1930",
     "os-leaflet": "rob-murray/os-leaflet",
     "typeahead.js": "~0.11.1"
   },
