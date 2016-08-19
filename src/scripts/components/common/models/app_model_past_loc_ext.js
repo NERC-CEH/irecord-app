@@ -5,6 +5,8 @@ import _ from 'lodash';
 import UUID from '../../../helpers/UUID';
 import LocHelp from '../../../helpers/location';
 
+const MAX_SAVED = 100;
+
 export default {
   /**
    * Saves device location.
@@ -41,6 +43,9 @@ export default {
     // add new one
     location.id = UUID();
     locations.splice(0, 0, location);
+
+    // check if not exceeded limits
+    if (locations.length > MAX_SAVED) locations.pop(); // remove old one
 
     this.set('locations', locations);
     this.trigger('change:locations');
