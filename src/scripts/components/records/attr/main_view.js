@@ -171,10 +171,10 @@ export default Marionette.ItemView.extend({
 
   onShow() {
     const that = this;
+    let $input;
     switch (this.options.attr) {
       case 'date':
-        // this.$el.find('input').focus();
-        const $input = this.$el.find('input').focus();
+        $input = this.$el.find('input').focus();
         if (Device.isAndroid()) {
           const options = {
             date: new Date(this.model.get('date')),
@@ -190,11 +190,19 @@ export default Marionette.ItemView.extend({
         }
         break;
       case 'comment':
-        // this.$el.find('textarea').focus();
-        const $textarea = this.$el.find('textarea').focus();
+        $input = this.$el.find('textarea').focus();
         if (window.cordova && Device.isAndroid()) {
           window.Keyboard.show();
-          $textarea.focusout(() => {
+          $input.focusout(() => {
+            window.Keyboard.hide();
+          });
+        }
+        break;
+      case 'identifiers':
+        $input = this.$el.find('input').focus();
+        if (window.cordova && Device.isAndroid()) {
+          window.Keyboard.show();
+          $input.focusout(() => {
             window.Keyboard.hide();
           });
         }
