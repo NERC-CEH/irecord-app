@@ -204,7 +204,7 @@ describe('Taxon Search Engine', () => {
       it('should be an array', (done) => {
         searchEngine.search('blackbird', (results) => {
           expect(results).to.be.an('array');
-          expect(results.length).to.equal(5);
+          expect(results.length).to.equal(6);
           done();
         });
       });

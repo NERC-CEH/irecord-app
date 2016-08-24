@@ -65,8 +65,9 @@ export default function (species, searchPhrase, results = [], maxResults = MAX, 
       }
 
       let fullRes;
-      if (!otherWordsRegex) {
+      if (!otherWordsRegex && speciesEntry[WAREHOUSE_INDEX]) {
         // no need to add genus if searching for species
+        // why speciesEntry[WAREHOUSE_INDEX] see 'sandDustHack' in generator
         fullRes = {
           array_id: speciesArrayIndex,
           found_in_name: 'scientific_name',

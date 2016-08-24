@@ -1,5 +1,12 @@
-Create master_list.csv
-----------------------
+Build species list
+===================
+
+You will need to install csvkit and have python 3
+pip install csvkit
+
+Build
+-----
+
 1. Get NHM master species list as UKSI.csv in data folder
 Run main query in UKSI.accdb
 

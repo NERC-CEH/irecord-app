@@ -87,6 +87,7 @@ def process_row(data, row):
     else:
         #add to all row data
         if (len(row_data[2].split()) == 2 and row_data[INPUT_TAXON_ID].split()[0] != 'X'):
+            # sandDustHack:
             # no genus, let's make one!
             missing_genus = [
                 0, # warehouse id = 0 since we don't have anny
@@ -97,6 +98,7 @@ def process_row(data, row):
             logging.debug ('Warning! Species without genus: ' + row_data[INPUT_TAXON_ID] + ' (created ' + row_data[INPUT_TAXON_ID].split()[0] + ')' )
 
             row_data[INPUT_TAXON_ID] = row_data[INPUT_TAXON_ID].split()[1] # only second word
+            del row_data[OUTPUT_GROUP_ID]
             missing_genus[3].append(copy.copy(row_data))  
 
             data.append(missing_genus)
@@ -121,6 +123,7 @@ def run(input_filename, output_filename):
     # logging.debug out    
     json_file = open(output_filename, 'wt')
     json_file.write(json.dumps(data,separators=(',', ':')))
+    # json_file.write(json.dumps(data, indent=4, separators=(',', ': ')))
 
     csv_file.close()
     json_file.close()
