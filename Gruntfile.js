@@ -423,6 +423,10 @@ module.exports = function exports(grunt) {
     },
 
     exec: {
+      data_init: {
+        command: 'cd src/scripts/data && python scripts/make.py raw/UKSI.csv raw/warehouse_ids.csv master_list.data',
+        stdout: true,
+      },
       cordova_init: {
         command: 'cordova create cordova',
         stdout: true,
@@ -477,7 +481,13 @@ module.exports = function exports(grunt) {
 
 
   // the default task can be run just by typing 'grunt' on the command line
+  // Development run
+  grunt.registerTask('init:data', 'Initialize data', () => {
+    grunt.task.run('exec:data_init');
+  });
+
   grunt.registerTask('init', [
+    'init:data',
     'bower',
     'replace:bootstrap',
     'replace:indexedDBShim',

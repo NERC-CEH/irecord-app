@@ -20,3 +20,6 @@ src/vendor/*
 !src/vendor/bootstrap/
 !src/vendor/ionic/
 !src/vendor/fontello/
+/src/scripts/data/names_master_list.data.json
+/src/scripts/data/master_list.data.json
+/src/scripts/data/warnings.log

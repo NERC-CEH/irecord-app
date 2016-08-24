@@ -30,7 +30,7 @@ module.exports = {
         proj4: 'proj4/js/proj4',
         'photoswipe-lib': 'photoswipe/js/photoswipe.min',
         'photoswipe-ui-default': 'photoswipe/js/photoswipe-ui-default.min',
-        'common_names.data': 'data/common_names.data.json',
+        'common_names.data': 'data/names_master_list.data.json',
         'master_list.data': 'data/master_list.data.json',
         'informal_groups.data': 'data/informal_groups.data.js',
         typeahead: 'typeahead.js/js/typeahead.jquery',
