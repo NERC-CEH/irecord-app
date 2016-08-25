@@ -4,10 +4,10 @@
 import $ from 'jquery';
 import Marionette from 'marionette';
 import L from 'leaflet';
-import OSLeaflet from '../../../../../vendor/os-leaflet/js/OSOpenSpace';
+import OSLeaflet from 'OSOpenSpace';
 import GridRef from 'Leaflet.GridRef';
 import OsGridRef from 'OsGridRef';
-import JST from '../../../../JST';
+import JST from 'JST';
 import LocHelp from '../../../../helpers/location';
 import mapMarker from './map_view_marker';
 import CONFIG from 'config'; // Replaced with alias

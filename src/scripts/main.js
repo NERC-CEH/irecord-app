@@ -1,9 +1,9 @@
 /** ****************************************************************************
  * App start.
  *****************************************************************************/
-import Bootstrap from '../vendor/bootstrap/js/bootstrap';
-import Ratchet from '../vendor/ratchet/js/ratchet';
-import IndexedDBShim from '../vendor/IndexedDBShim/js/IndexedDBShim';
+import Bootstrap from 'bootstrap';
+import Ratchet from 'ratchet';
+import IndexedDBShim from 'indexedDBShim';
 
 import App from './app';
 import RecordsRouter from './components/records/router';

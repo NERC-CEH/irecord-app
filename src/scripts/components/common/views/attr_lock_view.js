@@ -1,6 +1,6 @@
 import Marionette from 'marionette';
 import Log from '../../../helpers/log';
-import JST from '../../../JST';
+import JST from 'JST';
 
 export default Marionette.ItemView.extend({
   template: JST['common/lock'],

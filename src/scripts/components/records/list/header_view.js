@@ -2,7 +2,7 @@
  * Record List header view.
  *****************************************************************************/
 import Marionette from 'marionette';
-import JST from '../../../JST';
+import JST from 'JST';
 
 export default Marionette.ItemView.extend({
   id: 'records-header',

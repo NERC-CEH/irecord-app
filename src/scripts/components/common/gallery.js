@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import PhotoSwipe from 'photoswipe-lib';
 import PhotoSwipeUI_Default from 'photoswipe-ui-default';
-import JST from '../../JST';
+import JST from 'JST';
 
 const defaultOptions = {
   mainClass: 'pswp--minimal--dark',

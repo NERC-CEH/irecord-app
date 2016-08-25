@@ -4,13 +4,13 @@
 import $ from 'jquery';
 import Marionette from 'marionette';
 import Morel from 'morel';
-import Hammer from '../../../../vendor/hammerjs/js/hammer';
+import Hammer from 'hammer';
 import Log from '../../../helpers/log';
 import Device from '../../../helpers/device';
 import DateHelp from '../../../helpers/date';
 import Gallery from '../../common/gallery';
 import StringHelp from '../../../helpers/string';
-import JST from '../../../JST';
+import JST from 'JST';
 
 
 const RecordView = Marionette.ItemView.extend({

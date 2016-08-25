@@ -2,7 +2,7 @@
  * Location GridRef view.
  *****************************************************************************/
 import Marionette from 'marionette';
-import JST from '../../../../JST';
+import JST from 'JST';
 import LocHelp from '../../../../helpers/location';
 import StringHelp from '../../../../helpers/string';
 import Validate from '../../../../helpers/validate';

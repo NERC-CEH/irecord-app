@@ -3,7 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'marionette';
-import JST from '../../../../JST';
+import JST from 'JST';
 import Typeahead from 'typeahead';
 import locationNameFinder from './location_name_search';
 import CONFIG from 'config';

@@ -7,7 +7,7 @@ import Device from '../../../helpers/device';
 import DateHelp from '../../../helpers/date';
 import StringHelp from '../../../helpers/string';
 import Log from '../../../helpers/log';
-import JST from '../../../JST';
+import JST from 'JST';
 
 // http://stackoverflow.com/questions/846221/logarithmic-slider
 function LogSlider(options = {}) {

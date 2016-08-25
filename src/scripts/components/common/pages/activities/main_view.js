@@ -4,7 +4,7 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Marionette from 'marionette';
-import JST from '../../../../JST';
+import JST from 'JST';
 import LoaderView from '../../views/loader_view';
 
 /**

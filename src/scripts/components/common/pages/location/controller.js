@@ -13,7 +13,7 @@ import StringHelp from '../../../../helpers/string';
 import LocHelp from '../../../../helpers/location';
 import PastLocationsController from '../../../settings/locations/controller';
 import App from '../../../../app';
-import JST from '../../../../JST';
+import JST from 'JST';
 
 import recordManager from '../../record_manager';
 import appModel from '../../models/app_model';

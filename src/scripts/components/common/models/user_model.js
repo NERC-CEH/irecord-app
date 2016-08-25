@@ -3,7 +3,7 @@
  *****************************************************************************/
 import _ from 'lodash';
 import Backbone from 'backbone';
-import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
+import Store from 'backbone.localStorage';
 import activitiesExtension from './user_model_activities_ext';
 import statisticsExtension from './user_model_statistics_ext';
 import Validate from '../../../helpers/validate';

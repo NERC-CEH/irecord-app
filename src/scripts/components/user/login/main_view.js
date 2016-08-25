@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import Validate from '../../../helpers/validate';
-import JST from '../../../JST';
+import JST from 'JST';
 
 export default Marionette.ItemView.extend({
   template: JST['user/login/main'],

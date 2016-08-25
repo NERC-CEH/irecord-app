@@ -1,8 +1,8 @@
 /** ****************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
-import LatLon from '../../vendor/latlon/js/latlon-ellipsoidal';
-import OsGridRef from '../../vendor/latlon/js/osgridref';
+import LatLon from 'latlon-ellipsoidal';
+import OsGridRef from 'OsGridRef';
 
 const helpers = {
   coord2grid(location) {

@@ -2,7 +2,7 @@
  * Statistics main view.
  *****************************************************************************/
 import Marionette from 'marionette';
-import JST from '../../../JST';
+import JST from 'JST';
 import LoaderView from '../../common/views/loader_view';
 
 export default Marionette.ItemView.extend({

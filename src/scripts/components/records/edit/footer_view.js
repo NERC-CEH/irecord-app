@@ -5,7 +5,7 @@ import Marionette from 'marionette';
 import _ from 'lodash';
 import Morel from 'morel';
 import Gallery from '../../common/gallery';
-import JST from '../../../JST';
+import JST from 'JST';
 
 const SavedImageView = Marionette.ItemView.extend({
   template: _.template('<span class="delete icon icon-cancel">' +

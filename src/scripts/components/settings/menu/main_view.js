@@ -4,7 +4,7 @@
 import $ from 'jquery';
 import Marionette from 'marionette';
 import Device from '../../../helpers/device';
-import JST from '../../../JST';
+import JST from 'JST';
 
 export default Marionette.ItemView.extend({
   tagName: 'ul',

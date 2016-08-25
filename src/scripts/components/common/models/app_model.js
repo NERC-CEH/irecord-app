@@ -2,7 +2,7 @@
  * App model. Persistent.
  *****************************************************************************/
 import Backbone from 'backbone';
-import Store from '../../../../vendor/backbone.localStorage/js/backbone.localStorage';
+import Store from 'backbone.localStorage';
 import pastLocationsExtension from './app_model_past_loc_ext';
 import attributeLockExtension from './app_model_attr_lock_ext';
 import CONFIG from 'config'; // Replaced with alias

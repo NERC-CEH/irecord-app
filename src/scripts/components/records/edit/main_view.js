@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Marionette from 'marionette';
 import Morel from 'morel';
-import JST from '../../../JST';
+import JST from 'JST';
 import DateHelp from '../../../helpers/date';
 import StringHelp from '../../../helpers/string';
 
