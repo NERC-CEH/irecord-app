@@ -1,8 +1,8 @@
 /** ****************************************************************************
  * Main app development configuration file.
  *****************************************************************************/
-import LocHelp from './helpers/location';
-import DateHelp from './helpers/date';
+import LocHelp from 'location';
+import DateHelp from 'date';
 
 export default {
   version: '{APP_VER}', // replaced on build

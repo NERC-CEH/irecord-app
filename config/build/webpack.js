@@ -1,5 +1,5 @@
-const webpackConfig = require('../../src/webpack.config.js');
-const webpackConfigDev = require('../../src/webpack.config.dev.js');
+const webpackConfig = require('../webpack.config.js');
+const webpackConfigDev = require('../webpack.config.dev.js');
 
 module.exports = {
   // Main run
