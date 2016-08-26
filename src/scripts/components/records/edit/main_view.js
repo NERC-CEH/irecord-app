@@ -23,15 +23,7 @@ export default Marionette.ItemView.extend({
 
     // taxon
     const scientificName = specie.scientific_name;
-    let commonName = specie[specie.found_in_name];
-    if (specie.found_in_name === 'scientific_name') {
-      // show recommended name
-      if (specie.common_name) {
-        commonName = specie.common_name;
-      } else {
-        commonName = '';
-      }
-    }
+    let commonName = specie.common_name;
 
     const locationPrint = recordModel.printLocation();
     const location = recordModel.get('location') || {};
