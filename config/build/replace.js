@@ -106,6 +106,17 @@ module.exports = {
       }],
   },
 
+  // moving the stylesheet to root makes the path different
+  fontello_fonts: {
+    src: ['dist/_build/styles/icons.css'],
+    overwrite: true,
+    replacements: [
+      {
+        from: /\.\.\/font\//g,
+        to: '\.\/font\/',
+      }],
+  },
+
   // clean up dev only code
   development_code: {
     src: ['dist/main/index.html'],
@@ -119,9 +130,9 @@ module.exports = {
   // Cordova config changes
   cordova_config: {
     src: [
-      'src/cordova.xml',
+      'config/cordova.xml',
     ],
-    dest: 'dist/_build/cordova/config.xml',
+    dest: 'dist/cordova/config.xml',
     replacements: [
       {
         from: /\{ID\}/g, // string replacement

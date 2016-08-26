@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
   context: './src/scripts',
@@ -43,7 +44,6 @@ module.exports = {
       ratchet: 'ratchet/js/ratchet',
       indexedDBShim: 'IndexedDBShim/js/IndexedDBShim',
       hammer: 'hammerjs/js/hammer',
-      script: 'scriptjs/js/script.min',
       underscore: 'lodash/js/lodash',
       backbone: 'backbone/js/backbone',
       'backbone.localStorage': 'backbone.localStorage/js/backbone.localStorage',
@@ -59,8 +59,8 @@ module.exports = {
       'latlon-ellipsoidal': 'latlon/js/latlon-ellipsoidal',
       proj4: 'proj4/js/proj4',
 
-      'photoswipe-lib': 'photoswipe/js/photoswipe.min',
-      'photoswipe-ui-default': 'photoswipe/js/photoswipe-ui-default.min',
+      'photoswipe-lib': 'photoswipe/js/photoswipe',
+      'photoswipe-ui-default': 'photoswipe/js/photoswipe-ui-default',
 },
   },
   module: {
@@ -73,4 +73,14 @@ module.exports = {
       { test: /\.json/, loader: 'json' },
     ],
   },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      cacheFolder: path.resolve(__dirname, 'dist/_build/.cached_uglify/'),
+      minimize: true,
+      compressor: {
+        warnings: false,
+      },
+    }),
+  ],
+  cache: true,
 };

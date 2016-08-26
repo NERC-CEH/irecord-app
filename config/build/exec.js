@@ -9,19 +9,19 @@ module.exports = {
     stdout: true,
   },
   cordova_init: {
-    command: 'cordova create cordova',
+    command: 'cordova create dist/cordova',
     stdout: true,
   },
   cordova_clean_www: {
-    command: 'rm -R cordova/www/* && rm cordova/config.xml',
+    command: 'rm -R dist/cordova/www/* && rm dist/cordova/config.xml',
     stdout: true,
   },
   cordova_copy_dist: {
-    command: 'cp -R dist/* cordova/www/ && cp src/config_build.xml cordova/config.xml',
+    command: 'cp -R dist/main/* dist/cordova/www/',
     stdout: true,
   },
   cordova_add_platforms: {
-    command: 'cd cordova && cordova platforms add ios android',
+    command: 'cd dist/cordova && cordova platforms add ios android',
     stdout: true,
   },
 };

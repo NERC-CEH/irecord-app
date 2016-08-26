@@ -3,7 +3,7 @@ module.exports = {
     options: {
       targetDir: 'dist/_build/vendor',
       layout: 'byComponent',
-      cleanBowerDir: false,
+      cleanBowerDir: true,
     },
   },
 };

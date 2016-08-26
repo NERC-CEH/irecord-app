@@ -8,20 +8,20 @@ module.exports = {
 
   'init': [
     'init:data',
-    'init:vendor',
+    'bower',
     'copy',
+    'vendor',
   ],
 
   'init:data': ['exec:data_init'],
 
-  'init:vendor': [
-    'bower',
+  'vendor': [
     'replace:bootstrap',
     'replace:indexedDBShim',
     'replace:latlon',
     'replace:ratchet',
     'replace:ratchet_fonts',
-    'uglify',
+    'replace:fontello_fonts',
   ],
 
   'run': [
@@ -53,31 +53,26 @@ module.exports = {
 
   'test': ['karma:local'],
   'test:sauce': ['karma:sauce'],
+
+  // Cordova
+  'cordova': [
+    // prepare www source
+    'default',
+
+    // init cordova source
+    // add www source to cordova
+    'exec:cordova_init',
+
+    'exec:cordova_clean_www',
+    'exec:cordova_copy_dist',
+    'replace:cordova_config',
+    'exec:cordova_add_platforms',
+  ],
+
+  'cordova:update': [
+    'replace:cordova_config',
+    // update www
+    'exec:cordova_clean_www',
+    'exec:cordova_copy_dist',
+  ],
 };
-//
-// grunt.registerTask('cordova', 'Cordova tasks', update => {
-//   if (update) {
-//     // update only
-//
-//     grunt.task.run('replace:cordova_config');
-//
-//     // update www
-//     grunt.task.run('exec:cordova_clean_www');
-//     grunt.task.run('exec:cordova_copy_dist');
-//     return;
-//   }
-//
-//   // prepare www source
-//   grunt.task.run('default');
-//
-//   grunt.task.run('replace:cordova_config');
-//
-//   // init cordova source
-//   grunt.task.run('exec:cordova_init');
-//
-//   // add www source to cordova
-//   grunt.task.run('exec:cordova_clean_www');
-//   grunt.task.run('exec:cordova_copy_dist');
-//   grunt.task.run('exec:cordova_add_platforms');
-// });
-//
