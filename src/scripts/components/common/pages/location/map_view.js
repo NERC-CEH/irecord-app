@@ -256,7 +256,13 @@ const MapView = Marionette.ItemView.extend({
           }
           break;
         case 'gridref':
-          mapZoomLevel = currentLocation.accuracy + 1;
+          if (currentLocation.accuracy < (MAX_OS_ZOOM - 1)) {
+            mapZoomLevel = currentLocation.accuracy + 1;
+          } else {
+            // normalize to OSM zoom
+            mapZoomLevel = 18;
+          }
+
           break;
         default:
           mapZoomLevel = MAX_OS_ZOOM - 2;
