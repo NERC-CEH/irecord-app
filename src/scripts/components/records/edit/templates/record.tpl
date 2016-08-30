@@ -13,7 +13,7 @@
       <span class="media-object pull-left icon icon-location"></span>
 
       <% if (obj.location_name) { %>
-      <span class="media-object pull-right descript"><%- obj.location_name %></span>
+      <span class="media-object pull-right descript"><%= obj.location_name %></span>
       <% } else { %>
       <span class="media-object pull-right descript error">Name missing</span>
       <% } %>
@@ -58,7 +58,7 @@
     <a href="#records/<%- obj.id %>/edit/comment" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-comment"></span>
-      <span class="media-object pull-right descript"><%- obj.comment %></span>
+      <span class="media-object pull-right descript"><%= obj.comment %></span>
       Comment
     </a>
   </li>
@@ -66,7 +66,7 @@
     <a href="#records/<%- obj.id %>/edit/identifiers" id="identifiers-button"
        class="<%- obj.locks['identifiers'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-user-plus"></span>
-      <span class="media-object pull-right descript"><%- obj.identifiers %></span>
+      <span class="media-object pull-right descript"><%= obj.identifiers %></span>
       Identifiers
     </a>
   </li>
