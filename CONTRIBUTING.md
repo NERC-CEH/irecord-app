@@ -131,25 +131,14 @@ grunt test
 
 # Cordova
 
-## Signing
+## iOS 
 
-Generate a key with first one if don't have one
+Use XCode to build and upload
+
+## Android
+
+Run and upload binaries from cordova/dist
 ```bash
-jarsigner -keytool -genkey -v -keystore irecord.keystore -alias irecord -keyalg RSA -keysize 2048 -validity 10000
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore irecord.keystore android-release-unsigned.apk irecord
+grunt cordova:android
+grunt cordova:android:old
 ```
-
-Zipalign is in sdk build tools. On Mac /Applications/Android/sdk/build-tools/
-
-```bash
-zipalign -v 4 android-release-unsigned.apk irecord.apk
-```
-
-### Android
-
-Add crosswalk to older platforms.
-```bash
-cordova plugin add cordova-plugin-crosswalk-webview
-```
-
-Change config.xml, sdk version and build version starting 19->14.
