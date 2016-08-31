@@ -31,7 +31,8 @@ If you have any questions, please feel free to ask on the
 
 ## Configuration
 
-App configuration is hosted in `src/conf.js`. **Note:** it should be done *before* building the code.
+App configuration is hosted in `config/config.js`. **Note:** it should be done
+ *before* building the code.
 
 
 ## Building
@@ -95,7 +96,7 @@ This will create a `dist` folder with the app code and its dependencies.
 launch of a web server.
 
 ```bash
-node app.js
+node config/server.js
 ```
 
 - Open the app on a browser [http://localhost:8000](http://localhost:8000)
@@ -103,9 +104,7 @@ node app.js
 
 ## Authors
 
-**Karolis Kazlauskis**
-
-- <https://github.com/kazlauskis>
+[Karolis Kazlauskis](https://github.com/kazlauskis)
 
 
 ## Copyright and license

@@ -1,4 +1,3 @@
-var path = require('path');
 var _ = require('lodash');
 
 const webpackConfig = require('./webpack.config.js');

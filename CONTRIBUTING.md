@@ -39,7 +39,7 @@ transpiles check the [Babel Docs](https://babeljs.io/docs/learn-es2015).
 
 The code is packaged up by [Webpack](https://webpack.github.io) module bundler. It
 takes care of passing the ES6 code through Babel and pulling the code together
-to make an *dist/app.js* file that is loaded in the *index.html*.
+to make an *dist/main/app.js* file that is loaded in the *index.html*.
 
 
 ## Style Guide
@@ -74,9 +74,7 @@ The app is structured in such a way:
 │   │   └── **component**
 │   │       └── **sub component**
 │   │           └── templates
-│   ├── config
 │   ├── data
-│   │   └── raw
 │   └── helpers
 ├── styles
 │   ├── common
@@ -87,7 +85,7 @@ The app is structured in such a way:
 ## Components folder
 
 * App **components** - a group of page-like components (sub components) providing similar
- functionality eg. records, maping, information pages. 
+ functionality eg. records, mapping, information pages. 
  Components should work independently between each other, so that for example mapping should
  have no dependencies on record components.
 
