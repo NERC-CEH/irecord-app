@@ -52,7 +52,7 @@ function make() {
   }
 
   // go through all taxa in array
-  for (let i = 1, length = species.length; i < length; i++) {
+  for (let i = 0, length = species.length; i < length; i++) {
     const speciesEntry = species[i];
 
     // if genus or above
@@ -109,8 +109,8 @@ function make() {
 
 const map = make();
 
-fs.writeFile(outputFileName, JSON.stringify(map), function(err) {
-  if(err) {
+fs.writeFile(outputFileName, JSON.stringify(map), function (err) {
+  if (err) {
     return console.log(err);
   }
 

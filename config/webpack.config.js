@@ -19,8 +19,8 @@ module.exports = {
     ],
     alias: {
       // data
-      'common_names.data': 'master_list_names.data.json',
-      'master_list.data': 'master_list.data.json',
+      'common_names.data': 'species_names.data.json',
+      'master_list.data': 'species.data.json',
       'informal_groups.data': 'informal_groups.data.json',
 
       // helpers
