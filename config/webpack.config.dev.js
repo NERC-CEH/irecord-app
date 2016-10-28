@@ -8,5 +8,6 @@ development.entry.testing = '../../test/manual-testing.js';
 
 // development configuration
 development.resolve.alias.config = 'config_dev';
+development.plugins = [];
 
 module.exports = development;
