@@ -7,7 +7,7 @@ def run(file_name):
 		line = re.sub('\[.*\]\s', '', line)
 
 		#Remove ',.*().*,,' - should not have bracketed old Genus
-		line = re.sub('(\"[0-9]+\",\"[0-9]+\",\".*) \(.*\)(.*)', r'\1\2', line)
+		line = re.sub('([0-9]+,[0-9]+,\".*) \(.*\)(.*)', r'\1\2', line)
 	
 		#todo: remove non alphanumerics
 		line = re.sub('[^-_0-9,A-Za-z \.\=\(\)\'\"\/]', '', line)
