@@ -95,7 +95,9 @@ describe('Taxon Search Engine', () => {
         expect(results).to.be.an('array');
         let found = false;
         results.forEach((result) => {
-          if (result.common_name === 'Willow') found = true;
+          console.log(result)
+          if (result.common_name === 'Willow' ||
+            result.synonym === 'Willow') found = true;
         });
         expect(found).to.be.true;
         searchEngine.search('Jumping spiders', (results) => {

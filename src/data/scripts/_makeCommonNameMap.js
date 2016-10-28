@@ -11,6 +11,7 @@ const fs = require('fs');
 const species = require(inputFileName);
 
 const GENUS_COMMON_INDEX = 3;
+const GENUS_COMMON_SYN_INDEX = 4;
 const SPECIES_COMMON_INDEX = 2; // in species and bellow
 const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
 
@@ -55,10 +56,15 @@ function make() {
   for (let i = 0, length = species.length; i < length; i++) {
     const speciesEntry = species[i];
 
-    // if genus or above
+    // if genus or above - add genus common name
     if (typeof speciesEntry[GENUS_COMMON_INDEX] === 'string') {
       // genus has a common name
       addWord(speciesEntry[GENUS_COMMON_INDEX], i, GENUS_COMMON_INDEX);
+    }
+    // add genus synonym
+    if (typeof speciesEntry[GENUS_COMMON_SYN_INDEX] === 'string') {
+      // genus has a common name
+      addWord(speciesEntry[GENUS_COMMON_SYN_INDEX], i, GENUS_COMMON_SYN_INDEX);
     }
 
     // find species array within genus object
@@ -92,8 +98,10 @@ function make() {
       let spB = helpers.getCommonName(species, b);
 
       // sort by name count
-      spA = spA.split(' ')[nameCount];
-      spB = spB.split(' ')[nameCount];
+      const spAwords = spA.split(' ');
+      spA = spAwords.slice(nameCount, spAwords.length).join(' ');
+      const spBwords = spB.split(' ');
+      spB = spBwords.slice(nameCount, spBwords.length).join(' ');
 
       if (spA > spB) {
         return 1;
@@ -103,6 +111,10 @@ function make() {
       return 0;
     });
   }
+
+  commonNames[0].slice(6000,50000).forEach((a) => {
+    console.log(helpers.getCommonName(species, a));
+  })
 
   return commonNames;
 }
