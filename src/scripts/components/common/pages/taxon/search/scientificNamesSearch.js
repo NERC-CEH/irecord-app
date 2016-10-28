@@ -1,5 +1,5 @@
 /** ****************************************************************************
- *
+ * Scientific name search.
  *****************************************************************************/
 import helpers from './searchHelpers';
 import searchSciNames from './scientificNamesSearch';
@@ -50,7 +50,7 @@ export default function (species, searchPhrase, results = [], maxResults = MAX, 
 
   // go through all
   const speciesArrayLength = species.length;
-  while (speciesArrayIndex &&
+  while (speciesArrayIndex !== null && speciesArrayIndex >= 0 &&
   speciesArrayIndex < speciesArrayLength &&
   results.length < maxResults) {
     const speciesEntry = species[speciesArrayIndex];

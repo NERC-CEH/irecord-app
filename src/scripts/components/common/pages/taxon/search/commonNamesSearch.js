@@ -1,5 +1,5 @@
 /** ****************************************************************************
- *
+ * Common name search.
  *****************************************************************************/
 import helpers from './searchHelpers';
 
@@ -36,7 +36,7 @@ export default function (species, commonNamePointersArray, searchPhrase, results
     otherWordsRegex = new RegExp(otherWordsRegexStr, 'i');
   }
 
-  // for each word
+  // for each word index
   for (let wordCount = 0;
        wordCount < commonNamePointersArray.length && results.length < maxResults;
        wordCount++) {
@@ -51,7 +51,7 @@ export default function (species, commonNamePointersArray, searchPhrase, results
     );
 
     // go through all common name pointers
-    while (pointersArrayIndex &&
+    while (pointersArrayIndex !== null && pointersArrayIndex >= 0 &&
     pointersArrayIndex < pointerArrayLength &&
     results.length < maxResults) {
       const p = commonNamePointers[pointersArrayIndex];
