@@ -1,11 +1,12 @@
 module.exports = {
   data_init: {
     command() {
-     return 'cd src/data && ' +
-      'python make.py species &&' +
-      'mkdir -p ../../dist/_build/ &&' +
-      'mv species*data.json ../../dist/_build/ &&' +
-      'rm warnings.log';
+      return 'cd src/data && ' +
+        'cp species.csv species_cleaned.csv && ' +
+        'python make.py species && ' +
+        'mkdir -p ../../dist/_build/ && ' +
+        'mv species*data.json ../../dist/_build/ && ' +
+        'rm warnings.log species_cleaned.csv';
     },
     stdout: true,
   },

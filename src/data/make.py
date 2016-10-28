@@ -14,11 +14,11 @@ filename = sys.argv[1]
 
 # Clean the data
 print('Cleaning species data...')
-_clean.run(filename + '.csv')
+_clean.run(filename + '_cleaned.csv')
 
 # Transform species.csv to json:
 print('Transforming to JSON...')
-_json_translator.run(filename + '.csv', filename + '.data.json')
+_json_translator.run(filename + '_cleaned.csv', filename + '.data.json')
 
 # Create common name map
 print('Building name map...')
