@@ -12,6 +12,8 @@ export default Marionette.ItemView.extend({
   template: JST['settings/menu/main'],
 
   events: {
+    'toggle #use-training-btn': 'onSettingToggled',
+    'click #use-training-btn': 'onSettingToggled',
     'toggle #use-gridref-btn': 'useGridRef',
     'click #use-gridref-btn': 'useGridRef',
     'toggle #use-gridmap-btn': 'onSettingToggled',
@@ -53,6 +55,7 @@ export default Marionette.ItemView.extend({
   serializeData() {
     const appModel = this.model;
     return {
+      useTraining: appModel.get('useTraining'),
       useGridRef: appModel.get('useGridRef'),
       useGridMap: appModel.get('useGridMap'),
       autosync: appModel.get('autosync'),

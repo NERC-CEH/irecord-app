@@ -55,6 +55,13 @@
 }
 
 //LIST
+#training-header {
+  margin-left: -$main-content-margin;
+  margin-right: -$main-content-margin;
+  text-align: center;
+  color: $color-white;
+  background-color: $color-black;
+}
 #records-list {
   margin: 0;
 
