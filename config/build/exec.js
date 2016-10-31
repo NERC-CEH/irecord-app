@@ -1,11 +1,13 @@
 module.exports = {
   data_init: {
-    command:
-    'cd src/data && ' +
-    'python make.py UKSI.csv warehouse_ids.csv master_list && ' +
-    'mkdir -p ../../dist/_build &&' +
-    'mv master_list* ../../dist/_build &&' +
-    'rm warnings.log',
+    command() {
+      return 'cd src/data && ' +
+        'cp species.csv species_cleaned.csv && ' +
+        'python make.py species && ' +
+        'mkdir -p ../../dist/_build/ && ' +
+        'mv species*data.json ../../dist/_build/ && ' +
+        'rm warnings.log species_cleaned.csv';
+    },
     stdout: true,
   },
   cordova_init: {

@@ -1,5 +1,5 @@
 /** ****************************************************************************
- *
+ * Common name search.
  *****************************************************************************/
 import helpers from './searchHelpers';
 
@@ -7,6 +7,7 @@ const WAREHOUSE_INDEX = 0;
 const GROUP_INDEX = 1;
 const SCI_NAME_INDEX = 2; // in genera and above
 const GENUS_COMMON_INDEX = 3;
+const GENUS_COMMON_SYN_INDEX = 4;
 const SPECIES_SCI_NAME_INDEX = 1; // in species and bellow
 const SPECIES_COMMON_INDEX = 2; // in species and bellow
 const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
@@ -36,7 +37,7 @@ export default function (species, commonNamePointersArray, searchPhrase, results
     otherWordsRegex = new RegExp(otherWordsRegexStr, 'i');
   }
 
-  // for each word
+  // for each word index
   for (let wordCount = 0;
        wordCount < commonNamePointersArray.length && results.length < maxResults;
        wordCount++) {
@@ -51,7 +52,7 @@ export default function (species, commonNamePointersArray, searchPhrase, results
     );
 
     // go through all common name pointers
-    while (pointersArrayIndex &&
+    while (pointersArrayIndex !== null && pointersArrayIndex >= 0 &&
     pointersArrayIndex < pointerArrayLength &&
     results.length < maxResults) {
       const p = commonNamePointers[pointersArrayIndex];
@@ -63,14 +64,17 @@ export default function (species, commonNamePointersArray, searchPhrase, results
         if (!firstWordRegex.test(name)) break;
 
         if (!otherWordsRegex || otherWordsRegex.test(name)) {
+          const foundInName = p[1] === GENUS_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
+
           // check if matches full phrase
           const fullRes = {
             array_id: p[0],
-            found_in_name: 'common_name',
+            found_in_name: foundInName,
             warehouse_id: genus[WAREHOUSE_INDEX],
             group: genus[GROUP_INDEX],
             scientific_name: genus[SCI_NAME_INDEX],
             common_name: genus[GENUS_COMMON_INDEX],
+            synonym: genus[GENUS_COMMON_SYN_INDEX],
           };
           results.push(fullRes);
         }

@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Generates UKSI list search suggestions.
+ * Generates species list suggestions.
  *****************************************************************************/
 import Backbone from 'backbone';
 import _ from 'lodash';

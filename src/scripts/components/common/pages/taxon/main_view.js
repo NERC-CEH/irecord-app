@@ -38,7 +38,7 @@ const SpeciesView = Marionette.ItemView.extend({
     return {
       name,
       removeEditBtn: this.options.removeEditBtn,
-      group: informalGroups[this.model.get('group') - 1],
+      group: informalGroups[this.model.get('group')],
     };
   },
 

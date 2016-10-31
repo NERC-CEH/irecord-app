@@ -95,7 +95,8 @@ describe('Taxon Search Engine', () => {
         expect(results).to.be.an('array');
         let found = false;
         results.forEach((result) => {
-          if (result.common_name === 'Willow') found = true;
+          if (result.common_name === 'Willow' ||
+            result.synonym === 'Willow') found = true;
         });
         expect(found).to.be.true;
         searchEngine.search('Jumping spiders', (results) => {
@@ -204,7 +205,7 @@ describe('Taxon Search Engine', () => {
       it('should be an array', (done) => {
         searchEngine.search('blackbird', (results) => {
           expect(results).to.be.an('array');
-          expect(results.length).to.equal(6);
+          expect(results.length).to.equal(8);
           done();
         });
       });
