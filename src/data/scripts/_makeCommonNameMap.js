@@ -112,10 +112,6 @@ function make() {
     });
   }
 
-  commonNames[0].slice(6000,50000).forEach((a) => {
-    console.log(helpers.getCommonName(species, a));
-  })
-
   return commonNames;
 }
 

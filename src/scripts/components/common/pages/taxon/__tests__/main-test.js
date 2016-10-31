@@ -95,7 +95,6 @@ describe('Taxon Search Engine', () => {
         expect(results).to.be.an('array');
         let found = false;
         results.forEach((result) => {
-          console.log(result)
           if (result.common_name === 'Willow' ||
             result.synonym === 'Willow') found = true;
         });
