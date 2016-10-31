@@ -1,6 +1,8 @@
 import Morel from 'morel';
 import Backbone from 'backbone';
 import recordManager from '../record_manager';
+import userModel from '../models/user_model';
+import appModel from '../models/app_model';
 import Sample from '../models/sample';
 import Occurrence from '../models/occurrence';
 
@@ -10,12 +12,15 @@ describe('Record Manager', () => {
   const okResponse = [200, { 'Content-Type': 'text/html' }, ''];
   const errResponse = [502, { 'Content-Type': 'text/html' }, ''];
 
+  let userLogin;
   before(() => {
     server = sinon.fakeServer.create();
+    userLogin = sinon.stub(userModel, 'hasLogIn').returns(true);
   });
 
   after((done) => {
     recordManager.clear(done);
+    userLogin.reset();
   });
 
   it('should be a Morel Manager', () => {
@@ -35,7 +40,6 @@ describe('Record Manager', () => {
     }, {
       occurrences: [occurrence],
       manager: recordManager,
-      onSend: () => {}, // overwrite manager's one checking for user login
     });
 
     sample.metadata.saved = true;
@@ -61,5 +65,21 @@ describe('Record Manager', () => {
 
     server.respondWith('POST', 'http://192.171.199.230/irecord7/mobile/submit', okResponse);
     server.respond();
+  });
+
+  it ('should set occurrence to training mode', () => {
+    appModel.set('useTraining', false);
+
+    const sample = getRandomSample();
+    sample.save(null, { remote: true });
+    console.log(sample.occurrences.at(0).attributes)
+    expect(sample.occurrences.at(0).get('training')).to.be.equal(false);
+
+    appModel.set('useTraining', true);
+
+    const sample2 = getRandomSample();
+    sample2.save(null, { remote: true });
+    console.log(sample2.occurrences.at(0).attributes)
+    expect(sample2.occurrences.at(0).get('training')).to.be.equal(true);
   });
 });
