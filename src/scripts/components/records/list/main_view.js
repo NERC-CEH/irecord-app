@@ -196,21 +196,23 @@ const NoRecordsView = Marionette.ItemView.extend({
   template: JST['records/list/list-none'],
 });
 
-export default Marionette.CollectionView.extend({
-  id: 'records-list',
-  tagName: 'ul',
-  className: 'table-view no-top',
+export default Marionette.CompositeView.extend({
+  id: 'records-list-container',
+  template: JST['records/list/main'],
+
+  childViewContainer: '#records-list',
   emptyView: NoRecordsView,
   childView: RecordView,
-
-  // inverse the collection
-  attachHtml(collectionView, childView) {
-    collectionView.$el.prepend(childView.el);
-  },
 
   childViewOptions() {
     return {
       appModel: this.options.appModel,
     };
+  },
+
+  serializeData() {
+    return {
+      useTraining: this.options.appModel.get('useTraining'),
+    }
   },
 });
