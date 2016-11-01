@@ -69,9 +69,9 @@ const API = {
     });
   },
 
-  onLockClick(options) {
+  onLockClick(view) {
     Log('Records:Attr:Controller: lock clicked');
-    const attr = options.view.options.attr;
+    const attr = view.options.attr;
     // invert the lock of the attribute
     // real value will be put on exit
     if (attr === 'number') {

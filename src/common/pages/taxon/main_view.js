@@ -7,6 +7,7 @@ import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import { Log, Device } from 'helpers';
 import informalGroups from 'informal_groups.data';
+import './styles.scss';
 
 const MIN_SEARCH_LENGTH = 2;
 
@@ -143,7 +144,7 @@ export default Marionette.View.extend({
       searchPhrase,
     });
     suggestionsColView.on('childview:taxon:selected',
-      (view, speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
+      (speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
 
     this.getRegion('suggestions').show(suggestionsColView);
   },
