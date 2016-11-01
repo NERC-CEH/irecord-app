@@ -204,6 +204,11 @@ export default Marionette.CompositeView.extend({
   emptyView: NoRecordsView,
   childView: RecordView,
 
+  // invert the order
+  attachHtml(collectionView, childView){
+    collectionView.$el.find(this.childViewContainer).prepend(childView.el);
+  },
+
   childViewOptions() {
     return {
       appModel: this.options.appModel,
