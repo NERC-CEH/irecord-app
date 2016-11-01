@@ -62,8 +62,9 @@
   margin-left: -$main-content-margin;
   margin-right: -$main-content-margin;
   text-align: center;
+  padding: 8px 0;
   color: $color-white;
-  background-color: $color-black;
+  background-color: $color-main-dark;
 }
 #records-list {
   margin: 0;

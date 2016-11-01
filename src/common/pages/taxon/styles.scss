@@ -1,109 +1,71 @@
 @import "../../styles/_variables.scss";
-//MAIN
-//.species .descript {
-//  width: 100%;
-//  padding-left: 1em;
-//}
 
-//.info li.table-view-cell {
-//  padding-right: 2%;
-//}
-//
-//.descript.comment {
-//  white-space: initial;
-//  text-align: left;
-//  width: auto;
-//  float: none;
-//  margin-left: 8% !important;
-//  display: block !important;
-//}
-
-#img-array {
-  height: 80px;
-  padding: 0;
-
-  white-space: nowrap;
-  overflow: overlay;
-
-  img {
-    width: 60px;
-  }
+#suggestions .table-view {
+  border-top: none;
 }
 
-#occurrence-id {
-  position: fixed;
-  bottom: 0;
-  left: 10px;
-  color: $color-gray;
-}
+#suggestions .table-view-cell {
+  padding: 8px 65px 8px 15px;
 
-#taxon-main.list {
-  margin: -1px -1 0;
+  @include empty-list();
 
-  #species-list {
-    margin: 0 -2% -2px;
-  }
-  #species-list > div {
-    padding: 0;
-  }
+  button {
+    width: 20%;
+    max-width: 80px;
+    right: 0;
 
-  label {
-    color: $color-white;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 30vh;
-    border: 0;
+    background-color: transparent;
+    border: none;
 
-    &.other {
-      height: inherit;
-      background-color: #7d7d7d;
-
-      .item-content {
-        width: 100%;
-        text-align: center;
-        font-size: 40px;
-      }
-    }
-
-    a {
-      z-index: 10;
+    //left line
+    &:after {
+      content: "";
+      background: $color-gray;
       position: absolute;
-      right: 5px;
-      top: 5px;
-      color: $color-white;
+      bottom: 9px;
+      left: 0;
+      height: 63%;
+      width: 1px;
+    }
+  }
 
-      span:before {
-        font-size: 35px;
-      }
+  h3 {
+    white-space: normal;
+    overflow: visible;
+    font-weight: normal;
+    margin-bottom: 8px;
+    margin-top: -2px;
+  }
+
+  span.group {
+    position: absolute;
+    right: 22%;
+
+    &.right {
+      right: 2%;
     }
 
-    #hornet-warning {
-      position: absolute;
-      bottom: 8px;
-      left: 8px;
-      color: $color-orange;
+    bottom: -2px;
+    font-weight: 200;
+    font-size: 14px;
+    color: $color-gray-dark;
+  }
 
-      &:before {
-        font-size: 30px;
-      }
+  @media only screen and (min-width: 400px) {
+    span.group {
+      right: 90px;
     }
+  }
 
-    .item-content {
-      width: 50%;
-      padding: 10px;
-      font-size: 18px;
-      background: rgba(0, 0, 0, 0.6);
-    }
+  &.selected {
+    background-color: $color-gray;
 
-    // tick to shade
-    i.icon-check {
-      width: 100%;
-      background: rgba(0,0,0,0.6);
-      z-index: 0;
-      &:before {
-        display: none;
-      }
+    button {
+      border-left: 1px $color-gray-dark solid;
     }
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 }
