@@ -4,10 +4,14 @@
   },
   "extends": "airbnb/base",
   "rules": {
-     "no-unused-expressions": [2, {
-          "allowShortCircuit": true, // eg. a || a()
-          "allowTernary": true // eg. a ? b() : c()
-     }],
+    "no-console": 0,
+    "no-plusplus": 0,
+    "no-mutable-exports": 0,
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": [2, {
+      "allowShortCircuit": true, // eg. a || a()
+      "allowTernary": true // eg. a ? b() : c()
+    }],
     "new-cap": ["error", {
       "capIsNewExceptions": ["Log", "UUID"]
     }]
@@ -30,7 +34,7 @@
   "settings": {
     "import/resolver": {
       "webpack": {
-        "config": "src/webpack.config.dev.js"
+        "config": "config/webpack.common.js"
       }
     }
   }

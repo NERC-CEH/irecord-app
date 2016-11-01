@@ -17,7 +17,7 @@ module.exports = {
         let path = filepath;
 
         // strip all until components folder
-        path = path.split('src/scripts/components/')[1];
+        path = path.split('src/')[1];
 
         // remove 'pages' from common/pages
         if (path.indexOf('common/pages') >= 0) {
@@ -39,8 +39,8 @@ module.exports = {
     },
     files: {
       'dist/_build/JST.js': [
-        'src/scripts/components/**/**/**/**/*.tpl',
-        'src/scripts/components/common/templates/*.tpl',
+        'src/**/**/**/**/*.tpl',
+        'src/common/templates/*.tpl',
       ],
     },
   },

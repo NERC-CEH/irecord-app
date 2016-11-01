@@ -1,0 +1,163 @@
+@import "../../common/styles/_variables.scss";
+
+//HEADING
+.heading {
+  font-size: .9em!important;
+  width: 33%;
+  overflow: visible;
+}
+
+#record-save-btn {
+  min-width: 70% !important;
+  max-width: 100px;
+  margin-right: 0px;
+  color: $header-color;
+  float: right;
+  border: none;
+  border-bottom: 1px solid $color-white;
+  background-color: $color-white;
+}
+
+//MAIN
+ul.table-view.inputs {
+  margin-bottom: 80px; // to account the floating photo picker for scrolling
+}
+.inputs span.icon {
+  color: $button-black;
+}
+
+.descript, .heading {
+  display: inline-block!important;
+  vertical-align: middle;
+  margin: 0!important;
+
+  color: $button-black;
+}
+
+.descript {
+  width: 55%;
+  min-height: 21px;
+  font-size: $text-font-size;
+
+  float: right;
+  text-align: right;
+  color: $color-gray-dark ;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  &.warn {
+    color: $color-yellow;
+  }
+
+  &.error {
+    color: $color-red;
+  }
+}
+
+.inputs a {
+  padding-right: 45px !important;
+}
+
+.inputs .table-view-cell {
+  padding-left: 2%;
+}
+
+.inputs .media-object.icon {
+  font-size: 16px;
+  margin-right: 3%;
+  margin-left: 1%;
+}
+
+#lock-btn {
+  margin-right: 7px;
+}
+
+.lock:after {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+
+  color: $color-gray-dark;
+  font-family: icons;
+  content: '\e80c';
+}
+
+
+$footer-height: 80px;
+
+#img-picker-array {
+  display: table;
+  height: $footer-height;
+  margin: 0;
+  padding: 0;
+
+  .img-picker {
+    display: table-cell;
+    width: $footer-height;
+    min-height: $footer-height;
+    padding: 0;
+
+    border-right: 1px solid $color-gray;
+
+    color: $color-black;
+
+    //icon to middle
+    &:before {
+      padding-top: 0;
+      top: 36%;
+      left: 55%;
+      margin-left: -12px;
+      position: absolute;
+    }
+
+    input {
+      width: $footer-height;
+      margin-top: 0 !important;
+      height: $footer-height !important;
+    }
+  }
+
+  #img-array {
+    display: table-cell;
+    width: auto;
+
+    white-space: nowrap;
+    overflow: overlay;
+
+    .img {
+      display: inline-block;
+      position: relative;
+
+      //delete X
+      span.delete {
+        position: absolute;
+        right: 0;
+        padding: 0;
+
+        &:before {
+          text-shadow: 1px 1px $color-black;
+        }
+      }
+
+      img {
+        height: $footer-height;
+      }
+    }
+
+    .empty {
+      float: left;
+      margin-top: 28px;
+      margin-left: 12px;
+      color: $color-gray-dark;
+      font-size: $text-font-size;
+    }
+  }
+}
+
+footer #edit-footer {
+  margin: 0 -5px;
+  background-color: $color-white;
+  border-top: 1px solid $color-gray;
+}

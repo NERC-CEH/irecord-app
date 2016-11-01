@@ -1,0 +1,109 @@
+@import "../../styles/_variables.scss";
+//MAIN
+//.species .descript {
+//  width: 100%;
+//  padding-left: 1em;
+//}
+
+//.info li.table-view-cell {
+//  padding-right: 2%;
+//}
+//
+//.descript.comment {
+//  white-space: initial;
+//  text-align: left;
+//  width: auto;
+//  float: none;
+//  margin-left: 8% !important;
+//  display: block !important;
+//}
+
+#img-array {
+  height: 80px;
+  padding: 0;
+
+  white-space: nowrap;
+  overflow: overlay;
+
+  img {
+    width: 60px;
+  }
+}
+
+#occurrence-id {
+  position: fixed;
+  bottom: 0;
+  left: 10px;
+  color: $color-gray;
+}
+
+#taxon-main.list {
+  margin: -1px -1 0;
+
+  #species-list {
+    margin: 0 -2% -2px;
+  }
+  #species-list > div {
+    padding: 0;
+  }
+
+  label {
+    color: $color-white;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 30vh;
+    border: 0;
+
+    &.other {
+      height: inherit;
+      background-color: #7d7d7d;
+
+      .item-content {
+        width: 100%;
+        text-align: center;
+        font-size: 40px;
+      }
+    }
+
+    a {
+      z-index: 10;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      color: $color-white;
+
+      span:before {
+        font-size: 35px;
+      }
+    }
+
+    #hornet-warning {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      color: $color-orange;
+
+      &:before {
+        font-size: 30px;
+      }
+    }
+
+    .item-content {
+      width: 50%;
+      padding: 10px;
+      font-size: 18px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    // tick to shade
+    i.icon-check {
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 0;
+      &:before {
+        display: none;
+      }
+    }
+  }
+}
