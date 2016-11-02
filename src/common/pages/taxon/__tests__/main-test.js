@@ -1,5 +1,5 @@
 import searchEngine from '../search/taxon_search_engine';
-import species_list from 'master_list.data';
+import 'species.data';
 
 const NAME = 1;
 const WAREHOUSE_ID = 0;

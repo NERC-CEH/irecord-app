@@ -6,7 +6,7 @@ var fs = require('fs');
 var path = require('path');
 
 //get development webpack config
-var webpackConfigDev = require('../config/webpack.config.dev');
+var webpackConfigDev = require('../config/webpack.dev');
 //clean it up a bit
 delete webpackConfigDev.context;
 delete webpackConfigDev.entry;

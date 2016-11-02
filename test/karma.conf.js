@@ -1,15 +1,16 @@
 var path = require('path');
 
 //get development webpack config
-var webpackConfigDev = require('../config/webpack.config.dev');
+var webpackConfigDev = require('../config/webpack.dev');
 //clean it up a bit
 delete webpackConfigDev.context;
-delete webpackConfigDev.entry;
-delete webpackConfigDev.output;
+delete webpackConfigDev.entry; // the entry is the loader
+delete webpackConfigDev.output; // no need to output files
+webpackConfigDev.plugins.splice(1,2); // temp remove of clashing plugins
 
 module.exports = function exports(config) {
   config.set({
-    basePath: '../',
+    // basePath: './',
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
@@ -18,12 +19,12 @@ module.exports = function exports(config) {
     frameworks: ['mocha', 'chai', 'sinon'],
 
     files: [
-      { pattern: 'test/mocks.js', watched: false },
-      { pattern: 'tests.webpack.js', watched: true },
+      { pattern: 'mocks.js', watched: false },
+      { pattern: 'loader.js', watched: true },
     ],
 
     preprocessors: {
-      'tests.webpack.js': ['webpack'],
+      'loader.js': ['webpack'],
     },
 
     webpack: webpackConfigDev,

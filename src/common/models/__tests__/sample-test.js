@@ -91,7 +91,7 @@ describe('Sample', () => {
     it('should return a promise', () => {
       const sample = getRandomSample();
       const promise = sample.setToSend();
-      expect(promise).to.be.an('object');
+      expect(promise).to.be.an.instanceof(Promise);
     });
 
     it('should not send if invalid, but set validationError', () => {

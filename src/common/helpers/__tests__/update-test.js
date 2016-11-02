@@ -1,5 +1,5 @@
 import Update from '../update';
-import appModel from '../../components/common/models/app_model';
+import appModel from '../../models/app_model';
 import CONFIG from 'config'; // Replaced with alias
 
 Update.updatesSeq = ['3.0.0', '3.1.2', '3.2.0', '4.0.0'];

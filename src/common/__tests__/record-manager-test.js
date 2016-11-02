@@ -63,8 +63,11 @@ describe('Record Manager', () => {
         done();
       });
 
-    server.respondWith('POST', 'http://192.171.199.230/irecord7/mobile/submit', okResponse);
-    server.respond();
+    // needs timeout because syncAll is async and returns before the POST call
+    setTimeout(() => {
+      server.respondWith('POST', recordManager.options.url, okResponse);
+      server.respond();
+    });
   });
 
   it('should set occurrence to training mode', () => {
