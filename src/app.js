@@ -56,7 +56,7 @@ App.on('start', () => {
       Backbone.history.start();
 
       if (App.getCurrentRoute() === '') {
-        App.trigger('home');
+        App.trigger('records:list');
       }
 
       App.on('404:show', () => {
