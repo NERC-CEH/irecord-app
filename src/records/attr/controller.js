@@ -61,7 +61,9 @@ const API = {
 
       // if exit on selection click
       mainView.on('save', () => {
-        API.onExit(mainView, recordModel, attr);
+        API.onExit(mainView, recordModel, attr, () => {
+          window.history.back();
+        });
       });
 
       // FOOTER
@@ -89,7 +91,6 @@ const API = {
   onExit(mainView, recordModel, attr, callback) {
     Log('Records:Attr:Controller: exiting');
     const values = mainView.getValues();
-    // todo: remove the record if the habitat is empty
     API.save(attr, values, recordModel, callback);
   },
 
@@ -160,7 +161,12 @@ const API = {
 
     // save it
     recordModel.save(null, {
-      success: callback,
+      success: () => {
+        // update locked value if attr is locked
+        API.updateLock(attr, newVal, currentVal);
+
+        callback();
+      },
       error: (err) => {
         Log(err, 'e');
         App.regions.getRegion('dialog').error(err);
