@@ -27,7 +27,7 @@ export default {
     clearFormErrors();
 
     _.each(errors, (value, key) => {
-      const $controlGroup = $view.find(selector + key).parent();
+      const $controlGroup = $view.find(selector + key).closest('div.input-row');
       $controlGroup.addClass('error');
       $controlGroup.attr('error-message', value);
     });
