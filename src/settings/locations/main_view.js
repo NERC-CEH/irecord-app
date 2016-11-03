@@ -20,11 +20,11 @@ export default Marionette.View.extend({
     this.triggerMethod('location:edit', view.model);
   },
 
-  onShow() {
+  onAttach() {
     const pastLocationsView = new PastLocationsView({
       model: this.model,
     });
 
-    this.locations.show(pastLocationsView);
+    this.getRegion('locations').show(pastLocationsView);
   },
 });

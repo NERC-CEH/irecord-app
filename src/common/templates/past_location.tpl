@@ -1,9 +1,7 @@
 <div id="location" class="location">
   <%= (obj.name ? '<strong>' + obj.name + '</strong>' : '') %>
   <p> <%- obj.location %></p>
-  <% if (obj.favourite) { %>
-    <span class="location-favourite icon icon-star"></span>
-  <% } %>
+  <span class="location-favourite icon icon-star <%- obj.favourite ? 'on' : '' %>"></span>
   <span class="location-source">source: <%- obj.source %></span>
 </div>
 
