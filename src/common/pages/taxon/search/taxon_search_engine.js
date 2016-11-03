@@ -60,6 +60,8 @@ const API = {
 
     let results = [];
 
+    if (!searchPhrase) return results;
+
     // normalize the search phrase
     const normSearchPhrase = searchPhrase.toLowerCase();
 

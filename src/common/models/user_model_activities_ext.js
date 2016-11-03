@@ -92,7 +92,7 @@ export default {
    * collection in the main view.
    */
   fetchActivities(callback) {
-    Log('UserModel: fetching activities');
+    // Log('UserModel: fetching activities');
     this.trigger('sync:activities:start');
     const that = this;
     const data = {

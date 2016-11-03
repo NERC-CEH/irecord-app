@@ -34,7 +34,7 @@ export default {
    * collection in the main view.
    */
   fetchStatsSpecies(callback) {
-    Log('UserModel: fetching statistics - species');
+    // Log('UserModel: fetching statistics - species');
     this.trigger('sync:statistics:species:start');
     const that = this;
     const statistics = this.get('statistics');
@@ -67,7 +67,6 @@ export default {
         receivedData.forEach((stat) => {
           const promise = new $.Deferred();
           toWait.push(promise);
-
           // turn it to a full species descriptor from species data set
           SpeciesSearchEngine.search(stat.taxon, (results) => {
             const foundedSpecies = results[0];

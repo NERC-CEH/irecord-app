@@ -37,6 +37,7 @@
     "backbone.marionette": "3.0.0",
     "backbone.radio": "^2.0.0",
     "bower": "^1.7.9",
+    "circular-dependency-plugin": "^2.0.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.25.0",
     "dotenv": "^2.0.0",

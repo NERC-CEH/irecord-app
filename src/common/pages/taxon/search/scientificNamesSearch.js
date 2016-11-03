@@ -2,7 +2,6 @@
  * Scientific name search.
  *****************************************************************************/
 import helpers from './searchHelpers';
-import searchSciNames from './scientificNamesSearch';
 
 const WAREHOUSE_INDEX = 0;
 const GROUP_INDEX = 1;
@@ -18,7 +17,7 @@ const MAX = 20;
  * @param searchPhrase
  * @returns {Array}
  */
-export default function (species, searchPhrase, results = [], maxResults = MAX, hybridRun) {
+function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, hybridRun) {
   const searchWords = searchPhrase.split(' ');
 
   // prepare first word regex
@@ -125,3 +124,5 @@ export default function (species, searchPhrase, results = [], maxResults = MAX, 
   }
   return results;
 }
+
+export { searchSciNames as default };
