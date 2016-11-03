@@ -1,3 +1,5 @@
+'use strict';
+
 const PORT = 8000;
 let NETWORK = 'localhost';
 
