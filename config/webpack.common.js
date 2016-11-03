@@ -6,6 +6,7 @@ const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const pkg = require('../package.json');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const sassLoaders = [
   'css-loader?-url',
@@ -75,6 +76,7 @@ module.exports = {
       API_SECRET: JSON.stringify(process.env.API_SECRET || ''),
       API_KEY: JSON.stringify(process.env.API_KEY || ''),
     }),
+    new CircularDependencyPlugin(),
   ],
   postcss: [
     autoprefixer({
