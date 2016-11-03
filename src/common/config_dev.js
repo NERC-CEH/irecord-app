@@ -11,6 +11,8 @@ const newConfig = $.extend(true, config, {
   },
 
   log: {
+    // use prod logging if testing otherwise full log
+    states: process.env.ENV === 'testing' ? null : ['e', 'w', 'i', 'd'], // see log helper
     ga_error: false,
   },
 

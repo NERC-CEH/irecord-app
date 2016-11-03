@@ -43,8 +43,12 @@ module.exports = grunt => {
       'webpack:dev',
     ],
 
-    test: ['karma:local'],
-    'test:sauce': ['karma:sauce'],
+    test: [
+      'karma:local',
+    ],
+    'test:sauce': [
+      'karma:sauce',
+    ],
 
     // Cordova set up
     cordova: [
@@ -77,7 +81,7 @@ module.exports = grunt => {
     'cordova:android': [
       'prompt:keystore',
       'cordova:android:new',
-      'cordova:android:old'
+      'cordova:android:old',
     ],
     'cordova:android:new': [
       'cordova:_prepAndroid',

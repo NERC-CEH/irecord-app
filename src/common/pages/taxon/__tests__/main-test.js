@@ -1,5 +1,5 @@
-import searchEngine from '../search/taxon_search_engine';
 import 'species.data';
+import searchEngine from '../search/taxon_search_engine';
 
 const NAME = 1;
 const WAREHOUSE_ID = 0;
@@ -30,6 +30,11 @@ function getRandomSpecies() {
 }
 
 describe('Taxon Search Engine', () => {
+  before((done) => {
+    // todo: remove this as the engine should work without it!
+    searchEngine.init(done);
+  });
+
   it('should be an API object with search function', () => {
     expect(searchEngine).to.be.an('object');
     expect(searchEngine.search).to.exist;
@@ -38,7 +43,7 @@ describe('Taxon Search Engine', () => {
 
   describe('search', () => {
     it('should accept a string and a callback', (done) => {
-      searchEngine.search('blackbird', (results) => {
+      searchEngine.search('blackbird', () => {
         done();
       });
     });

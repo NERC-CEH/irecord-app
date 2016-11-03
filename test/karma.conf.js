@@ -1,20 +1,26 @@
-var path = require('path');
+const webpack = require('webpack');
+const ENV = process.env.NODE_ENV || process.env.ENV || 'testing';
 
-//get development webpack config
-var webpackConfigDev = require('../config/webpack.dev');
-//clean it up a bit
+// get development webpack config
+const webpackConfigDev = require('../config/webpack.dev');
+// clean it up a bit
 delete webpackConfigDev.context;
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
-webpackConfigDev.plugins.splice(1,2); // temp remove of clashing plugins
+webpackConfigDev.plugins.splice(1, 2); // temp remove of clashing plugins
+webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
+  'process.env': {
+    ENV: JSON.stringify(ENV),
+  },
+}));
 
-module.exports = function exports(config) {
+module.exports = (config) => {
   config.set({
     // basePath: './',
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox', 'Safari'],
 
     frameworks: ['mocha', 'chai', 'sinon'],
 
@@ -33,6 +39,20 @@ module.exports = function exports(config) {
       noInfo: true,
     },
 
+    webpackMiddleware: {
+      // webpack-dev-middleware configuration
+      stats: {
+        // minimal logging
+        assets: false,
+        colors: true,
+        version: false,
+        hash: false,
+        timings: false,
+        chunks: false,
+        chunkModules: false,
+        children: false,
+      },
+    },
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 

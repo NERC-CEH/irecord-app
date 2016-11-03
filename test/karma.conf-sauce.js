@@ -1,18 +1,27 @@
 /**
  * Config copied with mods from backbone karma sauce config
  */
-var _ = require('./vendor/underscore');
-var fs = require('fs');
-var path = require('path');
+'use strict';
+const _ = require('lodash');
+const fs = require('fs');
 
-//get development webpack config
-var webpackConfigDev = require('../config/webpack.dev');
-//clean it up a bit
+const webpack = require('webpack');
+const ENV = process.env.NODE_ENV || process.env.ENV || 'testing';
+
+// get development webpack config
+const webpackConfigDev = require('../config/webpack.dev');
+// clean it up a bit
 delete webpackConfigDev.context;
-delete webpackConfigDev.entry;
-delete webpackConfigDev.output;
+delete webpackConfigDev.entry; // the entry is the loader
+delete webpackConfigDev.output; // no need to output files
+webpackConfigDev.plugins.splice(1, 2); // temp remove of clashing plugins
+webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
+  'process.env': {
+    ENV: JSON.stringify(ENV),
+  },
+}));
 
-var sauceBrowsers = _.reduce([
+const sauceBrowsers = _.reduce([
   ['firefox', '45'],
   ['firefox', '44'],
   ['firefox', '43'],
@@ -41,7 +50,7 @@ var sauceBrowsers = _.reduce([
 
 ], function (memo, platform) {
   // internet explorer -> ie
-  var label = platform[0].split(' ');
+  let label = platform[0].split(' ');
   if (label.length > 1) {
     label = _.invoke(label, 'charAt', 0);
   }
@@ -50,34 +59,27 @@ var sauceBrowsers = _.reduce([
     'base': 'SauceLabs',
     'browserName': platform[0],
     'version': platform[1],
-    'platform': platform[2]
+    'platform': platform[2],
   }, Boolean);
   return memo;
 }, {});
 
 module.exports = function (config) {
   // Use ENV vars on Travis and sauce.json locally to get credentials
-  if (!process.env.SAUCE_USERNAME) {
-    if (!fs.existsSync('./test/sauce.json')) {
-      console.log('Create a sauce.json with your credentials based on the sauce-sample.json file.');
-      process.exit(1);
-    } else {
-      process.env.SAUCE_USERNAME = require('./sauce').username;
-      process.env.SAUCE_ACCESS_KEY = require('./sauce').accessKey;
-    }
+  if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
+    console.log('SAUCE_USERNAME and SAUCE_ACCESS_KEY env variables are required.');
+    process.exit(1);
   }
 
   config.set({
-    basePath: '../',
-
     frameworks: ['mocha', 'chai', 'sinon'],
 
     files: [
-      { pattern: 'tests.webpack.js', watched: false },
+      { pattern: 'loader.js', watched: false },
     ],
 
     preprocessors: {
-      'tests.webpack.js': ['webpack'],
+      'loader.js': ['webpack'],
     },
 
     webpack: webpackConfigDev,
@@ -86,12 +88,27 @@ module.exports = function (config) {
       noInfo: true,
     },
 
+    webpackMiddleware: {
+      // webpack-dev-middleware configuration
+      stats: {
+        // minimal logging
+        assets: false,
+        colors: true,
+        version: false,
+        hash: false,
+        timings: false,
+        chunks: false,
+        chunkModules: false,
+        children: false,
+      },
+    },
+
     singleRun: true,
 
     // Number of sauce tests to start in parallel
     concurrency: 9,
 
-      // test results reporter to use
+    // test results reporter to use
     reporters: ['dots', 'saucelabs'],
     port: 9876,
     colors: true,
@@ -99,7 +116,7 @@ module.exports = function (config) {
     sauceLabs: {
       build: 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')',
       startConnect: false,
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
     },
 
     captureTimeout: 120000,

@@ -75,14 +75,12 @@ describe('Record Manager', () => {
 
     const sample = getRandomSample();
     sample.save(null, { remote: true });
-    console.log(sample.occurrences.at(0).attributes);
     expect(sample.occurrences.at(0).get('training')).to.be.equal(false);
 
     appModel.set('useTraining', true);
 
     const sample2 = getRandomSample();
     sample2.save(null, { remote: true });
-    console.log(sample2.occurrences.at(0).attributes);
     expect(sample2.occurrences.at(0).get('training')).to.be.equal(true);
   });
 });

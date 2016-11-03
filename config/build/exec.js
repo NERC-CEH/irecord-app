@@ -41,7 +41,7 @@ module.exports = function (grunt) {
      */
     cordova_android_build: {
       command() {
-        var pass = grunt.config('keystore-password');
+        const pass = grunt.config('keystore-password');
 
         return 'cd dist/cordova && ' +
           'mkdir -p dist && ' +
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
 
           'zipalign -v 4 android-release-unsigned.apk main.apk && ' +
 
-          'mv -f main.apk ../../../../../dist/'
+          'mv -f main.apk ../../../../../dist/';
       },
 
       stdout: true,
@@ -64,7 +64,7 @@ module.exports = function (grunt) {
     },
     cordova_android_build_old: {
       command() {
-        var pass = grunt.config('keystore-password');
+        const pass = grunt.config('keystore-password');
 
         return 'cd dist/cordova && ' +
           'mkdir -p dist && ' +
@@ -89,11 +89,11 @@ module.exports = function (grunt) {
           'zipalign -v 4 android-x86-release-unsigned.apk x86.apk && ' +
 
           'mv -f arm7.apk ../../../../../dist/ && ' +
-          'mv -f x86.apk ../../../../../dist/'
+          'mv -f x86.apk ../../../../../dist/';
       },
 
       stdout: true,
       stdin: true,
     },
-  }
+  };
 };

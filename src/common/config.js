@@ -15,7 +15,7 @@ export default {
 
   // logging
   log: {
-    states: ['e', 'w', 'i', 'd'], // see log helper
+    states: ['e', 'w'], // see log helper
     ga_error: true,
   },
 
