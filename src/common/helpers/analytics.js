@@ -2,7 +2,7 @@
  * Google analytics to track the page navigation.
  */
 import Backbone from 'backbone';
-import { Device } from 'helpers';
+import Device from './device';
 import CONFIG from 'config';
 import appModel from '../models/app_model';
 

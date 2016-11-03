@@ -12,8 +12,8 @@
  *
  * Levels values defined in core app module.
  *****************************************************************************/
-import { Analytics } from 'helpers';
 import CONFIG from 'config';
+import Analytics from './analytics';
 
 const ERROR = 'e';
 const WARNING = 'w';

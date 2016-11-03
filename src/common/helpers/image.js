@@ -3,7 +3,10 @@
  *****************************************************************************/
 import Morel from 'morel';
 import _ from 'lodash';
-import { Log, Analytics, Error, Device } from 'helpers';
+import Log from './log';
+import Analytics from './analytics';
+import Error from './error';
+import Device from './device';
 import ImageModel from '../models/image';
 
 const Image = {

@@ -2,7 +2,8 @@
  * App update functionality.
  *****************************************************************************/
 
-import { Log, Analytics } from 'helpers';
+import Log from './log';
+import Analytics from './analytics';
 import CONFIG from 'config';
 import appModel from '../models/app_model';
 
