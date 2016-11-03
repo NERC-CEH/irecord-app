@@ -118,7 +118,7 @@ const marker = {
     location.gridref = LocHelp.coord2grid(location);
 
     // trigger won't work to bubble up
-    this.triggerMethod('location:select:map', this, location);
+    this.triggerMethod('location:select:map', location);
     this.updateMapMarker(location);
 
     // // zoom to marker

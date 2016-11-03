@@ -75,7 +75,7 @@ const API = {
         vent: App,
       });
 
-      function onLocationSelect(view, loc, createNew) {
+      function onLocationSelect(loc, createNew) {
         if (typeof loc !== 'object') {
           // jQuery event object bug fix
           Log('Location:Controller:onLocationSelect: loc is not an object', 'e');
@@ -106,7 +106,7 @@ const API = {
         }
       }
 
-      function onLocationNameChange(view, name) {
+      function onLocationNameChange(name) {
         if (!name || typeof name !== 'string') {
           return;
         }
@@ -165,18 +165,18 @@ const API = {
         });
       }
 
-      mainView.on('childview:location:select:past', (view, location) => {
-        onLocationSelect(view, location, true);
+      mainView.on('childview:location:select:past', (location) => {
+        onLocationSelect(location, true);
         onPageExit();
       });
-      mainView.on('childview:location:delete', (view, model) => {
+      mainView.on('childview:location:delete', (model) => {
         PastLocationsController.deleteLocation(model);
       });
-      mainView.on('childview:location:edit', (view, model) => {
+      mainView.on('childview:location:edit', (model) => {
         PastLocationsController.editLocation(model);
       });
       mainView.on('childview:location:select:map', onLocationSelect);
-      mainView.on('childview:location:select:gridref', (view, data) => {
+      mainView.on('childview:location:select:gridref', (data) => {
         /**
          * Validates the new location
          * @param attrs
@@ -223,7 +223,7 @@ const API = {
           const accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
           location.accuracy = accuracy;
 
-          onLocationSelect(view, location);
+          onLocationSelect(location);
           onPageExit();
         } else {
           App.trigger('gridref:form:data:invalid', validationError);

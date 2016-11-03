@@ -44,7 +44,7 @@ export default Marionette.View.extend({
       name,
     };
     // trigger won't work to bubble up
-    this.triggerMethod('location:select:gridref', this, data);
+    this.triggerMethod('location:select:gridref', data);
   },
 
   onFormDataInvalid(errors) {

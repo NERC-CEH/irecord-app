@@ -34,7 +34,7 @@ const MapView = Marionette.View.extend({
   },
 
   changeName(e) {
-    this.triggerMethod('location:name:change', this, $(e.target).val());
+    this.triggerMethod('location:name:change', $(e.target).val());
   },
 
   initialize() {

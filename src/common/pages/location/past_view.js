@@ -5,7 +5,6 @@ import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import PastLocationsView from '../../views/past_locations_view';
 
-
 export default Marionette.View.extend({
   template: JST['common/location/past'],
 
@@ -29,11 +28,11 @@ export default Marionette.View.extend({
     this.triggerMethod('location:edit', view.model);
   },
 
-  onShow() {
+  onAttach() {
     const pastLocationsView = new PastLocationsView({
       model: this.model.get('appModel'),
     });
 
-    this.locations.show(pastLocationsView);
+    this.getRegion('locations').show(pastLocationsView);
   },
 });
