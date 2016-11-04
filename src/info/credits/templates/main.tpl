@@ -1,4 +1,5 @@
 <ul class="table-view">
+  <li><img src="images/sponsor_logo.png" alt=""></li>
   <li>
     <p>
       <strong>We are very grateful for all the people that helped to
@@ -21,7 +22,8 @@
     </ul>
     </p>
     <p>
-      This app was part-funded by the Centre for Ecology & Hydrology/Joint Nature Conservation Committee partnership supporting BRC.
+      This app was part-funded by the Centre for Ecology & Hydrology/Joint Nature
+      Conservation Committee partnership supporting BRC.
     </p>
   </li>
 </ul>
