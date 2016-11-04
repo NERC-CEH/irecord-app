@@ -213,8 +213,10 @@ export default Marionette.CompositeView.extend({
   },
 
   serializeData() {
+    const activity = this.options.appModel.getAttrLock('activity') || {};
     return {
       useTraining: this.options.appModel.get('useTraining'),
+      activity: activity.title,
     };
   },
 });
