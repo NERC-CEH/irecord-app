@@ -56,7 +56,7 @@ const API = {
         };
       },
 
-      onShow() {
+      onAttach() {
         const $input = this.$el.find('#location-name');
         $input.focus();
         if (Device.isAndroid()) {

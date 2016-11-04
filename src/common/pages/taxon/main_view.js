@@ -103,7 +103,7 @@ export default Marionette.View.extend({
     this.selectedIndex = 0;
   },
 
-  onShow() {
+  onAttach() {
     // preselect the input for typing
     const $input = this.$el.find('#taxon').focus();
     if (window.cordova && Device.isAndroid()) {
