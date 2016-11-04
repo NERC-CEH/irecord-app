@@ -396,14 +396,14 @@ input {
   }
 
   .delete {
-    width: 5%;
+    width: 7%;
+    height: 100%;
     position: absolute;
     top: 0;
     right: 0;
 
-    margin-right: 3px;
-    margin-top: 14px;
-
+    padding-top: 13px;
+    text-align: center;
     color: $color-gray;
   }
 }

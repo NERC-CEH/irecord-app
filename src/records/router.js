@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Record router.
  *****************************************************************************/
+import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import { Log, Device } from 'helpers';
 import App from 'app';
@@ -18,6 +19,7 @@ import TaxonController from '../common/pages/taxon/controller';
 App.records = {};
 
 let scroll = 0; // last scroll position
+const $mainRegion = $('#main');
 
 const Router = Marionette.AppRouter.extend({
   routes: {
@@ -27,14 +29,14 @@ const Router = Marionette.AppRouter.extend({
         if (Device.isIOS()) {
           // iOS scroll glitch fix
           setTimeout(() => {
-            scrollTo(0, scroll);
+            $mainRegion.scrollTop(scroll);
           }, 1);
         } else {
-          scrollTo(0, scroll);
+          $mainRegion.scrollTop(scroll);
         }
       },
       leave() {
-        scroll = scrollY;
+        scroll = $mainRegion.scrollTop();
       },
     },
     'records/new(/)': TaxonController.show,

@@ -41,14 +41,6 @@ _.extend(Backbone.Router.prototype, Backbone.Events, {
 
       fn.apply(this, args);
 
-      /** ****************
-       * My Modification - every page scroll to start
-       ******************/
-      scrollTo(0, 0);
-      /** ****************
-       * End
-       ******************/
-
       if (after && after.apply(this, args) === false) return;
 
       if (typeof callback == 'object') {
