@@ -61,7 +61,7 @@ module.exports = grunt => {
 
       'exec:cordova_clean_www',
       'exec:cordova_copy_dist',
-      'cordova:_prepAndroid',
+      // 'cordova:_prepAndroid', // !!!!! use this to switch between android and ios
       'replace:cordova_config',
       'exec:cordova_add_platforms',
     ],
