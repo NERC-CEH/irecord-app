@@ -1,6 +1,6 @@
-//https://github.com/2gis/mock-geolocation
-(function(window, navigator) {
-  var exports = {},
+// https://github.com/2gis/mock-geolocation
+(function (window, navigator) {
+  let exports = {},
       counterId = 0,
       successData = {
         accuracy: 50,
@@ -9,27 +9,27 @@
         heading: null,
         latitude: 54.9799,
         longitude: 82.89683699999999,
-        speed: null
+        speed: null,
       },
       errorData = {
         code: 1,
-        message: 'The acquisition of the geolocation information failed because the page didn\'t have the permission to do it.'
+        message: 'The acquisition of the geolocation information failed because the page didn\'t have the permission to do it.',
       };
 
-  var getCurrentPositionArguments = {},
+  let getCurrentPositionArguments = {},
       watchPositionArguments = {},
       _navigatorGeolocation;
 
-  var changeGeolocation = function(object) {
+  const changeGeolocation = function (object) {
     if (Object.defineProperty) {
       Object.defineProperty(navigator, 'geolocation', {
-        get: function() {
+        get() {
           return object;
         },
-        configurable: true
+        configurable: true,
       });
     } else if (navigator.__defineGetter__) {
-      navigator.__defineGetter__('geolocation', function() {
+      navigator.__defineGetter__('geolocation', function () {
         return object;
       });
     } else {
@@ -37,21 +37,21 @@
     }
   };
 
-  exports.use = function() {
+  exports.use = function () {
     _navigatorGeolocation = navigator.geolocation;
 
     changeGeolocation({
-      getCurrentPosition: function(success, error, opt) {
+      getCurrentPosition(success, error, opt) {
         counterId++;
         getCurrentPositionArguments[counterId] = arguments;
       },
-      watchPosition: function(success, error, opt) {
+      watchPosition(success, error, opt) {
         counterId++;
         getCurrentPositionArguments[counterId] = arguments;
         watchPositionArguments[counterId] = arguments;
         return counterId;
       },
-      clearWatch: function(i) {
+      clearWatch(i) {
         if (watchPositionArguments[i]) {
           delete watchPositionArguments[i];
 
@@ -59,13 +59,13 @@
             delete getCurrentPositionArguments[i];
           }
         }
-      }
+      },
     });
 
     return this;
   };
 
-  exports.restore = function() {
+  exports.restore = function () {
     if (_navigatorGeolocation) {
       changeGeolocation(_navigatorGeolocation);
     } else {
@@ -80,11 +80,11 @@
 
   function changeSuccessData(options) {
     // copy available parameter to successData
-    for (var i in successData) {
+    Object.keys(successData).forEach(function (i) {
       if (options.hasOwnProperty(i)) {
         successData[i] = options[i];
       }
-    }
+    });
 
     // lat and lng are available parameters too
     if (options.lat !== undefined) {
@@ -98,13 +98,13 @@
   function getRequestData(options) {
     options = options || {};
 
-    var data = {
-      coords: {}
+    const data = {
+      coords: {},
     };
 
-    for (var i in successData) {
+    Object.keys(successData).forEach(function (i) {
       data.coords[i] = successData[i];
-    }
+    });
 
     if (options.timestamp !== undefined) {
       data.timestamp = options.timestamp;
@@ -118,7 +118,7 @@
   function getErrorData(options) {
     options = options || {};
 
-    var data = {};
+    const data = {};
 
     if (options.code !== undefined) {
       data.code = options.code;
@@ -135,40 +135,41 @@
     return data;
   }
 
-  exports.send = function(options) {
+  exports.send = function (options) {
     if (options) {
       changeSuccessData(options);
     }
 
-    for (var i in getCurrentPositionArguments) {
+
+    Object.keys(getCurrentPositionArguments).forEach(function (i) {
       if (typeof getCurrentPositionArguments[i][0] === 'function') {
         getCurrentPositionArguments[i][0](getRequestData(options));
       }
-    }
+    });
 
     getCurrentPositionArguments = {};
 
     return this;
   };
 
-  exports.sendError = function(options) {
-    for (var i in getCurrentPositionArguments) {
+  exports.sendError = function (options) {
+    Object.keys(getCurrentPositionArguments).forEach(function (i) {
       if (typeof getCurrentPositionArguments[i][1] === 'function') {
         getCurrentPositionArguments[i][1](getErrorData(options));
       }
-    }
+    });
 
     getCurrentPositionArguments = {};
 
     return this;
   };
 
-  exports.change = function(options) {
+  exports.change = function (options) {
     if (options) {
       changeSuccessData(options);
     }
 
-    for (var i in watchPositionArguments) {
+    Object.keys(watchPositionArguments).forEach(function (i) {
       if (typeof watchPositionArguments[i][0] === 'function') {
         watchPositionArguments[i][0](getRequestData(options));
       }
@@ -176,13 +177,13 @@
       if (getCurrentPositionArguments[i]) {
         delete getCurrentPositionArguments[i];
       }
-    }
+    });
 
     return this;
   };
 
-  exports.changeError = function(options) {
-    for (var i in watchPositionArguments) {
+  exports.changeError = function (options) {
+    Object.keys(watchPositionArguments).forEach(function (i) {
       if (typeof watchPositionArguments[i][1] === 'function') {
         watchPositionArguments[i][1](getErrorData(options));
       }
@@ -190,15 +191,15 @@
       if (getCurrentPositionArguments[i]) {
         delete getCurrentPositionArguments[i];
       }
-    }
+    });
 
     return this;
   };
 
   function expose() {
-    var _geolocate = window.geolocate;
+    const _geolocate = window.geolocate;
 
-    exports.noConflict = function() {
+    exports.noConflict = function () {
       if (_geolocate !== undefined) {
         window.geolocate = _geolocate;
       } else {

@@ -1,0 +1,77 @@
+@import "./_variables.scss";
+
+.tabs-container {
+  position: relative;
+  height: 100%;
+
+  padding-top: 38.5px;
+  margin: 0 (-$main-content-margin);
+  overflow: hidden;
+
+  .tabs {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    color: $color-white;
+    background-color: $color-main-light;
+
+    ul {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -moz-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-direction: normal;
+      -webkit-box-orient: horizontal;
+      -webkit-flex-direction: row;
+      -moz-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+
+      margin: 0;
+      padding: 0;
+      justify-content: center;
+      list-style: none;
+    }
+
+    li {
+      display: block;
+      width: 100%;
+      padding: 8.75px;
+
+      border-left: 1px solid rgba(255,255,255,0.44);
+
+      text-decoration: none;
+      text-align: center;
+      font-size: 12.5px;
+      font-weight: 500;
+
+      &:hover, &:focus {
+        background: $color-gray-light;
+        color: $button-black;
+      }
+
+      &.active {
+        background-color: $color-white;
+        color: $button-black;
+      ;
+      }
+    }
+  }
+
+  .tabs + .content {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  //remove hover on touch devices
+  @media (pointer:coarse) {
+    .tabs li:hover {
+      background-color: inherit;
+      color: inherit;
+    }
+  }
+}

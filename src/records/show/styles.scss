@@ -1,0 +1,38 @@
+@import "../../common/styles/_variables.scss";
+//MAIN
+.species .descript {
+  width: 100%;
+  padding-left: 1em;
+}
+
+.info li.table-view-cell {
+  padding-right: 2%;
+}
+
+.descript.comment {
+  white-space: initial;
+  text-align: left;
+  width: auto;
+  float: none;
+  margin-left: 8% !important;
+  display: block !important;
+}
+
+#img-array {
+  height: 80px;
+  padding: 0;
+
+  white-space: nowrap;
+  overflow: overlay;
+
+  img {
+    width: 60px;
+  }
+}
+
+#occurrence-id {
+  position: fixed;
+  bottom: 0;
+  left: 10px;
+  color: $color-gray;
+}

@@ -34,9 +34,9 @@ testing.resetRecordsStatus = function () {
 testing.addDummyRecord = function (count = 1, imageData, testID) {
   if (!imageData) {
     // create random image
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const imgData = ctx.createImageData(1000, 1000); //px
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const imgData = ctx.createImageData(1000, 1000); // px
 
     for (let i = 0; i < imgData.data.length; i += 4) {
       imgData.data[i] = (Math.random() * 100).toFixed(0);
@@ -63,12 +63,12 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
   const occurrence = new Occurrence({
     taxon: {
       array_id: 12186,
-      common_name: "Tuberous Pea",
-      found_in_name: "common_name",
+      common_name: 'Tuberous Pea',
+      found_in_name: 'common_name',
       group: 27,
-      scientific_name: "Lathyrus tuberosus",
+      scientific_name: 'Lathyrus tuberosus',
       species_id: 3,
-      synonym: "Fyfield Pea",
+      synonym: 'Fyfield Pea',
       warehouse_id: 113813,
     },
     comment: sampleTestID,
@@ -81,11 +81,11 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
     location_type: 'latlon',
     location: {
       accuracy: 1,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
       name: sampleTestID,
-      source: "map",
+      source: 'map',
     },
   }, {
     occurrences: [occurrence],
@@ -129,22 +129,22 @@ function createSamples(manager) {
     location_type: 'latlon',
     location: {
       accuracy: 1,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
-      source: "map",
+      source: 'map',
       name: 'Wallingford',
     },
   });
   occurrence = new sample.Occurrence({
     taxon: {
       array_id: 12186,
-      common_name: "10-spot Ladybird",
-      found_in_name: "common_name",
+      common_name: '10-spot Ladybird',
+      found_in_name: 'common_name',
       group: 27,
-      scientific_name: "Lathyrus tuberosus",
+      scientific_name: 'Lathyrus tuberosus',
       species_id: 3,
-      synonym: "Fyfield Pea",
+      synonym: 'Fyfield Pea',
       warehouse_id: 113813,
     },
     stage: 'Adult',
@@ -164,10 +164,10 @@ function createSamples(manager) {
     location_type: 'latlon',
     location: {
       accuracy: 1,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
-      source: "map",
+      source: 'map',
       name: 'Wallingford',
     },
   });
@@ -175,12 +175,12 @@ function createSamples(manager) {
   occurrence = new sample.Occurrence({
     taxon: {
       array_id: 12186,
-      common_name: "Red Kite",
-      found_in_name: "common_name",
+      common_name: 'Red Kite',
+      found_in_name: 'common_name',
       group: 27,
-      scientific_name: "Lathyrus tuberosus",
+      scientific_name: 'Lathyrus tuberosus',
       species_id: 3,
-      synonym: "Fyfield Pea",
+      synonym: 'Fyfield Pea',
       warehouse_id: 113813,
     },
     stage: 'Pre-adult',
@@ -191,14 +191,14 @@ function createSamples(manager) {
 
   // ***create sample***
   sample = new Sample({
-    date: new Date(2016,3,11),
+    date: new Date(2016, 3, 11),
     location_type: 'latlon',
     location: {
       accuracy: 1,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
-      source: "map",
+      source: 'map',
       name: 'Wallingford',
     },
   });
@@ -206,12 +206,12 @@ function createSamples(manager) {
   occurrence = new sample.Occurrence({
     taxon: {
       array_id: 12186,
-      common_name: "Meadow Brown",
-      found_in_name: "common_name",
+      common_name: 'Meadow Brown',
+      found_in_name: 'common_name',
       group: 27,
-      scientific_name: "Lathyrus tuberosus",
+      scientific_name: 'Lathyrus tuberosus',
       species_id: 3,
-      synonym: "Fyfield Pea",
+      synonym: 'Fyfield Pea',
       warehouse_id: 113813,
     },
     stage: 'Adult',
@@ -232,10 +232,10 @@ function createSamples(manager) {
     location_type: 'latlon',
     location: {
       accuracy: 1,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
-      source: "map",
+      source: 'map',
       name: 'Wallingford',
     },
   });
@@ -243,9 +243,9 @@ function createSamples(manager) {
     taxon: {
       array_id: 12186,
       common_name: 'Wild Cherry',
-      found_in_name: "common_name",
+      found_in_name: 'common_name',
       group: 27,
-      scientific_name: "Volucella inanis",
+      scientific_name: 'Volucella inanis',
       species_id: 3,
       warehouse_id: 113813,
     },
@@ -256,14 +256,14 @@ function createSamples(manager) {
 
   // ***create sample***
   sample = new Sample({
-    date: new Date(2016,4,11),
+    date: new Date(2016, 4, 11),
     location_type: 'latlon',
     location: {
       accuracy: 7,
-      gridref: "SD483663",
+      gridref: 'SD483663',
       latitude: 54.0902,
       longitude: -2.7918,
-      source: "map",
+      source: 'map',
       name: 'Lancaster, Slyne Hall',
     },
   });
@@ -271,15 +271,15 @@ function createSamples(manager) {
     taxon: {
       array_id: 12186,
       common_name: 'Great Tit',
-      found_in_name: "common_name",
+      found_in_name: 'common_name',
       group: 27,
-      scientific_name: "Parus major",
+      scientific_name: 'Parus major',
       species_id: 3,
       warehouse_id: 113813,
     },
     stage: 'Adult',
     number: '6-20',
-    comment: 'Came very close to where we were.'
+    comment: 'Came very close to where we were.',
   });
   image = new occurrence.Image({
     data: images.tit,
@@ -291,24 +291,24 @@ function createSamples(manager) {
 
   // ***create sample***
   sample = new Sample({
-    date: new Date(2016,2,11),
+    date: new Date(2016, 2, 11),
     location_type: 'latlon',
     location: {
       accuracy: 8,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
-      source: "map",
+      source: 'map',
       name: 'Wallingford',
     },
   });
   occurrence = new sample.Occurrence({
     taxon: {
       array_id: 12186,
-      common_name: "Grey Squirrel",
-      found_in_name: "common_name",
+      common_name: 'Grey Squirrel',
+      found_in_name: 'common_name',
       group: 27,
-      scientific_name: "Volucella inanis",
+      scientific_name: 'Volucella inanis',
       species_id: 3,
       warehouse_id: 113813,
     },
@@ -317,7 +317,7 @@ function createSamples(manager) {
     data: images.squirrel,
     type: 'jpg',
     width: 1500,
-    height: 2000
+    height: 2000,
   });
   occurrence.addImage(image);
   sample.addOccurrence(occurrence);
@@ -329,19 +329,19 @@ function createSamples(manager) {
     location_type: 'latlon',
     location: {
       accuracy: 1,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
-      source: "map",
+      source: 'map',
       name: 'Lancaster',
     },
   });
   occurrence = new sample.Occurrence({
     taxon: {
       array_id: 12186,
-      found_in_name: "scientific_name",
+      found_in_name: 'scientific_name',
       group: 27,
-      scientific_name: "Arion",
+      scientific_name: 'Arion',
       species_id: 3,
       warehouse_id: 113813,
     },
@@ -360,19 +360,19 @@ function createSamples(manager) {
     location_type: 'latlon',
     location: {
       accuracy: 1,
-      gridref: "SD75",
+      gridref: 'SD75',
       latitude: 54.0310862,
       longitude: -2.3106393,
-      source: "map",
+      source: 'map',
       name: 'Carlisle',
     },
   });
   occurrence = new sample.Occurrence({
     taxon: {
       array_id: 12186,
-      found_in_name: "scientific_name",
+      found_in_name: 'scientific_name',
       group: 27,
-      scientific_name: "Volucella inanis",
+      scientific_name: 'Volucella inanis',
       species_id: 3,
       warehouse_id: 113813,
     },
