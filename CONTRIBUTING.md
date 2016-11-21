@@ -39,7 +39,7 @@ transpiles check the [Babel Docs](https://babeljs.io/docs/learn-es2015).
 
 The code is packaged up by [Webpack](https://webpack.github.io) module bundler. It
 takes care of passing the ES6 code through Babel and pulling the code together
-to make an *dist/app.js* file that is loaded in the *index.html*.
+to make an *dist/main/app.js* file that is loaded in the *index.html*.
 
 
 ## Style Guide
@@ -74,9 +74,7 @@ The app is structured in such a way:
 │   │   └── **component**
 │   │       └── **sub component**
 │   │           └── templates
-│   ├── config
 │   ├── data
-│   │   └── raw
 │   └── helpers
 ├── styles
 │   ├── common
@@ -87,7 +85,7 @@ The app is structured in such a way:
 ## Components folder
 
 * App **components** - a group of page-like components (sub components) providing similar
- functionality eg. records, maping, information pages. 
+ functionality eg. records, mapping, information pages. 
  Components should work independently between each other, so that for example mapping should
  have no dependencies on record components.
 
@@ -131,25 +129,14 @@ grunt test
 
 # Cordova
 
-## Signing
+## iOS 
 
-Generate a key with first one if don't have one
+Use XCode to build and upload
+
+## Android
+
+Run and upload binaries from cordova/dist
 ```bash
-jarsigner -keytool -genkey -v -keystore irecord.keystore -alias irecord -keyalg RSA -keysize 2048 -validity 10000
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore irecord.keystore android-release-unsigned.apk irecord
+grunt cordova:android
+grunt cordova:android:old
 ```
-
-Zipalign is in sdk build tools. On Mac /Applications/Android/sdk/build-tools/
-
-```bash
-zipalign -v 4 android-release-unsigned.apk irecord.apk
-```
-
-### Android
-
-Add crosswalk to older platforms.
-```bash
-cordova plugin add cordova-plugin-crosswalk-webview
-```
-
-Change config.xml, sdk version and build version starting 19->14.

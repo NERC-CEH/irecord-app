@@ -1,0 +1,120 @@
+ul.table-view {
+  li.swipe {
+    &.table-view-cell {
+      padding-right: 33px;
+    }
+
+    min-height: 65px;
+    border-color: $color-gray;
+
+    font-size: 13.3333px;
+    font-weight: normal;
+    height: 16px;
+    line-height: 17.3333px;
+
+    //shrink the size nicely
+    &.shrink {
+      min-height: 0;
+      margin: 0;
+      height: 0;
+      padding: 0;
+    }
+    -webkit-transition:height 200ms ease-in-out;
+    -moz-transition:height 200ms ease-in-out;
+    -o-transition:height 200ms ease-in-out;
+    transition:height 200ms ease-in-out;
+
+    &.empty {
+      height: initial !important;
+      min-height: initial !important;
+      padding: 13px 0;
+      border: none;
+      margin: 0;
+
+      list-style: none;
+      text-align: center;
+
+      color: $color-black;
+
+      a {
+        line-height: $button-height;
+        position: relative;
+        right: 0;
+        margin: 31px auto 0;
+      }
+    }
+
+    .mobile-swipe-edit #delete {
+      padding-top: 20px;
+    }
+
+    .photo {
+      margin: -9px 8px 0 -14px;
+      height: 60px;
+      width: 60px;
+      background-color: #E5EACD;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+
+    a {
+      cursor: default;
+
+      //mobile swipe styles
+      transition: transform 0.3s cubic-bezier(0, 0, 0, 1);
+      z-index: 10;
+      background-color: $color-white;
+
+      &:hover {
+        background-color: $color-gray-light;
+
+        .online-status {
+          display: none;
+        }
+
+        .edit {
+          display: inline-block;
+
+          .delete {
+            margin-left: 25px;
+          }
+        }
+      }
+
+      &.mobile:hover {
+        background-color: $color-white;
+
+        .online-status {
+          display: inline-block;
+        }
+
+        .edit {
+          .delete {
+            margin-left: 0;
+          }
+        }
+      }
+
+      .edit {
+        display: none;
+        padding-top: 13px;
+
+        color: $color-gray-dark;
+
+        .icon{
+          cursor: initial;
+          &:before {
+            font-size: 17px;
+          }
+          &:hover {
+            color: $button-black;
+          }
+        }
+      }
+    }
+  }
+}
