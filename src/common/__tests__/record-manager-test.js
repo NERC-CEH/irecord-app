@@ -10,7 +10,6 @@ describe('Record Manager', () => {
   let server;
 
   const okResponse = [200, { 'Content-Type': 'text/html' }, ''];
-  const errResponse = [502, { 'Content-Type': 'text/html' }, ''];
 
   let userLogin;
   before(() => {
@@ -18,9 +17,10 @@ describe('Record Manager', () => {
     userLogin = sinon.stub(userModel, 'hasLogIn').returns(true);
   });
 
-  after((done) => {
-    recordManager.clear(done);
+  after(function (done) {
+    this.timeout(5000);
     userLogin.reset();
+    recordManager.clear(done);
   });
 
   it('should be a Morel Manager', () => {
@@ -47,8 +47,10 @@ describe('Record Manager', () => {
     return sample;
   }
 
-  const RECORD_COUNT = 200;
+  const RECORD_COUNT = 500;
   it(`should be able to send ${RECORD_COUNT} records`, function (done) {
+    this.timeout(5000);
+
     const samples = [];
     for (let i = 0; i < RECORD_COUNT; i++) {
       samples.push(getRandomSample());
