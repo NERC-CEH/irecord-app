@@ -1,33 +1,11 @@
 import $ from 'jquery';
 import Morel from 'morel';
+import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { Device, Log } from 'helpers';
 import CONFIG from 'config';
 import Sample from './models/sample';
 import appModel from './models/app_model';
 import userModel from './models/user_model';
-
-const morelConfiguration = $.extend(CONFIG.morel.manager, {
-  Storage: Morel.DatabaseStorage,
-  Sample,
-  onSend(sample) {
-    if (userModel.hasLogIn()) {
-      // attach device information
-      sample.set('device', Device.getPlatform());
-      sample.set('device_version', Device.getVersion());
-
-      // attach user information
-      userModel.appendSampleUser(sample);
-
-      // training setting
-      const training = appModel.get('useTraining');
-      sample.occurrences.at(0).set('training', training);
-    } else {
-      // don't send until the user has logged in
-      return true;
-    }
-    return null;
-  },
-});
 
 class Manager extends Morel {
   syncAll(method, collection, options = {}) {
@@ -125,6 +103,38 @@ class Manager extends Morel {
       that.clear(callback);
     });
   }
+}
+
+function onSend(sample) {
+  if (userModel.hasLogIn()) {
+    // attach device information
+    sample.set('device', Device.getPlatform());
+    sample.set('device_version', Device.getVersion());
+
+    // attach user information
+    userModel.appendSampleUser(sample);
+
+    // training setting
+    const training = appModel.get('useTraining');
+    sample.occurrences.at(0).set('training', training);
+  } else {
+    // don't send until the user has logged in
+    return true;
+  }
+  return null;
+}
+
+
+const morelConfiguration = $.extend(CONFIG.morel.manager, {
+  Sample,
+  onSend,
+});
+
+// enable SQLite
+if (window.cordova) {
+  morelConfiguration.storage = {
+    driverOrder: [CordovaSQLiteDriver, 'indexeddb', 'websql'],
+  };
 }
 
 const recordManager = new Manager(morelConfiguration);
