@@ -10,7 +10,7 @@ module.exports = function (grunt) {
           'mkdir -p ../../../dist/_build/ && ' +
           'mv species*data.json ../../../dist/_build/ && ' +
           'cp *data.json ../../../dist/_build/ && ' +
-          'rm warnings.log species_cleaned.csv';
+          'rm -f warnings.log species_cleaned.csv scripts/*.pyc';
       },
       stdout: true,
     },
