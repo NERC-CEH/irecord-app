@@ -222,6 +222,10 @@ class DatabaseStorage {
       callback(err);
     }
   }
+
+  delete() {
+    this.indexedDB.deleteDatabase(this.NAME);
+  }
 }
 
 const API = {
@@ -318,6 +322,7 @@ const API = {
             Log('Update: clearing old db', 'i');
             oldDB.clear(() => {
               Log('Update: finished', 'i');
+              oldDB.delete();
               callback(null, true); // fully restart afterwards
             });
           });
