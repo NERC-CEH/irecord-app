@@ -2,108 +2,19 @@
  * App update functionality.
  *****************************************************************************/
 
-import Log from './log';
-import Analytics from './analytics';
+import App from 'app';
 import CONFIG from 'config';
+import recordManager from '../record_manager';
+import Log from './log';
+import Error from './error';
+import Analytics from './analytics';
 import appModel from '../models/app_model';
 
-const API = {
-  /**
-   * Main update function.
-   */
-  run(callback) {
-    const currentVersion = appModel.get('appVersion');
-    const newVersion = CONFIG.version;
-
-    if (currentVersion !== newVersion) {
-      // set new app version
-      API._updateAppVersion(currentVersion, newVersion);
-
-      // find first update
-      const firstUpdate = API._findFirst(API.updatesSeq, currentVersion);
-      if (firstUpdate < 0) return callback(); // no update for this version
-
-      // apply all updates
-      return API._applyUpdates(firstUpdate, callback);
-    }
-
-    callback();
-  },
-
-  /**
-   * The sequence of updates that should take place.
-   * @type {string[]}
-   */
-  updatesSeq: [],
-
-  /**
-   * Update functions.
-   * @type {{['1.1.0']: (())}}
-   */
-  updates: {
-
-  },
-
-  /**
-   * Returns the index of the first found update in sequence.
-   * @param updatesSeq
-   * @param newVersion
-   * @private
-   */
-  _findFirst(updatesSeq = API.updatesSeq, currentVersion) {
-    if (!updatesSeq.length) return -1;
-
-    let firstVersion = -1;
-
-    API.updatesSeq.some((version, index) => {
-      if (versionCompare(version, currentVersion) === 1) {
-        firstVersion = index;
-        return true;
-      }
-    });
-
-    return firstVersion;
-  },
-
-  /**
-   * Recursively apply all updates.
-   * @param updateIndex
-   * @param callback
-   * @private
-   */
-  _applyUpdates(updateIndex, callback) {
-    const update = API.updates[API.updatesSeq[updateIndex]];
-
-    if (typeof update !== 'function') {
-      Log('Update: error with update function', 'e');
-      return callback();
-    }
-
-    return update(() => {
-      // check if last update
-      if (API.updatesSeq.length <= updateIndex) {
-        return callback();
-      }
-
-      API._applyUpdates(updateIndex + 1, callback);
-    });
-  },
-
-  _updateAppVersion(currentVersion, newVersion) {
-    appModel.set('appVersion', newVersion);
-    appModel.save();
-
-    // log only updates and not init as no prev value on init
-    if (currentVersion) {
-      Log('Update');
-      Analytics.trackEvent('App', 'updated');
-    }
-  },
-};
+const MIN_UPDATE_TIME = 3000; // show updating dialog for minimum seconds
 
 /**
  * https://gist.github.com/alexey-bass/1115557
- * Simply compares two string version values.
+ * Simply compares left version to right one.
  *
  * Example:
  * versionCompare('1.1', '1.2') => -1
@@ -142,5 +53,349 @@ function versionCompare(left, right) {
 
   return 0;
 }
+
+
+/**
+ * part of 1.2.2 update
+ */
+class DatabaseStorage {
+  constructor(options = {}) {
+    // because of iOS8 bug on home screen: null & readonly window.indexedDB
+    this.indexedDB = window._indexedDB || window.indexedDB;
+    this.IDBKeyRange = window._IDBKeyRange || window.IDBKeyRange;
+
+    this.VERSION = 1;
+    this.STORE_NAME = 'samples';
+
+    this.NAME = `morel-${options.appname}`;
+  }
+
+  /**
+   * Brings back all saved data from the database.
+   */
+  getAll(callback) {
+    const that = this;
+    this.open((err, store) => {
+      if (err) {
+        callback(err);
+        return;
+      }
+      try {
+        // Get everything in the store
+        const keyRange = that.IDBKeyRange.lowerBound(0);
+        const req = store.openCursor(keyRange);
+        const data = {};
+
+        req.onsuccess = (e) => {
+          try {
+            const result = e.target.result;
+
+            // If there's data, add it to array
+            if (result) {
+              data[result.key] = result.value;
+              result.continue();
+
+              // Reach the end of the data
+            } else {
+              callback(null, data);
+            }
+          } catch (err) {
+            callback && callback(err);
+          }
+        };
+
+        req.onerror = (e) => {
+          console.error('Database error.');
+          console.error(e.target.error);
+          const error = new Error(e.target.error);
+          callback(error);
+        };
+      } catch (err) {
+        callback && callback(err);
+      }
+    });
+  }
+
+  /**
+   * Clears all the saved data.
+   */
+  clear(callback) {
+    this.open((err, store) => {
+      if (err) {
+        callback && callback(err);
+        return;
+      }
+
+      try {
+        const req = store.clear();
+
+        req.onsuccess = () => {
+          callback && callback();
+        };
+
+        req.onerror = (e) => {
+          console.error('Database error.');
+          console.error(e.target.error);
+          const error = new Error(e.target.error);
+          callback && callback(error);
+        };
+      } catch (err) {
+        callback && callback(err);
+      }
+    });
+  }
+
+  /**
+   * Opens a database connection and returns a store.
+   *
+   * @param onError
+   * @param callback
+   */
+  open(callback) {
+    const that = this;
+    let req = null;
+
+    try {
+      req = this.indexedDB.open(this.NAME, this.VERSION);
+
+      /**
+       * On Database opening success, returns the Records object store.
+       *
+       * @param e
+       */
+      req.onsuccess = (e) => {
+        try {
+          const db = e.target.result;
+          const transaction = db.transaction([that.STORE_NAME], 'readwrite');
+          if (transaction) {
+            const store = transaction.objectStore(that.STORE_NAME);
+            if (store) {
+              callback(null, store);
+            } else {
+              const err = new Error('Database Problem: no such store');
+              callback(err);
+            }
+          }
+        } catch (err) {
+          callback(err);
+        }
+      };
+
+      /**
+       * If the Database needs an upgrade or is initialising.
+       *
+       * @param e
+       */
+      req.onupgradeneeded = (e) => {
+        try {
+          const db = e.target.result;
+          db.createObjectStore(that.STORE_NAME);
+        } catch (err) {
+          callback && callback(err);
+        }
+      };
+
+      /**
+       * Error of opening the database.
+       *
+       * @param e
+       */
+      req.onerror = (e) => {
+        console.error('Database error.');
+        console.error(e.target.error);
+        const error = new Error(e.target.error);
+        callback(error);
+      };
+
+      /**
+       * Error on database being blocked.
+       *
+       * @param e
+       */
+      req.onblocked = (e) => {
+        console.error('Database error.');
+        console.error(e.target.error);
+        const error = new Error(e.target.error);
+        callback(error);
+      };
+    } catch (err) {
+      callback(err);
+    }
+  }
+}
+
+const API = {
+  /**
+   * Main update function.
+   */
+  run(callback) {
+    const currentVersion = appModel.get('appVersion');
+    const newVersion = CONFIG.version;
+
+    if (currentVersion !== newVersion) {
+      // todo: check for backward downgrade
+      // set new app version
+      API._updateAppVersion(currentVersion, newVersion);
+
+      // first install
+      if (!currentVersion) callback();
+
+      // find first update
+      const firstUpdate = API._findFirst(API.updatesSeq, currentVersion);
+      if (firstUpdate < 0) return callback(); // no update for this version
+
+      // apply all updates
+      App.regions.getRegion('dialog').show({
+        title: 'Updating',
+        body: 'This should take only a moment...',
+        hideAllowed: false,
+      });
+      const startTime = Date.now();
+      return API._applyUpdates(firstUpdate, (error) => {
+        if (error) {
+          App.regions.getRegion('dialog')
+            .error('Sorry, an error has occurred while updating the app');
+          return null;
+        }
+
+        const timeDiff = (Date.now() - startTime);
+        if (timeDiff < MIN_UPDATE_TIME) {
+          setTimeout(() => {
+            App.regions.getRegion('dialog').hide(true);
+            callback();
+          }, MIN_UPDATE_TIME - timeDiff);
+        } else {
+          App.regions.getRegion('dialog').hide(true);
+          callback();
+        }
+      });
+    }
+
+    callback();
+    return null;
+  },
+
+  /**
+   * The sequence of updates that should take place.
+   * @type {string[]}
+   */
+  updatesSeq: ['1.2.2'],
+
+  /**
+   * Update functions.
+   * @type {{['1.1.0']: (())}}
+   */
+  updates: {
+    /**
+     *  Migrate to new morel database.
+     *  NOTE: requires full restart in the end!!
+     */
+    '1.2.2': function (callback) {
+      Log('Update: version 1.2.2', 'i');
+      // copy over all the records to SQLite db
+      const oldDB = new DatabaseStorage({ appname: 'test' });
+      oldDB.getAll((err, records = []) => {
+        Log(`Update: copying ${records.length} records to SQLite`, 'i');
+        // records
+        const toWait = [];
+        records.forEach((record) => {
+          const promise = recordManager.set(record);
+          toWait.push(promise);
+        });
+
+        Promise.all(toWait).then(() => {
+          Log('Update: records copied', 'i');
+
+          // check if correct copy
+          Log('Update: checking if correct copy', 'i');
+          recordManager.storage.size().then((size) => {
+            if (records.length !== size) {
+              callback(true);
+              return;
+            }
+
+            // clean up old db
+            Log('Update: clearing old db', 'i');
+            oldDB.clear(() => {
+              Log('Update: finished', 'i');
+              callback(null, true); // fully restart afterwards
+            });
+          });
+        });
+      });
+    },
+  },
+
+  /**
+   * Returns the index of the first found update in sequence.
+   * @param updatesSeq
+   * @param currentVersion
+   * @returns {number}
+   * @private
+   */
+  _findFirst(updatesSeq = API.updatesSeq, currentVersion) {
+    if (!updatesSeq.length) return -1;
+
+    let firstVersion = -1;
+
+    API.updatesSeq.some((version, index) => {
+      if (versionCompare(version, currentVersion) === 1) {
+        firstVersion = index;
+        return true;
+      }
+    });
+
+    return firstVersion;
+  },
+
+  /**
+   * Recursively apply all updates.
+   * @param updateIndex
+   * @param callback
+   * @private
+   */
+  _applyUpdates(updateIndex, callback) {
+    const update = API.updates[API.updatesSeq[updateIndex]];
+
+    if (typeof update !== 'function') {
+      Log('Update: error with update function', 'e');
+      return callback();
+    }
+
+    let fullRestartRequired = false;
+    return update((error, _fullRestartRequired) => {
+      if (error) {
+        callback(error);
+        return null;
+      }
+
+      if (_fullRestartRequired) {
+        fullRestartRequired = true;
+      }
+
+      // check if last update
+      if ((API.updatesSeq.length - 1) <= updateIndex) {
+        if (!fullRestartRequired) {
+          return callback();
+        }
+        App.restart();
+        return null;
+      }
+
+      API._applyUpdates(updateIndex + 1, callback);
+      return null;
+    });
+  },
+
+  _updateAppVersion(currentVersion, newVersion) {
+    appModel.set('appVersion', newVersion);
+    appModel.save();
+
+    // log only updates and not init as no prev value on init
+    if (currentVersion) {
+      Analytics.trackEvent('App', 'updated');
+    }
+  },
+};
 
 export default API;
