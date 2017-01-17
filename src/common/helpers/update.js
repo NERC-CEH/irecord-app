@@ -10,7 +10,7 @@ import Error from './error';
 import Analytics from './analytics';
 import appModel from '../models/app_model';
 
-const MIN_UPDATE_TIME = 3000; // show updating dialog for minimum seconds
+const MIN_UPDATE_TIME = 5000; // show updating dialog for minimum seconds
 
 /**
  * https://gist.github.com/alexey-bass/1115557
@@ -109,35 +109,6 @@ class DatabaseStorage {
           console.error(e.target.error);
           const error = new Error(e.target.error);
           callback(error);
-        };
-      } catch (err) {
-        callback && callback(err);
-      }
-    });
-  }
-
-  /**
-   * Clears all the saved data.
-   */
-  clear(callback) {
-    this.open((err, store) => {
-      if (err) {
-        callback && callback(err);
-        return;
-      }
-
-      try {
-        const req = store.clear();
-
-        req.onsuccess = () => {
-          callback && callback();
-        };
-
-        req.onerror = (e) => {
-          console.error('Database error.');
-          console.error(e.target.error);
-          const error = new Error(e.target.error);
-          callback && callback(error);
         };
       } catch (err) {
         callback && callback(err);
@@ -248,6 +219,11 @@ const API = {
       const firstUpdate = API._findFirst(API.updatesSeq, currentVersion);
       if (firstUpdate < 0) return callback(); // no update for this version
 
+      // hide loader
+      if (navigator && navigator.splashscreen) {
+        navigator.splashscreen.hide();
+      }
+
       // apply all updates
       App.regions.getRegion('dialog').show({
         title: 'Updating',
@@ -272,6 +248,7 @@ const API = {
           App.regions.getRegion('dialog').hide(true);
           callback();
         }
+        return null;
       });
     }
 
@@ -292,39 +269,44 @@ const API = {
   updates: {
     /**
      *  Migrate to new morel database.
-     *  NOTE: requires full restart in the end!!
      */
     '1.2.2': function (callback) {
       Log('Update: version 1.2.2', 'i');
+
       // copy over all the records to SQLite db
       const oldDB = new DatabaseStorage({ appname: 'test' });
       oldDB.getAll((err, records = []) => {
-        Log(`Update: copying ${records.length} records to SQLite`, 'i');
+        if (err) {
+          Log(err, 'e');
+          return;
+        }
+
+        const recordsCount = Object.keys(records).length;
+        Log(`Update: copying ${recordsCount} records to SQLite`, 'i');
         // records
         const toWait = [];
-        records.forEach((record) => {
-          const promise = recordManager.set(record);
+        for (const record in records) {
+          const promise = recordManager.set(records[record]);
           toWait.push(promise);
-        });
+        }
 
         Promise.all(toWait).then(() => {
-          Log('Update: records copied', 'i');
+          Log('Update: copying done', 'i');
 
           // check if correct copy
           Log('Update: checking if correct copy', 'i');
           recordManager.storage.size().then((size) => {
-            if (records.length !== size) {
+            if (recordsCount !== size) {
               callback(true);
               return;
             }
 
             // clean up old db
             Log('Update: clearing old db', 'i');
-            oldDB.clear(() => {
-              Log('Update: finished', 'i');
-              oldDB.delete();
-              callback(null, true); // fully restart afterwards
-            });
+            oldDB.delete();
+
+            Log('Update: finished', 'i');
+            callback(); // fully restart afterwards
           });
         });
       });
@@ -342,12 +324,12 @@ const API = {
     if (!updatesSeq.length) return -1;
 
     let firstVersion = -1;
-
     API.updatesSeq.some((version, index) => {
       if (versionCompare(version, currentVersion) === 1) {
         firstVersion = index;
         return true;
       }
+      return null;
     });
 
     return firstVersion;
