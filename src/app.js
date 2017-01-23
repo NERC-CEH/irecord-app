@@ -83,9 +83,6 @@ App.on('start', () => {
             $('body').addClass('ios');
           }
 
-          // development loader
-          $('#loader').remove();
-
           // hide loader
           if (navigator && navigator.splashscreen) {
             navigator.splashscreen.hide();

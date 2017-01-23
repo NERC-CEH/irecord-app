@@ -168,10 +168,12 @@ export default Marionette.Region.extend({
     Marionette.Region.prototype.show.call(this, view);
   },
 
-  hide() {
-    if (!this.hideAllowed) {
+  hide(permission) {
+    if (!permission && !this.hideAllowed) {
       return;
     }
+
+    this.hideAllowed = true;
 
     // turn off timeout
     if (this.timeout) {

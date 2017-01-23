@@ -91,9 +91,16 @@ module.exports = function (grunt) {
           'mv -f arm7.apk ../../../../../dist/ && ' +
           'mv -f x86.apk ../../../../../dist/';
       },
+    },
 
+    cordova_build_ios: {
+      command: 'cd dist/cordova && cordova build ios',
       stdout: true,
-      stdin: true,
+    },
+
+    cordova_run_android: {
+      command: 'cd dist/cordova && cordova run android',
+      stdout: true,
     },
   };
 };

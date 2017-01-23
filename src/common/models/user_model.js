@@ -4,6 +4,7 @@
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
+import Raven from 'raven-js';
 import CONFIG from 'config';
 import { Validate, Analytics } from 'helpers';
 import activitiesExtension from './user_model_activities_ext';
@@ -36,6 +37,8 @@ let UserModel = Backbone.Model.extend({
     this.fetch();
     this.syncActivities();
     this.syncStats();
+
+    this.setUpTracker();
   },
 
   /**
@@ -155,6 +158,23 @@ let UserModel = Backbone.Model.extend({
     }
 
     return null;
+  },
+
+  setUpTracker() {
+    const that = this;
+
+    function setUserContext() {
+      if (that.hasLogIn()) {
+        Raven.setUserContext({
+          email: that.get('email'),
+        });
+      } else {
+        Raven.setUserContext({email: null});
+      }
+    }
+
+    this.on('login logout', setUserContext);
+    setUserContext();
   },
 });
 

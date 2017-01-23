@@ -1,4 +1,4 @@
-module.exports = grunt => {
+module.exports = (grunt) => {
   return {
     default: [
       'init',
@@ -80,19 +80,17 @@ module.exports = grunt => {
 
     'cordova:android': [
       'prompt:keystore',
-      'cordova:android:new',
-      'cordova:android:old',
-    ],
-    'cordova:android:new': [
+      // new
       'cordova:_prepAndroid',
       'replace:cordova_config',
       'exec:cordova_android_build',
-    ],
-    'cordova:android:old': [
+
+      // old
       'cordova:_prepAndroidOld',
       'replace:cordova_config',
       'exec:cordova_android_build_old',
     ],
+
 
     /**
      * Sets up the right SDK version and package ID for the config generator

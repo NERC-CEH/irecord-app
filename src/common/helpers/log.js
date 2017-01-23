@@ -34,7 +34,7 @@ function error(err = {}) {
     };
   }
   console.error(err.message, err.url, err.line, err.column, err.obj);
-  Analytics.trackException(err);
+  // Analytics.trackException(err);
 }
 
 function log(message, type = DEBUG) {
@@ -68,15 +68,15 @@ function log(message, type = DEBUG) {
   }
 }
 
-// Hook into window.error function
-window.onerror = (message, url, line, column, obj) => {
-  const onerror = window.onerror;
-  window.onerror = null;
-
-  error({ message, url, line, column, obj });
-
-  window.onerror = onerror; // turn on error handling again
-  return true; // suppress normal error reporting
-};
+// // Hook into window.error function
+// window.onerror = (message, url, line, column, obj) => {
+//   const onerror = window.onerror;
+//   window.onerror = null;
+//
+//   error({ message, url, line, column, obj });
+//
+//   window.onerror = onerror; // turn on error handling again
+//   return true; // suppress normal error reporting
+// };
 
 export { log as default };
