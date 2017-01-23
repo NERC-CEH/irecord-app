@@ -127,7 +127,19 @@ const API = {
 
       // sync
       // todo: call callback
-      recordModel.save(null, { remote: true });
+      recordModel.save(null, { remote: true }).catch((response) => {
+        const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
+        if (response.responseJSON && !visibleDialog) {
+          let errorMsg = '';
+          const errors = response.responseJSON.errors;
+          for (const error in errors) {
+            const title = errors[error].title;
+            const description = errors[error].description || '';
+            errorMsg += `<p><b>${title}</b> - ${description}</p>`;
+          }
+          App.regions.getRegion('dialog').error(errorMsg);
+        }
+      });
       App.trigger('record:saved');
     });
 
