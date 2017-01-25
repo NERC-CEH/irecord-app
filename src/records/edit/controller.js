@@ -135,7 +135,7 @@ const API = {
           for (const error in errors) {
             const title = errors[error].title;
             const description = errors[error].description || '';
-            errorMsg += `<p><b>${title}</b> - ${description}</p>`;
+            errorMsg += `<p><b>${title}</b> ${description}</p>`;
           }
           App.regions.getRegion('dialog').error(errorMsg);
         }
