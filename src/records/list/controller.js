@@ -17,30 +17,30 @@ const API = {
     const loaderView = new LoaderView();
     App.regions.getRegion('main').show(loaderView);
 
-    recordManager.getAll((getError, recordsCollection) => {
-      Log('Records:List:Controller: showing');
-      if (getError) {
-        Log(getError, 'e');
-        App.regions.getRegion('dialog').error(getError);
-        return;
-      }
+    recordManager.getAll()
+      .then((recordsCollection) => {
+        Log('Records:List:Controller: showing');
 
-      // MAIN
-      const mainView = new MainView({
-        collection: recordsCollection,
-        appModel,
-      });
+        // MAIN
+        const mainView = new MainView({
+          collection: recordsCollection,
+          appModel,
+        });
 
-      mainView.on('childview:record:edit:attr', (childView, attr) => {
-        App.trigger('records:edit:attr', childView.model.id || childView.model.cid, attr);
-      });
+        mainView.on('childview:record:edit:attr', (childView, attr) => {
+          App.trigger('records:edit:attr', childView.model.id || childView.model.cid, attr);
+        });
 
-      mainView.on('childview:record:delete', (childView) => {
-        const recordModel = childView.model;
-        API.recordDelete(recordModel);
+        mainView.on('childview:record:delete', (childView) => {
+          const recordModel = childView.model;
+          API.recordDelete(recordModel);
+        });
+        App.regions.getRegion('main').show(mainView);
+      })
+      .catch((err) => {
+        Log(err, 'e');
+        App.regions.getRegion('dialog').error(err);
       });
-      App.regions.getRegion('main').show(mainView);
-    });
 
     // HEADER
     const headerView = new HeaderView({ model: appModel });

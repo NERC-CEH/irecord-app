@@ -136,10 +136,11 @@ describe('Sample', () => {
 
         // get the same sample - fresh
         const newManager = new RecordManager(morelConfiguration);
-        newManager.get(sample, (err, newSample) => {
-          expect(newSample.get('group')).to.be.undefined;
-          done();
-        });
+        newManager.get(sample)
+          .then((newSample) => {
+            expect(newSample.get('group')).to.be.undefined;
+            done();
+          });
       });
     });
 

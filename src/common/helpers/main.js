@@ -11,7 +11,7 @@ import Update from './update';
 import UUID from './UUID';
 import Validate from './validate';
 
-export {
+export default {
   Analytics,
   DateHelp,
   Device,

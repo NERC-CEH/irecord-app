@@ -14,61 +14,61 @@ import LockView from '../../common/views/attr_lock_view';
 const API = {
   show(recordID, attr) {
     Log('Records:Attr:Controller: showing');
-    recordManager.get(recordID, (err, recordModel) => {
-      if (err) {
-        Log(err, 'e');
-      }
+    recordManager.get(recordID)
+      .then((recordModel) => {
+        // Not found
+        if (!recordModel) {
+          Log('No record model found.', 'e');
+          App.trigger('404:show', { replace: true });
+          return;
+        }
 
-      // Not found
-      if (!recordModel) {
-        Log('No record model found.', 'e');
-        App.trigger('404:show', { replace: true });
-        return;
-      }
+        // can't edit a saved one - to be removed when record update
+        // is possible on the server
+        if (recordModel.getSyncStatus() === Morel.SYNCED) {
+          App.trigger('records:show', recordID, { replace: true });
+          return;
+        }
 
-      // can't edit a saved one - to be removed when record update
-      // is possible on the server
-      if (recordModel.getSyncStatus() === Morel.SYNCED) {
-        App.trigger('records:show', recordID, { replace: true });
-        return;
-      }
+        // MAIN
+        const mainView = new MainView({
+          attr,
+          model: recordModel,
+        });
+        App.regions.getRegion('main').show(mainView);
 
-      // MAIN
-      const mainView = new MainView({
-        attr,
-        model: recordModel,
-      });
-      App.regions.getRegion('main').show(mainView);
+        // HEADER
+        const lockView = new LockView({
+          model: new Backbone.Model({ appModel, recordModel }),
+          attr,
+          onLockClick: API.onLockClick,
+        });
 
-      // HEADER
-      const lockView = new LockView({
-        model: new Backbone.Model({ appModel, recordModel }),
-        attr,
-        onLockClick: API.onLockClick,
-      });
+        const headerView = new HeaderView({
+          onExit() {
+            API.onExit(mainView, recordModel, attr, () => {
+              window.history.back();
+            });
+          },
+          rightPanel: lockView,
+          model: new Backbone.Model({ title: attr }),
+        });
 
-      const headerView = new HeaderView({
-        onExit() {
+        App.regions.getRegion('header').show(headerView);
+
+        // if exit on selection click
+        mainView.on('save', () => {
           API.onExit(mainView, recordModel, attr, () => {
             window.history.back();
           });
-        },
-        rightPanel: lockView,
-        model: new Backbone.Model({ title: attr }),
-      });
-
-      App.regions.getRegion('header').show(headerView);
-
-      // if exit on selection click
-      mainView.on('save', () => {
-        API.onExit(mainView, recordModel, attr, () => {
-          window.history.back();
         });
-      });
 
-      // FOOTER
-      App.regions.getRegion('footer').hide().empty();
-    });
+        // FOOTER
+        App.regions.getRegion('footer').hide().empty();
+      })
+      .catch((err) => {
+        Log(err, 'e');
+      });
   },
 
   onLockClick(view) {
@@ -160,18 +160,16 @@ const API = {
     }
 
     // save it
-    recordModel.save(null, {
-      success: () => {
+    recordModel.save()
+      .then(() => {
         // update locked value if attr is locked
         API.updateLock(attr, newVal, currentVal);
-
         callback();
-      },
-      error: (err) => {
+      })
+      .catch((err) => {
         Log(err, 'e');
         App.regions.getRegion('dialog').error(err);
-      },
-    });
+      });
   },
 
   updateLock(attr, newVal, currentVal) {

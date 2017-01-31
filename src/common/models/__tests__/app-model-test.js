@@ -20,10 +20,11 @@ describe('App Model', () => {
     return sample;
   }
 
-  before(() => {
+  before((done) => {
     const appModel = new AppModel();
-    appModel.clear();
-    appModel.save();
+    appModel.clear()
+      .then(() => appModel.save())
+      .then(done);
   });
 
   it('has default values', () => {

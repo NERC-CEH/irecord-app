@@ -4,6 +4,8 @@
 import $ from 'jquery';
 import config from './config';
 
+const HOST = 'http://localhost/drupal/';
+
 const newConfig = $.extend(true, config, {
   // google analytics
   ga: {
@@ -17,19 +19,19 @@ const newConfig = $.extend(true, config, {
   },
 
   login: {
-    url: 'http://192.171.199.230/irecord7/user/mobile/register',
+    url: `${HOST}user/mobile/register`,
     timeout: 80000,
   },
 
   report: {
-    url: 'http://192.171.199.230/irecord7/mobile/report',
+    url: `${HOST}mobile/report`,
     timeout: 80000,
   },
 
   // morel configuration
   morel: {
     manager: {
-      url: 'http://192.171.199.230/irecord7/mobile/submit',
+      host: HOST,
       survey_id: 374,
     },
   },

@@ -23,35 +23,34 @@ class Manager extends Morel {
   }
 
   removeAllSynced(callback) {
-    this.getAll((err, records) => {
-      if (err) {
+    this.getAll()
+      .then((records) => {
+        let toRemove = 0;
+        let noneUsed = true;
+
+        records.each((record) => {
+          if (record.getSyncStatus() === Morel.SYNCED) {
+            noneUsed = false;
+            toRemove++;
+            record.destroy({
+              success: () => {
+                toRemove--;
+                if (toRemove === 0) {
+                  callback && callback();
+                }
+              },
+            });
+          }
+        });
+
+        if (noneUsed) {
+          callback && callback();
+        }
+      })
+      .catch((err) => {
         Log(err, 'e');
         callback && callback(err);
-        return;
-      }
-
-      let toRemove = 0;
-      let noneUsed = true;
-
-      records.each((record) => {
-        if (record.getSyncStatus() === Morel.SYNCED) {
-          noneUsed = false;
-          toRemove++;
-          record.destroy({
-            success: () => {
-              toRemove--;
-              if (toRemove === 0) {
-                callback && callback();
-              }
-            },
-          });
-        }
       });
-
-      if (noneUsed) {
-        callback && callback();
-      }
-    });
   }
 
   setAllToSend(callback) {
@@ -59,49 +58,54 @@ class Manager extends Morel {
     let noneUsed = true;
     let saving = 0;
 
-    this.getAll((err, records) => {
-      if (err) {
-        Log(err, 'e');
-        callback && callback(err);
-        return;
-      }
-      records.each((record) => {
-        noneUsed = false;
-        saving++;
-        const valid = record.setToSend((error) => {
-          if (error) {
-            callback && callback(error);
-            return;
+    this.getAll()
+      .then((records) => {
+        records.each((record) => {
+          noneUsed = false;
+          saving++;
+          const promise = record.setToSend();
+          if (!promise) {
+            return saving--;
           }
-          saving--;
-          if (saving === 0) {
-            callback && callback();
-            that.syncAll();
-          }
+          promise
+            .then(() => {
+              saving--;
+              if (saving === 0) {
+                callback && callback();
+                that.syncAll();
+              }
+            })
+            .catch((error) => {
+              callback && callback(error);
+            });
         });
 
-        if (!valid) {
-          saving--;
+        if (noneUsed || saving === 0) {
+          callback && callback();
         }
+      })
+      .catch((err) => {
+        Log(err, 'e');
+        callback && callback(err);
       });
-
-      if (noneUsed || saving === 0) {
-        callback && callback();
-      }
-    });
   }
 
   clearAll(local, callback) {
     const that = this;
-    this.getAll((err, samples) => {
-      if (window.cordova) {
-        // we need to remove the images from file system
-        samples.each((sample) => {
-          sample.trigger('destroy');
-        });
-      }
-      that.clear(callback);
-    });
+    this.getAll()
+      .then((samples) => {
+        if (window.cordova) {
+          // we need to remove the images from file system
+          samples.each((sample) => {
+            sample.trigger('destroy');
+          });
+        }
+        that.clear(callback);
+      })
+      .catch((err) => {
+        Log(err, 'e');
+        callback && callback(err);
+      });
   }
 }
 

@@ -90,7 +90,7 @@ let Sample = Morel.Sample.extend({
   /**
    * Set the record for submission and send it.
    */
-  setToSend(callback) {
+  setToSend() {
     this.metadata.saved = true;
 
     if (!this.isValid()) {
@@ -101,16 +101,7 @@ let Sample = Morel.Sample.extend({
     }
 
     // save record
-    const promise = this.save(null, {
-      success: () => {
-        callback && callback();
-      },
-      error: (err) => {
-        callback && callback(err);
-      },
-    });
-
-    return promise;
+    return this.save();
   },
 
   checkExpiredGroup() {

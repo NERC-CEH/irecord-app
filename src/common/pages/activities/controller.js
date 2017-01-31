@@ -126,31 +126,30 @@ const API = {
 
     // Initialize data
     if (recordID) {
-      recordManager.get(recordID, (err, record) => {
-        if (err) {
+      recordManager.get(recordID)
+        .then((record) => {
+          recordModel = record;
+          activitiesCollection.updateActivitiesCollection();
+
+          onExit = () => {
+            Log('Activities:List:Controller: exiting');
+            const newActivity = mainView.getActivity();
+            API.save(newActivity);
+            recordModel = null; // reset
+          };
+
+          refreshView.on('refreshClick', () => {
+            Log('Activities:List:Controller: refresh clicked');
+            if (!userModel.hasLogIn()) {
+              App.trigger('user:login');
+              return;
+            }
+            API.refreshActivities();
+          });
+        })
+        .catch((err) => {
           Log(err, 'e');
-          return;
-        }
-
-        recordModel = record;
-        activitiesCollection.updateActivitiesCollection();
-
-        onExit = () => {
-          Log('Activities:List:Controller: exiting');
-          const newActivity = mainView.getActivity();
-          API.save(newActivity);
-          recordModel = null; // reset
-        };
-
-        refreshView.on('refreshClick', () => {
-          Log('Activities:List:Controller: refresh clicked');
-          if (!userModel.hasLogIn()) {
-            App.trigger('user:login');
-            return;
-          }
-          API.refreshActivities();
-        });
-      });
+        })
     } else {
       activitiesCollection.updateActivitiesCollection();
 
@@ -180,12 +179,8 @@ const API = {
     const activityID = activity.id;
     if (recordModel) {
       recordModel.set('group', userModel.getActivity(activityID));
-      recordModel.save(null, {
-        success: () => {
-          // return to previous page after save
-          window.history.back();
-        },
-      });
+      recordModel.save()
+        .then(() => window.history.back()); // return to previous page after save
     } else {
       appModel.setAttrLock('activity', userModel.getActivity(activityID));
       // return to previous page after save

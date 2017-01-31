@@ -1,11 +1,10 @@
 /** ****************************************************************************
  * Record Edit controller.
  *****************************************************************************/
-import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Morel from 'morel';
-import { Device, ImageHelp, Analytics, Log, StringHelp, Validate } from 'helpers';
+import { Device, ImageHelp, Analytics, Log } from 'helpers';
 import App from 'app';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
@@ -22,128 +21,120 @@ const API = {
     Log('Records:Edit:Controller: showing');
 
     id = recordID;
-    recordManager.get(recordID, (err, recordModel) => {
-      if (err) {
-        Log(err, 'e');
-      }
+    recordManager.get(recordID)
+      .then((recordModel) => {
+        // Not found
+        if (!recordModel) {
+          Log('No record model found', 'e');
+          App.trigger('404:show', { replace: true });
+          return;
+        }
 
-      // Not found
-      if (!recordModel) {
-        Log('No record model found', 'e');
-        App.trigger('404:show', { replace: true });
-        return;
-      }
-
-      // can't edit a saved one - to be removed when record update
-      // is possible on the server
-      if (recordModel.getSyncStatus() === Morel.SYNCED) {
-        App.trigger('records:show', recordID, { replace: true });
-        return;
-      }
-
-
-      // MAIN
-      const mainView = new MainView({
-        model: new Backbone.Model({ recordModel, appModel }),
-      });
-      App.regions.getRegion('main').show(mainView);
-
-      // on finish sync move to show
-      function checkIfSynced() {
+        // can't edit a saved one - to be removed when record update
+        // is possible on the server
         if (recordModel.getSyncStatus() === Morel.SYNCED) {
           App.trigger('records:show', recordID, { replace: true });
           return;
         }
-      }
-      recordModel.on('request sync error', checkIfSynced);
-      mainView.on('destroy', () => {
-        // unbind when page destroyed
-        recordModel.off('request sync error', checkIfSynced);
+
+
+        // MAIN
+        const mainView = new MainView({
+          model: new Backbone.Model({ recordModel, appModel }),
+        });
+        App.regions.getRegion('main').show(mainView);
+
+        // on finish sync move to show
+        function checkIfSynced() {
+          if (recordModel.getSyncStatus() === Morel.SYNCED) {
+            App.trigger('records:show', recordID, { replace: true });
+            return;
+          }
+        }
+        recordModel.on('request sync error', checkIfSynced);
+        mainView.on('destroy', () => {
+          // unbind when page destroyed
+          recordModel.off('request sync error', checkIfSynced);
+        });
+
+
+        // HEADER
+        const headerView = new HeaderView({
+          model: recordModel,
+        });
+
+        headerView.on('save', () => {
+          API.save(recordModel);
+        });
+
+        App.regions.getRegion('header').show(headerView);
+
+        // FOOTER
+        const footerView = new FooterView({
+          model: recordModel,
+        });
+
+        footerView.on('photo:upload', (e) => {
+          const photo = e.target.files[0];
+          API.photoUpload(recordModel, photo);
+        });
+
+        footerView.on('childview:photo:delete', (view) => {
+          const photo = view.model;
+          API.photoDelete(photo);
+        });
+
+        // android gallery/camera selection
+        footerView.on('photo:selection', () => {
+          API.photoSelect(recordModel);
+        });
+
+        App.regions.getRegion('footer').show(footerView);
+      })
+      .catch((err) => {
+        Log(err, 'e');
       });
-
-
-      // HEADER
-      const headerView = new HeaderView({
-        model: recordModel,
-      });
-
-      headerView.on('save', () => {
-        API.save(recordModel);
-      });
-
-      App.regions.getRegion('header').show(headerView);
-
-      // FOOTER
-      const footerView = new FooterView({
-        model: recordModel,
-      });
-
-      footerView.on('photo:upload', (e) => {
-        const photo = e.target.files[0];
-        API.photoUpload(recordModel, photo);
-      });
-
-      footerView.on('childview:photo:delete', (view) => {
-        const photo = view.model;
-        API.photoDelete(photo);
-      });
-
-      // android gallery/camera selection
-      footerView.on('photo:selection', () => {
-        API.photoSelect(recordModel);
-      });
-
-      App.regions.getRegion('footer').show(footerView);
-    });
   },
 
   save(recordModel) {
-    const valid = API.saveRecord(recordModel, (saveErr) => {
-      if (saveErr) {
-        App.regions.getRegion('dialog').error(saveErr);
-      }
-    });
+    Log('Records:Edit:Controller: save clicked');
+
+    const promise = recordModel.setToSend();
 
     // invalid sample
-    if (!valid) {
+    if (!promise) {
       const invalids = recordModel.validationError;
       API.showInvalidsMessage(invalids);
     }
-  },
 
-  saveRecord(recordModel, callback) {
-    Log('Records:Edit:Controller: save clicked');
-
-    const valid = recordModel.setToSend((setError) => {
-      if (setError) {
-        callback(setError);
-        return;
-      }
-
-      if (Device.isOnline() && !userModel.hasLogIn()) {
-        App.trigger('user:login', { replace: true });
-        return;
-      }
-
-      // sync
-      // todo: call callback
-      recordModel.save(null, { remote: true }).catch((response) => {
-        const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
-        if (response.responseJSON && !visibleDialog) {
-          let errorMsg = '';
-          const errors = response.responseJSON.errors;
-          for (const error in errors) {
-            const title = errors[error].title;
-            const description = errors[error].description || '';
-            errorMsg += `<p><b>${title}</b> ${description}</p>`;
-          }
-          App.regions.getRegion('dialog').error(errorMsg);
+    promise
+      .then(() => {
+        // should we sync?
+        if (Device.isOnline() && !userModel.hasLogIn()) {
+          App.trigger('user:login', { replace: true });
+          return;
         }
-      });
-      App.trigger('record:saved');
-    });
 
-    return valid;
+        // sync
+        recordModel.save({ remote: true })
+          .catch((response) => {
+            const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
+            if (response.responseJSON && !visibleDialog) {
+              let errorMsg = '';
+              const errors = response.responseJSON.errors;
+              for (const error in errors) {
+                const title = errors[error].title;
+                const description = errors[error].description || '';
+                errorMsg += `<p><b>${title}</b> ${description}</p>`;
+              }
+              App.regions.getRegion('dialog').error(errorMsg);
+            }
+          });
+        App.trigger('record:saved');
+      })
+      .catch((err) => {
+        App.regions.getRegion('dialog').error(err);
+      });
   },
 
   showInvalidsMessage(invalids) {
@@ -265,15 +256,12 @@ const API = {
       }
       occurrence.addImage(image);
 
-      occurrence.save(null, {
-        success: () => {
-          callback();
-        },
-        error: (error) => {
+      occurrence.save()
+        .then(callback)
+        .catch((error) => {
           Log(error, 'e');
           callback(error);
-        },
-      });
+        });
     });
   },
 };

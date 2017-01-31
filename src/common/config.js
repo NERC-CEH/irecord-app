@@ -3,6 +3,8 @@
  *****************************************************************************/
 import { DateHelp, LocHelp } from 'helpers';
 
+const HOST = 'https://www.brc.ac.uk/irecord/';
+
 export default {
   // variables replaced on build
   /* global APP_VERSION, APP_BUILD, APP_NAME, REGISTER_URL, API_KEY, API_SECRET,
@@ -26,12 +28,12 @@ export default {
   },
 
   login: {
-    url: 'https://www.brc.ac.uk/irecord/user/mobile/register',
+    url: `${HOST}user/mobile/register`,
     timeout: 30000,
   },
 
   report: {
-    url: 'http://www.brc.ac.uk/irecord/mobile/report',
+    url: `${HOST}mobile/report`,
     timeout: 80000,
   },
 
@@ -46,7 +48,7 @@ export default {
   // morel configuration
   morel: {
     manager: {
-      url: 'https://www.brc.ac.uk/irecord/mobile/submit',
+      host: HOST,
       appname: API_KEY,
       appsecret: API_SECRET,
       website_id: 23,

@@ -24,11 +24,6 @@ const API = {
     if (recordID) {
       // check if the record has taxon specified
       recordManager.get(recordID, (getError, recordModel) => {
-        if (getError) {
-          App.regions.getRegion('dialog').error(getError);
-          return;
-        }
-
         // Not found
         if (!recordModel) {
           Log('No record model found', 'e');
@@ -75,21 +70,20 @@ const API = {
   _showMainView(mainView, that) {
     const sampleID = that.id;
     mainView.on('taxon:selected', (taxon, edit) => {
-      API.updateTaxon(sampleID, taxon, (err, sample) => {
-        if (err) {
+      API.updateTaxon(sampleID, taxon)
+        .then((sample) => {
+          if (edit) {
+            const updatedSampleID = sample.id || sample.cid;
+            App.trigger('records:edit', updatedSampleID, { replace: true });
+          } else {
+            // return to previous page
+            window.history.back();
+          }
+        })
+        .catch((err) => {
           Log(err, 'e');
           App.regions.getRegion('dialog').error(err);
-          return;
-        }
-
-        if (edit) {
-          const updatedSampleID = sample.id || sample.cid;
-          App.trigger('records:edit', updatedSampleID, { replace: true });
-        } else {
-          // return to previous page
-          window.history.back();
-        }
-      });
+        });
     }, that);
     mainView.on('taxon:searched', (searchPhrase) => {
       SpeciesSearchEngine.search(searchPhrase, (selection) => {
@@ -100,7 +94,7 @@ const API = {
     App.regions.getRegion('main').show(mainView);
   },
 
-  updateTaxon(sampleID, taxon, callback) {
+  updateTaxon(sampleID, taxon) {
     if (!sampleID) {
       // create new sighting
       const occurrence = new Occurrence({
@@ -113,45 +107,30 @@ const API = {
       // add locked attributes
       appModel.appendAttrLocks(sample);
 
-      recordManager.set(sample, (saveError) => {
-        if (saveError) {
-          callback(saveError);
-          return;
-        }
+      const promise = recordManager.set(sample)
+        .then((savedSample) => {
+          // check if location attr is not locked
+          const locks = appModel.get('attrLocks');
 
-        // check if location attr is not locked
-        const locks = appModel.get('attrLocks');
-
-        if (!locks.location) {
-          // no previous location
-          sample.startGPS();
-        } else if (!locks.location.latitude || !locks.location.longitude) {
-          // previously locked location was through GPS
-          // so try again
-          sample.startGPS();
-        }
-
-        callback(null, sample);
-      });
-    } else {
-      // edit existing one
-      recordManager.get(sampleID, (getError, recordModel) => {
-        if (getError) {
-          callback(getError);
-          return;
-        }
-
-        recordModel.occurrences.at(0).set('taxon', taxon);
-        recordModel.save(null, {
-          success: (sample) => {
-            callback(null, sample);
-          },
-          error: (saveError) => {
-            callback(saveError);
-          },
+          if (!locks.location) {
+            // no previous location
+            savedSample.startGPS();
+          } else if (!locks.location.latitude || !locks.location.longitude) {
+            // previously locked location was through GPS
+            // so try again
+            savedSample.startGPS();
+          }
+          return savedSample;
         });
-      });
+
+      return promise;
     }
+
+    // edit existing one
+    return recordManager.get(sampleID).then((recordModel) => {
+      recordModel.occurrences.at(0).set('taxon', taxon);
+      return recordModel.save();
+    });
   },
 };
 

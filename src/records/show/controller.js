@@ -11,27 +11,27 @@ import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
 const API = {
-  show(id) {
+  show(recordID) {
     Log('Records:Show:Controller: showing');
-    recordManager.get(id, (err, recordModel) => {
-      if (err) {
+    recordManager.get(recordID)
+      .then((recordModel) => {
+        // Not found
+        if (!recordModel) {
+          Log('No record model found', 'e');
+          App.trigger('404:show', { replace: true });
+          return;
+        }
+
+        // MAIN
+        const mainView = new MainView({
+          model: new Backbone.Model({ recordModel, appModel }),
+        });
+
+        App.regions.getRegion('main').show(mainView);
+      })
+      .catch((err) => {
         Log(err, 'e');
-      }
-
-      // Not found
-      if (!recordModel) {
-        Log('No record model found', 'e');
-        App.trigger('404:show', { replace: true });
-        return;
-      }
-
-      // MAIN
-      const mainView = new MainView({
-        model: new Backbone.Model({ recordModel, appModel }),
       });
-
-      App.regions.getRegion('main').show(mainView);
-    });
 
     // HEADER
     const headerView = new HeaderView({
@@ -52,14 +52,11 @@ const API = {
         return;
       }
 
-      recordModel.save(null, {
-        remote: true,
-        success: () => {},
-        error: (err) => {
+      recordModel.save({ remote: true })
+        .catch((err) => {
           Log(err, 'e');
           App.regions.getRegion('dialog').error(err);
-        },
-      });
+        });
     } else {
       App.regions.getRegion('dialog').error({
         message: 'Looks like you are offline!',
