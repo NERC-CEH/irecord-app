@@ -92,22 +92,23 @@ export default {
    * collection in the main view.
    */
   fetchActivities(callback) {
-    // Log('UserModel: fetching activities');
     this.trigger('sync:activities:start');
     const that = this;
     const data = {
       report: 'library/groups/groups_for_app.xml',
       // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.morel.manager.input_form,
       email: this.get('email'),
+      usersecret: this.get('secret'),
+
+      path: CONFIG.morel.manager.input_form,
+
       appname: CONFIG.morel.manager.appname,
       appsecret: CONFIG.morel.manager.appsecret,
-      usersecret: this.get('secret'),
     };
 
     $.ajax({
       url: CONFIG.report.url,
-      type: 'POST',
+      type: 'GET',
       data,
       dataType: 'JSON',
       timeout: CONFIG.report.timeout,

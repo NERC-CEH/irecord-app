@@ -42,11 +42,13 @@ export default {
     const data = {
       report: 'library/taxa/filterable_explore_list.xml',
       // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.morel.manager.input_form,
       email: this.get('email'),
+      usersecret: this.get('secret'),
+
+      path: CONFIG.morel.manager.input_form,
+
       appname: CONFIG.morel.manager.appname,
       appsecret: CONFIG.morel.manager.appsecret,
-      usersecret: this.get('secret'),
 
       my_records: 1,
       limit: 10,
@@ -56,7 +58,7 @@ export default {
 
     $.ajax({
       url: CONFIG.report.url,
-      type: 'POST',
+      type: 'GET',
       data,
       dataType: 'JSON',
       timeout: CONFIG.report.timeout,
@@ -116,8 +118,6 @@ export default {
       return Math.round((second - first) / (1000 * 60 * 60 * 24));
     }
 
-    if (daydiff(lastSync, new Date()) >= 1) return true;
-
-    return false;
+    return daydiff(lastSync, new Date()) >= 1;
   },
 };
