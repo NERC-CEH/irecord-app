@@ -67,13 +67,13 @@ const Image = {
         const name = `${Date.now()}.jpeg`;
         window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (fileSystem) => {
             // copy to app data directory
-          fileEntry.copyTo(
+            fileEntry.copyTo(
               fileSystem,
               name,
               callback,
               fail
             );
-        },
+          },
           fail);
       }
 
@@ -98,12 +98,8 @@ const Image = {
    */
   getImageModel(file, callback) {
     // create and add new record
-    const success = (err, data, type, width, height) => {
-      if (err) {
-        callback(err);
-        return;
-      }
-
+    const success = (args) => {
+      const [data, type, width, height] = args;
       const imageModel = new ImageModel({
         data,
         type,
@@ -111,30 +107,39 @@ const Image = {
         height,
       });
 
-      imageModel.addThumbnail((thumbErr) => {
-        if (thumbErr) {
-          Log(thumbErr, 'e');
-          return;
-        }
-        callback(null, imageModel);
-      });
+      imageModel.addThumbnail()
+        .then(() => {
+          callback(null, imageModel);
+        })
+        .catch((err) => {
+          callback(err);
+        });
     };
 
     if (window.cordova) {
       // don't resize, only get width and height
-      Morel.Image.getDataURI(file, (err, data, type, width, height) => {
-        let fileName = file;
+      Morel.Image.getDataURI(file)
+        .then((args) => {
+          const [, , width, height] = args;
+          let fileName = file;
 
-        if (Device.isIOS()) {
-          // save only the file name or iOS, because the app UUID changes
-          // on every app update
-          const pathArray = file.split('/');
-          fileName = pathArray[pathArray.length - 1];
-        }
-        success(null, fileName, 'jpeg', width, height);
-      });
+          if (Device.isIOS()) {
+            // save only the file name or iOS, because the app UUID changes
+            // on every app update
+            const pathArray = file.split('/');
+            fileName = pathArray[pathArray.length - 1];
+          }
+          success(fileName, 'jpeg', width, height);
+        })
+        .catch((err) => {
+          callback(err);
+        });
     } else if (file instanceof File) {
-      Morel.Image.getDataURI(file, success);
+      Morel.Image.getDataURI(file)
+        .then(success)
+        .catch((err) => {
+          callback(err);
+        });
     }
   },
 };
