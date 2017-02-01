@@ -99,14 +99,10 @@ const API = {
       type: 'POST',
       data: person,
       callback_data: person,
-      dataType: 'text',
       timeout: CONFIG.login.timeout,
       success(receivedData) {
-        const details = API.extractUserDetails(receivedData);
-        details.email = person.email;
-        userModel.logIn(details);
-
-        callback(null, details);
+        userModel.logIn(receivedData.data);
+        callback(null, receivedData.data);
       },
       error(xhr, ajaxOptions, thrownError) {
         callback({
@@ -116,24 +112,6 @@ const API = {
         });
       },
     });
-  },
-
-  /**
-   * Since the server response is not JSON, it gets user details from the response.
-   * @param data
-   * @returns {*}
-   */
-  extractUserDetails(data) {
-    const lines = (data && data.split(/\r\n|\r|\n/g));
-    if (lines && lines.length >= 3 && lines[0].length > 0) {
-      return {
-        secret: lines[0],
-        name: lines[1],
-        surname: lines[2],
-      };
-    }
-    Log('login:extractdetails: problems with received secret.', 'w');
-    return null;
   },
 };
 

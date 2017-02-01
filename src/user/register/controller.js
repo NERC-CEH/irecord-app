@@ -123,17 +123,13 @@ const API = {
       url: CONFIG.login.url,
       type: 'POST',
       data: formData,
-      dataType: 'text',
       contentType: false,
       processData: false,
       timeout: CONFIG.login.timeout,
 
-      success(response) {
-        const details = API.extractUserDetails(response);
-        details.email = data.email;
-        userModel.logIn(details);
-
-        callback(null, details);
+      success(receivedData) {
+        userModel.logIn(receivedData.data);
+        callback(null, receivedData.data);
       },
       error(xhr, ajaxOptions, thrownError) {
         callback({
@@ -143,24 +139,6 @@ const API = {
         });
       },
     });
-  },
-
-  /**
-   * Since the server response is not JSON, it gets user details from the response.
-   * @param data
-   * @returns {*}
-   */
-  extractUserDetails(data) {
-    const lines = (data && data.split(/\r\n|\r|\n/g));
-    if (lines && lines.length >= 3 && lines[0].length > 0) {
-      return {
-        secret: lines[0],
-        name: lines[1],
-        surname: lines[2],
-      };
-    }
-    Log('User:Register:Controller: problems with received secret.', 'e');
-    return null;
   },
 };
 

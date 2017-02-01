@@ -14,6 +14,7 @@ let UserModel = Backbone.Model.extend({
   id: 'user',
 
   defaults: {
+    drupalID: '',
     name: '',
     surname: '',
     email: '',
@@ -65,23 +66,17 @@ let UserModel = Backbone.Model.extend({
    * @param user User object or empty object
    */
   logIn(user) {
-    this.set('secret', user.secret || '');
-    this.setContactDetails(user);
+    this.set('drupalID', user.id || '');
+    this.set('secret', user.usersecret || '');
+    this.set('email', user.email || '');
+    this.set('name', user.firstname || '');
+    this.set('surname', user.secondname || '');
     this.save();
+
     this.trigger('login');
     this.syncActivities();
     this.syncStats();
     Analytics.trackEvent('User', 'login');
-  },
-
-  /**
-   * Sets user contact information.
-   */
-  setContactDetails(user) {
-    this.set('email', user.email || '');
-    this.set('name', user.name || '');
-    this.set('surname', user.surname || '');
-    this.save();
   },
 
   /**
@@ -103,10 +98,8 @@ let UserModel = Backbone.Model.extend({
 
     if (!attrs.email) {
       errors.email = "can't be blank";
-    } else {
-      if (!Validate.email(attrs.email)) {
-        errors.email = 'invalid';
-      }
+    } else if (!Validate.email(attrs.email)) {
+      errors.email = 'invalid';
     }
 
     if (!attrs.firstname) {
@@ -169,7 +162,7 @@ let UserModel = Backbone.Model.extend({
           email: that.get('email'),
         });
       } else {
-        Raven.setUserContext({email: null});
+        Raven.setUserContext({ email: null });
       }
     }
 
