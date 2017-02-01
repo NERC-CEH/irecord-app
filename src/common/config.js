@@ -28,12 +28,12 @@ export default {
   },
 
   login: {
-    url: `${HOST}user/mobile/register`,
+    url: `${HOST}api/v0.1/users/auth`,
     timeout: 30000,
   },
 
   report: {
-    url: `${HOST}mobile/report`,
+    url: `${HOST}api/v0.1/reports`,
     timeout: 80000,
   },
 
