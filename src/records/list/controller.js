@@ -28,7 +28,7 @@ const API = {
         });
 
         mainView.on('childview:record:edit:attr', (childView, attr) => {
-          App.trigger('records:edit:attr', childView.model.id || childView.model.cid, attr);
+          App.trigger('records:edit:attr', childView.model.cid, attr);
         });
 
         mainView.on('childview:record:delete', (childView) => {

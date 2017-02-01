@@ -53,7 +53,7 @@ export default Marionette.View.extend({
     const group = recordModel.get('group');
 
     return {
-      id: recordModel.id || recordModel.cid,
+      id: recordModel.cid,
       scientificName,
       commonName,
       isLocating: recordModel.isGPSRunning(),

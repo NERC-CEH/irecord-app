@@ -70,7 +70,7 @@ let Sample = Morel.Sample.extend({
       this.occurrences.each((occurrence) => {
         const errors = occurrence.validate();
         if (errors) {
-          const occurrenceID = occurrence.id || occurrence.cid;
+          const occurrenceID = occurrence.cid;
           occurrences[occurrenceID] = errors;
         }
       });

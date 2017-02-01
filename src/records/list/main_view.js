@@ -127,7 +127,7 @@ const RecordView = Marionette.View.extend({
     const group = recordModel.get('group');
 
     return {
-      id: recordModel.id || recordModel.cid,
+      id: recordModel.cid,
       saved: recordModel.metadata.saved,
       onDatabase: syncStatus === Morel.SYNCED,
       isLocating: recordModel.isGPSRunning(),

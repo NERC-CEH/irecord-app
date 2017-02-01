@@ -73,7 +73,7 @@ const API = {
       API.updateTaxon(sampleID, taxon)
         .then((sample) => {
           if (edit) {
-            const updatedSampleID = sample.id || sample.cid;
+            const updatedSampleID = sample.cid;
             App.trigger('records:edit', updatedSampleID, { replace: true });
           } else {
             // return to previous page
