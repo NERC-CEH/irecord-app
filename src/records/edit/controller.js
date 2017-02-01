@@ -257,7 +257,7 @@ const API = {
       occurrence.addImage(image);
 
       occurrence.save()
-        .then(callback)
+        .then(() => callback())
         .catch((error) => {
           Log(error, 'e');
           callback(error);

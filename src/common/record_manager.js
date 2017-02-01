@@ -100,7 +100,7 @@ class Manager extends Morel {
             sample.trigger('destroy');
           });
         }
-        that.clear(callback);
+        that.clear().then(() => { callback(); });
       })
       .catch((err) => {
         Log(err, 'e');
