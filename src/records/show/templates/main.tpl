@@ -1,7 +1,12 @@
 <div class="info-message">
   <p>This record has been submitted and cannot be edited within this App.
-    Go to the <a href="http://irecord.org.uk" target="_blank">iRecord website</a> to edit.</p>
-
+    <% if (obj.id) { %>
+    <a href="<%= obj.irecord_url %>/record-details?occurrence_id=<%= obj.id %>"
+       class="btn btn-block btn-narrow"
+       target="_blank">View on iRecord</a>
+    <% } else { %>
+      Go to the <a href="<%= obj.irecord_url %>" target="_blank">iRecord website</a> to edit.</p>
+    <% } %>
 </div>
 <ul class="table-view core inputs info no-top">
   <li class="table-view-cell species">
@@ -65,4 +70,4 @@
   <% } %>
 </ul>
 
-<div id="occurrence-id"><%- obj.id %></div>
+<div id="occurrence-id"><%- obj.cid %></div>

@@ -141,8 +141,8 @@ const API = {
     delete invalids.sample.saved; // it wasn't saved so of course this error
 
     let missing = '';
-    if (invalids.occurrences) {
-      _.each(invalids.occurrences, (message, invalid) => {
+    if (invalids.subModels) {
+      _.each(invalids.subModels, (message, invalid) => {
         missing += `<b>${invalid}</b> - ${message}</br>`;
       });
     }
@@ -162,7 +162,7 @@ const API = {
   photoUpload(recordModel, photo) {
     Log('Records:Edit:Controller: photo uploaded');
 
-    const occurrence = recordModel.occurrences.at(0);
+    const occurrence = recordModel.getSubModel();
     // show loader
     API.addPhoto(occurrence, photo, (occErr) => {
       // hide loader
@@ -206,7 +206,7 @@ const API = {
 
   photoSelect(recordModel) {
     Log('Records:Edit:Controller: photo selection');
-    const occurrence = recordModel.occurrences.at(0);
+    const occurrence = recordModel.getSubModel();
 
     App.regions.getRegion('dialog').show({
       title: 'Choose a method to upload a photo',

@@ -5,6 +5,7 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
+import CONFIG from 'config';
 import LoaderView from '../../views/loader_view';
 import './styles.scss';
 
@@ -55,5 +56,11 @@ export default Marionette.CompositeView.extend({
       }
     });
     return activity;
+  },
+
+  serializeData() {
+    return {
+      irecord_url: CONFIG.irecord_url,
+    };
   },
 });

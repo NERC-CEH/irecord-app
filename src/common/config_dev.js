@@ -7,6 +7,8 @@ import config from './config';
 const HOST = 'http://localhost/drupal/';
 
 const newConfig = $.extend(true, config, {
+  irecord_url: 'http://192.171.199.230/irecord7',
+
   // google analytics
   ga: {
     status: false,

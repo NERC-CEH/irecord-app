@@ -4,6 +4,7 @@
 import Morel from 'morel';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
+import CONFIG from 'config';
 import { DateHelp, StringHelp } from 'helpers';
 import Gallery from '../../common/gallery';
 import './styles.scss';
@@ -20,7 +21,7 @@ export default Marionette.View.extend({
 
     const items = [];
     const recordModel = this.model.get('recordModel');
-    recordModel.occurrences.at(0).images.each((image) => {
+    recordModel.getSubModel().images.each((image) => {
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
@@ -35,7 +36,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const recordModel = this.model.get('recordModel');
-    const occ = recordModel.occurrences.at(0);
+    const occ = recordModel.getSubModel();
     const specie = occ.get('taxon');
 
     // taxon
@@ -57,7 +58,9 @@ export default Marionette.View.extend({
     const group = recordModel.get('group');
 
     return {
-      id: occ.cid,
+      id: occ.id,
+      cid: occ.cid,
+      irecord_url: CONFIG.irecord_url,
       isSynchronising: syncStatus === Morel.SYNCHRONISING,
       onDatabase: syncStatus === Morel.SYNCED,
       scientific_name: scientificName,

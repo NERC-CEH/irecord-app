@@ -27,23 +27,33 @@ const Router = Marionette.AppRouter.extend({
           version: CONFIG.version,
           build: CONFIG.build,
         }),
-      }); },
+      });
+    },
     'info/help(/)': () => {
       CommonController.show({
-        title: 'Help', App, route: 'info/help/main',
-      }); },
+        title: 'Help',
+        App,
+        route: 'info/help/main',
+        model: new Backbone.Model({
+          irecord_url: CONFIG.irecord_url,
+        }),
+      });
+    },
     'info/privacy(/)': () => {
       CommonController.show({
         title: 'Privacy Policy', App, route: 'info/privacy/main',
-      }); },
+      });
+    },
     'info/brc-approved(/)': () => {
       CommonController.show({
         title: 'BRC Approved', App, route: 'info/brc_approved/main',
-      }); },
+      });
+    },
     'info/credits(/)': () => {
       CommonController.show({
         title: 'Credits', App, route: 'info/credits/main',
-      }); },
+      });
+    },
     'info/*path': function () { App.trigger('404:show'); },
   },
 });

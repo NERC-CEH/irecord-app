@@ -21,7 +21,7 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="http://www.brc.ac.uk/irecord/user/password"
+    <a href="<%= obj.irecord_url %>/user/password"
        class="navigate-right" rel="external">
       <span class="media-object pull-left icon icon-key"></span>
       Request new password

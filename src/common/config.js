@@ -13,6 +13,8 @@ export default {
   build: APP_BUILD,
   name: APP_NAME,
 
+  irecord_url: HOST,
+
   gps_accuracy_limit: 100,
 
   // logging
