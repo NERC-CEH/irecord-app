@@ -10,6 +10,7 @@ describe('User Model', () => {
 
   it('has default values', () => {
     const userModel = new UserModel();
+    expect(userModel.get('drupalID')).to.be.equal('');
     expect(userModel.get('name')).to.be.equal('');
     expect(userModel.get('surname')).to.be.equal('');
     expect(userModel.get('email')).to.be.equal('');

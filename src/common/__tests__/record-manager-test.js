@@ -38,7 +38,7 @@ describe('Record Manager', () => {
         longitude: -0.23,
         name: 'automatic test' },
     }, {
-      occurrences: [occurrence],
+      subModels: [occurrence],
       manager: recordManager,
     });
 
@@ -77,12 +77,12 @@ describe('Record Manager', () => {
 
     const sample = getRandomSample();
     sample.save({ remote: true });
-    expect(sample.occurrences.at(0).get('training')).to.be.equal(false);
+    expect(sample.getSubModel().get('training')).to.be.equal(false);
 
     appModel.set('useTraining', true);
 
     const sample2 = getRandomSample();
     sample2.save({ remote: true });
-    expect(sample2.occurrences.at(0).get('training')).to.be.equal(true);
+    expect(sample2.getSubModel().get('training')).to.be.equal(true);
   });
 });

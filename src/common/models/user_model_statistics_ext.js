@@ -47,8 +47,7 @@ export default {
 
       path: CONFIG.morel.manager.input_form,
 
-      appname: CONFIG.morel.manager.appname,
-      appsecret: CONFIG.morel.manager.appsecret,
+      api_key: CONFIG.morel.manager.api_key,
 
       my_records: 1,
       limit: 10,
@@ -66,7 +65,7 @@ export default {
         const species = [];
         const toWait = [];
 
-        receivedData.forEach((stat) => {
+        receivedData.data.forEach((stat) => {
           const promise = new $.Deferred();
           toWait.push(promise);
           // turn it to a full species descriptor from species data set

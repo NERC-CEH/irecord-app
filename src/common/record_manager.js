@@ -120,7 +120,7 @@ function onSend(sample) {
 
     // training setting
     const training = appModel.get('useTraining');
-    sample.occurrences.at(0).set('training', training);
+    sample.getSubModel().set('training', training);
   } else {
     // don't send until the user has logged in
     return true;

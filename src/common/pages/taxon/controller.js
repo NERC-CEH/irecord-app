@@ -40,7 +40,7 @@ const API = {
 
         let mainView;
 
-        if (!recordModel.occurrences.at(0).get('taxon')) {
+        if (!recordModel.getSubModel().get('taxon')) {
           mainView = new MainView({ model: userModel });
         } else {
           mainView = new MainView({ removeEditBtn: true, model: userModel });
@@ -102,7 +102,7 @@ const API = {
       });
 
       const sample = new Sample();
-      sample.addOccurrence(occurrence);
+      sample.addSubModel(occurrence);
 
       // add locked attributes
       appModel.appendAttrLocks(sample);
@@ -128,7 +128,7 @@ const API = {
 
     // edit existing one
     return recordManager.get(sampleID).then((recordModel) => {
-      recordModel.occurrences.at(0).set('taxon', taxon);
+      recordModel.getSubModel().set('taxon', taxon);
       return recordModel.save();
     });
   },

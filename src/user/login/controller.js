@@ -80,7 +80,7 @@ const API = {
    * should be a Drupal sight using iForm Mobile Auth Module.
    *
    * It is important that the app authorises itself providing
-   * appname and appsecret for the mentioned module.
+   * api_key for the mentioned module.
    */
   login(data, callback) {
     Log('User:Login:Controller: logging in');
@@ -90,8 +90,7 @@ const API = {
       password: data.password,
 
       // app logins
-      appname: CONFIG.morel.manager.appname,
-      appsecret: CONFIG.morel.manager.appsecret,
+      api_key: CONFIG.morel.manager.api_key,
     };
 
     $.ajax({

@@ -102,8 +102,7 @@ export default {
 
       path: CONFIG.morel.manager.input_form,
 
-      appname: CONFIG.morel.manager.appname,
-      appsecret: CONFIG.morel.manager.appsecret,
+      api_key: CONFIG.morel.manager.api_key,
     };
 
     $.ajax({
@@ -124,7 +123,7 @@ export default {
           group_to_date: '',
         };
 
-        receivedData.forEach((activity) => {
+        receivedData.data.forEach((activity) => {
           const fullActivity = $.extend({}, defaultActivity, activity);
           fullActivity.id = parseInt(fullActivity.id);
 

@@ -73,7 +73,6 @@ module.exports = {
       APP_BUILD: JSON.stringify(process.env.TRAVIS_BUILD_ID || pkg.build || new Date().getTime()),
       APP_NAME: JSON.stringify(pkg.name),
       APP_VERSION: JSON.stringify(pkg.version),
-      API_SECRET: JSON.stringify(process.env.API_SECRET || ''),
       API_KEY: JSON.stringify(process.env.API_KEY || ''),
     }),
     new CircularDependencyPlugin(),

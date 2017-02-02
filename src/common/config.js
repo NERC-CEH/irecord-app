@@ -49,8 +49,7 @@ export default {
   morel: {
     manager: {
       host: HOST,
-      appname: API_KEY,
-      appsecret: API_SECRET,
+      api_key: API_KEY,
       website_id: 23,
       survey_id: 374,
       input_form: 'enter-app-record',

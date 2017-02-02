@@ -147,7 +147,7 @@ const API = {
       occurrence.addImage(image);
 
       const sample = new Sample();
-      sample.addOccurrence(occurrence);
+      sample.addSubModel(occurrence);
 
       // append locked attributes
       appModel.appendAttrLocks(sample);
