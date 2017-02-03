@@ -16,10 +16,18 @@ export default {
     if (this.hasLogIn() && this._lastStatsSyncExpired() || force) {
       // init or refresh
       this.synchronizingStatistics = true;
+      this.trigger('sync:statistics:species:start');
 
-      this.fetchStatsSpecies(() => {
-        that.synchronizingStatistics = false;
-      });
+      this.fetchStatsSpecies()
+        .then(() => {
+          that.synchronizingStatistics = false;
+          that.trigger('sync:statistics:species:end');
+        })
+        .catch(() => {
+          // todo
+          that.synchronizingStatistics = false;
+          that.trigger('sync:statistics:species:end');
+        });
     }
   },
 
@@ -33,9 +41,8 @@ export default {
    * Loads the list of available stats from the warehouse then updates the
    * collection in the main view.
    */
-  fetchStatsSpecies(callback) {
+  fetchStatsSpecies() {
     // Log('UserModel: fetching statistics - species');
-    this.trigger('sync:statistics:species:start');
     const that = this;
     const statistics = this.get('statistics');
 
@@ -55,50 +62,52 @@ export default {
       sortdir: 'DESC',
     };
 
-    $.ajax({
-      url: CONFIG.report.url,
-      type: 'GET',
-      data,
-      dataType: 'JSON',
-      timeout: CONFIG.report.timeout,
-      success(receivedData) {
-        const species = [];
-        const toWait = [];
+    const promise = new Promise((fulfull, reject) => {
+      $.ajax({
+        url: CONFIG.report.url,
+        type: 'GET',
+        data,
+        dataType: 'JSON',
+        timeout: CONFIG.report.timeout,
+        success(receivedData) {
+          const species = [];
+          const toWait = [];
 
-        receivedData.data.forEach((stat) => {
-          const promise = new $.Deferred();
-          toWait.push(promise);
-          // turn it to a full species descriptor from species data set
-          SpeciesSearchEngine.search(stat.taxon, (results) => {
-            const foundedSpecies = results[0];
-            if (results.length && foundedSpecies.scientific_name === stat.taxon) {
-              if (foundedSpecies.common_name) {
-                foundedSpecies.found_in_name = 'common_name';
+          receivedData.data.forEach((stat) => {
+            const promise = new $.Deferred();
+            toWait.push(promise);
+            // turn it to a full species descriptor from species data set
+            SpeciesSearchEngine.search(stat.taxon, (results) => {
+              const foundedSpecies = results[0];
+              if (results.length && foundedSpecies.scientific_name === stat.taxon) {
+                if (foundedSpecies.common_name) {
+                  foundedSpecies.found_in_name = 'common_name';
+                }
+                species.push(foundedSpecies);
               }
-              species.push(foundedSpecies);
-            }
-            promise.resolve();
-          }, 1, true);
-        });
+              promise.resolve();
+            }, 1, true);
+          });
 
-        const dfd = $.when.apply($, toWait);
-        dfd.then(() => {
-          // save and exit
-          statistics.synced_on = new Date().toString();
-          statistics.species = species;
-          statistics.speciesRaw = receivedData;
-          that.set('statistics', statistics);
-          that.save();
-          callback();
-          that.trigger('sync:statistics:species:end');
-        });
-      },
-      error(err) {
-        Log('Stats load failed');
-        callback(err);
-        that.trigger('sync:statistics:species:end');
-      },
+          const dfd = $.when.apply($, toWait);
+          dfd.then(() => {
+            // save and exit
+            statistics.synced_on = new Date().toString();
+            statistics.species = species;
+            statistics.speciesRaw = receivedData.data;
+            that.set('statistics', statistics);
+            that.save();
+            fulfull();
+          });
+        },
+        error(err) {
+          Log('Stats load failed', 'e');
+          reject(err);
+        },
+      });
     });
+
+    return promise;
   },
 
   /**

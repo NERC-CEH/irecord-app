@@ -12,13 +12,22 @@ export default {
     if (this.synchronizingActivities) {
       return;
     }
-    this.synchronizingActivities = true;
 
-    if (this.hasLogIn() && this._lastSyncExpired() || force) {
+
+    if ((this.hasLogIn() && this._lastSyncExpired()) || force) {
       // init or refresh
-      this.fetchActivities(() => {
-        that.synchronizingActivities = false;
-      });
+      this.synchronizingActivities = true;
+      this.trigger('sync:activities:start');
+      this.fetchActivities()
+        .then(() => {
+          that.synchronizingActivities = false;
+          that.trigger('sync:activities:end');
+        })
+        .catch(() => {
+          // todo
+          that.synchronizingActivities = false;
+          that.trigger('sync:activities:end');
+        });
     } else {
       const activities = this.get('activities') || [];
       // remove expired activities
@@ -29,7 +38,6 @@ export default {
           activities.splice(i, 1);
         }
       }
-      this.synchronizingActivities = false;
     }
   },
 
@@ -91,8 +99,7 @@ export default {
    * Loads the list of available activities from the warehouse then updates the
    * collection in the main view.
    */
-  fetchActivities(callback) {
-    this.trigger('sync:activities:start');
+  fetchActivities() {
     const that = this;
     const data = {
       report: 'library/groups/groups_for_app.xml',
@@ -105,55 +112,57 @@ export default {
       api_key: CONFIG.morel.manager.api_key,
     };
 
-    $.ajax({
-      url: CONFIG.report.url,
-      type: 'GET',
-      data,
-      dataType: 'JSON',
-      timeout: CONFIG.report.timeout,
-      success(receivedData) {
-        const activities = [];
-        const defaultActivity = {
-          synced_on: new Date().toString(),
-          id: null,
-          title: '',
-          description: '',
-          group_type: '',
-          group_from_date: '',
-          group_to_date: '',
-        };
+    const promise = new Promise((fulfill, reject) => {
+      $.ajax({
+        url: CONFIG.report.url,
+        type: 'GET',
+        data,
+        dataType: 'JSON',
+        timeout: CONFIG.report.timeout,
+        success(receivedData) {
+          const activities = [];
+          const defaultActivity = {
+            synced_on: new Date().toString(),
+            id: null,
+            title: '',
+            description: '',
+            group_type: '',
+            group_from_date: '',
+            group_to_date: '',
+          };
 
-        receivedData.data.forEach((activity) => {
-          const fullActivity = $.extend({}, defaultActivity, activity);
-          fullActivity.id = parseInt(fullActivity.id);
+          receivedData.data.forEach((activity) => {
+            const fullActivity = $.extend({}, defaultActivity, activity);
+            fullActivity.id = parseInt(fullActivity.id);
 
-          // from
-          let date;
-          if (fullActivity.group_from_date) {
-            date = new Date(fullActivity.group_from_date);
-            fullActivity.group_from_date = date.toString();
-          }
+            // from
+            let date;
+            if (fullActivity.group_from_date) {
+              date = new Date(fullActivity.group_from_date);
+              fullActivity.group_from_date = date.toString();
+            }
 
-          // to
-          if (fullActivity.group_to_date) {
-            date = new Date(fullActivity.group_to_date);
-            date.setDate(date.getDate() + 1); // include the last day
-            fullActivity.group_to_date = date.toString();
-          }
-          activities.push(fullActivity);
-        });
+            // to
+            if (fullActivity.group_to_date) {
+              date = new Date(fullActivity.group_to_date);
+              date.setDate(date.getDate() + 1); // include the last day
+              fullActivity.group_to_date = date.toString();
+            }
+            activities.push(fullActivity);
+          });
 
-        that.set('activities', activities);
-        that.save();
-        callback();
-        that.trigger('sync:activities:end');
-      },
-      error(err) {
-        Log('Activities load failed');
-        callback(err);
-        that.trigger('sync:activities:end');
-      },
+          that.set('activities', activities);
+          that.save();
+          fulfill();
+        },
+        error(err) {
+          Log('Activities load failed', 'e');
+          reject(err);
+        },
+      });
     });
+
+    return promise;
   },
 
   /**

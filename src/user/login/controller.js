@@ -4,7 +4,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import App from 'app';
-import { Log, Device } from 'helpers';
+import { Log, Device, Error } from 'helpers';
 import CONFIG from 'config';
 import userModel from '../../common/models/user_model';
 import MainView from './main_view';
@@ -44,27 +44,14 @@ const API = {
         mainView.triggerMethod('form:data:invalid', {}); // update form
         App.regions.getRegion('dialog').showLoader();
 
-        API.login(data, (err) => {
-          if (err) {
-            let response = '';
-            if (err.xhr.responseText && (err.xhr.responseText === 'Missing name parameter'
-              || err.xhr.responseText.indexOf('Bad') >= 0)) {
-              response = 'Bad Username or Password';
-            } else if (err.thrownError && err.thrownError.indexOf('Unauthorised')) {
-              response = 'Invalid password';
-            } else if (err.thrownError && typeof err.thrownError === 'string') {
-              response = err.thrownError;
-            } else {
-              response = 'Unknown error occurred';
-            }
-
-            App.regions.getRegion('dialog').error({ message: response });
-            return;
-          }
-
-          App.regions.getRegion('dialog').hideLoader();
-          window.history.back();
-        });
+        API.login(data)
+          .then(() => {
+            App.regions.getRegion('dialog').hideLoader();
+            window.history.back();
+          })
+          .catch((err) => {
+            App.regions.getRegion('dialog').error(err);
+          });
       } else {
         mainView.triggerMethod('form:data:invalid', validationError);
       }
@@ -93,24 +80,25 @@ const API = {
       api_key: CONFIG.morel.manager.api_key,
     };
 
-    $.ajax({
-      url: CONFIG.login.url,
-      type: 'POST',
-      data: person,
-      callback_data: person,
-      timeout: CONFIG.login.timeout,
-      success(receivedData) {
-        userModel.logIn(receivedData.data);
-        callback(null, receivedData.data);
-      },
-      error(xhr, ajaxOptions, thrownError) {
-        callback({
-          xhr,
-          ajaxOptions,
-          thrownError,
-        });
-      },
+    const promise = new Promise((fulfill, reject) => {
+      $.ajax({
+        url: CONFIG.login.url,
+        type: 'POST',
+        data: person,
+        callback_data: person,
+        timeout: CONFIG.login.timeout,
+        success(receivedData) {
+          userModel.logIn(receivedData.data);
+          fulfill(receivedData.data);
+        },
+        error(xhr) {
+          const error = new Error(xhr.responseJSON.errors);
+          reject(error);
+        },
+      });
     });
+
+    return promise;
   },
 };
 

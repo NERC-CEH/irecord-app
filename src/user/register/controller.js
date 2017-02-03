@@ -41,53 +41,30 @@ const API = {
         mainView.triggerMethod('form:data:invalid', {}); // update form
         App.regions.getRegion('dialog').showLoader();
 
-        API.register(data, (err) => {
-          if (err) {
-            Log(err, 'e');
-            switch (err.xhr.status) {
-              case 401:
-                // unauthorised
-                break;
-              default:
-                Log(`login:submit: ${err.xhr.status} ${err.thrownError}.`, 'e');
-            }
-
-            let response = '';
-            if (err.xhr.responseText && (err.xhr.responseText === 'Missing name parameter'
-              || err.xhr.responseText.indexOf('Bad') >= 0)) {
-              response = 'Bad Username or Password';
-            } else if (err.thrownError && err.thrownError.indexOf('Unauthorised')) {
-              // err.xhr.responseText = Invalid password"
-              // it thinks that the user tries to update its account
-              response = 'An account with this email exist';
-            } else if (err.thrownError && typeof err.thrownError === 'string') {
-              response = err.thrownError;
-            } else {
-              response = 'Unknown error occurred';
-            }
-
-            App.regions.getRegion('dialog').error({ message: response });
-            return;
-          }
-          App.regions.getRegion('dialog').show({
-            title: 'Welcome aboard!',
-            body: 'Before submitting any records please check your email and ' +
-            'click on the verification link.',
-            buttons: [
-              {
-                title: 'OK, got it',
-                class: 'btn-positive',
-                onClick() {
-                  App.regions.getRegion('dialog').hide();
-                  window.history.back();
+        API.register(data)
+          .then(() => {
+            App.regions.getRegion('dialog').show({
+              title: 'Welcome aboard!',
+              body: 'Before submitting any records please check your email and ' +
+              'click on the verification link.',
+              buttons: [
+                {
+                  title: 'OK, got it',
+                  class: 'btn-positive',
+                  onClick() {
+                    App.regions.getRegion('dialog').hide();
+                    window.history.back();
+                  },
                 },
+              ],
+              onHide() {
+                window.history.back();
               },
-            ],
-            onHide() {
-              window.history.back();
-            },
+            });
+          })
+          .catch((err) => {
+            App.regions.getRegion('dialog').error(err);
           });
-        });
       } else {
         mainView.triggerMethod('form:data:invalid', validationError);
       }
@@ -105,7 +82,7 @@ const API = {
    * It is important that the app authorises itself providing
    * api_key for the mentioned module.
    */
-  register(data, callback) {
+  register(data) {
     Log('User:Register:Controller: registering');
 
     const formData = new FormData();
@@ -114,30 +91,29 @@ const API = {
       formData.append(key, value);
     });
 
-
     // app logins
     formData.append('api_key', CONFIG.morel.manager.api_key);
+    const promise = new Promise((fulfill, reject) => {
+      $.ajax({
+        url: CONFIG.login.url,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        timeout: CONFIG.login.timeout,
 
-    $.ajax({
-      url: CONFIG.login.url,
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      timeout: CONFIG.login.timeout,
-
-      success(receivedData) {
-        userModel.logIn(receivedData.data);
-        callback(null, receivedData.data);
-      },
-      error(xhr, ajaxOptions, thrownError) {
-        callback({
-          xhr,
-          ajaxOptions,
-          thrownError,
-        });
-      },
+        success(receivedData) {
+          userModel.logIn(receivedData.data);
+          fulfill(receivedData.data);
+        },
+        error(xhr) {
+          const error = new Error(xhr.responseJSON.errors);
+          reject(error);
+        },
+      });
     });
+
+    return promise;
   },
 };
 
