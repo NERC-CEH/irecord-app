@@ -14,7 +14,7 @@ describe('App Model', () => {
         longitude: -0.23,
         name: 'automatic test' },
     }, {
-      subModels: [occurrence],
+      occurrences: [occurrence],
       onSend: () => {}, // overwrite manager's one checking for user login
     });
     return sample;
@@ -58,7 +58,7 @@ describe('App Model', () => {
       appModel.appendAttrLocks(sample);
 
       // check if correct
-      const number = sample.getSubModel().get('number');
+      const number = sample.getOccurrence().get('number');
       expect(number).to.be.equal(123);
     });
 
@@ -80,21 +80,21 @@ describe('App Model', () => {
       const lockNum = appModel.getAttrLock('number');
       lockNum.num = 2;
 
-      let number = sample2.getSubModel().get('number');
+      let number = sample2.getOccurrence().get('number');
       expect(number).to.deep.equal({ num: 1 });
 
       // check if references between samples
-      const num = sample.getSubModel().get('number');
+      const num = sample.getOccurrence().get('number');
       num.num = 3;
 
-      number = sample2.getSubModel().get('number');
+      number = sample2.getOccurrence().get('number');
       expect(number).to.deep.equal({ num: 1 });
 
       // check if haven't overwritten
       numberObject.num = 4;
-      sample.getSubModel().set('number', numberObject);
+      sample.getOccurrence().set('number', numberObject);
 
-      number = sample2.getSubModel().get('number');
+      number = sample2.getOccurrence().get('number');
       expect(number).to.deep.equal({ num: 1 });
     });
   });

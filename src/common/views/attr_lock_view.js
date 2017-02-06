@@ -19,7 +19,7 @@ export default Marionette.View.extend({
   serializeData() {
     const appModel = this.model.get('appModel');
     const recordModel = this.model.get('recordModel');
-    const occ = recordModel.getSubModel();
+    const occ = recordModel.getOccurrence();
     let attr = this.options.attr;
 
     let value;

@@ -18,7 +18,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const recordModel = this.model.get('recordModel');
-    const occ = recordModel.getSubModel();
+    const occ = recordModel.getOccurrence();
     const specie = occ.get('taxon') || {};
     const appModel = this.model.get('appModel');
 

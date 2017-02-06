@@ -69,7 +69,7 @@ const API = {
    * It is important that the app authorises itself providing
    * api_key for the mentioned module.
    */
-  login(data, callback) {
+  login(data) {
     Log('User:Login:Controller: logging in');
     const person = {
       // user logins
@@ -88,8 +88,9 @@ const API = {
         callback_data: person,
         timeout: CONFIG.login.timeout,
         success(receivedData) {
-          userModel.logIn(receivedData.data);
-          fulfill(receivedData.data);
+          const fullData = _.extend(receivedData.data, { password: data.password });
+          userModel.logIn(fullData);
+          fulfill(fullData);
         },
         error(xhr) {
           const error = new Error(xhr.responseJSON.errors);

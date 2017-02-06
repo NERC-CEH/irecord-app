@@ -41,7 +41,7 @@ const RecordView = Marionette.View.extend({
 
     const items = [];
 
-    this.model.getSubModel().images.each((image) => {
+    this.model.getOccurrence().media.each((image) => {
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
@@ -101,15 +101,15 @@ const RecordView = Marionette.View.extend({
 
   serializeData() {
     const recordModel = this.model;
-    const occ = recordModel.getSubModel();
+    const occ = recordModel.getOccurrence();
     const date = DateHelp.print(recordModel.get('date'));
     const specie = occ.get('taxon') || {};
-    const images = occ.images;
-    let img = images.length && images.at(0).get('thumbnail');
+    const media = occ.media;
+    let img = media.length && media.at(0).get('thumbnail');
 
     if (!img) {
       // backwards compatibility
-      img = images.length && images.at(0).getURL();
+      img = media.length && media.at(0).getURL();
     }
 
     const taxon = specie[specie.found_in_name];

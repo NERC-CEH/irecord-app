@@ -3,7 +3,10 @@
     <% if (obj.id) { %>
     <a href="<%= obj.irecord_url %>/record-details?occurrence_id=<%= obj.id %>"
        class="btn btn-block btn-narrow"
-       target="_blank">View on iRecord</a>
+       target="_blank">
+      View on iRecord
+      <span class="pull-right icon icon-link-ext"></span>
+    </a>
     <% } else { %>
       Go to the <a href="<%= obj.irecord_url %>" target="_blank">iRecord website</a> to edit.</p>
     <% } %>
@@ -61,9 +64,9 @@
     Activity
   </li>
   <% } %>
-  <% if (obj.images.length) { %>
+  <% if (obj.media.length) { %>
     <li id="img-array">
-      <% obj.images.each((image) =>{ %>
+      <% obj.media.each((image) =>{ %>
         <img src="<%- image.getURL() %>" alt="">
       <% }) %>
     </li>

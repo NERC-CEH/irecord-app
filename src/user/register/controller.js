@@ -103,8 +103,9 @@ const API = {
         timeout: CONFIG.login.timeout,
 
         success(receivedData) {
-          userModel.logIn(receivedData.data);
-          fulfill(receivedData.data);
+          const fullData = _.extend(receivedData.data, { password: data.password });
+          userModel.logIn(fullData);
+          fulfill(fullData);
         },
         error(xhr) {
           const error = new Error(xhr.responseJSON.errors);

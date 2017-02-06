@@ -95,7 +95,7 @@ class Manager extends Morel {
     this.getAll()
       .then((samples) => {
         if (window.cordova) {
-          // we need to remove the images from file system
+          // we need to remove the media from file system
           samples.each((sample) => {
             sample.trigger('destroy');
           });
@@ -115,12 +115,9 @@ function onSend(sample) {
     sample.set('device', Device.getPlatform());
     sample.set('device_version', Device.getVersion());
 
-    // attach user information
-    userModel.appendSampleUser(sample);
-
     // training setting
     const training = appModel.get('useTraining');
-    sample.getSubModel().set('training', training);
+    sample.getOccurrence().set('training', training);
   } else {
     // don't send until the user has logged in
     return true;
@@ -132,6 +129,8 @@ function onSend(sample) {
 const morelConfiguration = $.extend(CONFIG.morel.manager, {
   Sample,
   onSend,
+  user: userModel.getUser,
+  password: userModel.getPassword,
 });
 
 // enable SQLite

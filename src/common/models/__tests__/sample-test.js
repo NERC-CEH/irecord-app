@@ -22,7 +22,7 @@ function getRandomSample() {
       longitude: -0.23,
       name: 'automatic test' },
   }, {
-    subModels: [occurrence],
+    occurrences: [occurrence],
     manager: recordManager,
     onSend: () => {}, // overwrite manager's one checking for user login
   });
@@ -59,25 +59,25 @@ describe('Sample', () => {
       let invalids = sample.validate({});
       expect(invalids).to.be.an('object')
         .and.have.property('sample')
-        .and.have.property('subModels');
+        .and.have.property('occurrences');
 
       // sample
       expect(invalids.sample).to.have.property('date');
       expect(invalids.sample).to.have.property('location');
       expect(invalids.sample).to.have.property('location name');
       expect(invalids.sample).to.have.property('location_type');
-      expect(invalids.sample).to.have.property('subModels');
+      expect(invalids.sample).to.have.property('occurrences');
 
       // occurrence
-      expect(invalids.subModels)
+      expect(invalids.occurrences)
         .to.be.an('object')
         .and.to.be.empty;
 
       const occurrence = new Occurrence();
-      sample.addSubModel(occurrence);
+      sample.addOccurrence(occurrence);
       invalids = sample.validate();
-      expect(invalids.subModels).to.not.be.empty;
-      expect(invalids.subModels).to.have.property(occurrence.cid);
+      expect(invalids.occurrences).to.not.be.empty;
+      expect(invalids.occurrences).to.have.property(occurrence.cid);
     });
   });
 

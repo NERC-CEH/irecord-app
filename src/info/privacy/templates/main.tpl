@@ -39,7 +39,7 @@
       obtained your permission to do so.</p>
   </li>
   <li>
-    <p><strong>Use of images submitted with the app</strong></p>
+    <p><strong>Use of media submitted with the app</strong></p>
 
     <p>By submitting a photograph with this app you:</p>
     <ul>

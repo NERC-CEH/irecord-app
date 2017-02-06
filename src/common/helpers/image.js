@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Functions to work with images.
+ * Functions to work with media.
  *****************************************************************************/
 import Morel from 'morel';
 import _ from 'lodash';

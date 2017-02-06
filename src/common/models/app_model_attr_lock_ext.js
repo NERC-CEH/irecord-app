@@ -66,7 +66,7 @@ export default {
 
   appendAttrLocks(sample) {
     const locks = this.get('attrLocks');
-    const occurrence = sample.getSubModel();
+    const occurrence = sample.getOccurrence();
 
     _.each(locks, (value, key) => {
       // false or undefined

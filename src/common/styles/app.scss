@@ -357,6 +357,12 @@ li h3 {
   .btn {
     color: $color-black;
     padding: 15px 0;
+
+    span.pull-right {
+      position: absolute;
+      right: 15px;
+      top: 0;
+    }
   }
 }
 

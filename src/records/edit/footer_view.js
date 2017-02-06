@@ -42,7 +42,7 @@ export default Marionette.CompositeView.extend({
   id: 'edit-footer',
   template: JST['records/edit/image_picker_array'],
   initialize() {
-    this.collection = this.model.getSubModel().images;
+    this.collection = this.model.getOccurrence().media;
   },
 
   events: {

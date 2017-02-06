@@ -30,7 +30,7 @@ let Sample = Morel.Sample.extend({
     const attrs = _.extend({}, this.attributes, attributes);
 
     const sample = {};
-    const subModels = {};
+    const occurrences = {};
 
     // todo: remove this bit once sample DB update is possible
     // check if saved
@@ -63,23 +63,23 @@ let Sample = Morel.Sample.extend({
       sample.location_type = 'can\'t be blank';
     }
 
-    // subModels
-    if (this.subModels.length === 0) {
-      sample.subModels = 'no species selected';
+    // occurrences
+    if (this.occurrences.length === 0) {
+      sample.occurrences = 'no species selected';
     } else {
-      this.subModels.each((occurrence) => {
+      this.occurrences.each((occurrence) => {
         const errors = occurrence.validate();
         if (errors) {
           const occurrenceID = occurrence.cid;
-          subModels[occurrenceID] = errors;
+          occurrences[occurrenceID] = errors;
         }
       });
     }
 
-    if (!_.isEmpty(sample) || !_.isEmpty(subModels)) {
+    if (!_.isEmpty(sample) || !_.isEmpty(occurrences)) {
       const errors = {
         sample,
-        subModels,
+        occurrences,
       };
       return errors;
     }

@@ -21,7 +21,7 @@ export default Marionette.View.extend({
 
     const items = [];
     const recordModel = this.model.get('recordModel');
-    recordModel.getSubModel().images.each((image) => {
+    recordModel.getOccurrence().media.each((image) => {
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
@@ -36,7 +36,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const recordModel = this.model.get('recordModel');
-    const occ = recordModel.getSubModel();
+    const occ = recordModel.getOccurrence();
     const specie = occ.get('taxon');
 
     // taxon
@@ -73,7 +73,7 @@ export default Marionette.View.extend({
       identifiers: occ.get('identifiers'),
       comment: occ.get('comment'),
       group_title: group ? group.title : null,
-      images: occ.images,
+      media: occ.media,
     };
   },
 });

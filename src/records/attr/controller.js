@@ -102,7 +102,7 @@ const API = {
   save(attr, values, recordModel, callback) {
     let currentVal;
     let newVal;
-    const occ = recordModel.getSubModel();
+    const occ = recordModel.getOccurrence();
 
     switch (attr) {
       case 'date':

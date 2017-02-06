@@ -2,17 +2,17 @@ import Morel from 'morel';
 import CONFIG from 'config';
 import { ImageHelp, Device } from 'helpers';
 
-export default Morel.Image.extend({
+export default Morel.Media.extend({
   destroy(...args) {
     // remove from internal storage
     if (window.cordova) {
       const URL = this.getURL();
       ImageHelp.deleteInternalStorage(URL, () => {
-        Morel.Image.prototype.destroy.apply(this, args);
+        Morel.Media.prototype.destroy.apply(this, args);
       });
     }
 
-    Morel.Image.prototype.destroy.apply(this, args);
+    Morel.Media.prototype.destroy.apply(this, args);
   },
 
   getURL() {

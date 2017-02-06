@@ -100,7 +100,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const templateData = {};
-    const occ = this.model.getSubModel();
+    const occ = this.model.getOccurrence();
 
     switch (this.options.attr) {
       case 'date':
