@@ -1,19 +1,19 @@
 /** ****************************************************************************
- * User Register controller.
+ * User Reset controller.
  *****************************************************************************/
 import $ from 'jquery';
-import _ from 'lodash';
 import Backbone from 'backbone';
 import App from 'app';
-import { Log, Device } from 'helpers';
-import CONFIG from 'config'; // Replaced with alias
+import { Log, Device, Error, Validate } from 'helpers';
+import CONFIG from 'config';
 import userModel from '../../common/models/user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {
-    Log('User:Register:Controller: showing');
+    Log('User:Reset:Controller: showing');
+
     // MAIN
     const mainView = new MainView();
     App.regions.getRegion('main').show(mainView);
@@ -21,12 +21,11 @@ const API = {
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Register',
+        title: 'Reset',
       }),
     });
     App.regions.getRegion('header').show(headerView);
 
-    // Start registration
     mainView.on('form:submit', (data) => {
       if (!Device.isOnline()) {
         App.regions.getRegion('dialog').show({
@@ -36,31 +35,18 @@ const API = {
         return;
       }
 
-      const validationError = userModel.validateRegistration(data);
+      const validationError = userModel.validateReset(data);
       if (!validationError) {
         mainView.triggerMethod('form:data:invalid', {}); // update form
         App.regions.getRegion('dialog').showLoader();
 
-        API.register(data)
+        API.reset(data)
           .then(() => {
             App.regions.getRegion('dialog').show({
-              title: 'Welcome aboard!',
-              body: 'Before submitting any records please check your email and ' +
-              'click on the verification link.',
-              buttons: [
-                {
-                  title: 'OK, got it',
-                  class: 'btn-positive',
-                  onClick() {
-                    App.regions.getRegion('dialog').hide();
-                    window.history.back();
-                  },
-                },
-              ],
-              onHide() {
-                window.history.back();
-              },
+              title: 'Success',
+              body: 'Further instructions have been sent to your e-mail address.',
             });
+            window.history.back();
           })
           .catch((err) => {
             App.regions.getRegion('dialog').error(err);
@@ -76,36 +62,59 @@ const API = {
 
   /**
    * Starts an app sign in to the Drupal site process.
-   * The sign in endpoint is specified by CONFIG.login.url -
+   * The sign in endpoint is specified by CONFIG.reset.url -
    * should be a Drupal sight using iForm Mobile Auth Module.
    *
    * It is important that the app authorises itself providing
    * api_key for the mentioned module.
    */
-  register(data) {
-    Log('User:Register:Controller: registering');
+  reset(data) {
+    Log('User:Reset:Controller: logging in');
+    const person = {
+      // app resets
+      api_key: CONFIG.morel.manager.api_key,
+    };
 
-    // app logins
-    formData.append('api_key', CONFIG.morel.manager.api_key);
+    // user resets
+    person.password = data.password;
+    if (Validate.email(data.name)) {
+      person.email = data.name;
+    } else {
+      person.name = data.name;
+    }
+
     const promise = new Promise((fulfill, reject) => {
-      $.ajax({
+      // find user ID
+      $.get({
         url: CONFIG.users.url,
-        type: 'POST',
-        data,
+        data: person,
         timeout: CONFIG.users.timeout,
-        success(receivedData) {
-          const fullData = _.extend(receivedData.data, { password: data.password });
-          userModel.logIn(fullData);
-          fulfill(fullData);
-        },
-        error(xhr, textStatus) {
+      })
+      // Reset password
+        .then((receivedData) => {
+          const userData = receivedData.data[0];
+          if (!userData) {
+            reject(new Error('User not found'));
+            return false;
+          }
+
+          return $.get({
+            url: `${CONFIG.users.url}/${userData.id}/reset`,
+            method: 'POST',
+            data: {
+              api_key: CONFIG.morel.manager.api_key,
+            },
+            timeout: CONFIG.users.timeout,
+          });
+        })
+        .then(fulfill)
+        .fail((xhr, textStatus) => {
           if (xhr.responseJSON) {
             reject(new Error(xhr.responseJSON.errors));
           } else {
             reject(new Error(textStatus));
           }
-        },
-      });
+        });
     });
 
     return promise;

@@ -6,6 +6,7 @@ import { Log } from 'helpers';
 import App from 'app';
 import LoginController from './login/controller';
 import RegisterController from './register/controller';
+import ResetController from './reset/controller';
 import ActivitiesController from '../common/pages/activities/controller';
 import StatisticsController from './statistics/controller';
 
@@ -17,6 +18,7 @@ const Router = Marionette.AppRouter.extend({
     'user/activities(/)': ActivitiesController.show,
     'user/statistics(/)': StatisticsController.show,
     'user/register(/)': RegisterController.show,
+    'user/reset(/)': ResetController.show,
     'user/*path': () => { App.trigger('404:show'); },
   },
 });

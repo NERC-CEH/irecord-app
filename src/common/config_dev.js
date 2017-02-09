@@ -20,12 +20,12 @@ const newConfig = $.extend(true, config, {
     ga_error: false,
   },
 
-  login: {
-    url: `${HOST}api/v0.1/users/auth`,
+  users: {
+    url: `${HOST}api/v0.1/users`,
     timeout: 80000,
   },
 
-  report: {
+  reports: {
     url: `${HOST}api/v0.1/reports`,
     timeout: 80000,
   },

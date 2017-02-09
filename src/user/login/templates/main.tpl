@@ -3,8 +3,8 @@
 </div>
 <div class="input-group">
   <div class="input-row">
-    <label class="media-object pull-left icon icon-mail"></label>
-    <input id="user-email" name="email" type="email" placeholder="Email">
+    <label class="media-object pull-left icon icon-user"></label>
+    <input id="user-name" name="name" type="email" placeholder="Username or email">
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-key"></label>
@@ -21,10 +21,9 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="<%= obj.irecord_url %>/user/password"
-       class="navigate-right" rel="external">
+    <a href="#user/reset" class="navigate-right">
       <span class="media-object pull-left icon icon-key"></span>
-      Request new password
+      Request a new password
     </a>
   </li>
 </ul>

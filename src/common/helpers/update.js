@@ -9,6 +9,7 @@ import Log from './log';
 import Error from './error';
 import Analytics from './analytics';
 import appModel from '../models/app_model';
+import userModel from '../models/user_model';
 
 const MIN_UPDATE_TIME = 5000; // show updating dialog for minimum seconds
 
@@ -304,6 +305,14 @@ const API = {
             // clean up old db
             Log('Update: clearing old db', 'i');
             oldDB.delete();
+
+            const oldFirstName = userModel.get('name');
+            const oldSecondName = userModel.get('surname');
+            userModel.set('firstname', oldFirstName);
+            userModel.set('secondname', oldSecondName);
+            userModel.set('name', '');
+            userModel.unset('surname');
+            userModel.save();
 
             Log('Update: finished', 'i');
             callback(); // fully restart afterwards

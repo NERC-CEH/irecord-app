@@ -16,7 +16,8 @@ let UserModel = Backbone.Model.extend({
   defaults: {
     drupalID: '',
     name: '',
-    surname: '',
+    firstname: '',
+    secondname: '',
     email: '',
     password: '',
 
@@ -49,7 +50,8 @@ let UserModel = Backbone.Model.extend({
     this.set('email', '');
     this.set('password', '');
     this.set('name', '');
-    this.set('surname', '');
+    this.set('firstname', '');
+    this.set('secondname', '');
 
     this.resetActivities();
     this.resetStats();
@@ -69,8 +71,9 @@ let UserModel = Backbone.Model.extend({
     this.set('drupalID', user.id || '');
     this.set('password', user.password || '');
     this.set('email', user.email || '');
-    this.set('name', user.firstname || '');
-    this.set('surname', user.secondname || '');
+    this.set('name', user.name || '');
+    this.set('firstname', user.firstname || '');
+    this.set('secondname', user.secondname || '');
     this.save();
 
     this.trigger('login');
@@ -137,14 +140,26 @@ let UserModel = Backbone.Model.extend({
   validateLogin(attrs) {
     const errors = {};
 
-    if (!attrs.email) {
-      errors.email = "can't be blank";
-    } else if (!Validate.email(attrs.email)) {
-      errors.email = 'invalid';
+    if (!attrs.name) {
+      errors.name = "can't be blank";
     }
 
     if (!attrs.password) {
       errors.password = "can't be blank";
+    }
+
+    if (!_.isEmpty(errors)) {
+      return errors;
+    }
+
+    return null;
+  },
+
+  validateReset(attrs) {
+    const errors = {};
+
+    if (!attrs.name) {
+      errors.name = "can't be blank";
     }
 
     if (!_.isEmpty(errors)) {

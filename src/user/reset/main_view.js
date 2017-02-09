@@ -1,25 +1,22 @@
 /** ****************************************************************************
- * User Login main view.
+ * User Reset main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import { Validate } from 'helpers';
 import JST from 'JST';
-import CONFIG from 'config';
 
 export default Marionette.View.extend({
-  template: JST['user/login/main'],
+  template: JST['user/reset/main'],
 
   events: {
-    'click #login-button': 'login',
+    'click #reset-button': 'reset',
   },
 
-  login() {
-    const $inputPassword = this.$el.find('#user-password');
+  reset() {
     const $inputName = this.$el.find('#user-name');
 
     const data = {
       name: $inputName.val(),
-      password: $inputPassword.val(),
     };
 
     this.trigger('form:submit', data);
@@ -28,12 +25,6 @@ export default Marionette.View.extend({
   onFormDataInvalid(errors) {
     const $view = this.$el;
     Validate.updateViewFormErrors($view, errors, '#user-');
-  },
-
-  serializeData() {
-    return {
-      irecord_url: CONFIG.irecord_url,
-    };
   },
 });
 

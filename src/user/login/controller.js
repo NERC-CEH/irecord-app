@@ -4,7 +4,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import App from 'app';
-import { Log, Device, Error } from 'helpers';
+import { Log, Device, Error, Validate } from 'helpers';
 import CONFIG from 'config';
 import userModel from '../../common/models/user_model';
 import MainView from './main_view';
@@ -72,29 +72,38 @@ const API = {
   login(data) {
     Log('User:Login:Controller: logging in');
     const person = {
-      // user logins
-      email: data.email,
-      password: data.password,
-
       // app logins
       api_key: CONFIG.morel.manager.api_key,
     };
 
+    // user logins
+    person.password = data.password;
+    if (Validate.email(data.name)) {
+      person.email = data.name;
+    } else {
+      person.name = data.name;
+    }
+
     const promise = new Promise((fulfill, reject) => {
-      $.ajax({
-        url: CONFIG.login.url,
-        type: 'POST',
+      $.get({
+        url: CONFIG.users.url,
         data: person,
-        callback_data: person,
-        timeout: CONFIG.login.timeout,
+        timeout: CONFIG.users.timeout,
+        beforeSend(xhr) {
+          const userAuth = btoa(`${data.name}:${data.password}`);
+          xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
+        },
         success(receivedData) {
-          const fullData = _.extend(receivedData.data, { password: data.password });
+          const fullData = _.extend(receivedData.data[0], { password: data.password });
           userModel.logIn(fullData);
           fulfill(fullData);
         },
-        error(xhr) {
-          const error = new Error(xhr.responseJSON.errors);
-          reject(error);
+        error(xhr, textStatus) {
+          if (xhr.responseJSON) {
+            reject(new Error(xhr.responseJSON.errors));
+          } else {
+            reject(new Error(textStatus));
+          }
         },
       });
     });

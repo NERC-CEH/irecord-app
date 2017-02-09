@@ -20,14 +20,11 @@ export default Marionette.View.extend({
     change: 'render',
   },
 
-  serializeDate() {
-    let surname;
-
-    if (userModel.hasLogIn()) {
-      surname = userModel.get('surname');
-    }
+  serializeData() {
     return {
-      surname,
+      login: this.model.hasLogIn(),
+      firstname: this.model.get('firstname'),
+      secondname: this.model.get('secondname'),
     };
   },
 

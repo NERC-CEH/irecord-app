@@ -29,12 +29,12 @@ export default {
     ID: 'UA-58378803-4',
   },
 
-  login: {
-    url: `${HOST}api/v0.1/users/auth`,
+  logins: {
+    url: `${HOST}api/v0.1/users`,
     timeout: 30000,
   },
 
-  report: {
+  reports: {
     url: `${HOST}api/v0.1/reports`,
     timeout: 80000,
   },

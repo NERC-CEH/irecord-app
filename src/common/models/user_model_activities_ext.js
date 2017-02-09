@@ -104,21 +104,19 @@ export default {
     const data = {
       report: 'library/groups/groups_for_app.xml',
       // user_id filled in by iform_mobile_auth proxy
-      email: this.get('email'),
-      usersecret: this.get('secret'),
-
       path: CONFIG.morel.manager.input_form,
-
       api_key: CONFIG.morel.manager.api_key,
     };
 
     const promise = new Promise((fulfill, reject) => {
-      $.ajax({
-        url: CONFIG.report.url,
-        type: 'GET',
+      $.get({
+        url: CONFIG.reports.url,
         data,
-        dataType: 'JSON',
-        timeout: CONFIG.report.timeout,
+        timeout: CONFIG.reports.timeout,
+        beforeSend(xhr) {
+          const userAuth = btoa(`${that.get('name')}:${that.get('password')}`);
+          xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
+        },
         success(receivedData) {
           const activities = [];
           const defaultActivity = {
