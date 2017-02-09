@@ -84,29 +84,13 @@ const API = {
     }
 
     const promise = new Promise((fulfill, reject) => {
-      // find user ID
+      // Reset password
       $.get({
-        url: CONFIG.users.url,
+        url: `${CONFIG.users.url}/anonymous/reset`,
+        method: 'POST',
         data: person,
         timeout: CONFIG.users.timeout,
       })
-      // Reset password
-        .then((receivedData) => {
-          const userData = receivedData.data[0];
-          if (!userData) {
-            reject(new Error('User not found'));
-            return false;
-          }
-
-          return $.get({
-            url: `${CONFIG.users.url}/${userData.id}/reset`,
-            method: 'POST',
-            data: {
-              api_key: CONFIG.morel.manager.api_key,
-            },
-            timeout: CONFIG.users.timeout,
-          });
-        })
         .then(fulfill)
         .fail((xhr, textStatus) => {
           if (xhr.responseJSON) {
