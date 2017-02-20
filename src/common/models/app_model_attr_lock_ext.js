@@ -2,7 +2,8 @@
  * App Model attribute lock functions.
  *****************************************************************************/
 import _ from 'lodash';
-import { Log, Analytics } from 'helpers';
+import Log from 'helpers/log';
+import Analytics from 'helpers/analytics';
 import userModel from './user_model';
 
 export default {

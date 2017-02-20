@@ -1,4 +1,5 @@
-import { LocHelp, Log } from 'helpers';
+import LocHelp from 'helpers/location';
+import Log from 'helpers/log';
 import L from 'leaflet';
 import { OsGridRef } from 'geodesy';
 import './map_view_singleclick';

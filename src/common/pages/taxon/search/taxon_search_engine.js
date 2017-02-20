@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import _ from 'lodash';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import searchCommonNames from './commonNamesSearch';
 import searchSciNames from './scientificNamesSearch';
 import helpers from './searchHelpers';

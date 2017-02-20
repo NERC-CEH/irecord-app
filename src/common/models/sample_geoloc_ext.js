@@ -5,7 +5,8 @@
  * start, update, error, success, stop
  *****************************************************************************/
 import $ from 'jquery';
-import { GPS, LocHelp } from 'helpers';
+import GPS from 'helpers/GPS';
+import LocHelp from 'helpers/location';
 import appModel from './app_model';
 
 const extension = {

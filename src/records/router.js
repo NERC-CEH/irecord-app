@@ -3,7 +3,8 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import { Log, Device } from 'helpers';
+import Log from 'helpers/log';
+import Device from 'helpers/device';
 import App from 'app';
 import recordManager from '../common/record_manager';
 import userModel from '../common/models/user_model';

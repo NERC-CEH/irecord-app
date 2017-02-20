@@ -3,7 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import _ from 'lodash';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import CONFIG from 'config';
 
 export default {

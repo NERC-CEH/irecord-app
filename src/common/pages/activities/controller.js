@@ -4,15 +4,16 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
-import { Log, Analytics } from 'helpers';
+import Log from 'helpers/log';
+import Analytics from 'helpers/analytics';
 import App from 'app';
+import radio from 'radio';
 import MainView from './main_view';
 import HeaderView from '../../views/header_view';
 import RefreshView from './refresh_view';
 import appModel from '../../models/app_model';
 import userModel from '../../models/user_model';
 import recordManager from '../../record_manager';
-import CONFIG from 'config'; // Replaced with alias
 
 /**
  * Model to hold details of an activity (group entity)
@@ -108,10 +109,10 @@ const API = {
       }),
     });
 
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
 
     // MAIN
     const mainView = new MainView({
@@ -165,7 +166,7 @@ const API = {
 
     // if exit on selection click
     mainView.on('save', onExit);
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     headerView.onExit = onExit;
   },
@@ -192,7 +193,7 @@ const API = {
    * Notify the user why the there are no activities.
    */
   userLoginMessage() {
-    App.regions.getRegion('dialog').show({
+    radio.on('app:dialog', {
       title: 'Information',
       body: 'Please log in to the app before selecting an alternative ' +
       'activity for your records.',

@@ -5,7 +5,9 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
 import App from 'app';
-import { Log, Device } from 'helpers';
+import radio from 'radio';
+import Log from 'helpers/log';
+import Device from 'helpers/device';
 import CONFIG from 'config'; // Replaced with alias
 import userModel from '../../common/models/user_model';
 import MainView from './main_view';
@@ -16,7 +18,7 @@ const API = {
     Log('User:Register:Controller: showing');
     // MAIN
     const mainView = new MainView();
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({
@@ -24,12 +26,12 @@ const API = {
         title: 'Register',
       }),
     });
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     // Start registration
     mainView.on('form:submit', (data) => {
       if (!Device.isOnline()) {
-        App.regions.getRegion('dialog').show({
+        radio.on('app:dialog', {
           title: 'Sorry',
           body: 'Looks like you are offline!',
         });
@@ -43,7 +45,7 @@ const API = {
 
         API.register(data)
           .then(() => {
-            App.regions.getRegion('dialog').show({
+            radio.on('app:dialog', {
               title: 'Welcome aboard!',
               body: 'Before submitting any records please check your email and ' +
               'click on the verification link.',
@@ -52,7 +54,7 @@ const API = {
                   title: 'OK, got it',
                   class: 'btn-positive',
                   onClick() {
-                    App.regions.getRegion('dialog').hide();
+                    radio.on('app:dialog:hide', );
                     window.history.back();
                   },
                 },
@@ -63,7 +65,7 @@ const API = {
             });
           })
           .catch((err) => {
-            App.regions.getRegion('dialog').error(err);
+            radio.on('app:dialog:error', err);
           });
       } else {
         mainView.triggerMethod('form:data:invalid', validationError);
@@ -71,7 +73,7 @@ const API = {
     });
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
   },
 
   /**

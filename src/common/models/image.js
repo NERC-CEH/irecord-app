@@ -1,6 +1,7 @@
 import Morel from 'morel';
 import CONFIG from 'config';
-import { ImageHelp, Device } from 'helpers';
+import ImageHelp from 'helpers/image';
+import Device from 'helpers/device';
 
 export default Morel.Media.extend({
   destroy(...args) {

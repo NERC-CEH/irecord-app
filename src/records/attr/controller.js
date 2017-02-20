@@ -3,8 +3,9 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import Morel from 'morel';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import App from 'app';
+import radio from 'radio';
 import appModel from '../../common/models/app_model';
 import recordManager from '../../common/record_manager';
 import MainView from './main_view';
@@ -35,7 +36,7 @@ const API = {
           attr,
           model: recordModel,
         });
-        App.regions.getRegion('main').show(mainView);
+        radio.trigger('app:main', mainView);
 
         // HEADER
         const lockView = new LockView({
@@ -54,7 +55,7 @@ const API = {
           model: new Backbone.Model({ title: attr }),
         });
 
-        App.regions.getRegion('header').show(headerView);
+        radio.trigger('app:header', headerView);
 
         // if exit on selection click
         mainView.on('save', () => {
@@ -64,7 +65,7 @@ const API = {
         });
 
         // FOOTER
-        App.regions.getRegion('footer').hide().empty();
+        radio.trigger('app:footer:hide');
       })
       .catch((err) => {
         Log(err, 'e');
@@ -168,7 +169,7 @@ const API = {
       })
       .catch((err) => {
         Log(err, 'e');
-        App.regions.getRegion('dialog').error(err);
+        radio.on('app:dialog:error', err);
       });
   },
 

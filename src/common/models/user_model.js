@@ -6,7 +6,8 @@ import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
 import Raven from 'raven-js';
 import CONFIG from 'config';
-import { Validate, Analytics } from 'helpers';
+import Validate from 'helpers/validate';
+import Analytics from 'helpers/analytics';
 import activitiesExtension from './user_model_activities_ext';
 import statisticsExtension from './user_model_statistics_ext';
 

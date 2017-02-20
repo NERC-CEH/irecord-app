@@ -11,7 +11,7 @@ import OSLeaflet from 'os-leaflet';
 import GridRef from 'leaflet.gridref';
 import { OsGridRef } from 'geodesy';
 import JST from 'JST';
-import { LocHelp } from 'helpers';
+import LocHelp from 'helpers/location';
 import CONFIG from 'config';
 import 'typeahead';
 import mapMarker from './map_view_marker';

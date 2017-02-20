@@ -3,7 +3,9 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import App from 'app';
-import { Log, Device } from 'helpers';
+import radio from 'radio';
+import Log from 'helpers/log';
+import Device from 'helpers/device';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
 import recordManager from '../../common/record_manager';
@@ -27,7 +29,7 @@ const API = {
           model: new Backbone.Model({ recordModel, appModel }),
         });
 
-        App.regions.getRegion('main').show(mainView);
+        radio.trigger('app:main', mainView);
       })
       .catch((err) => {
         Log(err, 'e');
@@ -39,10 +41,10 @@ const API = {
         title: 'Record',
       }),
     });
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
   },
 
   syncRecord(recordModel) {
@@ -55,10 +57,10 @@ const API = {
       recordModel.save({ remote: true })
         .catch((err) => {
           Log(err, 'e');
-          App.regions.getRegion('dialog').error(err);
+          radio.on('app:dialog:error', err);
         });
     } else {
-      App.regions.getRegion('dialog').error({
+      radio.on('app:dialog:error', {
         message: 'Looks like you are offline!',
       });
     }

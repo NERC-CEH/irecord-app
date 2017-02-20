@@ -5,8 +5,12 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Morel from 'morel';
-import { Log, Validate, StringHelp, LocHelp } from 'helpers';
+import Log from 'helpers/log';
+import Validate from 'helpers/validate';
+import StringHelp from 'helpers/string';
+import LocHelp from 'helpers/location';
 import App from 'app';
+import radio from 'radio';
 
 import recordManager from '../../record_manager';
 import appModel from '../../models/app_model';
@@ -161,7 +165,7 @@ const API = {
             })
             .catch((error) => {
               Log(error, 'e');
-              App.regions.getRegion('dialog').error(error);
+              radio.on('app:dialog:error', error);
             });
         }
 
@@ -232,7 +236,7 @@ const API = {
         mainView.on('childview:gps:click', onGPSClick);
         mainView.on('childview:location:name:change', onLocationNameChange);
 
-        App.regions.getRegion('main').show(mainView);
+        radio.trigger('app:main', mainView);
 
         // HEADER
         const lockView = new LockView({
@@ -280,18 +284,18 @@ const API = {
           model: recordModel,
         });
 
-        App.regions.getRegion('header').show(headerView);
+        radio.trigger('app:header', headerView);
 
         // if exit on selection click
         mainView.on('save', onPageExit);
       })
       .catch((err) => {
-        App.regions.getRegion('dialog').error(err);
+        radio.on('app:dialog:error', err);
       });
 
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
   },
 };
 

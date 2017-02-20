@@ -5,7 +5,8 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
-import { Log, Device } from 'helpers';
+import Log from 'helpers/log';
+import Device from 'helpers/device';
 import informalGroups from 'informal_groups.data';
 import './styles.scss';
 

@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import CONFIG from 'config';
 import App from 'app';
 import CommonController from '../common/controller';

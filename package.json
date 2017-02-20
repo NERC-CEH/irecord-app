@@ -70,7 +70,7 @@
     "localforage": "^1.4.3",
     "localforage-cordovasqlitedriver": "^1.5.0",
     "lodash": "3.6.0",
-    "morel": "Indicia-Team/morel#09ceffda32acc8859d3cb4a3a266d435f3aaf533",
+    "morel": "Indicia-Team/morel#cd5ea51d52f54fbbb6bd1da4b5cf6d49982eb5df",
     "node-sass": "^3.8.0",
     "os-leaflet": "0.2.1",
     "photoswipe": "^4.1.1",

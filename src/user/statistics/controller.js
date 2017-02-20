@@ -3,8 +3,9 @@
  ******************************************************************************/
 
 import Backbone from 'backbone';
-import { Log, Analytics } from 'helpers';
-import App from 'app';
+import Log from 'helpers/log';
+import Analytics from 'helpers/analytics';
+import radio from 'radio';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 import RefreshView from './refresh_view';
@@ -24,17 +25,17 @@ const API = {
       }),
     });
 
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
 
     // MAIN
     const mainView = new MainView({
       model: userModel,
     });
 
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     refreshView.on('refreshClick', () => {
       Log('User:Statistics:Controller: refresh clicked');

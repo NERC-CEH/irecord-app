@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import App from 'app';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import LocationsController from './locations/controller';
 import CommonController from '../common/controller';
 import MenuController from './menu/controller';

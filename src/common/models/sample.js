@@ -6,7 +6,7 @@ import _ from 'lodash';
 import Morel from 'morel';
 import CONFIG from 'config';
 import recordManager from '../record_manager';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import userModel from './user_model';
 import Occurrence from './occurrence';
 import GeolocExtension from './sample_geoloc_ext';

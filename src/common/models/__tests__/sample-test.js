@@ -3,7 +3,7 @@ import Morel from 'morel';
 import Sample from '../sample';
 import Occurrence from '../occurrence';
 import userModel from '../user_model';
-import { DateHelp } from 'helpers';
+import DateHelp from 'helpers/date';
 import CONFIG from 'config'; // Replaced with alias
 import { recordManager, Manager as RecordManager } from '../../record_manager';
 

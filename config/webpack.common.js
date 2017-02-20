@@ -33,8 +33,9 @@ module.exports = {
     ],
     alias: {
       app: 'app',
-      config: 'common/config',
-      helpers: 'common/helpers/main',
+      config: 'common/config/config',
+      helpers: 'common/helpers',
+      radio: 'common/radio',
 
       // vendor
       typeahead: 'typeahead.js/dist/typeahead.jquery',

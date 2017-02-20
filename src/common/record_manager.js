@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import Morel from 'morel';
 import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
-import { Device, Log } from 'helpers';
+import Device from 'helpers/device';
+import Log from 'helpers/log';
 import CONFIG from 'config';
 import Sample from './models/sample';
 import appModel from './models/app_model';

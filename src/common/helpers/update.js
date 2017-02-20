@@ -2,7 +2,7 @@
  * App update functionality.
  *****************************************************************************/
 
-import App from 'app';
+import radio from 'radio';
 import CONFIG from 'config';
 import recordManager from '../record_manager';
 import Log from './log';
@@ -226,7 +226,7 @@ const API = {
       }
 
       // apply all updates
-      App.regions.getRegion('dialog').show({
+      radio.trigger('app:dialog:show', {
         title: 'Updating',
         body: 'This should take only a moment...',
         hideAllowed: false,
@@ -234,19 +234,18 @@ const API = {
       const startTime = Date.now();
       return API._applyUpdates(firstUpdate, (error) => {
         if (error) {
-          App.regions.getRegion('dialog')
-            .error('Sorry, an error has occurred while updating the app');
+          radio.trigger('app:dialog:error', 'Sorry, an error has occurred while updating the app');
           return null;
         }
 
         const timeDiff = (Date.now() - startTime);
         if (timeDiff < MIN_UPDATE_TIME) {
           setTimeout(() => {
-            App.regions.getRegion('dialog').hide(true);
+            radio.trigger('app:dialog:hide', true);
             callback();
           }, MIN_UPDATE_TIME - timeDiff);
         } else {
-          App.regions.getRegion('dialog').hide(true);
+          radio.trigger('app:dialog:hide', true);
           callback();
         }
         return null;
@@ -374,7 +373,7 @@ const API = {
         if (!fullRestartRequired) {
           return callback();
         }
-        App.restart();
+        radio.trigger('app:restart');
         return null;
       }
 

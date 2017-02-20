@@ -7,7 +7,6 @@ import Log from './log';
 import Analytics from './analytics';
 import Error from './error';
 import Device from './device';
-import ImageModel from '../models/image';
 
 const Image = {
   deleteInternalStorage(name, callback) {
@@ -96,7 +95,7 @@ const Image = {
   /**
    * Create new record with a photo
    */
-  getImageModel(file, callback) {
+  getImageModel(ImageModel, file, callback) {
     // create and add new record
     const success = (args) => {
       const [data, type, width, height] = args;

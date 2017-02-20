@@ -13,7 +13,6 @@
  * Levels values defined in core app module.
  *****************************************************************************/
 import CONFIG from 'config';
-import Analytics from './analytics';
 
 const ERROR = 'e';
 const WARNING = 'w';
@@ -34,7 +33,6 @@ function error(err = {}) {
     };
   }
   console.error(err.message, err.url, err.line, err.column, err.obj);
-  // Analytics.trackException(err);
 }
 
 function log(message, type = DEBUG) {

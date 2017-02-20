@@ -5,7 +5,7 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
-import App from 'app';
+import radio from 'radio';
 import JST from 'JST';
 import '../styles/dialog.scss';
 
@@ -16,7 +16,7 @@ const errorsTable = {
     buttons: [{
       title: 'Restart',
       onClick: function onClick() {
-        App.restart();
+        radio.trigger('app:restart');
       },
     }],
   },

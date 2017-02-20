@@ -3,8 +3,10 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import App from 'app';
-import { Log, StringHelp, Device } from 'helpers';
+import radio from 'radio';
+import Log from 'helpers/log';
+import StringHelp from 'helpers/string';
+import Device from 'helpers/device';
 import JST from 'JST';
 import appModel from '../../common/models/app_model';
 import MainView from './main_view';
@@ -22,7 +24,7 @@ const API = {
     mainView.on('location:delete', API.deleteLocation);
     mainView.on('location:edit', API.editLocation);
 
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({
@@ -30,10 +32,10 @@ const API = {
         title: 'Locations',
       }),
     });
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
   },
 
   deleteLocation(model) {
@@ -70,7 +72,7 @@ const API = {
 
     const editView = new EditView({ model: location });
 
-    App.regions.getRegion('dialog').show({
+    radio.on('app:dialog', {
       title: 'Edit Location',
       body: editView,
       buttons: [
@@ -81,13 +83,13 @@ const API = {
             // update location
             const locationEdit = editView.getValues();
             appModel.setLocation(location.set(locationEdit).toJSON());
-            App.regions.getRegion('dialog').hide();
+            radio.on('app:dialog:hide', );
           },
         },
         {
           title: 'Cancel',
           onClick() {
-            App.regions.getRegion('dialog').hide();
+            radio.on('app:dialog:hide', );
           },
         },
       ],

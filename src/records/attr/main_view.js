@@ -3,7 +3,10 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import { Device, DateHelp, StringHelp, Log } from 'helpers';
+import Device from 'helpers/device';
+import DateHelp from 'helpers/date';
+import StringHelp from 'helpers/string';
+import Log from 'helpers/log';
 import JST from 'JST';
 
 // http://stackoverflow.com/questions/846221/logarithmic-slider

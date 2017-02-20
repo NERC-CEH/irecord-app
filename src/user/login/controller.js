@@ -4,7 +4,11 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import App from 'app';
-import { Log, Device, Error, Validate } from 'helpers';
+import radio from 'radio';
+import Log from 'helpers/log';
+import Device from 'helpers/device';
+import Error from 'helpers/error';
+import Validate from 'helpers/validate';
 import CONFIG from 'config';
 import userModel from '../../common/models/user_model';
 import MainView from './main_view';
@@ -20,7 +24,7 @@ const API = {
 
     // MAIN
     const mainView = new MainView();
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({
@@ -28,11 +32,11 @@ const API = {
         title: 'Login',
       }),
     });
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     mainView.on('form:submit', (data) => {
       if (!Device.isOnline()) {
-        App.regions.getRegion('dialog').show({
+        radio.on('app:dialog', {
           title: 'Sorry',
           body: 'Looks like you are offline!',
         });
@@ -50,7 +54,7 @@ const API = {
             window.history.back();
           })
           .catch((err) => {
-            App.regions.getRegion('dialog').error(err);
+            radio.on('app:dialog:error', err);
           });
       } else {
         mainView.triggerMethod('form:data:invalid', validationError);
@@ -58,7 +62,7 @@ const API = {
     });
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
   },
 
   /**

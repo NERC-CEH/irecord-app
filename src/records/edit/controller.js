@@ -4,10 +4,15 @@
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Morel from 'morel';
-import { Device, ImageHelp, Analytics, Log } from 'helpers';
+import Device from 'helpers/device';
+import ImageHelp from 'helpers/image';
+import Analytics from 'helpers/analytics';
+import Log from 'helpers/log';
 import App from 'app';
+import radio from 'radio';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
+import ImageModel from '../../common/models/image';
 import recordManager from '../../common/record_manager';
 import MainView from './main_view';
 import HeaderView from './header_view';
@@ -42,7 +47,7 @@ const API = {
         const mainView = new MainView({
           model: new Backbone.Model({ recordModel, appModel }),
         });
-        App.regions.getRegion('main').show(mainView);
+        radio.trigger('app:main', mainView);
 
         // on finish sync move to show
         function checkIfSynced() {
@@ -67,7 +72,7 @@ const API = {
           API.save(recordModel);
         });
 
-        App.regions.getRegion('header').show(headerView);
+        radio.trigger('app:header', headerView);
 
         // FOOTER
         const footerView = new FooterView({
@@ -89,7 +94,7 @@ const API = {
           API.photoSelect(recordModel);
         });
 
-        App.regions.getRegion('footer').show(footerView);
+        radio.trigger('app:footer', footerView);
       })
       .catch((err) => {
         Log(err, 'e');
@@ -127,13 +132,13 @@ const API = {
                 const description = errors[error].description || '';
                 errorMsg += `<p><b>${title}</b> ${description}</p>`;
               }
-              App.regions.getRegion('dialog').error(errorMsg);
+              radio.on('app:dialog:error', errorMsg);
             }
           });
         App.trigger('record:saved');
       })
       .catch((err) => {
-        App.regions.getRegion('dialog').error(err);
+        radio.on('app:dialog:error', err);
       });
   },
 
@@ -152,7 +157,7 @@ const API = {
       });
     }
 
-    App.regions.getRegion('dialog').show({
+    radio.on('app:dialog', {
       title: 'Sorry',
       body: missing,
       timeout: 2000,
@@ -167,13 +172,13 @@ const API = {
     API.addPhoto(occurrence, photo, (occErr) => {
       // hide loader
       if (occErr) {
-        App.regions.getRegion('dialog').error(occErr);
+        radio.on('app:dialog:error', occErr);
       }
     });
   },
 
   photoDelete(photo) {
-    App.regions.getRegion('dialog').show({
+    radio.on('app:dialog', {
       title: 'Delete',
       body: 'Are you sure you want to remove this photo from the record?' +
       '</br><i><b>Note:</b> it will remain in the gallery.</i>',
@@ -181,7 +186,7 @@ const API = {
         {
           title: 'Cancel',
           onClick() {
-            App.regions.getRegion('dialog').hide();
+            radio.on('app:dialog:hide', );
           },
         },
         {
@@ -196,7 +201,7 @@ const API = {
                 // hide loader
               },
             });
-            App.regions.getRegion('dialog').hide();
+            radio.on('app:dialog:hide', );
             Analytics.trackEvent('Record', 'photo remove');
           },
         },
@@ -208,7 +213,7 @@ const API = {
     Log('Records:Edit:Controller: photo selection');
     const occurrence = recordModel.getOccurrence();
 
-    App.regions.getRegion('dialog').show({
+    radio.on('app:dialog', {
       title: 'Choose a method to upload a photo',
       buttons: [
         {
@@ -217,11 +222,11 @@ const API = {
             ImageHelp.getImage((entry) => {
               API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
                 if (occErr) {
-                  App.regions.getRegion('dialog').error(occErr);
+                  radio.on('app:dialog:error', occErr);
                 }
               });
             });
-            App.regions.getRegion('dialog').hide();
+            radio.on('app:dialog:hide', );
           },
         },
         {
@@ -230,14 +235,14 @@ const API = {
             ImageHelp.getImage((entry) => {
               API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
                 if (occErr) {
-                  App.regions.getRegion('dialog').error(occErr);
+                  radio.on('app:dialog:error', occErr);
                 }
               });
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
             });
-            App.regions.getRegion('dialog').hide();
+            radio.on('app:dialog:hide', );
           },
         },
       ],
@@ -248,7 +253,7 @@ const API = {
    * Adds a new image to occurrence.
    */
   addPhoto(occurrence, photo, callback) {
-    ImageHelp.getImageModel(photo, (err, image) => {
+    ImageHelp.getImageModel(ImageModel, photo, (err, image) => {
       if (err || !image) {
         const error = new Error('Missing image.');
         callback(error);

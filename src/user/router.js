@@ -2,7 +2,7 @@
  * User router.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import App from 'app';
 import LoginController from './login/controller';
 import RegisterController from './register/controller';

@@ -1,5 +1,5 @@
 import Marionette from 'backbone.marionette';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import JST from 'JST';
 
 export default Marionette.View.extend({

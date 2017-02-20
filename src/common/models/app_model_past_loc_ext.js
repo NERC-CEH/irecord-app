@@ -2,7 +2,8 @@
  * App Model past locations functions.
  *****************************************************************************/
 import _ from 'lodash';
-import { UUID, LocHelp } from 'helpers';
+import UUID from 'helpers/UUID';
+import LocHelp from 'helpers/location';
 
 const MAX_SAVED = 100;
 

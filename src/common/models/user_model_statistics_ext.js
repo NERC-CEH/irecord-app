@@ -2,7 +2,7 @@
  * App Model statistics functions.
  *****************************************************************************/
 import $ from 'jquery';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 import CONFIG from 'config';
 

@@ -4,7 +4,8 @@
 import Backbone from 'backbone';
 import Morel from 'morel';
 import App from 'app';
-import { Log } from 'helpers';
+import radio from 'radio';
+import Log from 'helpers/log';
 import recordManager from '../../record_manager';
 import appModel from '../../models/app_model';
 import userModel from '../../models/user_model';
@@ -61,10 +62,10 @@ const API = {
         title: 'Species',
       }),
     });
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
   },
 
   _showMainView(mainView, that) {
@@ -82,7 +83,7 @@ const API = {
         })
         .catch((err) => {
           Log(err, 'e');
-          App.regions.getRegion('dialog').error(err);
+          radio.on('app:dialog:error', err);
         });
     }, that);
     mainView.on('taxon:searched', (searchPhrase) => {
@@ -91,7 +92,7 @@ const API = {
       });
     });
 
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
   },
 
   updateTaxon(sampleID, taxon) {

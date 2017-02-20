@@ -2,7 +2,7 @@
  * User Reset main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
-import { Validate } from 'helpers';
+import Validate from 'helpers/validate';
 import JST from 'JST';
 
 export default Marionette.View.extend({

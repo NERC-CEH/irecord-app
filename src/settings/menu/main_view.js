@@ -3,7 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import { Device } from 'helpers';
+import Device from 'helpers/device';
 import JST from 'JST';
 
 export default Marionette.View.extend({

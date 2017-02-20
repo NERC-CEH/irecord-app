@@ -4,7 +4,7 @@ import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import Hammer from 'hammerjs';
 import JST from 'JST';
-import { Device } from 'helpers';
+import Device from 'helpers/device';
 
 const EmptyListView = Marionette.View.extend({
   tagName: 'li',
