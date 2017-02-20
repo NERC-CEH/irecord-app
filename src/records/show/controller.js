@@ -50,7 +50,7 @@ const API = {
         return;
       }
 
-      recordModel.save({ remote: true })
+      recordModel.save(null, { remote: true })
         .catch((err) => {
           Log(err, 'e');
           radio.trigger('app:dialog:error', err);

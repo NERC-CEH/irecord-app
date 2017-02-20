@@ -111,13 +111,20 @@ const API = {
     promise
       .then(() => {
         // should we sync?
-        if (Device.isOnline() && !userModel.hasLogIn()) {
+        if (!Device.isOnline()) {
+          radio.trigger('app:dialog:error', {
+            message: 'Looks like you are offline!',
+          });
+          return;
+        }
+
+        if (!userModel.hasLogIn()) {
           App.trigger('user:login', { replace: true });
           return;
         }
 
         // sync
-        recordModel.save({ remote: true })
+        recordModel.save(null, { remote: true })
           .catch((response) => {
             const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
             if (response.responseJSON && !visibleDialog) {

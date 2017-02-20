@@ -6,6 +6,7 @@ import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import App from 'app';
+import radio from 'radio';
 import savedRecords from '../common/saved_records';
 import userModel from '../common/models/user_model';
 import appModel from '../common/models/app_model';
@@ -117,7 +118,7 @@ App.on('record:saved', () => {
 });
 
 function syncRecords() {
-  if (Device.isOnline() && appModel.get('autosync')) {
+  if (Device.isOnline() && appModel.get('autosync') && userModel.hasLogIn()) {
     Log('Records:router: syncing all records');
     savedRecords.save(null, { remote: true });
   }

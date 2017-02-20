@@ -1,6 +1,7 @@
 import Morel from 'morel';
 import store from './store';
 import Sample from './models/sample';
+import userModel from './models/user_model';
 
 const Collection = Morel.Collection.extend({
   store,
@@ -46,7 +47,9 @@ const Collection = Morel.Collection.extend({
           saving--;
           if (saving === 0) {
             callback && callback();
-            that.save(null, { remote: true });
+            if (userModel.hasLogIn()) {
+              that.save(null, { remote: true });
+            }
           }
         })
         .catch((error) => {
