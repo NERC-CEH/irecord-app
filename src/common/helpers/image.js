@@ -110,14 +110,12 @@ const Image = {
         .then(() => {
           callback(null, imageModel);
         })
-        .catch((err) => {
-          callback(err);
-        });
+        .catch(callback);
     };
 
     if (window.cordova) {
       // don't resize, only get width and height
-      Morel.Image.getDataURI(file)
+      Morel.Media.getDataURI(file)
         .then((args) => {
           const [, , width, height] = args;
           let fileName = file;
@@ -130,15 +128,11 @@ const Image = {
           }
           success(fileName, 'jpeg', width, height);
         })
-        .catch((err) => {
-          callback(err);
-        });
+        .catch(callback);
     } else if (file instanceof File) {
-      Morel.Image.getDataURI(file)
+      Morel.Media.getDataURI(file)
         .then(success)
-        .catch((err) => {
-          callback(err);
-        });
+        .catch(callback);
     }
   },
 };

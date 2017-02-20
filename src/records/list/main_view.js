@@ -11,6 +11,7 @@ import Device from 'helpers/device';
 import DateHelp from 'helpers/date';
 import JST from 'JST';
 import Gallery from '../../common/gallery';
+import LoaderView from '../../common/views/loader_view';
 import './styles.scss';
 
 const RecordView = Marionette.View.extend({
@@ -201,8 +202,24 @@ export default Marionette.CompositeView.extend({
   template: JST['records/list/main'],
 
   childViewContainer: '#records-list',
-  emptyView: NoRecordsView,
   childView: RecordView,
+
+  constructor(...args) {
+    const that = this;
+    const [options] = args;
+    if (options.collection.fetching) {
+      this.emptyView = LoaderView;
+
+      options.collection.once('fetching:done', () => {
+        that.emptyView = NoRecordsView;
+        if (!that.collection.length) that.render();
+      });
+    } else {
+      this.emptyView = NoRecordsView;
+    }
+
+    Marionette.CompositeView.prototype.constructor.apply(this, args);
+  },
 
   // invert the order
   attachHtml(collectionView, childView) {

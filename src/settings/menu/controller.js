@@ -7,7 +7,7 @@ import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
-import recordManager from '../../common/record_manager';
+import savedRecords from '../../common/saved_records';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
@@ -28,7 +28,7 @@ const API = {
     mainView.on('records:submit:all', API.sendAllRecords);
     mainView.on('records:delete:all', API.deleteAllRecords);
     mainView.on('app:reset', () => {
-      radio.on('app:dialog', {
+      radio.trigger('app:dialog', {
         title: 'Reset',
         class: 'error',
         body: 'Are you sure you want to reset the application to its initial state? ' +
@@ -37,7 +37,7 @@ const API = {
           {
             title: 'Cancel',
             onClick() {
-              radio.on('app:dialog:hide', );
+              radio.trigger('app:dialog:hide');
             },
           },
           {
@@ -46,7 +46,7 @@ const API = {
             onClick() {
               // delete all
               API.resetApp(() => {
-                radio.on('app:dialog', {
+                radio.trigger('app:dialog', {
                   title: 'Done!',
                   timeout: 1000,
                 });
@@ -71,14 +71,14 @@ const API = {
     let body = 'Are you sure you want to delete all successfully synchronised local records?';
     body += '</br><i><b>Note:</b> records on the server will not be touched.</i>';
 
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Delete All',
       body,
       buttons: [
         {
           title: 'Cancel',
           onClick() {
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
         {
@@ -88,8 +88,8 @@ const API = {
             Log('Settings:Menu:Controller: deleting all records');
 
             // delete all
-            recordManager.removeAllSynced(() => {
-              radio.on('app:dialog', {
+            savedRecords.removeAllSynced(() => {
+              radio.trigger('app:dialog', {
                 title: 'Done!',
                 timeout: 1000,
               });
@@ -102,14 +102,14 @@ const API = {
   },
 
   sendAllRecords() {
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Submit All',
       body: 'Are you sure you want to set all valid records for submission?',
       buttons: [
         {
           title: 'Cancel',
           onClick() {
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
         {
@@ -119,12 +119,12 @@ const API = {
             Log('Settings:Menu:Controller: sending all records');
 
             // delete all
-            recordManager.setAllToSend((err) => {
+            savedRecords.addAllToSend((err) => {
               if (err) {
-                radio.on('app:dialog:error', err);
+                radio.trigger('app:dialog:error', err);
                 return;
               }
-              radio.on('app:dialog', {
+              radio.trigger('app:dialog', {
                 title: 'Done!',
                 timeout: 1000,
               });
@@ -145,7 +145,12 @@ const API = {
     userModel.clear().set(userModel.defaults);
     userModel.save();
 
-    recordManager.clearAll(true, callback);
+    savedRecords.destroy()
+      .then(callback)
+      .catch((err) => {
+        Log(err, 'e');
+        callback && callback(err);
+      });
 
     Analytics.trackEvent('Settings', 'reset app');
   },

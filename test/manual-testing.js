@@ -2,7 +2,7 @@
  * Manual testing functions.
  *********************************************************************/
 import appModel from 'components/common/models/app_model';
-import recordManager from 'components/common/record_manager';
+import savedRecords from 'components/common/saved_records';
 import Sample from 'components/common/models/sample';
 import Occurrence from 'components/common/models/occurrence';
 import Morel from 'morel';
@@ -13,7 +13,7 @@ const testing = {};
  * Reset All Records Status
  */
 testing.resetRecordsStatus = function () {
-  recordManager.getAll((getError, recordsCollection) => {
+  savedRecords.getAll((getError, recordsCollection) => {
     if (getError) {
       App.regions.dialog.error(getError);
       return;
@@ -94,7 +94,7 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
   // append locked attributes
   appModel.appendAttrLocks(sample);
 
-  recordManager.set(sample, (saveErr) => {
+  savedRecords.set(sample, (saveErr) => {
     if (saveErr) {
       console.error(saveErr);
       return;
@@ -402,10 +402,10 @@ function screenshotsRecursive(samples, callback) {
   });
 }
 
-testing.screenshotsPopulate = function (recordManager) {
-  const samples = createSamples(recordManager);
+testing.screenshotsPopulate = function (savedRecords) {
+  const samples = createSamples(savedRecords);
 
-  recordManager.clear(() => {
+  savedRecords.clear(() => {
     screenshotsRecursive(samples, () => {
 
     });

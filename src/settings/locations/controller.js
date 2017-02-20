@@ -72,7 +72,7 @@ const API = {
 
     const editView = new EditView({ model: location });
 
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Edit Location',
       body: editView,
       buttons: [
@@ -83,13 +83,13 @@ const API = {
             // update location
             const locationEdit = editView.getValues();
             appModel.setLocation(location.set(locationEdit).toJSON());
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
         {
           title: 'Cancel',
           onClick() {
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
       ],

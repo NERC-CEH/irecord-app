@@ -7,7 +7,7 @@ import Log from 'helpers/log';
 import App from 'app';
 import radio from 'radio';
 import appModel from '../../common/models/app_model';
-import recordManager from '../../common/record_manager';
+import savedRecords from '../../common/saved_records';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 import LockView from '../../common/views/attr_lock_view';
@@ -15,61 +15,57 @@ import LockView from '../../common/views/attr_lock_view';
 const API = {
   show(recordID, attr) {
     Log('Records:Attr:Controller: showing');
-    recordManager.get(recordID)
-      .then((recordModel) => {
-        // Not found
-        if (!recordModel) {
-          Log('No record model found.', 'e');
-          App.trigger('404:show', { replace: true });
-          return;
-        }
 
-        // can't edit a saved one - to be removed when record update
-        // is possible on the server
-        if (recordModel.getSyncStatus() === Morel.SYNCED) {
-          App.trigger('records:show', recordID, { replace: true });
-          return;
-        }
+    const recordModel = savedRecords.get(recordID);
+    // Not found
+    if (!recordModel) {
+      Log('No record model found.', 'e');
+      radio.trigger('app:404:show', { replace: true });
+      return;
+    }
 
-        // MAIN
-        const mainView = new MainView({
-          attr,
-          model: recordModel,
+    // can't edit a saved one - to be removed when record update
+    // is possible on the server
+    if (recordModel.getSyncStatus() === Morel.SYNCED) {
+      App.trigger('records:show', recordID, { replace: true });
+      return;
+    }
+
+    // MAIN
+    const mainView = new MainView({
+      attr,
+      model: recordModel,
+    });
+    radio.trigger('app:main', mainView);
+
+    // HEADER
+    const lockView = new LockView({
+      model: new Backbone.Model({ appModel, recordModel }),
+      attr,
+      onLockClick: API.onLockClick,
+    });
+
+    const headerView = new HeaderView({
+      onExit() {
+        API.onExit(mainView, recordModel, attr, () => {
+          window.history.back();
         });
-        radio.trigger('app:main', mainView);
+      },
+      rightPanel: lockView,
+      model: new Backbone.Model({ title: attr }),
+    });
 
-        // HEADER
-        const lockView = new LockView({
-          model: new Backbone.Model({ appModel, recordModel }),
-          attr,
-          onLockClick: API.onLockClick,
-        });
+    radio.trigger('app:header', headerView);
 
-        const headerView = new HeaderView({
-          onExit() {
-            API.onExit(mainView, recordModel, attr, () => {
-              window.history.back();
-            });
-          },
-          rightPanel: lockView,
-          model: new Backbone.Model({ title: attr }),
-        });
-
-        radio.trigger('app:header', headerView);
-
-        // if exit on selection click
-        mainView.on('save', () => {
-          API.onExit(mainView, recordModel, attr, () => {
-            window.history.back();
-          });
-        });
-
-        // FOOTER
-        radio.trigger('app:footer:hide');
-      })
-      .catch((err) => {
-        Log(err, 'e');
+    // if exit on selection click
+    mainView.on('save', () => {
+      API.onExit(mainView, recordModel, attr, () => {
+        window.history.back();
       });
+    });
+
+    // FOOTER
+    radio.trigger('app:footer:hide');
   },
 
   onLockClick(view) {
@@ -169,7 +165,7 @@ const API = {
       })
       .catch((err) => {
         Log(err, 'e');
-        radio.on('app:dialog:error', err);
+        radio.trigger('app:dialog:error', err);
       });
   },
 

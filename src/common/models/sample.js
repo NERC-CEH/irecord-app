@@ -1,32 +1,43 @@
 /** ****************************************************************************
  * Morel Sample.
  *****************************************************************************/
-import $ from 'jquery';
 import _ from 'lodash';
 import Morel from 'morel';
 import CONFIG from 'config';
-import recordManager from '../record_manager';
 import Log from 'helpers/log';
+import Device from 'helpers/device';
+import store from '../store';
 import userModel from './user_model';
 import Occurrence from './occurrence';
 import GeolocExtension from './sample_geoloc_ext';
 
-let Sample = Morel.Sample.extend({
-  constructor(...args) {
-    this.manager = recordManager;
-    Morel.Sample.prototype.constructor.apply(this, args);
+const Sample = Morel.Sample.extend({
+  api_key: CONFIG.morel.api_key,
+  remote_host: CONFIG.morel.host,
+  user: userModel.getUser,
+  password: userModel.getPassword,
+
+  store, // offline store
+
+  Occurrence,
+
+  keys: CONFIG.morel.sample, // warehouse attribute keys
+
+  defaults: {
+    // recording form on the iRecord website
+    form: CONFIG.morel.input_form,
+
+    // attach device information
+    device: Device.getPlatform(),
+    device_version: Device.getVersion(),
   },
 
   initialize() {
-    this.set('form', CONFIG.morel.manager.input_form);
-
     this.checkExpiredGroup(); // activities
     this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
   },
 
-  Occurrence,
-
-  validate(attributes) {
+  validateRemote(attributes) {
     const attrs = _.extend({}, this.attributes, attributes);
 
     const sample = {};
@@ -93,7 +104,7 @@ let Sample = Morel.Sample.extend({
   setToSend() {
     this.metadata.saved = true;
 
-    if (!this.isValid()) {
+    if (!this.isValid({ remote: true })) {
       // since the sample was invalid and so was not saved
       // we need to revert it's status
       this.metadata.saved = false;
@@ -134,10 +145,16 @@ let Sample = Morel.Sample.extend({
     }
     return false;
   },
+
+  timeout() {
+    if (!Device.connectionWifi()) {
+      return 180000; // 3 min
+    }
+    return 60000; // 1 min
+  },
 });
 
 // add geolocation functionality
-Sample = Sample.extend(GeolocExtension);
+const SampleWithGeoloc = Sample.extend(GeolocExtension);
 
-$.extend(true, Morel.Sample.keys, CONFIG.morel.sample);
-export { Sample as default };
+export { SampleWithGeoloc as default };

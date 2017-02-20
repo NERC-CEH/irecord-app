@@ -13,7 +13,7 @@ import HeaderView from '../../views/header_view';
 import RefreshView from './refresh_view';
 import appModel from '../../models/app_model';
 import userModel from '../../models/user_model';
-import recordManager from '../../record_manager';
+import savedRecords from '../../saved_records';
 
 /**
  * Model to hold details of an activity (group entity)
@@ -127,7 +127,7 @@ const API = {
 
     // Initialize data
     if (recordID) {
-      recordManager.get(recordID)
+      savedRecords.get(recordID)
         .then((record) => {
           recordModel = record;
           activitiesCollection.updateActivitiesCollection();
@@ -193,7 +193,7 @@ const API = {
    * Notify the user why the there are no activities.
    */
   userLoginMessage() {
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Information',
       body: 'Please log in to the app before selecting an alternative ' +
       'activity for your records.',

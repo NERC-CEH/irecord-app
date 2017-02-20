@@ -1,5 +1,5 @@
 import API from '../controller';
-import recordManager from '../../../common/record_manager';
+import savedRecords from '../../../common/saved_records';
 
 
 describe('List Controller', function () {
@@ -28,11 +28,11 @@ describe('List Controller', function () {
 
   describe('photo picker', () => {
     before((done) => {
-      recordManager.clear(done);
+      savedRecords.clear(done);
     });
 
     afterEach((done) => {
-      recordManager.clear(done);
+      savedRecords.clear(done);
     });
 
     it('should create a new record with a photo', (done) => {

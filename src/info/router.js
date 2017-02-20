@@ -54,7 +54,7 @@ const Router = Marionette.AppRouter.extend({
         title: 'Credits', App, route: 'info/credits/main',
       });
     },
-    'info/*path': function () { App.trigger('404:show'); },
+    'info/*path': function () { radio.trigger('app:404:show'); },
   },
 });
 

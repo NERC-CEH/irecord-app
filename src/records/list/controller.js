@@ -8,43 +8,32 @@ import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
 import ImageHelp from 'helpers/image';
 import appModel from '../../common/models/app_model';
-import recordManager from '../../common/record_manager';
+import savedRecords from '../../common/saved_records';
 import Sample from '../../common/models/sample';
 import Occurrence from '../../common/models/occurrence';
 import ImageModel from '../../common/models/image';
 import MainView from './main_view';
 import HeaderView from './header_view';
-import LoaderView from '../../common/views/loader_view';
 
 const API = {
   show() {
-    const loaderView = new LoaderView();
-    radio.trigger('app:main', loaderView);
+    Log('Records:List:Controller: showing');
 
-    recordManager.getAll()
-      .then((recordsCollection) => {
-        Log('Records:List:Controller: showing');
+    // MAIN
+    const mainView = new MainView({
+      collection: savedRecords,
+      appModel,
+    });
 
-        // MAIN
-        const mainView = new MainView({
-          collection: recordsCollection,
-          appModel,
-        });
+    mainView.on('childview:record:edit:attr', (childView, attr) => {
+      App.trigger('records:edit:attr', childView.model.cid, attr);
+    });
 
-        mainView.on('childview:record:edit:attr', (childView, attr) => {
-          App.trigger('records:edit:attr', childView.model.cid, attr);
-        });
-
-        mainView.on('childview:record:delete', (childView) => {
-          const recordModel = childView.model;
-          API.recordDelete(recordModel);
-        });
-        radio.trigger('app:main', mainView);
-      })
-      .catch((err) => {
-        Log(err, 'e');
-        radio.on('app:dialog:error', err);
-      });
+    mainView.on('childview:record:delete', (childView) => {
+      const recordModel = childView.model;
+      API.recordDelete(recordModel);
+    });
+    radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({ model: appModel });
@@ -74,14 +63,14 @@ const API = {
       body = 'Are you sure you want to remove this record from your device?';
       body += '</br><i><b>Note:</b> it will remain on the server.</i>';
     }
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Delete',
       body,
       buttons: [
         {
           title: 'Cancel',
           onClick() {
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
         {
@@ -89,7 +78,7 @@ const API = {
           class: 'btn-negative',
           onClick() {
             recordModel.destroy();
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
             Analytics.trackEvent('List', 'record remove');
           },
         },
@@ -109,7 +98,7 @@ const API = {
   photoSelect() {
     Log('Records:List:Controller: photo select');
 
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Choose a method to upload a photo',
       buttons: [
         {
@@ -118,7 +107,7 @@ const API = {
             ImageHelp.getImage((entry) => {
               API.createNewRecord(entry.nativeURL, () => {});
             });
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
         {
@@ -130,7 +119,7 @@ const API = {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
             });
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
       ],
@@ -148,7 +137,7 @@ const API = {
         return;
       }
       const occurrence = new Occurrence();
-      occurrence.addImage(image);
+      occurrence.addMedia(image);
 
       const sample = new Sample();
       sample.addOccurrence(occurrence);
@@ -156,24 +145,23 @@ const API = {
       // append locked attributes
       appModel.appendAttrLocks(sample);
 
-      recordManager.set(sample, (saveErr) => {
-        if (saveErr) {
-          callback(saveErr);
-          return;
-        }
-        // check if location attr is not locked
-        const locks = appModel.get('attrLocks');
+      sample.save()
+        .then(() => {
+          savedRecords.add(sample);
+          // check if location attr is not locked
+          const locks = appModel.get('attrLocks');
 
-        if (!locks.location) {
-          // no previous location
-          sample.startGPS();
-        } else if (!locks.location.latitude || !locks.location.longitude) {
-          // previously locked location was through GPS
-          // so try again
-          sample.startGPS();
-        }
-        callback();
-      });
+          if (!locks.location) {
+            // no previous location
+            sample.startGPS();
+          } else if (!locks.location.latitude || !locks.location.longitude) {
+            // previously locked location was through GPS
+            // so try again
+            sample.startGPS();
+          }
+          callback();
+        })
+        .catch(callback);
     });
   },
 };

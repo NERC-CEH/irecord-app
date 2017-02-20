@@ -1,10 +1,16 @@
-import $ from 'jquery';
 import Morel from 'morel';
-import ImageModel from './image';
 import CONFIG from 'config';
-
-$.extend(true, Morel.Occurrence.keys, CONFIG.morel.occurrence);
+import ImageModel from './image';
+import appModel from './app_model';
 
 export default Morel.Occurrence.extend({
   Image: ImageModel,
+
+  keys: CONFIG.morel.occurrence, // warehouse attribute keys
+
+  initialize() {
+    // training setting
+    const training = appModel.get('useTraining');
+    this.set('training', training);
+  },
 });

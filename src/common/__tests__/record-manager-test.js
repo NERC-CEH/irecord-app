@@ -1,13 +1,16 @@
 import Morel from 'morel';
 import Backbone from 'backbone';
-import recordManager from '../record_manager';
+import savedRecords from '../saved_records';
 import userModel from '../models/user_model';
 import appModel from '../models/app_model';
 import Sample from '../models/sample';
 import Occurrence from '../models/occurrence';
 
-describe('Record Manager', () => {
+describe('Saved collection', () => {
   let server;
+
+  // const store = new Store();
+  // const savedRecords = new Collection([], { store, model: Sample });
 
   const okResponse = [200, { 'Content-Type': 'text/html' }, ''];
 
@@ -17,14 +20,17 @@ describe('Record Manager', () => {
     userLogin = sinon.stub(userModel, 'hasLogIn').returns(true);
   });
 
-  after(function (done) {
+  after((done) => {
     this.timeout(5000);
     userLogin.reset();
-    recordManager.clear(done);
+    // clean up in case of trash
+    savedRecords.fetch()
+      .then(() => savedRecords.destroy())
+      .then(() => done());
   });
 
   it('should be a Morel Manager', () => {
-    expect(recordManager).to.be.instanceOf(Morel);
+    expect(savedRecords).to.be.instanceOf(Morel);
   });
 
 
@@ -39,7 +45,7 @@ describe('Record Manager', () => {
         name: 'automatic test' },
     }, {
       occurrences: [occurrence],
-      manager: recordManager,
+      manager: savedRecords,
     });
 
     sample.metadata.saved = true;
@@ -57,7 +63,7 @@ describe('Record Manager', () => {
     }
     const collection = new Backbone.Collection(samples);
 
-    recordManager.syncAll(null, collection)
+    savedRecords.syncAll(null, collection)
       .then(() => {
         collection.each((sample) => {
           expect(sample.getSyncStatus()).to.be.equal(Morel.SYNCED);
@@ -67,7 +73,7 @@ describe('Record Manager', () => {
 
     // needs timeout because syncAll is async and returns before the POST call
     setTimeout(() => {
-      server.respondWith('POST', recordManager.options.url, okResponse);
+      server.respondWith('POST', savedRecords.options.url, okResponse);
       server.respond();
     });
   });

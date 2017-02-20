@@ -13,7 +13,7 @@ import radio from 'radio';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
 import ImageModel from '../../common/models/image';
-import recordManager from '../../common/record_manager';
+import savedRecords from '../../common/saved_records';
 import MainView from './main_view';
 import HeaderView from './header_view';
 import FooterView from './footer_view';
@@ -26,79 +26,74 @@ const API = {
     Log('Records:Edit:Controller: showing');
 
     id = recordID;
-    recordManager.get(recordID)
-      .then((recordModel) => {
-        // Not found
-        if (!recordModel) {
-          Log('No record model found', 'e');
-          App.trigger('404:show', { replace: true });
-          return;
-        }
+    const recordModel = savedRecords.get(recordID);
+    // Not found
+    if (!recordModel) {
+      Log('No record model found', 'e');
+      radio.trigger('app:404:show', { replace: true });
+      return;
+    }
 
-        // can't edit a saved one - to be removed when record update
-        // is possible on the server
-        if (recordModel.getSyncStatus() === Morel.SYNCED) {
-          App.trigger('records:show', recordID, { replace: true });
-          return;
-        }
-
-
-        // MAIN
-        const mainView = new MainView({
-          model: new Backbone.Model({ recordModel, appModel }),
-        });
-        radio.trigger('app:main', mainView);
-
-        // on finish sync move to show
-        function checkIfSynced() {
-          if (recordModel.getSyncStatus() === Morel.SYNCED) {
-            App.trigger('records:show', recordID, { replace: true });
-            return;
-          }
-        }
-        recordModel.on('request sync error', checkIfSynced);
-        mainView.on('destroy', () => {
-          // unbind when page destroyed
-          recordModel.off('request sync error', checkIfSynced);
-        });
+    // can't edit a saved one - to be removed when record update
+    // is possible on the server
+    if (recordModel.getSyncStatus() === Morel.SYNCED) {
+      App.trigger('records:show', recordID, { replace: true });
+      return;
+    }
 
 
-        // HEADER
-        const headerView = new HeaderView({
-          model: recordModel,
-        });
+    // MAIN
+    const mainView = new MainView({
+      model: new Backbone.Model({ recordModel, appModel }),
+    });
+    radio.trigger('app:main', mainView);
 
-        headerView.on('save', () => {
-          API.save(recordModel);
-        });
+    // on finish sync move to show
+    function checkIfSynced() {
+      if (recordModel.getSyncStatus() === Morel.SYNCED) {
+        App.trigger('records:show', recordID, { replace: true });
+        return;
+      }
+    }
+    recordModel.on('request sync error', checkIfSynced);
+    mainView.on('destroy', () => {
+      // unbind when page destroyed
+      recordModel.off('request sync error', checkIfSynced);
+    });
 
-        radio.trigger('app:header', headerView);
 
-        // FOOTER
-        const footerView = new FooterView({
-          model: recordModel,
-        });
+    // HEADER
+    const headerView = new HeaderView({
+      model: recordModel,
+    });
 
-        footerView.on('photo:upload', (e) => {
-          const photo = e.target.files[0];
-          API.photoUpload(recordModel, photo);
-        });
+    headerView.on('save', () => {
+      API.save(recordModel);
+    });
 
-        footerView.on('childview:photo:delete', (view) => {
-          const photo = view.model;
-          API.photoDelete(photo);
-        });
+    radio.trigger('app:header', headerView);
 
-        // android gallery/camera selection
-        footerView.on('photo:selection', () => {
-          API.photoSelect(recordModel);
-        });
+    // FOOTER
+    const footerView = new FooterView({
+      model: recordModel,
+    });
 
-        radio.trigger('app:footer', footerView);
-      })
-      .catch((err) => {
-        Log(err, 'e');
-      });
+    footerView.on('photo:upload', (e) => {
+      const photo = e.target.files[0];
+      API.photoUpload(recordModel, photo);
+    });
+
+    footerView.on('childview:photo:delete', (view) => {
+      const photo = view.model;
+      API.photoDelete(photo);
+    });
+
+    // android gallery/camera selection
+    footerView.on('photo:selection', () => {
+      API.photoSelect(recordModel);
+    });
+
+    radio.trigger('app:footer', footerView);
   },
 
   save(recordModel) {
@@ -110,6 +105,7 @@ const API = {
     if (!promise) {
       const invalids = recordModel.validationError;
       API.showInvalidsMessage(invalids);
+      return;
     }
 
     promise
@@ -132,13 +128,13 @@ const API = {
                 const description = errors[error].description || '';
                 errorMsg += `<p><b>${title}</b> ${description}</p>`;
               }
-              radio.on('app:dialog:error', errorMsg);
+              radio.trigger('app:dialog:error', errorMsg);
             }
           });
         App.trigger('record:saved');
       })
       .catch((err) => {
-        radio.on('app:dialog:error', err);
+        radio.trigger('app:dialog:error', err);
       });
   },
 
@@ -157,7 +153,7 @@ const API = {
       });
     }
 
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Sorry',
       body: missing,
       timeout: 2000,
@@ -172,13 +168,13 @@ const API = {
     API.addPhoto(occurrence, photo, (occErr) => {
       // hide loader
       if (occErr) {
-        radio.on('app:dialog:error', occErr);
+        radio.trigger('app:dialog:error', occErr);
       }
     });
   },
 
   photoDelete(photo) {
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Delete',
       body: 'Are you sure you want to remove this photo from the record?' +
       '</br><i><b>Note:</b> it will remain in the gallery.</i>',
@@ -186,7 +182,7 @@ const API = {
         {
           title: 'Cancel',
           onClick() {
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
         {
@@ -201,7 +197,7 @@ const API = {
                 // hide loader
               },
             });
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
             Analytics.trackEvent('Record', 'photo remove');
           },
         },
@@ -213,7 +209,7 @@ const API = {
     Log('Records:Edit:Controller: photo selection');
     const occurrence = recordModel.getOccurrence();
 
-    radio.on('app:dialog', {
+    radio.trigger('app:dialog', {
       title: 'Choose a method to upload a photo',
       buttons: [
         {
@@ -222,11 +218,11 @@ const API = {
             ImageHelp.getImage((entry) => {
               API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
                 if (occErr) {
-                  radio.on('app:dialog:error', occErr);
+                  radio.trigger('app:dialog:error', occErr);
                 }
               });
             });
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
         {
@@ -235,14 +231,14 @@ const API = {
             ImageHelp.getImage((entry) => {
               API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
                 if (occErr) {
-                  radio.on('app:dialog:error', occErr);
+                  radio.trigger('app:dialog:error', occErr);
                 }
               });
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
             });
-            radio.on('app:dialog:hide', );
+            radio.trigger('app:dialog:hide');
           },
         },
       ],
@@ -259,7 +255,7 @@ const API = {
         callback(error);
         return;
       }
-      occurrence.addImage(image);
+      occurrence.addMedia(image);
 
       occurrence.save()
         .then(() => callback())

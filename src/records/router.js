@@ -6,7 +6,7 @@ import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import App from 'app';
-import recordManager from '../common/record_manager';
+import savedRecords from '../common/saved_records';
 import userModel from '../common/models/user_model';
 import appModel from '../common/models/app_model';
 import ListController from './list/controller';
@@ -47,7 +47,7 @@ const Router = Marionette.AppRouter.extend({
     'records/:id/edit/activity(/)': ActivitiesController.show,
     'records/:id/edit/taxon(/)': TaxonController.show,
     'records/:id/edit/:attr(/)': EditAttrController.show,
-    'records/*path': () => { App.trigger('404:show'); },
+    'records/*path': () => { radio.trigger('app:404:show'); },
   },
 });
 
@@ -119,7 +119,7 @@ App.on('record:saved', () => {
 function syncRecords() {
   if (Device.isOnline() && appModel.get('autosync')) {
     Log('Records:router: syncing all records');
-    recordManager.syncAll();
+    savedRecords.save(null, { remote: true });
   }
 }
 

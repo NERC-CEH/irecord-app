@@ -4,7 +4,7 @@
 
 import radio from 'radio';
 import CONFIG from 'config';
-import recordManager from '../record_manager';
+import savedRecords from '../saved_records';
 import Log from './log';
 import Error from './error';
 import Analytics from './analytics';
@@ -270,7 +270,7 @@ const API = {
     /**
      *  Migrate to new morel database.
      */
-    '1.2.2': function (callback) {
+    '1.2.2': (callback) => {
       Log('Update: version 1.2.2', 'i');
 
       // copy over all the records to SQLite db
@@ -284,18 +284,16 @@ const API = {
         const recordsCount = Object.keys(records).length;
         Log(`Update: copying ${recordsCount} records to SQLite`, 'i');
         // records
-        const toWait = [];
         for (const record in records) {
-          const promise = recordManager.set(records[record]);
-          toWait.push(promise);
+          savedRecords.add(records[record]);
         }
 
-        Promise.all(toWait).then(() => {
+        savedRecords.save().then(() => {
           Log('Update: copying done', 'i');
 
           // check if correct copy
           Log('Update: checking if correct copy', 'i');
-          recordManager.storage.size().then((size) => {
+          savedRecords.size().then((size) => {
             if (recordsCount !== size) {
               callback(true);
               return;

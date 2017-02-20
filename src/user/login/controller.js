@@ -36,7 +36,7 @@ const API = {
 
     mainView.on('form:submit', (data) => {
       if (!Device.isOnline()) {
-        radio.on('app:dialog', {
+        radio.trigger('app:dialog', {
           title: 'Sorry',
           body: 'Looks like you are offline!',
         });
@@ -54,7 +54,7 @@ const API = {
             window.history.back();
           })
           .catch((err) => {
-            radio.on('app:dialog:error', err);
+            radio.trigger('app:dialog:error', err);
           });
       } else {
         mainView.triggerMethod('form:data:invalid', validationError);

@@ -6,7 +6,7 @@ import Morel from 'morel';
 import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
-import recordManager from '../../record_manager';
+import savedRecords from '../../saved_records';
 import appModel from '../../models/app_model';
 import userModel from '../../models/user_model';
 import Sample from '../../models/sample';
@@ -24,30 +24,29 @@ const API = {
 
     if (recordID) {
       // check if the record has taxon specified
-      recordManager.get(recordID, (getError, recordModel) => {
-        // Not found
-        if (!recordModel) {
-          Log('No record model found', 'e');
-          App.trigger('404:show', { replace: true });
-          return;
-        }
+      const recordModel = savedRecords.get(recordID);
+      // Not found
+      if (!recordModel) {
+        Log('No record model found', 'e');
+        radio.trigger('app:404:show', { replace: true });
+        return;
+      }
 
-        // can't edit a saved one - to be removed when record update
-        // is possible on the server
-        if (recordModel.getSyncStatus() === Morel.SYNCED) {
-          App.trigger('records:show', recordID, { replace: true });
-          return;
-        }
+      // can't edit a saved one - to be removed when record update
+      // is possible on the server
+      if (recordModel.getSyncStatus() === Morel.SYNCED) {
+        App.trigger('records:show', recordID, { replace: true });
+        return;
+      }
 
-        let mainView;
+      let mainView;
 
-        if (!recordModel.getOccurrence().get('taxon')) {
-          mainView = new MainView({ model: userModel });
-        } else {
-          mainView = new MainView({ removeEditBtn: true, model: userModel });
-        }
-        API._showMainView(mainView, that);
-      });
+      if (!recordModel.getOccurrence().get('taxon')) {
+        mainView = new MainView({ model: userModel });
+      } else {
+        mainView = new MainView({ removeEditBtn: true, model: userModel });
+      }
+      API._showMainView(mainView, that);
     } else {
       const mainView = new MainView({ model: userModel });
       API._showMainView(mainView, this);
@@ -83,7 +82,7 @@ const API = {
         })
         .catch((err) => {
           Log(err, 'e');
-          radio.on('app:dialog:error', err);
+          radio.trigger('app:dialog:error', err);
         });
     }, that);
     mainView.on('taxon:searched', (searchPhrase) => {
@@ -108,8 +107,10 @@ const API = {
       // add locked attributes
       appModel.appendAttrLocks(sample);
 
-      const promise = recordManager.set(sample)
+      const promise = sample.save()
         .then((savedSample) => {
+          savedRecords.add(sample);
+
           // check if location attr is not locked
           const locks = appModel.get('attrLocks');
 
@@ -128,10 +129,9 @@ const API = {
     }
 
     // edit existing one
-    return recordManager.get(sampleID).then((recordModel) => {
-      recordModel.getOccurrence().set('taxon', taxon);
-      return recordModel.save();
-    });
+    const recordModel = savedRecords.get(sampleID);
+    recordModel.getOccurrence().set('taxon', taxon);
+    return recordModel.save();
   },
 };
 

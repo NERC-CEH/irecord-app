@@ -8,32 +8,28 @@ import Log from 'helpers/log';
 import Device from 'helpers/device';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
-import recordManager from '../../common/record_manager';
+import savedRecords from '../../common/saved_records';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
 const API = {
   show(recordID) {
     Log('Records:Show:Controller: showing');
-    recordManager.get(recordID)
-      .then((recordModel) => {
-        // Not found
-        if (!recordModel) {
-          Log('No record model found', 'e');
-          App.trigger('404:show', { replace: true });
-          return;
-        }
+    const recordModel = savedRecords.get(recordID);
 
-        // MAIN
-        const mainView = new MainView({
-          model: new Backbone.Model({ recordModel, appModel }),
-        });
+    // Not found
+    if (!recordModel) {
+      Log('No record model found', 'e');
+      radio.trigger('app:404:show', { replace: true });
+      return;
+    }
 
-        radio.trigger('app:main', mainView);
-      })
-      .catch((err) => {
-        Log(err, 'e');
-      });
+    // MAIN
+    const mainView = new MainView({
+      model: new Backbone.Model({ recordModel, appModel }),
+    });
+
+    radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({
@@ -57,10 +53,10 @@ const API = {
       recordModel.save({ remote: true })
         .catch((err) => {
           Log(err, 'e');
-          radio.on('app:dialog:error', err);
+          radio.trigger('app:dialog:error', err);
         });
     } else {
-      radio.on('app:dialog:error', {
+      radio.trigger('app:dialog:error', {
         message: 'Looks like you are offline!',
       });
     }

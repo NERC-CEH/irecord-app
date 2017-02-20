@@ -31,7 +31,7 @@ const API = {
     // Start registration
     mainView.on('form:submit', (data) => {
       if (!Device.isOnline()) {
-        radio.on('app:dialog', {
+        radio.trigger('app:dialog', {
           title: 'Sorry',
           body: 'Looks like you are offline!',
         });
@@ -45,7 +45,7 @@ const API = {
 
         API.register(data)
           .then(() => {
-            radio.on('app:dialog', {
+            radio.trigger('app:dialog', {
               title: 'Welcome aboard!',
               body: 'Before submitting any records please check your email and ' +
               'click on the verification link.',
@@ -54,7 +54,7 @@ const API = {
                   title: 'OK, got it',
                   class: 'btn-positive',
                   onClick() {
-                    radio.on('app:dialog:hide', );
+                    radio.trigger('app:dialog:hide');
                     window.history.back();
                   },
                 },
@@ -65,7 +65,7 @@ const API = {
             });
           })
           .catch((err) => {
-            radio.on('app:dialog:error', err);
+            radio.trigger('app:dialog:error', err);
           });
       } else {
         mainView.triggerMethod('form:data:invalid', validationError);

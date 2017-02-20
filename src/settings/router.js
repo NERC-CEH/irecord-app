@@ -14,7 +14,7 @@ const Router = Marionette.AppRouter.extend({
   routes: {
     'settings(/)': MenuController.show,
     'settings/locations(/)': LocationsController.show,
-    'settings/*path': () => { App.trigger('404:show'); },
+    'settings/*path': () => { radio.trigger('app:404:show'); },
   },
 });
 
