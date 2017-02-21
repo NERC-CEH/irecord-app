@@ -104,9 +104,9 @@ const RecordView = Marionette.View.extend({
   },
 
   serializeData() {
-    const recordModel = this.model;
-    const occ = recordModel.getOccurrence();
-    const date = DateHelp.print(recordModel.get('date'));
+    const sample = this.model;
+    const occ = sample.getOccurrence();
+    const date = DateHelp.print(sample.get('date'));
     const specie = occ.get('taxon') || {};
     const media = occ.media;
     let img = media.length && media.at(0).get('thumbnail');
@@ -120,21 +120,21 @@ const RecordView = Marionette.View.extend({
 
     const syncStatus = this.model.getSyncStatus();
 
-    const locationPrint = recordModel.printLocation();
-    const location = recordModel.get('location') || {};
+    const locationPrint = sample.printLocation();
+    const location = sample.get('location') || {};
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
     if (!number) {
       number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
-    const group = recordModel.get('group');
+    const group = sample.get('group');
 
     return {
-      id: recordModel.cid,
-      saved: recordModel.metadata.saved,
+      id: sample.cid,
+      saved: sample.metadata.saved,
       onDatabase: syncStatus === Morel.SYNCED,
-      isLocating: recordModel.isGPSRunning(),
+      isLocating: sample.isGPSRunning(),
       location: locationPrint,
       location_name: location.name,
       isSynchronising: syncStatus === Morel.SYNCHRONISING,

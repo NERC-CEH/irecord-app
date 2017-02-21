@@ -36,23 +36,23 @@ const API = {
       return;
     }
 
-    const recordModel = savedRecords.get(recordID);
+    const sample = savedRecords.get(recordID);
 
     // Not found
-    if (!recordModel) {
+    if (!sample) {
       radio.trigger('app:404:show', { replace: true });
       return;
     }
 
     // can't edit a saved one - to be removed when record update
     // is possible on the server
-    if (recordModel.getSyncStatus() === Morel.SYNCED) {
+    if (sample.getSyncStatus() === Morel.SYNCED) {
       App.trigger('records:show', recordID, { replace: true });
       return;
     }
 
     // MAIN
-    const recordLocation = recordModel.get('location') || {};
+    const recordLocation = sample.get('location') || {};
     const active = {};
     if (!recordLocation.source) {
       active.gps = true;
@@ -85,7 +85,7 @@ const API = {
           ContentView: PastView,
         },
       ],
-      model: new Backbone.Model({ recordModel, appModel }),
+      model: new Backbone.Model({ sample, appModel }),
       vent: App,
     });
 
@@ -98,25 +98,25 @@ const API = {
 
       let location = loc;
       // we don't need the GPS running and overwriting the selected location
-      recordModel.stopGPS();
+      sample.stopGPS();
 
       if (!createNew) {
         // extend old location to preserve its previous attributes like name or id
-        let oldLocation = recordModel.get('location');
+        let oldLocation = sample.get('location');
         if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
         location = $.extend(oldLocation, location);
       }
 
-      recordModel.set('location', location);
-      recordModel.trigger('change:location');
+      sample.set('location', location);
+      sample.trigger('change:location');
     }
 
     function onGPSClick() {
       // turn off if running
-      if (recordModel.isGPSRunning()) {
-        recordModel.stopGPS();
+      if (sample.isGPSRunning()) {
+        sample.stopGPS();
       } else {
-        recordModel.startGPS();
+        sample.startGPS();
       }
     }
 
@@ -125,20 +125,20 @@ const API = {
         return;
       }
 
-      const location = recordModel.get('location') || {};
+      const location = sample.get('location') || {};
       location.name = StringHelp.escape(name);
-      recordModel.set('location', location);
-      recordModel.trigger('change:location');
+      sample.set('location', location);
+      sample.trigger('change:location');
     }
 
-    const currentVal = recordModel.get('location') || {};
+    const currentVal = sample.get('location') || {};
     const locationIsLocked = appModel.isAttrLocked('location', currentVal);
 
     function onPageExit() {
-      recordModel.save()
+      sample.save()
         .then(() => {
           const attr = 'location';
-          let location = recordModel.get('location') || {};
+          let location = sample.get('location') || {};
           const lockedValue = appModel.getAttrLock('location');
 
           if ((location.latitude && location.longitude) || location.name) {
@@ -146,9 +146,9 @@ const API = {
             // don't lock GPS though, because it varies more than a map or gridref
 
             // save to past locations
-            const locationID = appModel.setLocation(recordModel.get('location'));
+            const locationID = appModel.setLocation(sample.get('location'));
             location.id = locationID;
-            recordModel.set('location', location);
+            sample.set('location', location);
 
             // update locked value if attr is locked
             if (lockedValue) {
@@ -249,7 +249,7 @@ const API = {
 
     // HEADER
     const lockView = new LockView({
-      model: new Backbone.Model({ appModel, recordModel }),
+      model: new Backbone.Model({ appModel, sample }),
       attr: 'location',
       onLockClick() {
         // invert the lock of the attribute
@@ -290,7 +290,7 @@ const API = {
     const headerView = new LocationHeader({
       onExit: onPageExit,
       rightPanel: lockView,
-      model: recordModel,
+      model: sample,
     });
 
     radio.trigger('app:header', headerView);

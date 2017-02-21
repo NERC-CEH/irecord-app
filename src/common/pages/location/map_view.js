@@ -312,7 +312,7 @@ const MapView = Marionette.View.extend({
   },
 
   _getCurrentLocation() {
-    return this.model.get('recordModel').get('location') || {};
+    return this.model.get('sample').get('location') || {};
   },
 
   serializeData() {

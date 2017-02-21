@@ -32,9 +32,9 @@ const API = {
       }
 
       // check if the record has taxon specified
-      const recordModel = savedRecords.get(recordID);
+      const sample = savedRecords.get(recordID);
       // Not found
-      if (!recordModel) {
+      if (!sample) {
         Log('No record model found', 'e');
         radio.trigger('app:404:show', { replace: true });
         return;
@@ -42,14 +42,14 @@ const API = {
 
       // can't edit a saved one - to be removed when record update
       // is possible on the server
-      if (recordModel.getSyncStatus() === Morel.SYNCED) {
+      if (sample.getSyncStatus() === Morel.SYNCED) {
         App.trigger('records:show', recordID, { replace: true });
         return;
       }
 
       let mainView;
 
-      if (!recordModel.getOccurrence().get('taxon')) {
+      if (!sample.getOccurrence().get('taxon')) {
         mainView = new MainView({ model: userModel });
       } else {
         mainView = new MainView({ removeEditBtn: true, model: userModel });
@@ -137,9 +137,9 @@ const API = {
     }
 
     // edit existing one
-    const recordModel = savedRecords.get(sampleID);
-    recordModel.getOccurrence().set('taxon', taxon);
-    return recordModel.save();
+    const sample = savedRecords.get(sampleID);
+    sample.getOccurrence().set('taxon', taxon);
+    return sample.save();
   },
 };
 

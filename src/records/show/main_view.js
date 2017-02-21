@@ -21,8 +21,8 @@ export default Marionette.View.extend({
     e.preventDefault();
 
     const items = [];
-    const recordModel = this.model.get('recordModel');
-    recordModel.getOccurrence().media.each((image) => {
+    const sample = this.model.get('sample');
+    sample.getOccurrence().media.each((image) => {
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
@@ -36,18 +36,18 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
-    const recordModel = this.model.get('recordModel');
-    const occ = recordModel.getOccurrence();
+    const sample = this.model.get('sample');
+    const occ = sample.getOccurrence();
     const specie = occ.get('taxon');
 
     // taxon
     const scientificName = specie.scientific_name;
     const commonName = specie.common_name;
 
-    const syncStatus = recordModel.getSyncStatus();
+    const syncStatus = sample.getSyncStatus();
 
-    const locationPrint = recordModel.printLocation();
-    const location = recordModel.get('location') || {};
+    const locationPrint = sample.printLocation();
+    const location = sample.get('location') || {};
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
     if (!number) {
@@ -56,7 +56,7 @@ export default Marionette.View.extend({
 
 
     // show activity title.
-    const group = recordModel.get('group');
+    const group = sample.get('group');
 
     return {
       id: occ.id,
@@ -68,7 +68,7 @@ export default Marionette.View.extend({
       commonName,
       location: locationPrint,
       location_name: location.name,
-      date: DateHelp.print(recordModel.get('date')),
+      date: DateHelp.print(sample.get('date')),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       identifiers: occ.get('identifiers'),

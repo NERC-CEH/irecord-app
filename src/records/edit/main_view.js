@@ -13,13 +13,13 @@ export default Marionette.View.extend({
   template: JST['records/edit/main'],
 
   initialize() {
-    const recordModel = this.model.get('recordModel');
-    this.listenTo(recordModel, 'request sync error geolocation', this.render);
+    const sample = this.model.get('sample');
+    this.listenTo(sample, 'request sync error geolocation', this.render);
   },
 
   serializeData() {
-    const recordModel = this.model.get('recordModel');
-    const occ = recordModel.getOccurrence();
+    const sample = this.model.get('sample');
+    const occ = sample.getOccurrence();
     const specie = occ.get('taxon') || {};
     const appModel = this.model.get('appModel');
 
@@ -27,8 +27,8 @@ export default Marionette.View.extend({
     const scientificName = specie.scientific_name;
     const commonName = specie.common_name;
 
-    const locationPrint = recordModel.printLocation();
-    const location = recordModel.get('location') || {};
+    const locationPrint = sample.printLocation();
+    const location = sample.get('location') || {};
 
     let numberLock = appModel.isAttrLocked('number', occ.get('number'));
     if (!numberLock) {
@@ -36,13 +36,13 @@ export default Marionette.View.extend({
     }
 
     const attrLocks = {
-      date: appModel.isAttrLocked('date', recordModel.get('date')),
-      location: appModel.isAttrLocked('location', recordModel.get('location')),
+      date: appModel.isAttrLocked('date', sample.get('date')),
+      location: appModel.isAttrLocked('location', sample.get('location')),
       number: numberLock,
       stage: appModel.isAttrLocked('stage', occ.get('stage')),
       identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
       comment: appModel.isAttrLocked('comment', occ.get('comment')),
-      activity: appModel.isAttrLocked('activity', recordModel.get('group')),
+      activity: appModel.isAttrLocked('activity', sample.get('group')),
     };
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
@@ -51,17 +51,17 @@ export default Marionette.View.extend({
     }
 
     // show activity title.
-    const group = recordModel.get('group');
+    const group = sample.get('group');
 
     return {
-      id: recordModel.cid,
+      id: sample.cid,
       scientificName,
       commonName,
-      isLocating: recordModel.isGPSRunning(),
-      isSynchronising: recordModel.getSyncStatus() === Morel.SYNCHRONISING,
+      isLocating: sample.isGPSRunning(),
+      isSynchronising: sample.getSyncStatus() === Morel.SYNCHRONISING,
       location: locationPrint,
       location_name: location.name,
-      date: DateHelp.print(recordModel.get('date')),
+      date: DateHelp.print(sample.get('date')),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       identifiers: occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),

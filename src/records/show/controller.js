@@ -24,10 +24,10 @@ const API = {
     }
 
     Log('Records:Show:Controller: showing');
-    const recordModel = savedRecords.get(recordID);
+    const sample = savedRecords.get(recordID);
 
     // Not found
-    if (!recordModel) {
+    if (!sample) {
       Log('No record model found', 'e');
       radio.trigger('app:404:show', { replace: true });
       return;
@@ -35,7 +35,7 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      model: new Backbone.Model({ recordModel, appModel }),
+      model: new Backbone.Model({ sample, appModel }),
     });
 
     radio.trigger('app:main', mainView);
@@ -52,14 +52,14 @@ const API = {
     radio.trigger('app:footer:hide');
   },
 
-  syncRecord(recordModel) {
+  syncRecord(sample) {
     if (Device.isOnline()) {
       if (!userModel.hasLogIn()) {
         App.trigger('user:login');
         return;
       }
 
-      recordModel.save(null, { remote: true })
+      sample.save(null, { remote: true })
         .catch((err) => {
           Log(err, 'e');
           radio.trigger('app:dialog:error', err);

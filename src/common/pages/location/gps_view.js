@@ -11,14 +11,14 @@ export default Marionette.View.extend({
   initialize() {
     this.locationUpdate = null; // to store GPS updates
 
-    const recordModel = this.model.get('recordModel');
+    const sample = this.model.get('sample');
 
     this.template = function template(...args) {
-      if (recordModel.isGPSRunning()) {
+      if (sample.isGPSRunning()) {
         return JST['common/location/gps_running'](args[0]);
       }
 
-      const location = recordModel.get('location') || {};
+      const location = sample.get('location') || {};
       // only gps and todays records
       if (location.source === 'gps' &&
         (new Date(location.updateTime).toDateString() === new Date().toDateString())) {
@@ -27,9 +27,9 @@ export default Marionette.View.extend({
       return JST['common/location/gps'](args[0]);
     };
 
-    this.listenTo(recordModel, 'geolocation:start geolocation:stop geolocation:error', this.render);
-    this.listenTo(recordModel, 'geolocation:update', this.geolocationUpdate);
-    this.listenTo(recordModel, 'geolocation:success', this.geolocationSuccess);
+    this.listenTo(sample, 'geolocation:start geolocation:stop geolocation:error', this.render);
+    this.listenTo(sample, 'geolocation:update', this.geolocationUpdate);
+    this.listenTo(sample, 'geolocation:success', this.geolocationSuccess);
   },
 
   onAttach() {
@@ -77,9 +77,9 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
-    const recordModel = this.model.get('recordModel');
+    const sample = this.model.get('sample');
     let location = this.locationUpdate;
-    const prevLocation = recordModel.get('location') || {};
+    const prevLocation = sample.get('location') || {};
 
     // if not fixed the location but has previous one that is updating
     if (!location && prevLocation.source === 'gps') {

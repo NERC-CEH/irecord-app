@@ -25,9 +25,9 @@ const API = {
 
     Log('Records:Attr:Controller: showing');
 
-    const recordModel = savedRecords.get(recordID);
+    const sample = savedRecords.get(recordID);
     // Not found
-    if (!recordModel) {
+    if (!sample) {
       Log('No record model found.', 'e');
       radio.trigger('app:404:show', { replace: true });
       return;
@@ -35,7 +35,7 @@ const API = {
 
     // can't edit a saved one - to be removed when record update
     // is possible on the server
-    if (recordModel.getSyncStatus() === Morel.SYNCED) {
+    if (sample.getSyncStatus() === Morel.SYNCED) {
       App.trigger('records:show', recordID, { replace: true });
       return;
     }
@@ -43,20 +43,20 @@ const API = {
     // MAIN
     const mainView = new MainView({
       attr,
-      model: recordModel,
+      model: sample,
     });
     radio.trigger('app:main', mainView);
 
     // HEADER
     const lockView = new LockView({
-      model: new Backbone.Model({ appModel, recordModel }),
+      model: new Backbone.Model({ appModel, sample }),
       attr,
       onLockClick: API.onLockClick,
     });
 
     const headerView = new HeaderView({
       onExit() {
-        API.onExit(mainView, recordModel, attr, () => {
+        API.onExit(mainView, sample, attr, () => {
           window.history.back();
         });
       },
@@ -68,7 +68,7 @@ const API = {
 
     // if exit on selection click
     mainView.on('save', () => {
-      API.onExit(mainView, recordModel, attr, () => {
+      API.onExit(mainView, sample, attr, () => {
         window.history.back();
       });
     });
@@ -94,30 +94,30 @@ const API = {
     }
   },
 
-  onExit(mainView, recordModel, attr, callback) {
+  onExit(mainView, sample, attr, callback) {
     Log('Records:Attr:Controller: exiting');
     const values = mainView.getValues();
-    API.save(attr, values, recordModel, callback);
+    API.save(attr, values, sample, callback);
   },
 
   /**
    * Update record with new values
    * @param values
-   * @param recordModel
+   * @param sample
    */
-  save(attr, values, recordModel, callback) {
+  save(attr, values, sample, callback) {
     let currentVal;
     let newVal;
-    const occ = recordModel.getOccurrence();
+    const occ = sample.getOccurrence();
 
     switch (attr) {
       case 'date':
-        currentVal = recordModel.get('date');
+        currentVal = sample.get('date');
 
         // validate before setting up
         if (values.date && values.date.toString() !== 'Invalid Date') {
           newVal = values.date;
-          recordModel.set('date', newVal);
+          sample.set('date', newVal);
         }
         break;
       case 'number':
@@ -166,7 +166,7 @@ const API = {
     }
 
     // save it
-    recordModel.save()
+    sample.save()
       .then(() => {
         // update locked value if attr is locked
         API.updateLock(attr, newVal, currentVal);

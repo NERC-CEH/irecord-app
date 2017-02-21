@@ -30,8 +30,8 @@ const API = {
     });
 
     mainView.on('childview:record:delete', (childView) => {
-      const recordModel = childView.model;
-      API.recordDelete(recordModel);
+      const sample = childView.model;
+      API.recordDelete(sample);
     });
     radio.trigger('app:main', mainView);
 
@@ -52,10 +52,10 @@ const API = {
     radio.trigger('app:footer:hide');
   },
 
-  recordDelete(recordModel) {
+  recordDelete(sample) {
     Log('Records:List:Controller: deleting record');
 
-    const syncStatus = recordModel.getSyncStatus();
+    const syncStatus = sample.getSyncStatus();
     let body = 'This record hasn\'t been saved to iRecord yet, ' +
       'are you sure you want to remove it from your device?';
 
@@ -77,7 +77,7 @@ const API = {
           title: 'Delete',
           class: 'btn-negative',
           onClick() {
-            recordModel.destroy();
+            sample.destroy();
             radio.trigger('app:dialog:hide');
             Analytics.trackEvent('List', 'record remove');
           },

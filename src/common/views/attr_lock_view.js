@@ -18,8 +18,8 @@ export default Marionette.View.extend({
 
   serializeData() {
     const appModel = this.model.get('appModel');
-    const recordModel = this.model.get('recordModel');
-    const occ = recordModel.getOccurrence();
+    const sample = this.model.get('sample');
+    const occ = sample.getOccurrence();
     let attr = this.options.attr;
 
     let value;
@@ -28,7 +28,7 @@ export default Marionette.View.extend({
       case 'date':
       case 'location':
         // sample
-        value = recordModel.get(this.options.attr);
+        value = sample.get(this.options.attr);
         break;
       case 'number':
         value = occ.get(attr);

@@ -35,9 +35,9 @@ const API = {
     Log('Records:Edit:Controller: showing');
 
     id = recordID;
-    const recordModel = savedRecords.get(recordID);
+    const sample = savedRecords.get(recordID);
     // Not found
-    if (!recordModel) {
+    if (!sample) {
       Log('No record model found', 'e');
       radio.trigger('app:404:show', { replace: true });
       return;
@@ -45,7 +45,7 @@ const API = {
 
     // can't edit a saved one - to be removed when record update
     // is possible on the server
-    if (recordModel.getSyncStatus() === Morel.SYNCED) {
+    if (sample.getSyncStatus() === Morel.SYNCED) {
       App.trigger('records:show', recordID, { replace: true });
       return;
     }
@@ -53,43 +53,43 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      model: new Backbone.Model({ recordModel, appModel }),
+      model: new Backbone.Model({ sample, appModel }),
     });
     radio.trigger('app:main', mainView);
 
     // on finish sync move to show
     function checkIfSynced() {
-      if (recordModel.getSyncStatus() === Morel.SYNCED) {
+      if (sample.getSyncStatus() === Morel.SYNCED) {
         App.trigger('records:show', recordID, { replace: true });
         return;
       }
     }
-    recordModel.on('request sync error', checkIfSynced);
+    sample.on('request sync error', checkIfSynced);
     mainView.on('destroy', () => {
       // unbind when page destroyed
-      recordModel.off('request sync error', checkIfSynced);
+      sample.off('request sync error', checkIfSynced);
     });
 
 
     // HEADER
     const headerView = new HeaderView({
-      model: recordModel,
+      model: sample,
     });
 
     headerView.on('save', () => {
-      API.save(recordModel);
+      API.save(sample);
     });
 
     radio.trigger('app:header', headerView);
 
     // FOOTER
     const footerView = new FooterView({
-      model: recordModel,
+      model: sample,
     });
 
     footerView.on('photo:upload', (e) => {
       const photo = e.target.files[0];
-      API.photoUpload(recordModel, photo);
+      API.photoUpload(sample, photo);
     });
 
     footerView.on('childview:photo:delete', (view) => {
@@ -99,20 +99,20 @@ const API = {
 
     // android gallery/camera selection
     footerView.on('photo:selection', () => {
-      API.photoSelect(recordModel);
+      API.photoSelect(sample);
     });
 
     radio.trigger('app:footer', footerView);
   },
 
-  save(recordModel) {
+  save(sample) {
     Log('Records:Edit:Controller: save clicked');
 
-    const promise = recordModel.setToSend();
+    const promise = sample.setToSend();
 
     // invalid sample
     if (!promise) {
-      const invalids = recordModel.validationError;
+      const invalids = sample.validationError;
       API.showInvalidsMessage(invalids);
       return;
     }
@@ -133,7 +133,7 @@ const API = {
         }
 
         // sync
-        recordModel.save(null, { remote: true })
+        sample.save(null, { remote: true })
           .catch((response = {}) => {
             const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
             if (response.responseJSON && !visibleDialog) {
@@ -178,10 +178,10 @@ const API = {
     });
   },
 
-  photoUpload(recordModel, photo) {
+  photoUpload(sample, photo) {
     Log('Records:Edit:Controller: photo uploaded');
 
-    const occurrence = recordModel.getOccurrence();
+    const occurrence = sample.getOccurrence();
     // show loader
     API.addPhoto(occurrence, photo, (occErr) => {
       // hide loader
@@ -223,9 +223,9 @@ const API = {
     });
   },
 
-  photoSelect(recordModel) {
+  photoSelect(sample) {
     Log('Records:Edit:Controller: photo selection');
-    const occurrence = recordModel.getOccurrence();
+    const occurrence = sample.getOccurrence();
 
     radio.trigger('app:dialog', {
       title: 'Choose a method to upload a photo',

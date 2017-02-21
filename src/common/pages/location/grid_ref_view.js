@@ -55,7 +55,7 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
-    const location = this.model.get('recordModel').get('location') || {};
+    const location = this.model.get('sample').get('location') || {};
     let gridref;
 
     if (location.latitude && location.longitude) {

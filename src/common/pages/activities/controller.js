@@ -30,7 +30,7 @@ const ActivityModel = Backbone.Model.extend({
   },
 });
 
-let recordModel; // should be initialized if editing records' activity
+let sample; // should be initialized if editing records' activity
 
 const ActivitiesCollection = Backbone.Collection.extend({
   model: ActivityModel,
@@ -61,8 +61,8 @@ const ActivitiesCollection = Backbone.Collection.extend({
     const lockedActivity = appModel.getAttrLock('activity');
     let recordActivity;
 
-    if (recordModel) {
-      recordActivity = recordModel.get('group');
+    if (sample) {
+      recordActivity = sample.get('group');
     }
 
     const selectedActivity = recordActivity || lockedActivity || {};
@@ -136,14 +136,14 @@ const API = {
         return;
       }
 
-      recordModel = savedRecords.get(recordID);
+      sample = savedRecords.get(recordID);
       activitiesCollection.updateActivitiesCollection();
 
       onExit = () => {
         Log('Activities:List:Controller: exiting');
         const newActivity = mainView.getActivity();
         API.save(newActivity);
-        recordModel = null; // reset
+        sample = null; // reset
       };
 
       refreshView.on('refreshClick', () => {
@@ -181,9 +181,9 @@ const API = {
 
   save(activity = {}) {
     const activityID = activity.id;
-    if (recordModel) {
-      recordModel.set('group', userModel.getActivity(activityID));
-      recordModel.save()
+    if (sample) {
+      sample.set('group', userModel.getActivity(activityID));
+      sample.save()
         .then(() => window.history.back()); // return to previous page after save
     } else {
       appModel.setAttrLock('activity', userModel.getActivity(activityID));
