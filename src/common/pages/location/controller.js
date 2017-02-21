@@ -27,6 +27,15 @@ import './styles.scss';
 
 const API = {
   show(recordID) {
+// wait till savedRecords is fully initialized
+    if (savedRecords.fetching) {
+      const that = this;
+      savedRecords.once('fetching:done', () => {
+        API.show.apply(that, [recordID]);
+      });
+      return;
+    }
+
     const recordModel = savedRecords.get(recordID);
 
     // Not found

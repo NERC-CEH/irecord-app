@@ -14,6 +14,15 @@ import LockView from '../../common/views/attr_lock_view';
 
 const API = {
   show(recordID, attr) {
+    // wait till savedRecords is fully initialized
+    if (savedRecords.fetching) {
+      const that = this;
+      savedRecords.once('fetching:done', () => {
+        API.show.apply(that, [recordID, attr]);
+      });
+      return;
+    }
+
     Log('Records:Attr:Controller: showing');
 
     const recordModel = savedRecords.get(recordID);

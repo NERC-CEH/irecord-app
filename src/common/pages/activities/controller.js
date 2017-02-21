@@ -127,30 +127,33 @@ const API = {
 
     // Initialize data
     if (recordID) {
-      savedRecords.get(recordID)
-        .then((record) => {
-          recordModel = record;
-          activitiesCollection.updateActivitiesCollection();
+      // wait till savedRecords is fully initialized
+      if (savedRecords.fetching) {
+        const that = this;
+        savedRecords.once('fetching:done', () => {
+          API.show.apply(that, [recordID]);
+        });
+        return;
+      }
 
-          onExit = () => {
-            Log('Activities:List:Controller: exiting');
-            const newActivity = mainView.getActivity();
-            API.save(newActivity);
-            recordModel = null; // reset
-          };
+      recordModel = savedRecords.get(recordID);
+      activitiesCollection.updateActivitiesCollection();
 
-          refreshView.on('refreshClick', () => {
-            Log('Activities:List:Controller: refresh clicked');
-            if (!userModel.hasLogIn()) {
-              App.trigger('user:login');
-              return;
-            }
-            API.refreshActivities();
-          });
-        })
-        .catch((err) => {
-          Log(err, 'e');
-        })
+      onExit = () => {
+        Log('Activities:List:Controller: exiting');
+        const newActivity = mainView.getActivity();
+        API.save(newActivity);
+        recordModel = null; // reset
+      };
+
+      refreshView.on('refreshClick', () => {
+        Log('Activities:List:Controller: refresh clicked');
+        if (!userModel.hasLogIn()) {
+          App.trigger('user:login');
+          return;
+        }
+        API.refreshActivities();
+      });
     } else {
       activitiesCollection.updateActivitiesCollection();
 

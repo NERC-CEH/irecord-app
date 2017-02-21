@@ -23,6 +23,14 @@ const API = {
     this.id = recordID;
 
     if (recordID) {
+      // wait till savedRecords is fully initialized
+      if (savedRecords.fetching) {
+        savedRecords.once('fetching:done', () => {
+          API.show.apply(that, [recordID]);
+        });
+        return;
+      }
+
       // check if the record has taxon specified
       const recordModel = savedRecords.get(recordID);
       // Not found

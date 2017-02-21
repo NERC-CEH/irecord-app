@@ -23,6 +23,15 @@ let record;
 
 const API = {
   show(recordID) {
+    // wait till savedRecords is fully initialized
+    if (savedRecords.fetching) {
+      const that = this;
+      savedRecords.once('fetching:done', () => {
+        API.show.apply(that, [recordID]);
+      });
+      return;
+    }
+
     Log('Records:Edit:Controller: showing');
 
     id = recordID;

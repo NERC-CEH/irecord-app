@@ -14,6 +14,15 @@ import HeaderView from '../../common/views/header_view';
 
 const API = {
   show(recordID) {
+    // wait till savedRecords is fully initialized
+    if (savedRecords.fetching) {
+      const that = this;
+      savedRecords.once('fetching:done', () => {
+        API.show.apply(that, [recordID]);
+      });
+      return;
+    }
+
     Log('Records:Show:Controller: showing');
     const recordModel = savedRecords.get(recordID);
 
