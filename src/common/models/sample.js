@@ -23,10 +23,13 @@ const Sample = Morel.Sample.extend({
 
   keys: CONFIG.morel.sample, // warehouse attribute keys
 
-  defaults: {
+  metadata: {
+    survey_id: CONFIG.morel.survey_id,
     // recording form on the iRecord website
-    form: CONFIG.morel.input_form,
+    input_form: CONFIG.morel.input_form,
+  },
 
+  defaults: {
     // attach device information
     device: Device.getPlatform(),
     device_version: Device.getVersion(),

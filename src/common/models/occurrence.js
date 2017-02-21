@@ -8,9 +8,7 @@ export default Morel.Occurrence.extend({
 
   keys: CONFIG.morel.occurrence, // warehouse attribute keys
 
-  initialize() {
-    // training setting
-    const training = appModel.get('useTraining');
-    this.set('training', training);
+  metadata: {
+    training: appModel.get('useTraining'),
   },
 });
