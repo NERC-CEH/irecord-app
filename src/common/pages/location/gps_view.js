@@ -19,7 +19,7 @@ export default Marionette.View.extend({
       }
 
       const location = sample.get('location') || {};
-      // only gps and todays records
+      // only gps and todays samples
       if (location.source === 'gps' &&
         (new Date(location.updateTime).toDateString() === new Date().toDateString())) {
         return JST['common/location/gps_success'](args[0]);

@@ -4,7 +4,7 @@
 
 import radio from 'radio';
 import CONFIG from 'config';
-import savedRecords from '../saved_records';
+import savedSamples from '../saved_samples';
 import Log from './log';
 import Error from './error';
 import Analytics from './analytics';
@@ -131,7 +131,7 @@ class DatabaseStorage {
       req = this.indexedDB.open(this.NAME, this.VERSION);
 
       /**
-       * On Database opening success, returns the Records object store.
+       * On Database opening success, returns the Samples object store.
        *
        * @param e
        */
@@ -273,28 +273,28 @@ const API = {
     '1.2.2': (callback) => {
       Log('Update: version 1.2.2', 'i');
 
-      // copy over all the records to SQLite db
+      // copy over all the samples to SQLite db
       const oldDB = new DatabaseStorage({ appname: 'test' });
-      oldDB.getAll((err, records = []) => {
+      oldDB.getAll((err, samples = []) => {
         if (err) {
           Log(err, 'e');
           return;
         }
 
-        const recordsCount = Object.keys(records).length;
-        Log(`Update: copying ${recordsCount} records to SQLite`, 'i');
-        // records
-        for (const record in records) {
-          savedRecords.add(records[record]);
+        const samplesCount = Object.keys(samples).length;
+        Log(`Update: copying ${samplesCount} samples to SQLite`, 'i');
+        // samples
+        for (const sample in samples) {
+          savedSamples.add(samples[sample]);
         }
 
-        savedRecords.save().then(() => {
+        savedSamples.save().then(() => {
           Log('Update: copying done', 'i');
 
           // check if correct copy
           Log('Update: checking if correct copy', 'i');
-          savedRecords.size().then((size) => {
-            if (recordsCount !== size) {
+          savedSamples.size().then((size) => {
+            if (samplesCount !== size) {
               callback(true);
               return;
             }

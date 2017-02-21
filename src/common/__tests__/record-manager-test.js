@@ -1,6 +1,6 @@
 import Morel from 'morel';
 import Backbone from 'backbone';
-import savedRecords from '../saved_records';
+import savedSamples from '../saved_samples';
 import userModel from '../models/user_model';
 import appModel from '../models/app_model';
 import Sample from '../models/sample';
@@ -10,7 +10,7 @@ describe('Saved collection', () => {
   let server;
 
   // const store = new Store();
-  // const savedRecords = new Collection([], { store, model: Sample });
+  // const savedSamples = new Collection([], { store, model: Sample });
 
   const okResponse = [200, { 'Content-Type': 'text/html' }, ''];
 
@@ -24,13 +24,13 @@ describe('Saved collection', () => {
     this.timeout(5000);
     userLogin.reset();
     // clean up in case of trash
-    savedRecords.fetch()
-      .then(() => savedRecords.destroy())
+    savedSamples.fetch()
+      .then(() => savedSamples.destroy())
       .then(() => done());
   });
 
   it('should be a Morel Manager', () => {
-    expect(savedRecords).to.be.instanceOf(Morel);
+    expect(savedSamples).to.be.instanceOf(Morel);
   });
 
 
@@ -45,7 +45,7 @@ describe('Saved collection', () => {
         name: 'automatic test' },
     }, {
       occurrences: [occurrence],
-      manager: savedRecords,
+      manager: savedSamples,
     });
 
     sample.metadata.saved = true;
@@ -53,17 +53,17 @@ describe('Saved collection', () => {
     return sample;
   }
 
-  const RECORD_COUNT = 500;
-  it(`should be able to send ${RECORD_COUNT} records`, function (done) {
+  const SAMPLE_COUNT = 500;
+  it(`should be able to send ${SAMPLE_COUNT} samples`, function (done) {
     this.timeout(5000);
 
     const samples = [];
-    for (let i = 0; i < RECORD_COUNT; i++) {
+    for (let i = 0; i < SAMPLE_COUNT; i++) {
       samples.push(getRandomSample());
     }
     const collection = new Backbone.Collection(samples);
 
-    savedRecords.syncAll(null, collection)
+    savedSamples.syncAll(null, collection)
       .then(() => {
         collection.each((sample) => {
           expect(sample.getSyncStatus()).to.be.equal(Morel.SYNCED);
@@ -73,7 +73,7 @@ describe('Saved collection', () => {
 
     // needs timeout because syncAll is async and returns before the POST call
     setTimeout(() => {
-      server.respondWith('POST', savedRecords.options.url, okResponse);
+      server.respondWith('POST', savedSamples.options.url, okResponse);
       server.respond();
     });
   });

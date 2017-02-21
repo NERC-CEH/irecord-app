@@ -60,7 +60,7 @@ App.on('start', () => {
       Backbone.history.start();
 
       if (App.getCurrentRoute() === '') {
-        App.trigger('records:list');
+        App.trigger('samples:list');
       }
 
       if (window.cordova) {
@@ -94,10 +94,10 @@ App.on('start', () => {
       }
 
       /**
-       import savedRecords from './common/saved_records';
+       import savedSamples from './common/saved_samples';
        $(document).ready(() => {
          // For screenshots capture only
-          window.testing.screenshotsPopulate(savedRecords);
+          window.testing.screenshotsPopulate(savedSamples);
         });
        */
     }

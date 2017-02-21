@@ -23,8 +23,8 @@ export default Marionette.View.extend({
   },
 
   triggers: {
-    'click #delete-all-btn': 'records:delete:all',
-    'click #submit-all-btn': 'records:submit:all',
+    'click #delete-all-btn': 'samples:delete:all',
+    'click #submit-all-btn': 'samples:submit:all',
     'click #app-reset-btn': 'app:reset',
   },
 

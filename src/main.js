@@ -9,7 +9,7 @@ import 'photoswipe/dist/default-skin/default-skin.css';
 import 'photoswipe/dist/default-skin/default-skin.png';
 import 'photoswipe/dist/default-skin/default-skin.svg';
 
-import './records/router';
+import './samples/router';
 import './info/router';
 import './settings/router';
 import './user/router';

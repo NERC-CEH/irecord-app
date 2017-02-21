@@ -7,7 +7,7 @@ import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
 import appModel from '../../common/models/app_model';
 import userModel from '../../common/models/user_model';
-import savedRecords from '../../common/saved_records';
+import savedSamples from '../../common/saved_samples';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
@@ -25,8 +25,8 @@ const API = {
       appModel.save();
     });
 
-    mainView.on('records:submit:all', API.sendAllRecords);
-    mainView.on('records:delete:all', API.deleteAllRecords);
+    mainView.on('samples:submit:all', API.sendAllSamples);
+    mainView.on('samples:delete:all', API.deleteAllSamples);
     mainView.on('app:reset', () => {
       radio.trigger('app:dialog', {
         title: 'Reset',
@@ -67,7 +67,7 @@ const API = {
     radio.trigger('app:header', headerView);
   },
 
-  deleteAllRecords() {
+  deleteAllSamples() {
     let body = 'Are you sure you want to delete all successfully synchronised local records?';
     body += '</br><i><b>Note:</b> records on the server will not be touched.</i>';
 
@@ -85,10 +85,10 @@ const API = {
           title: 'Delete',
           class: 'btn-negative',
           onClick() {
-            Log('Settings:Menu:Controller: deleting all records');
+            Log('Settings:Menu:Controller: deleting all samples');
 
             // delete all
-            savedRecords.removeAllSynced(() => {
+            savedSamples.removeAllSynced(() => {
               radio.trigger('app:dialog', {
                 title: 'Done!',
                 timeout: 1000,
@@ -101,7 +101,7 @@ const API = {
     });
   },
 
-  sendAllRecords() {
+  sendAllSamples() {
     radio.trigger('app:dialog', {
       title: 'Submit All',
       body: 'Are you sure you want to set all valid records for submission?',
@@ -119,7 +119,7 @@ const API = {
             Log('Settings:Menu:Controller: sending all records');
 
             // delete all
-            savedRecords.addAllToSend((err) => {
+            savedSamples.addAllToSend((err) => {
               if (err) {
                 radio.trigger('app:dialog:error', err);
                 return;
@@ -145,7 +145,7 @@ const API = {
     userModel.clear().set(userModel.defaults);
     userModel.save();
 
-    savedRecords.destroy()
+    savedSamples.destroy()
       .then(callback)
       .catch((err) => {
         Log(err, 'e');

@@ -12,7 +12,7 @@ import LocHelp from 'helpers/location';
 import App from 'app';
 import radio from 'radio';
 
-import savedRecords from '../../saved_records';
+import savedSamples from '../../saved_samples';
 import appModel from '../../models/app_model';
 import TabsLayout from '../../views/tabs_layout';
 import HeaderView from '../../views/header_view';
@@ -26,17 +26,17 @@ import PastView from './past_view';
 import './styles.scss';
 
 const API = {
-  show(recordID) {
-// wait till savedRecords is fully initialized
-    if (savedRecords.fetching) {
+  show(sampleID) {
+// wait till savedSamples is fully initialized
+    if (savedSamples.fetching) {
       const that = this;
-      savedRecords.once('fetching:done', () => {
-        API.show.apply(that, [recordID]);
+      savedSamples.once('fetching:done', () => {
+        API.show.apply(that, [sampleID]);
       });
       return;
     }
 
-    const sample = savedRecords.get(recordID);
+    const sample = savedSamples.get(sampleID);
 
     // Not found
     if (!sample) {
@@ -44,20 +44,20 @@ const API = {
       return;
     }
 
-    // can't edit a saved one - to be removed when record update
+    // can't edit a saved one - to be removed when sample update
     // is possible on the server
     if (sample.getSyncStatus() === Morel.SYNCED) {
-      App.trigger('records:show', recordID, { replace: true });
+      App.trigger('samples:show', sampleID, { replace: true });
       return;
     }
 
     // MAIN
-    const recordLocation = sample.get('location') || {};
+    const sampleLocation = sample.get('location') || {};
     const active = {};
-    if (!recordLocation.source) {
+    if (!sampleLocation.source) {
       active.gps = true;
     } else {
-      active[recordLocation.source] = true;
+      active[sampleLocation.source] = true;
     }
     const mainView = new TabsLayout({
       tabs: [

@@ -228,7 +228,7 @@ const MapView = Marionette.View.extend({
   _getZoomLevel() {
     const currentLocation = this._getCurrentLocation();
     let mapZoomLevel = 1;
-    // check if record has location
+    // check if sample has location
     if (currentLocation.latitude && currentLocation.longitude) {
       // transform location accuracy to map zoom level
       switch (currentLocation.source) {

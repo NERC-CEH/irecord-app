@@ -102,7 +102,7 @@ const Sample = Morel.Sample.extend({
   },
 
   /**
-   * Set the record for submission and send it.
+   * Set the sample for submission and send it.
    */
   setToSend() {
     this.metadata.saved = true;
@@ -114,7 +114,7 @@ const Sample = Morel.Sample.extend({
       return false;
     }
 
-    // save record
+    // save sample
     return this.save();
   },
 

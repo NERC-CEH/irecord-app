@@ -5,7 +5,7 @@ import Occurrence from '../occurrence';
 import userModel from '../user_model';
 import DateHelp from 'helpers/date';
 import CONFIG from 'config'; // Replaced with alias
-import { savedRecords, Manager as savedRecords } from '../../saved_records';
+import { savedSamples, Manager as savedSamples } from '../../saved_samples';
 
 const morelConfiguration = $.extend(CONFIG.morel.manager, {
   Storage: Morel.DatabaseStorage,
@@ -23,7 +23,7 @@ function getRandomSample() {
       name: 'automatic test' },
   }, {
     occurrences: [occurrence],
-    manager: savedRecords,
+    manager: savedSamples,
     onSend: () => {}, // overwrite manager's one checking for user login
   });
 
@@ -135,7 +135,7 @@ describe('Sample', () => {
         userModel.save();
 
         // get the same sample - fresh
-        const newManager = new savedRecords(morelConfiguration);
+        const newManager = new savedSamples(morelConfiguration);
         newManager.get(sample)
           .then((newSample) => {
             expect(newSample.get('group')).to.be.undefined;

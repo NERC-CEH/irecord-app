@@ -13,7 +13,7 @@ import HeaderView from '../../views/header_view';
 import RefreshView from './refresh_view';
 import appModel from '../../models/app_model';
 import userModel from '../../models/user_model';
-import savedRecords from '../../saved_records';
+import savedSamples from '../../saved_samples';
 
 /**
  * Model to hold details of an activity (group entity)
@@ -30,7 +30,7 @@ const ActivityModel = Backbone.Model.extend({
   },
 });
 
-let sample; // should be initialized if editing records' activity
+let sample; // should be initialized if editing samples' activity
 
 const ActivitiesCollection = Backbone.Collection.extend({
   model: ActivityModel,
@@ -59,13 +59,13 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
     const that = this;
     const lockedActivity = appModel.getAttrLock('activity');
-    let recordActivity;
+    let sampleActivity;
 
     if (sample) {
-      recordActivity = sample.get('group');
+      sampleActivity = sample.get('group');
     }
 
-    const selectedActivity = recordActivity || lockedActivity || {};
+    const selectedActivity = sampleActivity || lockedActivity || {};
 
     // add default activity
     const defaultActivity = new ActivityModel({
@@ -92,7 +92,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
 const activitiesCollection = new ActivitiesCollection();
 
 const API = {
-  show(recordID) {
+  show(sampleID) {
     Log('Activities:Controller: showing');
 
     if (!userModel.hasLogIn()) {
@@ -126,17 +126,17 @@ const API = {
     };
 
     // Initialize data
-    if (recordID) {
-      // wait till savedRecords is fully initialized
-      if (savedRecords.fetching) {
+    if (sampleID) {
+      // wait till savedSamples is fully initialized
+      if (savedSamples.fetching) {
         const that = this;
-        savedRecords.once('fetching:done', () => {
-          API.show.apply(that, [recordID]);
+        savedSamples.once('fetching:done', () => {
+          API.show.apply(that, [sampleID]);
         });
         return;
       }
 
-      sample = savedRecords.get(recordID);
+      sample = savedSamples.get(sampleID);
       activitiesCollection.updateActivitiesCollection();
 
       onExit = () => {

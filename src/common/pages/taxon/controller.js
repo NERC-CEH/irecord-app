@@ -6,7 +6,7 @@ import Morel from 'morel';
 import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
-import savedRecords from '../../saved_records';
+import savedSamples from '../../saved_samples';
 import appModel from '../../models/app_model';
 import userModel from '../../models/user_model';
 import Sample from '../../models/sample';
@@ -16,34 +16,34 @@ import HeaderView from '../../views/header_view';
 import SpeciesSearchEngine from './search/taxon_search_engine';
 
 const API = {
-  show(recordID) {
+  show(sampleID) {
     SpeciesSearchEngine.init();
 
     const that = this;
-    this.id = recordID;
+    this.id = sampleID;
 
-    if (recordID) {
-      // wait till savedRecords is fully initialized
-      if (savedRecords.fetching) {
-        savedRecords.once('fetching:done', () => {
-          API.show.apply(that, [recordID]);
+    if (sampleID) {
+      // wait till savedSamples is fully initialized
+      if (savedSamples.fetching) {
+        savedSamples.once('fetching:done', () => {
+          API.show.apply(that, [sampleID]);
         });
         return;
       }
 
-      // check if the record has taxon specified
-      const sample = savedRecords.get(recordID);
+      // check if the sample has taxon specified
+      const sample = savedSamples.get(sampleID);
       // Not found
       if (!sample) {
-        Log('No record model found', 'e');
+        Log('No sample model found', 'e');
         radio.trigger('app:404:show', { replace: true });
         return;
       }
 
-      // can't edit a saved one - to be removed when record update
+      // can't edit a saved one - to be removed when sample update
       // is possible on the server
       if (sample.getSyncStatus() === Morel.SYNCED) {
-        App.trigger('records:show', recordID, { replace: true });
+        App.trigger('samples:show', sampleID, { replace: true });
         return;
       }
 
@@ -82,7 +82,7 @@ const API = {
         .then((sample) => {
           if (edit) {
             const updatedSampleID = sample.cid;
-            App.trigger('records:edit', updatedSampleID, { replace: true });
+            App.trigger('samples:edit', updatedSampleID, { replace: true });
           } else {
             // return to previous page
             window.history.back();
@@ -117,7 +117,7 @@ const API = {
 
       const promise = sample.save()
         .then((savedSample) => {
-          savedRecords.add(sample);
+          savedSamples.add(sample);
 
           // check if location attr is not locked
           const locks = appModel.get('attrLocks');
@@ -137,7 +137,7 @@ const API = {
     }
 
     // edit existing one
-    const sample = savedRecords.get(sampleID);
+    const sample = savedSamples.get(sampleID);
     sample.getOccurrence().set('taxon', taxon);
     return sample.save();
   },
