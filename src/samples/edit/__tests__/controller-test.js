@@ -5,8 +5,8 @@ describe('Edit Controller', () => {
     expect(API.show).to.be.a('function');
   });
 
-  it('should have a saveSample method', () => {
-    expect(API.saveSample).to.be.a('function');
+  it('should have a save method', () => {
+    expect(API.save).to.be.a('function');
   });
 
   it('should have a photoUpload method', () => {

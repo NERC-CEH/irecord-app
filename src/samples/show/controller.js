@@ -6,9 +6,9 @@ import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
-import appModel from '../../common/models/app_model';
-import userModel from '../../common/models/user_model';
-import savedSamples from '../../common/saved_samples';
+import appModel from 'app_model';
+import userModel from 'user_model';
+import savedSamples from 'saved_samples';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 

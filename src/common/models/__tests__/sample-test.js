@@ -1,16 +1,9 @@
-import $ from 'jquery';
-import Morel from 'morel';
-import Sample from '../sample';
-import Occurrence from '../occurrence';
-import userModel from '../user_model';
 import DateHelp from 'helpers/date';
-import CONFIG from 'config'; // Replaced with alias
-import { savedSamples, Manager as savedSamples } from '../../saved_samples';
-
-const morelConfiguration = $.extend(CONFIG.morel.manager, {
-  Storage: Morel.DatabaseStorage,
-  Sample,
-});
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import userModel from 'user_model';
+import { savedSamples, Collection } from '../../saved_samples';
+import store from '../../store';
 
 function getRandomSample() {
   const occurrence = new Occurrence({
@@ -23,8 +16,8 @@ function getRandomSample() {
       name: 'automatic test' },
   }, {
     occurrences: [occurrence],
-    manager: savedSamples,
-    onSend: () => {}, // overwrite manager's one checking for user login
+    Collection: savedSamples,
+    onSend: () => {}, // overwrite Collection's one checking for user login
   });
 
   sample.metadata.saved = true;
@@ -135,9 +128,10 @@ describe('Sample', () => {
         userModel.save();
 
         // get the same sample - fresh
-        const newManager = new savedSamples(morelConfiguration);
-        newManager.get(sample)
-          .then((newSample) => {
+        const newCollection = new Collection([], { store, model: Sample });
+        newCollection.fetch()
+          .then(() => {
+            const newSample = newCollection.get(sample);
             expect(newSample.get('group')).to.be.undefined;
             done();
           });

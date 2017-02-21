@@ -10,16 +10,13 @@ import Analytics from 'helpers/analytics';
 import Log from 'helpers/log';
 import App from 'app';
 import radio from 'radio';
-import appModel from '../../common/models/app_model';
-import userModel from '../../common/models/user_model';
+import appModel from 'app_model';
+import userModel from 'user_model';
 import ImageModel from '../../common/models/image';
-import savedSamples from '../../common/saved_samples';
+import savedSamples from 'saved_samples';
 import MainView from './main_view';
 import HeaderView from './header_view';
 import FooterView from './footer_view';
-
-let id;
-let sample;
 
 const API = {
   show(sampleID) {
@@ -34,7 +31,6 @@ const API = {
 
     Log('Samples:Edit:Controller: showing');
 
-    id = sampleID;
     const sample = savedSamples.get(sampleID);
     // Not found
     if (!sample) {

@@ -12,8 +12,8 @@ import LocHelp from 'helpers/location';
 import App from 'app';
 import radio from 'radio';
 
-import savedSamples from '../../saved_samples';
-import appModel from '../../models/app_model';
+import savedSamples from 'saved_samples';
+import appModel from 'app_model';
 import TabsLayout from '../../views/tabs_layout';
 import HeaderView from '../../views/header_view';
 import LockView from '../../views/attr_lock_view';

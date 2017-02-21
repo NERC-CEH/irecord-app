@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
-import userModel from './user_model';
+import userModel from 'user_model';
 
 export default {
   setAttrLock(attr, value) {

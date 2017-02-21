@@ -1,7 +1,7 @@
 import Morel from 'morel';
 import store from './store';
-import Sample from './models/sample';
-import userModel from './models/user_model';
+import Sample from 'sample';
+import userModel from 'user_model';
 
 const Collection = Morel.Collection.extend({
   store,

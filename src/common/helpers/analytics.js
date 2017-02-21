@@ -4,7 +4,7 @@
 import Backbone from 'backbone';
 // import Device from './device';
 import CONFIG from 'config';
-// import appModel from '../models/app_model';
+// import appModel from 'app_model';
 
 // todo: do not track connection is not WIFI or 3G/4G
 

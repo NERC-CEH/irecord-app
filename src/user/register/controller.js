@@ -9,7 +9,7 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import CONFIG from 'config'; // Replaced with alias
-import userModel from '../../common/models/user_model';
+import userModel from 'user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 

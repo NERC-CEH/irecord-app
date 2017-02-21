@@ -11,9 +11,9 @@ import radio from 'radio';
 import MainView from './main_view';
 import HeaderView from '../../views/header_view';
 import RefreshView from './refresh_view';
-import appModel from '../../models/app_model';
-import userModel from '../../models/user_model';
-import savedSamples from '../../saved_samples';
+import appModel from 'app_model';
+import userModel from 'user_model';
+import savedSamples from 'saved_samples';
 
 /**
  * Model to hold details of an activity (group entity)

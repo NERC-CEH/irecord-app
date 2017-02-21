@@ -1,4 +1,4 @@
-import Occurrence from '../occurrence';
+import Occurrence from 'occurrence';
 
 describe('Occurrence', () => {
   describe('validation', () => {

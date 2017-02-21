@@ -8,7 +8,7 @@ import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
 import JST from 'JST';
-import appModel from '../../common/models/app_model';
+import appModel from 'app_model';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 

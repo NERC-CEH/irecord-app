@@ -9,7 +9,7 @@ import radio from 'radio';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 import RefreshView from './refresh_view';
-import userModel from '../../common/models/user_model';
+import userModel from 'user_model';
 
 const API = {
   show() {

@@ -1,7 +1,7 @@
 import validate from '../validate';
 import device from '../device';
 import analytics from '../analytics';
-import appModel from '../../models/app_model';
+import appModel from 'app_model';
 import CONFIG from 'config';
 
 describe('Validate', function () {

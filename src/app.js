@@ -94,7 +94,7 @@ App.on('start', () => {
       }
 
       /**
-       import savedSamples from './common/saved_samples';
+       import savedSamples from 'saved_samples';
        $(document).ready(() => {
          // For screenshots capture only
           window.testing.screenshotsPopulate(savedSamples);

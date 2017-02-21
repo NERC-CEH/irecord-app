@@ -1,10 +1,10 @@
 import Morel from 'morel';
 import Backbone from 'backbone';
-import savedSamples from '../saved_samples';
-import userModel from '../models/user_model';
-import appModel from '../models/app_model';
-import Sample from '../models/sample';
-import Occurrence from '../models/occurrence';
+import Sample from 'sample';
+import savedSamples from 'saved_samples';
+import userModel from 'user_model';
+import appModel from 'app_model';
+import Occurrence from 'occurrence';
 
 describe('Saved collection', () => {
   let server;

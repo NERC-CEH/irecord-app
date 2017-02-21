@@ -1,5 +1,5 @@
 import API from '../controller';
-import savedSamples from '../../../common/saved_samples';
+import savedSamples from 'saved_samples';
 
 
 describe('List Controller', function () {

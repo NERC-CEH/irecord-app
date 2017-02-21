@@ -7,8 +7,8 @@ import CONFIG from 'config';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import store from '../store';
-import userModel from './user_model';
-import Occurrence from './occurrence';
+import userModel from 'user_model';
+import Occurrence from 'occurrence';
 import GeolocExtension from './sample_geoloc_ext';
 
 const Sample = Morel.Sample.extend({

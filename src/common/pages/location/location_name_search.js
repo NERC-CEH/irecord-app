@@ -2,7 +2,7 @@
  * Returns a location name search function.
  */
 import _ from 'lodash';
-import appModel from '../../models/app_model';
+import appModel from 'app_model';
 
 const substringMatcher = (strs, max) => {
   return function findMatches(q, cb) {

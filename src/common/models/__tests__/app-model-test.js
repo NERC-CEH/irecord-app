@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import Occurrence from '../occurrence';
-import Sample from '../sample';
+import Occurrence from 'occurrence';
+import Sample from 'sample';
 import { AppModel } from '../app_model';
 
 describe('App Model', () => {

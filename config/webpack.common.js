@@ -36,6 +36,11 @@ module.exports = {
       config: 'common/config/config',
       helpers: 'common/helpers',
       radio: 'common/radio',
+      saved_samples: 'common/saved_samples',
+      sample: 'common/models/sample',
+      occurrence: 'common/models/occurrence',
+      app_model: 'common/models/app_model',
+      user_model: 'common/models/user_model',
 
       // vendor
       typeahead: 'typeahead.js/dist/typeahead.jquery',
