@@ -28,11 +28,17 @@ describe('List Controller', function () {
 
   describe('photo picker', () => {
     before((done) => {
-      savedSamples.clear(done);
+      // clean up in case of trash
+      savedSamples.fetch()
+        .then(() => savedSamples.destroy())
+        .then(() => done());
     });
 
     afterEach((done) => {
-      savedSamples.clear(done);
+      // clean up in case of trash
+      savedSamples.fetch()
+        .then(() => savedSamples.destroy())
+        .then(() => done());
     });
 
     it('should create a new sample with a photo', (done) => {

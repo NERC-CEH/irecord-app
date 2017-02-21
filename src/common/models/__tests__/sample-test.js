@@ -39,17 +39,16 @@ describe('Sample', () => {
       expect(sample.validate).to.be.a('function');
       sample.clear();
 
-      const invalids = sample.validate();
+      const invalids = sample.validate(null, { remote: true });
       expect(invalids.sample.send).to.be.false;
     });
 
     it('should return sample and occurrence objects with invalids', () => {
       const sample = new Sample();
-      expect(sample.validate).to.be.a('function');
       sample.metadata.saved = true;
       sample.clear();
 
-      let invalids = sample.validate({});
+      let invalids = sample.validate({}, { remote: true });
       expect(invalids).to.be.an('object')
         .and.have.property('sample')
         .and.have.property('occurrences');

@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const ENV = process.env.NODE_ENV || process.env.ENV || 'testing';
 
@@ -13,6 +14,7 @@ webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
     ENV: JSON.stringify(ENV),
   },
 }));
+webpackConfigDev.resolve.root.push(path.resolve('./test/'));
 
 module.exports = (config) => {
   config.set({

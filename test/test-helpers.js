@@ -1,26 +1,25 @@
-import Sample from 'Sample';
-import Occurrence from 'Occurrence';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import CONFIG from 'config';
 import serverResponses from './server_responses.js';
-import { API_BASE, API_VER, API_SAMPLES_PATH } from '../src/constants';
 
-function getRandomSample(store, samples = [], occurrences = []) {
-  if (!occurrences.length) {
-    const occurrence = new Occurrence({
-      taxon: 1234,
+function getRandomSample(occurrence) {
+  if (!occurrence) {
+    occurrence = new Occurrence({ // eslint-disable-line
+      taxon: { warehouse_id: 166205 },
     });
-    occurrences.push(occurrence);
   }
 
   const sample = new Sample(
     {
-      location: ' 12.12, -0.23',
+      location: {
+        latitude: 12.12,
+        longitude: -0.23,
+        name: 'automatic test',
+      },
     },
     {
-      api_key: 'x',
-      remote_host: 'x',
-      store,
-      occurrences,
-      samples,
+      occurrences: [occurrence],
     }
   );
 
@@ -28,7 +27,7 @@ function getRandomSample(store, samples = [], occurrences = []) {
 }
 
 function generateSampleResponse(server, type, data) {
-  const SAMPLE_POST_URL = 'x' + API_BASE + API_VER + API_SAMPLES_PATH;
+  const SAMPLE_POST_URL = `${CONFIG.morel.host}/api/v0.1/samples`;
 
   switch (type) {
     case 'OK':
@@ -39,11 +38,10 @@ function generateSampleResponse(server, type, data) {
           model = data(submission.external_key);
         }
 
-        req.respond.apply(req, serverResponses(type, {
-            cid: model.cid,
-            occurrence_cid: model.getOccurrence().cid,
-          },
-          )
+        req.respond.apply(req, serverResponses(type, { // eslint-disable-line
+            cid: model.cid, // eslint-disable-line
+            occurrence_cid: model.getOccurrence().cid, // eslint-disable-line
+          }) // eslint-disable-line
         );
       });
       break;
@@ -65,10 +63,9 @@ function generateSampleResponse(server, type, data) {
         'POST',
         SAMPLE_POST_URL,
         serverResponses(type, {
-            occurrence_cid: data.getOccurrence().cid,
-            cid: data.cid,
-          },
-        ),
+          occurrence_cid: data.getOccurrence().cid, // eslint-disable-line
+          cid: data.cid, // eslint-disable-line
+        }), // eslint-disable-line
       );
       break;
 

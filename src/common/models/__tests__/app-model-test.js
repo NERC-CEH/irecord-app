@@ -1,25 +1,8 @@
 import _ from 'lodash';
-import Occurrence from 'occurrence';
-import Sample from 'sample';
-import { AppModel } from '../app_model';
+import { AppModel } from 'app_model';
+import { getRandomSample } from 'test-helpers';
 
 describe('App Model', () => {
-  function getRandomSample() {
-    const occurrence = new Occurrence({
-      taxon: { warehouse_id: 166205 },
-    });
-    const sample = new Sample({
-      location: {
-        latitude: 12.12,
-        longitude: -0.23,
-        name: 'automatic test' },
-    }, {
-      occurrences: [occurrence],
-      onSend: () => {}, // overwrite manager's one checking for user login
-    });
-    return sample;
-  }
-
   before((done) => {
     const appModel = new AppModel();
     appModel.clear()
@@ -31,11 +14,11 @@ describe('App Model', () => {
     const appModel = new AppModel();
     expect(_.keys(appModel.attributes).length).to.be.equal(7);
     // should set the exact value checks in the modules requiring them
-    expect(appModel.get('locations')).to.be.an.array;
-    expect(appModel.get('attrLocks')).to.be.an.object;
-    expect(appModel.get('autosync')).to.be.equal.true;
-    expect(appModel.get('useGridRef')).to.be.equal.true;
-    expect(appModel.get('useTraining')).to.be.equal.false;
+    expect(appModel.get('locations')).to.be.an('array');
+    expect(appModel.get('attrLocks')).to.be.an('object');
+    expect(appModel.get('autosync')).to.be.equal(true);
+    expect(appModel.get('useGridRef')).to.be.equal(true);
+    expect(appModel.get('useTraining')).to.be.equal(false);
   });
 
   describe('Locking attributes extension', () => {
@@ -121,7 +104,7 @@ describe('App Model', () => {
       expect(appModel.getAttrLock('activity')).to.be.an('object');
 
       appModel = new AppModel();
-      expect(appModel.getAttrLock('activity')).to.be.undefined;
+      expect(appModel.getAttrLock('activity')).to.be.equal(null);
     });
   });
 });

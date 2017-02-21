@@ -12,9 +12,10 @@ describe('User Model', () => {
     const userModel = new UserModel();
     expect(userModel.get('drupalID')).to.be.equal('');
     expect(userModel.get('name')).to.be.equal('');
-    expect(userModel.get('surname')).to.be.equal('');
+    expect(userModel.get('firstname')).to.be.equal('');
+    expect(userModel.get('secondname')).to.be.equal('');
     expect(userModel.get('email')).to.be.equal('');
-    expect(userModel.get('secret')).to.be.equal('');
+    expect(userModel.get('password')).to.be.equal('');
   });
 
   describe('Activities support', () => {
