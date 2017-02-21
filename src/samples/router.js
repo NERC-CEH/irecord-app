@@ -52,32 +52,22 @@ const Router = Marionette.AppRouter.extend({
   },
 });
 
-App.on('samples:list', (options) => {
+radio.on('samples:list', (options) => {
   App.navigate('samples', options);
   ListController.show();
 });
 
-App.on('samples:show', (sampleID, options) => {
+radio.on('samples:show', (sampleID, options) => {
   App.navigate(`samples/${sampleID}`, options);
   ShowController.show(sampleID);
 });
 
-App.on('samples:edit', (sampleID, options) => {
+radio.on('samples:edit', (sampleID, options) => {
   App.navigate(`samples/${sampleID}/edit`, options);
   EditController.show(sampleID);
 });
 
-App.on('samples:edit:taxon', (sampleID, options) => {
-  App.navigate(`samples/${sampleID}/edit/taxon/`, options);
-  TaxonController.show(sampleID);
-});
-
-App.on('samples:edit:location', (sampleID, options) => {
-  App.navigate(`samples/${sampleID}/edit/location`, options);
-  EditLocationController.show(sampleID);
-});
-
-App.on('samples:edit:attr', (sampleID, attrID, options) => {
+radio.on('samples:edit:attr', (sampleID, attrID, options) => {
   App.navigate(`samples/${sampleID}/edit/${attrID}`, options);
   switch (attrID) {
     case 'location':
@@ -87,33 +77,14 @@ App.on('samples:edit:attr', (sampleID, attrID, options) => {
       TaxonController.show(sampleID);
       break;
     case 'activity':
-      ActivityController.show(sampleID);
+      ActivitiesController.show(sampleID);
       break;
     default:
       EditAttrController.show(sampleID, attrID);
   }
 });
 
-App.on('samples:new', (options) => {
-  App.navigate('samples/new', options);
-  EditController.show();
-});
-
-App.on('samples:new:attr', (attrID, options) => {
-  App.navigate(`samples/new/${attrID}`, options);
-  switch (attrID) {
-    case 'location':
-      EditLocationController.show();
-      break;
-    case 'taxon':
-      TaxonController.show();
-      break;
-    default:
-      EditAttrController.show(null, attrID);
-  }
-});
-
-App.on('sample:saved', () => {
+radio.on('sample:saved', () => {
   window.history.back();
 });
 

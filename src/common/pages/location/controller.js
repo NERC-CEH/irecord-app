@@ -47,7 +47,7 @@ const API = {
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
     if (sample.getSyncStatus() === Morel.SYNCED) {
-      App.trigger('samples:show', sampleID, { replace: true });
+      radio.trigger('samples:show', sampleID, { replace: true });
       return;
     }
 
@@ -222,7 +222,7 @@ const API = {
 
       const validationError = validate(data);
       if (!validationError) {
-        App.trigger('gridref:form:data:invalid', {}); // update form
+        radio.trigger('gridref:form:data:invalid', {}); // update form
         const latLon = LocHelp.grid2coord(data.gridref);
         const location = {
           source: 'gridref',
@@ -239,7 +239,7 @@ const API = {
         onLocationSelect(location);
         onPageExit();
       } else {
-        App.trigger('gridref:form:data:invalid', validationError);
+        radio.trigger('gridref:form:data:invalid', validationError);
       }
     });
     mainView.on('childview:gps:click', onGPSClick);

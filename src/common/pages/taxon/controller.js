@@ -43,7 +43,7 @@ const API = {
       // can't edit a saved one - to be removed when sample update
       // is possible on the server
       if (sample.getSyncStatus() === Morel.SYNCED) {
-        App.trigger('samples:show', sampleID, { replace: true });
+        radio.trigger('samples:show', sampleID, { replace: true });
         return;
       }
 
@@ -82,7 +82,7 @@ const API = {
         .then((sample) => {
           if (edit) {
             const updatedSampleID = sample.cid;
-            App.trigger('samples:edit', updatedSampleID, { replace: true });
+            radio.trigger('samples:edit', updatedSampleID, { replace: true });
           } else {
             // return to previous page
             window.history.back();

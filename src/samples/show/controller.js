@@ -55,7 +55,7 @@ const API = {
   syncSample(sample) {
     if (Device.isOnline()) {
       if (!userModel.hasLogIn()) {
-        App.trigger('user:login');
+        radio.trigger('user:login');
         return;
       }
 

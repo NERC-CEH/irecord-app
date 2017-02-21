@@ -60,7 +60,7 @@ App.on('start', () => {
       Backbone.history.start();
 
       if (App.getCurrentRoute() === '') {
-        App.trigger('samples:list');
+        radio.trigger('samples:list');
       }
 
       if (window.cordova) {

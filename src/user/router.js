@@ -4,6 +4,7 @@
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import App from 'app';
+import radio from 'radio';
 import LoginController from './login/controller';
 import RegisterController from './register/controller';
 import ResetController from './reset/controller';
@@ -23,24 +24,9 @@ const Router = Marionette.AppRouter.extend({
   },
 });
 
-App.on('user:login', (options) => {
+radio.on('user:login', (options) => {
   App.navigate('user/login', options);
   LoginController.show();
-});
-
-App.on('user:register', (options) => {
-  App.navigate('user/register', options);
-  RegisterController.show();
-});
-
-App.on('user:activities', (options) => {
-  App.navigate('user/activities', options);
-  ActivitiesController.show();
-});
-
-App.on('user:statistics', (options) => {
-  App.navigate('user/statistics', options);
-  StatisticsController.show();
 });
 
 App.on('before:start', () => {

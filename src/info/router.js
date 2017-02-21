@@ -6,6 +6,7 @@ import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 import App from 'app';
+import radio from 'radio';
 import CommonController from '../common/controller';
 import InfoMenuController from './menu/controller';
 import './brc_approved/BRC_approved_logo.png';
@@ -54,51 +55,8 @@ const Router = Marionette.AppRouter.extend({
         title: 'Credits', App, route: 'info/credits/main',
       });
     },
-    'info/*path': function () { radio.trigger('app:404:show'); },
+    'info/*path': () => { radio.trigger('app:404:show'); },
   },
-});
-
-App.on('info', () => {
-  App.navigate('info');
-  InfoMenuController.show();
-});
-
-App.on('info:about', () => {
-  App.navigate('info/about');
-  CommonController.show({
-    title: 'About',
-    App,
-    route: 'info/about/main',
-    model: new Backbone.Model({ version: CONFIG.version }),
-  });
-});
-
-App.on('info:help', () => {
-  App.navigate('info/help');
-  CommonController.show({
-    title: 'Help', App, route: 'info/help/main',
-  });
-});
-
-App.on('info:privacy', () => {
-  App.navigate('info/privacy');
-  CommonController.show({
-    title: 'Privacy Policy', App, route: 'info/privacy/main',
-  });
-});
-
-App.on('info:brc-approved', () => {
-  App.navigate('info/brc-approved');
-  CommonController.show({
-    title: 'BRC Approved', App, route: 'info/brc_approved/main',
-  });
-});
-
-App.on('info:credits', () => {
-  App.navigate('info/credits');
-  CommonController.show({
-    title: 'Credits', App, route: 'info/credits/main',
-  });
 });
 
 App.on('before:start', () => {

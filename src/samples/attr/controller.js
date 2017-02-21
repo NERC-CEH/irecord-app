@@ -36,7 +36,7 @@ const API = {
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
     if (sample.getSyncStatus() === Morel.SYNCED) {
-      App.trigger('samples:show', sampleID, { replace: true });
+      radio.trigger('samples:show', sampleID, { replace: true });
       return;
     }
 

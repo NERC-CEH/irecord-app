@@ -18,18 +18,6 @@ const Router = Marionette.AppRouter.extend({
   },
 });
 
-App.on('settings', () => {
-  App.navigate('settings/menu');
-  CommonController.show({
-    title: 'Settings', App, route: 'settings/menu',
-  });
-});
-
-App.on('settings:locations', () => {
-  App.navigate('settings/locations');
-  LocationsController.show();
-});
-
 App.on('before:start', () => {
   Log('Settings:router: initializing');
   App.settings.router = new Router();

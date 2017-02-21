@@ -26,7 +26,7 @@ const API = {
     });
 
     mainView.on('childview:sample:edit:attr', (childView, attr) => {
-      App.trigger('samples:edit:attr', childView.model.cid, attr);
+      radio.trigger('samples:edit:attr', childView.model.cid, attr);
     });
 
     mainView.on('childview:sample:delete', (childView) => {

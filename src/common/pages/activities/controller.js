@@ -149,7 +149,7 @@ const API = {
       refreshView.on('refreshClick', () => {
         Log('Activities:List:Controller: refresh clicked');
         if (!userModel.hasLogIn()) {
-          App.trigger('user:login');
+          radio.trigger('user:login');
           return;
         }
         API.refreshActivities();
@@ -160,7 +160,7 @@ const API = {
       refreshView.on('refreshClick', () => {
         Log('Activities:List:Controller: refresh clicked');
         if (!userModel.hasLogIn()) {
-          App.trigger('user:login');
+          radio.trigger('user:login');
           return;
         }
         API.refreshActivities();

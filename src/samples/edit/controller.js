@@ -46,7 +46,7 @@ const API = {
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
     if (sample.getSyncStatus() === Morel.SYNCED) {
-      App.trigger('samples:show', sampleID, { replace: true });
+      radio.trigger('samples:show', sampleID, { replace: true });
       return;
     }
 
@@ -60,7 +60,7 @@ const API = {
     // on finish sync move to show
     function checkIfSynced() {
       if (sample.getSyncStatus() === Morel.SYNCED) {
-        App.trigger('samples:show', sampleID, { replace: true });
+        radio.trigger('samples:show', sampleID, { replace: true });
         return;
       }
     }
@@ -128,7 +128,7 @@ const API = {
         }
 
         if (!userModel.hasLogIn()) {
-          App.trigger('user:login', { replace: true });
+          radio.trigger('user:login', { replace: true });
           return;
         }
 
@@ -149,7 +149,7 @@ const API = {
               radio.trigger('app:dialog:error', response.message);
             }
           });
-        App.trigger('sample:saved');
+        radio.trigger('sample:saved');
       })
       .catch((err) => {
         radio.trigger('app:dialog:error', err);
