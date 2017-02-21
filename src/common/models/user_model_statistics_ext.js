@@ -49,8 +49,8 @@ export default {
     const data = {
       report: 'library/taxa/filterable_explore_list.xml',
       // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.morel.manager.input_form,
-      api_key: CONFIG.morel.manager.api_key,
+      path: CONFIG.morel.input_form,
+      api_key: CONFIG.morel.api_key,
       my_records: 1,
       limit: 10,
       orderby: 'count',

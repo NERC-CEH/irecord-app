@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Main app configuration file.
  *****************************************************************************/
+import $ from 'jquery';
 import DateHelp from 'helpers/date';
 import LocHelp from 'helpers/location';
 
@@ -58,7 +59,7 @@ export default {
 
     sample: {
       location: {
-        values(location, options) {
+        values(location, submission) {
           // convert accuracy for map and gridref sources
           let accuracy = location.accuracy;
           if (location.source !== 'gps') {
@@ -79,7 +80,7 @@ export default {
           };
 
           // add other location related attributes
-          options.flattener(attributes, options);
+          $.extend(submission.fields, attributes);
 
           return location.latitude + ', ' + location.longitude;
         },

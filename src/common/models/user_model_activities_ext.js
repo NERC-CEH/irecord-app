@@ -104,8 +104,8 @@ export default {
     const data = {
       report: 'library/groups/groups_for_app.xml',
       // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.morel.manager.input_form,
-      api_key: CONFIG.morel.manager.api_key,
+      path: CONFIG.morel.input_form,
+      api_key: CONFIG.morel.api_key,
     };
 
     const promise = new Promise((fulfill, reject) => {

@@ -88,7 +88,7 @@ const API = {
     Log('User:Register:Controller: registering');
 
     // app logins
-    formData.append('api_key', CONFIG.morel.manager.api_key);
+    formData.append('api_key', CONFIG.morel.api_key);
     const promise = new Promise((fulfill, reject) => {
       $.ajax({
         url: CONFIG.users.url,

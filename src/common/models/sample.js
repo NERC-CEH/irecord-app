@@ -14,8 +14,8 @@ import GeolocExtension from './sample_geoloc_ext';
 const Sample = Morel.Sample.extend({
   api_key: CONFIG.morel.api_key,
   remote_host: CONFIG.morel.host,
-  user: userModel.getUser,
-  password: userModel.getPassword,
+  user: userModel.getUser.bind(userModel),
+  password: userModel.getPassword.bind(userModel),
 
   store, // offline store
 

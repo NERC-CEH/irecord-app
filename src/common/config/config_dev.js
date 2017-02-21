@@ -32,10 +32,8 @@ const newConfig = $.extend(true, config, {
 
   // morel configuration
   morel: {
-    manager: {
-      host: HOST,
-      survey_id: 374,
-    },
+    host: HOST,
+    survey_id: 374,
   },
 });
 

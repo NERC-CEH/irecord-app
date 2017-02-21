@@ -134,7 +134,7 @@ const API = {
 
         // sync
         recordModel.save(null, { remote: true })
-          .catch((response) => {
+          .catch((response = {}) => {
             const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
             if (response.responseJSON && !visibleDialog) {
               let errorMsg = '';
@@ -145,6 +145,8 @@ const API = {
                 errorMsg += `<p><b>${title}</b> ${description}</p>`;
               }
               radio.trigger('app:dialog:error', errorMsg);
+            } else if (response.message && !visibleDialog) {
+              radio.trigger('app:dialog:error', response.message);
             }
           });
         App.trigger('record:saved');
