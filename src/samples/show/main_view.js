@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Sample Show main view.
  *****************************************************************************/
-import Morel from 'morel';
+import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import CONFIG from 'config';
@@ -62,8 +62,8 @@ export default Marionette.View.extend({
       id: occ.id,
       cid: occ.cid,
       irecord_url: CONFIG.irecord_url,
-      isSynchronising: syncStatus === Morel.SYNCHRONISING,
-      onDatabase: syncStatus === Morel.SYNCED,
+      isSynchronising: syncStatus === Indicia.SYNCHRONISING,
+      onDatabase: syncStatus === Indicia.SYNCED,
       scientific_name: scientificName,
       commonName,
       location: locationPrint,

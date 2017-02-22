@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Functions to work with media.
  *****************************************************************************/
-import Morel from 'morel';
+import Indicia from 'indicia';
 import _ from 'lodash';
 import Log from './log';
 import Analytics from './analytics';
@@ -115,7 +115,7 @@ const Image = {
 
     if (window.cordova) {
       // don't resize, only get width and height
-      Morel.Media.getDataURI(file)
+      Indicia.Media.getDataURI(file)
         .then((args) => {
           const [, , width, height] = args;
           let fileName = file;
@@ -130,7 +130,7 @@ const Image = {
         })
         .catch(callback);
     } else if (file instanceof File) {
-      Morel.Media.getDataURI(file)
+      Indicia.Media.getDataURI(file)
         .then(success)
         .catch(callback);
     }

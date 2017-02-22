@@ -1,12 +1,12 @@
-import Morel from 'morel';
+import Indicia from 'indicia';
 import CONFIG from 'config';
 import ImageModel from './image';
 import appModel from 'app_model';
 
-export default Morel.Occurrence.extend({
+export default Indicia.Occurrence.extend({
   Image: ImageModel,
 
-  keys: CONFIG.morel.occurrence, // warehouse attribute keys
+  keys: CONFIG.indicia.occurrence, // warehouse attribute keys
 
   metadata: {
     training: appModel.get('useTraining'),

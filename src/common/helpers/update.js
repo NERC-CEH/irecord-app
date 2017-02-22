@@ -268,7 +268,7 @@ const API = {
    */
   updates: {
     /**
-     *  Migrate to new morel database.
+     *  Migrate to new indicia database.
      */
     '1.2.2': (callback) => {
       Log('Update: version 1.2.2', 'i');

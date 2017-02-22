@@ -76,7 +76,7 @@ const API = {
     Log('User:Reset:Controller: logging in');
     const person = {
       // app resets
-      api_key: CONFIG.morel.api_key,
+      api_key: CONFIG.indicia.api_key,
     };
 
     // user resets

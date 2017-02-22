@@ -2,7 +2,7 @@
  * Taxon controller.
  *****************************************************************************/
 import Backbone from 'backbone';
-import Morel from 'morel';
+import Indicia from 'indicia';
 import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
@@ -42,7 +42,7 @@ const API = {
 
       // can't edit a saved one - to be removed when sample update
       // is possible on the server
-      if (sample.getSyncStatus() === Morel.SYNCED) {
+      if (sample.getSyncStatus() === Indicia.SYNCED) {
         radio.trigger('samples:show', sampleID, { replace: true });
         return;
       }

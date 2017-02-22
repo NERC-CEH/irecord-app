@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
-import Morel from 'morel';
+import Indicia from 'indicia';
 import JST from 'JST';
 import Gallery from '../../common/gallery';
 
@@ -64,7 +64,7 @@ export default Marionette.CompositeView.extend({
 
   serializeData() {
     return {
-      isSynchronising: this.model.getSyncStatus() === Morel.SYNCHRONISING,
+      isSynchronising: this.model.getSyncStatus() === Indicia.SYNCHRONISING,
     };
   },
 

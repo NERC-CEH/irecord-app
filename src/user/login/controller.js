@@ -77,7 +77,7 @@ const API = {
     Log('User:Login:Controller: logging in');
     const person = {
       // app logins
-      api_key: CONFIG.morel.api_key,
+      api_key: CONFIG.indicia.api_key,
     };
 
     // user logins

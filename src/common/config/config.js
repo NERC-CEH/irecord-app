@@ -49,8 +49,8 @@ export default {
     mapbox_satellite_id: 'cehapps.0femh3mh',
   },
 
-  // morel configuration
-  morel: {
+  // indicia configuration
+  indicia: {
     host: HOST,
     api_key: API_KEY,
     website_id: 23,

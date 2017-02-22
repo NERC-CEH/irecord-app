@@ -5,7 +5,7 @@ import appModel from 'appModel';
 import savedRecords from 'saved_records';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
-import Morel from 'morel';
+import Indicia from 'indicia';
 
 const testing = {};
 
@@ -52,7 +52,7 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
     testID = (Math.random() * 10).toFixed(0);
   }
 
-  const image = new Morel.Image({
+  const image = new Indicia.Image({
     data: imageData,
     type: 'image/png',
   });

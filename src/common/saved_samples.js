@@ -1,9 +1,9 @@
-import Morel from 'morel';
+import Indicia from 'indicia';
 import store from './store';
 import Sample from 'sample';
 import userModel from 'user_model';
 
-const Collection = Morel.Collection.extend({
+const Collection = Indicia.Collection.extend({
   store,
   model: Sample,
 
@@ -12,7 +12,7 @@ const Collection = Morel.Collection.extend({
     let noneUsed = true;
 
     this.models.each((sample) => {
-      if (sample.getSyncStatus() === Morel.SYNCED) {
+      if (sample.getSyncStatus() === Indicia.SYNCED) {
         noneUsed = false;
         toRemove++;
         sample.destroy()

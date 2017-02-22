@@ -4,7 +4,7 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
-import Morel from 'morel';
+import Indicia from 'indicia';
 import Log from 'helpers/log';
 import Validate from 'helpers/validate';
 import StringHelp from 'helpers/string';
@@ -46,7 +46,7 @@ const API = {
 
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
-    if (sample.getSyncStatus() === Morel.SYNCED) {
+    if (sample.getSyncStatus() === Indicia.SYNCED) {
       radio.trigger('samples:show', sampleID, { replace: true });
       return;
     }

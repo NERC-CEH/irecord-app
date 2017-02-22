@@ -27,7 +27,7 @@ function getRandomSample(occurrence) {
 }
 
 function generateSampleResponse(server, type, data) {
-  const SAMPLE_POST_URL = `${CONFIG.morel.host}/api/v0.1/samples`;
+  const SAMPLE_POST_URL = `${CONFIG.indicia.host}/api/v0.1/samples`;
 
   switch (type) {
     case 'OK':

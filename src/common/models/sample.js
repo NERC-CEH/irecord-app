@@ -1,8 +1,8 @@
 /** ****************************************************************************
- * Morel Sample.
+ * Indicia Sample.
  *****************************************************************************/
 import _ from 'lodash';
-import Morel from 'morel';
+import Indicia from 'indicia';
 import CONFIG from 'config';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
@@ -11,9 +11,9 @@ import userModel from 'user_model';
 import Occurrence from 'occurrence';
 import GeolocExtension from './sample_geoloc_ext';
 
-const Sample = Morel.Sample.extend({
-  api_key: CONFIG.morel.api_key,
-  remote_host: CONFIG.morel.host,
+const Sample = Indicia.Sample.extend({
+  api_key: CONFIG.indicia.api_key,
+  remote_host: CONFIG.indicia.host,
   user: userModel.getUser.bind(userModel),
   password: userModel.getPassword.bind(userModel),
 
@@ -21,12 +21,12 @@ const Sample = Morel.Sample.extend({
 
   Occurrence,
 
-  keys: CONFIG.morel.sample, // warehouse attribute keys
+  keys: CONFIG.indicia.sample, // warehouse attribute keys
 
   metadata: {
-    survey_id: CONFIG.morel.survey_id,
+    survey_id: CONFIG.indicia.survey_id,
     // recording form on the iRecord website
-    input_form: CONFIG.morel.input_form,
+    input_form: CONFIG.indicia.input_form,
   },
 
   defaults: {
@@ -142,8 +142,8 @@ const Sample = Morel.Sample.extend({
   isLocalOnly() {
     const status = this.getSyncStatus();
     if (this.metadata.saved && (
-      status === Morel.LOCAL ||
-      status === Morel.SYNCHRONISING)) {
+      status === Indicia.LOCAL ||
+      status === Indicia.SYNCHRONISING)) {
       return true;
     }
     return false;

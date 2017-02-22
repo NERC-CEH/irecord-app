@@ -1,4 +1,4 @@
-import Morel from 'morel';
+import Indicia from 'indicia';
 import Backbone from 'backbone';
 import savedSamples from 'saved_samples';
 import userModel from 'user_model';
@@ -42,8 +42,8 @@ describe('Saved samples', () => {
       .then(() => done());
   });
 
-  it('should be a Morel Collection', () => {
-    expect(savedSamples).to.be.instanceOf(Morel.Collection);
+  it('should be a Indicia Collection', () => {
+    expect(savedSamples).to.be.instanceOf(Indicia.Collection);
   });
   //
   // const SAMPLE_COUNT = 500;
@@ -65,7 +65,7 @@ describe('Saved samples', () => {
   //   savedSamples.save(null, { remote: true })
   //     .then(() => {
   //       savedSamples.each((sample) => {
-  //         expect(sample.getSyncStatus()).to.be.equal(Morel.SYNCED);
+  //         expect(sample.getSyncStatus()).to.be.equal(Indicia.SYNCED);
   //       });
   //       stub.restore();
   //       done();

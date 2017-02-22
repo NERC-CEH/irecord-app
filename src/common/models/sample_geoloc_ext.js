@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Morel Sample geolocation functions.
+ * Indicia Sample geolocation functions.
  *
  * Sample geolocation events:
  * start, update, error, success, stop

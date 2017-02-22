@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Takes care of application execution logging.
  *
- * Depends on morel.
+ * Depends on indicia.
  *
  * Uses 5 levels of logging:
  *  0: none

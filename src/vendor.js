@@ -17,7 +17,7 @@ import 'underscore';
 import 'backbone';
 import 'backbone.localstorage';
 import 'backbone.marionette';
-import 'morel';
+import 'indicia';
 import { LatLon, OsGridRef, LatLonEllipsoidal } from 'geodesy';
 import 'photoswipe-lib';
 import 'photoswipe-ui-default';

@@ -1,4 +1,4 @@
-import Morel from 'morel';
+import Indicia from 'indicia';
 import _ from 'lodash';
 import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
@@ -10,6 +10,6 @@ if (window.cordova) {
     driverOrder: [CordovaSQLiteDriver, 'indexeddb', 'websql'],
   });
 }
-const store = new Morel.Store(storeConfig);
+const store = new Indicia.Store(storeConfig);
 
 export default store;

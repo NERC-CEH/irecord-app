@@ -3,7 +3,7 @@
  *****************************************************************************/
 import Backbone from 'backbone';
 import _ from 'lodash';
-import Morel from 'morel';
+import Indicia from 'indicia';
 import Device from 'helpers/device';
 import ImageHelp from 'helpers/image';
 import Analytics from 'helpers/analytics';
@@ -41,7 +41,7 @@ const API = {
 
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
-    if (sample.getSyncStatus() === Morel.SYNCED) {
+    if (sample.getSyncStatus() === Indicia.SYNCED) {
       radio.trigger('samples:show', sampleID, { replace: true });
       return;
     }
@@ -55,7 +55,7 @@ const API = {
 
     // on finish sync move to show
     function checkIfSynced() {
-      if (sample.getSyncStatus() === Morel.SYNCED) {
+      if (sample.getSyncStatus() === Indicia.SYNCED) {
         radio.trigger('samples:show', sampleID, { replace: true });
         return;
       }
@@ -132,17 +132,13 @@ const API = {
         sample.save(null, { remote: true })
           .catch((response = {}) => {
             const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
-            if (response.responseJSON && !visibleDialog) {
-              let errorMsg = '';
-              const errors = response.responseJSON.errors;
-              for (const error in errors) {
-                const title = errors[error].title;
-                const description = errors[error].description || '';
-                errorMsg += `<p><b>${title}</b> ${description}</p>`;
-              }
-              radio.trigger('app:dialog:error', errorMsg);
-            } else if (response.message && !visibleDialog) {
-              radio.trigger('app:dialog:error', response.message);
+            // we don't want to close any other dialog
+            if (response.message && !visibleDialog) {
+              radio.trigger('app:dialog:error',
+                `Sorry, we have encountered a problem while sending the record.
+                
+                 <p><i>${response.message}</i></p>`
+              );
             }
           });
         radio.trigger('sample:saved');

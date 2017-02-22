@@ -30,8 +30,8 @@ const newConfig = $.extend(true, config, {
     timeout: 80000,
   },
 
-  // morel configuration
-  morel: {
+  // indicia configuration
+  indicia: {
     host: HOST,
     survey_id: 374,
   },

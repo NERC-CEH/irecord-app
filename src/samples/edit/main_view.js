@@ -2,7 +2,7 @@
  * Sample Edit main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
-import Morel from 'morel';
+import Indicia from 'indicia';
 import JST from 'JST';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
@@ -58,7 +58,7 @@ export default Marionette.View.extend({
       scientificName,
       commonName,
       isLocating: sample.isGPSRunning(),
-      isSynchronising: sample.getSyncStatus() === Morel.SYNCHRONISING,
+      isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
       location_name: location.name,
       date: DateHelp.print(sample.get('date')),
