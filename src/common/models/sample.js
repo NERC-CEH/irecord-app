@@ -4,11 +4,11 @@
 import _ from 'lodash';
 import Indicia from 'indicia';
 import CONFIG from 'config';
+import userModel from 'user_model';
+import Occurrence from 'occurrence';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import store from '../store';
-import userModel from 'user_model';
-import Occurrence from 'occurrence';
 import GeolocExtension from './sample_geoloc_ext';
 
 const Sample = Indicia.Sample.extend({
@@ -141,12 +141,8 @@ const Sample = Indicia.Sample.extend({
 
   isLocalOnly() {
     const status = this.getSyncStatus();
-    if (this.metadata.saved && (
-      status === Indicia.LOCAL ||
-      status === Indicia.SYNCHRONISING)) {
-      return true;
-    }
-    return false;
+    return this.metadata.saved &&
+      (status === Indicia.LOCAL || status === Indicia.SYNCHRONISING);
   },
 
   timeout() {

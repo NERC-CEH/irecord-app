@@ -3,6 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import _ from 'lodash';
+import Indicia from 'indicia';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 
@@ -101,64 +102,58 @@ export default {
    */
   fetchActivities() {
     const that = this;
-    const data = {
+
+    const report = new Indicia.Report({
       report: 'library/groups/groups_for_app.xml',
-      // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.indicia.input_form,
+
       api_key: CONFIG.indicia.api_key,
-    };
-
-    const promise = new Promise((fulfill, reject) => {
-      $.get({
-        url: CONFIG.reports.url,
-        data,
-        timeout: CONFIG.reports.timeout,
-        beforeSend(xhr) {
-          const userAuth = btoa(`${that.get('name')}:${that.get('password')}`);
-          xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
-        },
-        success(receivedData) {
-          const activities = [];
-          const defaultActivity = {
-            synced_on: new Date().toString(),
-            id: null,
-            title: '',
-            description: '',
-            group_type: '',
-            group_from_date: '',
-            group_to_date: '',
-          };
-
-          receivedData.data.forEach((activity) => {
-            const fullActivity = $.extend({}, defaultActivity, activity);
-            fullActivity.id = parseInt(fullActivity.id);
-
-            // from
-            let date;
-            if (fullActivity.group_from_date) {
-              date = new Date(fullActivity.group_from_date);
-              fullActivity.group_from_date = date.toString();
-            }
-
-            // to
-            if (fullActivity.group_to_date) {
-              date = new Date(fullActivity.group_to_date);
-              date.setDate(date.getDate() + 1); // include the last day
-              fullActivity.group_to_date = date.toString();
-            }
-            activities.push(fullActivity);
-          });
-
-          that.set('activities', activities);
-          that.save();
-          fulfill();
-        },
-        error(err) {
-          Log('Activities load failed', 'e');
-          reject(err);
-        },
-      });
+      remote_host: CONFIG.indicia.host,
+      user: this.getUser.bind(this),
+      password: this.getPassword.bind(this),
+      params: {
+        path: CONFIG.indicia.input_form,
+      },
     });
+
+    const promise = report.run()
+      .then((receivedData) => {
+        const activities = [];
+        const defaultActivity = {
+          synced_on: new Date().toString(),
+          id: null,
+          title: '',
+          description: '',
+          group_type: '',
+          group_from_date: '',
+          group_to_date: '',
+        };
+
+        receivedData.data.forEach((activity) => {
+          const fullActivity = $.extend({}, defaultActivity, activity);
+          fullActivity.id = parseInt(fullActivity.id);
+
+          // from
+          let date;
+          if (fullActivity.group_from_date) {
+            date = new Date(fullActivity.group_from_date);
+            fullActivity.group_from_date = date.toString();
+          }
+
+          // to
+          if (fullActivity.group_to_date) {
+            date = new Date(fullActivity.group_to_date);
+            date.setDate(date.getDate() + 1); // include the last day
+            fullActivity.group_to_date = date.toString();
+          }
+          activities.push(fullActivity);
+        });
+
+        that.set('activities', activities);
+        that.save();
+      })
+      .catch(() => {
+        Log('Activities load failed', 'e');
+      });
 
     return promise;
   },

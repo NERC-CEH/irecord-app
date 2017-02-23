@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * App Model statistics functions.
  *****************************************************************************/
-import $ from 'jquery';
+import Indicia from 'indicia';
 import Log from 'helpers/log';
 import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 import CONFIG from 'config';
@@ -46,33 +46,30 @@ export default {
     const that = this;
     const statistics = this.get('statistics');
 
-    const data = {
+    const report = new Indicia.Report({
       report: 'library/taxa/filterable_explore_list.xml',
-      // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.indicia.input_form,
+
       api_key: CONFIG.indicia.api_key,
-      my_records: 1,
-      limit: 10,
-      orderby: 'count',
-      sortdir: 'DESC',
-    };
+      remote_host: CONFIG.indicia.host,
+      user: this.getUser.bind(this),
+      password: this.getPassword.bind(this),
+      params: {
+        path: CONFIG.indicia.input_form,
+        my_records: 1,
+        limit: 10,
+        orderby: 'count',
+        sortdir: 'DESC',
+      },
+    });
 
-    const promise = new Promise((fulfull, reject) => {
-      $.get({
-        url: CONFIG.reports.url,
-        data,
-        timeout: CONFIG.reports.timeout,
-        beforeSend(xhr) {
-          const userAuth = btoa(`${that.get('name')}:${that.get('password')}`);
-          xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
-        },
-        success(receivedData) {
-          const species = [];
-          const toWait = [];
+    const promise = report.run()
+      .then((receivedData) => {
+        const species = [];
+        const toWait = [];
 
-          receivedData.data.forEach((stat) => {
-            const promise = new $.Deferred();
-            toWait.push(promise);
+        // try to find all species in the internal taxa database
+        receivedData.data.forEach((stat) => {
+          const parsePromise = new Promise((fulfill) => {
             // turn it to a full species descriptor from species data set
             SpeciesSearchEngine.search(stat.taxon, (results) => {
               const foundedSpecies = results[0];
@@ -82,27 +79,25 @@ export default {
                 }
                 species.push(foundedSpecies);
               }
-              promise.resolve();
+              fulfill();
             }, 1, true);
           });
 
-          const dfd = $.when.apply($, toWait);
-          dfd.then(() => {
-            // save and exit
-            statistics.synced_on = new Date().toString();
-            statistics.species = species;
-            statistics.speciesRaw = receivedData.data;
-            that.set('statistics', statistics);
-            that.save();
-            fulfull();
-          });
-        },
-        error(err) {
-          Log('Stats load failed', 'e');
-          reject(err);
-        },
+          toWait.push(parsePromise);
+        });
+
+        // save the user and exit
+        return Promise.all(toWait).then(() => {
+          statistics.synced_on = new Date().toString();
+          statistics.species = species;
+          statistics.speciesRaw = receivedData.data;
+          that.set('statistics', statistics);
+          that.save();
+        });
+      })
+      .catch(() => {
+        Log('Stats load failed', 'e');
       });
-    });
 
     return promise;
   },
