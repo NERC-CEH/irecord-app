@@ -65,7 +65,7 @@
     "latlon": "github:chrisveness/geodesy#d50580b5054b562f0d1c94441f74a9d0bf8ba710",
     "leaflet": "^0.7.7",
     "leaflet.gridref": "github:kazlauskis/Leaflet.GridRef#743575909366cab851e9ad5b2b04213a55495c40",
-    "load-grunt-config": "^0.19.2",
+    "load-grunt-config" : "^0.19.2",
     "load-grunt-tasks": "^3.5.2",
     "localforage": "^1.4.3",
     "localforage-cordovasqlitedriver": "^1.5.0",

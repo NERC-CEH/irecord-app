@@ -2,12 +2,13 @@
  * Main app development configuration file.
  *****************************************************************************/
 import $ from 'jquery';
+import Indicia from 'indicia';
 import config from './config';
 
-const HOST = 'http://localhost/drupal/';
+const HOST = 'http://192.171.199.230/irecord7/';
 
 const newConfig = $.extend(true, config, {
-  irecord_url: 'http://192.171.199.230/irecord7',
+  irecord_url: HOST,
 
   // google analytics
   ga: {
@@ -21,12 +22,12 @@ const newConfig = $.extend(true, config, {
   },
 
   users: {
-    url: `${HOST}api/v0.1/users`,
+    url: `${HOST + Indicia.API_BASE + Indicia.API_VER}/users/`,
     timeout: 80000,
   },
 
   reports: {
-    url: `${HOST}api/v0.1/reports`,
+    url: `${HOST + Indicia.API_BASE + Indicia.API_VER + Indicia.API_REPORTS_PATH}`,
     timeout: 80000,
   },
 

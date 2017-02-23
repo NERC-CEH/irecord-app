@@ -44,7 +44,10 @@ const API = {
   },
 
   refresh() {
-    userModel.syncStats(true);
+    userModel.syncStats(true)
+      .catch((err) => {
+        radio.trigger('app:dialog:error', err);
+      });
     Analytics.trackEvent('Statistics', 'refresh');
   },
 };

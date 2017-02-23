@@ -8,12 +8,12 @@ import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
 import App from 'app';
 import radio from 'radio';
-import MainView from './main_view';
-import HeaderView from '../../views/header_view';
-import RefreshView from './refresh_view';
 import appModel from 'app_model';
 import userModel from 'user_model';
 import savedSamples from 'saved_samples';
+import MainView from './main_view';
+import HeaderView from '../../views/header_view';
+import RefreshView from './refresh_view';
 
 /**
  * Model to hold details of an activity (group entity)
@@ -175,7 +175,10 @@ const API = {
   },
 
   refreshActivities() {
-    userModel.syncActivities(true);
+    userModel.syncActivities(true)
+      .catch((err) => {
+        radio.trigger('app:dialog:error', err);
+      })
     Analytics.trackEvent('Activities', 'refresh');
   },
 

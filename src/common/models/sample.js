@@ -13,7 +13,7 @@ import GeolocExtension from './sample_geoloc_ext';
 
 const Sample = Indicia.Sample.extend({
   api_key: CONFIG.indicia.api_key,
-  remote_host: CONFIG.indicia.host,
+  host_url: CONFIG.indicia.host,
   user: userModel.getUser.bind(userModel),
   password: userModel.getPassword.bind(userModel),
 

@@ -2,13 +2,13 @@
  * User Login controller.
  *****************************************************************************/
 import $ from 'jquery';
+import _ from 'lodash';
 import Backbone from 'backbone';
 import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import Error from 'helpers/error';
-import Validate from 'helpers/validate';
 import CONFIG from 'config';
 import userModel from 'user_model';
 import MainView from './main_view';
@@ -75,30 +75,19 @@ const API = {
    */
   login(data) {
     Log('User:Login:Controller: logging in');
-    const person = {
-      // app logins
-      api_key: CONFIG.indicia.api_key,
-    };
-
-    // user logins
-    person.password = data.password;
-    if (Validate.email(data.name)) {
-      person.email = data.name;
-    } else {
-      person.name = data.name;
-    }
-
     const promise = new Promise((fulfill, reject) => {
       $.get({
-        url: CONFIG.users.url,
-        data: person,
+        url: CONFIG.users.url + encodeURIComponent(data.name), // url + user id
+        data: {
+          api_key: CONFIG.indicia.api_key, // app logins
+        },
         timeout: CONFIG.users.timeout,
         beforeSend(xhr) {
           const userAuth = btoa(`${data.name}:${data.password}`);
           xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
         },
         success(receivedData) {
-          const fullData = _.extend(receivedData.data[0], { password: data.password });
+          const fullData = _.extend(receivedData.data, { password: data.password });
           userModel.logIn(fullData);
           fulfill(fullData);
         },

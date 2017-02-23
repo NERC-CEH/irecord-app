@@ -11,23 +11,22 @@ export default {
   syncActivities(force) {
     const that = this;
     if (this.synchronizingActivities) {
-      return;
+      return this.synchronizingActivities;
     }
-
 
     if ((this.hasLogIn() && this._lastSyncExpired()) || force) {
       // init or refresh
-      this.synchronizingActivities = true;
       this.trigger('sync:activities:start');
-      this.fetchActivities()
+
+      this.synchronizingActivities = this.fetchActivities()
         .then(() => {
-          that.synchronizingActivities = false;
+          delete that.synchronizingActivities;
           that.trigger('sync:activities:end');
         })
-        .catch(() => {
-          // todo
-          that.synchronizingActivities = false;
+        .catch((err) => {
+          delete that.synchronizingActivities;
           that.trigger('sync:activities:end');
+          return Promise.reject(err);
         });
     } else {
       const activities = this.get('activities') || [];
@@ -40,6 +39,8 @@ export default {
         }
       }
     }
+
+    return this.synchronizingActivities;
   },
 
   resetActivities() {
@@ -104,10 +105,10 @@ export default {
     const that = this;
 
     const report = new Indicia.Report({
-      report: 'library/groups/groups_for_app.xml',
+      report: '/library/groups/groups_for_app.xml',
 
       api_key: CONFIG.indicia.api_key,
-      remote_host: CONFIG.indicia.host,
+      host_url: CONFIG.indicia.host,
       user: this.getUser.bind(this),
       password: this.getPassword.bind(this),
       params: {
@@ -151,8 +152,9 @@ export default {
         that.set('activities', activities);
         that.save();
       })
-      .catch(() => {
+      .catch((err) => {
         Log('Activities load failed', 'e');
+        return Promise.reject(err);
       });
 
     return promise;

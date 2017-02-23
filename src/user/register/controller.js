@@ -87,8 +87,9 @@ const API = {
   register(data) {
     Log('User:Register:Controller: registering');
 
+    data['api_key'] = CONFIG.indicia.api_key; // app logins
+
     // app logins
-    formData.append('api_key', CONFIG.indicia.api_key);
     const promise = new Promise((fulfill, reject) => {
       $.ajax({
         url: CONFIG.users.url,

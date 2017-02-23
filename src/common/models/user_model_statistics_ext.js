@@ -3,32 +3,33 @@
  *****************************************************************************/
 import Indicia from 'indicia';
 import Log from 'helpers/log';
-import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 import CONFIG from 'config';
+import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 
 export default {
   syncStats(force) {
     const that = this;
     if (this.synchronizingStatistics) {
-      return;
+      return this.synchronizingStatistics;
     }
 
     if (this.hasLogIn() && this._lastStatsSyncExpired() || force) {
       // init or refresh
-      this.synchronizingStatistics = true;
       this.trigger('sync:statistics:species:start');
 
-      this.fetchStatsSpecies()
+      this.synchronizingStatistics = this.fetchStatsSpecies()
         .then(() => {
-          that.synchronizingStatistics = false;
+          delete that.synchronizingStatistics;
           that.trigger('sync:statistics:species:end');
         })
-        .catch(() => {
-          // todo
-          that.synchronizingStatistics = false;
+        .catch((err) => {
+          delete that.synchronizingStatistics;
           that.trigger('sync:statistics:species:end');
+          return Promise.reject(err);
         });
     }
+
+    return this.synchronizingStatistics;
   },
 
   resetStats() {
@@ -47,10 +48,10 @@ export default {
     const statistics = this.get('statistics');
 
     const report = new Indicia.Report({
-      report: 'library/taxa/filterable_explore_list.xml',
+      report: '/library/taxa/filterable_explore_list.xml',
 
       api_key: CONFIG.indicia.api_key,
-      remote_host: CONFIG.indicia.host,
+      host_url: CONFIG.indicia.host,
       user: this.getUser.bind(this),
       password: this.getPassword.bind(this),
       params: {
@@ -95,8 +96,9 @@ export default {
           that.save();
         });
       })
-      .catch(() => {
+      .catch((err) => {
         Log('Stats load failed', 'e');
+        return Promise.reject(err);
       });
 
     return promise;

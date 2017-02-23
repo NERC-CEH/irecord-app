@@ -74,25 +74,15 @@ const API = {
    */
   reset(data) {
     Log('User:Reset:Controller: logging in');
-    const person = {
-      // app resets
-      api_key: CONFIG.indicia.api_key,
-    };
-
-    // user resets
-    person.password = data.password;
-    if (Validate.email(data.name)) {
-      person.email = data.name;
-    } else {
-      person.name = data.name;
-    }
-
     const promise = new Promise((fulfill, reject) => {
       // Reset password
-      $.get({
-        url: `${CONFIG.users.url}/anonymous/reset`,
-        method: 'POST',
-        data: person,
+      $.ajax({
+        url: CONFIG.users.url + encodeURIComponent(data.name), // url + user id
+        method: 'PUT',
+        data: {
+          api_key: CONFIG.indicia.api_key, // app logins
+          password: ' ', // reset password
+        },
         timeout: CONFIG.users.timeout,
       })
         .then(fulfill)
