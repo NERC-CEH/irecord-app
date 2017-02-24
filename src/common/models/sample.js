@@ -29,10 +29,16 @@ const Sample = Indicia.Sample.extend({
     input_form: CONFIG.indicia.input_form,
   },
 
-  defaults: {
-    // attach device information
-    device: Device.getPlatform(),
-    device_version: Device.getVersion(),
+  /**
+   * Need a function because Device might not be ready on module load.
+   * @returns {{device: *, device_version: *}}
+   */
+  defaults() {
+    return {
+      // attach device information
+      device: Device.getPlatform(),
+      device_version: Device.getVersion(),
+    };
   },
 
   initialize() {
