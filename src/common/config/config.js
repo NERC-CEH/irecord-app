@@ -2,12 +2,13 @@
  * Main app configuration file.
  *****************************************************************************/
 import $ from 'jquery';
+import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
 import LocHelp from 'helpers/location';
 
 const HOST = 'https://www.brc.ac.uk/irecord/';
 
-export default {
+const CONFIG = {
   // variables replaced on build
   /* global APP_VERSION, APP_BUILD, APP_NAME, REGISTER_URL, API_KEY, API_SECRET,
    REPORT_URL, STATISTICS_URL, RECORD_URL, APP_SECRET */
@@ -31,13 +32,13 @@ export default {
     ID: 'UA-58378803-4',
   },
 
-  logins: {
-    url: `${HOST}api/v0.1/users`,
-    timeout: 30000,
+  users: {
+    url: `${HOST + Indicia.API_BASE + Indicia.API_VER}/users/`,
+    timeout: 80000,
   },
 
   reports: {
-    url: `${HOST}api/v0.1/reports`,
+    url: `${HOST + Indicia.API_BASE + Indicia.API_VER + Indicia.API_REPORTS_PATH}`,
     timeout: 80000,
   },
 
@@ -70,14 +71,14 @@ export default {
             }
           }
 
-          const attributes = {
-            location_name: location.name,
-            location_source: location.source,
-            location_gridref: location.gridref,
-            location_altitude: location.altitude,
-            location_altitude_accuracy: location.altitudeAccuracy,
-            location_accuracy: accuracy,
-          };
+          const attributes = {};
+          const keys = CONFIG.indicia.sample;
+          attributes[keys['location_name']] = location.name;
+          attributes[keys['location_source']] = location.source;
+          attributes[keys['location_gridref']] = location.gridref;
+          attributes[keys['location_altitude']] = location.altitude;
+          attributes[keys['location_altitude_accuracy']] = location.altitudeAccuracy;
+          attributes[keys['location_accuracy']] = accuracy;
 
           // add other location related attributes
           $.extend(submission.fields, attributes);
@@ -153,3 +154,5 @@ export default {
     },
   },
 };
+
+export default CONFIG;
