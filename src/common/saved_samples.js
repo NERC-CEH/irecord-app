@@ -1,65 +1,34 @@
 import Indicia from 'indicia';
-import store from './store';
-import Sample from 'sample';
+import Log from 'helpers/log';
 import userModel from 'user_model';
+import Sample from 'sample';
+import store from './store';
 
 const Collection = Indicia.Collection.extend({
   store,
   model: Sample,
 
-  removeAllSynced(callback) {
-    let toRemove = 0;
-    let noneUsed = true;
-
+  removeAllSynced() {
+    const toWait = [];
     this.models.each((sample) => {
       if (sample.getSyncStatus() === Indicia.SYNCED) {
-        noneUsed = false;
-        toRemove++;
-        sample.destroy()
-          .then(() => {
-            toRemove--;
-            if (toRemove === 0) {
-              callback && callback();
-            }
-          });
+        toWait.push(sample.destroy());
       }
     });
 
-    if (noneUsed) {
-      callback && callback();
-    }
+    return Promise.all(toWait);
   },
 
-  setAllToSend(callback) {
-    const that = this;
-    let noneUsed = true;
-    let saving = 0;
-
+  setAllToSend() {
+    const toWait = [];
     this.models.each((sample) => {
-      noneUsed = false;
-      saving++;
-      const promise = sample.setToSend();
-      if (!promise) {
-        return saving--;
+      const validPromise = sample.setToSend();
+      if (!validPromise) {
+        return;
       }
-      promise
-        .then(() => {
-          saving--;
-          if (saving === 0) {
-            callback && callback();
-            if (userModel.hasLogIn()) {
-              that.save(null, { remote: true });
-            }
-          }
-        })
-        .catch((error) => {
-          callback && callback(error);
-        });
+      toWait.push(validPromise);
     });
-
-    if (noneUsed || saving === 0) {
-      callback && callback();
-    }
+    return Promise.all(toWait);
   },
 });
 
@@ -72,7 +41,9 @@ savedSamples.fetch()
     savedSamples.fetching = false;
     savedSamples.trigger('fetching:done');
   })
-  .catch(() => {
+  .catch((err) => {
+    Log(err, 'e');
+
     savedSamples.fetching = false;
     savedSamples.trigger('fetching:error');
   });

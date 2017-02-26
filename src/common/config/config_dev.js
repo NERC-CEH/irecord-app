@@ -5,7 +5,7 @@ import $ from 'jquery';
 import Indicia from 'indicia';
 import config from './config';
 
-const HOST = 'localhost/drupal/';
+const HOST = 'http://192.171.199.230/irecord7/';
 
 const newConfig = $.extend(true, config, {
   irecord_url: HOST,

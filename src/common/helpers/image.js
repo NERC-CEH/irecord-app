@@ -64,7 +64,9 @@ const Image = {
       let URI = fileURI;
       function copyFile(fileEntry) {
         const name = `${Date.now()}.jpeg`;
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (fileSystem) => {
+        window.resolveLocalFileSystemURL(
+          cordova.file.dataDirectory,
+          (fileSystem) => {
             // copy to app data directory
             fileEntry.copyTo(
               fileSystem,
@@ -73,7 +75,8 @@ const Image = {
               fail
             );
           },
-          fail);
+          fail
+        );
       }
 
       // for some reason when selecting from Android gallery
@@ -95,7 +98,7 @@ const Image = {
   /**
    * Create new record with a photo
    */
-  getImageModel(ImageModel, file, callback) {
+  getImageModel(ImageModel, file) {
     // create and add new record
     const success = (args) => {
       const [data, type, width, height] = args;
@@ -106,17 +109,14 @@ const Image = {
         height,
       });
 
-      imageModel.addThumbnail()
-        .then(() => {
-          callback(null, imageModel);
-        })
-        .catch(callback);
+      return imageModel.addThumbnail().then(() => imageModel);
     };
 
     if (window.cordova) {
-      // don't resize, only get width and height
-      Indicia.Media.getDataURI(file)
+      // cordova environment
+      return Indicia.Media.getDataURI(file)
         .then((args) => {
+          // don't resize, only get width and height
           const [, , width, height] = args;
           let fileName = file;
 
@@ -126,14 +126,15 @@ const Image = {
             const pathArray = file.split('/');
             fileName = pathArray[pathArray.length - 1];
           }
-          success(fileName, 'jpeg', width, height);
-        })
-        .catch(callback);
+          return success(fileName, 'jpeg', width, height);
+        });
     } else if (file instanceof File) {
-      Indicia.Media.getDataURI(file)
-        .then(success)
-        .catch(callback);
+      // browser environment
+      return Indicia.Media.getDataURI(file).then(success);
     }
+
+    const err = new Error('File not found while creating image model.');
+    return Promise.reject(err);
   },
 };
 

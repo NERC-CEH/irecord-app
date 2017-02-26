@@ -53,6 +53,7 @@ const API = {
             window.history.back();
           })
           .catch((err) => {
+            Log(err, 'e');
             radio.trigger('app:dialog:error', err);
           });
       } else {

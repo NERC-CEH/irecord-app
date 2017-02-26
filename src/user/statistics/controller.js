@@ -6,10 +6,10 @@ import Backbone from 'backbone';
 import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
 import radio from 'radio';
+import userModel from 'user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 import RefreshView from './refresh_view';
-import userModel from 'user_model';
 
 const API = {
   show() {
@@ -46,6 +46,7 @@ const API = {
   refresh() {
     userModel.syncStats(true)
       .catch((err) => {
+        Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
     Analytics.trackEvent('Statistics', 'refresh');

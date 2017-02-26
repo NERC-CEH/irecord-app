@@ -12,6 +12,7 @@
  *
  * Levels values defined in core app module.
  *****************************************************************************/
+import Raven from 'raven-js';
 import CONFIG from 'config';
 
 const ERROR = 'e';
@@ -32,6 +33,11 @@ function error(err = {}) {
       message: err,
     };
   }
+
+  if (Raven) {
+    Raven.captureException(err);
+  }
+
   console.error(err.message, err.url, err.line, err.column, err.obj);
 }
 
@@ -61,20 +67,9 @@ function log(message, type = DEBUG) {
           break;
         }
         console.debug(message);
-        // if (typeof console.trace === 'function') console.trace();
+      // if (typeof console.trace === 'function') console.trace();
     }
   }
 }
-
-// // Hook into window.error function
-// window.onerror = (message, url, line, column, obj) => {
-//   const onerror = window.onerror;
-//   window.onerror = null;
-//
-//   error({ message, url, line, column, obj });
-//
-//   window.onerror = onerror; // turn on error handling again
-//   return true; // suppress normal error reporting
-// };
 
 export { log as default };

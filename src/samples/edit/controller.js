@@ -12,8 +12,8 @@ import App from 'app';
 import radio from 'radio';
 import appModel from 'app_model';
 import userModel from 'user_model';
-import ImageModel from '../../common/models/image';
 import savedSamples from 'saved_samples';
+import ImageModel from '../../common/models/image';
 import MainView from './main_view';
 import HeaderView from './header_view';
 import FooterView from './footer_view';
@@ -57,7 +57,6 @@ const API = {
     function checkIfSynced() {
       if (sample.getSyncStatus() === Indicia.SYNCED) {
         radio.trigger('samples:show', sampleID, { replace: true });
-        return;
       }
     }
     sample.on('request sync error', checkIfSynced);
@@ -130,26 +129,30 @@ const API = {
 
         // sync
         sample.save(null, { remote: true })
-          .catch((response = {}) => {
-            const visibleDialog = App.regions.getRegion('dialog').$el.is(":visible");
+          .catch((err = {}) => {
+            Log(err, 'e');
+
+            const visibleDialog = App.regions.getRegion('dialog').$el.is(':visible');
             // we don't want to close any other dialog
-            if (response.message && !visibleDialog) {
+            if (err.message && !visibleDialog) {
               radio.trigger('app:dialog:error',
                 `Sorry, we have encountered a problem while sending the record.
                 
-                 <p><i>${response.message}</i></p>`
+                 <p><i>${err.message}</i></p>`
               );
             }
           });
         radio.trigger('sample:saved');
       })
       .catch((err) => {
+        Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
   },
 
   showInvalidsMessage(invalids) {
-    delete invalids.sample.saved; // it wasn't saved so of course this error
+    // it wasn't saved so of course this error
+    delete invalids.sample.saved; // eslint-disable-line
 
     let missing = '';
     if (invalids.occurrences) {
@@ -174,12 +177,10 @@ const API = {
     Log('Samples:Edit:Controller: photo uploaded');
 
     const occurrence = sample.getOccurrence();
-    // show loader
-    API.addPhoto(occurrence, photo, (occErr) => {
-      // hide loader
-      if (occErr) {
-        radio.trigger('app:dialog:error', occErr);
-      }
+    // todo: show loader
+    API.addPhoto(occurrence, photo).catch((err) => {
+      Log(err, 'e');
+      radio.trigger('app:dialog:error', err);
     });
   },
 
@@ -258,22 +259,12 @@ const API = {
   /**
    * Adds a new image to occurrence.
    */
-  addPhoto(occurrence, photo, callback) {
-    ImageHelp.getImageModel(ImageModel, photo, (err, image) => {
-      if (err || !image) {
-        const error = new Error('Missing image.');
-        callback(error);
-        return;
-      }
-      occurrence.addMedia(image);
-
-      occurrence.save()
-        .then(() => callback())
-        .catch((error) => {
-          Log(error, 'e');
-          callback(error);
-        });
-    });
+  addPhoto(occurrence, photo) {
+    return ImageHelp.getImageModel(ImageModel, photo)
+      .then((image) => {
+        occurrence.addMedia(image);
+        return occurrence.save();
+      });
   },
 };
 

@@ -65,6 +65,7 @@ const API = {
             });
           })
           .catch((err) => {
+            Log(err, 'e');
             radio.trigger('app:dialog:error', err);
           });
       } else {

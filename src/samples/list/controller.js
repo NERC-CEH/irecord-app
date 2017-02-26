@@ -2,7 +2,6 @@
  * Sample List controller.
  *****************************************************************************/
 import Indicia from 'indicia';
-import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
@@ -89,9 +88,10 @@ const API = {
   photoUpload(photo) {
     Log('Samples:List:Controller: photo upload');
 
-    // show loader
-    API.createNewSample(photo, () => {
-      // hide loader
+    // todo: show loader
+    API.createNewSample(photo).catch((err) => {
+      Log(err, 'e');
+      radio.trigger('app:dialog:error', err);
     });
   },
 
@@ -129,24 +129,19 @@ const API = {
   /**
    * Creates a new sample with an image passed as an argument.
    */
-  createNewSample(photo, callback) {
-    ImageHelp.getImageModel(ImageModel, photo, (err, image) => {
-      if (err || !image) {
-        const err = new Error('Missing image.');
-        callback(err);
-        return;
-      }
-      const occurrence = new Occurrence();
-      occurrence.addMedia(image);
+  createNewSample(photo) {
+    return ImageHelp.getImageModel(ImageModel, photo)
+      .then((image) => {
+        const occurrence = new Occurrence();
+        occurrence.addMedia(image);
 
-      const sample = new Sample();
-      sample.addOccurrence(occurrence);
+        const sample = new Sample();
+        sample.addOccurrence(occurrence);
 
-      // append locked attributes
-      appModel.appendAttrLocks(sample);
+        // append locked attributes
+        appModel.appendAttrLocks(sample);
 
-      sample.save()
-        .then(() => {
+        return sample.save().then(() => {
           savedSamples.add(sample);
           // check if location attr is not locked
           const locks = appModel.get('attrLocks');
@@ -159,10 +154,9 @@ const API = {
             // so try again
             sample.startGPS();
           }
-          callback();
-        })
-        .catch(callback);
-    });
+          return sample;
+        });
+      });
   },
 };
 

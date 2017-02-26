@@ -177,8 +177,9 @@ const API = {
   refreshActivities() {
     userModel.syncActivities(true)
       .catch((err) => {
+        Log(err, 'e');
         radio.trigger('app:dialog:error', err);
-      })
+      });
     Analytics.trackEvent('Activities', 'refresh');
   },
 
@@ -187,7 +188,11 @@ const API = {
     if (sample) {
       sample.set('group', userModel.getActivity(activityID));
       sample.save()
-        .then(() => window.history.back()); // return to previous page after save
+        .then(() => window.history.back()) // return to previous page after save
+        .catch((err) => {
+          Log(err, 'e');
+          radio.trigger('app:dialog:error', err);
+        });
     } else {
       appModel.setAttrLock('activity', userModel.getActivity(activityID));
       // return to previous page after save

@@ -23,13 +23,18 @@ const CONFIG = {
   // logging
   log: {
     states: ['e', 'w'], // see log helper
-    ga_error: true,
   },
 
   // google analytics
   ga: {
     status: true,
     ID: 'UA-58378803-4',
+  },
+
+  // error analytics
+  sentry: {
+    key: 'fdde66f95b1c4f50a8186e828b595351',
+    project: '128357',
   },
 
   users: {
@@ -73,17 +78,17 @@ const CONFIG = {
 
           const attributes = {};
           const keys = CONFIG.indicia.sample;
-          attributes[keys['location_name']] = location.name;
-          attributes[keys['location_source']] = location.source;
-          attributes[keys['location_gridref']] = location.gridref;
-          attributes[keys['location_altitude']] = location.altitude;
-          attributes[keys['location_altitude_accuracy']] = location.altitudeAccuracy;
-          attributes[keys['location_accuracy']] = accuracy;
+          attributes.location_name = location.name; // this is a native indicia attr
+          attributes[keys.location_source.id] = location.source;
+          attributes[keys.location_gridref.id] = location.gridref;
+          attributes[keys.location_altitude.id] = location.altitude;
+          attributes[keys.location_altitude_accuracy.id] = location.altitudeAccuracy;
+          attributes[keys.location_accuracy.id] = accuracy;
 
           // add other location related attributes
           $.extend(submission.fields, attributes);
 
-          return location.latitude + ', ' + location.longitude;
+          return `${location.latitude}, ${location.longitude}`;
         },
       },
       location_accuracy: { id: 282 },
@@ -142,10 +147,10 @@ const CONFIG = {
       stage: {
         id: 106,
         values: {
-          'default': 1949,
-          'Adult': 1950,
+          default: 1949,
+          Adult: 1950,
           'Pre-adult': 1951,
-          'Other': 1952,
+          Other: 1952,
         },
       },
       identifiers: {

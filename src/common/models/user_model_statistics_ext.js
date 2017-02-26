@@ -63,43 +63,38 @@ export default {
       },
     });
 
-    const promise = report.run()
-      .then((receivedData) => {
-        const species = [];
-        const toWait = [];
+    const promise = report.run().then((receivedData) => {
+      const species = [];
+      const toWait = [];
 
-        // try to find all species in the internal taxa database
-        receivedData.data.forEach((stat) => {
-          const parsePromise = new Promise((fulfill) => {
-            // turn it to a full species descriptor from species data set
-            SpeciesSearchEngine.search(stat.taxon, (results) => {
-              const foundedSpecies = results[0];
-              if (results.length && foundedSpecies.scientific_name === stat.taxon) {
-                if (foundedSpecies.common_name) {
-                  foundedSpecies.found_in_name = 'common_name';
-                }
-                species.push(foundedSpecies);
+      // try to find all species in the internal taxa database
+      receivedData.data.forEach((stat) => {
+        const parsePromise = new Promise((fulfill) => {
+          // turn it to a full species descriptor from species data set
+          SpeciesSearchEngine.search(stat.taxon, (results) => {
+            const foundedSpecies = results[0];
+            if (results.length && foundedSpecies.scientific_name === stat.taxon) {
+              if (foundedSpecies.common_name) {
+                foundedSpecies.found_in_name = 'common_name';
               }
-              fulfill();
-            }, 1, true);
-          });
-
-          toWait.push(parsePromise);
+              species.push(foundedSpecies);
+            }
+            fulfill();
+          }, 1, true);
         });
 
-        // save the user and exit
-        return Promise.all(toWait).then(() => {
-          statistics.synced_on = new Date().toString();
-          statistics.species = species;
-          statistics.speciesRaw = receivedData.data;
-          that.set('statistics', statistics);
-          that.save();
-        });
-      })
-      .catch((err) => {
-        Log('Stats load failed', 'e');
-        return Promise.reject(err);
+        toWait.push(parsePromise);
       });
+
+      // save the user and exit
+      return Promise.all(toWait).then(() => {
+        statistics.synced_on = new Date().toString();
+        statistics.species = species;
+        statistics.speciesRaw = receivedData.data;
+        that.set('statistics', statistics);
+        that.save();
+      });
+    });
 
     return promise;
   },

@@ -88,12 +88,17 @@ const API = {
             Log('Settings:Menu:Controller: deleting all samples');
 
             // delete all
-            savedSamples.removeAllSynced(() => {
-              radio.trigger('app:dialog', {
-                title: 'Done!',
-                timeout: 1000,
+            savedSamples.removeAllSynced()
+              .then(() => {
+                radio.trigger('app:dialog', {
+                  title: 'Done!',
+                  timeout: 1000,
+                });
+              })
+              .catch((err) => {
+                Log(err, 'e');
+                radio.trigger('app:dialog:error', err);
               });
-            });
             Analytics.trackEvent('Settings', 'delete all');
           },
         },
@@ -117,18 +122,17 @@ const API = {
           class: 'btn-positive',
           onClick() {
             Log('Settings:Menu:Controller: sending all records');
-
-            // delete all
-            savedSamples.addAllToSend((err) => {
-              if (err) {
+            savedSamples.setAllToSend()
+              .then(() => {
+                radio.trigger('app:dialog', {
+                  title: 'Done!',
+                  timeout: 1000,
+                });
+              })
+              .catch((err) => {
+                Log(err, 'e');
                 radio.trigger('app:dialog:error', err);
-                return;
-              }
-              radio.trigger('app:dialog', {
-                title: 'Done!',
-                timeout: 1000,
               });
-            });
             Analytics.trackEvent('Settings', 'send all');
           },
         },
