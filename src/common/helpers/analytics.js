@@ -18,7 +18,8 @@ const API = {
         environment: process.env.ENV,
         release: CONFIG.version,
         ignoreErrors: [
-          'setSelectionRange',
+          'setSelectionRange', // there is some fastclick issue (does not affect ux)
+          'Incorrect password or email', // no need to log that
         ],
       })
       .install();
