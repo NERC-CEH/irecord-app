@@ -111,6 +111,11 @@ const Sample = Indicia.Sample.extend({
    * Set the sample for submission and send it.
    */
   setToSend() {
+    // don't change it's status if already saved
+    if (this.metadata.saved) {
+      return Promise.resolve(this);
+    }
+
     this.metadata.saved = true;
 
     if (!this.isValid({ remote: true })) {
