@@ -17,6 +17,9 @@ const API = {
       .config(`https://${CONFIG.sentry.key}@sentry.io/${CONFIG.sentry.project}`, {
         environment: process.env.ENV,
         release: CONFIG.version,
+        ignoreErrors: [
+          'setSelectionRange',
+        ],
       })
       .install();
 
