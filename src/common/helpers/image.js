@@ -5,7 +5,6 @@ import Indicia from 'indicia';
 import _ from 'lodash';
 import Log from './log';
 import Analytics from './analytics';
-import Error from './error';
 import Device from './device';
 
 const Image = {

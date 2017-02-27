@@ -7,7 +7,6 @@ import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
-import Error from 'helpers/error';
 import Validate from 'helpers/validate';
 import CONFIG from 'config';
 import userModel from 'user_model';
@@ -88,11 +87,14 @@ const API = {
       })
         .then(fulfill)
         .fail((xhr, textStatus) => {
-          if (xhr.responseJSON) {
-            reject(new Error(xhr.responseJSON.errors));
-          } else {
-            reject(new Error(textStatus));
+          let message = textStatus;
+          if (xhr.responseJSON && xhr.responseJSON.errors) {
+            message = xhr.responseJSON.errors.reduce(
+              (name, err) => `${name}${err.title}\n`,
+              ''
+            );
           }
+          reject(new Error(message));
         });
     });
 
