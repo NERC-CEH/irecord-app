@@ -22,10 +22,6 @@ const API = {
 
     // capture unhandled promises
     window.onunhandledrejection = (e) => {
-      if (!(e instanceof Response)) {
-        e = new Error('Unhandled promise rejection'); // eslint-disable-line
-      }
-
       Raven.captureException(e.reason, {
         extra: { unhandledPromise: true },
       });

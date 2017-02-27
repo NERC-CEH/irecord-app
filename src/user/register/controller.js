@@ -85,20 +85,28 @@ const API = {
    * It is important that the app authorises itself providing
    * api_key for the mentioned module.
    */
-  register(data) {
+  register(details) {
     Log('User:Register:Controller: registering');
 
-    data['api_key'] = CONFIG.indicia.api_key; // app logins
+    // app logins
+    details.api_key = CONFIG.indicia.api_key; // eslint-disable-line
 
     // app logins
     const promise = new Promise((fulfill, reject) => {
       $.ajax({
         url: CONFIG.users.url,
         type: 'POST',
-        data,
+        data: details,
         timeout: CONFIG.users.timeout,
         success(receivedData) {
-          const fullData = _.extend(receivedData.data, { password: data.password });
+          const data = receivedData.data || {};
+          if (!data.id || !data.email || !data.name ||
+            !data.firstname || !data.secondname) {
+            const err = new Error('Error while retrieving registration response.');
+            reject(err);
+            return;
+          }
+          const fullData = _.extend(receivedData.data, { password: details.password });
           userModel.logIn(fullData);
           fulfill(fullData);
         },

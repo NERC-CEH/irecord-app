@@ -64,11 +64,17 @@ export default {
     });
 
     const promise = report.run().then((receivedData) => {
+      const data = receivedData.data;
+      if (!data) {
+        const err = new Error('Error while retrieving stats response.');
+        return Promise.reject(err);
+      }
+
       const species = [];
       const toWait = [];
 
       // try to find all species in the internal taxa database
-      receivedData.data.forEach((stat) => {
+      data.forEach((stat) => {
         const parsePromise = new Promise((fulfill) => {
           // turn it to a full species descriptor from species data set
           SpeciesSearchEngine.search(stat.taxon, (results) => {

@@ -74,21 +74,29 @@ const API = {
    * It is important that the app authorises itself providing
    * api_key for the mentioned module.
    */
-  login(data) {
+  login(details) {
     Log('User:Login:Controller: logging in');
     const promise = new Promise((fulfill, reject) => {
       $.get({
-        url: CONFIG.users.url + encodeURIComponent(data.name), // url + user id
+        url: CONFIG.users.url + encodeURIComponent(details.name), // url + user id
         data: {
           api_key: CONFIG.indicia.api_key, // app logins
         },
         timeout: CONFIG.users.timeout,
         beforeSend(xhr) {
-          const userAuth = btoa(`${data.name}:${data.password}`);
+          const userAuth = btoa(`${details.name}:${details.password}`);
           xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
         },
         success(receivedData) {
-          const fullData = _.extend(receivedData.data, { password: data.password });
+          const data = receivedData.data || {};
+          if (!data.id || !data.email || !data.name ||
+            !data.firstname || !data.secondname) {
+            const err = new Error('Error while retrieving login response.');
+            reject(err);
+            return;
+          }
+
+          const fullData = _.extend(data, { password: details.password });
           userModel.logIn(fullData);
           fulfill(fullData);
         },

@@ -118,6 +118,12 @@ export default {
 
     const promise = report.run()
       .then((receivedData) => {
+        const data = receivedData.data;
+        if (!data) {
+          const err = new Error('Error while retrieving activities response.');
+          return Promise.reject(err);
+        }
+
         const activities = [];
         const defaultActivity = {
           synced_on: new Date().toString(),
@@ -129,7 +135,7 @@ export default {
           group_to_date: '',
         };
 
-        receivedData.data.forEach((activity) => {
+        data.forEach((activity) => {
           const fullActivity = $.extend({}, defaultActivity, activity);
           fullActivity.id = parseInt(fullActivity.id);
 
@@ -151,10 +157,6 @@ export default {
 
         that.set('activities', activities);
         that.save();
-      })
-      .catch((err) => {
-        Log('Activities load failed', 'e');
-        return Promise.reject(err);
       });
 
     return promise;

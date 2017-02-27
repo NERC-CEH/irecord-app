@@ -53,8 +53,8 @@ const Sample = Indicia.Sample.extend({
     const occurrences = {};
 
     // todo: remove this bit once sample DB update is possible
-    // check if saved
-    if (!this.metadata.saved) {
+    // check if saved or already send
+    if (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED) {
       sample.send = false;
     }
 
