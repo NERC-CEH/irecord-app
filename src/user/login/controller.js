@@ -88,8 +88,7 @@ const API = {
         },
         success(receivedData) {
           const data = receivedData.data || {};
-          if (!data.id || !data.email || !data.name ||
-            !data.firstname || !data.secondname) {
+          if (!data.id || !data.email || !data.name) {
             const err = new Error('Error while retrieving login response.');
             reject(err);
             return;

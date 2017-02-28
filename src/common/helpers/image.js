@@ -127,7 +127,7 @@ const Image = {
             const pathArray = file.split('/');
             fileName = pathArray[pathArray.length - 1];
           }
-          return success(fileName, 'jpeg', width, height);
+          return success([fileName, 'jpeg', width, height]);
         });
     } else if (file instanceof File) {
       // browser environment
