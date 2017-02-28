@@ -90,6 +90,14 @@ radio.on('sample:saved', () => {
 
 function syncSamples() {
   if (Device.isOnline() && appModel.get('autosync') && userModel.hasLogIn()) {
+    // wait till savedSamples is fully initialized
+    if (savedSamples.fetching) {
+      savedSamples.once('fetching:done', () => {
+        Log('Samples:router: syncing all samples.');
+        savedSamples.save(null, { remote: true });
+      });
+      return;
+    }
     Log('Samples:router: syncing all samples.');
     savedSamples.save(null, { remote: true });
   }
