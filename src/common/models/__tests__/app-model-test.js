@@ -2,12 +2,13 @@ import _ from 'lodash';
 import { AppModel } from 'app_model';
 import { getRandomSample } from 'test-helpers';
 
+/* eslint-disable no-unused-expressions */
+
 describe('App Model', () => {
-  before((done) => {
+  before(() => {
     const appModel = new AppModel();
-    appModel.clear()
-      .then(() => appModel.save())
-      .then(done);
+    appModel.clear();
+    appModel.save();
   });
 
   it('has default values', () => {

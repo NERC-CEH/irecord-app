@@ -2,6 +2,8 @@ import appModel from 'app_model';
 import Occurrence from 'occurrence';
 import { getRandomSample } from 'test-helpers';
 
+/* eslint-disable no-unused-expressions */
+
 describe('Occurrence', () => {
   it('should set occurrence to training mode', () => {
     appModel.set('useTraining', false);
@@ -20,7 +22,7 @@ describe('Occurrence', () => {
     expect(occurrence.validate).to.be.a('function');
     occurrence.clear();
 
-    const invalids = occurrence.validate({});
+    const invalids = occurrence.validate({ remote: true });
     expect(invalids).to.be.an('object')
       .and.have.property('taxon');
   });

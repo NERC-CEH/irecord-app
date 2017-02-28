@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { UserModel } from '../user_model';
 
+/* eslint-disable no-unused-expressions */
+
 describe('User Model', () => {
   before(() => {
     const userModel = new UserModel();
