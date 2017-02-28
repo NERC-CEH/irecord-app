@@ -16,7 +16,7 @@ import HeaderView from './header_view';
 
 const API = {
   show() {
-    Log('Samples:List:Controller: showing');
+    Log('Samples:List:Controller: showing.');
 
     // MAIN
     const mainView = new MainView({
@@ -52,7 +52,7 @@ const API = {
   },
 
   sampleDelete(sample) {
-    Log('Samples:List:Controller: deleting sample');
+    Log('Samples:List:Controller: deleting sample.');
 
     const syncStatus = sample.getSyncStatus();
     let body = 'This record hasn\'t been saved to iRecord yet, ' +
@@ -86,7 +86,7 @@ const API = {
   },
 
   photoUpload(photo) {
-    Log('Samples:List:Controller: photo upload');
+    Log('Samples:List:Controller: photo upload.');
 
     // todo: show loader
     API.createNewSample(photo).catch((err) => {
@@ -96,7 +96,7 @@ const API = {
   },
 
   photoSelect() {
-    Log('Samples:List:Controller: photo select');
+    Log('Samples:List:Controller: photo select.');
 
     radio.trigger('app:dialog', {
       title: 'Choose a method to upload a photo',

@@ -21,7 +21,7 @@ const API = {
   },
 
   logout() {
-    Log('Info:Menu:Controller: logging out');
+    Log('Info:Menu:Controller: logging out.');
     userModel.logOut();
   },
 };

@@ -33,7 +33,7 @@ export default {
   },
 
   resetStats() {
-    Log('UserModel: resetting statistics');
+    Log('UserModel: resetting statistics.');
     this.set('statistics', this.defaults.statistics);
     this.save();
   },
@@ -43,7 +43,7 @@ export default {
    * collection in the main view.
    */
   fetchStatsSpecies() {
-    // Log('UserModel: fetching statistics - species');
+    // Log('UserModel: fetching statistics - species.');
     const that = this;
     const statistics = this.get('statistics');
 

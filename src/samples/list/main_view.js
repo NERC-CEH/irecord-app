@@ -59,7 +59,7 @@ const SampleView = Marionette.View.extend({
   },
 
   onRender() {
-    Log('Samples:List:MainView: rendering a sample');
+    Log('Samples:List:MainView: rendering a sample.');
 
     // add mobile swipe events
     // early return
@@ -90,7 +90,7 @@ const SampleView = Marionette.View.extend({
   },
 
   remove() {
-    Log('Samples:MainView: removing a sample');
+    Log('Samples:MainView: removing a sample.');
     // removing the last element leaves emptyView + fading out entry for a moment
     if (this.model.collection && this.model.collection.length >= 1) {
       const that = this;

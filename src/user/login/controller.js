@@ -15,7 +15,7 @@ import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {
-    Log('User:Register:Controller: showing');
+    Log('User:Register:Controller: showing.');
     // don't show if logged in
     if (userModel.hasLogIn()) {
       window.history.back();
@@ -74,7 +74,7 @@ const API = {
    * api_key for the mentioned module.
    */
   login(details) {
-    Log('User:Login:Controller: logging in');
+    Log('User:Login:Controller: logging in.');
     const promise = new Promise((fulfill, reject) => {
       $.get({
         url: CONFIG.users.url + encodeURIComponent(details.name), // url + user id

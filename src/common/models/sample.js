@@ -137,12 +137,12 @@ const Sample = Indicia.Sample.extend({
         const newActivity = userModel.getActivity(activity.id);
         if (!newActivity) {
           // the old activity is expired and removed
-          Log('Sample:Group: removing exipired activity');
+          Log('Sample:Group: removing exipired activity.');
           this.unset('group');
           this.save();
         } else {
           // old activity has been updated
-          Log('Sample:Group: updating exipired activity');
+          Log('Sample:Group: updating exipired activity.');
           this.set('group', newActivity);
           this.save();
         }

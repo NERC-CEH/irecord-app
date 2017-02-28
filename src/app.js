@@ -24,7 +24,7 @@ Analytics.init();
 const App = new Marionette.Application();
 
 App.navigate = (route, options = {}) => {
-  Log(`App: navigating to ${route}`);
+  Log(`App: navigating to ${route}.`);
   const defaultOptions = { trigger: true };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
@@ -36,7 +36,7 @@ App.restart = () => {
 App.getCurrentRoute = () => Backbone.history.fragment;
 
 App.on('before:start', () => {
-  Log('App: initializing main regions');
+  Log('App: initializing main regions.');
   const RegionContainer = Marionette.View.extend({
     el: '#app',
 
@@ -55,7 +55,7 @@ App.on('start', () => {
   // update app first
   Update.run(() => {
     // release the beast
-    Log('App: starting');
+    Log('App: starting.');
 
     FastClick.attach(document.body);
 
@@ -67,7 +67,7 @@ App.on('start', () => {
       }
 
       if (window.cordova) {
-        Log('App: cordova setup');
+        Log('App: cordova setup.');
 
         // Although StatusB  ar in the global scope,
         // it is not available until after the deviceready event.

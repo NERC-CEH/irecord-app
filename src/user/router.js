@@ -30,6 +30,6 @@ radio.on('user:login', (options) => {
 });
 
 App.on('before:start', () => {
-  Log('User:router: initializing');
+  Log('User:router: initializing.');
   App.user.router = new Router();
 });

@@ -36,20 +36,20 @@ const ActivitiesCollection = Backbone.Collection.extend({
   model: ActivityModel,
 
   initialize() {
-    Log('Activities:Controller: initializing collection');
+    Log('Activities:Controller: initializing collection.');
     const that = this;
 
     this.updateActivitiesCollection();
 
     this.listenTo(userModel, 'sync:activities:start', () => {
-      Log('Activities:Controller: reseting collection for sync');
+      Log('Activities:Controller: reseting collection for sync.');
       that.reset();
     });
     this.listenTo(userModel, 'sync:activities:end', this.updateActivitiesCollection);
   },
 
   updateActivitiesCollection() {
-    Log('Activities:Controller: updating collection');
+    Log('Activities:Controller: updating collection.');
 
     // if loading have empty collection
     if (userModel.synchronizingActivities) {
@@ -93,7 +93,7 @@ const activitiesCollection = new ActivitiesCollection();
 
 const API = {
   show(sampleID) {
-    Log('Activities:Controller: showing');
+    Log('Activities:Controller: showing.');
 
     if (!userModel.hasLogIn()) {
       API.userLoginMessage();
@@ -120,7 +120,7 @@ const API = {
     });
 
     let onExit = () => {
-      Log('Activities:List:Controller: exiting');
+      Log('Activities:List:Controller: exiting.');
       const activity = mainView.getActivity();
       API.save(activity);
     };
@@ -140,14 +140,14 @@ const API = {
       activitiesCollection.updateActivitiesCollection();
 
       onExit = () => {
-        Log('Activities:List:Controller: exiting');
+        Log('Activities:List:Controller: exiting.');
         const newActivity = mainView.getActivity();
         API.save(newActivity);
         sample = null; // reset
       };
 
       refreshView.on('refreshClick', () => {
-        Log('Activities:List:Controller: refresh clicked');
+        Log('Activities:List:Controller: refresh clicked.');
         if (!userModel.hasLogIn()) {
           radio.trigger('user:login');
           return;
@@ -158,7 +158,7 @@ const API = {
       activitiesCollection.updateActivitiesCollection();
 
       refreshView.on('refreshClick', () => {
-        Log('Activities:List:Controller: refresh clicked');
+        Log('Activities:List:Controller: refresh clicked.');
         if (!userModel.hasLogIn()) {
           radio.trigger('user:login');
           return;

@@ -131,7 +131,7 @@ export default Marionette.View.extend({
         templateData.comment = occ.get('comment');
         break;
       default:
-        Log('Samples:Attribute:MainView: no such attribute', 'e');
+        Log('Samples:Attribute:MainView: no such attribute.', 'e');
         return null;
     }
 

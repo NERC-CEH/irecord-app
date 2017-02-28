@@ -7,7 +7,7 @@ import HeaderView from './views/header_view';
 
 const API = {
   show(options) {
-    Log(`Common:Controller:${options.route}: showing`);
+    Log(`Common:Controller:${options.route}: showing.`);
     const MainView = options.mainView || Marionette.View.extend({
       template: JST[options.route],
     });

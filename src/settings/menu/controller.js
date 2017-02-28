@@ -13,13 +13,13 @@ import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {
-    Log('Settings:Menu:Controller: showing');
+    Log('Settings:Menu:Controller: showing.');
 
     const mainView = new MainView({
       model: appModel,
     });
     mainView.on('setting:toggled', (setting, on) => {
-      Log('Settings:Menu:Controller: setting toggled');
+      Log('Settings:Menu:Controller: setting toggled.');
 
       appModel.set(setting, on);
       appModel.save();
@@ -85,7 +85,7 @@ const API = {
           title: 'Delete',
           class: 'btn-negative',
           onClick() {
-            Log('Settings:Menu:Controller: deleting all samples');
+            Log('Settings:Menu:Controller: deleting all samples.');
 
             // delete all
             savedSamples.removeAllSynced()
@@ -121,7 +121,7 @@ const API = {
           title: 'OK',
           class: 'btn-positive',
           onClick() {
-            Log('Settings:Menu:Controller: sending all records');
+            Log('Settings:Menu:Controller: sending all records.');
             savedSamples.setAllToSend()
               .then(() => {
                 radio.trigger('app:dialog', {

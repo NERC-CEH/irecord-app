@@ -14,7 +14,7 @@ import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {
-    Log('Settings:Locations:Controller: showing');
+    Log('Settings:Locations:Controller: showing.');
 
     // MAIN
     const mainView = new MainView({
@@ -39,14 +39,14 @@ const API = {
   },
 
   deleteLocation(model) {
-    Log('Settings:Locations:Controller: deleting location');
+    Log('Settings:Locations:Controller: deleting location.');
 
     const location = model;
     appModel.removeLocation(location);
   },
 
   editLocation(model) {
-    Log('Settings:Locations:Controller: editing location');
+    Log('Settings:Locations:Controller: editing location.');
 
     const location = model;
     const EditView = Marionette.View.extend({

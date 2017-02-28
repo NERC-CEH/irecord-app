@@ -281,17 +281,17 @@ const API = {
         }
 
         const samplesCount = Object.keys(samples).length;
-        Log(`Update: copying ${samplesCount} samples to SQLite`, 'i');
+        Log(`Update: copying ${samplesCount} samples to SQLite.`, 'i');
         // samples
         for (const sample in samples) {
           savedSamples.add(samples[sample]);
         }
 
         savedSamples.save().then(() => {
-          Log('Update: copying done', 'i');
+          Log('Update: copying done.', 'i');
 
           // check if correct copy
-          Log('Update: checking if correct copy', 'i');
+          Log('Update: checking if correct copy.', 'i');
           savedSamples.size().then((size) => {
             if (samplesCount !== size) {
               callback(true);
@@ -299,7 +299,7 @@ const API = {
             }
 
             // clean up old db
-            Log('Update: clearing old db', 'i');
+            Log('Update: clearing old db.', 'i');
             oldDB.delete();
 
             const oldFirstName = userModel.get('name');
@@ -310,7 +310,7 @@ const API = {
             userModel.unset('surname');
             userModel.save();
 
-            Log('Update: finished', 'i');
+            Log('Update: finished.', 'i');
             callback(); // fully restart afterwards
           });
         });
@@ -350,7 +350,7 @@ const API = {
     const update = API.updates[API.updatesSeq[updateIndex]];
 
     if (typeof update !== 'function') {
-      Log('Update: error with update function', 'e');
+      Log('Update: error with update function.', 'e');
       return callback();
     }
 

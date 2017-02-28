@@ -34,7 +34,7 @@ export default {
       for (let i = activities.length - 1; i >= 0; i--) {
         const activity = activities[i];
         if (this.hasActivityExpired(activity)) {
-          Log('UserModel: removing expired activity');
+          Log('UserModel: removing expired activity.');
           activities.splice(i, 1);
         }
       }
@@ -44,7 +44,7 @@ export default {
   },
 
   resetActivities() {
-    Log('UserModel: resetting activities');
+    Log('UserModel: resetting activities.');
     this.set('activities', []);
     this.save();
   },

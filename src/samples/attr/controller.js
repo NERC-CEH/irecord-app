@@ -23,12 +23,12 @@ const API = {
       return;
     }
 
-    Log('Samples:Attr:Controller: showing');
+    Log('Samples:Attr:Controller: showing.');
 
     const sample = savedSamples.get(sampleID);
     // Not found
     if (!sample) {
-      Log('No sample model found', 'e');
+      Log('No sample model found.', 'e');
       radio.trigger('app:404:show', { replace: true });
       return;
     }
@@ -78,7 +78,7 @@ const API = {
   },
 
   onLockClick(view) {
-    Log('Samples:Attr:Controller: lock clicked');
+    Log('Samples:Attr:Controller: lock clicked.');
     const attr = view.options.attr;
     // invert the lock of the attribute
     // real value will be put on exit
@@ -95,7 +95,7 @@ const API = {
   },
 
   onExit(mainView, sample, attr, callback) {
-    Log('Samples:Attr:Controller: exiting');
+    Log('Samples:Attr:Controller: exiting.');
     const values = mainView.getValues();
     API.save(attr, values, sample, callback);
   },
@@ -106,6 +106,8 @@ const API = {
    * @param sample
    */
   save(attr, values, sample, callback) {
+    Log('Samples:Attr:Controller: saving.');
+
     let currentVal;
     let newVal;
     const occ = sample.getOccurrence();

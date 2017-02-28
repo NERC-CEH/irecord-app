@@ -15,7 +15,7 @@ import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {
-    Log('User:Register:Controller: showing');
+    Log('User:Register:Controller: showing.');
     // MAIN
     const mainView = new MainView();
     radio.trigger('app:main', mainView);
@@ -86,7 +86,7 @@ const API = {
    * api_key for the mentioned module.
    */
   register(details) {
-    Log('User:Register:Controller: registering');
+    Log('User:Register:Controller: registering.');
 
     // app logins
     details.api_key = CONFIG.indicia.api_key; // eslint-disable-line

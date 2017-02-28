@@ -90,7 +90,7 @@ radio.on('sample:saved', () => {
 
 function syncSamples() {
   if (Device.isOnline() && appModel.get('autosync') && userModel.hasLogIn()) {
-    Log('Samples:router: syncing all samples');
+    Log('Samples:router: syncing all samples.');
     savedSamples.save(null, { remote: true });
   }
 }
@@ -98,7 +98,7 @@ function syncSamples() {
 userModel.on('login', syncSamples);
 
 App.on('before:start', () => {
-  Log('Samples:router: initializing');
+  Log('Samples:router: initializing.');
   App.samples.router = new Router();
 
   if (userModel.hasLogIn()) {

@@ -19,6 +19,6 @@ const Router = Marionette.AppRouter.extend({
 });
 
 App.on('before:start', () => {
-  Log('Settings:router: initializing');
+  Log('Settings:router: initializing.');
   App.settings.router = new Router();
 });

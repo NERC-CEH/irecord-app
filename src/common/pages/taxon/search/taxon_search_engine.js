@@ -16,7 +16,7 @@ const MAX = 20;
 
 const API = {
   init(callback) {
-    Log('Taxon search engine: initializing');
+    Log('Taxon search engine: initializing.');
     const that = this;
 
     loading = true;

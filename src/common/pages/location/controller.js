@@ -92,7 +92,7 @@ const API = {
     function onLocationSelect(loc, createNew) {
       if (typeof loc !== 'object') {
         // jQuery event object bug fix
-        Log('Location:Controller:onLocationSelect: loc is not an object', 'e');
+        Log('Location:Controller:onLocationSelect: loc is not an object.', 'e');
         return;
       }
 
@@ -154,7 +154,7 @@ const API = {
             if (lockedValue) {
               // check if previously the value was locked and we are updating
               if (locationIsLocked || lockedValue === true) {
-                Log('Updating lock', 'd');
+                Log('Updating lock.', 'd');
 
                 if (location.source === 'gps') {
                   // on GPS don't lock other than name

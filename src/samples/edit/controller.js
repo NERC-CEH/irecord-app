@@ -29,12 +29,12 @@ const API = {
       return;
     }
 
-    Log('Samples:Edit:Controller: showing');
+    Log('Samples:Edit:Controller: showing.');
 
     const sample = savedSamples.get(sampleID);
     // Not found
     if (!sample) {
-      Log('No sample model found', 'e');
+      Log('No sample model found.', 'e');
       radio.trigger('app:404:show', { replace: true });
       return;
     }
@@ -101,7 +101,7 @@ const API = {
   },
 
   save(sample) {
-    Log('Samples:Edit:Controller: save clicked');
+    Log('Samples:Edit:Controller: save clicked.');
 
     const promise = sample.setToSend();
 
@@ -174,7 +174,7 @@ const API = {
   },
 
   photoUpload(sample, photo) {
-    Log('Samples:Edit:Controller: photo uploaded');
+    Log('Samples:Edit:Controller: photo uploaded.');
 
     const occurrence = sample.getOccurrence();
     // todo: show loader
@@ -203,7 +203,7 @@ const API = {
             // show loader
             photo.destroy({
               success: () => {
-                Log('Samples:Edit:Controller: photo deleted');
+                Log('Samples:Edit:Controller: photo deleted.');
 
                 // hide loader
               },
@@ -217,7 +217,7 @@ const API = {
   },
 
   photoSelect(sample) {
-    Log('Samples:Edit:Controller: photo selection');
+    Log('Samples:Edit:Controller: photo selection.');
     const occurrence = sample.getOccurrence();
 
     radio.trigger('app:dialog', {

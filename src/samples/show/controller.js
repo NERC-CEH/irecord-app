@@ -23,12 +23,12 @@ const API = {
       return;
     }
 
-    Log('Samples:Show:Controller: showing');
+    Log('Samples:Show:Controller: showing.');
     const sample = savedSamples.get(sampleID);
 
     // Not found
     if (!sample) {
-      Log('No sample model found', 'e');
+      Log('No sample model found.', 'e');
       radio.trigger('app:404:show', { replace: true });
       return;
     }

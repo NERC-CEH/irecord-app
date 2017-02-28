@@ -13,7 +13,7 @@ import RefreshView from './refresh_view';
 
 const API = {
   show() {
-    Log('User:Statistics:Controller: showing');
+    Log('User:Statistics:Controller: showing.');
 
     // HEADER
     const refreshView = new RefreshView();
@@ -38,7 +38,7 @@ const API = {
     radio.trigger('app:main', mainView);
 
     refreshView.on('refreshClick', () => {
-      Log('User:Statistics:Controller: refresh clicked');
+      Log('User:Statistics:Controller: refresh clicked.');
       API.refresh();
     });
   },

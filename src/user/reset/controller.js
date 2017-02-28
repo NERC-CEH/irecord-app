@@ -15,7 +15,7 @@ import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {
-    Log('User:Reset:Controller: showing');
+    Log('User:Reset:Controller: showing.');
 
     // MAIN
     const mainView = new MainView();
@@ -73,7 +73,7 @@ const API = {
    * api_key for the mentioned module.
    */
   reset(data) {
-    Log('User:Reset:Controller: logging in');
+    Log('User:Reset:Controller: logging in.');
     const promise = new Promise((fulfill, reject) => {
       // Reset password
       $.ajax({
