@@ -88,7 +88,7 @@ const Sample = Indicia.Sample.extend({
       sample.occurrences = 'no species selected';
     } else {
       this.occurrences.each((occurrence) => {
-        const errors = occurrence.validate();
+        const errors = occurrence.validate(null, { remote: true });
         if (errors) {
           const occurrenceID = occurrence.cid;
           occurrences[occurrenceID] = errors;

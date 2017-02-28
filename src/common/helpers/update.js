@@ -203,7 +203,7 @@ const API = {
   /**
    * Main update function.
    */
-  run(callback) {
+  run(callback, silent = false) {
     const currentVersion = appModel.get('appVersion');
     const newVersion = CONFIG.version;
 
@@ -224,27 +224,36 @@ const API = {
         navigator.splashscreen.hide();
       }
 
-      // apply all updates
-      radio.trigger('app:dialog:show', {
-        title: 'Updating',
-        body: 'This should take only a moment...',
-        hideAllowed: false,
-      });
+      if (!silent) {
+        radio.trigger('app:dialog:show', {
+          title: 'Updating',
+          body: 'This should take only a moment...',
+          hideAllowed: false,
+        });
+      }
       const startTime = Date.now();
+
+      // apply all updates
       return API._applyUpdates(firstUpdate, (error) => {
         if (error) {
-          radio.trigger('app:dialog:error', 'Sorry, an error has occurred while updating the app');
+          if (!silent) {
+            radio.trigger('app:dialog:error', 'Sorry, an error has occurred while updating the app');
+          }
           return null;
         }
 
         const timeDiff = (Date.now() - startTime);
         if (timeDiff < MIN_UPDATE_TIME) {
           setTimeout(() => {
-            radio.trigger('app:dialog:hide', true);
+            if (!silent) {
+              radio.trigger('app:dialog:hide', true);
+            }
             callback();
           }, MIN_UPDATE_TIME - timeDiff);
         } else {
-          radio.trigger('app:dialog:hide', true);
+          if (!silent) {
+            radio.trigger('app:dialog:hide', true);
+          }
           callback();
         }
         return null;

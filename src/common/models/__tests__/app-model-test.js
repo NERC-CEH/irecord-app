@@ -105,7 +105,7 @@ describe('App Model', () => {
       expect(appModel.getAttrLock('activity')).to.be.an('object');
 
       appModel = new AppModel();
-      expect(appModel.getAttrLock('activity')).to.be.equal(null);
+      expect(appModel.getAttrLock('activity')).to.be.undefined;
     });
   });
 });

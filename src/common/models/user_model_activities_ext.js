@@ -30,19 +30,21 @@ export default {
           that.trigger('sync:activities:end');
           return Promise.reject(err);
         });
-    } else {
-      const activities = this.get('activities') || [];
-      // remove expired activities
-      for (let i = activities.length - 1; i >= 0; i--) {
-        const activity = activities[i];
-        if (this.hasActivityExpired(activity)) {
-          Log('UserModel:Activities: removing expired one.');
-          activities.splice(i, 1);
-        }
+
+      return this.synchronizingActivities;
+    }
+
+    // remove expired activities
+    const activities = this.get('activities') || [];
+    for (let i = activities.length - 1; i >= 0; i--) {
+      const activity = activities[i];
+      if (this.hasActivityExpired(activity)) {
+        Log('UserModel:Activities: removing expired one.');
+        activities.splice(i, 1);
       }
     }
 
-    return this.synchronizingActivities;
+    return Promise.resolve();
   },
 
   resetActivities() {
