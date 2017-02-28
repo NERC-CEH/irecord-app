@@ -125,6 +125,8 @@ const Sample = Indicia.Sample.extend({
       return false;
     }
 
+    Log('SampleModel: was set to send.');
+
     // save sample
     return this.save();
   },

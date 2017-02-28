@@ -23,7 +23,7 @@ const API = {
       return;
     }
 
-    Log('Samples:Attr:Controller: showing.');
+    Log(`Samples:Attr:Controller: showing ${attr}.`);
 
     const sample = savedSamples.get(sampleID);
     // Not found

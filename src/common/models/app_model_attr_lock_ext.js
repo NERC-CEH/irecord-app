@@ -66,6 +66,8 @@ export default {
   },
 
   appendAttrLocks(sample) {
+    Log('AppModel:AttrLocks: appending.');
+
     const locks = this.get('attrLocks');
     const occurrence = sample.getOccurrence();
 
@@ -80,11 +82,11 @@ export default {
       switch (key) {
         case 'activity':
           if (!userModel.hasActivityExpired(val)) {
-            Log('AppModel: appending activity to the sample.');
+            Log('AppModel:AttrLocks: appending activity to the sample.');
             sample.set('group', val);
           } else {
             // unset the activity as it's now expired
-            Log('AppModel: activity has expired.');
+            Log('AppModel:AttrLocks: activity has expired.');
             this.unsetAttrLock('activity');
           }
           break;
@@ -120,12 +122,12 @@ export default {
     const locks = this.get('attrLocks');
     if (locks.activity) {
       if (userModel.hasActivityExpired(locks.activity)) {
-        Log('AppModel: activity has expired.');
+        Log('AppModel:AttrLocks: activity has expired.');
         this.unsetAttrLock('activity');
       }
     }
     userModel.on('logout', () => {
-      Log('AppModel: activity has expired.');
+      Log('AppModel:AttrLocks: activity has expired.');
       that.unsetAttrLock('activity'); // remove locked activity
     });
   },

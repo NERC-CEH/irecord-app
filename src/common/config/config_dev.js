@@ -15,11 +15,8 @@ const newConfig = $.extend(true, config, {
     status: false,
   },
 
-  log: {
-    // use prod logging if testing otherwise full log
-    states: process.env.ENV === 'testing' ? null : ['e', 'w', 'i', 'd'], // see log helper
-    ga_error: false,
-  },
+  // use prod logging if testing otherwise full log
+  log: process.env.ENV !== 'testing',
 
   users: {
     url: `${HOST + Indicia.API_BASE + Indicia.API_VER}/users/`,

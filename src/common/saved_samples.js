@@ -8,6 +8,8 @@ const Collection = Indicia.Collection.extend({
   model: Sample,
 
   removeAllSynced() {
+    Log('SavedSamples: removing all synced samples.');
+
     const toWait = [];
     this.models.forEach((sample) => {
       if (sample.getSyncStatus() === Indicia.SYNCED) {
@@ -19,6 +21,8 @@ const Collection = Indicia.Collection.extend({
   },
 
   setAllToSend() {
+    Log('SavedSamples: setting all samples to send.');
+
     const that = this;
     const toWait = [];
     this.models.forEach((sample) => {
@@ -47,10 +51,14 @@ const Collection = Indicia.Collection.extend({
 
 
 const savedSamples = new Collection();
+Log('SavedSamples: fetching all samples.');
+
 // load all the samples from storage
 savedSamples.fetching = true;
 savedSamples.fetch()
   .then(() => {
+    Log('SavedSamples: fetching all samples done.');
+
     savedSamples.fetching = false;
     savedSamples.trigger('fetching:done');
   })

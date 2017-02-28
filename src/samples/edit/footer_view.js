@@ -4,6 +4,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import Indicia from 'indicia';
+import Log from 'helpers/log';
 import JST from 'JST';
 import Gallery from '../../common/gallery';
 
@@ -69,6 +70,8 @@ export default Marionette.CompositeView.extend({
   },
 
   onChildviewPhotoView(view) {
+    Log('Samples:Edit:Footer: photo view.');
+
     const items = [];
     const options = {};
 

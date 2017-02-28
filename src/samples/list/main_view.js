@@ -59,8 +59,6 @@ const SampleView = Marionette.View.extend({
   },
 
   onRender() {
-    Log('Samples:List:MainView: rendering a sample.');
-
     // add mobile swipe events
     // early return
     if (!Device.isMobile()) return;

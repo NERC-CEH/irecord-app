@@ -42,16 +42,15 @@ function error(err = {}) {
 }
 
 function log(message, type = DEBUG) {
-  // do nothing if logging turned off
-  if (!(CONFIG.log && CONFIG.log.states)) {
+  // always print errors
+  if (type === ERROR) {
+    error(message);
     return;
   }
 
-  if (CONFIG.log.states.indexOf(type) >= 0) {
+  // do nothing if logging turned off
+  if (CONFIG.log) {
     switch (type) {
-      case ERROR:
-        error(message);
-        break;
       case WARNING:
         console.warn(message);
         break;
@@ -67,7 +66,6 @@ function log(message, type = DEBUG) {
           break;
         }
         console.debug(message);
-      // if (typeof console.trace === 'function') console.trace();
     }
   }
 }

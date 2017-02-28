@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
 import CONFIG from 'config';
+import Log from 'helpers/log';
 import Validate from 'helpers/validate';
 import Analytics from 'helpers/analytics';
 import activitiesExtension from './user_model_activities_ext';
@@ -45,6 +46,8 @@ let UserModel = Backbone.Model.extend({
    * Resets the user login information.
    */
   logOut() {
+    Log('User: logging out.');
+
     this.set('email', '');
     this.set('password', '');
     this.set('name', '');
@@ -66,6 +69,8 @@ let UserModel = Backbone.Model.extend({
    * @param user User object or empty object
    */
   logIn(user) {
+    Log('User: logging in.');
+
     this.set('drupalID', user.id || '');
     this.set('password', user.password || '');
     this.set('email', user.email || '');

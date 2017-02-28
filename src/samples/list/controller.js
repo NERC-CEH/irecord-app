@@ -16,7 +16,7 @@ import HeaderView from './header_view';
 
 const API = {
   show() {
-    Log('Samples:List:Controller: showing.');
+    Log(`Samples:List:Controller: showing ${savedSamples.length}.`);
 
     // MAIN
     const mainView = new MainView({

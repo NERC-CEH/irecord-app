@@ -8,6 +8,8 @@ import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 
 export default {
   syncStats(force) {
+    Log('UserModel:Statistics: synchronising.');
+
     const that = this;
     if (this.synchronizingStatistics) {
       return this.synchronizingStatistics;
@@ -33,7 +35,7 @@ export default {
   },
 
   resetStats() {
-    Log('UserModel: resetting statistics.');
+    Log('UserModel:Statistics: resetting.');
     this.set('statistics', this.defaults.statistics);
     this.save();
   },
@@ -43,7 +45,7 @@ export default {
    * collection in the main view.
    */
   fetchStatsSpecies() {
-    // Log('UserModel: fetching statistics - species.');
+    Log('UserModel:Statistics: fetching.');
     const that = this;
     const statistics = this.get('statistics');
 

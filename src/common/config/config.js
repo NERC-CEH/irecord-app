@@ -21,9 +21,7 @@ const CONFIG = {
   gps_accuracy_limit: 100,
 
   // logging
-  log: {
-    states: ['e', 'w'], // see log helper
-  },
+  log: true,
 
   // google analytics
   ga: {

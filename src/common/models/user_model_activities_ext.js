@@ -9,6 +9,8 @@ import CONFIG from 'config';
 
 export default {
   syncActivities(force) {
+    Log('UserModel:Activities: synchronising.');
+
     const that = this;
     if (this.synchronizingActivities) {
       return this.synchronizingActivities;
@@ -34,7 +36,7 @@ export default {
       for (let i = activities.length - 1; i >= 0; i--) {
         const activity = activities[i];
         if (this.hasActivityExpired(activity)) {
-          Log('UserModel: removing expired activity.');
+          Log('UserModel:Activities: removing expired one.');
           activities.splice(i, 1);
         }
       }
@@ -102,6 +104,8 @@ export default {
    * collection in the main view.
    */
   fetchActivities() {
+    Log('UserModel:Activities: fetching.');
+
     const that = this;
 
     const report = new Indicia.Report({
@@ -178,8 +182,6 @@ export default {
       return Math.round((second - first) / (1000 * 60 * 60 * 24));
     }
 
-    if (daydiff(lastSync, new Date()) >= 1) return true;
-
-    return false;
+    return daydiff(lastSync, new Date()) >= 1;
   },
 };

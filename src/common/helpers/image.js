@@ -35,6 +35,8 @@ const Image = {
    * @param options
    */
   getImage(callback, options = {}) {
+    Log('Helpers:Image: getting.');
+
     const cameraOptions = {
       sourceType: window.Camera.PictureSourceType.CAMERA,
       // allow edit is unpredictable on Android and it should not be used!

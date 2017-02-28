@@ -6,11 +6,14 @@
  *****************************************************************************/
 import $ from 'jquery';
 import GPS from 'helpers/GPS';
+import Log from 'helpers/log';
 import LocHelp from 'helpers/location';
 import appModel from 'app_model';
 
 const extension = {
   startGPS(accuracyLimit) {
+    Log('SampleModel:GPS: start.');
+
     const that = this;
     const options = {
       accuracyLimit,
@@ -52,6 +55,8 @@ const extension = {
   },
 
   stopGPS(options = {}) {
+    Log('SampleModel:GPS: stop.');
+
     GPS.stop(this.locating);
     delete this.locating;
 
