@@ -8,7 +8,9 @@ export default Indicia.Occurrence.extend({
 
   keys: CONFIG.indicia.occurrence, // warehouse attribute keys
 
-  metadata: {
-    training: appModel.get('useTraining'),
+  metadata() {
+    return {
+      training: appModel.get('useTraining'),
+    };
   },
 });
