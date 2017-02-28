@@ -22,7 +22,7 @@ describe('Occurrence', () => {
     expect(occurrence.validate).to.be.a('function');
     occurrence.clear();
 
-    const invalids = occurrence.validate({ remote: true });
+    const invalids = occurrence.validate(null, { remote: true });
     expect(invalids).to.be.an('object')
       .and.have.property('taxon');
   });

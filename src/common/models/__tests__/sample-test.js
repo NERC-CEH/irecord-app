@@ -5,6 +5,8 @@ import userModel from 'user_model';
 import { savedSamples, Collection } from '../../saved_samples';
 import store from '../../store';
 
+/* eslint-disable no-unused-expressions */
+
 function getRandomSample() {
   const occurrence = new Occurrence({
     taxon: { warehouse_id: 166205 },
@@ -67,7 +69,7 @@ describe('Sample', () => {
 
       const occurrence = new Occurrence();
       sample.addOccurrence(occurrence);
-      invalids = sample.validate();
+      invalids = sample.validate(null, { remote: true });
       expect(invalids.occurrences).to.not.be.empty;
       expect(invalids.occurrences).to.have.property(occurrence.cid);
     });
