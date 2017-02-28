@@ -211,7 +211,20 @@ export default Marionette.CompositeView.extend({
 
       options.collection.once('fetching:done', () => {
         that.emptyView = NoSamplesView;
-        if (!that.collection.length) that.render();
+        // when the collection for the view is "reset",
+        // the view will call render on itself
+        if (!that.collection.length) {
+          if (that._isRendered) {
+            Log('Samples:MainView: showing empty view.');
+            that.render();
+          } else if (that._isRendering) {
+            Log('Samples:MainView: waiting for current rendering to finish.');
+            that.once('render', () => {
+              Log('Samples:MainView: showing empty view.');
+              that.render();
+            });
+          }
+        }
       });
     } else {
       this.emptyView = NoSamplesView;
