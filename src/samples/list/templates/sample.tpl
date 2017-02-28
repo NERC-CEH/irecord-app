@@ -3,6 +3,12 @@
   <% } else { %>
   <a href="#samples/<%- obj.id %>/edit/taxon" class="mobile">
     <% } %>
+    <% if (obj.training) { %>
+    <div class="media-object pull-left training"></div>
+    <% } %>
+    <% if (obj.group) { %>
+    <div class="media-object pull-left group"></div>
+    <% } %>
     <div class="media-object pull-left photo"><%= obj.img %></div>
     <div class="pull-right">
       <% if (obj.saved) { %>
@@ -11,9 +17,6 @@
       <% } else { %>
       <div class="online-status icon icon-send <%- obj.onDatabase ? 'cloud' : 'local' %>"></div>
       <% } %>
-      <% } %>
-      <% if (obj.group) { %>
-      <div class="group-status icon icon-users"></div>
       <% } %>
     </div>
 

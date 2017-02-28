@@ -57,6 +57,7 @@ export default Marionette.View.extend({
       id: sample.cid,
       scientificName,
       commonName,
+      training: occ.metadata.training,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
@@ -67,6 +68,7 @@ export default Marionette.View.extend({
       identifiers: occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
       group_title: group ? group.title : null,
+      group,
       locks: attrLocks,
     };
   },

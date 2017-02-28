@@ -692,6 +692,25 @@ header .pull-right {
   }
 }
 
+// main page component header
+.main-header {
+  margin-left: -$main-content-margin;
+  margin-right: -$main-content-margin;
+  text-align: center;
+  padding: 8px 0;
+
+  &.activity {
+    color: $color-white;
+    background-color: $color-main-dark;
+  }
+
+  &.training {
+    color: $color-white;
+    background-color: $color-black;
+  }
+}
+
+
 // increase margin on pull left list items
 .table-view .media-object.pull-left {
   margin-right: 15px;

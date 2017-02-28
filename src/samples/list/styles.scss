@@ -63,23 +63,6 @@
 
 //LIST
 #samples-list-container {
-  .list-header {
-    margin-left: -$main-content-margin;
-    margin-right: -$main-content-margin;
-    text-align: center;
-    padding: 8px 0;
-
-    &.activity {
-      color: $color-white;
-      background-color: $color-main-dark;
-    }
-
-    &.training {
-      color: $color-white;
-      background-color: $color-black;
-    }
-  }
-
   #samples-list {
     margin: 0;
 
@@ -134,6 +117,32 @@
 
       .mobile-swipe-edit #delete {
         padding-top: 20px;
+      }
+
+      .training {
+        width: 7px;
+        height: 100%;
+        margin: 0;
+        background-color: $color-black;
+        z-index: 100;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .group {
+        width: 7px;
+        height: 100%;
+        margin: 0;
+        background-color: $color-green-dark;
+        z-index: 100;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .training + .group {
+        left: 7px;
       }
 
       .photo {
