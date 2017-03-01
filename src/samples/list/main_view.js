@@ -3,6 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
+import 'marionette.sliding-view';
 import Indicia from 'indicia';
 import Hammer from 'hammerjs';
 import Log from 'helpers/log';
@@ -13,6 +14,8 @@ import JST from 'JST';
 import Gallery from '../../common/gallery';
 import LoaderView from '../../common/views/loader_view';
 import './styles.scss';
+
+window.Marionette = Marionette;
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
@@ -196,7 +199,10 @@ const NoSamplesView = Marionette.View.extend({
   template: JST['samples/list/list-none'],
 });
 
-export default Marionette.CompositeView.extend({
+
+
+
+Marionette.CompositeView.extend({
   id: 'samples-list-container',
   template: JST['samples/list/main'],
 
@@ -252,3 +258,93 @@ export default Marionette.CompositeView.extend({
     };
   },
 });
+
+var cellHeight = 65;
+
+const $main = $('#main');
+var viewportHeight = $main.height();
+const offset = Math.floor(viewportHeight / cellHeight) + 1;
+
+const Slider = Marionette.SlidingView.extend({
+  id: 'samples-list',
+  className: 'table-view no-top',
+
+  childView: SampleView,
+  emptyView: LoaderView,
+
+  initialLowerBound: 0,
+  // indexOffset: offset,
+
+  registerUpdateEvent() {
+
+    // Execute the throttled callback on scroll
+    $main.on('scroll', () => {
+      this.onUpdateEvent();
+    });
+  },
+
+  initialUpperBound: function() {
+    return offset;
+  },
+
+  getLowerBound: function() {
+    const scrollTop = $main.scrollTop() + 5;
+    var start = Math.floor(scrollTop / cellHeight);
+    // start = start - this.indexOffset;
+    // if (start < 0) { start = 0; }
+    return start;
+  },
+
+  getUpperBound: function(lowerBound) {
+    var contained = offset;
+
+    // Multiply the offset by 2 to account for the start index
+    let end = lowerBound + contained;
+
+    return end;
+  },
+
+  pruneCollection: function(lowerBound, upperBound) {
+    return this.referenceCollection.slice(lowerBound, upperBound)
+  },
+
+  // // invert the order
+  // attachHtml(collectionView, childView) {
+  //   collectionView.$el.find(this.childViewContainer).prepend(childView.el);
+  // },
+
+  childViewOptions() {
+    return {
+      appModel: this.options.appModel,
+    };
+  },
+
+  serializeData() {
+    const activity = this.options.appModel.getAttrLock('activity') || {};
+    return {
+      useTraining: this.options.appModel.get('useTraining'),
+      activity: activity.title,
+    };
+  },
+});
+
+export default Marionette.View.extend({
+  id: 'samples-list-container',
+  template: JST['samples/list/main'],
+
+
+  regions: {
+    body: {
+      el: '#samples-list',
+      replaceElement: true
+    }
+  },
+
+  onRender: function() {
+    this.showChildView('body', new Slider({
+      referenceCollection: this.collection,
+      appModel: this.options.appModel
+    }));
+  }
+});
+
