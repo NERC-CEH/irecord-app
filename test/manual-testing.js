@@ -1,8 +1,8 @@
 /** ********************************************************************
  * Manual testing functions.
  *********************************************************************/
-import appModel from 'appModel';
-import savedRecords from 'saved_records';
+import appModel from 'app_model';
+import savedRecords from 'saved_samples';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
 import Indicia from 'indicia';
