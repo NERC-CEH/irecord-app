@@ -5,6 +5,8 @@
   "extends": "airbnb/base",
   "rules": {
     "linebreak-style": 0,
+    "import/no-extraneous-dependencies": 0, // TODO: remove once Webpack fixes it
+    "import/no-unresolved": 0, // TODO: remove once Webpack fixes it
     "prefer-rest-params": 0,
     "no-fallthrough": 0,
     "no-case-declarations": 0,
