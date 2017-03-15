@@ -61,7 +61,7 @@ export default Marionette.View.extend({
     return {
       id: occ.id,
       cid: occ.cid,
-      irecord_url: CONFIG.irecord_url,
+      site_url: CONFIG.site_url,
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       onDatabase: syncStatus === Indicia.SYNCED,
       scientific_name: scientificName,

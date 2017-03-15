@@ -1,14 +1,14 @@
 <div class="info-message">
   <p>This record has been submitted and cannot be edited within this App.
     <% if (obj.id) { %>
-    <a href="<%= obj.irecord_url %>/record-details?occurrence_id=<%= obj.id %>"
+    <a href="<%= obj.site_url %>/record-details?occurrence_id=<%= obj.id %>"
        class="btn btn-block btn-narrow"
        target="_blank">
       View on iRecord
       <span class="pull-right icon icon-link-ext"></span>
     </a>
     <% } else { %>
-      Go to the <a href="<%= obj.irecord_url %>" target="_blank">iRecord website</a> to edit.</p>
+      Go to the <a href="<%= obj.site_url %>" target="_blank">iRecord website</a> to edit.</p>
     <% } %>
 </div>
 <ul class="table-view core inputs info no-top">

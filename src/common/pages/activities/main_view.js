@@ -60,7 +60,7 @@ export default Marionette.CompositeView.extend({
 
   serializeData() {
     return {
-      irecord_url: CONFIG.irecord_url,
+      site_url: CONFIG.site_url,
     };
   },
 });

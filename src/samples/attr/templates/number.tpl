@@ -8,7 +8,7 @@
 <div class="list">
   <label class="item item-radio">
     <input type="radio" name="group" value="default"
-    <%- !_.keys(obj).length || obj['default'] ? 'checked' : ''%>>
+    <%- !_.keys(obj).length || obj['Present'] ? 'checked' : ''%>>
     <div class="radio-content">
       <div class="item-content">
         Present
@@ -78,20 +78,3 @@
   </label>
 
 </div>
-
-<!--<ul class="list">-->
-
-  <!--<li class="item item-checkbox">-->
-    <!--<label class="checkbox">-->
-      <!--<input type="checkbox">-->
-    <!--</label>-->
-    <!--Flux Capacitor-->
-  <!--</li>-->
-
-  <!--<li class="item item-checkbox">-->
-  <!--<label class="checkbox">-->
-    <!--<input type="checkbox">-->
-  <!--</label>-->
-  <!--Flux Capacitor-->
-<!--</li>-->
-<!--</ul>-->

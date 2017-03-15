@@ -32,7 +32,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     return {
-      irecord_url: CONFIG.irecord_url,
+      siteUrl: CONFIG.site_url,
     };
   },
 });

@@ -121,7 +121,7 @@ const API = {
           title: 'OK',
           class: 'btn-positive',
           onClick() {
-            Log('Settings:Menu:Controller: sending all records.');
+            Log('Settings:Menu:Controller: sending all samples.');
             savedSamples.setAllToSend()
               .then(() => {
                 radio.trigger('app:dialog', {

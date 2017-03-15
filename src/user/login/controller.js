@@ -4,7 +4,6 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
-import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
@@ -45,11 +44,10 @@ const API = {
       const validationError = userModel.validateLogin(data);
       if (!validationError) {
         mainView.triggerMethod('form:data:invalid', {}); // update form
-        App.regions.getRegion('dialog').showLoader();
-
+        radio.trigger('app:loader');
         API.login(data)
           .then(() => {
-            App.regions.getRegion('dialog').hideLoader();
+            radio.trigger('app:loader:hide');
             window.history.back();
           })
           .catch((err) => {

@@ -8,6 +8,7 @@ import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
 import Log from 'helpers/log';
 import JST from 'JST';
+import CONFIG from 'config';
 
 // http://stackoverflow.com/questions/846221/logarithmic-slider
 function LogSlider(options = {}) {
@@ -34,7 +35,18 @@ const logsl = new LogSlider({ maxpos: 100, minval: 1, maxval: 500 });
 
 export default Marionette.View.extend({
   initialize(options) {
-    this.template = JST[`samples/attr/${options.attr}`];
+    switch (options.attr) {
+      case 'stage':
+        this.template = JST['common/radio'];
+        break;
+
+      case 'identifiers':
+        this.template = JST['common/input'];
+        break;
+
+      default:
+        this.template = JST[`samples/attr/${options.attr}`];
+    }
   },
 
   events: {
@@ -65,6 +77,8 @@ export default Marionette.View.extend({
         break;
       }
       case 'number':
+        const numberRangesConfig = CONFIG.indicia.occurrence['number-ranges'];
+
         value = this.$el.find('#rangeVal').val();
         if (value) {
           // slider
@@ -74,16 +88,26 @@ export default Marionette.View.extend({
           $inputs = this.$el.find('input[type="radio"]');
           $inputs.each((int, elem) => {
             if ($(elem).prop('checked')) {
-              values['number-ranges'] = $(elem).val();
+              const newVal = $(elem).val();
+              // don't set default
+              if (newVal !== numberRangesConfig.default) {
+                values['number-ranges'] = newVal;
+              }
             }
           });
         }
         break;
       case 'stage':
+        const stageConfig = CONFIG.indicia.occurrence.stage;
+
         $inputs = this.$el.find('input');
         $inputs.each((int, elem) => {
           if ($(elem).prop('checked')) {
-            values[attr] = $(elem).val();
+            const newVal = $(elem).val();
+            // don't set default
+            if (newVal !== stageConfig.default) {
+              values[attr] = newVal;
+            }
           }
         });
         break;
@@ -102,8 +126,9 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
-    const templateData = {};
     const occ = this.model.getOccurrence();
+    let templateData = {};
+    let selected;
 
     switch (this.options.attr) {
       case 'date':
@@ -111,25 +136,34 @@ export default Marionette.View.extend({
         templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
       case 'number': {
+        const numberRangesConfig = CONFIG.indicia.occurrence['number-ranges'];
         let number = occ.get('number');
         if (number) {
           templateData.number = number;
           templateData.numberPosition = logsl.position(number).toFixed(0);
         } else {
-          number = occ.get('number-ranges') || 'default';
+          number = occ.get('number-ranges') || numberRangesConfig.default;
           templateData[number] = true;
         }
         break;
       }
       case 'stage':
-        templateData[occ.get('stage')] = true;
+        const stageConfig = CONFIG.indicia.occurrence.stage;
+        selected = occ.get('stage') || stageConfig.default;
+        templateData = {
+          message: 'Please pick the life stage.',
+          selection: Object.keys(stageConfig.values),
+          selected,
+        };
         break;
       case 'identifiers':
-        templateData.identifiers = occ.get('identifiers');
+        templateData.message = 'If anyone helped with the identification please enter their name here.';
+        templateData.value = occ.get(this.options.attr);
         break;
       case 'comment':
-        templateData.comment = occ.get('comment');
+        templateData.value = occ.get(this.options.attr);
         break;
+
       default:
         Log('Samples:Attribute:MainView: no such attribute.', 'e');
         return null;
