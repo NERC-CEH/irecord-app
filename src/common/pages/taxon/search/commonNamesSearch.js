@@ -22,6 +22,7 @@ const MAX = 20;
  */
 export default function (species, commonNamePointersArray, searchPhrase, results = [], maxResults = MAX) {
   const searchWords = searchPhrase.split(' ');
+  const matches = [];
 
   // prepare first word regex
   const firstWord = helpers.normalizeFirstWord(searchWords[0]);
@@ -39,7 +40,7 @@ export default function (species, commonNamePointersArray, searchPhrase, results
 
   // for each word index
   for (let wordCount = 0;
-       wordCount < commonNamePointersArray.length && results.length < maxResults;
+       wordCount < commonNamePointersArray.length && matches.length < maxResults;
        wordCount++) {
     const commonNamePointers = commonNamePointersArray[wordCount];
     const pointerArrayLength = commonNamePointers.length;
@@ -54,7 +55,7 @@ export default function (species, commonNamePointersArray, searchPhrase, results
     // go through all common name pointers
     while (pointersArrayIndex !== null && pointersArrayIndex >= 0 &&
     pointersArrayIndex < pointerArrayLength &&
-    results.length < maxResults) {
+    matches.length < maxResults) {
       const p = commonNamePointers[pointersArrayIndex];
       if (helpers.isGenusPointer(p)) {
         const genus = species[p[0]];
@@ -76,7 +77,7 @@ export default function (species, commonNamePointersArray, searchPhrase, results
             common_name: genus[GENUS_COMMON_INDEX],
             synonym: genus[GENUS_COMMON_SYN_INDEX],
           };
-          results.push(fullRes);
+          matches.push(fullRes);
         }
       } else {
         const genus = species[p[0]];
@@ -100,11 +101,46 @@ export default function (species, commonNamePointersArray, searchPhrase, results
             common_name: speciesEntry[SPECIES_COMMON_INDEX],
             synonym: speciesEntry[SPECIES_COMMON_SYN_INDEX],
           };
-          results.push(fullRes);
+          matches.push(fullRes);
         }
       }
       pointersArrayIndex++;
     }
   }
+
+  // sort matches by common name and then by latin name word count
+  // @todo if this was applied to iRecord then might also need to take account of kingdom
+  matches.sort((a, b) => {
+    if (a.common_name === b.common_name) {
+      return a.scientific_name.split(/\s+/).length - b.scientific_name.split(/\s+/).length;
+    }
+
+    return a.common_name.localeCompare(b.common_name);
+  });
+
+  // deduplicate matches
+  let previous = null;
+  matches.forEach((taxon) => {
+    if (!previous || (previous.common_name !== taxon.common_name)) {
+      results.push(taxon);
+      previous = taxon;
+    } else if (
+      taxon.scientific_name.split(/\s+/).length ===
+      previous.scientific_name.split(/\s+/).length
+    ) {
+      // need to qualify both the last pushed name and this entry with the
+      // scientific name helps to disambiguate Silene pusilla and
+      // Silene suecica with have been (wrongly) assigned the same
+      // vernacular name
+      const previousQualified = Object.assign({}, previous);
+      previousQualified.common_name = `${previous.common_name} <small><i>(${previous.scientific_name})</i></small>`;
+      results[results.length - 1] = previousQualified; // replace last result with qualified copy
+
+      const currentQualified = Object.assign({}, taxon);
+      currentQualified.common_name = `${taxon.common_name} <small><i>(${taxon.scientific_name})</i></small>`;
+      results[results.length] = currentQualified;
+    }
+  });
+
   return results;
 }
