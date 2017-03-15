@@ -2,6 +2,10 @@
  * Extract common names as pointers in an array.
  *****************************************************************************/
 
+/* eslint-disable */
+
+'use strict';
+
 // get the filename
 const inputFileName = process.argv[2];
 const outputFileName = process.argv[3];
