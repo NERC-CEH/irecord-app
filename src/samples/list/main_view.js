@@ -104,7 +104,7 @@ const SampleView = Marionette.View.extend({
   serializeData() {
     const sample = this.model;
     const occ = sample.getOccurrence();
-    const date = DateHelp.print(sample.get('date'));
+    const date = DateHelp.print(sample.get('date'), true);
     const specie = occ.get('taxon') || {};
     const media = occ.media;
     let img = media.length && media.at(0).get('thumbnail');

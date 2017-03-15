@@ -68,7 +68,7 @@ export default Marionette.View.extend({
       commonName,
       location: locationPrint,
       location_name: location.name,
-      date: DateHelp.print(sample.get('date')),
+      date: DateHelp.print(sample.get('date'), true),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
       identifiers: occ.get('identifiers'),
