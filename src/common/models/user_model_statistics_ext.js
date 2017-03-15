@@ -15,7 +15,7 @@ export default {
       return this.synchronizingStatistics;
     }
 
-    if (this.hasLogIn() && this._lastStatsSyncExpired() || force) {
+    if ((this.hasLogIn() && this._lastStatsSyncExpired()) || force) {
       // init or refresh
       this.trigger('sync:statistics:species:start');
 

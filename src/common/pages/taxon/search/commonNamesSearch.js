@@ -20,7 +20,8 @@ const MAX = 20;
  * @param searchPhrase
  * @returns {Array}
  */
-export default function (species, commonNamePointersArray, searchPhrase, results = [], maxResults = MAX) {
+export default function (species, commonNamePointersArray,
+                         searchPhrase, results = [], maxResults = MAX) {
   const searchWords = searchPhrase.split(' ');
   const matches = [];
 
@@ -134,11 +135,12 @@ export default function (species, commonNamePointersArray, searchPhrase, results
       // vernacular name
       const previousQualified = Object.assign({}, previous);
       previousQualified.common_name = `${previous.common_name} <small><i>(${previous.scientific_name})</i></small>`;
-      results[results.length - 1] = previousQualified; // replace last result with qualified copy
+      // replace last result with qualified copy
+      results[results.length - 1] = previousQualified; // eslint-disable-line
 
       const currentQualified = Object.assign({}, taxon);
       currentQualified.common_name = `${taxon.common_name} <small><i>(${taxon.scientific_name})</i></small>`;
-      results[results.length] = currentQualified;
+      results[results.length] = currentQualified; // eslint-disable-line
     }
   });
 

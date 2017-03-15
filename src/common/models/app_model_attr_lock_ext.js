@@ -38,23 +38,24 @@ export default {
     let lockedVal = this.getAttrLock(attr);
     if (!lockedVal) return false; // has not been locked
     if (lockedVal === true) return true; // has been locked
-    let locked;
     switch (attr) {
       case 'activity':
         return lockedVal.id === value.id;
       case 'location':
-        locked =
-          // map or gridref
-          (lockedVal &&
-          (lockedVal.name === value.name &&
+        if (!lockedVal) {
+          return false;
+        }
+
+        // map or gridref
+        const mapGrid = lockedVal.name === value.name &&
           lockedVal.latitude === value.latitude &&
-          lockedVal.longitude === value.longitude) ||
+          lockedVal.longitude === value.longitude;
 
-            // GPS doesn't lock the location only name
-          (lockedVal.name === value.name && (
-          !lockedVal.latitude && !lockedVal.longitude)));
+        // GPS only locks the name
+        const gps = lockedVal.name === value.name &&
+          !lockedVal.latitude && !lockedVal.longitude;
 
-        return locked;
+        return mapGrid || gps;
       case 'date':
         lockedVal = new Date(lockedVal);
         if (lockedVal === 'Invalid Date') return false;

@@ -227,7 +227,6 @@ describe('User Model', () => {
           done();
         });
         server.respond();
-
       });
       server.respond();
     });

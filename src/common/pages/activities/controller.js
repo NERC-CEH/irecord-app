@@ -81,7 +81,8 @@ const ActivitiesCollection = Backbone.Collection.extend({
     // add user activities
     const activitiesData = _.cloneDeep(userModel.get('activities'));
     $.each(activitiesData, (index, activ) => {
-      activ.checked = selectedActivity.id === activ.id; // todo:  server '71' == local 71
+      // todo:  server '71' == local 71
+      activ.checked = selectedActivity.id === activ.id; // eslint-disable-line
       foundOneToCheck = foundOneToCheck || activ.checked;
 
       that.add(new ActivityModel(activ));
