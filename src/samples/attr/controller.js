@@ -4,7 +4,7 @@
 import Backbone from 'backbone';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
-import App from 'app';
+import DateHelp from 'helpers/date';
 import radio from 'radio';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
@@ -131,38 +131,22 @@ const API = {
           newVal = values.number;
           occ.set('number', newVal);
           occ.unset('number-ranges');
-        } else {
+        } else if (values['number-ranges']) {
           // number ranges
-          attr = 'number-ranges';
-          // don't save default values
-          newVal = values['number-ranges'] === 'default' ?
-            null : values['number-ranges'];
+          attr = 'number-ranges'; // eslint-disable-line
+          newVal = values[attr];
           occ.set('number-ranges', newVal);
           occ.unset('number');
         }
         break;
       case 'stage':
-        currentVal = occ.get('stage');
-
-        // todo:validate before setting up
-        // don't save default values
-        newVal = values.stage === 'default' ? null : values.stage;
-        occ.set('stage', newVal);
-        break;
       case 'identifiers':
-        currentVal = occ.get('identifiers');
-
-        // todo:validate before setting up
-        // don't save default values
-        newVal = values.identifiers;
-        occ.set('identifiers', newVal);
-        break;
       case 'comment':
-        currentVal = occ.get('comment');
+        currentVal = occ.get(attr);
+        newVal = values[attr];
 
         // todo:validate before setting up
-        newVal = values.comment;
-        occ.set('comment', newVal);
+        occ.set(attr, values[attr]);
         break;
       default:
     }

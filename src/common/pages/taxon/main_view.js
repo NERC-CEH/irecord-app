@@ -154,7 +154,7 @@ export default Marionette.View.extend({
     const that = this;
     const input = e.target.value;
     if (!input) {
-      return;
+      return null;
     }
 
     switch (e.keyCode) {
@@ -163,7 +163,7 @@ export default Marionette.View.extend({
         e.preventDefault();
 
         // exit if no suggestions
-        if (this.selectedIndex < 0 || !this.suggestionsCol) return;
+        if (this.selectedIndex < 0 || !this.suggestionsCol) return null;
 
         // find which one is currently selected
         const selectedModel = this.suggestionsCol.at(this.selectedIndex);
@@ -201,7 +201,7 @@ export default Marionette.View.extend({
 
         // on keyDOWN need to add the pressed char
         let pressedChar = String.fromCharCode(e.keyCode);
-        if (e.keyCode != 8) {
+        if (e.keyCode !== 8) {
           // http://stackoverflow.com/questions/19278037/javascript-non-unicode-char-code-to-unicode-character
           if (e.keyCode === 189 || e.keyCode === 109) {
             pressedChar = '-';
@@ -226,7 +226,7 @@ export default Marionette.View.extend({
           }
 
           // Set new timeout - don't run if user is typing
-          this.timeout = setTimeout(function () {
+          this.timeout = setTimeout(() => {
             // let controller know
             that.trigger('taxon:searched', text.toLowerCase());
           }, 100);
@@ -264,7 +264,7 @@ export default Marionette.View.extend({
           }
 
           // Set new timeout - don't run if user is typing
-          this.timeout = setTimeout(function () {
+          this.timeout = setTimeout(() => {
             // let controller know
             that.trigger('taxon:searched', text.toLowerCase());
           }, 100);

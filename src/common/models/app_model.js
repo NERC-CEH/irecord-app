@@ -7,7 +7,7 @@ import CONFIG from 'config';
 import pastLocationsExtension from './app_model_past_loc_ext';
 import attributeLockExtension from './app_model_attr_lock_ext';
 
-let AppModel = Backbone.Model.extend({
+const AppModel = Backbone.Model.extend({
   id: 'app',
 
   defaults: {
@@ -18,7 +18,7 @@ let AppModel = Backbone.Model.extend({
     autosync: true,
     useGridRef: true,
     useGridMap: true,
-    useTraining: false,
+    useTraining: process.env.TRAINING,
   },
 
   localStorage: new Store(CONFIG.name),
@@ -33,9 +33,9 @@ let AppModel = Backbone.Model.extend({
 });
 
 // add previous/pased saved locations management
-AppModel = AppModel.extend(pastLocationsExtension);
+const AppModelLocations = AppModel.extend(pastLocationsExtension);
 // add sample/occurrence attribute management
-AppModel = AppModel.extend(attributeLockExtension);
+const AppModelLocationsLock = AppModelLocations.extend(attributeLockExtension);
 
-const appModel = new AppModel();
-export { appModel as default, AppModel };
+const appModel = new AppModelLocationsLock();
+export { appModel as default, AppModelLocationsLock as AppModel };

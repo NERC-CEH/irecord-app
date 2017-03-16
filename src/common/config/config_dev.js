@@ -5,15 +5,15 @@ import $ from 'jquery';
 import Indicia from 'indicia';
 import config from './config';
 
-const HOST = 'http://192.171.199.230/irecord7/'; // Backend URL - needs trailing slash
+const HOST = 'https://test.brc.ac.uk/irecord7/'; // Backend URL - needs trailing slash
 
 const newConfig = $.extend(true, config, {
-  irecord_url: HOST,
-
   // google analytics
   ga: {
     status: false,
   },
+
+  site_url: HOST,
 
   // use prod logging if testing otherwise full log
   log: process.env.ENV !== 'testing',

@@ -15,7 +15,7 @@
 
 <ul class="table-view space-top">
   <li class="table-view-cell">
-    <a href="#user/register" class="navigate-right">
+    <a href="<%= obj.siteUrl %>user/register" class="navigate-right" target="_blank">
       <span class="media-object pull-left icon icon-user-plus"></span>
       Create new account
     </a>

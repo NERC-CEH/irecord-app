@@ -2,7 +2,6 @@
  * Sample Show controller.
  *****************************************************************************/
 import Backbone from 'backbone';
-import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';

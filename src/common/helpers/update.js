@@ -5,10 +5,10 @@
 import radio from 'radio';
 import CONFIG from 'config';
 import savedSamples from 'saved_samples';
-import Log from './log';
-import Analytics from './analytics';
 import appModel from 'app_model';
 import userModel from 'user_model';
+import Log from './log';
+import Analytics from './analytics';
 
 const MIN_UPDATE_TIME = 5000; // show updating dialog for minimum seconds
 

@@ -262,26 +262,24 @@
             }
           }
 
-          .date,
-          .location {
-            float: left;
-            font-size: 12px;
-            color: $button-black;
-            margin-right: 10px;
-            &.error {
-              color: $color-orange;
-            }
-
-            &.warn {
-              color: $color-yellow;
-            }
-          }
-
-          .location {
-            width: 60%;
+          .core {
+            width: 80%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 12px;
+
+            span {
+              font-weight: 500;
+              color: $button-black;
+              &.error {
+                color: $color-orange;
+              }
+
+              &.warn {
+                color: $color-yellow;
+              }
+            }
           }
 
           .attributes {
@@ -290,13 +288,15 @@
 
           div.stage,
           div.number {
-            @extend .date;
+            float: left;
+            font-size: 12px;
             margin-right: 10px;
           }
 
           div.comment {
-            @extend .date;
-            float: none;
+            float: left;
+            font-size: 12px;
+            margin-right: 10px;
             overflow: hidden;
 
             word-wrap: normal;

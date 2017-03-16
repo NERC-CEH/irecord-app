@@ -2,6 +2,8 @@
 import Backbone from 'backbone';
 import _ from 'lodash';
 
+/* eslint-disable */
+
 let leave, leaveArgs;
 
 _.extend(Backbone.Router.prototype, Backbone.Events, {

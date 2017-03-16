@@ -2,7 +2,7 @@
   <p>Click on the activity below which you would like to participate in. Any
   records you add from now on will be submitted to the chosen activity. You can
   join in with more activities by logging in to
-  <a href="<%= obj.irecord_url %>" target="_blank">iRecord</a> and visiting the Record
+  <a href="<%= obj.site_url %>" target="_blank">iRecord</a> and visiting the Record
   &gt; Activities page.</p>
 </div>
 <div class="list"></div>

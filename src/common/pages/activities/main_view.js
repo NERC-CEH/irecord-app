@@ -46,8 +46,8 @@ export default Marionette.CompositeView.extend({
     let activity;
     $inputs.each((int, elem) => {
       if ($(elem).prop('checked')) {
-        const activityId = parseInt($(elem).val());
-        const filtered = that.collection.filter((a) => a.id == activityId);
+        const activityId = parseInt($(elem).val(), 10);
+        const filtered = that.collection.filter(a => a.id == activityId);
         if (filtered.length) {
           // should be only one activity in the array matching the id
           activity = _.cloneDeep(filtered[0].attributes);
@@ -60,7 +60,7 @@ export default Marionette.CompositeView.extend({
 
   serializeData() {
     return {
-      irecord_url: CONFIG.irecord_url,
+      site_url: CONFIG.site_url,
     };
   },
 });

@@ -27,26 +27,29 @@
       <div class="species error">Species missing</div>
       <% } %>
 
-      <% if (obj.date) { %>
-      <div class="date"><%= obj.date %></div>
-      <% } else { %>
-      <div class="date error">Date</div>
-      <% } %>
+      <div class="core">
+        <% if (obj.date) { %>
+        <span class="date"><%= obj.date %></span>
+        <% } else { %>
+        <span class="date error">Date</span>
+        <% } %>
 
-      <% if (obj.location) { %>
-      <% if (obj.location_name) { %>
-      <div class="location"><%= obj.location_name %></div>
-      <%  } else { %>
-      <div class="location error">No location name</div>
-      <% } %>
-      <% } else { %>
-      <% if (obj.isLocating) { %>
-      <div class="location warn">Locating...</div>
-      <% } else {%>
-      <div class="location error">No location</div>
-      <% } %>
-      <% } %>
+        @
 
+        <% if (obj.location) { %>
+          <% if (obj.location_name) { %>
+          <span class="location"><%= obj.location_name %></span>
+          <%  } else { %>
+            <span class="location error">No location name</span>
+          <% } %>
+        <% } else { %>
+          <% if (obj.isLocating) { %>
+          <span class="location warn">Locating...</span>
+          <% } else { %>
+          <span class="location error">No location</span>
+          <% } %>
+        <% } %>
+      </div>
 
       <div class="attributes">
         <div class="number"><%= obj.number %></div>

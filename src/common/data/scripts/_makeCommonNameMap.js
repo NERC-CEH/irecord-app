@@ -1,6 +1,9 @@
 /** ****************************************************************************
  * Extract common names as pointers in an array.
  *****************************************************************************/
+
+/* eslint-disable */
+
 'use strict';
 
 // get the filename
@@ -8,6 +11,7 @@ const inputFileName = process.argv[2];
 const outputFileName = process.argv[3];
 
 const fs = require('fs');
+
 const species = require(inputFileName);
 
 const GENUS_COMMON_INDEX = 3;
@@ -20,13 +24,13 @@ const helpers = {
    * Return common name from common names array pointer
    * @param p array pointer
    */
-  getCommonName(species, p) {
+  getCommonName(allSpecies, p) {
     let name;
     if (helpers.isGenusPointer(p)) {
       // genus common name
-      name = species[p[0]][p[1]];
+      name = allSpecies[p[0]][p[1]];
     } else {
-      name = species[p[0]][p[1]][p[2]][p[3]];
+      name = allSpecies[p[0]][p[1]][p[2]][p[3]];
     }
     return name.toLowerCase();
   },
@@ -117,9 +121,10 @@ function make() {
 
 const map = make();
 
-fs.writeFile(outputFileName, JSON.stringify(map), function (err) {
+fs.writeFile(outputFileName, JSON.stringify(map), function (err) { // eslint-disable-line
   if (err) {
-    return console.log(err);
+    console.log(err);
+    return;
   }
 
   console.log('Done.');

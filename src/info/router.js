@@ -36,7 +36,7 @@ const Router = Marionette.AppRouter.extend({
         App,
         route: 'info/help/main',
         model: new Backbone.Model({
-          irecord_url: CONFIG.irecord_url,
+          site_url: CONFIG.site_url,
         }),
       });
     },

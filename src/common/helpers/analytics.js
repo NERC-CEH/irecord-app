@@ -47,7 +47,7 @@ const API = {
   },
 
   /**
-   * Record page view.
+   * Sample page view.
    * @param view
    */
   trackView(view) {

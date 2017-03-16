@@ -16,9 +16,9 @@ const CONFIG = {
   build: APP_BUILD,
   name: APP_NAME,
 
-  irecord_url: HOST,
-
   gps_accuracy_limit: 100,
+
+  site_url: HOST,
 
   // logging
   log: true,
@@ -132,8 +132,9 @@ const CONFIG = {
       },
       'number-ranges': {
         id: 523,
+        default: 'Present',
         values: {
-          default: 671,
+          Present: 671,
           1: 665,
           '2-5': 666,
           '6-20': 667,
@@ -144,8 +145,9 @@ const CONFIG = {
       },
       stage: {
         id: 106,
+        default: 'Not Recorded',
         values: {
-          default: 1949,
+          'Not Recorded': 1949,
           Adult: 1950,
           'Pre-adult': 1951,
           Other: 1952,

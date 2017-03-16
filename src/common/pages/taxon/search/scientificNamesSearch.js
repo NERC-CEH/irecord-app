@@ -80,7 +80,10 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
       // if this is genus
       if (speciesArray) {
         // go through all species
-        for (let speciesIndex = 0, length = speciesArray.length; speciesIndex < length && results.length < maxResults; speciesIndex++) {
+        for (
+          let speciesIndex = 0, length = speciesArray.length;
+          speciesIndex < length && results.length < maxResults;
+          speciesIndex++) {
           const speciesInArray = speciesArray[speciesIndex];
           if (otherWordsRegex) {
             // if search through species
@@ -93,7 +96,7 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
                 found_in_name: 'scientific_name',
                 warehouse_id: speciesInArray[WAREHOUSE_INDEX],
                 group: speciesEntry[GROUP_INDEX],
-                scientific_name: speciesEntry[SCI_NAME_INDEX] + ' ' + speciesInArray[SPECIES_SCI_NAME_INDEX],
+                scientific_name: `${speciesEntry[SCI_NAME_INDEX]} ${speciesInArray[SPECIES_SCI_NAME_INDEX]}`,
                 common_name: speciesInArray[SPECIES_COMMON_INDEX],
                 synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
               };
