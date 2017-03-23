@@ -44,8 +44,7 @@ const API = {
 
     // Callback if geolocation fails
     const onError = (err = {}) => {
-      const error = new Error(err.message);
-      callback && callback(error);
+      callback && callback(new Error(err.message));
     };
 
     const watchID = navigator.geolocation.watchPosition(onSuccess, onError, GPSoptions);
