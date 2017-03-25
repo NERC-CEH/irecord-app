@@ -87,9 +87,8 @@ const API = {
       API.photoUpload(sample, photo);
     });
 
-    footerView.on('childview:photo:delete', (view) => {
-      const photo = view.model;
-      API.photoDelete(photo);
+    footerView.on('childview:photo:delete', (model) => {
+      API.photoDelete(model);
     });
 
     // android gallery/camera selection

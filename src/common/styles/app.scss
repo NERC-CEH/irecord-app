@@ -505,6 +505,10 @@ li.table-view-cell {
   }
 }
 
+li.table-view-cell.wide {
+  padding: 11px 15px 11px 15px;
+}
+
 ul.no-style {
   list-style: none;
   padding: 0;
@@ -598,6 +602,10 @@ button, input, select, textarea {
   background-color: $color-gray-light;
   font-size: $button-font-size;
   color: $color-black;
+}
+
+.table-view-divider.dark {
+  background-color: $color-gray;
 }
 
 //remove top margin on lists

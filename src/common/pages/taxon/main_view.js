@@ -239,7 +239,7 @@ export default Marionette.View.extend({
     const that = this;
     const input = e.target.value;
     if (!input) {
-      return;
+      return null;
     }
 
     switch (e.keyCode) {

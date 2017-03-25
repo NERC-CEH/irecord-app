@@ -23,12 +23,12 @@ const SavedImageView = Marionette.View.extend({
   },
 
   delete() {
-    this.trigger('photo:delete', this);
+    this.trigger('photo:delete', this.model);
   },
 
   serializeData() {
     return {
-      data: this.model.getURL(),
+      data: this.model.get('thumbnail'),
     };
   },
 });

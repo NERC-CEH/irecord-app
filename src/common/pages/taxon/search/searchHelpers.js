@@ -13,7 +13,7 @@ const helpers = {
   },
 
   removeNonAlphanumerics(phrase) {
-    return phrase.replace(/\\[\-\'\"()\\]/g, '.?');
+    return phrase.replace(/\\[\-\'\"()\\]/g, '.?'); // eslint-disable-line
   },
 
 // todo: change èéöüáöëïåß -> eeou..
@@ -71,9 +71,9 @@ const helpers = {
    */
   isPhraseScientific(searchPhrase) {
     const check = [
-      ' ssp\.? ',
-      ' subsect\.? ',
-      ' nothovar\.? ',
+      ' ssp\.? ', // eslint-disable-line
+      ' subsect\.? ', // eslint-disable-line
+      ' nothovar\.? ', // eslint-disable-line
     ];
 
     const re = new RegExp(check.join('|'), 'i');
@@ -160,7 +160,7 @@ const helpers = {
     // checkup
     if (high < low) return null;
 
-    const mid = parseInt((low + high) / 2);
+    const mid = parseInt((low + high) / 2, 10);
     const campared = comparator(mid);
     if (campared > 0) {
       return helpers.binarySearch(array, comparator, low, mid - 1);

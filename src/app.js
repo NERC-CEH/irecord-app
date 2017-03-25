@@ -139,6 +139,14 @@ radio.on('app:footer:hide', (options) => {
   App.regions.getRegion('footer').hide(options).empty();
 });
 
+radio.on('app:loader', () => {
+  App.regions.getRegion('dialog').showLoader();
+});
+radio.on('app:loader:hide', () => {
+  App.regions.getRegion('dialog').hideLoader();
+});
+
+
 radio.on('app:404:show', () => {
   CommonController.show({
     App,

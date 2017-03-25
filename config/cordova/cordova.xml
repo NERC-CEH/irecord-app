@@ -27,6 +27,8 @@
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
 
     <access origin="*" />
+    <allow-intent href="*" />
+    <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="mailto:*" />
