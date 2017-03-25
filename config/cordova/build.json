@@ -1,10 +1,10 @@
 {
   "ios": {
     "debug": {
-      "developmentTeam": "X4GARM6E7K"
+      "developmentTeam": "{DEV_TEAM_ID}"
     },
     "release": {
-      "developmentTeam": "X4GARM6E7K"
+      "developmentTeam": "{DEV_TEAM_ID}"
     }
   }
 }
