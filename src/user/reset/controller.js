@@ -74,13 +74,20 @@ const API = {
   reset(data) {
     Log('User:Reset:Controller: logging in.');
     const promise = new Promise((fulfill, reject) => {
+      const details = {
+        type: 'users',
+        password: ' ', // reset password
+      };
+
       // Reset password
       $.ajax({
         url: CONFIG.users.url + encodeURIComponent(data.name), // url + user id
         method: 'PUT',
-        data: {
-          api_key: CONFIG.indicia.api_key, // app logins
-          password: ' ', // reset password
+        processData: false,
+        data: JSON.stringify({ data: details }),
+        headers: {
+          'x-api-key': CONFIG.indicia.api_key,
+          'content-type': 'application/json',
         },
         timeout: CONFIG.users.timeout,
       })

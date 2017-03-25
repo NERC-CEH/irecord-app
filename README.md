@@ -109,5 +109,5 @@ node config/server.js
 
 ## Copyright and license
 
-Code copyright 2016 Centre for Ecology & Hydrology.
+Code copyright 2017 Centre for Ecology & Hydrology.
 Code released under the [GNU GPL v3 license](LICENSE).

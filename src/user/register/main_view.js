@@ -28,6 +28,7 @@ export default Marionette.View.extend({
     const password = $passwordInput.val();
     const passwordConfirm = $passwordConfInput.val();
 
+    data.type = 'users';
     data.email = this.email;
     data.firstname = firstname;
     data.secondname = secondname;

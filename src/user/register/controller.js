@@ -89,14 +89,16 @@ const API = {
     Log('User:Register:Controller: registering.');
 
     // app logins
-    details.api_key = CONFIG.indicia.api_key; // eslint-disable-line
-
-    // app logins
     const promise = new Promise((fulfill, reject) => {
       $.ajax({
         url: CONFIG.users.url,
-        type: 'POST',
-        data: details,
+        method: 'POST',
+        processData: false,
+        data: JSON.stringify({ data: details }),
+        headers: {
+          'x-api-key': CONFIG.indicia.api_key,
+          'content-type': 'application/json',
+        },
         timeout: CONFIG.users.timeout,
         success(receivedData) {
           const data = receivedData.data || {};
@@ -111,11 +113,14 @@ const API = {
           fulfill(fullData);
         },
         error(xhr, textStatus) {
-          if (xhr.responseJSON) {
-            reject(new Error(xhr.responseJSON.errors));
-          } else {
-            reject(new Error(textStatus));
+          let message = textStatus;
+          if (xhr.responseJSON && xhr.responseJSON.errors) {
+            message = xhr.responseJSON.errors.reduce(
+              (name, err) => `${name}${err.title}\n`,
+              ''
+            );
           }
+          reject(new Error(message));
         },
       });
     });
