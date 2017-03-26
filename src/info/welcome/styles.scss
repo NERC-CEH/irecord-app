@@ -1,0 +1,177 @@
+@import "../../common/styles/_variables.scss";
+
+$height: 100vh;
+$width: 500vw;
+
+#welcome {
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  background-color: $color-black;
+
+  button#exit {
+    position: fixed;
+    bottom: 0;
+    margin: 0;
+
+    width: 100%;
+  }
+
+  #swaps-container {
+    height: $height;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #swaps {
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: $width;
+
+    transition-property: transform;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+
+    /*apply a transform to kick in the hardware acceleration.  Without this, the first
+    time we add the transform you get odd rendering of the divs (half missing) */
+    transform: translate(0, 0);
+  }
+
+  #swaps .swap {
+    float: left;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: $height;
+
+    /*apply a transform to kick in the hardware acceleration.  Without this, the first
+    time we add the transform you get odd rendering of the divs (half missing) */
+    transform: translate(0, 0);
+  }
+
+
+  #exit-button {
+    font-size: medium;
+    color: rgb(51, 38, 38);
+    background-color: rgba(245,245,245,.86);
+    border-color: #E8E8E8;
+    max-width: 500px;
+    width:100%;
+    height: 56px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .progress {
+    position: fixed;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    bottom: 70px;
+    left: 43%;
+  }
+
+  .circle {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: rgba(0, 0, 0, 0.15);
+    -moz-border-radius: 70px;
+    -webkit-border-radius: 70px;
+    border-radius: 70px;
+  }
+
+  .circle-full {
+    background: $color-white;
+  }
+
+  .dark {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+
+  .swap {
+    text-align: center;
+  }
+
+  .first {
+    background: url("images/welcome_1.jpg") no-repeat;
+    background-position: left;
+    background-size: cover;
+  }
+
+  .second {
+    background: url("images/welcome_2.jpg") no-repeat;
+    background-position: left;
+    background-size: cover;
+  }
+
+  .third {
+    background: url("images/welcome_3.jpg") no-repeat;
+    background-position: left;
+    background-size: cover;
+  }
+
+  .fourth {
+    background: url("images/welcome_4.jpg") no-repeat;
+    background-position: left;
+    background-size: cover;
+  }
+
+  .fifth {
+    background: url("images/welcome_5.jpg") no-repeat;
+    background-position: left;
+    background-size: cover;
+  }
+
+  .message {
+    position: absolute;
+    width: 50%;
+  }
+
+  .message p,
+  .message h2 {
+    padding: 10px;
+    color: whitesmoke;
+    background-color: rgba(123,117,55,0.9);
+  }
+
+  .message p {
+    font-size: 0.9em;
+  }
+
+  $bottom: 16vh;
+
+  .first .message {
+    text-align: left;
+    bottom: $bottom;
+    left: 14px;
+  }
+
+  .second .message {
+    text-align: left;
+    top: 10vh;
+    left: 14px;
+  }
+
+  .third .message {
+    text-align: left;
+    bottom: $bottom;
+    left: 14px;
+  }
+
+  .fourth .message {
+    text-align: right;
+    bottom: $bottom;
+    right: 14px;
+  }
+
+  .fifth .message {
+    text-align: left;
+    bottom: $bottom;
+    left: 14px;
+  }
+}

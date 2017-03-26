@@ -13,6 +13,7 @@ import Log from 'helpers/log';
 import Update from 'helpers/update';
 import Analytics from 'helpers/analytics';
 import Device from 'helpers/device';
+import appModel from 'app_model';
 import CommonController from './common/controller';
 import DialogRegion from './common/views/dialog_region';
 import HideableRegion from './common/views/hideable_region';
@@ -63,7 +64,11 @@ App.on('start', () => {
       Backbone.history.start();
 
       if (App.getCurrentRoute() === '') {
-        radio.trigger('samples:list');
+        if (appModel.get('showWelcome')) {
+          radio.trigger('info:welcome');
+        } else {
+          radio.trigger('samples:list');
+        }
       }
 
       if (window.cordova) {

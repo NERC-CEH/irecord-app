@@ -9,6 +9,7 @@ import App from 'app';
 import radio from 'radio';
 import CommonController from '../common/controller';
 import InfoMenuController from './menu/controller';
+import WelcomeController from './welcome/controller';
 import './brc_approved/BRC_approved_logo.png';
 import './brc_approved/styles.scss';
 import './help/swipe_record.png';
@@ -19,6 +20,7 @@ App.info = {};
 const Router = Marionette.AppRouter.extend({
   routes: {
     'info(/)': InfoMenuController.show,
+    'info/welcome(/)': WelcomeController.show,
     'info/about(/)': () => {
       CommonController.show({
         title: 'About',
@@ -57,6 +59,13 @@ const Router = Marionette.AppRouter.extend({
     },
     'info/*path': () => { radio.trigger('app:404:show'); },
   },
+});
+
+radio.on('info:welcome', (options) => {
+  App.navigate('info/welcome', options);
+  CommonController.show({
+    route: 'info/welcome/main',
+  });
 });
 
 App.on('before:start', () => {
