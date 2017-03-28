@@ -63,9 +63,7 @@ const Router = Marionette.AppRouter.extend({
 
 radio.on('info:welcome', (options) => {
   App.navigate('info/welcome', options);
-  CommonController.show({
-    route: 'info/welcome/main',
-  });
+  WelcomeController.show();
 });
 
 App.on('before:start', () => {
