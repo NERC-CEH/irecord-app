@@ -47,11 +47,14 @@ export default Marionette.CompositeView.extend({
   },
 
   events: {
-    'change input': 'photoUpload',
-  },
-
-  photoUpload(e) {
-    this.trigger('photo:upload', e);
+    'change input'(e) { // eslint-disable-line
+      this.trigger('photo:upload', e);
+    },
+    'click .img-picker'() { // eslint-disable-line
+      if (window.cordova) {
+        this.trigger('photo:selection');
+      }
+    },
   },
 
   childViewContainer: '#img-array',
