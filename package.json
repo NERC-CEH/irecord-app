@@ -25,7 +25,9 @@
     }
   ],
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "postinstall": "grunt dev",
+    "start": "node config/server.js"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
