@@ -9,6 +9,10 @@ export default Marionette.View.extend({
   tagName: 'nav',
   template: JST['samples/list/header'],
 
+  triggers: {
+    'click #surveys-btn': 'surveys',
+  },
+
   events: {
     'change input': 'photoUpload',
   },

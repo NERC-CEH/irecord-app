@@ -44,6 +44,9 @@ const API = {
 
     // android gallery/camera selection
     headerView.on('photo:selection', API.photoSelect);
+    headerView.on('surveys', () => {
+      radio.trigger('surveys:list', { replace: true });
+    });
 
     radio.trigger('app:header', headerView);
 

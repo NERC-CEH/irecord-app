@@ -712,6 +712,11 @@ header .pull-right {
     background-color: $color-main-dark;
   }
 
+  &.surveys {
+    color: $color-white;
+    background-color: $color-brown;
+  }
+
   &.training {
     color: $color-white;
     background-color: $color-black;
