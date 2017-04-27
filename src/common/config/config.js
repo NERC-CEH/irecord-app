@@ -61,6 +61,13 @@ const CONFIG = {
     survey_id: 374,
     input_form: 'enter-app-record',
 
+    surveys: {
+      plant: {
+        survey_id: 325,
+        input_form: 'enter-vascular-plants',
+      },
+    },
+
     sample: {
       location: {
         values(location, submission) {
