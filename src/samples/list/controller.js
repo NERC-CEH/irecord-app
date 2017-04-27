@@ -1,7 +1,6 @@
 /** ****************************************************************************
  * Sample List controller.
  *****************************************************************************/
-import Backbone from 'backbone';
 import Indicia from 'indicia';
 import radio from 'radio';
 import Log from 'helpers/log';
@@ -33,8 +32,7 @@ const API = {
     });
 
     mainView.on('childview:sample:delete', (childView) => {
-      const sample = childView.model;
-      API.sampleDelete(sample);
+      API.sampleDelete(childView.model);
     });
     radio.trigger('app:main', mainView);
 

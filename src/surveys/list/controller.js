@@ -1,9 +1,11 @@
 /** ****************************************************************************
  * Surveys List controller.
  *****************************************************************************/
+import Indicia from 'indicia';
 import Backbone from 'backbone';
 import radio from 'radio';
 import Log from 'helpers/log';
+import Analytics from 'helpers/analytics';
 import Sample from 'sample';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
@@ -22,7 +24,11 @@ const API = {
       }),
       appModel,
     });
+    mainView.on('childview:sample:delete', (childView) => {
+      API.sampleDelete(childView.model);
+    });
     radio.trigger('app:main', mainView);
+
 
     // HEADER
     const headerView = new HeaderView({
@@ -39,6 +45,41 @@ const API = {
 
     // FOOTER
     radio.trigger('app:footer:hide');
+  },
+
+
+  sampleDelete(sample) {
+    Log('Samples:List:Controller: deleting sample.');
+
+    const syncStatus = sample.getSyncStatus();
+    let body = 'This record hasn\'t been saved to iRecord yet, ' +
+      'are you sure you want to remove it from your device?';
+
+    if (syncStatus === Indicia.SYNCED) {
+      body = 'Are you sure you want to remove this record from your device?';
+      body += '</br><i><b>Note:</b> it will remain on the server.</i>';
+    }
+    radio.trigger('app:dialog', {
+      title: 'Delete',
+      body,
+      buttons: [
+        {
+          title: 'Cancel',
+          onClick() {
+            radio.trigger('app:dialog:hide');
+          },
+        },
+        {
+          title: 'Delete',
+          class: 'btn-negative',
+          onClick() {
+            sample.destroy();
+            radio.trigger('app:dialog:hide');
+            Analytics.trackEvent('List', 'sample remove');
+          },
+        },
+      ],
+    });
   },
 
   addSurvey() {
