@@ -10,6 +10,7 @@ import appModel from 'app_model';
 import savedSamples from 'saved_samples';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
+import CONFIG from 'config';
 import ImageModel from '../../common/models/image';
 import MainView from './main_view';
 import HeaderView from './header_view';
@@ -138,7 +139,11 @@ const API = {
         const occurrence = new Occurrence();
         occurrence.addMedia(image);
 
-        const sample = new Sample();
+        const sample = new Sample(null, {
+          survey_id: CONFIG.indicia.survey_id,
+          // recording form on the iRecord website
+          input_form: CONFIG.indicia.input_form,
+        });
         sample.addOccurrence(occurrence);
 
         // append locked attributes

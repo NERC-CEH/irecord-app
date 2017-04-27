@@ -23,12 +23,6 @@ const Sample = Indicia.Sample.extend({
 
   keys: CONFIG.indicia.sample, // warehouse attribute keys
 
-  metadata: {
-    survey_id: CONFIG.indicia.survey_id,
-    // recording form on the iRecord website
-    input_form: CONFIG.indicia.input_form,
-  },
-
   /**
    * Need a function because Device might not be ready on module load.
    * @returns {{device: *, device_version: *}}
