@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Sample List controller.
  *****************************************************************************/
+import Backbone from 'backbone';
 import Indicia from 'indicia';
 import radio from 'radio';
 import Log from 'helpers/log';
@@ -21,7 +22,9 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      collection: savedSamples,
+      collection: savedSamples.subcollection({
+        filter: model => !model.metadata.survey,
+      }),
       appModel,
     });
 

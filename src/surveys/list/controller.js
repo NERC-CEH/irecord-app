@@ -5,6 +5,7 @@ import Backbone from 'backbone';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Sample from 'sample';
+import appModel from 'app_model';
 import savedSamples from 'saved_samples';
 import CONFIG from 'config';
 import MainView from './main_view';
@@ -15,7 +16,12 @@ const API = {
     Log('Surveys:List:Controller: showing.');
 
     // MAIN
-    const mainView = new MainView();
+    const mainView = new MainView({
+      collection: savedSamples.subcollection({
+        filter: model => model.metadata.survey,
+      }),
+      appModel,
+    });
     radio.trigger('app:main', mainView);
 
     // HEADER

@@ -18,6 +18,8 @@ const SampleView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell swipe',
 
+  template: JST['samples/list/sample'],
+
   triggers: {
     'click #delete': 'sample:delete',
   },
@@ -34,10 +36,6 @@ const SampleView = Marionette.View.extend({
   modelEvents: {
     'request sync error': 'render',
     geolocation: 'render',
-  },
-
-  initialize() {
-    this.template = JST['samples/list/sample'];
   },
 
   photoView(e) {
@@ -196,12 +194,14 @@ const NoSamplesView = Marionette.View.extend({
   template: JST['samples/list/list-none'],
 });
 
-export default Marionette.CompositeView.extend({
+const MainView = Marionette.CompositeView.extend({
   id: 'samples-list-container',
   template: JST['samples/list/main'],
 
   childViewContainer: '#samples-list',
   childView: SampleView,
+
+  NoSamplesView,
 
   constructor(...args) {
     const that = this;
@@ -209,8 +209,9 @@ export default Marionette.CompositeView.extend({
     if (options.collection.fetching) {
       this.emptyView = LoaderView;
 
+      // todo move to controller
       options.collection.once('fetching:done', () => {
-        that.emptyView = NoSamplesView;
+        that.emptyView = this.NoSamplesView;
         // when the collection for the view is "reset",
         // the view will call render on itself
         if (!that.collection.length) {
@@ -227,7 +228,7 @@ export default Marionette.CompositeView.extend({
         }
       });
     } else {
-      this.emptyView = NoSamplesView;
+      this.emptyView = this.NoSamplesView;
     }
 
     Marionette.CompositeView.prototype.constructor.apply(this, args);
@@ -252,3 +253,5 @@ export default Marionette.CompositeView.extend({
     };
   },
 });
+
+export { MainView as default, SampleView };
