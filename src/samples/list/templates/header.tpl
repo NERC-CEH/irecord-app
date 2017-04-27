@@ -1,6 +1,6 @@
 <div class="pull-left">
   <a href="#info" class="icon icon-menu"></a>
-  <button id="surveys-btn" class="icon icon-grid"></button>
+  <button id="surveys-btn" class="icon icon-surveys"></button>
   <a href="#user/activities" id="activities-btn" class="icon icon-users <%- obj.activityOn ? 'on' : '' %>"></a>
 </div>
 <div class="pull-right">
