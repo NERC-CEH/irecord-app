@@ -39,6 +39,11 @@ radio.on('surveys:list', (options) => {
   ListController.show();
 });
 
+radio.on('surveys:edit', (sampleID, options) => {
+  App.navigate(`surveys/${sampleID}/edit`, options);
+  EditController.show(sampleID);
+});
+
 App.on('before:start', () => {
   Log('Settings:router: initializing.');
   App.settings.router = new Router();

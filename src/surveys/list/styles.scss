@@ -4,4 +4,14 @@
 //HEADER
 #surveys-header {
   @include samples-surveys-header;
+
+  #add-survey-btn {
+    width: 48%;
+    max-width: none;
+
+    &:hover {
+      text-shadow: 0px 0px 0px $header-color, 0px 0px 0px $header-color;
+    }
+  }
+
 }
