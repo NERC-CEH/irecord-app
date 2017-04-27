@@ -15,10 +15,12 @@ describe('App Model', () => {
     const appModel = new AppModel();
     expect(_.keys(appModel.attributes).length).to.be.equal(7);
     // should set the exact value checks in the modules requiring them
+    expect(appModel.get('showWelcome')).to.be.equal(true);
     expect(appModel.get('locations')).to.be.an('array');
     expect(appModel.get('attrLocks')).to.be.an('object');
     expect(appModel.get('autosync')).to.be.equal(true);
     expect(appModel.get('useGridRef')).to.be.equal(true);
+    expect(appModel.get('useGridMap')).to.be.equal(true);
     expect(appModel.get('useTraining')).to.be.equal(false);
   });
 

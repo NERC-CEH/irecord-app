@@ -23,7 +23,7 @@ describe('Occurrence', () => {
     occurrence.clear();
 
     const invalids = occurrence.validate(null, { remote: true });
-    expect(invalids).to.be.an('object')
+    expect(invalids.occurrence).to.be.an('object')
       .and.have.property('taxon');
   });
 });

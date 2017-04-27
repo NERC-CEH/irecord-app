@@ -13,8 +13,6 @@ const AppModel = Backbone.Model.extend({
   defaults: {
     showWelcome: true,
 
-    exceptions: [],
-
     locations: [],
     attrLocks: {},
     autosync: true,
