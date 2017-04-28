@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Sample Edit footer view.
+ * Surveys Sample Edit footer view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';

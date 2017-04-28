@@ -26,7 +26,7 @@ import PastView from './past_view';
 import './styles.scss';
 
 const API = {
-  show(sampleID) {
+  show(sampleID, subSampleID) {
 // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
       const that = this;
@@ -36,7 +36,7 @@ const API = {
       return;
     }
 
-    const sample = savedSamples.get(sampleID);
+    let sample = savedSamples.get(sampleID);
 
     // Not found
     if (!sample) {
@@ -49,6 +49,10 @@ const API = {
     if (sample.getSyncStatus() === Indicia.SYNCED) {
       radio.trigger('samples:show', sampleID, { replace: true });
       return;
+    }
+
+    if (subSampleID) {
+      sample = sample.samples.get(subSampleID);
     }
 
     // MAIN

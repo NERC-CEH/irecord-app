@@ -13,7 +13,7 @@ import SamplesListController from './samples/list/controller';
 import SamplesEditController from './samples/edit/controller';
 import SamplesEditAttrController from './samples/attr/controller';
 import SamplesEditTaxonController from '../common/pages/taxon/controller';
-import SamplesEditLocationController from '../common/pages/location/controller';
+import LocationController from '../common/pages/location/controller';
 
 App.settings = {};
 
@@ -27,9 +27,10 @@ const Router = Marionette.AppRouter.extend({
     'surveys/:id/edit/samples/new(/)': SamplesEditTaxonController.show,
     'surveys/:id/edit/samples/:id/edit(/)': SamplesEditController.show,
     'surveys/:id/edit/samples/:id/edit/taxon(/)': SamplesEditTaxonController.show,
-    'surveys/:id/edit/samples/:id/edit/location(/)': SamplesEditLocationController.show,
+    'surveys/:id/edit/samples/:id/edit/location(/)': LocationController.show,
     'surveys/:id/edit/samples/:id/edit/:attr(/)': SamplesEditAttrController.show,
 
+    'surveys/:id/edit/location(/)': LocationController.show,
     'surveys/:id/edit/:attr(/)': EditAttrController.show,
     'surveys/*path': () => { radio.trigger('app:404:show'); },
   },
@@ -45,9 +46,14 @@ radio.on('surveys:edit', (sampleID, options) => {
   EditController.show(sampleID);
 });
 
-radio.on('surveys:samples:new', (sampleID, options = {}) => {
-  App.navigate(`surveys/${sampleID}/edit/samples/new`, options);
-  SamplesEditTaxonController.show(options.onSuccess);
+radio.on('surveys:samples:edit', (surveySampleID, sampleID, options) => {
+  App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit`, options);
+  SamplesEditController.show(surveySampleID, sampleID);
+});
+
+radio.on('surveys:samples:edit:taxon', (surveySampleID, sampleID, options = {}) => {
+  App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit/taxon`, options);
+  SamplesEditTaxonController.show(options.onSuccess, options.showEditButton);
 });
 
 App.on('before:start', () => {

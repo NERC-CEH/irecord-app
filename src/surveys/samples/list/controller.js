@@ -45,10 +45,11 @@ const API = {
       surveySampleID: surveySample.cid,
     });
     mainView.on('childview:create', () => {
-      radio.trigger('surveys:samples:new', surveySampleID, {
-        onSuccess(taxon) {
-          API.createNewSample(surveySample, taxon);
+      radio.trigger('surveys:samples:edit:taxon', surveySampleID, null, {
+        onSuccess(taxon, editButtonClicked) {
+          API.createNewSample(surveySample, taxon, editButtonClicked);
         },
+        showEditButton: true,
       });
     });
     mainView.on('childview:sample:delete', (childView) => {
@@ -67,10 +68,11 @@ const API = {
     // android gallery/camera selection
     headerView.on('photo:selection', API.photoSelect);
     headerView.on('create', () => {
-      radio.trigger('surveys:samples:new', surveySampleID, {
-        onSuccess(taxon) {
-          API.createNewSample(surveySample, taxon);
+      radio.trigger('surveys:samples:edit:taxon', surveySampleID, null, {
+        onSuccess(taxon, editButtonClicked) {
+          API.createNewSample(surveySample, taxon, editButtonClicked);
         },
+        showEditButton: true,
       });
     });
 
@@ -89,7 +91,7 @@ const API = {
     // todo: show loader
     Sample.createNewSampleWithPhoto(photo)
       .then((sample) => {
-        surveySample.samples.add(sample);
+        surveySample.addSample(sample);
         return surveySample.save();
       })
       .catch((err) => {
@@ -134,13 +136,27 @@ const API = {
    * @param surveySample
    * @param taxon
    */
-  createNewSample(surveySample, taxon) {
+  createNewSample(surveySample, taxon, editButtonClicked) {
     return Sample.createNewSample()
       .then((sample) => {
         const occ = sample.getOccurrence();
         occ.set('taxon', taxon);
-        surveySample.samples.add(sample);
-        return surveySample.save();
+        surveySample.addSample(sample);
+        return surveySample.save().then(() => {
+          if (editButtonClicked) {
+            radio.trigger(
+              'surveys:samples:edit',
+              surveySample.cid,
+              sample.cid,
+              { replace: true },
+            );
+          } else {
+            radio.trigger('app:dialog', {
+              title: 'Added',
+              timeout: 500,
+            });
+          }
+        });
       })
       .catch((err) => {
         Log(err, 'e');

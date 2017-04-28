@@ -65,7 +65,13 @@ const API = {
       // unbind when page destroyed
       sample.off('request sync error', checkIfSynced);
     });
-
+    mainView.on('taxon:update', () => {
+      radio.trigger('surveys:samples:edit:taxon', surveySampleID, sample.cid, {
+        onSuccess(taxon) {
+          API.updateTaxon(sample, taxon);
+        },
+      });
+    });
 
     // HEADER
     const headerView = new HeaderView({
@@ -260,6 +266,13 @@ const API = {
         occurrence.addMedia(image);
         return occurrence.save();
       });
+  },
+
+  updateTaxon(sample, taxon) {
+    // edit existing one
+    sample.getOccurrence().set('taxon', taxon);
+    // return to previous - edit page
+    return sample.save().then(() => window.history.back());
   },
 };
 

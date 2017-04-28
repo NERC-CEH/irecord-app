@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Sample Edit main view.
+ * Surveys Sample Edit main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
@@ -11,6 +11,10 @@ import './styles.scss';
 
 export default Marionette.View.extend({
   template: JST['surveys/samples/edit/main'],
+
+  triggers: {
+    'click a#species-button': 'taxon:update',
+  },
 
   initialize() {
     const sample = this.model.get('sample');
