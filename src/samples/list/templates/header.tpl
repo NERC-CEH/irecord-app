@@ -7,5 +7,5 @@
   <div class="img-picker icon icon-camera">
     <input type="file" accept="image/*"/>
   </div>
-  <a href="#samples/new" class="icon icon-plus"></a>
+  <button id="add-sample-btn" class="icon icon-plus"></button>
 </div>

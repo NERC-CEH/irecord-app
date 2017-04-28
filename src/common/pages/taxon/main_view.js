@@ -38,7 +38,7 @@ const SpeciesView = Marionette.View.extend({
 
     return {
       name,
-      removeEditBtn: this.options.removeEditBtn,
+      showEditButton: this.options.showEditButton,
       group: informalGroups[this.model.get('group')],
     };
   },
@@ -81,7 +81,7 @@ const SuggestionsView = Marionette.CollectionView.extend({
   childView: SpeciesView,
   childViewOptions() {
     return {
-      removeEditBtn: this.options.removeEditBtn,
+      showEditButton: this.options.showEditButton,
       searchPhrase: this.options.searchPhrase,
     };
   },
@@ -141,9 +141,10 @@ export default Marionette.View.extend({
 
     const suggestionsColView = new SuggestionsView({
       collection: this.suggestionsCol,
-      removeEditBtn: this.options.removeEditBtn,
+      showEditButton: this.options.showEditButton,
       searchPhrase,
     });
+
     suggestionsColView.on('childview:taxon:selected',
       (speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
 

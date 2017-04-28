@@ -22,6 +22,7 @@ const SampleView = Marionette.View.extend({
 
   triggers: {
     'click #delete': 'sample:delete',
+    'click #add-species-btn': 'taxon:add',
   },
 
   events: {

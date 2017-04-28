@@ -67,14 +67,14 @@ radio.on('samples:edit', (sampleID, options) => {
   EditController.show(sampleID);
 });
 
-radio.on('samples:edit:attr', (sampleID, attrID, options) => {
+radio.on('samples:edit:attr', (sampleID, attrID, options = {}) => {
   App.navigate(`samples/${sampleID}/edit/${attrID}`, options);
   switch (attrID) {
     case 'location':
       EditLocationController.show(sampleID);
       break;
     case 'taxon':
-      TaxonController.show(sampleID);
+      TaxonController.show(options.onSuccess, options.showEditButton);
       break;
     case 'activity':
       ActivitiesController.show(sampleID);

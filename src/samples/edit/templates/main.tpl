@@ -7,7 +7,7 @@
 
 <ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
   <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/taxon" id="species-button" class="navigate-right">
+    <a id="species-button" class="navigate-right">
       <% if (obj.commonName) { %>
       <span class="media-object pull-right descript"><%- obj.commonName %></span>
       <% } %>

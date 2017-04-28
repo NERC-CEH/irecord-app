@@ -12,6 +12,10 @@ import './styles.scss';
 export default Marionette.View.extend({
   template: JST['samples/edit/main'],
 
+  triggers: {
+    'click a#species-button': 'taxon:update',
+  },
+
   initialize() {
     const sample = this.model.get('sample');
     this.listenTo(sample, 'request sync error geolocation', this.render);

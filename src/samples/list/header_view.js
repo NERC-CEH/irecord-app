@@ -11,6 +11,7 @@ export default Marionette.View.extend({
 
   triggers: {
     'click #surveys-btn': 'surveys',
+    'click #add-sample-btn': 'sample:new',
   },
 
   events: {

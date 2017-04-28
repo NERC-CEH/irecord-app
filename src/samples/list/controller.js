@@ -30,6 +30,16 @@ const API = {
       radio.trigger('samples:edit:attr', childView.model.cid, attr);
     });
 
+    mainView.on('childview:taxon:add', (childView) => {
+      const sample = childView.model;
+      radio.trigger('samples:edit:attr', sample.cid, 'taxon', {
+        onSuccess(taxon, editButtonClicked) {
+          API.setTaxon(sample, taxon, editButtonClicked);
+        },
+        showEditButton: true,
+      });
+    });
+
     mainView.on('childview:sample:delete', (childView) => {
       API.sampleDelete(childView.model);
     });
@@ -45,6 +55,22 @@ const API = {
 
     // android gallery/camera selection
     headerView.on('photo:selection', API.photoSelect);
+    headerView.on('sample:new', () => {
+      radio.trigger('samples:edit:attr', null, 'taxon', {
+        onSuccess(taxon, editButtonClicked) {
+          API.createNewSample(null, taxon)
+            .then((sample) => {
+              if (editButtonClicked) {
+                radio.trigger('samples:edit', sample.cid, { replace: true });
+              } else {
+                // return back to list page
+                window.history.back();
+              }
+            });
+        },
+        showEditButton: true,
+      });
+    });
     headerView.on('surveys', () => {
       radio.trigger('surveys:list', { replace: true });
     });
@@ -93,7 +119,7 @@ const API = {
     Log('Samples:List:Controller: photo upload.');
 
     // todo: show loader
-    API.createNewSample(photo).catch((err) => {
+    API.createNewSampleWithPhoto(photo).catch((err) => {
       Log(err, 'e');
       radio.trigger('app:dialog:error', err);
     });
@@ -132,39 +158,71 @@ const API = {
 
   /**
    * Creates a new sample with an image passed as an argument.
+   *
+   * Empty taxon.
    */
-  createNewSample(photo) {
+  createNewSampleWithPhoto(photo) {
     return ImageHelp.getImageModel(ImageModel, photo)
-      .then((image) => {
-        const occurrence = new Occurrence();
-        occurrence.addMedia(image);
+      .then(image => API.createNewSample(image));
+  },
 
-        const sample = new Sample(null, {
-          metadata: {
-            survey: 'general',
-          },
-        });
-        sample.addOccurrence(occurrence);
+  /**
+   * Creates a new sample with an occurrence.
+   * @param image
+   * @param taxon
+   * @returns {*}
+   */
+  createNewSample(image, taxon) {
+    const occurrence = new Occurrence({ taxon });
+    if (image) {
+      occurrence.addMedia(image);
+    }
 
-        // append locked attributes
-        appModel.appendAttrLocks(sample);
+    const sample = new Sample(null, {
+      metadata: {
+        survey: 'general',
+      },
+    });
+    sample.addOccurrence(occurrence);
 
-        return sample.save().then(() => {
-          savedSamples.add(sample);
-          // check if location attr is not locked
-          const locks = appModel.get('attrLocks');
+    // append locked attributes
+    appModel.appendAttrLocks(sample);
 
-          if (!locks.location) {
-            // no previous location
-            sample.startGPS();
-          } else if (!locks.location.latitude || !locks.location.longitude) {
-            // previously locked location was through GPS
-            // so try again
-            sample.startGPS();
-          }
-          return sample;
-        });
-      });
+    return sample.save().then(() => {
+      savedSamples.add(sample);
+      // check if location attr is not locked
+      const locks = appModel.get('attrLocks');
+
+      if (!locks.location) {
+        // no previous location
+        sample.startGPS();
+      } else if (!locks.location.latitude || !locks.location.longitude) {
+        // previously locked location was through GPS
+        // so try again
+        sample.startGPS();
+      }
+      return sample;
+    });
+  },
+
+  /**
+   * Sets a new taxon to an occurrence created by a photo-first method.
+   * @param sample
+   * @param taxon
+   * @param editButtonClicked
+   * @returns {*}
+   */
+  setTaxon(sample, taxon, editButtonClicked) {
+    sample.getOccurrence().set('taxon', taxon);
+    // return to previous - edit page
+    return sample.save().then(() => {
+      if (editButtonClicked) {
+        radio.trigger('samples:edit', sample.cid, { replace: true });
+      } else {
+        // return back to list page
+        window.history.back();
+      }
+    });
   },
 };
 

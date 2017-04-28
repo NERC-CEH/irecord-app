@@ -51,6 +51,13 @@ const API = {
     const mainView = new MainView({
       model: new Backbone.Model({ sample, appModel }),
     });
+    mainView.on('taxon:update', () => {
+      radio.trigger('samples:edit:attr', sampleID, 'taxon', {
+        onSuccess(taxon) {
+          API.updateTaxon(sample, taxon);
+        },
+      });
+    });
     radio.trigger('app:main', mainView);
 
     // on finish sync move to show
@@ -264,6 +271,13 @@ const API = {
         occurrence.addMedia(image);
         return occurrence.save();
       });
+  },
+
+  updateTaxon(sample, taxon) {
+    // edit existing one
+    sample.getOccurrence().set('taxon', taxon);
+    // return to previous - edit page
+    return sample.save().then(() => window.history.back());
   },
 };
 
