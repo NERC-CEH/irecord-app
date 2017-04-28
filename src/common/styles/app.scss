@@ -118,6 +118,7 @@ header a:hover {
 header button:hover {
   background-color: $color-gray-light !important;
   color: $button-black!important;
+  border: none;
 }
 
 button {
