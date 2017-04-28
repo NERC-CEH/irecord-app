@@ -193,13 +193,17 @@ const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
   template: JST['samples/list/list-none'],
+
+  triggers: {
+    'click #create-new-btn': 'create',
+  },
 });
 
 const MainView = Marionette.CompositeView.extend({
   id: 'samples-list-container',
   template: JST['samples/list/main'],
 
-  childViewContainer: '#samples-list',
+  childViewContainer: '#list',
   childView: SampleView,
 
   NoSamplesView,

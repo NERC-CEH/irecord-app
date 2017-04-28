@@ -35,7 +35,7 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#surveys/<%- obj.id %>/edit/taxon" id="stage-button"
+    <a href="#surveys/<%- obj.id %>/edit/samples" id="stage-button"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-stage"></span>
       <span class="media-object pull-right descript"><%- obj.species %></span>

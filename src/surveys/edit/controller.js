@@ -1,14 +1,18 @@
 /** ****************************************************************************
- * Surveys Edit controller.
+ * Survey Edit controller.
  *****************************************************************************/
-import Indicia from 'indicia';
 import Backbone from 'backbone';
-import radio from 'radio';
+import _ from 'lodash';
+import Indicia from 'indicia';
+import Device from 'helpers/device';
 import Log from 'helpers/log';
-import savedSamples from 'saved_samples';
+import App from 'app';
+import radio from 'radio';
 import appModel from 'app_model';
+import userModel from 'user_model';
+import savedSamples from 'saved_samples';
 import MainView from './main_view';
-import HeaderView from '../../common/views/header_view';
+import HeaderView from './header_view';
 
 const API = {
   show(sampleID) {
@@ -21,7 +25,7 @@ const API = {
       return;
     }
 
-    Log('Surveys:Edit:Controller: showing.');
+    Log('Samples:Edit:Controller: showing.');
 
     const sample = savedSamples.get(sampleID);
     // Not found
@@ -57,16 +61,93 @@ const API = {
       sample.off('request sync error', checkIfSynced);
     });
 
+
     // HEADER
     const headerView = new HeaderView({
-      model: new Backbone.Model({
-        title: 'Survey',
-      }),
+      model: sample,
     });
+
+    headerView.on('save', () => {
+      API.save(sample);
+    });
+
     radio.trigger('app:header', headerView);
 
     // FOOTER
     radio.trigger('app:footer:hide');
+  },
+
+  save(sample) {
+    Log('Samples:Edit:Controller: save clicked.');
+
+    const promise = sample.setToSend();
+
+    // invalid sample
+    if (!promise) {
+      const invalids = sample.validationError;
+      API.showInvalidsMessage(invalids);
+      return;
+    }
+
+    promise
+      .then(() => {
+        // should we sync?
+        if (!Device.isOnline()) {
+          radio.trigger('app:dialog:error', {
+            message: 'Looks like you are offline!',
+          });
+          return;
+        }
+
+        if (!userModel.hasLogIn()) {
+          radio.trigger('user:login', { replace: true });
+          return;
+        }
+
+        // sync
+        sample.save(null, { remote: true })
+          .catch((err = {}) => {
+            Log(err, 'e');
+
+            const visibleDialog = App.regions.getRegion('dialog').$el.is(':visible');
+            // we don't want to close any other dialog
+            if (err.message && !visibleDialog) {
+              radio.trigger('app:dialog:error',
+                `Sorry, we have encountered a problem while sending the record.
+                
+                 <p><i>${err.message}</i></p>`
+              );
+            }
+          });
+        radio.trigger('sample:saved');
+      })
+      .catch((err) => {
+        Log(err, 'e');
+        radio.trigger('app:dialog:error', err);
+      });
+  },
+
+  showInvalidsMessage(invalids) {
+    // it wasn't saved so of course this error
+    delete invalids.sample.saved; // eslint-disable-line
+
+    let missing = '';
+    if (invalids.occurrences) {
+      _.each(invalids.occurrences, (message, invalid) => {
+        missing += `<b>${invalid}</b> - ${message}</br>`;
+      });
+    }
+    if (invalids.sample) {
+      _.each(invalids.sample, (message, invalid) => {
+        missing += `<b>${invalid}</b> - ${message}</br>`;
+      });
+    }
+
+    radio.trigger('app:dialog', {
+      title: 'Sorry',
+      body: missing,
+      timeout: 2000,
+    });
   },
 };
 

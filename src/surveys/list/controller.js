@@ -24,6 +24,7 @@ const API = {
       }),
       appModel,
     });
+    mainView.on('childview:create', API.addSurvey);
     mainView.on('childview:sample:delete', (childView) => {
       API.sampleDelete(childView.model);
     });
@@ -39,7 +40,7 @@ const API = {
     headerView.on('surveys', () => {
       radio.trigger('samples:list', { replace: true });
     });
-    headerView.on('surveys:add', API.addSurvey);
+    headerView.on('create', API.addSurvey);
 
     radio.trigger('app:header', headerView);
 

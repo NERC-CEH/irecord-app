@@ -30,7 +30,7 @@ export default Marionette.View.extend({
       location: locationPrint,
       location_name: location.name,
       date: DateHelp.print(sample.get('date'), true),
-      species: sample.occurrences.length,
+      species: sample.samples.length,
       identifiers: sample.get('identifiers') && StringHelp.limit(sample.get('identifiers')),
       comment: sample.get('comment') && StringHelp.limit(sample.get('comment')),
       locks: {},

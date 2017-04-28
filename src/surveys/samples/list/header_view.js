@@ -7,15 +7,19 @@ import JST from 'JST';
 export default Marionette.View.extend({
   id: 'samples-header',
   tagName: 'nav',
-  template: JST['samples/list/header'],
+  template: JST['surveys/samples/list/header'],
 
   triggers: {
-    'click #surveys-btn': 'surveys',
     'click #create-new-btn': 'create',
   },
 
   events: {
     'change input': 'photoUpload',
+    'click a[data-rel="back"]': 'navigateBack',
+  },
+
+  navigateBack() {
+    window.history.back();
   },
 
   photoUpload(e) {

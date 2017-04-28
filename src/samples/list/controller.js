@@ -9,8 +9,6 @@ import ImageHelp from 'helpers/image';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
 import Sample from 'sample';
-import Occurrence from 'occurrence';
-import ImageModel from '../../common/models/image';
 import MainView from './main_view';
 import HeaderView from './header_view';
 
@@ -26,6 +24,7 @@ const API = {
       appModel,
     });
 
+    mainView.on('childview:create', () => API.createNewSample());
     mainView.on('childview:sample:edit:attr', (childView, attr) => {
       radio.trigger('samples:edit:attr', childView.model.cid, attr);
     });
@@ -55,22 +54,7 @@ const API = {
 
     // android gallery/camera selection
     headerView.on('photo:selection', API.photoSelect);
-    headerView.on('sample:new', () => {
-      radio.trigger('samples:edit:attr', null, 'taxon', {
-        onSuccess(taxon, editButtonClicked) {
-          API.createNewSample(null, taxon)
-            .then((sample) => {
-              if (editButtonClicked) {
-                radio.trigger('samples:edit', sample.cid, { replace: true });
-              } else {
-                // return back to list page
-                window.history.back();
-              }
-            });
-        },
-        showEditButton: true,
-      });
-    });
+    headerView.on('create', () => API.createNewSample());
     headerView.on('surveys', () => {
       radio.trigger('surveys:list', { replace: true });
     });
@@ -119,10 +103,16 @@ const API = {
     Log('Samples:List:Controller: photo upload.');
 
     // todo: show loader
-    API.createNewSampleWithPhoto(photo).catch((err) => {
-      Log(err, 'e');
-      radio.trigger('app:dialog:error', err);
-    });
+    Sample.createNewSampleWithPhoto(photo)
+      .then(sample => sample.save())
+      .then((sample) => {
+        // add to main collection
+        savedSamples.add(sample);
+      })
+      .catch((err) => {
+        Log(err, 'e');
+        radio.trigger('app:dialog:error', err);
+      });
   },
 
   photoSelect() {
@@ -135,7 +125,7 @@ const API = {
           title: 'Camera',
           onClick() {
             ImageHelp.getImage((entry) => {
-              API.createNewSample(entry.nativeURL, () => {});
+              Sample.createNewSampleWithPhoto(entry.nativeURL);
             });
             radio.trigger('app:dialog:hide');
           },
@@ -144,7 +134,7 @@ const API = {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage((entry) => {
-              API.createNewSample(entry.nativeURL, () => {});
+              Sample.createNewSampleWithPhoto(entry.nativeURL, () => {});
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
@@ -156,52 +146,25 @@ const API = {
     });
   },
 
-  /**
-   * Creates a new sample with an image passed as an argument.
-   *
-   * Empty taxon.
-   */
-  createNewSampleWithPhoto(photo) {
-    return ImageHelp.getImageModel(ImageModel, photo)
-      .then(image => API.createNewSample(image));
-  },
+  createNewSample() {
+    radio.trigger('samples:edit:attr', null, 'taxon', {
+      onSuccess(taxon, editButtonClicked) {
+        Sample.createNewSample(null, taxon)
+          .then(sample => sample.save())
+          .then((sample) => {
+            // add to main collection
+            savedSamples.add(sample);
 
-  /**
-   * Creates a new sample with an occurrence.
-   * @param image
-   * @param taxon
-   * @returns {*}
-   */
-  createNewSample(image, taxon) {
-    const occurrence = new Occurrence({ taxon });
-    if (image) {
-      occurrence.addMedia(image);
-    }
-
-    const sample = new Sample(null, {
-      metadata: {
-        survey: 'general',
+            // navigate
+            if (editButtonClicked) {
+              radio.trigger('samples:edit', sample.cid, { replace: true });
+            } else {
+              // return back to list page
+              window.history.back();
+            }
+          });
       },
-    });
-    sample.addOccurrence(occurrence);
-
-    // append locked attributes
-    appModel.appendAttrLocks(sample);
-
-    return sample.save().then(() => {
-      savedSamples.add(sample);
-      // check if location attr is not locked
-      const locks = appModel.get('attrLocks');
-
-      if (!locks.location) {
-        // no previous location
-        sample.startGPS();
-      } else if (!locks.location.latitude || !locks.location.longitude) {
-        // previously locked location was through GPS
-        // so try again
-        sample.startGPS();
-      }
-      return sample;
+      showEditButton: true,
     });
   },
 

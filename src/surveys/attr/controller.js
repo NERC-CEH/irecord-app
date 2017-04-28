@@ -13,7 +13,6 @@ import LockView from '../../common/views/attr_lock_view';
 
 const API = {
   show(sampleID, attr) {
-    Log('Surveys:Attr:Controller: showing.');
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
       const that = this;

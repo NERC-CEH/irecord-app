@@ -24,6 +24,7 @@ const Router = Marionette.AppRouter.extend({
     'surveys/:id/edit(/)': EditController.show,
 
     'surveys/:id/edit/samples(/)': SamplesListController.show,
+    'surveys/:id/edit/samples/new(/)': SamplesEditTaxonController.show,
     'surveys/:id/edit/samples/:id/edit(/)': SamplesEditController.show,
     'surveys/:id/edit/samples/:id/edit/taxon(/)': SamplesEditTaxonController.show,
     'surveys/:id/edit/samples/:id/edit/location(/)': SamplesEditLocationController.show,
@@ -42,6 +43,11 @@ radio.on('surveys:list', (options) => {
 radio.on('surveys:edit', (sampleID, options) => {
   App.navigate(`surveys/${sampleID}/edit`, options);
   EditController.show(sampleID);
+});
+
+radio.on('surveys:samples:new', (sampleID, options = {}) => {
+  App.navigate(`surveys/${sampleID}/edit/samples/new`, options);
+  SamplesEditTaxonController.show(options.onSuccess);
 });
 
 App.on('before:start', () => {

@@ -1,1 +1,0 @@
-Showing samples attribute edit page

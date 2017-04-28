@@ -5,5 +5,5 @@
 </div>
 <div class="pull-right">
   <div class="img-picker icon icon-camera disabled"></div>
-  <button id="add-survey-btn" class="icon icon-plus"></button>
+  <button id="create-new-btn" class="icon icon-plus"></button>
 </div>

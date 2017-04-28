@@ -82,6 +82,10 @@ const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
   template: JST['surveys/list/list-none'],
+
+  triggers: {
+    'click #create-new-btn': 'create',
+  },
 });
 
 const MainView = _MainView.extend({

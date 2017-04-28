@@ -26,7 +26,7 @@ const App = new Marionette.Application();
 
 App.navigate = (route, options = {}) => {
   Log(`App: navigating to ${route}.`);
-  const defaultOptions = { trigger: true };
+  const defaultOptions = { trigger: false };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
 

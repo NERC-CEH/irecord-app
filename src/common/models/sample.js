@@ -5,13 +5,16 @@ import _ from 'lodash';
 import Indicia from 'indicia';
 import CONFIG from 'config';
 import userModel from 'user_model';
+import appModel from 'app_model';
 import Occurrence from 'occurrence';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
+import ImageHelp from 'helpers/image';
 import store from '../store';
+import ImageModel from '../../common/models/image';
 import GeolocExtension from './sample_geoloc_ext';
 
-const Sample = Indicia.Sample.extend({
+let Sample = Indicia.Sample.extend({ // eslint-disable-line
   api_key: CONFIG.indicia.api_key,
   host_url: CONFIG.indicia.host,
   user: userModel.getUser.bind(userModel),
@@ -171,7 +174,61 @@ const Sample = Indicia.Sample.extend({
   },
 });
 
-// add geolocation functionality
-const SampleWithGeoloc = Sample.extend(GeolocExtension);
 
-export { SampleWithGeoloc as default };
+// add geolocation functionality
+Sample = Sample.extend(GeolocExtension);
+
+/**
+ * Static helper functions.
+ */
+const helpers = {
+
+  /**
+   * Creates a new sample with an image passed as an argument.
+   *
+   * Empty taxon.
+   */
+  createNewSampleWithPhoto(photo) {
+    return ImageHelp.getImageModel(ImageModel, photo)
+      .then(image => helpers.createNewSample(image));
+  },
+
+  /**
+   * Creates a new sample with an occurrence.
+   * @param image
+   * @param taxon
+   * @returns {*}
+   */
+  createNewSample(image, taxon) {
+    const occurrence = new Occurrence({ taxon });
+    if (image) {
+      occurrence.addMedia(image);
+    }
+
+    const sample = new Sample(null, {
+      metadata: {
+        survey: 'general',
+      },
+    });
+    sample.addOccurrence(occurrence);
+
+    // append locked attributes
+    appModel.appendAttrLocks(sample);
+
+    // check if location attr is not locked
+    const locks = appModel.get('attrLocks');
+
+    if (!locks.location) {
+      // no previous location
+      sample.startGPS();
+    } else if (!locks.location.latitude || !locks.location.longitude) {
+      // previously locked location was through GPS
+      // so try again
+      sample.startGPS();
+    }
+    return Promise.resolve(sample);
+  },
+};
+
+_.extend(Sample, helpers);
+export { Sample as default };
