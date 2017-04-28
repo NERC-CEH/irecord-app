@@ -113,6 +113,7 @@ const API = {
 
     return sample.save().then(() => {
       savedSamples.add(sample);
+      sample.startGPS();
       return sample;
     });
   },

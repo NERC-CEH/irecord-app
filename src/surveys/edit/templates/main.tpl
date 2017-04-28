@@ -1,2 +1,61 @@
-<a href="#surveys/1/edit/1">Edit attr 1</a></br></br>
-<a href="#surveys/2/edit/samples/">Edit samples</a></br></br>
+<% if (obj.training) { %>
+<div class="main-header training"></div>
+<% } %>
+
+<ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.id %>/edit/location" id="location-button"
+       class="<%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-location"></span>
+
+      <% if (obj.location_name) { %>
+      <span class="media-object pull-right descript"><%= obj.location_name %></span>
+      <% } else { %>
+      <span class="media-object pull-right descript error">Name missing</span>
+      <% } %>
+
+      <% if (obj.location) { %>
+      <span class="media-object pull-right descript"><%- obj.location %></span>
+      <% } else { %>
+      <% if (obj.isLocating) { %>
+      <span class="media-object pull-right descript warn">Locating...</span>
+      <% } else { %>
+      <span class="media-object pull-right descript error">Location missing</span>
+      <% } %>
+      <% } %>
+      Location
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.id %>/edit/date" id="date-button"
+       class="<%- obj.locks['date'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-calendar"></span>
+      <span class="media-object pull-right descript"><%- obj.date %></span>
+      Date
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.id %>/edit/taxon" id="stage-button"
+       class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-stage"></span>
+      <span class="media-object pull-right descript"><%- obj.species %></span>
+      Species
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.id %>/edit/identifiers" id="stage-button"
+       class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-users"></span>
+      <span class="media-object pull-right descript"><%- obj.identifiers %></span>
+      Recorders
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.id %>/edit/comment" id="comment-button"
+       class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-right descript"><%= obj.comment %></span>
+      Comment
+    </a>
+  </li>
+ </ul>

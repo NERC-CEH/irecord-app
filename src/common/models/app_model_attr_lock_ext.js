@@ -7,11 +7,12 @@ import Analytics from 'helpers/analytics';
 import userModel from 'user_model';
 
 export default {
-  setAttrLock(attr, value) {
+  setAttrLock(attr, value, survey) {
     const val = _.cloneDeep(value);
     const locks = this.get('attrLocks');
 
-    locks[attr] = val;
+    locks[survey] || (locks[survey] = {});
+    locks[survey][attr] = val;
     this.set(locks);
     this.save();
     this.trigger('change:attrLocks');
@@ -21,21 +22,24 @@ export default {
     }
   },
 
-  unsetAttrLock(attr) {
+  unsetAttrLock(attr, survey) {
     const locks = this.get('attrLocks');
-    delete locks[attr];
+    locks[survey] || (locks[survey] = {});
+
+    delete locks[survey][attr];
     this.set(locks);
     this.save();
     this.trigger('change:attrLocks');
   },
 
-  getAttrLock(attr) {
+  getAttrLock(attr, survey) {
     const locks = this.get('attrLocks');
-    return locks[attr];
+    locks[survey] || (locks[survey] = {});
+    return locks[survey][attr];
   },
 
-  isAttrLocked(attr, value = {}) {
-    let lockedVal = this.getAttrLock(attr);
+  isAttrLocked(attr, value = {}, survey) {
+    let lockedVal = this.getAttrLock(attr, survey);
     if (!lockedVal) return false; // has not been locked
     if (lockedVal === true) return true; // has been locked
     switch (attr) {
@@ -69,8 +73,8 @@ export default {
   appendAttrLocks(sample) {
     Log('AppModel:AttrLocks: appending.');
 
-    const locks = this.get('attrLocks');
-    const occurrence = sample.getOccurrence();
+    const survey = sample.metadata.survey;
+    const locks = this.get('attrLocks')[survey];
 
     _.each(locks, (value, key) => {
       // false or undefined
@@ -80,6 +84,7 @@ export default {
 
       const val = _.cloneDeep(value);
 
+      let occurrence, model;
       switch (key) {
         case 'activity':
           if (!userModel.hasActivityExpired(val)) {
@@ -99,18 +104,31 @@ export default {
           sample.set('date', new Date(val));
           break;
         case 'number':
+          occurrence = sample.getOccurrence();
           occurrence.set('number', val);
           break;
         case 'number-ranges':
+          occurrence = sample.getOccurrence();
           occurrence.set('number-ranges', val);
           break;
         case 'stage':
+          occurrence = sample.getOccurrence();
           occurrence.set('stage', val);
           break;
         case 'identifiers':
-          occurrence.set('identifiers', val);
+          model = sample;
+          if (survey === 'general') {
+            occurrence = sample.getOccurrence();
+            model = occurrence;
+          }
+          model.set('identifiers', val);
           break;
         case 'comment':
+          model = sample;
+          if (survey === 'general') {
+            occurrence = sample.getOccurrence();
+            model = occurrence;
+          }
           occurrence.set('comment', val);
           break;
         default:

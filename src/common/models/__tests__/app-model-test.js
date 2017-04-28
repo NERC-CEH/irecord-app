@@ -37,7 +37,7 @@ describe('App Model', () => {
       const appModel = new AppModel();
 
       // lock some attributes
-      appModel.setAttrLock('number', 123);
+      appModel.setAttrLock('number', 123, 'general');
 
       // create a new sample
       const sample = getRandomSample();
@@ -53,7 +53,7 @@ describe('App Model', () => {
 
       // lock some attributes
       const numberObject = { num: 1 };
-      appModel.setAttrLock('number', numberObject);
+      appModel.setAttrLock('number', numberObject, 'general');
 
       // create a new sample
       const sample = getRandomSample();
@@ -63,7 +63,7 @@ describe('App Model', () => {
       appModel.appendAttrLocks(sample2);
 
       // check if references with saved lock attributes
-      const lockNum = appModel.getAttrLock('number');
+      const lockNum = appModel.getAttrLock('number', 'general');
       lockNum.num = 2;
 
       let number = sample2.getOccurrence().get('number');
@@ -102,12 +102,12 @@ describe('App Model', () => {
       let appModel = new AppModel();
       const activity = getRandActivity();
       activity.group_to_date = '2000-01-01';
-      appModel.setAttrLock('activity', activity);
+      appModel.setAttrLock('activity', activity, 'general');
       appModel.save();
-      expect(appModel.getAttrLock('activity')).to.be.an('object');
+      expect(appModel.getAttrLock('activity', 'general')).to.be.an('object');
 
       appModel = new AppModel();
-      expect(appModel.getAttrLock('activity')).to.be.undefined;
+      expect(appModel.getAttrLock('activity', 'general')).to.be.undefined;
     });
   });
 });

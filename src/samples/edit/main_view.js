@@ -30,19 +30,19 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
+    let numberLock = appModel.isAttrLocked('number', occ.get('number'), 'general');
     if (!numberLock) {
       numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
     }
 
     const attrLocks = {
-      date: appModel.isAttrLocked('date', sample.get('date')),
-      location: appModel.isAttrLocked('location', sample.get('location')),
+      date: appModel.isAttrLocked('date', sample.get('date'), 'general'),
+      location: appModel.isAttrLocked('location', sample.get('location'), 'general'),
       number: numberLock,
-      stage: appModel.isAttrLocked('stage', occ.get('stage')),
-      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
-      comment: appModel.isAttrLocked('comment', occ.get('comment')),
-      activity: appModel.isAttrLocked('activity', sample.get('group')),
+      stage: appModel.isAttrLocked('stage', occ.get('stage'), 'general'),
+      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers'), 'general'),
+      comment: appModel.isAttrLocked('comment', occ.get('comment'), 'general'),
+      activity: appModel.isAttrLocked('activity', sample.get('group'), 'general'),
     };
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));

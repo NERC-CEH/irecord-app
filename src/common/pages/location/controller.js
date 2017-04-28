@@ -132,14 +132,14 @@ const API = {
     }
 
     const currentVal = sample.get('location') || {};
-    const locationIsLocked = appModel.isAttrLocked('location', currentVal);
+    const locationIsLocked = appModel.isAttrLocked('location', currentVal, 'general');
 
     function onPageExit() {
       sample.save()
         .then(() => {
           const attr = 'location';
           let location = sample.get('location') || {};
-          const lockedValue = appModel.getAttrLock('location');
+          const lockedValue = appModel.getAttrLock('location', 'general');
 
           if ((location.latitude && location.longitude) || location.name) {
             // we can lock loaction and name on their own
@@ -162,12 +162,12 @@ const API = {
                     name: location.name,
                   };
                 }
-                appModel.setAttrLock(attr, location);
+                appModel.setAttrLock(attr, location, 'general');
               }
             }
           } else if (lockedValue === true) {
             // reset if no location or location name selected but locked is clicked
-            appModel.setAttrLock(attr, null);
+            appModel.setAttrLock(attr, null, 'general');
           }
 
           window.history.back();
@@ -254,7 +254,11 @@ const API = {
       onLockClick() {
         // invert the lock of the attribute
         // real value will be put on exit
-        appModel.setAttrLock('location', !appModel.getAttrLock('location'));
+        appModel.setAttrLock(
+          'location',
+          !appModel.getAttrLock('location', 'general'),
+          'general'
+        );
       },
     });
 

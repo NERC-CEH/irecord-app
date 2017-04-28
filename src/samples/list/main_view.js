@@ -246,7 +246,7 @@ const MainView = Marionette.CompositeView.extend({
   },
 
   serializeData() {
-    const activity = this.options.appModel.getAttrLock('activity') || {};
+    const activity = this.options.appModel.getAttrLock('activity', 'general') || {};
     return {
       useTraining: this.options.appModel.get('useTraining'),
       activity: activity.title,
