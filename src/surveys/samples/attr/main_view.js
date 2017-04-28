@@ -55,6 +55,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const templateData = {};
+    const occ = this.model.getOccurrence();
 
     switch (this.options.attr) {
       case 'date':
@@ -66,7 +67,7 @@ export default Marionette.View.extend({
         templateData.value = this.model.get(this.options.attr);
         break;
       case 'comment':
-        templateData.value = this.model.get(this.options.attr);
+        templateData.value = occ.get(this.options.attr);
         break;
 
       default:

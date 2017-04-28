@@ -39,6 +39,7 @@ const SampleView = Marionette.View.extend({
     const location = sample.get('location') || {};
 
     return {
+      surveySampleID: this.options.surveySampleID,
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
@@ -58,6 +59,10 @@ const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
   template: JST['surveys/samples/list/list-none'],
+
+  triggers: {
+    'click #create-new-btn': 'create',
+  },
 });
 
 const MainView = _MainView.extend({
@@ -66,6 +71,12 @@ const MainView = _MainView.extend({
   childView: SampleView,
   NoSamplesView,
   serializeData() {},
+
+  childViewOptions() {
+    return {
+      surveySampleID: this.options.surveySampleID,
+    };
+  },
 });
 
 export { MainView as default, SampleView };

@@ -7,7 +7,7 @@ import JST from 'JST';
 
 export default Marionette.View.extend({
   tagName: 'nav',
-  template: JST['samples/edit/header'],
+  template: JST['surveys/edit/header'],
 
   events: {
     'click a[data-rel="back"]': 'navigateBack',

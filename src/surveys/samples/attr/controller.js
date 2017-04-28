@@ -12,30 +12,31 @@ import HeaderView from '../../../common/views/header_view';
 import LockView from '../../../common/views/attr_lock_view';
 
 const API = {
-  show(sampleID, attr) {
+  show(surveySampleID, sampleID, attr) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
       const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID, attr]);
+        API.show.apply(that, [surveySampleID, sampleID]);
       });
       return;
     }
 
-    Log('Surveys:Samples:Attr:Controller: showing.');
+    Log('Surveys:Sample:Edit:Controller: showing.');
 
-    const sample = savedSamples.get(sampleID);
+    const surveySample = savedSamples.get(surveySampleID);
     // Not found
-    if (!sample) {
+    if (!surveySample) {
       Log('No sample model found.', 'e');
       radio.trigger('app:404:show', { replace: true });
       return;
     }
 
-    // can't edit a saved one - to be removed when sample update
-    // is possible on the server
-    if (sample.getSyncStatus() === Indicia.SYNCED) {
-      radio.trigger('Surveys:show', sampleID, { replace: true });
+    const sample = surveySample.samples.get(sampleID);
+    // Not found
+    if (!sample) {
+      Log('No sample model found.', 'e');
+      radio.trigger('app:404:show', { replace: true });
       return;
     }
 
@@ -81,19 +82,7 @@ const API = {
     const attr = view.options.attr;
     // invert the lock of the attribute
     // real value will be put on exit
-    if (attr === 'number') {
-      if (appModel.getAttrLock(attr, 'plant')) {
-        appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'plant'), 'plant');
-      } else {
-        appModel.setAttrLock(
-          'number-ranges',
-          !appModel.getAttrLock('number-ranges'),
-          'plant'
-        );
-      }
-    } else {
-      appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'plant'), 'plant');
-    }
+    appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'plant'), 'plant');
   },
 
   onExit(mainView, sample, attr, callback) {
@@ -109,7 +98,7 @@ const API = {
    */
   save(attr, values, sample, callback) {
     Log('Surveys:Samples:Attr:Controller: saving.');
-
+    const occ = sample.getOccurrence();
     let currentVal;
     let newVal;
 
@@ -123,13 +112,12 @@ const API = {
           sample.set('date', newVal);
         }
         break;
-      case 'identifiers':
       case 'comment':
-        currentVal = sample.get(attr);
+        currentVal = occ.get(attr);
         newVal = values[attr];
 
         // todo:validate before setting up
-        sample.set(attr, values[attr]);
+        occ.set(attr, values[attr]);
         break;
       default:
     }

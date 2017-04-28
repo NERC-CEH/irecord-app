@@ -10,7 +10,7 @@ import StringHelp from 'helpers/string';
 import './styles.scss';
 
 export default Marionette.View.extend({
-  template: JST['samples/edit/main'],
+  template: JST['surveys/samples/edit/main'],
 
   initialize() {
     const sample = this.model.get('sample');
@@ -54,6 +54,7 @@ export default Marionette.View.extend({
     const group = sample.get('group');
 
     return {
+      surveySampleID: sample.parent.cid,
       id: sample.cid,
       scientificName,
       commonName,

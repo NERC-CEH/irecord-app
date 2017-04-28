@@ -15,7 +15,7 @@ import userModel from 'user_model';
 import savedSamples from 'saved_samples';
 import ImageModel from '../../../common/models/image';
 import MainView from './main_view';
-import HeaderView from './header_view';
+import HeaderView from '../../../common/views/header_view';
 import FooterView from './footer_view';
 
 const API = {
@@ -69,13 +69,8 @@ const API = {
 
     // HEADER
     const headerView = new HeaderView({
-      model: sample,
+      model: new Backbone.Model({ title: 'Edit' }),
     });
-
-    headerView.on('save', () => {
-      API.save(sample);
-    });
-
     radio.trigger('app:header', headerView);
 
     // FOOTER

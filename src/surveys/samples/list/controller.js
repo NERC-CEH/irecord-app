@@ -42,6 +42,14 @@ const API = {
     // MAIN
     const mainView = new MainView({
       collection: surveySample.samples,
+      surveySampleID: surveySample.cid,
+    });
+    mainView.on('childview:create', () => {
+      radio.trigger('surveys:samples:new', surveySampleID, {
+        onSuccess(taxon) {
+          API.createNewSample(surveySample, taxon);
+        },
+      });
     });
     mainView.on('childview:sample:delete', (childView) => {
       API.sampleDelete(childView.model);

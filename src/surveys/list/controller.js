@@ -48,7 +48,6 @@ const API = {
     radio.trigger('app:footer:hide');
   },
 
-
   sampleDelete(sample) {
     Log('Samples:List:Controller: deleting sample.');
 
