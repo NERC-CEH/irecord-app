@@ -32,6 +32,38 @@
     </a>
   </li>
   <li class="table-view-cell">
+    <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/stage" id="comment-button"
+       class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-right descript"><%= obj.stage %></span>
+      Stage
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/abundance" id="comment-button"
+       class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-right descript"><%= obj.abundance %></span>
+      Abundance
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/status" id="comment-button"
+       class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-right descript"><%= obj.status %></span>
+      Status
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/identifiers" id="comment-button"
+       class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-right descript"><%= obj.identifiers %></span>
+      Determiner
+    </a>
+  </li>
+  <li class="table-view-cell">
     <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/comment" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-comment"></span>
