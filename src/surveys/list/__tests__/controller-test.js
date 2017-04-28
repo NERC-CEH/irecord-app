@@ -71,11 +71,9 @@ describe('Surveys List Controller', () => {
           expect(savedSurveySample).to.be.an('object')
             .and.to.be.instanceOf(Sample);
 
-          expect(savedSurveySample.metadata.survey_id)
-            .to.be.equal(PLANT_SURVEY_ID);
-          expect(savedSurveySample.metadata.input_form)
-            .to.be.equal(PLANT_SURVEY_INPUT_FORM);
           expect(savedSurveySample.metadata.survey)
+            .to.be.equal('plant');
+          expect(savedSurveySample.metadata.complex_survey)
             .to.be.equal(true);
 
           done();

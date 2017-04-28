@@ -20,7 +20,7 @@ const API = {
     // MAIN
     const mainView = new MainView({
       collection: savedSamples.subcollection({
-        filter: model => model.metadata.survey,
+        filter: model => model.metadata.complex_survey,
       }),
       appModel,
     });
@@ -102,10 +102,9 @@ const API = {
     }
 
     const sample = new Sample(null, {
-      survey_id: survey.survey_id,
-      input_form: survey.input_form,
       metadata: {
-        survey: true,
+        survey: 'plant',
+        complex_survey: true,
       },
     });
 

@@ -58,10 +58,13 @@ const CONFIG = {
     host: HOST,
     api_key: API_KEY,
     website_id: 23,
-    survey_id: 374,
-    input_form: 'enter-app-record',
 
     surveys: {
+      general: {
+        survey_id: 374,
+        input_form: 'enter-app-record',
+      },
+
       plant: {
         survey_id: 325,
         input_form: 'enter-vascular-plants',

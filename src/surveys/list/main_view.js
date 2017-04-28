@@ -59,6 +59,7 @@ const SampleView = Marionette.View.extend({
     const location = sample.get('location') || {};
 
     return {
+      surveyLabel: 'Plant',
       id: sample.cid,
       saved: sample.metadata.saved,
       training: sample.metadata.training,

@@ -11,7 +11,6 @@ import appModel from 'app_model';
 import userModel from 'user_model';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
-import CONFIG from 'config';
 import MainView from './main_view';
 import HeaderView from '../../views/header_view';
 import SpeciesSearchEngine from './search/taxon_search_engine';
@@ -111,9 +110,9 @@ const API = {
       });
 
       const sample = new Sample(null, {
-        survey_id: CONFIG.indicia.survey_id,
-        // recording form on the iRecord website
-        input_form: CONFIG.indicia.input_form,
+        metadata: {
+          survey: 'general',
+        },
       });
       sample.addOccurrence(occurrence);
 

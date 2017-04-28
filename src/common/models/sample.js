@@ -102,6 +102,17 @@ const Sample = Indicia.Sample.extend({
   },
 
   /**
+   * Changes the plain survey key to survey specific metadata
+   */
+  onSend(submission, media) {
+    const survey = CONFIG.indicia.surveys[this.metadata.survey];
+    submission.survey_id = survey.survey_id; // eslint-disable-line
+    submission.input_form = survey.input_form; // eslint-disable-line
+
+    return Promise.resolve([submission, media]);
+  },
+
+  /**
    * Set the sample for submission and send it.
    */
   setToSend() {

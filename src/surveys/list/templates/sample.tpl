@@ -14,6 +14,8 @@
     </div>
 
     <div class="media-body">
+      <span class="survey-label"><%= obj.surveyLabel %></span>
+
       <div class="core">
         <% if (obj.date) { %>
         <span class="date"><%= obj.date %></span>
