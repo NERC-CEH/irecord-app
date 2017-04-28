@@ -13,7 +13,7 @@ import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
 const API = {
-  show() {
+  show(onSuccess) {
     Log('User:Register:Controller: showing.');
     // don't show if logged in
     if (userModel.hasLogIn()) {
@@ -48,6 +48,7 @@ const API = {
         API.login(data)
           .then(() => {
             radio.trigger('app:loader:hide');
+            onSuccess && onSuccess();
             window.history.back();
           })
           .catch((err) => {
