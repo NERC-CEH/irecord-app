@@ -150,14 +150,17 @@ header {
       margin-right: 2px;
     }
 
-    //if has any text then leave it auto width
     button:empty,
     a:empty {
       width: 50%;
-      max-width: 55px;
       margin-left: 0;
 
       text-align: center;
+    }
+
+    //if has any text then leave it auto width
+    a[data-rel="back"]:empty {
+      max-width: 55px;
     }
   }
 }

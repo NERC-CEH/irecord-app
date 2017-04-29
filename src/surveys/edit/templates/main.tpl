@@ -42,7 +42,7 @@
       Species
     </a>
   </li>
-  <li class="table-view-cell">
+  <li class="table-view-cell disabled">
     <a href="#surveys/<%- obj.id %>/edit/identifiers" id="stage-button"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-users"></span>

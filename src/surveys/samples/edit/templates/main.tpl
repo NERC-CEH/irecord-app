@@ -13,12 +13,6 @@
        class="<%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-location"></span>
 
-      <% if (obj.location_name) { %>
-      <span class="media-object pull-right descript"><%= obj.location_name %></span>
-      <% } else { %>
-      <span class="media-object pull-right descript error">Name missing</span>
-      <% } %>
-
       <% if (obj.location) { %>
       <span class="media-object pull-right descript"><%- obj.location %></span>
       <% } else { %>
@@ -31,34 +25,34 @@
       Location
     </a>
   </li>
-  <li class="table-view-cell">
+  <li class="table-view-cell disabled">
     <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/stage" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-left icon icon-stage"></span>
       <span class="media-object pull-right descript"><%= obj.stage %></span>
       Stage
     </a>
   </li>
-  <li class="table-view-cell">
+  <li class="table-view-cell disabled">
     <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/abundance" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-left icon icon-number"></span>
       <span class="media-object pull-right descript"><%= obj.abundance %></span>
       Abundance
     </a>
   </li>
-  <li class="table-view-cell">
+  <li class="table-view-cell disabled">
     <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/status" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-left icon icon-edit"></span>
       <span class="media-object pull-right descript"><%= obj.status %></span>
       Status
     </a>
   </li>
-  <li class="table-view-cell">
+  <li class="table-view-cell disabled">
     <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/identifiers" id="comment-button"
        class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-left icon icon-user-plus"></span>
       <span class="media-object pull-right descript"><%= obj.identifiers %></span>
       Determiner
     </a>

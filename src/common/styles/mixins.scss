@@ -1,5 +1,9 @@
 @mixin samples-surveys-header {
   border-bottom: 1px $header-color solid;
+  .menu-link {
+    max-width: 55px;
+  }
+
   .pull-right {
     width: 45%;
     max-width: 200px;
