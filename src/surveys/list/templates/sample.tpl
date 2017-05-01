@@ -41,6 +41,7 @@
       </div>
 
       <div class="attributes">
+        <div class="samples">Species: <b><%= obj.samples %></b></div>
         <div class="comment"><%= obj.comment %></div>
       </div>
     </div>

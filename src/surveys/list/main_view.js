@@ -67,6 +67,8 @@ const SampleView = Marionette.View.extend({
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
       location_name: location.name,
+      samples: sample.samples.length,
+      comment: sample.get('comment'),
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       date,
       img: img ? `<img src="${img}"/>` : '',
