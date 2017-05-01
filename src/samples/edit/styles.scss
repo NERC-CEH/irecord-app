@@ -36,6 +36,11 @@ ul.table-view.inputs {
 
 .descript {
   width: 52%;
+
+  &.short {
+    width: 50%;
+  }
+
   min-height: 21px;
   font-size: $text-font-size;
 

@@ -27,6 +27,14 @@
     </a>
   </li>
   <li class="table-view-cell">
+    <a href="#surveys/<%- obj.id %>/edit/vice-county" id="date-button"
+       class="<%- obj.locks['vice-county'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-address"></span>
+      <span class="media-object pull-right descript short"><%- obj['vice-county'] %></span>
+      Vice County
+    </a>
+  </li>
+  <li class="table-view-cell">
     <a href="#surveys/<%- obj.id %>/edit/date" id="date-button"
        class="<%- obj.locks['date'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-calendar"></span>

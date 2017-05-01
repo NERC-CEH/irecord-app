@@ -11,6 +11,7 @@ import JST from 'JST';
 export default Marionette.View.extend({
   initialize(options) {
     switch (options.attr) {
+      case 'vice-county':
       case 'identifiers':
         this.template = JST['common/input'];
         break;
@@ -39,6 +40,7 @@ export default Marionette.View.extend({
         }
         break;
       }
+      case 'vice-county':
       case 'identifiers':
         value = this.$el.find('input').val();
         values[attr] = StringHelp.escape(value);
@@ -65,6 +67,7 @@ export default Marionette.View.extend({
         templateData.message = 'If anyone helped with the identification please enter their name here.';
         templateData.value = this.model.get(this.options.attr);
         break;
+      case 'vice-county':
       case 'comment':
         templateData.value = this.model.get(this.options.attr);
         break;
@@ -105,6 +108,7 @@ export default Marionette.View.extend({
           });
         }
         break;
+      case 'vice-county':
       case 'identifiers':
         $input = this.$el.find('input').focus();
         if (window.cordova && Device.isAndroid()) {

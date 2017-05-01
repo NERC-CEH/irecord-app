@@ -123,6 +123,7 @@ const API = {
           sample.set('date', newVal);
         }
         break;
+      case 'vice-county':
       case 'identifiers':
       case 'comment':
         currentVal = sample.get(attr);
