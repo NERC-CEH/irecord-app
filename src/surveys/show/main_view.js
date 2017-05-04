@@ -2,6 +2,7 @@
  * Surveys List main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
+import CONFIG from 'config';
 import JST from 'JST';
 
 export default Marionette.View.extend({
@@ -13,5 +14,10 @@ export default Marionette.View.extend({
 
   triggers: {},
 
-  serializeData() {},
+  serializeData() {
+    return {
+      site_url: CONFIG.site_url,
+      id: this.model.id,
+    };
+  },
 });
