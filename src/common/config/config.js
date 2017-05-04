@@ -71,7 +71,12 @@ const CONFIG = {
 
         sample: {
           location: {
-            values(location) {
+            values(location, submission) {
+              const attributes = {};
+              attributes.location_name = location.name; // this is a native indicia attr
+
+              // add other location related attributes
+              $.extend(submission.fields, attributes);
               return location.gridref;
             },
           },
