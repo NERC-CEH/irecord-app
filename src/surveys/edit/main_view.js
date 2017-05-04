@@ -32,7 +32,7 @@ export default Marionette.View.extend({
       'vice-county': sample.get('vice-county'),
       date: DateHelp.print(sample.get('date'), true),
       species: sample.samples.length,
-      identifiers: sample.get('identifiers') && StringHelp.limit(sample.get('identifiers')),
+      recorders: (sample.get('recorders') || []).length,
       comment: sample.get('comment') && StringHelp.limit(sample.get('comment')),
       locks: {},
     };

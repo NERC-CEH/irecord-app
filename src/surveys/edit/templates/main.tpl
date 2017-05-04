@@ -50,11 +50,11 @@
       Species
     </a>
   </li>
-  <li class="table-view-cell disabled">
-    <a href="#surveys/<%- obj.id %>/edit/identifiers" id="stage-button"
+  <li class="table-view-cell">
+    <a href="#surveys/<%- obj.id %>/edit/recorders" id="stage-button"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-users"></span>
-      <span class="media-object pull-right descript"><%- obj.identifiers %></span>
+      <span class="media-object pull-right descript"><%- obj.recorders %></span>
       Recorders
     </a>
   </li>

@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Surveys List main view.
  *****************************************************************************/
+import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Device from 'helpers/device';
 import Log from 'helpers/log';
@@ -11,8 +12,11 @@ import JST from 'JST';
 export default Marionette.View.extend({
   initialize(options) {
     switch (options.attr) {
+      case 'recorders':
+        this.template = JST['surveys/attr/recorders'];
+        break;
+
       case 'vice-county':
-      case 'identifiers':
         this.template = JST['common/input'];
         break;
 
@@ -22,9 +26,14 @@ export default Marionette.View.extend({
   },
 
   events: {
+    'click button.add-new': 'addNew',
     'click input[type="radio"]': 'saveNumber',
     'input input[type="range"]': 'updateRangeInputValue',
     'change input[type="number"]': 'updateRangeSliderValue',
+  },
+
+  addNew() {
+    $('<input type="text"/>').insertAfter(this.$el.find('button'));
   },
 
   getValues() {
@@ -40,8 +49,17 @@ export default Marionette.View.extend({
         }
         break;
       }
+      case 'recorders':
+        values[attr] = [];
+        const $inputs = this.$el.find('input');
+        $inputs.each((index, input) => {
+          const val = input.value;
+          if (val) {
+            values[attr].push(StringHelp.escape(val));
+          }
+        });
+        break;
       case 'vice-county':
-      case 'identifiers':
         value = this.$el.find('input').val();
         values[attr] = StringHelp.escape(value);
         break;
@@ -63,9 +81,9 @@ export default Marionette.View.extend({
         templateData.date = DateHelp.toDateInputValue(this.model.get('date'));
         templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
-      case 'identifiers':
+      case 'recorders':
         templateData.message = 'If anyone helped with the identification please enter their name here.';
-        templateData.value = this.model.get(this.options.attr);
+        templateData.value = this.model.get(this.options.attr) || [];
         break;
       case 'vice-county':
       case 'comment':
@@ -109,7 +127,7 @@ export default Marionette.View.extend({
         }
         break;
       case 'vice-county':
-      case 'identifiers':
+      case 'recorders':
         $input = this.$el.find('input').focus();
         if (window.cordova && Device.isAndroid()) {
           window.Keyboard.show();

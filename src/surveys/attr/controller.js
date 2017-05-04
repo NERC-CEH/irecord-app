@@ -124,7 +124,7 @@ const API = {
         }
         break;
       case 'vice-county':
-      case 'identifiers':
+      case 'recorders':
       case 'comment':
         currentVal = sample.get(attr);
         newVal = values[attr];

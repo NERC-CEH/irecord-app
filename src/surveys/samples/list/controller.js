@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Surveys Samples List controller.
  *****************************************************************************/
+import _ from 'lodash';
 import Indicia from 'indicia';
 import radio from 'radio';
 import savedSamples from 'saved_samples';
@@ -140,6 +141,14 @@ const API = {
   createNewSample(surveySample, taxon, editButtonClicked) {
     return Sample.createNewSample('plant')
       .then((sample) => {
+        // set sample location to survey's location which
+        // can be corrected by GPS or user later on
+        // todo: listen for surveySample attribute changes
+        const surveyLocation = _.cloneDeep(surveySample.get('location'));
+        sample.set('location', surveyLocation);
+        sample.set('recorder_count', surveySample.get('recorder_count'));
+        sample.set('recorder_names', surveySample.get('recorder_names'));
+
         const occurrence = new Occurrence({ taxon });
         sample.addOccurrence(occurrence);
 

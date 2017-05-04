@@ -51,6 +51,19 @@ img {
   min-height: $button-height;
 }
 
+.input-group {
+  button {
+    position: absolute;
+    right: 0;
+    height: $button-height;
+    background-color: $color-white;
+
+    &+input {
+      padding-right: $button-height;
+    }
+  }
+}
+
 .input-row.error {
   height: 50px;
   border-bottom: 1px solid $color-orange;
