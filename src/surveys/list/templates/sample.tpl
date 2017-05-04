@@ -27,9 +27,11 @@
 
         <% if (obj.location) { %>
           <% if (obj.location_name) { %>
-          <span class="location"><%= obj.location_name %></span>
+          <span class="location"><%= obj.location %></span>
+          <span class="location">(<%= obj.location_name %>)</span>
           <%  } else { %>
-            <span class="location error">No location name</span>
+          <span class="location"><%= obj.location %></span>
+          <span class="location error">(No name)</span>
           <% } %>
         <% } else { %>
           <% if (obj.isLocating) { %>
