@@ -129,19 +129,29 @@ const API = {
 
   showInvalidsMessage(invalids) {
     // it wasn't saved so of course this error
-    delete invalids.sample.saved; // eslint-disable-line
+    delete invalids.attributes.saved; // eslint-disable-line
 
-    let missing = '';
-    if (invalids.occurrences) {
-      _.each(invalids.occurrences, (message, invalid) => {
+    /**
+     * Creates an invalids message recursively.
+     * @param errorModel
+     */
+    function deepErrorsMsg(errorModel) {
+      let missing = '';
+      _.each(errorModel.attributes, (message, invalid) => {
         missing += `<b>${invalid}</b> - ${message}</br>`;
       });
-    }
-    if (invalids.sample) {
-      _.each(invalids.sample, (message, invalid) => {
-        missing += `<b>${invalid}</b> - ${message}</br>`;
+
+      _.each(errorModel.samples, (model) => {
+        missing += deepErrorsMsg(model);
       });
+      _.each(errorModel.occurrences, (model) => {
+        missing += deepErrorsMsg(model);
+      });
+
+      return missing;
     }
+
+    const missing = deepErrorsMsg(invalids) || '';
 
     radio.trigger('app:dialog', {
       title: 'Sorry',

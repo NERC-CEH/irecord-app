@@ -71,11 +71,7 @@ const CONFIG = {
 
         sample: {
           location: {
-            values(location, submission) {
-              const attributes = {};
-              attributes.location_type = 'osgb';
-              $.extend(submission.fields, attributes);
-
+            values(location) {
               return location.gridref;
             },
           },

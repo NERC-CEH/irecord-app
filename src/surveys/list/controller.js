@@ -83,7 +83,7 @@ const API = {
   },
 
   addSurvey() {
-    API.addSurveySample(CONFIG.indicia.surveys.plant)
+    API.addSurveySample()
       .then((sample) => {
         radio.trigger('surveys:edit', sample.cid);
       })
@@ -96,8 +96,11 @@ const API = {
   /**
    * Creates a new survey.
    */
-  addSurveySample(survey) {
-    return Sample.createNewSample(survey, null, null).then((sample) => {
+  addSurveySample() {
+    return Sample.createNewSample('plant', null, null).then((sample) => {
+      sample.set('recorder_count', 1);
+      sample.set('recorder_names', 'me');
+
       return sample.save().then(() => {
         savedSamples.add(sample);
         sample.startGPS();

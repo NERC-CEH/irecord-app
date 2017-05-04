@@ -16,43 +16,43 @@ import GeolocExtension from './sample_geoloc_ext';
 
 const surveyVerify = {
   general(attrs) {
-    const sample = {};
+    const attributes = {};
     const occurrences = {};
 
     // todo: remove this bit once sample DB update is possible
     // check if saved or already send
     if (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED) {
-      sample.send = false;
+      attributes.send = false;
     }
 
     // location
     const location = attrs.location || {};
     if (!location.latitude || !location.longitude) {
-      sample.location = 'missing';
+      attributes.location = 'missing';
     }
     // location name
     if (!location.name) {
-      sample['location name'] = 'missing';
+      attributes['location name'] = 'missing';
     }
 
     // date
     if (!attrs.date) {
-      sample.date = 'missing';
+      attributes.date = 'missing';
     } else {
       const date = new Date(attrs.date);
       if (date === 'Invalid Date' || date > new Date()) {
-        sample.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
+        attributes.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
       }
     }
 
     // location type
     if (!attrs.location_type) {
-      sample.location_type = 'can\'t be blank';
+      attributes.location_type = 'can\'t be blank';
     }
 
     // occurrences
     if (this.occurrences.length === 0) {
-      sample.occurrences = 'no species selected';
+      attributes.occurrences = 'no species selected';
     } else {
       this.occurrences.each((occurrence) => {
         const errors = occurrence.validate(null, { remote: true });
@@ -63,43 +63,63 @@ const surveyVerify = {
       });
     }
 
-    return [sample, occurrences];
+    return [attributes, occurrences];
   },
 
   plant(attrs) {
-    const sample = {};
+    const attributes = {};
+    const samples = {};
     const occurrences = {};
 
     // todo: remove this bit once sample DB update is possible
     // check if saved or already send
-    if (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED) {
-      sample.send = false;
+    if (!this.parent && (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)) {
+      attributes.send = false;
     }
 
     // location
     const location = attrs.location || {};
     if (!location.latitude || !location.longitude) {
-      sample.location = 'missing';
+      attributes.location = 'missing';
     }
-    // location name
-    if (!location.name) {
-      sample['location name'] = 'missing';
+    // location name only for survey level
+    if (!this.parent && !location.name) {
+      attributes['location name'] = 'missing';
     }
 
     // date
     if (!attrs.date) {
-      sample.date = 'missing';
+      attributes.date = 'missing';
     } else {
       const date = new Date(attrs.date);
       if (date === 'Invalid Date' || date > new Date()) {
-        sample.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
+        attributes.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
       }
     }
 
     // location type
     if (!attrs.location_type) {
-      sample.location_type = 'can\'t be blank';
+      attributes.location_type = 'can\'t be blank';
     }
+
+    // recorder names
+    if (!attrs.recorder_names) {
+      attributes.recorder_names = 'can\'t be blank';
+    }
+
+    // recorder count
+    if (!attrs.recorder_count) {
+      attributes.recorder_count = 'can\'t be blank';
+    }
+
+    // subsamples
+    this.samples.each((subSample) => {
+      const errors = subSample.validate(null, { remote: true });
+      if (errors) {
+        const sampleID = subSample.cid;
+        samples[sampleID] = errors;
+      }
+    });
 
     // occurrences
     this.occurrences.each((occurrence) => {
@@ -110,7 +130,8 @@ const surveyVerify = {
       }
     });
 
-    return [sample, occurrences];
+
+    return [attributes, samples, occurrences];
   },
 };
 
@@ -127,7 +148,11 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
   // warehouse attribute keys
   keys() {
     if (this.metadata.survey === 'plant') {
-      return _.extend({}, CONFIG.indicia.sample, CONFIG.indicia.surveys.sample);
+      return _.extend(
+        {},
+        CONFIG.indicia.sample, // general keys
+        CONFIG.indicia.surveys.plant.sample // plant specific keys
+      );
     }
     return CONFIG.indicia.sample;
   },
@@ -149,19 +174,18 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
     this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
   },
 
-  validateRemote(attributes) {
+  validateRemote() {
     if (!surveyVerify[this.metadata.survey]) {
       Log('Sample:model: no such survey in remote verify.', 'e');
       return false;
     }
-    const attrs = _.extend({}, this.attributes, attributes);
-
     const verify = surveyVerify[this.metadata.survey].bind(this);
-    const [sample, occurrences] = verify(attrs);
+    const [attributes, samples, occurrences] = verify(this.attributes);
 
-    if (!_.isEmpty(sample) || !_.isEmpty(occurrences)) {
+    if (!_.isEmpty(attributes) || !_.isEmpty(samples) || !_.isEmpty(occurrences)) {
       const errors = {
-        sample,
+        attributes,
+        samples,
         occurrences,
       };
       return errors;
@@ -284,13 +308,14 @@ const helpers = {
     if (survey === 'plant') {
       sample = new Sample({
         location_type: 'british',
+        sample_method_id: 7305,
       }, {
         metadata: {
           survey: 'plant',
           complex_survey: true,
         },
       });
-      return sample;
+      return Promise.resolve(sample);
     }
 
     // general survey
