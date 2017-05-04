@@ -14,38 +14,8 @@ import store from '../store';
 import ImageModel from '../../common/models/image';
 import GeolocExtension from './sample_geoloc_ext';
 
-let Sample = Indicia.Sample.extend({ // eslint-disable-line
-  api_key: CONFIG.indicia.api_key,
-  host_url: CONFIG.indicia.host,
-  user: userModel.getUser.bind(userModel),
-  password: userModel.getPassword.bind(userModel),
-
-  store, // offline store
-
-  Occurrence,
-
-  keys: CONFIG.indicia.sample, // warehouse attribute keys
-
-  /**
-   * Need a function because Device might not be ready on module load.
-   * @returns {{device: *, device_version: *}}
-   */
-  defaults() {
-    return {
-      // attach device information
-      device: Device.getPlatform(),
-      device_version: Device.getVersion(),
-    };
-  },
-
-  initialize() {
-    this.checkExpiredGroup(); // activities
-    this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
-  },
-
-  validateRemote(attributes) {
-    const attrs = _.extend({}, this.attributes, attributes);
-
+const surveyVerify = {
+  general(attrs) {
     const sample = {};
     const occurrences = {};
 
@@ -93,6 +63,102 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
       });
     }
 
+    return [sample, occurrences];
+  },
+
+  plant(attrs) {
+    const sample = {};
+    const occurrences = {};
+
+    // todo: remove this bit once sample DB update is possible
+    // check if saved or already send
+    if (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED) {
+      sample.send = false;
+    }
+
+    // location
+    const location = attrs.location || {};
+    if (!location.latitude || !location.longitude) {
+      sample.location = 'missing';
+    }
+    // location name
+    if (!location.name) {
+      sample['location name'] = 'missing';
+    }
+
+    // date
+    if (!attrs.date) {
+      sample.date = 'missing';
+    } else {
+      const date = new Date(attrs.date);
+      if (date === 'Invalid Date' || date > new Date()) {
+        sample.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
+      }
+    }
+
+    // location type
+    if (!attrs.location_type) {
+      sample.location_type = 'can\'t be blank';
+    }
+
+    // occurrences
+    this.occurrences.each((occurrence) => {
+      const errors = occurrence.validate(null, { remote: true });
+      if (errors) {
+        const occurrenceID = occurrence.cid;
+        occurrences[occurrenceID] = errors;
+      }
+    });
+
+    return [sample, occurrences];
+  },
+};
+
+let Sample = Indicia.Sample.extend({ // eslint-disable-line
+  api_key: CONFIG.indicia.api_key,
+  host_url: CONFIG.indicia.host,
+  user: userModel.getUser.bind(userModel),
+  password: userModel.getPassword.bind(userModel),
+
+  store, // offline store
+
+  Occurrence,
+
+  // warehouse attribute keys
+  keys() {
+    if (this.metadata.survey === 'plant') {
+      return _.extend({}, CONFIG.indicia.sample, CONFIG.indicia.surveys.sample);
+    }
+    return CONFIG.indicia.sample;
+  },
+
+  /**
+   * Need a function because Device might not be ready on module load.
+   * @returns {{device: *, device_version: *}}
+   */
+  defaults() {
+    return {
+      // attach device information
+      device: Device.getPlatform(),
+      device_version: Device.getVersion(),
+    };
+  },
+
+  initialize() {
+    this.checkExpiredGroup(); // activities
+    this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
+  },
+
+  validateRemote(attributes) {
+    if (!surveyVerify[this.metadata.survey]) {
+      Log('Sample:model: no such survey in remote verify.', 'e');
+      return false;
+    }
+    const attrs = _.extend({}, this.attributes, attributes);
+
+    const verify = surveyVerify[this.metadata.survey].bind(this);
+    const [sample, occurrences] = verify(attrs);
+
     if (!_.isEmpty(sample) || !_.isEmpty(occurrences)) {
       const errors = {
         sample,
@@ -111,6 +177,14 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
     const survey = CONFIG.indicia.surveys[this.metadata.survey];
     submission.survey_id = survey.survey_id; // eslint-disable-line
     submission.input_form = survey.input_form; // eslint-disable-line
+
+    // add the survey_id to subsamples too
+    if (this.metadata.survey === 'plant') {
+      submission.samples.forEach((subSample) => {
+        subSample.survey_id = survey.survey_id; // eslint-disable-line
+        subSample.input_form = survey.input_form; // eslint-disable-line
+      });
+    }
 
     return Promise.resolve([submission, media]);
   },
@@ -199,13 +273,33 @@ const helpers = {
    * @param taxon
    * @returns {*}
    */
-  createNewSample(image, taxon) {
+  createNewSample(survey, image, taxon) {
+    if (!survey) {
+      return Promise.reject(new Error('Survey options are missing.'));
+    }
+
+    let sample;
+
+    // plant survey
+    if (survey === 'plant') {
+      sample = new Sample({
+        location_type: 'british',
+      }, {
+        metadata: {
+          survey: 'plant',
+          complex_survey: true,
+        },
+      });
+      return sample;
+    }
+
+    // general survey
     const occurrence = new Occurrence({ taxon });
     if (image) {
       occurrence.addMedia(image);
     }
 
-    const sample = new Sample(null, {
+    sample = new Sample(null, {
       metadata: {
         survey: 'general',
       },

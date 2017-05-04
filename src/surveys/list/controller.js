@@ -97,25 +97,16 @@ const API = {
    * Creates a new survey.
    */
   addSurveySample(survey) {
-    if (!survey) {
-      return Promise.reject(new Error('Survey options are missing.'));
-    }
-
-    const sample = new Sample(null, {
-      metadata: {
-        survey: 'plant',
-        complex_survey: true,
-      },
+    return Sample.createNewSample(survey, null, null).then((sample) => {
+      return sample.save().then(() => {
+        savedSamples.add(sample);
+        sample.startGPS();
+        return sample;
+      });
     });
 
     // append locked attributes
     // appModel.appendAttrLocks(sample);
-
-    return sample.save().then(() => {
-      savedSamples.add(sample);
-      sample.startGPS();
-      return sample;
-    });
   },
 };
 

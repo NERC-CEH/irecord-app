@@ -149,7 +149,7 @@ const API = {
   createNewSample() {
     radio.trigger('samples:edit:attr', null, 'taxon', {
       onSuccess(taxon, editButtonClicked) {
-        Sample.createNewSample(null, taxon)
+        Sample.createNewSample('general', null, taxon)
           .then(sample => sample.save())
           .then((sample) => {
             // add to main collection

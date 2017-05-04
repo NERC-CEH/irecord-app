@@ -5,6 +5,7 @@ import Indicia from 'indicia';
 import radio from 'radio';
 import savedSamples from 'saved_samples';
 import Log from 'helpers/log';
+import Occurrence from 'occurrence';
 import Sample from 'sample';
 import ImageHelp from 'helpers/image';
 import appModel from 'app_model';
@@ -137,11 +138,13 @@ const API = {
    * @param taxon
    */
   createNewSample(surveySample, taxon, editButtonClicked) {
-    return Sample.createNewSample()
+    return Sample.createNewSample('plant')
       .then((sample) => {
-        const occ = sample.getOccurrence();
-        occ.set('taxon', taxon);
+        const occurrence = new Occurrence({ taxon });
+        sample.addOccurrence(occurrence);
+
         surveySample.addSample(sample);
+
         return surveySample.save().then(() => {
           if (editButtonClicked) {
             radio.trigger(
