@@ -52,6 +52,7 @@ const API = {
           API.createNewSample(surveySample, taxon, editButtonClicked);
         },
         showEditButton: true,
+        informalGroups: [89],
       });
     });
     mainView.on('childview:sample:delete', (childView) => {

@@ -15,18 +15,20 @@ let commonNamePointers;
 const MAX = 20;
 
 const API = {
-  init(callback) {
+  init() {
     Log('Taxon search engine: initializing.');
     const that = this;
 
-    loading = true;
-    require.ensure([], () => {
-      loading = false;
-      species = require('species.data');
-      commonNamePointers = require('species_names.data');
-      that.trigger('data:loaded');
-      callback && callback();
-    }, 'data');
+    return new Promise((resolve) => {
+      loading = true;
+      require.ensure([], () => {
+        loading = false;
+        species = require('species.data');
+        commonNamePointers = require('species_names.data');
+        that.trigger('data:loaded');
+        resolve();
+      }, 'data');
+    });
   },
 
   /**
@@ -42,21 +44,29 @@ const API = {
      synonym: "Common name synonym"
    }
    */
-  search(searchPhrase, callback, maxResults = MAX, scientificOnly) {
+  search(searchPhrase, options = {}) {
+    // check if data exists
     if (!species) {
-      // initialize
-      function proceed() {
-        API.search(searchPhrase || '', callback, maxResults, scientificOnly);
+      const that = this;
+
+      // initialise data load
+      if (!loading) {
+        return API.init()
+          .then(() => API.search(searchPhrase || '', options));
       }
 
-      if (!loading) {
-        API.init(proceed);
-      } else {
+      // wait until loaded
+      return new Promise((resolve) => {
         // the process has started, wait until done
-        this.on('data:loaded', proceed);
-      }
-      return;
+        that.on('data:loaded', () => {
+          API.search(searchPhrase || '', options).then(resolve);
+        });
+      });
     }
+
+    const maxResults = options.maxResults || MAX;
+    const scientificOnly = options.scientificOnly;
+    const informalGroups = options.informalGroups || [];
 
     let results = [];
 
@@ -69,20 +79,22 @@ const API = {
     const isScientific = helpers.isPhraseScientific(normSearchPhrase);
     if (isScientific || scientificOnly) {
       // search sci names
-      searchSciNames(species, normSearchPhrase, results, maxResults);
+      searchSciNames(species, normSearchPhrase,
+        results, maxResults, null, informalGroups);
     } else {
       // search common names
-      results = searchCommonNames(species, commonNamePointers, normSearchPhrase);
+      results = searchCommonNames(species, commonNamePointers, normSearchPhrase, MAX, informalGroups);
 
       // if not enough
       if (results.length <= MAX) {
         // search sci names
-        searchSciNames(species, normSearchPhrase, results);
+        searchSciNames(species, normSearchPhrase,
+          results, MAX, null, informalGroups);
       }
     }
 
     // return results in the order
-    callback(results);
+    return Promise.resolve(results);
   },
 };
 

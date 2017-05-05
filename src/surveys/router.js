@@ -53,7 +53,7 @@ radio.on('surveys:samples:edit', (surveySampleID, sampleID, options) => {
 
 radio.on('surveys:samples:edit:taxon', (surveySampleID, sampleID, options = {}) => {
   App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit/taxon`, options);
-  SamplesEditTaxonController.show(options.onSuccess, options.showEditButton);
+  SamplesEditTaxonController.show(options);
 });
 
 App.on('before:start', () => {

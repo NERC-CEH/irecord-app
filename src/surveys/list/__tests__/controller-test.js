@@ -59,26 +59,22 @@ describe('Surveys List Controller', () => {
   it('should add new survey', (done) => {
     expect(API.addSurveySample).to.be.a('function');
 
-    // should require survey ID param
-    API.addSurveySample().catch(() => {
-      expect(savedSamples.length).to.be.equal(0);
-      API.addSurveySample(CONFIG.indicia.surveys.plant)
-        .then((sample) => {
-          expect(sample).to.be.instanceOf(Sample);
+    API.addSurveySample()
+      .then((sample) => {
+        expect(sample).to.be.instanceOf(Sample);
 
-          expect(savedSamples.length).to.be.equal(1);
-          const savedSurveySample = savedSamples.at(0);
-          expect(savedSurveySample).to.be.an('object')
-            .and.to.be.instanceOf(Sample);
+        expect(savedSamples.length).to.be.equal(1);
+        const savedSurveySample = savedSamples.at(0);
+        expect(savedSurveySample).to.be.an('object')
+          .and.to.be.instanceOf(Sample);
 
-          expect(savedSurveySample.metadata.survey)
-            .to.be.equal('plant');
-          expect(savedSurveySample.metadata.complex_survey)
-            .to.be.equal(true);
+        expect(savedSurveySample.metadata.survey)
+          .to.be.equal('plant');
+        expect(savedSurveySample.metadata.complex_survey)
+          .to.be.equal(true);
 
-          done();
-        })
-        .catch(err => done(err));
-    });
+        done();
+      })
+      .catch(err => done(err));
   });
 });
