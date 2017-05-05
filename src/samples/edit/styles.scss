@@ -40,6 +40,9 @@ ul.table-view.inputs {
   &.short {
     width: 50%;
   }
+  &.long {
+    width: 90%;
+  }
 
   min-height: 21px;
   font-size: $text-font-size;
