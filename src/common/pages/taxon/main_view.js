@@ -50,9 +50,19 @@ const SpeciesView = Marionette.View.extend({
     };
   },
 
+  /**
+   * Highlight the searched parts of taxa names.
+   * @param name
+   * @param searchPhrase
+   * @returns {*}
+   * @private
+   */
   _prettifyName(name, searchPhrase) {
+    let prettyName = name;
     const searchPos = name.toLowerCase().indexOf(searchPhrase);
-    const prettyName = `${name.slice(0, searchPos)}<b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>${name.slice(searchPos + searchPhrase.length)}`;
+    if (searchPos >= 0) {
+      prettyName = `${name.slice(0, searchPos)}<b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>${name.slice(searchPos + searchPhrase.length)}`;
+    }
 
     return prettyName;
   },

@@ -68,9 +68,11 @@ const API = {
         // Silene suecica with have been (wrongly) assigned the same
         // vernacular name
         const previousQualified = Object.assign({}, previous);
-        previousQualified._deduped_common_name = `${previous.common_name} <small><i>(${previous.scientific_name})</i></small>`;
-        // replace last result with qualified copy
-        results[results.length - 1] = previousQualified; // eslint-disable-line
+        if (!previousQualified._deduped_common_name) {
+          previousQualified._deduped_common_name = `${previous.common_name} <small><i>(${previous.scientific_name})</i></small>`;
+          // replace last result with qualified copy
+          results[results.length - 1] = previousQualified; // eslint-disable-line
+        }
 
         const currentQualified = Object.assign({}, taxon);
         currentQualified._deduped_common_name = `${taxon.common_name} <small><i>(${taxon.scientific_name})</i></small>`;
