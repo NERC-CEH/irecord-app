@@ -23,6 +23,7 @@ function getRandomSample() {
   });
 
   sample.metadata.saved = true;
+  sample.metadata.survey = 'general';
 
   return sample;
 }
@@ -38,29 +39,31 @@ describe('Sample', () => {
   describe('validation', () => {
     it('should return sample send false invalid if not saved', () => {
       const sample = new Sample();
+      sample.metadata.survey = 'general';
       expect(sample.validate).to.be.a('function');
       sample.clear();
 
       const invalids = sample.validate(null, { remote: true });
-      expect(invalids.sample.send).to.be.false;
+      expect(invalids.attributes.send).to.be.false;
     });
 
-    it('should return sample and occurrence objects with invalids', () => {
+    it('should return attributes and occurrence objects with invalids', () => {
       const sample = new Sample();
+      sample.metadata.survey = 'general';
       sample.metadata.saved = true;
       sample.clear();
 
       let invalids = sample.validate({}, { remote: true });
       expect(invalids).to.be.an('object')
-        .and.have.property('sample')
+        .and.have.property('attributes')
         .and.have.property('occurrences');
 
       // sample
-      expect(invalids.sample).to.have.property('date');
-      expect(invalids.sample).to.have.property('location');
-      expect(invalids.sample).to.have.property('location name');
-      expect(invalids.sample).to.have.property('location_type');
-      expect(invalids.sample).to.have.property('occurrences');
+      expect(invalids.attributes).to.have.property('date');
+      expect(invalids.attributes).to.have.property('location');
+      expect(invalids.attributes).to.have.property('location name');
+      expect(invalids.attributes).to.have.property('location_type');
+      expect(invalids.attributes).to.have.property('occurrences');
 
       // occurrence
       expect(invalids.occurrences)
@@ -90,6 +93,8 @@ describe('Sample', () => {
 
     it('should not send if invalid, but set validationError', () => {
       const sample = new Sample();
+      sample.metadata.survey = 'general';
+
       const valid = sample.setToSend();
       expect(valid).to.be.false;
 

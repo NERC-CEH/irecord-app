@@ -63,7 +63,7 @@ const surveyVerify = {
       });
     }
 
-    return [attributes, occurrences];
+    return [attributes, null, occurrences];
   },
 
   plant(attrs) {
@@ -177,8 +177,9 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
   validateRemote() {
     if (!surveyVerify[this.metadata.survey]) {
       Log('Sample:model: no such survey in remote verify.', 'e');
-      return false;
+      throw new Error('No sample survey to verify.');
     }
+
     const verify = surveyVerify[this.metadata.survey].bind(this);
     const [attributes, samples, occurrences] = verify(this.attributes);
 

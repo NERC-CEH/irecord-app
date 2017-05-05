@@ -78,17 +78,23 @@ export default {
       // try to find all species in the internal taxa database
       data.forEach((stat) => {
         const parsePromise = new Promise((fulfill) => {
+          const options = {
+            maxResults: 1,
+            scientificOnly: true,
+          };
+
           // turn it to a full species descriptor from species data set
-          SpeciesSearchEngine.search(stat.taxon, (results) => {
-            const foundedSpecies = results[0];
-            if (results.length && foundedSpecies.scientific_name === stat.taxon) {
-              if (foundedSpecies.common_name) {
-                foundedSpecies.found_in_name = 'common_name';
+          SpeciesSearchEngine.search(stat.taxon, options)
+            .then((results) => {
+              const foundedSpecies = results[0];
+              if (results.length && foundedSpecies.scientific_name === stat.taxon) {
+                if (foundedSpecies.common_name) {
+                  foundedSpecies.found_in_name = 'common_name';
+                }
+                species.push(foundedSpecies);
               }
-              species.push(foundedSpecies);
-            }
-            fulfill();
-          }, 1, true);
+              fulfill();
+            });
         });
 
         toWait.push(parsePromise);
