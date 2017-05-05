@@ -12,6 +12,7 @@ import App from 'app';
 import radio from 'radio';
 import appModel from 'app_model';
 import userModel from 'user_model';
+import CONFIG from 'config';
 import savedSamples from 'saved_samples';
 import ImageModel from '../../../common/models/image';
 import MainView from './main_view';
@@ -70,6 +71,7 @@ const API = {
         onSuccess(taxon) {
           API.updateTaxon(sample, taxon);
         },
+        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
       });
     });
 

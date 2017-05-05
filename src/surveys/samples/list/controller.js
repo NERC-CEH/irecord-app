@@ -9,6 +9,7 @@ import Log from 'helpers/log';
 import Occurrence from 'occurrence';
 import Sample from 'sample';
 import ImageHelp from 'helpers/image';
+import CONFIG from 'config';
 import appModel from 'app_model';
 import MainView from './main_view';
 import HeaderView from './header_view';
@@ -52,7 +53,7 @@ const API = {
           API.createNewSample(surveySample, taxon, editButtonClicked);
         },
         showEditButton: true,
-        informalGroups: [89],
+        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
       });
     });
     mainView.on('childview:sample:delete', (childView) => {
@@ -76,6 +77,7 @@ const API = {
           API.createNewSample(surveySample, taxon, editButtonClicked);
         },
         showEditButton: true,
+        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
       });
     });
 

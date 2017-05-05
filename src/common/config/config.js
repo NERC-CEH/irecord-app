@@ -69,6 +69,8 @@ const CONFIG = {
         survey_id: 325,
         input_form: 'enter-vascular-plants',
 
+        informal_groups: [89],
+
         sample: {
           location: {
             values(location, submission) {
