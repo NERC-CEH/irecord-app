@@ -33,11 +33,18 @@ const SpeciesView = Marionette.View.extend({
   serializeData() {
     const foundInName = this.model.get('found_in_name');
 
-    let name = this._prettifyName(this.model.get(foundInName), this.options.searchPhrase);
-    name = this.model.get(foundInName);
+    let name;
+    if (foundInName === 'common_name' && this.model.get('_deduped_common_name')) {
+      name = this.model.get('_deduped_common_name');
+    } else {
+      name = this.model.get(foundInName);
+    }
+
+    const prettyName = this._prettifyName(name, this.options.searchPhrase);
+    // name = this.model.get(foundInName);
 
     return {
-      name,
+      name: prettyName,
       showEditButton: this.options.showEditButton,
       group: informalGroups[this.model.get('group')],
     };
@@ -45,9 +52,7 @@ const SpeciesView = Marionette.View.extend({
 
   _prettifyName(name, searchPhrase) {
     const searchPos = name.toLowerCase().indexOf(searchPhrase);
-    const prettyName = `${name.slice(0, searchPos)}
-    <b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>
-    ${name.slice(searchPos + searchPhrase.length)}`;
+    const prettyName = `${name.slice(0, searchPos)}<b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>${name.slice(searchPos + searchPhrase.length)}`;
 
     return prettyName;
   },

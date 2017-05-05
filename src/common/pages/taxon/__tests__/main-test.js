@@ -32,7 +32,7 @@ function getRandomSpecies() {
 describe('Taxon Search Engine', () => {
   before((done) => {
     // todo: remove this as the engine should work without it!
-    searchEngine.init(done);
+    searchEngine.init().then(done);
   });
 
   it('should be an API object with search function', () => {
@@ -43,14 +43,14 @@ describe('Taxon Search Engine', () => {
 
   describe('search', () => {
     it('should accept a string and a callback', (done) => {
-      searchEngine.search('blackbird', () => {
+      searchEngine.search('blackbird').then(() => {
         done();
       });
     });
 
     it('should accept both capitalized and lowercase strings', (done) => {
-      searchEngine.search('blackbird', (results) => {
-        searchEngine.search('Blackbird', (results2) => {
+      searchEngine.search('blackbird').then((results) => {
+        searchEngine.search('Blackbird').then((results2) => {
           expect(results).to.deep.equal(results2);
           done();
         });
@@ -59,7 +59,7 @@ describe('Taxon Search Engine', () => {
 
     describe('common names', () => {
       it('should look into middle names', (done) => {
-        searchEngine.search('woodpecker', (results) => {
+        searchEngine.search('woodpecker').then((results) => {
           expect(results).to.be.an('array');
           expect(results.length > 0).to.be.true;
           done();
@@ -69,12 +69,12 @@ describe('Taxon Search Engine', () => {
 
     it('should treat non alpha numeric characters as spaces', (done) => {
       // todo: check "Wakely's Dowd"
-      searchEngine.search('Isle-of-Man Cabbage', (results) => {
-        searchEngine.search('Isle of Man Cabbage', (resultsDash) => {
+      searchEngine.search('Isle-of-Man Cabbage').then((results) => {
+        searchEngine.search('Isle of Man Cabbage').then((resultsDash) => {
           expect(results).to.deep.equal(resultsDash);
 
-          searchEngine.search('Perfoliate (Cotswold) Pennycress', (results) => {
-            searchEngine.search('Perfoliate Cotswold Pennycress', (resultsBracket) => {
+          searchEngine.search('Perfoliate (Cotswold) Pennycress').then((results) => {
+            searchEngine.search('Perfoliate Cotswold Pennycress').then((resultsBracket) => {
               expect(results).to.deep.equal(resultsBracket);
               done();
             });
@@ -83,11 +83,11 @@ describe('Taxon Search Engine', () => {
       });
     });
     it('should accept hybrids', (done) => {
-      searchEngine.search('Caryopteris incana x mongholica =', (results) => {
+      searchEngine.search('Caryopteris incana x mongholica =').then((results) => {
         expect(results).to.be.an('array');
         expect(results.length).to.equal(1);
 
-        searchEngine.search('X Cupressocyparis', (results) => {
+        searchEngine.search('X Cupressocyparis').then((results) => {
           expect(results).to.be.an('array');
           expect(results.length).to.equal(1);
           done();
@@ -96,7 +96,7 @@ describe('Taxon Search Engine', () => {
     });
 
     it('should find genus common names', (done) => {
-      searchEngine.search('Willow', (results) => {
+      searchEngine.search('Willow').then((results) => {
         expect(results).to.be.an('array');
         let found = false;
         results.forEach((result) => {
@@ -104,7 +104,7 @@ describe('Taxon Search Engine', () => {
             result.synonym === 'Willow') found = true;
         });
         expect(found).to.be.true;
-        searchEngine.search('Jumping spiders', (results) => {
+        searchEngine.search('Jumping spiders').then((results) => {
           expect(results).to.be.an('array');
           expect(results.length).to.equal(1);
           done();
@@ -114,7 +114,7 @@ describe('Taxon Search Engine', () => {
 
     describe('genus', () => {
       it('should add all species belonging to it', (done) => {
-        searchEngine.search('Puffinus', (results) => {
+        searchEngine.search('Puffinus').then((results) => {
           expect(results.length).to.be.equal(9);
           const genus = results[0];
           expect(genus.warehouse_id).to.be.equal(141974);
@@ -129,7 +129,7 @@ describe('Taxon Search Engine', () => {
     });
 
     // const SEARCH_TIMES = 10000;
-    // describe(`random taxa search ${SEARCH_TIMES}`, () => {
+    // describe(`random taxa search ${SEARCH_TIMES}`).then(() => {
     //  // random search of 100 names
     //  const speciesToSearch = [];
     //  for (let i = 0; i < SEARCH_TIMES; i++) {
@@ -139,7 +139,7 @@ describe('Taxon Search Engine', () => {
     //  // go through selected species names
     //  speciesToSearch.forEach(function(species) {
     //    it(`should find ${species[NAME]} (${species[WAREHOUSE_ID]})`, (done) => {
-    //      searchEngine.search(species[NAME], (results) => {
+    //      searchEngine.search(species[NAME]).then((results) => {
     //        expect(results).to.not.be.empty;
     //
     //        //check all results
@@ -158,7 +158,7 @@ describe('Taxon Search Engine', () => {
     // });
 
     it('should work with selected taxa', (done) => {
-      searchEngine.search('Phytomyza ilicis', (results) => {
+      searchEngine.search('Phytomyza ilicis').then((results) => {
         expect(results).to.not.be.empty;
         const result = results[0];
 
@@ -166,7 +166,7 @@ describe('Taxon Search Engine', () => {
         expect(result.scientific_name).to.be.equal('Phytomyza ilicis');
 
         // genus
-        searchEngine.search('Rotaliella', (results) => {
+        searchEngine.search('Rotaliella').then((results) => {
           expect(results).to.not.be.empty;
           const result = results[0];
 
@@ -174,7 +174,7 @@ describe('Taxon Search Engine', () => {
           expect(result.scientific_name).to.be.equal('Rotaliella');
 
           // common name
-          searchEngine.search('Giant Blackberry', (results) => {
+          searchEngine.search('Giant Blackberry').then((results) => {
             expect(results).to.not.be.empty;
             const result = results[0];
 
@@ -183,7 +183,7 @@ describe('Taxon Search Engine', () => {
             expect(result.scientific_name).to.be.equal('Rubus armeniacus');
 
            // specific cases
-            searchEngine.search('cockle', (results) => {
+            searchEngine.search('cockle').then((results) => {
               expect(results).to.not.be.empty;
               let found = false;
               results.forEach((species) => {
@@ -191,7 +191,7 @@ describe('Taxon Search Engine', () => {
               });
               expect(found).to.be.true;
 
-              searchEngine.search('blackthorn', (results) => {
+              searchEngine.search('blackthorn').then((results) => {
                 expect(results).to.not.be.empty;
                 let found = false;
                 results.forEach((species) => {
@@ -208,14 +208,14 @@ describe('Taxon Search Engine', () => {
 
     describe('return', () => {
       it('should be an array', (done) => {
-        searchEngine.search('blackbird', (results) => {
+        searchEngine.search('blackbird').then((results) => {
           expect(results).to.be.an('array');
           expect(results.length).to.equal(8);
           done();
         });
       });
       it('should hold warehouse_id', (done) => {
-        searchEngine.search('blackbird', (results) => {
+        searchEngine.search('blackbird').then((results) => {
           const result = results[0];
 
           expect(result).to.be.an('object');
