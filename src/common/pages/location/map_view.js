@@ -15,7 +15,7 @@ import LocHelp from 'helpers/location';
 import CONFIG from 'config';
 import 'typeahead';
 import mapMarker from './map_view_marker';
-import locationNameFinder from './location_name_search';
+import typeaheadSearchFn from 'common/typeahead_search';
 
 const DEFAULT_LAYER = 'OS';
 const DEFAULT_CENTER = [53.7326306, -2.6546124];
@@ -57,6 +57,9 @@ const MapView = Marionette.View.extend({
   },
 
   addLocationNameSearch() {
+    const appModel = this.model.get('appModel');
+    const strs = appModel.get('locations');
+
     this.$el.find('.typeahead').typeahead({
       hint: false,
       highlight: false,
@@ -65,7 +68,7 @@ const MapView = Marionette.View.extend({
       {
         limit: 3,
         name: 'names',
-        source: locationNameFinder(3),
+        source: typeaheadSearchFn(strs, 3, a => a.name),
       });
   },
 

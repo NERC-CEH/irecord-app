@@ -2,9 +2,8 @@
  * Returns a location name search function.
  */
 import _ from 'lodash';
-import appModel from 'app_model';
 
-function substringMatcher(strs, max) {
+export default (strs, max, strProcessor) => {
   return function findMatches(q, cb) {
     // an array that will be populated with substring matches
     const matches = [];
@@ -15,20 +14,19 @@ function substringMatcher(strs, max) {
     // iterate through the pool of strings and for any string that
     // contains the substring `q`, add it to the `matches` array
     for (let length = strs.length, i = 0; i < length && matches.length < max; i++) {
-      const str = strs[i];
-      if (str.name && substrRegex.test(str.name)) {
+      let str = strs[i];
+      if (strProcessor) {
+        str = strProcessor(strs[i]);
+      }
+
+      if (str && substrRegex.test(str)) {
         // check if not duplicate
-        if (_.indexOf(matches, str.name) < 0) {
-          matches.push(str.name);
+        if (_.indexOf(matches, str) < 0) {
+          matches.push(str);
         }
       }
     }
 
     cb(matches);
   };
-}
-
-export default (max) => {
-  const previousLocations = appModel.get('locations');
-  return substringMatcher(previousLocations, max);
 };

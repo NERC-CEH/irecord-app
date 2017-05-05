@@ -5,7 +5,7 @@ import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import CONFIG from 'config';
-import locationNameFinder from './location_name_search';
+import typeaheadSearchFn from 'common/typeahead_search';
 
 export default Marionette.View.extend({
   initialize() {
@@ -37,6 +37,9 @@ export default Marionette.View.extend({
   },
 
   addLocationNameSearch() {
+    const appModel = this.model.get('appModel');
+    const strs = appModel.get('locations');
+
     this.$el.find('.typeahead').typeahead({
       hint: false,
       highlight: false,
@@ -45,7 +48,7 @@ export default Marionette.View.extend({
       {
         limit: 3,
         name: 'names',
-        source: locationNameFinder(3),
+        source: typeaheadSearchFn(strs, 3, a => a.name),
       });
   },
 

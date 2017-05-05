@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Surveys List main view.
  *****************************************************************************/
+import _ from 'lodash';
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Device from 'helpers/device';
@@ -8,6 +9,7 @@ import Log from 'helpers/log';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
 import JST from 'JST';
+import typeaheadSearchFn from 'common/typeahead_search';
 
 export default Marionette.View.extend({
   initialize(options) {
@@ -30,6 +32,22 @@ export default Marionette.View.extend({
     'click input[type="radio"]': 'saveNumber',
     'input input[type="range"]': 'updateRangeInputValue',
     'change input[type="number"]': 'updateRangeSliderValue',
+  },
+
+  addtypeaheadSuggestions() {
+    const viceCounties = this.options.viceCounties;
+    const arr = _.map(viceCounties);
+    this.$el.find('.typeahead').typeahead(
+      {
+        hint: false,
+        highlight: false,
+        minLength: 0,
+      },
+      {
+        limit: 3,
+        name: 'names',
+        source: typeaheadSearchFn(arr, 3),
+      });
   },
 
   addNew() {
@@ -86,6 +104,7 @@ export default Marionette.View.extend({
         templateData.value = this.model.get(this.options.attr) || [];
         break;
       case 'vice-county':
+        templateData.typeahead = true;
       case 'comment':
         templateData.value = this.model.get(this.options.attr);
         break;
@@ -138,5 +157,7 @@ export default Marionette.View.extend({
         break;
       default:
     }
+
+    this.addtypeaheadSuggestions();
   },
 });

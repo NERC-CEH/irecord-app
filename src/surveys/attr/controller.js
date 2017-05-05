@@ -7,6 +7,7 @@ import savedSamples from 'saved_samples';
 import radio from 'radio';
 import appModel from 'app_model';
 import Log from 'helpers/log';
+import viceCounties from 'vice_counties.data';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 import LockView from '../../common/views/attr_lock_view';
@@ -43,6 +44,7 @@ const API = {
     const mainView = new MainView({
       attr,
       model: sample,
+      viceCounties,
     });
     radio.trigger('app:main', mainView);
 

@@ -7,7 +7,7 @@ import LocHelp from 'helpers/location';
 import StringHelp from 'helpers/string';
 import Validate from 'helpers/validate';
 import 'typeahead';
-import locationNameFinder from './location_name_search';
+import typeaheadSearchFn from 'common/typeahead_search';
 
 export default Marionette.View.extend({
   template: JST['common/location/grid_ref'],
@@ -25,15 +25,18 @@ export default Marionette.View.extend({
   },
 
   addLocationNameSearch() {
+    const appModel = this.model.get('appModel');
+    const strs = appModel.get('locations');
+
     this.$el.find('.typeahead').typeahead({
-      hint: false,
-      highlight: false,
-      minLength: 0,
-    },
+        hint: false,
+        highlight: false,
+        minLength: 0,
+      },
       {
         limit: 3,
         name: 'names',
-        source: locationNameFinder(3),
+        source: typeaheadSearchFn(strs, 3, a => a.name),
       });
   },
 
