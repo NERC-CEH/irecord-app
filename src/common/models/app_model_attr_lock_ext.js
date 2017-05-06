@@ -138,16 +138,16 @@ export default {
 
   checkExpiredAttrLocks() {
     const that = this;
-    const locks = this.get('attrLocks');
-    if (locks.activity) {
-      if (userModel.hasActivityExpired(locks.activity)) {
+    const activity = this.getAttrLock('activity', 'general');
+    if (activity) {
+      if (userModel.hasActivityExpired(activity)) {
         Log('AppModel:AttrLocks: activity has expired.');
-        this.unsetAttrLock('activity');
+        this.unsetAttrLock('activity', 'general');
       }
     }
     userModel.on('logout', () => {
       Log('AppModel:AttrLocks: activity has expired.');
-      that.unsetAttrLock('activity'); // remove locked activity
+      that.unsetAttrLock('activity', 'general'); // remove locked activity
     });
   },
 };

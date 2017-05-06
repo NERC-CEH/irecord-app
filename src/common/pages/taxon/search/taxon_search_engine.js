@@ -45,6 +45,12 @@ const API = {
    }
    */
   search(searchPhrase, options = {}) {
+    let results = [];
+
+    if (!searchPhrase) {
+      return Promise.resolve(results);
+    }
+
     // check if data exists
     if (!species) {
       const that = this;
@@ -67,10 +73,6 @@ const API = {
     const maxResults = options.maxResults || MAX;
     const scientificOnly = options.scientificOnly;
     const informalGroups = options.informalGroups || [];
-
-    let results = [];
-
-    if (!searchPhrase) return results;
 
     // normalize the search phrase
     const normSearchPhrase = searchPhrase.toLowerCase();
