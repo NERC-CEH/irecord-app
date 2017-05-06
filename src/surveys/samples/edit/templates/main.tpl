@@ -1,10 +1,14 @@
 <ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
   <li class="table-view-cell">
     <a id="species-button" class="navigate-right">
-      <% if (obj.commonName) { %>
-      <span class="media-object pull-right descript long"><%- obj.commonName %></span>
+      <% if (obj.commonName || obj.scientificName) { %>
+        <% if (obj.commonName) { %>
+        <span class="media-object pull-right descript long"><%- obj.commonName %></span>
+        <% } %>
+        <span class="media-object pull-right descript long"><i><%- obj.scientificName %></i></span>
+      <% } else { %>
+      <span class="media-object pull-right descript error">Species missing</span>
       <% } %>
-      <span class="media-object pull-right descript long"><i><%- obj.scientificName %></i></span>
     </a>
   </li>
   <li class="table-view-cell">
