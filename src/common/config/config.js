@@ -5,6 +5,7 @@ import $ from 'jquery';
 import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
 import LocHelp from 'helpers/location';
+import viceCounties from 'vice_counties.data';
 
 const HOST = 'https://www.brc.ac.uk/irecord/';
 
@@ -98,6 +99,15 @@ const CONFIG = {
           },
           'vice-county': {
             id: 991,
+            values(val) {
+              for (const vcID in viceCounties) { // eslint-disable-line
+                if (val === viceCounties[vcID]) {
+                  return vcID;
+                }
+              }
+
+              return null;
+            },
           },
           'time-surveying': {
             id: 993,
