@@ -157,12 +157,12 @@ const CONFIG = {
           stage: {
             id: 466,
             values: {
-              flowering: 5331,
-              fruiting: 5330,
-              juvenile: 5328,
-              mature: 5332,
-              seedling: 5327,
-              vegetative: 5329,
+              Flowering: 5331,
+              Fruiting: 5330,
+              Juvenile: 5328,
+              Mature: 5332,
+              Seedling: 5327,
+              Vegetative: 5329,
             },
           },
           determiner: {
