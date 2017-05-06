@@ -1,7 +1,11 @@
 <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit" class="mobile">
   <div class="media-object pull-left photo"><%= obj.img %></div>
   <div class="media-body">
+    <% if (obj.taxon) { %>
     <div class="species"> <%= obj.taxon %></div>
+    <% } else { %>
+    <div class="species error">Species missing</div>
+    <% } %>
     <div class="core">
       <% if (obj.location) { %>
       @

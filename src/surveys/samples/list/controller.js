@@ -47,6 +47,7 @@ const API = {
       collection: surveySample.samples,
       surveySampleID: surveySample.cid,
     });
+    // 'Add +' list button
     mainView.on('childview:create', () => {
       radio.trigger('surveys:samples:edit:taxon', surveySampleID, null, {
         onSuccess(taxon, editButtonClicked) {
@@ -63,14 +64,14 @@ const API = {
 
     // HEADER
     const headerView = new HeaderView({ model: appModel });
-
+    // header pic upload
     headerView.on('photo:upload', (e) => {
       const photo = e.target.files[0];
       API.photoUpload(surveySample, photo);
     });
 
     // android gallery/camera selection
-    headerView.on('photo:selection', API.photoSelect);
+    headerView.on('photo:selection', () => API.photoSelect(surveySample));
     headerView.on('create', () => {
       radio.trigger('surveys:samples:edit:taxon', surveySampleID, null, {
         onSuccess(taxon, editButtonClicked) {
@@ -92,20 +93,10 @@ const API = {
 
   photoUpload(surveySample, photo) {
     Log('Surveys:Samples:List:Controller: photo upload.');
-
-    // todo: show loader
-    Sample.createNewSampleWithPhoto(photo)
-      .then((sample) => {
-        surveySample.addSample(sample);
-        return surveySample.save();
-      })
-      .catch((err) => {
-        Log(err, 'e');
-        radio.trigger('app:dialog:error', err);
-      });
+    API.createNewSampleWithPhoto(surveySample, photo);
   },
 
-  photoSelect() {
+  photoSelect(surveySample) {
     Log('Surveys:Samples:List:Controller: photo select.');
 
     radio.trigger('app:dialog', {
@@ -115,7 +106,7 @@ const API = {
           title: 'Camera',
           onClick() {
             ImageHelp.getImage((entry) => {
-              Sample.createNewSampleWithPhoto(entry.nativeURL, () => {});
+              API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
             });
             radio.trigger('app:dialog:hide');
           },
@@ -124,7 +115,7 @@ const API = {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage((entry) => {
-              Sample.createNewSampleWithPhoto(entry.nativeURL, () => {});
+              API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
@@ -137,6 +128,22 @@ const API = {
   },
 
   /**
+   * Creates new subsample with a pic and empty occurrence taxon.
+   * @param surveySample
+   * @param photo
+   * @returns {*}
+   */
+  createNewSampleWithPhoto(surveySample, photo) {
+    // todo: show loader
+    return Sample.createNewSampleWithPhoto('plant', photo)
+      .then(sample => API.configNewSample(surveySample, sample))
+      .catch((err) => {
+        Log(err, 'e');
+        radio.trigger('app:dialog:error', err);
+      });
+  },
+
+  /**
    * Creates a subsample with occurrence set to new taxon.
    * @param surveySample
    * @param taxon
@@ -144,39 +151,51 @@ const API = {
   createNewSample(surveySample, taxon, editButtonClicked) {
     return Sample.createNewSample('plant')
       .then((sample) => {
-        // set sample location to survey's location which
-        // can be corrected by GPS or user later on
-        // todo: listen for surveySample attribute changes
-        const surveyLocation = _.cloneDeep(surveySample.get('location'));
-        sample.set('location', surveyLocation);
-        sample.set('recorder_count', surveySample.get('recorder_count'));
-        sample.set('recorder_names', surveySample.get('recorder_names'));
-
         const occurrence = new Occurrence({ taxon });
         sample.addOccurrence(occurrence);
-
-        surveySample.addSample(sample);
-
-        return surveySample.save().then(() => {
-          if (editButtonClicked) {
-            radio.trigger(
-              'surveys:samples:edit',
-              surveySample.cid,
-              sample.cid,
-              { replace: true },
-            );
-          } else {
-            radio.trigger('app:dialog', {
-              title: 'Added',
-              timeout: 500,
-            });
-          }
-        });
+        return API.configNewSample(surveySample, sample, taxon);
+      })
+      .then((sample) => {
+        if (editButtonClicked) {
+          radio.trigger(
+            'surveys:samples:edit',
+            surveySample.cid,
+            sample.cid,
+            { replace: true },
+          );
+        } else {
+          radio.trigger('app:dialog', {
+            title: 'Added',
+            timeout: 500,
+          });
+        }
       })
       .catch((err) => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
+  },
+
+  /**
+   * Configures survey subsample with default attrs and sets it
+   * to the parent survey sample.
+   * @param surveySample
+   * @param sample
+   * @param taxon
+   * @returns {*}
+   */
+  configNewSample(surveySample, sample) {
+    // set sample location to survey's location which
+    // can be corrected by GPS or user later on
+    // todo: listen for surveySample attribute changes
+    const surveyLocation = _.cloneDeep(surveySample.get('location'));
+    sample.set('location', surveyLocation);
+    sample.set('recorder_count', surveySample.get('recorder_count'));
+    sample.set('recorder_names', surveySample.get('recorder_names'));
+
+    surveySample.addSample(sample);
+
+    return surveySample.save().then(() => sample);
   },
 };
 

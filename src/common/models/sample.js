@@ -293,9 +293,9 @@ const helpers = {
    *
    * Empty taxon.
    */
-  createNewSampleWithPhoto(photo) {
+  createNewSampleWithPhoto(survey, photo) {
     return ImageHelp.getImageModel(ImageModel, photo)
-      .then(image => helpers.createNewSample(image));
+      .then(image => helpers.createNewSample(survey, image));
   },
 
   /**
@@ -322,6 +322,14 @@ const helpers = {
           complex_survey: true,
         },
       });
+
+      // occurrence with image - pic select-first only
+      if (image) {
+        const occurrence = new Occurrence({ taxon });
+        occurrence.addMedia(image);
+        sample.addOccurrence(occurrence);
+      }
+
       return Promise.resolve(sample);
     }
 

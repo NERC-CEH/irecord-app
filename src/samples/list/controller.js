@@ -103,7 +103,7 @@ const API = {
     Log('Samples:List:Controller: photo upload.');
 
     // todo: show loader
-    Sample.createNewSampleWithPhoto(photo)
+    Sample.createNewSampleWithPhoto('general', photo)
       .then(sample => sample.save())
       .then((sample) => {
         // add to main collection
@@ -125,7 +125,7 @@ const API = {
           title: 'Camera',
           onClick() {
             ImageHelp.getImage((entry) => {
-              Sample.createNewSampleWithPhoto(entry.nativeURL);
+              Sample.createNewSampleWithPhoto('general', entry.nativeURL);
             });
             radio.trigger('app:dialog:hide');
           },
@@ -134,7 +134,7 @@ const API = {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage((entry) => {
-              Sample.createNewSampleWithPhoto(entry.nativeURL, () => {});
+              Sample.createNewSampleWithPhoto('general', entry.nativeURL, () => {});
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
