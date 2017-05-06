@@ -4,6 +4,7 @@
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import { default as _MainView, SampleView as _SampleView } from '../../../samples/list/main_view';
+import './styles.scss';
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
@@ -24,7 +25,6 @@ const SampleView = Marionette.View.extend({
   serializeData() {
     const sample = this.model;
     const occ = sample.getOccurrence();
-    const specie = occ.get('taxon') || {};
     const media = occ.media;
     let img = media.length && media.at(0).get('thumbnail');
 
@@ -32,8 +32,11 @@ const SampleView = Marionette.View.extend({
       // backwards compatibility
       img = media.length && media.at(0).getURL();
     }
+    const specie = occ.get('taxon') || {};
 
-    const taxon = specie[specie.found_in_name];
+    // taxon
+    const scientificName = specie.scientific_name;
+    const commonName = specie.common_name;
 
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
@@ -44,7 +47,8 @@ const SampleView = Marionette.View.extend({
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
       location_name: location.name,
-      taxon,
+      scientificName,
+      commonName,
       status: occ.get('status'),
       comment: occ.get('comment'),
       img: img ? `<img src="${img}"/>` : '',

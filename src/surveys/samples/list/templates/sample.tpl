@@ -1,8 +1,13 @@
 <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit" class="mobile">
   <div class="media-object pull-left photo"><%= obj.img %></div>
   <div class="media-body">
-    <% if (obj.taxon) { %>
-    <div class="species"> <%= obj.taxon %></div>
+    <% if (obj.commonName || obj.scientificName) { %>
+      <% if (obj.commonName) { %>
+      <div class="species"> <%= obj.commonName %></div>
+      <div class="species scientific"> <small><i><%= obj.scientificName %></i></small></div>
+      <% } else { %>
+      <div class="species"> <i><%= obj.scientificName %></i></div>
+      <% } %>
     <% } else { %>
     <div class="species error">Species missing</div>
     <% } %>
