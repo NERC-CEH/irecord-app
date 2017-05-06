@@ -3,24 +3,25 @@
   <div class="media-body">
     <div class="species"> <%= obj.taxon %></div>
     <div class="core">
+      <% if (obj.location) { %>
       @
 
-      <% if (obj.location) { %>
       <% if (obj.location_name) { %>
       <span class="location"><%= obj.location_name %></span>
       <%  } else { %>
-      <span class="location error">No location name</span>
+      <span class="location"><%= obj.location %></span>
       <% } %>
       <% } else { %>
       <% if (obj.isLocating) { %>
+      @
+
       <span class="location warn">Locating...</span>
-      <% } else { %>
-      <span class="location error">No location</span>
       <% } %>
       <% } %>
     </div>
 
     <div class="attributes">
+      <div class="stage"><%= obj.status %></div>
       <div class="comment"><%= obj.comment %></div>
     </div>
   </div>

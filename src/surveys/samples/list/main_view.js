@@ -45,6 +45,7 @@ const SampleView = Marionette.View.extend({
       location: locationPrint,
       location_name: location.name,
       taxon,
+      status: occ.get('status'),
       comment: occ.get('comment'),
       img: img ? `<img src="${img}"/>` : '',
     };
