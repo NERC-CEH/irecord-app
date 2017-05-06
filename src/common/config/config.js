@@ -143,9 +143,27 @@ const CONFIG = {
           },
           status: {
             id: 507,
+            values: {
+              Native: 5709,
+              Unknown: 5710,
+              Introduced: 6775,
+              'Introduced - planted': 5711,
+              'Introduced - surviving': 10662,
+              'Introduced - casual': 10663,
+              'Introduced - established': 5712,
+              'Introduced - invasive': 5713,
+            },
           },
           stage: {
             id: 466,
+            values: {
+              flowering: 5331,
+              fruiting: 5330,
+              juvenile: 5328,
+              mature: 5332,
+              seedling: 5327,
+              vegetative: 5329,
+            },
           },
           determiner: {
             id: 125,

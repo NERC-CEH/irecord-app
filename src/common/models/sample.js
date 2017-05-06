@@ -145,6 +145,12 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
 
   Occurrence,
 
+  metadata() {
+    return {
+      training: appModel.get('useTraining'),
+    };
+  },
+
   // warehouse attribute keys
   keys() {
     if (this.metadata.survey === 'plant') {

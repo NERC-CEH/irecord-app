@@ -66,6 +66,11 @@ const API = {
       // unbind when page destroyed
       sample.off('request sync error', checkIfSynced);
     });
+    mainView.on('setting:toggled', (setting, on) => {
+      const occ = sample.getOccurrence();
+      occ.metadata.sensisive = on;
+      occ.save();
+    });
     mainView.on('taxon:update', () => {
       radio.trigger('surveys:samples:edit:taxon', surveySampleID, sample.cid, {
         onSuccess(taxon) {

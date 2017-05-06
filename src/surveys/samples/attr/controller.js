@@ -112,14 +112,14 @@ const API = {
           sample.set('date', newVal);
         }
         break;
+
       case 'comment':
+      default:
         currentVal = occ.get(attr);
         newVal = values[attr];
 
         // todo:validate before setting up
         occ.set(attr, values[attr]);
-        break;
-      default:
     }
 
     // save it

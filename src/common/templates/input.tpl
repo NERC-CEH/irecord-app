@@ -4,5 +4,5 @@
 </div>
 <% } %>
 <div class="input-group">
-  <input type="text" class="<%= obj.typeahead ? 'typeahead' : '' %>" value="<%= obj.value %>"/>
+  <input type="text" class="<%= obj.typeahead ? 'typeahead' : '' %>" pattern="<%= obj.pattern ? obj.pattern : '' %>" value="<%= obj.value %>"/>
 </div>

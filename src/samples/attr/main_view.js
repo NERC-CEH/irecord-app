@@ -50,12 +50,12 @@ export default Marionette.View.extend({
   },
 
   events: {
-    'click input[type="radio"]': 'saveNumber',
+    'click input[type="radio"]': 'saveRadio',
     'input input[type="range"]': 'updateRangeInputValue',
     'change input[type="number"]': 'updateRangeSliderValue',
   },
 
-  saveNumber() {
+  saveRadio() {
     // unset slider val
     const $rangeOutput = this.$el.find('#rangeVal');
     $rangeOutput.val('');
