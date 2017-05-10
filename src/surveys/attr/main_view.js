@@ -73,7 +73,7 @@ export default Marionette.View.extend({
         $inputs.each((index, input) => {
           const val = input.value;
           if (val) {
-            values[attr].push(StringHelp.escape(val));
+            values[attr].unshift(StringHelp.escape(val));
           }
         });
         break;
