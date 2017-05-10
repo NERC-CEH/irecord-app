@@ -12,10 +12,10 @@ $width: 500vw;
 
   button#exit {
     position: fixed;
-    bottom: 0;
+    bottom: 15px;
     margin: 0;
-
-    width: 100%;
+    width: 80%;
+    left: 10%;
   }
 
   #swaps-container {
