@@ -29,25 +29,28 @@ export default Marionette.View.extend({
 
   events: {
     'click button.add-new': 'addNew',
-    'click input[type="radio"]': 'saveNumber',
-    'input input[type="range"]': 'updateRangeInputValue',
-    'change input[type="number"]': 'updateRangeSliderValue',
   },
 
   addtypeaheadSuggestions() {
+    const that = this;
     const viceCounties = this.options.viceCounties;
     const arr = _.map(viceCounties);
-    this.$el.find('.typeahead').typeahead(
+    const $typeahead = this.$el.find('.typeahead');
+    $typeahead.typeahead(
       {
         hint: false,
-        highlight: false,
-        minLength: 0,
+        highlight: true,
+        minLength: 2,
       },
       {
         limit: 3,
         name: 'names',
         source: typeaheadSearchFn(arr, 3),
       });
+
+    $typeahead.bind('typeahead:select', () => {
+      that.trigger('save');
+    });
   },
 
   addNew() {

@@ -46,6 +46,13 @@ const API = {
       model: sample,
       viceCounties,
     });
+    // if exit on selection click
+    mainView.on('save', () => {
+      API.onExit(mainView, sample, attr, () => {
+        // window.history.back();
+      });
+    });
+
     radio.trigger('app:main', mainView);
 
     // HEADER
@@ -126,6 +133,18 @@ const API = {
         }
         break;
       case 'vice-county':
+        currentVal = sample.get(attr);
+        newVal = null;
+        // validate - check if exists in the list
+        Object.keys(viceCounties).forEach((key) => {
+          if (viceCounties[key] === values[attr]) {
+            newVal = values[attr];
+          }
+        });
+        if (newVal) {
+          sample.set(attr, values[attr]);
+        }
+        break;
       case 'recorders':
       case 'comment':
         currentVal = sample.get(attr);
