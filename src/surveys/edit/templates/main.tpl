@@ -46,7 +46,7 @@
     <a href="#surveys/<%- obj.id %>/edit/samples" id="stage-button"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-stage"></span>
-      <span class="media-object pull-right descript"><%- obj.species %></span>
+      <span class="media-object pull-right descript"><%- obj.species ? obj.species : '' %></span>
       Species
     </a>
   </li>
@@ -54,7 +54,7 @@
     <a href="#surveys/<%- obj.id %>/edit/recorders" id="stage-button"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-users"></span>
-      <span class="media-object pull-right descript"><%- obj.recorders %></span>
+      <span class="media-object pull-right descript"><%- obj.recorders ? obj.recorders : '' %></span>
       Recorders
     </a>
   </li>
