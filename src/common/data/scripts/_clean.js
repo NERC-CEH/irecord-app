@@ -1,5 +1,8 @@
 module.exports = (taxon, common, genus) => {
-  const cleaned = taxon.replace(/\([a-zA-Z]+\)/g, '').trim();
+  let cleaned = taxon;
+  if (taxon) {
+    cleaned = taxon.replace(/\([a-zA-Z]+\)/g, '').trim();
+  }
   return cleaned;
 };
 

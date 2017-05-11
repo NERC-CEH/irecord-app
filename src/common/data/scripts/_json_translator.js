@@ -4,9 +4,23 @@
 // #
 // # {A, B, [C, C, C], [D], E:{A, B}}, F:{P:[L]}
 
-'use strict';
 const taxonCleaner = require('./_clean');
 const parse = require('csv-parse/lib/sync');
+
+const SYNONYM = 4;
+const COMMON_NAME = 3;
+const TAXON = 2;
+const GROUP = 1;
+const ID = 0;
+
+
+function normalizeValue(value) {
+  // check if int
+  // https://coderwall.com/p/5tlhmw/converting-strings-to-number-in-javascript-pitfalls
+  const int = value * 1;
+  if (!isNaN(int)) return int;
+  return value;
+}
 
 function processRow(header, row) {
   const rowObj = [];
@@ -19,15 +33,6 @@ function processRow(header, row) {
   });
 
   return rowObj;
-}
-
-
-function normalizeValue(value) {
-  // check if int
-  //https://coderwall.com/p/5tlhmw/converting-strings-to-number-in-javascript-pitfalls
-  const int = value * 1;
-  if (!isNaN(int)) return int;
-  return value;
 }
 
 /**
@@ -53,19 +58,18 @@ function run(output) {
 function optimise(output) {
   const optimised = [];
 
-
   function addGenus(taxa) {
-    const taxon = taxonCleaner(taxa[2], false, true);
+    const taxon = taxonCleaner(taxa[TAXON], false, true);
     if (!taxon) {
       return;
     }
 
     const genus = [
-      taxa[0], // id
-      taxa[1], // group
+      taxa[ID], // id
+      taxa[GROUP], // group
       taxon, // taxon
     ];
-    const synonym = taxonCleaner(taxa[3], true, true);
+    const synonym = taxonCleaner(taxa[COMMON_NAME], true, true);
     if (synonym) {
       genus.push(synonym);
     }
@@ -78,11 +82,11 @@ function optimise(output) {
     let lastGenus = optimised[optimised.length - 1];
 
     // check if taxa groups match
-    if (lastGenus[1] !== taxa[1]) {
+    if (lastGenus[GROUP] !== taxa[GROUP]) {
       // create a new genus with matching group
       lastGenus = [
         'asdas',
-        taxa[1],
+        taxa[GROUP],
         taxaNameSplitted[0],
         [],
       ];
@@ -95,7 +99,7 @@ function optimise(output) {
 
   function addSpecies(taxa, taxaNameSplitted) {
     // species that needs to be appended to genus
-    const lastGenus = getLastGenus();
+    const lastGenus = getLastGenus(taxa, taxaNameSplitted);
 
     // check genus species array - must be last
     let speciesArray = lastGenus[lastGenus.length - 1];
@@ -107,20 +111,20 @@ function optimise(output) {
 
     const species = [];
     // id
-    species.push(normalizeValue(taxa[0]));
+    species.push(normalizeValue(taxa[ID]));
 
     // taxon
     const taxon = taxaNameSplitted.slice(1).join(' ');
     species.push(taxonCleaner(taxon, false)); // remove genus name
 
     // common name
-    const commonName = taxonCleaner(taxa[3], true);
+    const commonName = taxonCleaner(taxa[COMMON_NAME], true);
     if (commonName) {
       species.push(commonName);
     }
 
     // synonym name
-    const synonym = taxonCleaner(taxa[4], true);
+    const synonym = taxonCleaner(taxa[SYNONYM], true);
     if (synonym) {
       species.push(synonym);
     }
@@ -129,7 +133,7 @@ function optimise(output) {
   }
 
   output.forEach((taxa) => {
-    const taxaName = taxa[2];
+    const taxaName = taxa[TAXON];
     const taxaNameSplitted = taxaName.split(' ');
 
     if (taxaNameSplitted.length === 1) {
