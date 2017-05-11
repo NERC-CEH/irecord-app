@@ -12,21 +12,27 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/location"
+    <a
+      <% if (obj.locationEditAllowed) { %>
+        href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/location"
+      <% } %>
+
        id="location-button"
        class="<%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
+
       <span class="media-object pull-left icon icon-location"></span>
 
-      <% if (obj.location) { %>
-      <span class="media-object pull-right descript"><%- obj.location %></span>
+      <% if (obj.locationEditAllowed) { %>
+          <% if (obj.isLocating) { %>
+            <span class="media-object pull-right descript warn">Locating...</span>
+          <% } else { %>
+            <span class="media-object pull-right descript"><%- obj.location %></span>
+          <% } %>
       <% } else { %>
-      <% if (obj.isLocating) { %>
-      <span class="media-object pull-right descript warn">Locating...</span>
-      <% } else { %>
-      <span class="media-object pull-right descript error">Location missing</span>
+      <span class="media-object pull-right descript error">No survey location</span>
       <% } %>
-      <% } %>
-      Location
+
+    Location
     </a>
   </li>
   <li class="table-view-cell">

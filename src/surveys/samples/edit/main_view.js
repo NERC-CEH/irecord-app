@@ -92,6 +92,7 @@ export default Marionette.View.extend({
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
       location_name: location.name,
+      locationEditAllowed: this.options.locationEditAllowed,
       date: DateHelp.print(sample.get('date'), true),
       number,
       abundance: occ.get('abundance') && StringHelp.limit(occ.get('abundance')),

@@ -14,6 +14,7 @@ import appModel from 'app_model';
 import userModel from 'user_model';
 import CONFIG from 'config';
 import savedSamples from 'saved_samples';
+import SurveysEditController from '../../edit/controller';
 import ImageModel from '../../../common/models/image';
 import MainView from './main_view';
 import HeaderView from '../../../common/views/header_view';
@@ -48,9 +49,10 @@ const API = {
       return;
     }
 
-
+    const locationEditAllowed = API.isSurveyLocationSet(sample.parent);
     // MAIN
     const mainView = new MainView({
+      locationEditAllowed,
       model: new Backbone.Model({ sample, appModel }),
     });
     radio.trigger('app:main', mainView);
@@ -107,6 +109,8 @@ const API = {
 
     radio.trigger('app:footer', footerView);
   },
+
+  isSurveyLocationSet: SurveysEditController.isSurveyLocationSet,
 
   save(sample) {
     Log('Surveys:Sample:Edit:Controller: save clicked.');

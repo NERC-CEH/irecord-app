@@ -10,6 +10,7 @@ import App from 'app';
 import radio from 'radio';
 import appModel from 'app_model';
 import userModel from 'user_model';
+import LocHelp from 'helpers/location';
 import savedSamples from 'saved_samples';
 import MainView from './main_view';
 import HeaderView from './header_view';
@@ -158,6 +159,18 @@ const API = {
       body: missing,
       timeout: 2000,
     });
+  },
+
+  /**
+   * Checks if sample's location accuracy matches selected user default
+   * accuracy.
+   * @param surveySample
+   * @returns {boolean}
+   */
+  isSurveyLocationSet(surveySample) {
+    const surveyAccuracy = surveySample.metadata.surveyAccuracy;
+    const surveyLocation = surveySample.get('location') || { gridref: '' };
+    return surveyLocation.gridref.length === LocHelp.gridref_accuracy[surveyAccuracy];
   },
 };
 

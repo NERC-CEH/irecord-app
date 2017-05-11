@@ -9,9 +9,13 @@ describe('Sample atlas', () => {
     expect(true).to.be.false;
   });
 
-  it('if survey location changes and subsamples dont fit in then needs warning', () => {
+  it('should not allow changing survey location if subsamples exist', () => {
     expect(true).to.be.false;
   });
+
+  // it('if survey location changes and subsamples dont fit in then needs warning', () => {
+  //   expect(true).to.be.false;
+  // });
   it('if subsample location changes and dont fit in the survey then needs warning', () => {
     expect(true).to.be.false;
   });
