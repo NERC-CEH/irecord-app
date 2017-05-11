@@ -4,6 +4,12 @@
 import { LatLonEllipsoidal as LatLon, OsGridRef } from 'geodesy';
 
 const helpers = {
+  gridref_accuracy: {
+    tetrad: 4, // 2km
+    monad: 6, // 1km
+    '100m': 8, // 100m
+  },
+
   coord2grid(location) {
     const locationGranularity = helpers._getGRgranularity(location);
 
