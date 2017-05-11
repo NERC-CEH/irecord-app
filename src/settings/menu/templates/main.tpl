@@ -42,6 +42,13 @@
     Manage Saved
   </a>
 </li>
+<li class="table-view-cell">
+  <a href="#settings/survey" class="navigate-right">
+    <span class="media-object pull-left icon icon-grid"></span>
+    <span class="media-object pull-right descript" style="width: 25%;"><%= obj.surveyAccuracy %></span>
+    Survey Accuracy
+  </a>
+</li>
 
 <li class="table-view-divider">Application</li>
 <li class="table-view-cell">

@@ -18,6 +18,9 @@ const AppModel = Backbone.Model.extend({
     autosync: true,
     useGridRef: true,
     useGridMap: true,
+
+    surveyAccuracy: 'monad',
+
     useTraining: process.env.TRAINING,
   },
 

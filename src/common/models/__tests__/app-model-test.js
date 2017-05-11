@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { AppModel } from 'app_model';
+import LocHelp from 'helpers/location';
 import { getRandomSample } from 'test-helpers';
 
 /* eslint-disable no-unused-expressions */
@@ -13,7 +14,7 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(7);
+    expect(_.keys(appModel.attributes).length).to.be.equal(8);
     // should set the exact value checks in the modules requiring them
     expect(appModel.get('showWelcome')).to.be.equal(true);
     expect(appModel.get('locations')).to.be.an('array');
@@ -22,6 +23,7 @@ describe('App Model', () => {
     expect(appModel.get('useGridRef')).to.be.equal(true);
     expect(appModel.get('useGridMap')).to.be.equal(true);
     expect(appModel.get('useTraining')).to.be.equal(false);
+    expect(appModel.get('surveyAccuracy')).to.be.equal(LocHelp.gridref_accuracy.monad);
   });
 
   describe('Locking attributes extension', () => {
