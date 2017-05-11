@@ -44,6 +44,7 @@
     "circular-dependency-plugin": "^2.0.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.25.0",
+    "csv": "^1.1.1",
     "dotenv": "^2.0.0",
     "es6-promise": "^4.0.5",
     "extract-text-webpack-plugin": "^1.0.1",

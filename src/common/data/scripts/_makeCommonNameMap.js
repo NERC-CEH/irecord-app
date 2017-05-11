@@ -6,14 +6,6 @@
 
 'use strict';
 
-// get the filename
-const inputFileName = process.argv[2];
-const outputFileName = process.argv[3];
-
-const fs = require('fs');
-
-const species = require(inputFileName);
-
 const GENUS_COMMON_INDEX = 3;
 const GENUS_COMMON_SYN_INDEX = 4;
 const SPECIES_COMMON_INDEX = 2; // in species and bellow
@@ -40,7 +32,7 @@ const helpers = {
   },
 };
 
-function make() {
+module.exports = (species) => {
   const commonNames = []; // eg. first second third
 
   /**
@@ -96,6 +88,7 @@ function make() {
     }
   }
 
+  // sort the list
   for (let nameCount = 0; nameCount < commonNames.length; nameCount++) {
     commonNames[nameCount].sort((a, b) => {
       let spA = helpers.getCommonName(species, a);
@@ -118,14 +111,3 @@ function make() {
 
   return commonNames;
 }
-
-const map = make();
-
-fs.writeFile(outputFileName, JSON.stringify(map), function (err) { // eslint-disable-line
-  if (err) {
-    console.log(err);
-    return;
-  }
-
-  console.log('Done.');
-});

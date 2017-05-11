@@ -2,12 +2,12 @@ module.exports = (grunt) => {
   return {
     default: [
       'init',
-      'run',
+      'jst',
       'webpack:main',
     ],
 
     init: [
-      'exec:data_init',
+      'exec:data',
       'copy',
       'vendor',
     ],
@@ -20,26 +20,22 @@ module.exports = (grunt) => {
       'replace:photoswipe',
     ],
 
-    run: [
-      'jst',
-    ],
-
     // Development run
     update: [
-      'run',
+      'jst',
       'webpack:main',
     ],
 
     // Development update
     dev: [
       'init',
-      'run',
+      'jst',
       'webpack:dev',
     ],
 
     // Development run
     'dev:update': [
-      'run',
+      'jst',
       'webpack:dev',
     ],
 
