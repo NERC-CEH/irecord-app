@@ -49,6 +49,9 @@ const API = {
     // GPS
     this.addGPS();
 
+    // Past locations
+    this.addPastLocations();
+
     // Marker
     this.addMapMarker();
 
@@ -155,20 +158,45 @@ const API = {
     const that = this;
     const location = this._getCurrentLocation();
 
-    const GPSbutton = new LeafletButton({
+    const button = new LeafletButton({
       position: 'topright',
       className: 'gps-btn',
       title: 'seek gps fix',
       body: `<span class="icon icon-location"
                 data-source="${location.source}"></span>`,
-      onClick: function () {
+      onClick() {
         that.trigger('gps:click');
       },
       maxWidth: 30,  // number
     });
 
 
-    this.map.addControl(GPSbutton);
+    this.map.addControl(button);
+    const sample = this.model.get('sample');
+    if (sample.isGPSRunning()) {
+      this._set_gps_progress_feedback('pending');
+    } else {
+      this._set_gps_progress_feedback('');
+    }
+  },
+
+  addPastLocations() {
+    Log('Location:MainView:Map: adding past locations button.');
+
+    const that = this;
+    const button = new LeafletButton({
+      position: 'topright',
+      className: 'past-btn',
+      title: 'navigate to past locations',
+      body: '<span class="icon icon-clock"></span>',
+      onClick() {
+        that.trigger('past:click');
+      },
+      maxWidth: 30,  // number
+    });
+
+
+    this.map.addControl(button);
     const sample = this.model.get('sample');
     if (sample.isGPSRunning()) {
       this._set_gps_progress_feedback('pending');

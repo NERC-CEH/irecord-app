@@ -55,8 +55,7 @@ const API = {
     });
 
     // past locations
-    // todo
-    // mainView.on('childview:location:past');
+    mainView.on('past:click', () => API.onPastLocationsClick(sample));
 
     // map
     mainView.on('location:select:map',
@@ -283,6 +282,17 @@ const API = {
 
     radio.trigger('gridref:form:data:invalid', validationError);
     return false;
+  },
+
+  onPastLocationsClick(sample) {
+    radio.trigger('settings:locations', {
+      onSelect(location) {
+        sample.set('locationName', location.name);
+        delete location.name;
+        sample.set('location', location);
+        window.history.back();
+      },
+    });
   },
 
   onLocationLockClick() {

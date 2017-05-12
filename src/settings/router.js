@@ -20,6 +20,11 @@ const Router = Marionette.AppRouter.extend({
   },
 });
 
+radio.on('settings:locations', (options = {}) => {
+  App.navigate('settings/locations', options);
+  LocationsController.show(options);
+});
+
 App.on('before:start', () => {
   Log('Settings:router: initializing.');
   App.settings.router = new Router();

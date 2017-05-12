@@ -13,7 +13,7 @@ import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
 const API = {
-  show() {
+  show(options = {}) {
     Log('Settings:Locations:Controller: showing.');
 
     // MAIN
@@ -21,6 +21,9 @@ const API = {
       model: appModel,
     });
 
+    if (options.onSelect) {
+      mainView.on('location:select', options.onSelect);
+    }
     mainView.on('location:delete', API.deleteLocation);
     mainView.on('location:edit', API.editLocation);
 
@@ -29,7 +32,7 @@ const API = {
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Locations',
+        title: 'Past Locations',
       }),
     });
     radio.trigger('app:header', headerView);
@@ -50,7 +53,7 @@ const API = {
 
     const location = model;
     const EditView = Marionette.View.extend({
-      template: JST['common/past_location_edit'],
+      template: JST['settings/locations/past_location_edit'],
       getValues() {
         return {
           name: StringHelp.escape(this.$el.find('#location-name').val()),

@@ -16,7 +16,7 @@ const PastLocationView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell',
 
-  template: JST['common/past_location'],
+  template: JST['settings/locations/past_location'],
 
   triggers: {
     'click .location': 'location:select',
@@ -122,7 +122,7 @@ const PastLocationView = Marionette.View.extend({
 });
 
 export default Marionette.CompositeView.extend({
-  template: JST['common/past_locations'],
+  template: JST['settings/locations/past_locations'],
 
   childViewContainer: '#user-locations',
 
