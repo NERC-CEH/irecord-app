@@ -7,7 +7,7 @@ import Analytics from 'helpers/analytics';
 import userModel from 'user_model';
 
 export default {
-  setAttrLock(attr, value, survey) {
+  setAttrLock(attr, value, survey = 'general') {
     const val = _.cloneDeep(value);
     const locks = this.get('attrLocks');
 
@@ -22,7 +22,7 @@ export default {
     }
   },
 
-  unsetAttrLock(attr, survey) {
+  unsetAttrLock(attr, survey = 'general') {
     const locks = this.get('attrLocks');
     locks[survey] || (locks[survey] = {});
 
@@ -32,13 +32,13 @@ export default {
     this.trigger('change:attrLocks');
   },
 
-  getAttrLock(attr, survey) {
+  getAttrLock(attr, survey = 'general') {
     const locks = this.get('attrLocks');
     locks[survey] || (locks[survey] = {});
     return locks[survey][attr];
   },
 
-  isAttrLocked(attr, value = {}, survey) {
+  isAttrLocked(attr, value = {}, survey = 'general') {
     let lockedVal = this.getAttrLock(attr, survey);
     if (!lockedVal) return false; // has not been locked
     if (lockedVal === true) return true; // has been locked
@@ -84,7 +84,8 @@ export default {
 
       const val = _.cloneDeep(value);
 
-      let occurrence, model;
+      let occurrence;
+      let model;
       switch (key) {
         case 'activity':
           if (!userModel.hasActivityExpired(val)) {
@@ -138,16 +139,16 @@ export default {
 
   checkExpiredAttrLocks() {
     const that = this;
-    const activity = this.getAttrLock('activity', 'general');
+    const activity = this.getAttrLock('activity');
     if (activity) {
       if (userModel.hasActivityExpired(activity)) {
         Log('AppModel:AttrLocks: activity has expired.');
-        this.unsetAttrLock('activity', 'general');
+        this.unsetAttrLock('activity');
       }
     }
     userModel.on('logout', () => {
       Log('AppModel:AttrLocks: activity has expired.');
-      that.unsetAttrLock('activity', 'general'); // remove locked activity
+      that.unsetAttrLock('activity'); // remove locked activity
     });
   },
 };

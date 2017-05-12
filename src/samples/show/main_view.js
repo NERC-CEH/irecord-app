@@ -67,7 +67,7 @@ export default Marionette.View.extend({
       scientific_name: scientificName,
       commonName,
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       date: DateHelp.print(sample.get('date'), true),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),

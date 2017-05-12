@@ -92,6 +92,12 @@ ul.table-view.inputs {
   content: '\e80c';
 }
 
+// location below location name
+.location.lock:after {
+  bottom: 12px;
+  top: auto;
+}
+
 
 $footer-height: 80px;
 

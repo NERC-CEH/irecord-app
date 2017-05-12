@@ -134,7 +134,7 @@ const SampleView = Marionette.View.extend({
       onDatabase: syncStatus === Indicia.SYNCED,
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       date,
       taxon,
@@ -251,7 +251,7 @@ const MainView = Marionette.CompositeView.extend({
   },
 
   serializeData() {
-    const activity = this.options.appModel.getAttrLock('activity', 'general') || {};
+    const activity = this.options.appModel.getAttrLock('activity') || {};
     return {
       useTraining: this.options.appModel.get('useTraining'),
       activity: activity.title,

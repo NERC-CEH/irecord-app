@@ -28,7 +28,7 @@ export default Marionette.View.extend({
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       'vice-county': sample.get('vice-county'),
       date: DateHelp.print(sample.get('date'), true),
       species: sample.samples.length,

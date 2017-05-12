@@ -16,17 +16,11 @@
   </li>
   <li class="table-view-cell">
     <a href="#samples/<%- obj.id %>/edit/location" id="location-button"
-       class="<%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
+       class="<%- obj.locks['location'] || obj.locks['locationName'] ? '' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-location"></span>
 
-      <% if (obj.location_name) { %>
-      <span class="media-object pull-right descript"><%= obj.location_name %></span>
-      <% } else { %>
-      <span class="media-object pull-right descript error">Name missing</span>
-      <% } %>
-
       <% if (obj.location) { %>
-      <span class="media-object pull-right descript"><%- obj.location %></span>
+      <span class="location media-object pull-right descript <%- obj.locks['location'] ? 'lock' : '' %>"><%- obj.location %></span>
       <% } else { %>
       <% if (obj.isLocating) { %>
       <span class="media-object pull-right descript warn">Locating...</span>
@@ -34,6 +28,13 @@
       <span class="media-object pull-right descript error">Location missing</span>
       <% } %>
       <% } %>
+
+      <% if (obj.locationName) { %>
+      <span class="media-object pull-right descript <%- obj.locks['locationName'] ? 'lock' : '' %>""><%= obj.locationName %></span>
+      <% } else { %>
+      <span class="media-object pull-right descript error">Name missing</span>
+      <% } %>
+
       Location
     </a>
   </li>

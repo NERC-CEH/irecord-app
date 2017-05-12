@@ -55,22 +55,22 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let numberLock = appModel.isAttrLocked('number', occ.get('number'), 'general');
+    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
     if (!numberLock) {
       numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
     }
 
     const attrLocks = {
-      date: appModel.isAttrLocked('date', sample.get('date'), 'general'),
-      location: appModel.isAttrLocked('location', sample.get('location'), 'general'),
+      date: appModel.isAttrLocked('date', sample.get('date')),
+      location: appModel.isAttrLocked('location', sample.get('location')),
       number: numberLock,
       sensitive: occ.metadata.sensitive,
-      abundance: appModel.isAttrLocked('abundance', occ.get('abundance'), 'general'),
-      stage: appModel.isAttrLocked('stage', occ.get('stage'), 'general'),
-      status: appModel.isAttrLocked('status', occ.get('status'), 'general'),
-      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers'), 'general'),
-      comment: appModel.isAttrLocked('comment', occ.get('comment'), 'general'),
-      activity: appModel.isAttrLocked('activity', sample.get('group'), 'general'),
+      abundance: appModel.isAttrLocked('abundance', occ.get('abundance')),
+      stage: appModel.isAttrLocked('stage', occ.get('stage')),
+      status: appModel.isAttrLocked('status', occ.get('status')),
+      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
+      comment: appModel.isAttrLocked('comment', occ.get('comment')),
+      activity: appModel.isAttrLocked('activity', sample.get('group')),
     };
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
@@ -91,7 +91,7 @@ export default Marionette.View.extend({
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       locationEditAllowed: this.options.locationEditAllowed,
       date: DateHelp.print(sample.get('date'), true),
       number,

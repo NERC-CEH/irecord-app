@@ -15,8 +15,8 @@
       <% if (obj.location) { %>
       @
 
-      <% if (obj.location_name) { %>
-      <span class="location"><%= obj.location_name %></span>
+      <% if (obj.locationName) { %>
+      <span class="location"><%= obj.locationName %></span>
       <%  } else { %>
       <span class="location"><%= obj.location %></span>
       <% } %>

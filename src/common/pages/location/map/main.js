@@ -1,23 +1,21 @@
 /** ****************************************************************************
- * Location main view.
+ * Location main view map functions.
  *****************************************************************************/
 import $ from 'jquery';
-import Marionette from 'backbone.marionette';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/images/layers-2x.png';
 import 'leaflet/dist/images/layers.png';
+import L from 'leaflet';
+import CONFIG from 'config';
+import LocHelp from 'helpers/location';
+import Log from 'helpers/log';
 import OSLeaflet from 'os-leaflet';
 import GridRef from 'leaflet.gridref';
 import { OsGridRef } from 'geodesy';
-import JST from 'JST';
-import LocHelp from 'helpers/location';
-import CONFIG from 'config';
-import 'typeahead';
-import typeaheadSearchFn from 'common/typeahead_search';
-import mapMarker from './map_view_marker';
+import LeafletButton from './leaflet_button_ext';
+import mapMarker from './marker';
 
-const DEFAULT_LAYER = 'OS';
+const DEFAULT_LAYER = 'OSM'; // use Open Street Map as need to support Ireland
 const DEFAULT_CENTER = [53.7326306, -2.6546124];
 const MAX_OS_ZOOM = L.OSOpenSpace.RESOLUTIONS.length - 1;
 const OS_ZOOM_DIFF = 6;
@@ -25,54 +23,10 @@ const OS_CRS = L.OSOpenSpace.getCRS(); // OS maps use different projection
 
 const GRID_STEP = 100000; // meters
 
-const MapView = Marionette.View.extend({
-  template: JST['common/location/map'],
-
-  events: {
-    'change #location-name': 'changeName',
-    'typeahead:select #location-name': 'changeName',
-  },
-
-  changeName(e) {
-    this.triggerMethod('location:name:change', $(e.target).val());
-  },
-
-  initialize() {
-    this.map = null;
-    this.layers = this._getLayers();
-
-    this.currentLayerControlSelected = false;
-    this.currentLayer = null;
-    this.markerAdded = false;
-  },
-
-  onAttach() {
-    // set full remaining height
-    const mapHeight = $(document).height() - 47 - 38.5;
-    this.$container = this.$el.find('#map')[0];
-    $(this.$container).height(mapHeight);
-
-    this.initMap();
-    this.addLocationNameSearch();
-  },
-
-  addLocationNameSearch() {
-    const appModel = this.model.get('appModel');
-    const strs = appModel.get('locations');
-
-    this.$el.find('.typeahead').typeahead({
-      hint: false,
-      highlight: false,
-      minLength: 0,
-    },
-      {
-        limit: 3,
-        name: 'names',
-        source: typeaheadSearchFn(strs, 3, a => a.name),
-      });
-  },
-
+const API = {
   initMap() {
+    Log('Location:MainView:Map: initializing.');
+
     this.map = L.map(this.$container);
 
     // default layer
@@ -92,11 +46,26 @@ const MapView = Marionette.View.extend({
     // Controls
     this.addControls();
 
+    // GPS
+    this.addGPS();
+
     // Marker
     this.addMapMarker();
 
     // Graticule
     this.addGraticule();
+  },
+
+  /**
+   * set full remaining height
+   *
+   */
+  _refreshMapHeight() {
+    Log('Location:MainView:Map: refreshing map height.');
+    // const mapHeight = $(document).height() - 47 - 47 - 44;// - 47 - 38.5;
+    this.$container = this.$el.find('#map')[0];
+    // $(this.$container).height(mapHeight);
+    $(this.$container).style = 'height: 100vh;';
   },
 
   _getLayers() {
@@ -149,10 +118,10 @@ const MapView = Marionette.View.extend({
     let layer = DEFAULT_LAYER;
     const zoom = this._getZoomLevel();
     const currentLocation = this._getCurrentLocation();
-    const inUK = LocHelp.isInUK(currentLocation);
+    const inGB = LocHelp.isInGB(currentLocation);
     if (zoom > MAX_OS_ZOOM - 1) {
       layer = 'Satellite';
-    } else if (inUK === false) {
+    } else if (inGB === false) {
       this.currentLayerControlSelected = true;
       layer = 'Satellite';
     }
@@ -163,13 +132,15 @@ const MapView = Marionette.View.extend({
   _getCenter() {
     const currentLocation = this._getCurrentLocation();
     let center = DEFAULT_CENTER;
-    if (currentLocation.latitude && currentLocation.longitude) {
+    if (currentLocation.latitude) {
       center = [currentLocation.latitude, currentLocation.longitude];
     }
     return center;
   },
 
   addControls() {
+    Log('Location:MainView:Map: adding layer controls.');
+
     this.controls = L.control.layers({
       OS: this.layers.OS,
       OSM: this.layers.OSM,
@@ -178,7 +149,37 @@ const MapView = Marionette.View.extend({
     this.map.addControl(this.controls);
   },
 
+  addGPS() {
+    Log('Location:MainView:Map: adding gps button.');
+
+    const that = this;
+    const location = this._getCurrentLocation();
+
+    const GPSbutton = new LeafletButton({
+      position: 'topright',
+      className: 'gps-btn',
+      title: 'seek gps fix',
+      body: `<span class="icon icon-location"
+                data-source="${location.source}"></span>`,
+      onClick: function () {
+        that.trigger('gps:click');
+      },
+      maxWidth: 30,  // number
+    });
+
+
+    this.map.addControl(GPSbutton);
+    const sample = this.model.get('sample');
+    if (sample.isGPSRunning()) {
+      this._set_gps_progress_feedback('pending');
+    } else {
+      this._set_gps_progress_feedback('');
+    }
+  },
+
   addGraticule() {
+    Log('Location:MainView:Map: adding graticule.');
+
     const appModel = this.model.get('appModel');
     const useGridRef = appModel.get('useGridRef');
     const useGridMap = appModel.get('useGridMap');
@@ -187,7 +188,6 @@ const MapView = Marionette.View.extend({
     const that = this;
 
     function getColor() {
-      'use strict';
       let color;
       switch (that.currentLayer) {
         case 'OS':
@@ -229,67 +229,67 @@ const MapView = Marionette.View.extend({
    * 5 gridref digits. (1m)      ->
    */
   _getZoomLevel() {
+    Log('Location:MainView:Map: getting zoom level.');
+
     const currentLocation = this._getCurrentLocation();
     let mapZoomLevel = 1;
-    // check if sample has location
-    if (currentLocation.latitude && currentLocation.longitude) {
-      // transform location accuracy to map zoom level
-      switch (currentLocation.source) {
-        case 'map':
-          mapZoomLevel = currentLocation.mapZoom || 1;
-          // no need to show area as it would be smaller than the marker
-          break;
-        case 'gps':
-          /**
-           * 1 gridref digits. (10000m)  -> 4 OS map zoom lvl
-           * 2 gridref digits. (1000m)   -> 8 OS
-           * 3 gridref digits. (100m)    -> 16 OSM
-           * 4 gridref digits. (10m)     -> 18 OSM
-           * 5 gridref digits. (1m)      ->
-           */
-          if (currentLocation.accuracy) {
-            if (currentLocation.accuracy > 1000) {
-              mapZoomLevel = 4;
-            } else if (currentLocation.accuracy > 100) {
-              mapZoomLevel = 8;
-            } else if (currentLocation.accuracy > 10) {
-              mapZoomLevel = 16;
-            } else {
-              mapZoomLevel = 18;
-            }
-          } else {
-            mapZoomLevel = 1;
-          }
-          break;
-        case 'gridref':
-          if (currentLocation.accuracy < (MAX_OS_ZOOM - 1)) {
-            mapZoomLevel = currentLocation.accuracy + 1;
-          } else {
-            // normalize to OSM zoom
-            mapZoomLevel = 18;
-          }
 
-          break;
-        default:
-          mapZoomLevel = MAX_OS_ZOOM - 2;
+    // check if sample has location
+    if (currentLocation.latitude) {
+      // transform location accuracy to map zoom level
+
+      /**
+       * 1 gridref digits. (10000m)  -> 4 OS map zoom lvl
+       * 2 gridref digits. (1000m)   -> 8 OS
+       * 3 gridref digits. (100m)    -> 16 OSM
+       * 4 gridref digits. (10m)     -> 18 OSM
+       * 5 gridref digits. (1m)      ->
+       */
+      if (currentLocation.accuracy) {
+        if (currentLocation.accuracy > 1000) {
+          mapZoomLevel = 4;
+        } else if (currentLocation.accuracy > 100) {
+          mapZoomLevel = 8;
+        } else if (currentLocation.accuracy > 10) {
+          mapZoomLevel = 16;
+        } else {
+          mapZoomLevel = 18;
+        }
+      } else {
+        mapZoomLevel = 1;
       }
     }
+    // if (this.currentLayer && this.currentLayer !== 'OS' && mapZoomLevel < MAX_OS_ZOOM) {
+    if (this.currentLayer && this.currentLayer !== 'OS') {
+      mapZoomLevel += OS_ZOOM_DIFF;
+
+      if (mapZoomLevel > 18) {
+        mapZoomLevel = 18;
+      }
+    }
+
     return mapZoomLevel;
   },
 
   _updateCoordSystem(e) {
+    Log('Location:MainView:Map: updating coord system.');
+
     this.currentLayerControlSelected = this.controls._handlingClick;
 
     const center = this.map.getCenter();
     let zoom = this.map.getZoom();
     this.map.options.crs = e.name === 'OS' ? OS_CRS : L.CRS.EPSG3857;
-    if (e.name === 'OS') {
-      zoom -= OS_ZOOM_DIFF;
-      if (zoom > MAX_OS_ZOOM - 1) {
-        zoom = MAX_OS_ZOOM - 1;
+
+    if (!this.noZoomCompensation) {
+      if (e.name === 'OS') {
+        zoom -= OS_ZOOM_DIFF;
+
+        if (zoom > MAX_OS_ZOOM - 1) {
+          zoom = MAX_OS_ZOOM - 1;
+        }
+      } else if (this.currentLayer === 'OS') {
+        zoom += OS_ZOOM_DIFF;
       }
-    } else if (this.currentLayer === 'OS') {
-      zoom += OS_ZOOM_DIFF;
     }
     this.currentLayer = e.name;
     this.map.setView(center, zoom, { reset: true });
@@ -297,8 +297,10 @@ const MapView = Marionette.View.extend({
   },
 
   onMapZoom() {
+    Log('Location:MainView:Map: executing onMapZoom.');
+
     const zoom = this.map.getZoom();
-    const inUK = LocHelp.isInUK(this._getCurrentLocation());
+    const inGB = LocHelp.isInGB(this._getCurrentLocation());
 
     // -2 and not -1 because we ignore the last OS zoom level
     if (zoom > MAX_OS_ZOOM - 1 && this.currentLayer === 'OS') {
@@ -307,24 +309,58 @@ const MapView = Marionette.View.extend({
     } else if ((zoom - OS_ZOOM_DIFF) <= MAX_OS_ZOOM - 1 && this.currentLayer === 'Satellite') {
       // only change base layer if user is on OS and did not specificly
       // select OSM/Satellite
-      if (!this.currentLayerControlSelected && inUK !== false) {
+      if (!this.currentLayerControlSelected && inGB !== false) {
         this.map.removeLayer(this.layers.Satellite);
         this.map.addLayer(this.layers.OS);
       }
     }
   },
 
-  _getCurrentLocation() {
-    return this.model.get('sample').get('location') || {};
+  geolocationStart() {
+    this._set_gps_progress_feedback('pending');
   },
 
-  serializeData() {
-    const location = this._getCurrentLocation();
-
-    return {
-      name: location.name,
-    };
+  /**
+   * Update the temporary location fix
+   * @param location
+   */
+  geolocationUpdate(location) {
+    this.locationUpdate = location;
+    this._set_gps_progress_feedback('pending');
   },
-});
 
-export default MapView.extend(mapMarker);
+  geolocationSuccess(location) {
+    this.locationUpdate = location;
+    this._set_gps_progress_feedback('fixed');
+  },
+
+  geolocationStop() {
+    this._set_gps_progress_feedback('');
+  },
+
+  geolocationError() {
+    this._set_gps_progress_feedback('failed');
+  },
+
+  _set_gps_progress_feedback(state) {
+    Log('Location:MainView:Map: updating gps button state.');
+    const $gpsButton = this.$el.find('.gps-btn');
+    // change state
+    $gpsButton.attr('data-gps-progress', state);
+
+
+    // change icon
+    const $gpsButtonSpan = $gpsButton.find('span');
+    if (state === 'pending') {
+      $gpsButtonSpan.addClass('icon-plus icon-spin');
+      $gpsButtonSpan.removeClass('icon-location');
+    } else {
+      $gpsButtonSpan.removeClass('icon-plus icon-spin');
+      $gpsButtonSpan.addClass('icon-location');
+    }
+  },
+};
+
+$.extend(API, mapMarker);
+
+export default API;

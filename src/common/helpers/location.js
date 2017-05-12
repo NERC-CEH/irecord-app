@@ -2,6 +2,8 @@
  * Some location transformation logic.
  *****************************************************************************/
 import { LatLonEllipsoidal as LatLon, OsGridRef } from 'geodesy';
+import Log from './log';
+import GridRefUtils from './gridrefutils';
 
 const helpers = {
   gridref_accuracy: {
@@ -10,43 +12,69 @@ const helpers = {
     '100m': 8, // 100m
   },
 
-  coord2grid(location) {
-    const locationGranularity = helpers._getGRgranularity(location);
-
-    const p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);
-    const grid = OsGridRef.latLonToOsGrid(p);
-
-    return grid.toString(locationGranularity).replace(/\s/g, '');
+  /**
+   *
+   * @param {type} location
+   * @returns {string}
+   */
+  locationToGrid(location) {
+    const normalisedPrecision = GridRefUtils.GridRefParser.get_normalized_precision(location.accuracy * 2); // accuracy is radius
+    const nationaGridCoords = GridRefUtils.latlng_to_grid_coords(location.latitude, location.longitude);
+    return nationaGridCoords.to_gridref(normalisedPrecision);
   },
 
-  parseGrid(gridrefString) {
-    function normalizeGridRef(incorrectGridref) {
-      // normalise to 1m grid, rounding up to centre of grid square:
-      let e = incorrectGridref.easting;
-      let n = incorrectGridref.northing;
+  /**
+   *
+   * @param {object} location
+   * @returns {Array} latlng pairs (SW, SE, NE, NW)
+   */
+  getSquareBounds(location) {
+    if (location.latitude) {
+      const gridRefString = helpers.locationToGrid(location);
+      const parsedRef = GridRefUtils.GridRefParser.factory(gridRefString);
 
-      switch (incorrectGridref.easting.toString().length) {
-        case 1: e += '50000'; n += '50000'; break;
-        case 2: e += '5000'; n += '5000'; break;
-        case 3: e += '500'; n += '500'; break;
-        case 4: e += '50'; n += '50'; break;
-        case 5: e += '5'; n += '5'; break;
-        case 6: break; // 10-digit refs are already 1m
-        default: return new OsGridRef(NaN, NaN);
+      if (parsedRef) {
+        const nationalGridRefSW = parsedRef.osRef;
+        return [
+          nationalGridRefSW.to_latLng(),
+          (new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y)).to_latLng(),
+          (new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y + parsedRef.length)).to_latLng(),
+          (new parsedRef.NationalRef(nationalGridRefSW.x, nationalGridRefSW.y + parsedRef.length)).to_latLng()
+        ];
+      } else {
+        return null;
       }
-      return new OsGridRef(e, n);
+    } else {
+      return null;
     }
-
-    let gridref = OsGridRef.parse(gridrefString);
-    gridref = normalizeGridRef(gridref);
-
-    return gridref;
   },
 
-  grid2coord(gridrefString) {
-    const gridref = helpers.parseGrid(gridrefString);
-    if (!isNaN(gridref.easting) && !isNaN(gridref.northing)) {
-      return OsGridRef.osGridToLatLon(gridref, LatLon.datum.WGS84);
+  /**
+   *
+   * @param {string} gridrefString
+   * @returns {GridRefUtils.OSRef|null} SW corner of grid square
+   */
+  parseGrid(gridrefString) {
+    const parser = GridRefUtils.GridRefParser.factory(gridrefString);
+    return parser ? parser.osRef : null;
+  },
+
+  /**
+   *
+   * @param {string} gridrefString
+   * @returns {unresolved}
+   */
+  gridrefStringToLatLng(gridrefString) {
+    try {
+      const parsedRef = GridRefUtils.GridRefParser.factory(gridrefString);
+
+      if (parsedRef) {
+        return parsedRef.osRef.to_latLng();
+      } else {
+        return null;
+      }
+    } catch(e) {
+      Log(e.message);
     }
 
     return null;
@@ -58,79 +86,43 @@ const helpers = {
    * 3 gridref digits. (100m)    -> 10
    * 4 gridref digits. (10m)     -> 12
    * 5 gridref digits. (1m)      ->
+   *
+   * @return {int} radius in metres
    */
-  mapZoom2meters(accuracy) {
-    let updated = accuracy;
-    if (updated <= 4) {
-      updated = 0;
-    } else if (updated <= 7) {
-      updated = 1;
-    } else if (updated <= 10) {
-      updated = 2;
-    } else if (updated <= 12) {
-      updated = 3;
+  mapZoomToMetreRadius(zoom) {
+    let scale;
+    if (zoom <= 4) {
+      scale = 0;
+    } else if (zoom <= 5) {
+      Log('tetrad map scale');
+      return 1000; // tetrad (radius is 1000m)
+    } else if (zoom <= 7) {
+      scale = 1;
+    } else if (zoom <= 10) {
+      scale = 2;
+    } else if (zoom <= 12) {
+      scale = 3;
     } else {
-      updated = 4;
+      scale = 4;
     }
 
-    updated = 5000 / Math.pow(10, updated); // meters
-    return updated < 1 ? 1 : updated;
+    scale = 5000 / Math.pow(10, scale); // meters
+
+    Log('map scale (radius): ' + scale);
+
+    return scale < 1 ? 1 : scale;
   },
 
   /**
-   * 1 gridref digits. (10000m)
-   * 2 gridref digits. (1000m)
-   * 3 gridref digits. (100m)
-   * 4 gridref digits. (10m)
-   * 5 gridref digits. (1m)
+   *
+   * @param {type} location
+   * @returns {Boolean}
    */
-  _getGRgranularity(location) {
-    let locationGranularity;
-    let accuracy = location.accuracy;
-
-    // don't need to recalculate if exists
-    if (location.source === 'gridref') {
-      return accuracy;
+  isInGB(location) {
+    if (location.latitude && location.longiture) {
+      const nationaGridCoords = GridRefUtils.latlng_to_grid_coords(location.latitude, location.longitude);
+      return nationaGridCoords && nationaGridCoords.country === 'GB';
     }
-
-    // normalize to meters
-    if (location.source === 'map') {
-      accuracy = helpers.mapZoom2meters(accuracy);
-    }
-
-    // calculate granularity
-    const digits = Math.log(accuracy) / Math.LN10;
-    locationGranularity = 10 - (digits * 2); // MAX GR ACC -
-    locationGranularity = Number((locationGranularity).toFixed(0)); // round the float
-
-    // normalize granularity
-    // cannot be odd
-    if (locationGranularity % 2 !== 0) {
-      // should not be less than 2
-      locationGranularity =
-        locationGranularity === 1 ? locationGranularity + 1 : locationGranularity - 1;
-    }
-
-    if (locationGranularity > 10) {
-      // no more than 10 digits
-      locationGranularity = 10;
-    } else if (locationGranularity < 2) {
-      // no less than 2
-      locationGranularity = 2;
-    }
-    return locationGranularity;
-  },
-
-  isInUK(location) {
-    if (!location.latitude || !location.longitude) return null;
-
-    let gridref = location.gridref;
-    if (!gridref) {
-      gridref = helpers.coord2grid(location);
-    }
-
-    if (gridref) return true;
-
     return false;
   },
 };

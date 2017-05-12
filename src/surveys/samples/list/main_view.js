@@ -46,7 +46,7 @@ const SampleView = Marionette.View.extend({
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       scientificName,
       commonName,
       status: occ.get('status'),

@@ -83,14 +83,14 @@ const API = {
     // invert the lock of the attribute
     // real value will be put on exit
     if (attr === 'number') {
-      if (appModel.getAttrLock(attr), 'general') {
-        appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'general'), 'general');
+      if (appModel.getAttrLock(attr)) {
+        appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
       } else {
         appModel.setAttrLock('number-ranges',
-          !appModel.getAttrLock('number-ranges'), 'general');
+          !appModel.getAttrLock('number-ranges'));
       }
     } else {
-      appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'general'), 'general');
+      appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
     }
   },
 
@@ -165,40 +165,40 @@ const API = {
   },
 
   updateLock(attr, newVal, currentVal) {
-    let lockedValue = appModel.getAttrLock(attr, 'general');
+    let lockedValue = appModel.getAttrLock(attr);
 
     switch (attr) {
       case 'date':
         if (!lockedValue ||
           (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date()))) {
           // don't lock current day
-          appModel.setAttrLock(attr, null, 'general');
+          appModel.setAttrLock(attr, null);
         } else {
-          appModel.setAttrLock(attr, newVal, 'general');
+          appModel.setAttrLock(attr, newVal);
         }
         break;
       case 'number-ranges':
         if (!lockedValue) {
-          lockedValue = appModel.getAttrLock('number', 'general');
+          lockedValue = appModel.getAttrLock('number');
         }
       case 'number':
         if (!lockedValue) {
-          lockedValue = appModel.getAttrLock('number-ranges', 'general');
+          lockedValue = appModel.getAttrLock('number-ranges');
         }
 
         if (!lockedValue) return; // nothing was locked
 
         if (attr === 'number-ranges') {
-          appModel.setAttrLock(attr, newVal, 'general');
-          appModel.setAttrLock('number', null, 'general');
+          appModel.setAttrLock(attr, newVal);
+          appModel.setAttrLock('number', null);
         } else {
-          appModel.setAttrLock(attr, newVal, 'general');
-          appModel.setAttrLock('number-ranges', null, 'general');
+          appModel.setAttrLock(attr, newVal);
+          appModel.setAttrLock('number-ranges', null);
         }
         break;
       default:
         if (lockedValue && (lockedValue === true || lockedValue === currentVal)) {
-          appModel.setAttrLock(attr, newVal, 'general');
+          appModel.setAttrLock(attr, newVal);
         }
     }
   },

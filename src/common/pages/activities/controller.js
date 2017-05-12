@@ -58,7 +58,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
     }
 
     const that = this;
-    const lockedActivity = appModel.getAttrLock('activity', 'general');
+    const lockedActivity = appModel.getAttrLock('activity');
     let sampleActivity;
 
     if (sample) {
@@ -195,7 +195,7 @@ const API = {
           radio.trigger('app:dialog:error', err);
         });
     } else {
-      appModel.setAttrLock('activity', userModel.getActivity(activityID), 'general');
+      appModel.setAttrLock('activity', userModel.getActivity(activityID));
       // return to previous page after save
       window.history.back();
     }

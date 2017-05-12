@@ -34,19 +34,21 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let numberLock = appModel.isAttrLocked('number', occ.get('number'), 'general');
+    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
     if (!numberLock) {
       numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
     }
+    const locationName = sample.get('locationName');
 
     const attrLocks = {
-      date: appModel.isAttrLocked('date', sample.get('date'), 'general'),
-      location: appModel.isAttrLocked('location', sample.get('location'), 'general'),
+      date: appModel.isAttrLocked('date', sample.get('date')),
+      location: appModel.isAttrLocked('location', location),
       number: numberLock,
-      stage: appModel.isAttrLocked('stage', occ.get('stage'), 'general'),
-      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers'), 'general'),
-      comment: appModel.isAttrLocked('comment', occ.get('comment'), 'general'),
-      activity: appModel.isAttrLocked('activity', sample.get('group'), 'general'),
+      locationName: appModel.isAttrLocked('locationName', locationName),
+      stage: appModel.isAttrLocked('stage', occ.get('stage')),
+      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
+      comment: appModel.isAttrLocked('comment', occ.get('comment')),
+      activity: appModel.isAttrLocked('activity', sample.get('group')),
     };
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
@@ -65,7 +67,7 @@ export default Marionette.View.extend({
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
-      location_name: location.name,
+      locationName,
       date: DateHelp.print(sample.get('date'), true),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),

@@ -19,7 +19,7 @@
   </li>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-location"></span>
-    <span class="media-object pull-right descript"><%- obj.location_name %></span>
+    <span class="media-object pull-right descript"><%- obj.locationName %></span>
     <span class="media-object pull-right descript"><%- obj.location %></span>
     Location
   </li>
