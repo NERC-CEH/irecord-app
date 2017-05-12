@@ -15,12 +15,12 @@ import radio from 'radio';
 import savedSamples from 'saved_samples';
 import appModel from 'app_model';
 import TabsLayout from '../../views/tabs_layout';
-import HeaderView from '../../views/header_view';
+import HeaderView from './header_view';
 import LockView from '../../views/attr_lock_view';
 import PastLocationsController from '../../../settings/locations/controller';
 
 import GpsView from './gps_view';
-import MapView from './map_view';
+import MapView from './map/map_view';
 import GridRefView from './grid_ref_view';
 import PastView from './past_view';
 import './styles.scss';
@@ -100,7 +100,8 @@ const API = {
     mainView.on('childview:location:select:past', (location) => {
       API.setLocation(sample, location, true)
         .then(() => {
-          API.onExit(sample);
+          API.updateLock(sample.get('location'));
+          window.history.back();
         });
     });
     mainView.on('childview:location:delete', (model) => {
@@ -125,7 +126,7 @@ const API = {
 
     // location name
     mainView.on('childview:location:name:change',
-      name => API.onLocationNameChange(sample, name)
+      name => API.updateLocationName(sample, name)
     );
 
     radio.trigger('app:main', mainView);
@@ -137,37 +138,11 @@ const API = {
       onLockClick: API.onLockClick,
     });
 
-    // header view
-    const LocationHeader = HeaderView.extend({
-      id: 'location-header',
-
-      /*
-       From Marionette docs:
-       it is suggested that you avoid re-rendering the entire View unless
-       absolutely necessary. Instead, if you are binding the View's template
-       to a model and need to update portions of the View, you should listen
-       to the model's "change" events and only update the necessary DOM elements.
-       */
-      modelEvents: {
-        'change:location': 'updateTitle',
+    const headerView = new HeaderView({
+      onExit: () => {
+        API.updateLock(sample.get('location'));
+        window.history.back();
       },
-
-      updateTitle() {
-        const title = this.model.printLocation();
-        const $title = this.$el.find('h1');
-
-        $title.html(title || 'Location');
-      },
-
-      serializeData() {
-        return {
-          title: this.model.printLocation() || 'Location',
-        };
-      },
-    });
-
-    const headerView = new LocationHeader({
-      onExit: () => API.onExit(sample),
       rightPanel: lockView,
       model: sample,
     });
@@ -226,38 +201,38 @@ const API = {
       });
   },
 
-  onExit(sample) {
-    const currentVal = sample.get('location') || {};
-    const locationIsLocked =
-            appModel.isAttrLocked('location', currentVal, sample.metadata.survey);
+  /**
+   * Updates the
+   * @param sample
+   */
+  updateLock(location = {}) {
+    const currentLock = appModel.getAttrLock('location', 'general');
 
-    const attr = 'location';
-    let location = sample.get('location') || {};
-    const lockedValue = appModel.getAttrLock('location', 'general');
-
+    // validate
     if ((location.latitude && location.longitude) || location.name) {
       // we can lock location and name on their own
       // don't lock GPS though, because it varies more than a map or gridref
 
-      if (lockedValue && (locationIsLocked || lockedValue === true)) {
+      const locationIsLocked =
+              appModel.isAttrLocked('location', location, 'general');
+
+      if (currentLock && (locationIsLocked || currentLock === true)) {
         // update locked value if attr is locked
         // check if previously the value was locked and we are updating
         Log('Updating lock.', 'd');
 
         if (location.source === 'gps') {
           // on GPS don't lock other than name
-          location = {
-            name: location.name,
-          };
+          appModel.setAttrLock('location', { name: location.name }, 'general');
+          return;
         }
-        appModel.setAttrLock(attr, location, 'general');
-      }
-    } else if (lockedValue === true) {
-      // reset if no location or location name selected but locked is clicked
-      appModel.setAttrLock(attr, null, 'general');
-    }
 
-    window.history.back();
+        appModel.setAttrLock('location', location, 'general');
+      }
+    } else if (currentLock === true) {
+      // reset if no location or location name selected but locked is clicked
+      appModel.setAttrLock('location', null, 'general');
+    }
   },
 
   onGPSClick(sample) {
@@ -269,7 +244,7 @@ const API = {
     }
   },
 
-  onLocationNameChange(sample, name) {
+  updateLocationName(sample, name) {
     if (!name || typeof name !== 'string') {
       return;
     }
@@ -282,10 +257,36 @@ const API = {
   },
 
   onGridRefSelect(sample, data) {
+    if (!API.validateGridRef(data)) {
+      return;
+    }
+
+    // get lat/long from new gridref
+    const latLon = LocHelp.grid2coord(data.gridref);
+    const location = {
+      source: 'gridref',
+      name: data.name,
+      gridref: data.gridref,
+      latitude: parseFloat(latLon.lat.toFixed(8)),
+      longitude: parseFloat(latLon.lon.toFixed(8)),
+    };
+
+    // get accuracy
+    // -2 because of gridref letters, 2 because this is min precision
+    const accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
+    location.accuracy = accuracy;
+
+    API.setLocation(sample, location)
+      .then(() => {
+        API.updateLock(sample.get('location'));
+        window.history.back();
+      });
+  },
+
+  validateGridRef(data) {
     /**
      * Validates the new location
      * @param attrs
-     * @returns {{}}
      */
     function validate(attrs) {
       const errors = {};
@@ -315,26 +316,11 @@ const API = {
     const validationError = validate(data);
     if (!validationError) {
       radio.trigger('gridref:form:data:invalid', {}); // update form
-      const latLon = LocHelp.grid2coord(data.gridref);
-      const location = {
-        source: 'gridref',
-        name: data.name,
-        gridref: data.gridref,
-        latitude: parseFloat(latLon.lat.toFixed(8)),
-        longitude: parseFloat(latLon.lon.toFixed(8)),
-      };
-
-      // -2 because of gridref letters, 2 because this is min precision
-      const accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
-      location.accuracy = accuracy;
-
-      API.setLocation(sample, location)
-        .then(() => {
-          API.onExit(sample);
-        });
-    } else {
-      radio.trigger('gridref:form:data:invalid', validationError);
+      return true;
     }
+
+    radio.trigger('gridref:form:data:invalid', validationError);
+    return false;
   },
 };
 

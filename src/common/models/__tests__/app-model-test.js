@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { AppModel } from 'app_model';
-import LocHelp from 'helpers/location';
 import { getRandomSample } from 'test-helpers';
 
 /* eslint-disable no-unused-expressions */
@@ -23,7 +22,7 @@ describe('App Model', () => {
     expect(appModel.get('useGridRef')).to.be.equal(true);
     expect(appModel.get('useGridMap')).to.be.equal(true);
     expect(appModel.get('useTraining')).to.be.equal(false);
-    expect(appModel.get('surveyAccuracy')).to.be.equal(LocHelp.gridref_accuracy.monad);
+    expect(appModel.get('surveyAccuracy')).to.be.equal('monad');
   });
 
   describe('Locking attributes extension', () => {

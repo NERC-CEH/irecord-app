@@ -14,8 +14,8 @@ import JST from 'JST';
 import LocHelp from 'helpers/location';
 import CONFIG from 'config';
 import 'typeahead';
-import mapMarker from './map_view_marker';
 import typeaheadSearchFn from 'common/typeahead_search';
+import mapMarker from './map_view_marker';
 
 const DEFAULT_LAYER = 'OS';
 const DEFAULT_CENTER = [53.7326306, -2.6546124];
