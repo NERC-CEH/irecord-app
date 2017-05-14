@@ -27,7 +27,7 @@ const surveyVerify = {
 
     // location
     const location = attrs.location || {};
-    if (!location.latitude || !location.longitude) {
+    if (!location.latitude) {
       attributes.location = 'missing';
     }
     // location name
@@ -79,7 +79,7 @@ const surveyVerify = {
 
     // location
     const location = attrs.location || {};
-    if (!location.latitude || !location.longitude) {
+    if (!location.latitude) {
       attributes.location = 'missing';
     }
     // location name only for survey level
@@ -356,7 +356,7 @@ const helpers = {
     if (!locks.location) {
       // no previous location
       sample.startGPS();
-    } else if (!locks.location.latitude || !locks.location.longitude) {
+    } else if (!locks.location.latitude) {
       // previously locked location was through GPS
       // so try again
       sample.startGPS();

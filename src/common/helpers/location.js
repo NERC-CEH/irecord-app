@@ -20,6 +20,9 @@ const helpers = {
   locationToGrid(location) {
     const normalisedPrecision = GridRefUtils.GridRefParser.get_normalized_precision(location.accuracy * 2); // accuracy is radius
     const nationaGridCoords = GridRefUtils.latlng_to_grid_coords(location.latitude, location.longitude);
+    if (!nationaGridCoords) {
+      return null;
+    }
     return nationaGridCoords.to_gridref(normalisedPrecision);
   },
 
@@ -81,45 +84,12 @@ const helpers = {
   },
 
   /**
-   * 1 gridref digits. (10000m)  -> < 4 map zoom lvl
-   * 2 gridref digits. (1000m)   -> 7
-   * 3 gridref digits. (100m)    -> 10
-   * 4 gridref digits. (10m)     -> 12
-   * 5 gridref digits. (1m)      ->
-   *
-   * @return {int} radius in metres
-   */
-  mapZoomToMetreRadius(zoom) {
-    let scale;
-    if (zoom <= 4) {
-      scale = 0;
-    } else if (zoom <= 5) {
-      Log('tetrad map scale');
-      return 1000; // tetrad (radius is 1000m)
-    } else if (zoom <= 7) {
-      scale = 1;
-    } else if (zoom <= 10) {
-      scale = 2;
-    } else if (zoom <= 12) {
-      scale = 3;
-    } else {
-      scale = 4;
-    }
-
-    scale = 5000 / Math.pow(10, scale); // meters
-
-    Log('map scale (radius): ' + scale);
-
-    return scale < 1 ? 1 : scale;
-  },
-
-  /**
    *
    * @param {type} location
    * @returns {Boolean}
    */
   isInGB(location) {
-    if (location.latitude && location.longiture) {
+    if (location.latitude) {
       const nationaGridCoords = GridRefUtils.latlng_to_grid_coords(location.latitude, location.longitude);
       return nationaGridCoords && nationaGridCoords.country === 'GB';
     }

@@ -98,7 +98,15 @@ export default {
           }
           break;
         case 'location':
+          let location = sample.get('location');
+          val.name = location.name; // don't overwrite old one
           sample.set('location', val);
+          break;
+        case 'locationName':
+          // insert location name
+          location = sample.get('location');
+          location.name = val;
+          sample.set('location', location);
           break;
         case 'date':
           // parse stringified date

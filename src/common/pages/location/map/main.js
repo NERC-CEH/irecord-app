@@ -14,8 +14,9 @@ import GridRef from 'leaflet.gridref';
 import { OsGridRef } from 'geodesy';
 import LeafletButton from './leaflet_button_ext';
 import mapMarker from './marker';
+import gpsFunctions from './gps';
 
-const DEFAULT_LAYER = 'OSM'; // use Open Street Map as need to support Ireland
+const DEFAULT_LAYER = 'OS';
 const DEFAULT_CENTER = [53.7326306, -2.6546124];
 const MAX_OS_ZOOM = L.OSOpenSpace.RESOLUTIONS.length - 1;
 const OS_ZOOM_DIFF = 6;
@@ -152,34 +153,6 @@ const API = {
     this.map.addControl(this.controls);
   },
 
-  addGPS() {
-    Log('Location:MainView:Map: adding gps button.');
-
-    const that = this;
-    const location = this._getCurrentLocation();
-
-    const button = new LeafletButton({
-      position: 'topright',
-      className: 'gps-btn',
-      title: 'seek gps fix',
-      body: `<span class="icon icon-location"
-                data-source="${location.source}"></span>`,
-      onClick() {
-        that.trigger('gps:click');
-      },
-      maxWidth: 30,  // number
-    });
-
-
-    this.map.addControl(button);
-    const sample = this.model.get('sample');
-    if (sample.isGPSRunning()) {
-      this._set_gps_progress_feedback('pending');
-    } else {
-      this._set_gps_progress_feedback('');
-    }
-  },
-
   addPastLocations() {
     Log('Location:MainView:Map: adding past locations button.');
 
@@ -233,11 +206,9 @@ const API = {
     const gridRef = new L.GridRef({ color: getColor() });
 
     gridRef.update = () => {
-      let zoom = that.map.getZoom();
+      const zoom = that.getNormalZoom();
       // calculate granularity
       const color = getColor();
-      if (that.currentLayer === 'OS') zoom += OS_ZOOM_DIFF;
-
       const bounds = that.map.getBounds();
       const granularity = gridRef._getGranularity(zoom);
       const step = GRID_STEP / granularity;
@@ -250,50 +221,37 @@ const API = {
   },
 
   /**
-   * 1 gridref digits. (10000m)  -> < 3 map zoom lvl
-   * 2 gridref digits. (1000m)   -> 5
-   * 3 gridref digits. (100m)    -> 7
-   * 4 gridref digits. (10m)     -> 9
+   * Derives map zoom level from the current location accuracy.
+   *
+   * 1 gridref digits. (10000m)  -> 4 OS map zoom lvl
+   * 2 gridref digits. (1000m)   -> 8 OS
+   * 3 gridref digits. (100m)    -> 16 aerial
+   * 4 gridref digits. (10m)     -> 18 aerial
    * 5 gridref digits. (1m)      ->
    */
   _getZoomLevel() {
     Log('Location:MainView:Map: getting zoom level.');
-
-    const currentLocation = this._getCurrentLocation();
     let mapZoomLevel = 1;
 
+    const currentLocation = this._getCurrentLocation();
     // check if sample has location
-    if (currentLocation.latitude) {
-      // transform location accuracy to map zoom level
-
-      /**
-       * 1 gridref digits. (10000m)  -> 4 OS map zoom lvl
-       * 2 gridref digits. (1000m)   -> 8 OS
-       * 3 gridref digits. (100m)    -> 16 OSM
-       * 4 gridref digits. (10m)     -> 18 OSM
-       * 5 gridref digits. (1m)      ->
-       */
-      if (currentLocation.accuracy) {
-        if (currentLocation.accuracy > 1000) {
-          mapZoomLevel = 4;
-        } else if (currentLocation.accuracy > 100) {
-          mapZoomLevel = 8;
-        } else if (currentLocation.accuracy > 10) {
-          mapZoomLevel = 16;
-        } else {
-          mapZoomLevel = 18;
-        }
-      } else {
-        mapZoomLevel = 1;
-      }
+    if (!currentLocation.latitude) {
+      return mapZoomLevel;
     }
-    // if (this.currentLayer && this.currentLayer !== 'OS' && mapZoomLevel < MAX_OS_ZOOM) {
-    if (this.currentLayer && this.currentLayer !== 'OS') {
-      mapZoomLevel += OS_ZOOM_DIFF;
 
-      if (mapZoomLevel > 18) {
+    // transform location accuracy to map zoom level
+    if (currentLocation.accuracy) {
+      if (currentLocation.accuracy > 1000) {
+        mapZoomLevel = 4;
+      } else if (currentLocation.accuracy > 100) {
+        mapZoomLevel = 8;
+      } else if (currentLocation.accuracy > 10) {
+        mapZoomLevel = 16;
+      } else {
         mapZoomLevel = 18;
       }
+    } else {
+      mapZoomLevel = 1;
     }
 
     return mapZoomLevel;
@@ -305,23 +263,38 @@ const API = {
     this.currentLayerControlSelected = this.controls._handlingClick;
 
     const center = this.map.getCenter();
-    let zoom = this.map.getZoom();
+    const zoom = this.getNormalZoom(e.name);
     this.map.options.crs = e.name === 'OS' ? OS_CRS : L.CRS.EPSG3857;
 
-    if (!this.noZoomCompensation) {
-      if (e.name === 'OS') {
-        zoom -= OS_ZOOM_DIFF;
-
-        if (zoom > MAX_OS_ZOOM - 1) {
-          zoom = MAX_OS_ZOOM - 1;
-        }
-      } else if (this.currentLayer === 'OS') {
-        zoom += OS_ZOOM_DIFF;
-      }
-    }
     this.currentLayer = e.name;
     this.map.setView(center, zoom, { reset: true });
     this.$container.dataset.layer = this.currentLayer; // fix the lines between the tiles
+  },
+
+  /**
+   * Normalises the map zoom level between different projections.
+   * @param layer
+   * @returns {*}
+   */
+  getNormalZoom(layer, inGB) {
+    let zoom = this.map.getZoom();
+
+    if (layer === 'OS') {
+      zoom -= OS_ZOOM_DIFF;
+      if (zoom > MAX_OS_ZOOM - 1) {
+        zoom = MAX_OS_ZOOM - 1;
+      }
+    } else if (this.currentLayer === 'OS') {
+      zoom += OS_ZOOM_DIFF;
+    } else if (!inGB) {
+      // out of UK adjust the zoom because the next displayed map should be not OS
+      zoom += OS_ZOOM_DIFF;
+    } else if (inGB && (zoom - OS_ZOOM_DIFF) < MAX_OS_ZOOM) {
+      // need to downgrade to OS maps so that there is no OS -> OSM -> OS transitions
+      zoom -= OS_ZOOM_DIFF; // adjust the diff
+    }
+
+    return zoom;
   },
 
   onMapZoom() {
@@ -334,61 +307,53 @@ const API = {
     if (zoom > MAX_OS_ZOOM - 1 && this.currentLayer === 'OS') {
       this.map.removeLayer(this.layers.OS);
       this.map.addLayer(this.layers.Satellite);
-    } else if ((zoom - OS_ZOOM_DIFF) <= MAX_OS_ZOOM - 1 && this.currentLayer === 'Satellite') {
-      // only change base layer if user is on OS and did not specificly
-      // select OSM/Satellite
-      if (!this.currentLayerControlSelected && inGB !== false) {
-        this.map.removeLayer(this.layers.Satellite);
-        this.map.addLayer(this.layers.OS);
+    } else {
+      const somethingMagical = (zoom - OS_ZOOM_DIFF) <= MAX_OS_ZOOM - 1; //todo
+      const isSatellite = this.currentLayer === 'Satellite';
+      if (somethingMagical && isSatellite) {
+        // only change base layer if user is on OS and did not specificly
+        // select OSM/Satellite
+        if (!this.currentLayerControlSelected && inGB !== false) {
+          this.map.removeLayer(this.layers.Satellite);
+          this.map.addLayer(this.layers.OS);
+        }
       }
     }
   },
 
-  geolocationStart() {
-    this._set_gps_progress_feedback('pending');
-  },
 
   /**
-   * Update the temporary location fix
-   * @param location
+   * 1 gridref digits. (10000m)  -> < 4 map zoom lvl
+   * 2 gridref digits. (1000m)   -> 7
+   * 3 gridref digits. (100m)    -> 10
+   * 4 gridref digits. (10m)     -> 12
+   * 5 gridref digits. (1m)      ->
+   *
+   * @return {int} radius in metres
    */
-  geolocationUpdate(location) {
-    this.locationUpdate = location;
-    this._set_gps_progress_feedback('pending');
-  },
-
-  geolocationSuccess(location) {
-    this.locationUpdate = location;
-    this._set_gps_progress_feedback('fixed');
-  },
-
-  geolocationStop() {
-    this._set_gps_progress_feedback('');
-  },
-
-  geolocationError() {
-    this._set_gps_progress_feedback('failed');
-  },
-
-  _set_gps_progress_feedback(state) {
-    Log('Location:MainView:Map: updating gps button state.');
-    const $gpsButton = this.$el.find('.gps-btn');
-    // change state
-    $gpsButton.attr('data-gps-progress', state);
-
-
-    // change icon
-    const $gpsButtonSpan = $gpsButton.find('span');
-    if (state === 'pending') {
-      $gpsButtonSpan.addClass('icon-plus icon-spin');
-      $gpsButtonSpan.removeClass('icon-location');
+  mapZoomToMetreRadius(zoom) {
+    let scale;
+    if (zoom <= 4) {
+      scale = 0;
+    } else if (zoom <= 5) {
+      Log('tetrad map scale');
+      return 1000; // tetrad (radius is 1000m)
+    } else if (zoom <= 7) {
+      scale = 1;
+    } else if (zoom <= 10) {
+      scale = 2;
+    } else if (zoom <= 12) {
+      scale = 3;
     } else {
-      $gpsButtonSpan.removeClass('icon-plus icon-spin');
-      $gpsButtonSpan.addClass('icon-location');
+      scale = 4;
     }
+
+    scale = 5000 / Math.pow(10, scale); // meters
+    return scale < 1 ? 1 : scale;
   },
 };
 
 $.extend(API, mapMarker);
+$.extend(API, gpsFunctions);
 
 export default API;

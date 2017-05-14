@@ -6,7 +6,7 @@ import JST from 'JST';
 import LocHelp from 'helpers/location';
 import Log from 'helpers/log';
 import CONFIG from 'config';
-import 'typeahead'; //typeahead.js
+import 'typeahead'; //
 import headerFunctions from './main_view_header';
 import mapFunctions from './map/main';
 import './styles.scss';
@@ -68,22 +68,20 @@ const LocationView = Marionette.View.extend({
 
     const appModel = this.model.get('appModel');
     const location = this._getCurrentLocation();
-    const locationName = this.model.get('sample').get('locationName');
-    let gridref;
+    let value = location.gridref;
+
 
     // avoid testing location.longitude as this can validly be zero within the UK
-    if (location.source !== 'gridref' && location.latitude) {
-      gridref = LocHelp.locationToGrid(location);
-    } else {
-      gridref = location.gridref;
+    if (!value && location.latitude) {
+      value = `${location.latitude}, ${location.longitude}`;
     }
 
     const locationLocked = appModel.isAttrLocked('location', location);
-    const nameLocked = appModel.isAttrLocked('locationName', locationName);
+    const nameLocked = appModel.isAttrLocked('locationName', location.name);
 
     return {
-      locationName,
-      gridref,
+      locationName: location.name,
+      value,
       locationSource: location.source,
       accuracy: location.accuracy,
       latitude: location.latitude,

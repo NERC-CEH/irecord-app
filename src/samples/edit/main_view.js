@@ -38,13 +38,11 @@ export default Marionette.View.extend({
     if (!numberLock) {
       numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
     }
-    const locationName = sample.get('locationName');
-
     const attrLocks = {
       date: appModel.isAttrLocked('date', sample.get('date')),
       location: appModel.isAttrLocked('location', location),
       number: numberLock,
-      locationName: appModel.isAttrLocked('locationName', locationName),
+      locationName: appModel.isAttrLocked('locationName', location.name),
       stage: appModel.isAttrLocked('stage', occ.get('stage')),
       identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
       comment: appModel.isAttrLocked('comment', occ.get('comment')),
@@ -67,7 +65,7 @@ export default Marionette.View.extend({
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
-      locationName,
+      locationName: location.name,
       date: DateHelp.print(sample.get('date'), true),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),

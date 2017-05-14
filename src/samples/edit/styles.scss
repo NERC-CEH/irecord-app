@@ -84,8 +84,9 @@ ul.table-view.inputs {
 
 .lock:after {
   position: absolute;
-  top: 10px;
   right: 15px;
+  top: auto;
+  bottom: 12px;
 
   color: $color-gray-dark;
   font-family: icons;
@@ -94,8 +95,7 @@ ul.table-view.inputs {
 
 // location below location name
 .location.lock:after {
-  bottom: 12px;
-  top: auto;
+  top: 10px;
 }
 
 

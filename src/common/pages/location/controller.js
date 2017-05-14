@@ -18,6 +18,8 @@ import MainView from './main_view';
 // import PastLocationsController from '../../../settings/locations/controller';
 import './styles.scss';
 
+const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g;
+
 const API = {
   show(sampleID, subSampleID) {
     // wait till savedSamples is fully initialized
@@ -79,9 +81,8 @@ const API = {
     mainView.on('lock:click:name', API.onNameLockClick);
 
     const location = sample.get('location') || {};
-    const locationName = sample.get('locationName');
     const locationIsLocked = appModel.isAttrLocked('location', location);
-    const nameIsLocked = appModel.isAttrLocked('locationName', locationName);
+    const nameIsLocked = appModel.isAttrLocked('locationName', location.name);
     mainView.on('navigateBack', () => {
       API.exit(sample, locationIsLocked, nameIsLocked);
     });
@@ -140,15 +141,13 @@ const API = {
       .then(() => {
         // save to past locations and update location ID on record
         const location = sample.get('location') || {};
-        if ((location.latitude && location.longitude)) {
-          const locationName = sample.get('locationName');
-          const locationID = appModel.setLocation(location, locationName);
+        if ((location.latitude)) {
+          const locationID = appModel.setLocation(location);
           location.id = locationID;
           sample.set('location', location);
         }
 
-        const locationName = sample.get('locationName');
-        API.updateLocks(location, locationName, locationWasLocked, nameWasLocked);
+        API.updateLocks(location, locationWasLocked, nameWasLocked);
 
         window.history.back();
       })
@@ -163,14 +162,14 @@ const API = {
    * Updates the
    * @param sample
    */
-  updateLocks(location = {}, locationName, locationWasLocked, nameWasLocked) {
+  updateLocks(location = {}, locationWasLocked, nameWasLocked) {
     Log('Location:Controller: updating locks.');
 
     const currentLock = appModel.getAttrLock('location');
     const currentLockedName = appModel.getAttrLock('locationName');
 
     // location
-    if (location.source !== 'gps' && location.latitude && location.longitude) {
+    if (location.source !== 'gps' && location.latitude) {
       // we can lock location and name on their own
       // don't lock GPS though, because it varies more than a map or gridref
       if (currentLock &&
@@ -188,7 +187,7 @@ const API = {
     // name
     if (currentLockedName &&
       (currentLockedName === true || nameWasLocked)) {
-      appModel.setAttrLock('locationName', locationName);
+      appModel.setAttrLock('locationName', location.name);
     }
   },
 
@@ -207,7 +206,9 @@ const API = {
     }
 
     const escapedName = StringHelp.escape(locationName);
-    sample.set('locationName', escapedName);
+    const location = sample.set('location') || {};
+    location.name = locationName;
+    sample.set('location', location);
     sample.save();
   },
 
@@ -218,15 +219,29 @@ const API = {
     if (gridref !== '') {
       const parsedGridRef = GridRefUtils.GridRefParser.factory(normalizedGridref);
 
+      const location = sample.get('location') || {};
       if (parsedGridRef) {
-        const location = sample.get('location') || {};
-        const latLng = parsedGridRef.osRef.to_latLng();
-
         location.source = 'gridref';
         location.gridref = parsedGridRef.preciseGridRef;
+        location.accuracy = parsedGridRef.length / 2; // radius rather than square dimension
+
+        // center gridref
+        parsedGridRef.osRef.x += location.accuracy;
+        parsedGridRef.osRef.y += location.accuracy;
+
+        const latLng = parsedGridRef.osRef.to_latLng();
+
         location.latitude = latLng.lat;
         location.longitude = latLng.lng;
-        location.accuracy = parsedGridRef.length / 2; // radius rather than square dimension
+
+        API.setLocation(sample, location);
+      } else if (gridref.match(LATLONG_REGEX)) {
+        location.source = 'gridref';
+        location.accuracy = 1;
+        const latitude = parseFloat(gridref.split(',')[0]);
+        location.latitude = parseFloat(latitude);
+        const longitude = parseFloat(gridref.split(',')[1]);
+        location.longitude = parseFloat(longitude);
 
         API.setLocation(sample, location);
       } else {
@@ -244,51 +259,9 @@ const API = {
     }
   },
 
-  validateGridRef(data) {
-    /**
-     * Validates the new location
-     * @param attrs
-     */
-    function validate(attrs) {
-      const errors = {};
-
-      if (!attrs.name) {
-        errors.name = "can't be blank";
-      }
-
-      if (!attrs.gridref) {
-        errors.gridref = "can't be blank";
-      } else {
-        const gridref = attrs.gridref.replace(/\s/g, '');
-        if (!Validate.gridRef(gridref)) {
-          errors.gridref = 'invalid';
-        } else if (!LocHelp.grid2coord(gridref)) {
-          errors.gridref = 'invalid';
-        }
-      }
-
-      if (!_.isEmpty(errors)) {
-        return errors;
-      }
-
-      return null;
-    }
-
-    const validationError = validate(data);
-    if (!validationError) {
-      radio.trigger('gridref:form:data:invalid', {}); // update form
-      return true;
-    }
-
-    radio.trigger('gridref:form:data:invalid', validationError);
-    return false;
-  },
-
   onPastLocationsClick(sample) {
     radio.trigger('settings:locations', {
       onSelect(location) {
-        sample.set('locationName', location.name);
-        delete location.name;
         sample.set('location', location);
         window.history.back();
       },

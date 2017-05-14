@@ -6,7 +6,7 @@
     <div class="input-row">
       <button id="location-lock-btn" class="lock-btn icon icon-lock-<%- obj.locationLocked ? 'closed' : 'open' %>"></button>
       <label class="media-object pull-left icon icon-location" for="location-gridref" />
-      <input type="text" title="set gridreference" id="location-gridref" placeholder="Grid reference" value="<%- obj.gridref %>" data-source="<%- obj.locationSource %>" />
+      <input type="text" title="set gridreference" id="location-gridref" placeholder="Grid reference" value="<%- obj.value %>" data-source="<%- obj.locationSource %>" />
     </div>
     <div class="input-row" id="location-name-row">
       <button id="name-lock-btn" class="lock-btn icon icon-lock-<%- obj.nameLocked ? 'closed' : 'open' %>"></button>

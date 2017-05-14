@@ -29,17 +29,24 @@ const API = {
         break;
       default:
         // Other
-        const gr = e.target.value.replace(/\s+/g, '').toUpperCase();
+        const value = e.target.value.replace(/\s+/g, '').toUpperCase();
 
-        if (gr === this._getCurrentLocation().gridref) {
+        const location = this._getCurrentLocation();
+        const latlong = `${location.latitude}, ${location.longitude}`;
+        if (value === location.gridref || value === latlong) {
           return; // gridref hasn't changed meaningfully
         }
 
         // Clear previous timeout
         this._clearGrTimeout();
+        const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g;
 
-        if (gr === '' || LocHelp.gridrefStringToLatLng(gr)) {
-          // gr syntax ok (or blank)
+        if (
+          value === '' ||
+          LocHelp.gridrefStringToLatLng(value) ||
+          value.match(LATLONG_REGEX)
+        ) {
+          // value syntax ok (or blank)
 
           this._refreshGrErrorState(false);
 
@@ -47,7 +54,7 @@ const API = {
           // Set new timeout - don't run if user is typing
           this.grRefreshTimeout = setTimeout(() => {
             // let controller know
-            that.trigger('location:gridref:change', gr);
+            that.trigger('location:gridref:change', value);
           }, 200);
         } else {
           this._refreshGrErrorState(true);
@@ -113,16 +120,7 @@ const API = {
 
     this.updateMapMarker(location);
 
-    // if source was 'map' then presume that current zoom is fine
-    // so don't change (send undefined)
-    // this.map.setView(this._getCenter(), location.source !== 'map' ?
-    // this._getZoomLevel() : undefined);
-    this.noZoomCompensation = false;
-    // this.map.setView(this._getCenter(), this._getZoomLevel());
-    this.map.setView(this._getCenter(), location.source !== 'map' ? this._getZoomLevel() : undefined);
-    // this.map.panTo(this._getCenter());
-    // this.map.setZoom(this._getZoomLevel());
-    this.noZoomCompensation = false;
+    this.map.setView(this._getCenter(), this._getZoomLevel());
     this._refreshGridRefElement(location);
   },
 
@@ -131,7 +129,11 @@ const API = {
 
     // rather than full refresh of the view, directly update the relavant input element
     const $GR = this.$el.find('#location-gridref');
-    $GR.val(location.gridref);
+    let value = location.gridref;
+    if (!location.gridref) {
+      value = `${location.latitude}, ${location.longitude}`;
+    }
+    $GR.val(value);
     $GR.attr('data-source', location.source);
 
     const $gpsBtn = this.$el.find('.gps-btn');
@@ -150,7 +152,6 @@ const API = {
     const appModel = this.model.get('appModel');
     const sample = this.model.get('sample');
     const location = sample.get('location') || {};
-    const name = sample.get('locationName');
 
     // location lock
     const $locationLockBtn = this.$el.find('#location-lock-btn');
@@ -165,7 +166,7 @@ const API = {
 
     // location name lock
     const $nameLockBtn = this.$el.find('#name-lock-btn');
-    const nameLocked = appModel.isAttrLocked('locationName', name);
+    const nameLocked = appModel.isAttrLocked('locationName', location.name);
     if (nameLocked) {
       $nameLockBtn.addClass('icon-lock-closed');
       $nameLockBtn.removeClass('icon-lock-open');
