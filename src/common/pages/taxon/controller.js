@@ -52,16 +52,21 @@ const API = {
    * @param suggestions
    */
   deDuplicateSuggestions(suggestions) {
-    let previous = null;
+    let previous = {};
     const results = [];
     suggestions.forEach((taxon) => {
-      if (!previous || (previous.common_name !== taxon.common_name)) {
-        // not a dupe taxa
+      const commonName = taxon.common_name && taxon.common_name.toLocaleLowerCase();
+      const previousCommonName = previous.common_name && previous.common_name.toLocaleLowerCase();
+
+      if (!commonName || !previousCommonName || commonName !== previousCommonName) {
+        // common names don't match - not a dupe taxa
         results.push(taxon);
         previous = taxon;
       } else if (
         taxon.scientific_name.split(/\s+/).length ===
-        previous.scientific_name.split(/\s+/).length
+        previous.scientific_name.split(/\s+/).length &&
+        // don't add same species with the same name twice
+        previous.warehouse_id !== taxon.warehouse_id
       ) {
         // need to qualify both the last pushed name and this entry with the
         // scientific name helps to disambiguate Silene pusilla and
