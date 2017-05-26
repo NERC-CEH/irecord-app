@@ -3,6 +3,7 @@
 // # A, B, C[], C[], C[], D[], E{A}, E{B}, F{P{L[]}}
 // #
 // # {A, B, [C, C, C], [D], E:{A, B}}, F:{P:[L]}
+'use strict';
 
 const taxonCleaner = require('./_clean');
 const parse = require('csv-parse/lib/sync');

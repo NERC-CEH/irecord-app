@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = (taxon, common, genus) => {
   let cleaned = taxon;
   if (taxon) {
