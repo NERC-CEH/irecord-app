@@ -2,8 +2,10 @@
 
 module.exports = (taxon, common, genus) => {
   let cleaned = taxon;
+
   if (taxon) {
-    cleaned = taxon.replace(/\([a-zA-Z]+\)/g, '').trim();
+    // #Remove ',.*().*,,' - should not have bracketed old Genus
+    cleaned = taxon.replace(/\([a-zA-Z0-9\-\.\/\,\s]*\)\s?/g, '').trim();
   }
   return cleaned;
 };

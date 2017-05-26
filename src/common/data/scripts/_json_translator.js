@@ -70,7 +70,13 @@ function optimise(output) {
       taxa[GROUP], // group
       taxon, // taxon
     ];
-    const synonym = taxonCleaner(taxa[COMMON_NAME], true, true);
+
+    const name = taxonCleaner(taxa[COMMON_NAME], true, true);
+    if (name) {
+      genus.push(name);
+    }
+
+    const synonym = taxonCleaner(taxa[SYNONYM], true, true);
     if (synonym) {
       genus.push(synonym);
     }
@@ -79,19 +85,34 @@ function optimise(output) {
   }
 
 
-  function getLastGenus(taxa, taxaNameSplitted) {
-    let lastGenus = optimised[optimised.length - 1];
+  /**
+   * Finds the last genus entered in the optimised list.
+   * Looks for the matching taxa and informal group.
+   * @param taxa
+   * @param taxaNameSplitted
+   * @returns {*}
+   */
+  function getLastGenus(taxa, taxaNameSplitted, index) {
+    const lastEntry = index || optimised.length - 1;
+    let lastGenus = optimised[lastEntry];
 
-    // check if taxa groups match
-    if (lastGenus[GROUP] !== taxa[GROUP]) {
+    // no genus with the same name and group was found
+    if (lastGenus[TAXON] !== taxaNameSplitted[0]) {
       // create a new genus with matching group
       lastGenus = [
-        'asdas',
+        0,
         taxa[GROUP],
         taxaNameSplitted[0],
         [],
       ];
       optimised.push(lastGenus);
+      return lastGenus;
+    }
+
+    // if taxa groups don't match then recursively go to check
+    // next entry that matches the taxa and the group
+    if (lastGenus[GROUP] !== taxa[GROUP]) {
+      return getLastGenus(taxa, taxaNameSplitted, lastEntry - 1);
     }
 
     return lastGenus;
@@ -116,7 +137,12 @@ function optimise(output) {
 
     // taxon
     const taxon = taxaNameSplitted.slice(1).join(' ');
-    species.push(taxonCleaner(taxon, false)); // remove genus name
+    const taxonClean = taxonCleaner(taxon, false);
+    if (!taxonClean) {
+      // cleaner might stripped all
+      return;
+    }
+    species.push(taxonClean); // remove genus name
 
     // common name
     const commonName = taxonCleaner(taxa[COMMON_NAME], true);
@@ -133,12 +159,40 @@ function optimise(output) {
     speciesArray.push(species);
   }
 
+  function isGenusDuplicate(taxa, index) {
+    const lastEntry = index || optimised.length - 1;
+    if (lastEntry < 0) {
+      // empty array
+      return false;
+    }
+    const genus = optimised[lastEntry];
+    if (genus[TAXON] !== taxa[TAXON]) {
+      // couldn't find duplicate
+      return false;
+    }
+
+    if (genus[GROUP] !== taxa[GROUP]) {
+      // recursively look for another one down the line
+      return isGenusDuplicate(taxa, lastEntry - 1);
+    }
+    return true;
+  }
+
   output.forEach((taxa) => {
     const taxaName = taxa[TAXON];
     const taxaNameSplitted = taxaName.split(' ');
 
+    // hybrid genus names starting with X should
+    // have a full genus eg. X Agropogon littoralis
+    if (taxaNameSplitted[0] === 'X') {
+      taxaNameSplitted[0] = `${taxaNameSplitted.shift()} ${taxaNameSplitted[0]}`;
+    }
     if (taxaNameSplitted.length === 1) {
-      // genus - all good
+      // genus
+      if (isGenusDuplicate(taxa)) {
+        console.log(`Duplicate genus found: ${taxa.toString()}`);
+        return;
+      }
       addGenus(taxa);
     } else {
       addSpecies(taxa, taxaNameSplitted);
