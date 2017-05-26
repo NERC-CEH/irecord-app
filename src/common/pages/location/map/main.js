@@ -1,6 +1,31 @@
 /** ****************************************************************************
  * Location main view map functions.
+ *
+ +
+ |                Map zoom level to accuracy map
+ |                +----------------------------+
+ |
+ |            WGS84   OSGB1936   GRIDREF    GPS ACC.
+ |                                ACC.
+ |
+ |             + 18                4           10m
+ |             |                   4           10m
+ |             |                   4           10m
+ |             | 15   9 +          4           10m
+ |             | 14   8 |          4           10m
+ |             |        |          3          100m
+ |             | 12   6 |          3          100m
+ |             |        |          2         1000m
+ |             | 10   4 |          2         1000m
+ |             |        |          1        10000m
+ |             |        |          1        10000m
+ |             |        |          1        10000m
+ |             | 6    0 +          1        10000m
+ |             + 5                 1        10000m
+ +
+ *
  *****************************************************************************/
+
 import $ from 'jquery';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/images/layers-2x.png';
@@ -222,12 +247,6 @@ const API = {
 
   /**
    * Derives map zoom level from the current location accuracy.
-   *
-   * 1 gridref digits. (10000m)  -> 4 OS map zoom lvl
-   * 2 gridref digits. (1000m)   -> 8 OS
-   * 3 gridref digits. (100m)    -> 16 aerial
-   * 4 gridref digits. (10m)     -> 18 aerial
-   * 5 gridref digits. (1m)      ->
    */
   _getZoomLevel() {
     Log('Location:MainView:Map: getting zoom level.');

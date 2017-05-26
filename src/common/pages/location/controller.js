@@ -55,7 +55,23 @@ const API = {
       model: new Backbone.Model({ sample, appModel }),
       vent: App,
     });
+    API.attachMainViewEvents(mainView, sample);
 
+    radio.trigger('app:main', mainView);
+
+    // HEADER
+    radio.trigger('app:header:hide');
+
+    // FOOTER
+    radio.trigger('app:footer:hide');
+  },
+
+  /**
+   * Adds mainView listeners.
+   * @param mainView
+   * @param sample
+   */
+  attachMainViewEvents(mainView, sample) {
     // past locations
     mainView.on('past:click', () => API.onPastLocationsClick(sample));
 
@@ -86,14 +102,6 @@ const API = {
     mainView.on('navigateBack', () => {
       API.exit(sample, locationIsLocked, nameIsLocked);
     });
-
-    radio.trigger('app:main', mainView);
-
-    // HEADER
-    radio.trigger('app:header:hide');
-
-    // FOOTER
-    radio.trigger('app:footer:hide');
   },
 
   /**
@@ -159,7 +167,7 @@ const API = {
 
 
   /**
-   * Updates the
+   * Updates the locks.
    * @param sample
    */
   updateLocks(location = {}, locationWasLocked, nameWasLocked) {
@@ -200,6 +208,11 @@ const API = {
     }
   },
 
+  /**
+   * Update location name that was typed in.
+   * @param sample
+   * @param locationName
+   */
   updateLocationName(sample, locationName) {
     if (!locationName || typeof locationName !== 'string') {
       return;
@@ -212,6 +225,11 @@ const API = {
     sample.save();
   },
 
+  /**
+   * Updates sample location with new gridref that was typed in.
+   * @param sample
+   * @param gridref
+   */
   onManualGridrefChange(sample, gridref) {
     Log('Location:Controller: executing onManualGridrefChange.');
     const normalizedGridref = gridref.replace(/\s/g, '').toUpperCase();
@@ -259,6 +277,10 @@ const API = {
     }
   },
 
+  /**
+   * Navigates to past locations page.
+   * @param sample
+   */
   onPastLocationsClick(sample) {
     radio.trigger('settings:locations', {
       onSelect(location) {

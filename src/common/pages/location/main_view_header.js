@@ -39,6 +39,7 @@ const API = {
 
         // Clear previous timeout
         this._clearGrTimeout();
+        // eslint-disable-next-line
         const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g;
 
         if (
