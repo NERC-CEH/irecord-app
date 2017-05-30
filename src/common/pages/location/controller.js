@@ -243,10 +243,6 @@ const API = {
         location.gridref = parsedGridRef.preciseGridRef;
         location.accuracy = parsedGridRef.length / 2; // radius rather than square dimension
 
-        // center gridref
-        parsedGridRef.osRef.x += location.accuracy;
-        parsedGridRef.osRef.y += location.accuracy;
-
         const latLng = parsedGridRef.osRef.to_latLng();
 
         location.latitude = latLng.lat;
