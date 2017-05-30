@@ -58,8 +58,18 @@ const helpers = {
    * @returns {GridRefUtils.OSRef|null} SW corner of grid square
    */
   parseGrid(gridrefString) {
+    let gridRef;
     const parser = GridRefUtils.GridRefParser.factory(gridrefString);
-    return parser ? parser.osRef : null;
+
+    if (parser) {
+      // center gridref
+      parser.osRef.x += parser.length / 2;
+      parser.osRef.y += parser.length / 2;
+
+      gridRef = parser.osRef;
+    }
+
+    return gridRef;
   },
 
   /**

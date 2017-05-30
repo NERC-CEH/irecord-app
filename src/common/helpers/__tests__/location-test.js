@@ -1,15 +1,15 @@
 import location from '../location';
 
-describe('Location', function () {
-  it('should calculate the centre-point of a westerly GB grid-square', function () {
+describe('Location', () => {
+  it('should calculate the centre-point of a westerly GB grid-square', () => {
     const osCoords = location.parseGrid('SV80');
-    expect(osCoords.easting == 85000).to.be.true;
-    expect(osCoords.northing == 5000).to.be.false;
+    expect(osCoords.x == 85000).to.be.true;
+    expect(osCoords.y == 5000).to.be.true;
   });
 
-  it('should calculate the centre-point of a GB grid-square in Derbyshire', function () {
+  it('should calculate the centre-point of a GB grid-square in Derbyshire', () => {
     const osCoords = location.parseGrid('SD59');
-    expect(osCoords.easting == 355000).to.be.true;
-    expect(osCoords.northing == 495000).to.be.false;
+    expect(osCoords.x == 355000).to.be.true;
+    expect(osCoords.y == 495000).to.be.true;
   });
 });
