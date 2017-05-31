@@ -7,15 +7,15 @@ describe('Map', () => {
     API.map = {};
   });
 
-  it('should have getNormalZoom', () => {
-    expect(API.getNormalZoom).to.be.a('function');
+  it('should have getMapZoom', () => {
+    expect(API.getMapZoom).to.be.a('function');
   });
 
   it('should return WGS84 zoom', () => {
     const zoom = 5;
     API.map.getZoom = () => zoom; // spy
 
-    const normalized = API.getNormalZoom();
+    const normalized = API.getMapZoom();
     expect(normalized).to.be.equal(zoom);
   });
 
@@ -24,7 +24,7 @@ describe('Map', () => {
     API.map.getZoom = () => zoom; // spy
     API.currentLayer = 'OS';
 
-    const normalized = API.getNormalZoom();
+    const normalized = API.getMapZoom();
     expect(normalized).to.be.equal(zoom + OS_ZOOM_DIFF);
   });
 
