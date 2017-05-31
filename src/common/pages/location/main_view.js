@@ -49,7 +49,7 @@ const LocationView = Marionette.View.extend({
     this.listenTo(sample, 'geolocation:error', this.geolocationError);
     this.listenTo(sample, 'geolocation:update', this.geolocationUpdate);
     this.listenTo(sample, 'geolocation:success', this.geolocationSuccess);
-    this.listenTo(sample, 'change:location', this.locationChange);
+    this.listenTo(sample, 'change:location', this.onLocationChange);
 
     const appModel = this.model.get('appModel');
     this.listenTo(appModel, 'change:attrLocks', this.updateLocks);

@@ -80,17 +80,35 @@ const helpers = {
   gridrefStringToLatLng(gridrefString) {
     try {
       const parsedRef = GridRefUtils.GridRefParser.factory(gridrefString);
-
       if (parsedRef) {
         return parsedRef.osRef.to_latLng();
-      } else {
-        return null;
       }
-    } catch(e) {
+
+      return null;
+    } catch (e) {
       Log(e.message);
     }
 
     return null;
+  },
+
+  /**
+   * Checks if the grid reference is valid and in GB land
+   * @param gridrefString
+   */
+  isValidGridRef(gridrefString) {
+    try {
+      const parsedRef = GridRefUtils.GridRefParser.factory(gridrefString);
+      if (parsedRef && GridRefUtils.MappingUtils.is_gb_hectad(parsedRef.hectad)) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      Log(e.message);
+    }
+
+    return false;
   },
 
   /**
@@ -101,7 +119,10 @@ const helpers = {
   isInGB(location) {
     if (location.latitude) {
       const nationaGridCoords = GridRefUtils.latlng_to_grid_coords(location.latitude, location.longitude);
-      return nationaGridCoords && nationaGridCoords.country === 'GB';
+      if (!nationaGridCoords) {
+        return false;
+      }
+      return nationaGridCoords.country === 'GB';
     }
     return false;
   },

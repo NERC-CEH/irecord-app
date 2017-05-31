@@ -92,13 +92,12 @@ const marker = {
     };
 
     const inGB = LocHelp.isInGB(location);
-    const zoom = this.getNormalZoom(!inGB);
-    location.accuracy = this.mapZoomToMetreRadius(zoom);
+    const zoom = this.getMapZoom(!inGB);
+    location.accuracy = this._mapZoomToMetres(zoom);
     location.gridref = LocHelp.locationToGrid(location);
 
     // trigger won't work to bubble up
     this.triggerMethod('location:select:map', location);
-    this.updateMapMarker(location);
   },
 
   _setCircleLocation(loc) {

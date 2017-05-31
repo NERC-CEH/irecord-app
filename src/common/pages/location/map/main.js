@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Location main view map functions.
  *
- +
+ `
  |                Map zoom level to accuracy map
  |                +----------------------------+
  |
@@ -10,13 +10,13 @@
  |
  |             + 18                4           10m
  |             |                   4           10m
- |             |                   4           10m
- |             | 15   9 +          4           10m
- |             | 14   8 |          4           10m
- |             |        |          3          100m
- |             | 12   6 |          3          100m
+ |             |                   3          100m
+ |             | 15   9 +          3          100m
+ |             | 14   8 |          3          100m
  |             |        |          2         1000m
- |             | 10   4 |          2         1000m
+ |             | 12   6 |          2         1000m
+ |             |        |          2         1000m
+ |             | 10   4 |          1        10000m
  |             |        |          1        10000m
  |             |        |          1        10000m
  |             |        |          1        10000m
@@ -60,7 +60,8 @@ const API = {
     if (this.currentLayer === 'OS') this.map.options.crs = OS_CRS;
 
     // position view
-    this.map.setView(this._getCenter(), this._getZoomLevel());
+    const location = this._getCurrentLocation();
+    this.map.setView(this._getCenter(location), this._getZoomLevel(location));
 
     // show default layer
     this.layers[this.currentLayer].addTo(this.map);
@@ -145,9 +146,9 @@ const API = {
 
   _getCurrentLayer() {
     let layer = DEFAULT_LAYER;
-    const zoom = this._getZoomLevel();
-    const currentLocation = this._getCurrentLocation();
-    const inGB = LocHelp.isInGB(currentLocation);
+    const location = this._getCurrentLocation();
+    const zoom = this._getZoomLevel(location);
+    const inGB = LocHelp.isInGB(location);
     if (zoom > MAX_OS_ZOOM - 1) {
       layer = 'Satellite';
     } else if (inGB === false) {
@@ -158,11 +159,10 @@ const API = {
     return layer;
   },
 
-  _getCenter() {
-    const currentLocation = this._getCurrentLocation();
+  _getCenter(location = {}) {
     let center = DEFAULT_CENTER;
-    if (currentLocation.latitude) {
-      center = [currentLocation.latitude, currentLocation.longitude];
+    if (location.latitude) {
+      center = [location.latitude, location.longitude];
     }
     return center;
   },
@@ -231,7 +231,7 @@ const API = {
     const gridRef = new L.GridRef({ color: getColor() });
 
     gridRef.update = () => {
-      const zoom = that.getNormalZoom();
+      const zoom = that.getMapZoom();
       // calculate granularity
       const color = getColor();
       const bounds = that.map.getBounds();
@@ -246,44 +246,29 @@ const API = {
   },
 
   /**
-   * Derives map zoom level from the current location accuracy.
+   * Derives map zoom level from location accuracy.
    */
-  _getZoomLevel() {
+  _getZoomLevel(location = {}) {
     Log('Location:MainView:Map: getting zoom level.');
-    let mapZoomLevel = 1;
-
-    const currentLocation = this._getCurrentLocation();
-    // check if sample has location
-    if (!currentLocation.latitude) {
-      return mapZoomLevel;
-    }
-
-    // transform location accuracy to map zoom level
-    if (currentLocation.accuracy) {
-      if (currentLocation.accuracy > 1000) {
-        mapZoomLevel = 4;
-      } else if (currentLocation.accuracy > 100) {
-        mapZoomLevel = 8;
-      } else if (currentLocation.accuracy > 10) {
-        mapZoomLevel = 16;
-      } else {
-        mapZoomLevel = 18;
-      }
-    } else {
-      mapZoomLevel = 1;
-    }
-
-    return mapZoomLevel;
+    return API._metresToMapZoom(location.accuracy);
   },
 
   _updateCoordSystem(e) {
     Log('Location:MainView:Map: updating coord system.');
 
+    const nextLayer = e.name;
+
     this.currentLayerControlSelected = this.controls._handlingClick;
 
     const center = this.map.getCenter();
-    const zoom = this.getNormalZoom(e.name);
-    this.map.options.crs = e.name === 'OS' ? OS_CRS : L.CRS.EPSG3857;
+    let zoom = this.getMapZoom();
+    this.map.options.crs = L.CRS.EPSG3857;
+
+    // a change from WGS84 -> OS
+    if (nextLayer === 'OS') {
+      zoom = API._deNormalizeOSzoom(zoom);
+      this.map.options.crs = OS_CRS;
+    }
 
     this.currentLayer = e.name;
     this.map.setView(center, zoom, { reset: true });
@@ -295,44 +280,66 @@ const API = {
    * @param layer
    * @returns {*}
    */
-  getNormalZoom(layer, inGB) {
+  getMapZoom(outsideGB) {
     let zoom = this.map.getZoom();
 
-    if (layer === 'OS') {
-      zoom -= OS_ZOOM_DIFF;
-      if (zoom > MAX_OS_ZOOM - 1) {
-        zoom = MAX_OS_ZOOM - 1;
-      }
-    } else if (this.currentLayer === 'OS') {
+    if (this.currentLayer === 'OS') {
       zoom += OS_ZOOM_DIFF;
-    } else if (!inGB) {
-      // out of UK adjust the zoom because the next displayed map should be not OS
-      zoom += OS_ZOOM_DIFF;
-    } else if (inGB && (zoom - OS_ZOOM_DIFF) < MAX_OS_ZOOM) {
-      // need to downgrade to OS maps so that there is no OS -> OSM -> OS transitions
-      zoom -= OS_ZOOM_DIFF; // adjust the diff
     }
+    // else if (outsideGB) {
+    //   // out of UK adjust the zoom because the next displayed map should be not OS
+    //   zoom += OS_ZOOM_DIFF;
+    // } else if (!outsideGB && (zoom - OS_ZOOM_DIFF) < MAX_OS_ZOOM) {
+    //   // need to downgrade to OS maps so that there is no OS -> OSM -> OS transitions
+    //   zoom -= OS_ZOOM_DIFF; // adjust the diff
+    // }
 
     return zoom;
+  },
+
+  /**
+   * Checks if the WGS84 map zoom level fits within OSGB map zoom max/min.
+   * @param zoom
+   * @returns {boolean}
+   */
+  _isValidOSZoom(zoom) {
+    const deNormalizedZoom = zoom - OS_ZOOM_DIFF;
+    return deNormalizedZoom >= 0 && deNormalizedZoom <= MAX_OS_ZOOM - 1;
+  },
+
+  /**
+   * Turns WGS84 map zoom into OSGB zoom.
+   * @param zoom
+   * @returns {number}
+   */
+  _deNormalizeOSzoom(zoom) {
+    const deNormalizedZoom = zoom - OS_ZOOM_DIFF;
+    if (deNormalizedZoom > MAX_OS_ZOOM - 1) {
+      return MAX_OS_ZOOM - 1;
+    } else if (deNormalizedZoom < 0) {
+      return 0;
+    }
+
+    return deNormalizedZoom;
   },
 
   onMapZoom() {
     Log('Location:MainView:Map: executing onMapZoom.');
 
-    const zoom = this.map.getZoom();
-    const inGB = LocHelp.isInGB(this._getCurrentLocation());
+    const validOSZoom = API._isValidOSZoom(this.getMapZoom());
+    console.log(`zooming to: ${this.getMapZoom()} acc ${API._mapZoomToMetres(this.getMapZoom())}`)
 
-    // -2 and not -1 because we ignore the last OS zoom level
-    if (zoom > MAX_OS_ZOOM - 1 && this.currentLayer === 'OS') {
+    if (this.currentLayer === 'OS' && !validOSZoom) {
+      // change to WGS84
       this.map.removeLayer(this.layers.OS);
       this.map.addLayer(this.layers.Satellite);
     } else {
-      const somethingMagical = (zoom - OS_ZOOM_DIFF) <= MAX_OS_ZOOM - 1; //todo
       const isSatellite = this.currentLayer === 'Satellite';
-      if (somethingMagical && isSatellite) {
+      if (isSatellite && validOSZoom) {
         // only change base layer if user is on OS and did not specificly
         // select OSM/Satellite
-        if (!this.currentLayerControlSelected && inGB !== false) {
+        const inGB = LocHelp.isInGB(this._getCurrentLocation());
+        if (!this.currentLayerControlSelected && inGB) {
           this.map.removeLayer(this.layers.Satellite);
           this.map.addLayer(this.layers.OS);
         }
@@ -340,31 +347,46 @@ const API = {
     }
   },
 
+  /**
+   * Transform location accuracy to WGS84 map zoom level.
+   * @param metres
+   * @private
+   */
+  _metresToMapZoom(metres) {
+    if (!metres) {
+      return 1;
+    }
+
+    if (metres > 1000) {
+      return 4;
+    } else if (metres > 100) {
+      return 8;
+    } else if (metres > 10) {
+      return 16;
+    }
+
+    return 18;
+  },
 
   /**
-   * 1 gridref digits. (10000m)  -> < 4 map zoom lvl
-   * 2 gridref digits. (1000m)   -> 7
-   * 3 gridref digits. (100m)    -> 10
-   * 4 gridref digits. (10m)     -> 12
-   * 5 gridref digits. (1m)      ->
-   *
-   * @return {int} radius in metres
+   * Transform WGS84 map zoom to radius in meters.
+   * @param zoom
+   * @returns {*}
+   * @private
    */
-  mapZoomToMetreRadius(zoom) {
+  _mapZoomToMetres(zoom) {
     let scale;
-    if (zoom <= 4) {
+    if (zoom <= 10) {
       scale = 0;
-    } else if (zoom <= 5) {
-      Log('tetrad map scale');
-      return 1000; // tetrad (radius is 1000m)
-    } else if (zoom <= 7) {
+      // } else if (zoom <= 11) {
+      //   Log('tetrad map scale');
+      //   return 1000; // tetrad (radius is 1000m)
+    } else if (zoom <= 13) {
       scale = 1;
-    } else if (zoom <= 10) {
+    } else if (zoom <= 16) {
       scale = 2;
-    } else if (zoom <= 12) {
-      scale = 3;
     } else {
-      scale = 4;
+      scale = 3;
     }
 
     scale = 5000 / Math.pow(10, scale); // meters

@@ -235,10 +235,12 @@ const API = {
     const normalizedGridref = gridref.replace(/\s/g, '').toUpperCase();
 
     if (gridref !== '') {
-      const parsedGridRef = GridRefUtils.GridRefParser.factory(normalizedGridref);
-
       const location = sample.get('location') || {};
-      if (parsedGridRef) {
+      // check if it is in GB land and not in the sea
+      if (LocHelp.isValidGridRef(normalizedGridref)) {
+        // GB Grid Reference
+        const parsedGridRef = GridRefUtils.GridRefParser.factory(normalizedGridref);
+
         location.source = 'gridref';
         location.gridref = parsedGridRef.preciseGridRef;
         location.accuracy = parsedGridRef.length / 2; // radius rather than square dimension
@@ -250,6 +252,7 @@ const API = {
 
         API.setLocation(sample, location);
       } else if (gridref.match(LATLONG_REGEX)) {
+        // Lat Long
         location.source = 'gridref';
         location.accuracy = 1;
         const latitude = parseFloat(gridref.split(',')[0]);
@@ -259,11 +262,12 @@ const API = {
 
         API.setLocation(sample, location);
       } else {
+        // invalid
         App.trigger('gridref:form:data:invalid', { gridref: 'invalid' });
       }
     } else {
       const location = sample.get('location') || {};
-      location.source = null; // unsure what this should be
+      delete location.source;
       location.gridref = '';
       location.latitude = null;
       location.longitude = null;

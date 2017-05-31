@@ -42,13 +42,10 @@ const API = {
         // eslint-disable-next-line
         const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g;
 
-        if (
-          value === '' ||
-          LocHelp.gridrefStringToLatLng(value) ||
-          value.match(LATLONG_REGEX)
-        ) {
-          // value syntax ok (or blank)
-
+        const empty = value === '';
+        const validGridRef = LocHelp.isValidGridRef(value);
+        const validLatLong = value.match(LATLONG_REGEX);
+        if (empty || validGridRef || validLatLong) {
           this._refreshGrErrorState(false);
 
           const that = this;
@@ -111,8 +108,8 @@ const API = {
     }
   },
 
-  locationChange() {
-    Log('Location:Controller:Header: executing locationChange.');
+  onLocationChange() {
+    Log('Location:Controller:Header: executing onLocationChange.');
 
     this._clearGrTimeout();
     const location = this._getCurrentLocation();
@@ -121,7 +118,7 @@ const API = {
 
     this.updateMapMarker(location);
 
-    this.map.setView(this._getCenter(), this._getZoomLevel());
+    this.map.setView(this._getCenter(location), this._getZoomLevel(location));
     this._refreshGridRefElement(location);
   },
 
