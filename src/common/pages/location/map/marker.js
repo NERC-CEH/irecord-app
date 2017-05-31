@@ -86,13 +86,13 @@ const marker = {
 
   _onMapClick(e) {
     const location = {
-      latitude: parseFloat(e.latlng.lat.toFixed(7)),
-      longitude: parseFloat(e.latlng.lng.toFixed(7)),
+      latitude: parseFloat(e.latlng.lat.toFixed(5)),
+      longitude: parseFloat(e.latlng.lng.toFixed(5)),
       source: 'map',
     };
 
     const inGB = LocHelp.isInGB(location);
-    const zoom = this.getNormalZoom(null, inGB);
+    const zoom = this.getNormalZoom(!inGB);
     location.accuracy = this.mapZoomToMetreRadius(zoom);
     location.gridref = LocHelp.locationToGrid(location);
 
