@@ -368,6 +368,8 @@ const API = {
 
     if (metres >= 5000) {
       return 9;
+    } else if (metres >= 1000) {
+      return 12; // tetrad
     } else if (metres >= 500) {
       return 13;
     } else if (metres >= 50) {
@@ -387,9 +389,8 @@ const API = {
     let scale;
     if (zoom <= 10) {
       scale = 0;
-      // } else if (zoom <= 11) {
-      //   Log('tetrad map scale');
-      //   return 1000; // tetrad (radius is 1000m)
+    } else if (zoom <= 12) {
+      return 1000; // tetrad (radius is 1000m)
     } else if (zoom <= 13) {
       scale = 1;
     } else if (zoom <= 16) {
