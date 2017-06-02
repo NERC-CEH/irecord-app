@@ -41,11 +41,14 @@ import LeafletButton from './leaflet_button_ext';
 import mapMarker from './marker';
 import gpsFunctions from './gps';
 
-const DEFAULT_LAYER = 'OS';
-const DEFAULT_CENTER = [53.7326306, -2.6546124];
 const MAX_OS_ZOOM = L.OSOpenSpace.RESOLUTIONS.length - 1;
+const MIN_WGS84_ZOOM = 5;
 const OS_ZOOM_DIFF = 6;
 const OS_CRS = L.OSOpenSpace.getCRS(); // OS maps use different projection
+
+const DEFAULT_LAYER = 'OS';
+const DEFAULT_LAYER_ZOOM = 1 + OS_ZOOM_DIFF; // 7 and not 1 because of WGS84 scale
+const DEFAULT_CENTER = [53.7326306, -2.6546124];
 
 const GRID_STEP = 100000; // meters
 
@@ -101,7 +104,7 @@ const API = {
       id: CONFIG.map.mapbox_satellite_id,
       accessToken: CONFIG.map.mapbox_api_key,
       tileSize: 256, // specify as, OS layer overwites this with 200 otherwise,
-      minZoom: 5,
+      minZoom: MIN_WGS84_ZOOM,
     });
 
     layers.OSM = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -109,7 +112,7 @@ const API = {
       id: CONFIG.map.mapbox_osm_id,
       accessToken: CONFIG.map.mapbox_api_key,
       tileSize: 256, // specify as, OS layer overwites this with 200 otherwise
-      minZoom: 5,
+      minZoom: MIN_WGS84_ZOOM,
     });
 
     const start = OsGridRef.osGridToLatLon(OsGridRef(0, 0));
@@ -275,7 +278,12 @@ const API = {
     let layer = DEFAULT_LAYER;
     const location = this._getCurrentLocation();
     const zoom = this._metresToMapZoom(location.accuracy);
-    const inGB = LocHelp.isInGB(location);
+    let inGB = LocHelp.isInGB(location);
+
+    if (!location.latitude) {
+      // if no location default to true
+      inGB = true;
+    }
 
     const validOSzoom = this._isValidOSZoom(zoom);
 
@@ -363,7 +371,7 @@ const API = {
    */
   _metresToMapZoom(metres) {
     if (!metres) {
-      return 5;
+      return DEFAULT_LAYER_ZOOM;
     }
 
     if (metres >= 5000) {
