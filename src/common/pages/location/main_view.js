@@ -63,7 +63,7 @@ const LocationView = Marionette.View.extend({
 
 
     // avoid testing location.longitude as this can validly be zero within the UK
-    if (!value && location.latitude) {
+    if ((!appModel.get('useGridRef') || !value) && location.latitude) {
       value = `${location.latitude}, ${location.longitude}`;
     }
 

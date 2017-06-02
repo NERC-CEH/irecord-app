@@ -117,9 +117,12 @@ const API = {
     // rather than full refresh of the view, directly update the relavant input element
     const $GR = this.$el.find('#location-gridref');
     let value = location.gridref;
-    if (!location.gridref) {
+
+    const appModel = this.model.get('appModel');
+    if ((!appModel.get('useGridRef') || !value) && location.latitude) {
       value = `${location.latitude}, ${location.longitude}`;
     }
+
     $GR.val(value);
     $GR.attr('data-source', location.source);
 
