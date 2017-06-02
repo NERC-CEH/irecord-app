@@ -6,7 +6,7 @@ import JST from 'JST';
 import LocHelp from 'helpers/location';
 import Log from 'helpers/log';
 import CONFIG from 'config';
-import 'typeahead'; //
+import 'typeahead';
 import headerFunctions from './main_view_header';
 import mapFunctions from './map/main';
 import './styles.scss';
@@ -32,14 +32,6 @@ const LocationView = Marionette.View.extend({
 
   initialize() {
     Log('Location:Controller:MainView: initializing.');
-
-    this.map = null;
-    this.layers = this._getLayers();
-
-    this.currentLayerControlSelected = false;
-    this.currentLayer = null;
-    this.markerAdded = false;
-
     const sample = this.model.get('sample');
 
     // this.listenTo(sample,
@@ -58,9 +50,8 @@ const LocationView = Marionette.View.extend({
   onAttach() {
     Log('Location:Controller:MainView: attaching.');
 
-    this._refreshMapHeight();
     this.initMap();
-    this.addLocationNameSearch();
+    this.initHeader();
   },
 
   serializeData() {
@@ -90,6 +81,23 @@ const LocationView = Marionette.View.extend({
       locationLocked,
       nameLocked,
     };
+  },
+
+  onLocationChange() {
+
+    Log('Location:MainView: executing onLocationChange.');
+
+    const location = this._getCurrentLocation();
+    // console.log('-------------- LOC CHANGE!!');
+    // console.log(location.accuracy+ 'm');
+
+    this.updateMapMarker(location);
+
+    this._repositionMap();
+
+    this._clearGrTimeout();
+    this._refreshGrErrorState(false);
+    this._refreshGridRefElement(location);
   },
 
   _getCurrentLocation() {

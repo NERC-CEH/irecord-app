@@ -119,7 +119,9 @@ const API = {
 
     let location = loc;
     // we don't need the GPS running and overwriting the selected location
-    sample.stopGPS();
+    if (sample.isGPSRunning()) {
+      sample.stopGPS();
+    }
 
     if (!reset) {
       // extend old location to preserve its previous attributes like name or id

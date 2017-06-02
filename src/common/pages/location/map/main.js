@@ -53,6 +53,15 @@ const API = {
   initMap() {
     Log('Location:MainView:Map: initializing.');
 
+    this.map = null;
+    this.layers = this.getLayers();
+
+    this.currentLayerControlSelected = false;
+    this.currentLayer = null;
+    this.markerAdded = false;
+
+    this._refreshMapHeight();
+
     this.map = L.map(this.$container);
 
     // default layer
@@ -60,8 +69,7 @@ const API = {
     if (this.currentLayer === 'OS') this.map.options.crs = OS_CRS;
 
     // position view
-    const location = this._getCurrentLocation();
-    this.map.setView(this._getCenter(location), this._getZoomLevel(location));
+    this._repositionMap();
 
     // show default layer
     this.layers[this.currentLayer].addTo(this.map);
@@ -86,19 +94,7 @@ const API = {
     this.addGraticule();
   },
 
-  /**
-   * set full remaining height
-   *
-   */
-  _refreshMapHeight() {
-    Log('Location:MainView:Map: refreshing map height.');
-    // const mapHeight = $(document).height() - 47 - 47 - 44;// - 47 - 38.5;
-    this.$container = this.$el.find('#map')[0];
-    // $(this.$container).height(mapHeight);
-    $(this.$container).style = 'height: 100vh;';
-  },
-
-  _getLayers() {
+  getLayers() {
     const layers = {};
     layers.Satellite = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -133,38 +129,17 @@ const API = {
 
         // don't do it more than few times
         if (index < 4) {
+          // eslint-disable-next-line
           tile.tile.src = tile.tile.src.replace(/missingTileString=(\d+)/i, '&missingTileString=' + index);
         }
       } else {
         if (index === 0) {
+          // eslint-disable-next-line
           tile.tile.src = tile.tile.src + '&missingTileString=' + index;
         }
       }
     });
     return layers;
-  },
-
-  _getCurrentLayer() {
-    let layer = DEFAULT_LAYER;
-    const location = this._getCurrentLocation();
-    const zoom = this._getZoomLevel(location);
-    const inGB = LocHelp.isInGB(location);
-    if (zoom > MAX_OS_ZOOM - 1) {
-      layer = 'Satellite';
-    } else if (inGB === false) {
-      this.currentLayerControlSelected = true;
-      layer = 'Satellite';
-    }
-
-    return layer;
-  },
-
-  _getCenter(location = {}) {
-    let center = DEFAULT_CENTER;
-    if (location.latitude) {
-      center = [location.latitude, location.longitude];
-    }
-    return center;
   },
 
   addControls() {
@@ -246,11 +221,90 @@ const API = {
   },
 
   /**
-   * Derives map zoom level from location accuracy.
+   * Normalises the map zoom level between different projections.
+   * @param layer
+   * @returns {*}
    */
-  _getZoomLevel(location = {}) {
-    Log('Location:MainView:Map: getting zoom level.');
-    return API._metresToMapZoom(location.accuracy);
+  getMapZoom(zoom, outsideGB) {
+    zoom = zoom || this.map.getZoom();
+
+    if (this.currentLayer === 'OS') {
+      zoom += OS_ZOOM_DIFF;
+    }
+    // else if (outsideGB) {
+    //   // out of UK adjust the zoom because the next displayed map should be not OS
+    //   zoom += OS_ZOOM_DIFF;
+    // } else if (!outsideGB && (zoom - OS_ZOOM_DIFF) < MAX_OS_ZOOM) {
+    //   // need to downgrade to OS maps so that there is no OS -> OSM -> OS transitions
+    //   zoom -= OS_ZOOM_DIFF; // adjust the diff
+    // }
+
+    return zoom;
+  },
+
+  onMapZoom() {
+    const zoom = this.getMapZoom();
+    Log(`Location:MainView:Map: executing onMapZoom: ${zoom}`);
+
+    const validOSZoom = API._isValidOSZoom(zoom);
+    // console.log(`zooming to: ${this.map.getZoom()} acc ${API._mapZoomToMetres(this.getMapZoom())}`)
+
+    if (this.currentLayer === 'OS' && !validOSZoom) {
+      // change to WGS84
+      Log('Location:MainView:Map: changing to OS layer');
+      this.map.removeLayer(this.layers.OS);
+      this.map.addLayer(this.layers.Satellite);
+    } else {
+      const isSatellite = this.currentLayer === 'Satellite';
+      if (isSatellite && validOSZoom) {
+        // only change base layer if user is on OS and did not specificly
+        // select OSM/Satellite
+        const inGB = LocHelp.isInGB(this._getCurrentLocation());
+        if (!this.currentLayerControlSelected && inGB) {
+          Log('Location:MainView:Map: changing to Sattelite layer');
+          this.map.removeLayer(this.layers.Satellite);
+          this.map.addLayer(this.layers.OS);
+        }
+      }
+    }
+  },
+
+  _repositionMap() {
+    const location = this._getCurrentLocation();
+    let zoom = this._metresToMapZoom(location.accuracy);
+    if (this.currentLayer === 'OS') {
+      zoom = this._deNormalizeOSzoom(zoom);
+    }
+    this.map.setView(this._getCenter(location), zoom);
+  },
+
+  _getCurrentLayer() {
+    let layer = DEFAULT_LAYER;
+    const location = this._getCurrentLocation();
+    const zoom = this._metresToMapZoom(location.accuracy);
+    const inGB = LocHelp.isInGB(location);
+
+    const validOSzoom = this._isValidOSZoom(zoom);
+
+    if (!validOSzoom) {
+      layer = 'Satellite';
+    } else if (!inGB) {
+      this.currentLayerControlSelected = true;
+      layer = 'Satellite';
+    }
+
+    return layer;
+  },
+
+  /**
+   * Set full remaining height.
+   */
+  _refreshMapHeight() {
+    Log('Location:MainView:Map: refreshing map height.');
+    // const mapHeight = $(document).height() - 47 - 47 - 44;// - 47 - 38.5;
+    this.$container = this.$el.find('#map')[0];
+    // $(this.$container).height(mapHeight);
+    $(this.$container).style = 'height: 100vh;';
   },
 
   _updateCoordSystem(e) {
@@ -275,26 +329,12 @@ const API = {
     this.$container.dataset.layer = this.currentLayer; // fix the lines between the tiles
   },
 
-  /**
-   * Normalises the map zoom level between different projections.
-   * @param layer
-   * @returns {*}
-   */
-  getMapZoom(outsideGB) {
-    let zoom = this.map.getZoom();
-
-    if (this.currentLayer === 'OS') {
-      zoom += OS_ZOOM_DIFF;
+  _getCenter(location = {}) {
+    let center = DEFAULT_CENTER;
+    if (location.latitude) {
+      center = [location.latitude, location.longitude];
     }
-    // else if (outsideGB) {
-    //   // out of UK adjust the zoom because the next displayed map should be not OS
-    //   zoom += OS_ZOOM_DIFF;
-    // } else if (!outsideGB && (zoom - OS_ZOOM_DIFF) < MAX_OS_ZOOM) {
-    //   // need to downgrade to OS maps so that there is no OS -> OSM -> OS transitions
-    //   zoom -= OS_ZOOM_DIFF; // adjust the diff
-    // }
-
-    return zoom;
+    return center;
   },
 
   /**
@@ -323,30 +363,6 @@ const API = {
     return deNormalizedZoom;
   },
 
-  onMapZoom() {
-    Log('Location:MainView:Map: executing onMapZoom.');
-
-    const validOSZoom = API._isValidOSZoom(this.getMapZoom());
-    console.log(`zooming to: ${this.getMapZoom()} acc ${API._mapZoomToMetres(this.getMapZoom())}`)
-
-    if (this.currentLayer === 'OS' && !validOSZoom) {
-      // change to WGS84
-      this.map.removeLayer(this.layers.OS);
-      this.map.addLayer(this.layers.Satellite);
-    } else {
-      const isSatellite = this.currentLayer === 'Satellite';
-      if (isSatellite && validOSZoom) {
-        // only change base layer if user is on OS and did not specificly
-        // select OSM/Satellite
-        const inGB = LocHelp.isInGB(this._getCurrentLocation());
-        if (!this.currentLayerControlSelected && inGB) {
-          this.map.removeLayer(this.layers.Satellite);
-          this.map.addLayer(this.layers.OS);
-        }
-      }
-    }
-  },
-
   /**
    * Transform location accuracy to WGS84 map zoom level.
    * @param metres
@@ -354,14 +370,14 @@ const API = {
    */
   _metresToMapZoom(metres) {
     if (!metres) {
-      return 1;
+      return 5;
     }
 
-    if (metres > 1000) {
-      return 4;
-    } else if (metres > 100) {
-      return 8;
-    } else if (metres > 10) {
+    if (metres >= 5000) {
+      return 9;
+    } else if (metres >= 500) {
+      return 13;
+    } else if (metres >= 50) {
       return 16;
     }
 

@@ -7,6 +7,26 @@ import Log from 'helpers/log';
 import typeaheadSearchFn from 'common/typeahead_search';
 
 const API = {
+
+  /**
+   * Attaches suggestions to the location name search.
+   */
+  initHeader() {
+    const appModel = this.model.get('appModel');
+    const strs = appModel.get('locations');
+
+    this.$el.find('.typeahead').typeahead({
+        hint: false,
+        highlight: false,
+        minLength: 0,
+      },
+      {
+        limit: 3,
+        name: 'names',
+        source: typeaheadSearchFn(strs, 3, a => a.name),
+      });
+  },
+
   changeName(e) {
     this.triggerMethod('location:name:change', $(e.target).val());
   },
@@ -64,7 +84,7 @@ const API = {
    * stop any delayed gridref refresh
    */
   _clearGrTimeout() {
-    Log('Location:Controller:Header: executing _clearGrTimeout.');
+    Log('Location:MainView:Header: executing _clearGrTimeout.');
 
     if (this.grRefreshTimeout) {
       clearTimeout(this.grRefreshTimeout);
@@ -73,28 +93,11 @@ const API = {
   },
 
   changeGridRef(e) {
-    Log('Location:Controller:Header: executing changeGridRef.');
+    Log('Location:MainView:Header: executing changeGridRef.');
 
     this._clearGrTimeout();
     this.triggerMethod('location:gridref:change', $(e.target).val());
   },
-
-  addLocationNameSearch() {
-    const appModel = this.model.get('appModel');
-    const strs = appModel.get('locations');
-
-    this.$el.find('.typeahead').typeahead({
-        hint: false,
-        highlight: false,
-        minLength: 0,
-      },
-      {
-        limit: 3,
-        name: 'names',
-        source: typeaheadSearchFn(strs, 3, a => a.name),
-      });
-  },
-
 
   _refreshGrErrorState(isError) {
     const grInputEl = document.getElementById('location-gridref');
@@ -108,22 +111,8 @@ const API = {
     }
   },
 
-  onLocationChange() {
-    Log('Location:Controller:Header: executing onLocationChange.');
-
-    this._clearGrTimeout();
-    const location = this._getCurrentLocation();
-
-    this._refreshGrErrorState(false);
-
-    this.updateMapMarker(location);
-
-    this.map.setView(this._getCenter(location), this._getZoomLevel(location));
-    this._refreshGridRefElement(location);
-  },
-
   _refreshGridRefElement(location) {
-    Log('Location:Controller:Header: executing _refreshGridRefElement.');
+    Log('Location:MainView:Header: executing _refreshGridRefElement.');
 
     // rather than full refresh of the view, directly update the relavant input element
     const $GR = this.$el.find('#location-gridref');
@@ -145,7 +134,7 @@ const API = {
   },
 
   updateLocks() {
-    Log('Location:Controller:Header: updating the locks.');
+    Log('Location:MainView:Header: updating the locks.');
 
     const appModel = this.model.get('appModel');
     const sample = this.model.get('sample');
