@@ -91,8 +91,7 @@ const marker = {
       source: 'map',
     };
 
-    const inGB = LocHelp.isInGB(location);
-    const zoom = this.getMapZoom(!inGB);
+    const zoom = this.getMapZoom();
     location.accuracy = this._mapZoomToMetres(zoom);
     location.gridref = LocHelp.locationToGrid(location);
 

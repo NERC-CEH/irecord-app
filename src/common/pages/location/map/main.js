@@ -225,19 +225,12 @@ const API = {
    * @param layer
    * @returns {*}
    */
-  getMapZoom(zoom, outsideGB) {
+  getMapZoom(zoom) {
     zoom = zoom || this.map.getZoom();
 
     if (this.currentLayer === 'OS') {
       zoom += OS_ZOOM_DIFF;
     }
-    // else if (outsideGB) {
-    //   // out of UK adjust the zoom because the next displayed map should be not OS
-    //   zoom += OS_ZOOM_DIFF;
-    // } else if (!outsideGB && (zoom - OS_ZOOM_DIFF) < MAX_OS_ZOOM) {
-    //   // need to downgrade to OS maps so that there is no OS -> OSM -> OS transitions
-    //   zoom -= OS_ZOOM_DIFF; // adjust the diff
-    // }
 
     return zoom;
   },
