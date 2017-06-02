@@ -70,6 +70,7 @@
     "geodesy": "1.1.1",
     "leaflet": "^0.7.7",
     "leaflet.gridref": "kazlauskis/Leaflet.GridRef#ceee7334bd11b2cea0ddc80c845267dae057d6bc",
+    "bigu": "kazlauskis/bigu",
     "load-grunt-config": "^0.19.2",
     "load-grunt-tasks": "^3.5.2",
     "localforage": "^1.4.3",

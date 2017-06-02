@@ -22,3 +22,4 @@ import 'indicia';
 import { LatLon, OsGridRef, LatLonEllipsoidal } from 'geodesy'; // eslint-disable-line
 import 'photoswipe-lib';
 import 'photoswipe-ui-default';
+import 'bigu';

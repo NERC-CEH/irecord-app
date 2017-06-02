@@ -9,7 +9,7 @@ import Log from 'helpers/log';
 import Validate from 'helpers/validate';
 import StringHelp from 'helpers/string';
 import LocHelp from 'helpers/location';
-import GridRefUtils from 'helpers/gridrefutils';
+import GridRefUtils from 'bigu';
 import App from 'app';
 import radio from 'radio';
 import savedSamples from 'saved_samples';
@@ -221,8 +221,8 @@ const API = {
     }
 
     const escapedName = StringHelp.escape(locationName);
-    const location = sample.set('location') || {};
-    location.name = locationName;
+    const location = sample.get('location') || {};
+    location.name = escapedName;
     sample.set('location', location);
     sample.save();
   },

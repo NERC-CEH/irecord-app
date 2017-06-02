@@ -1,9 +1,9 @@
 /** ****************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
+import GridRefUtils from 'bigu';
 import { LatLonEllipsoidal as LatLon, OsGridRef } from 'geodesy';
 import Log from './log';
-import GridRefUtils from './gridrefutils';
 
 const helpers = {
   gridref_accuracy: {
