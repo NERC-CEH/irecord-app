@@ -2,7 +2,6 @@
  * Some location transformation logic.
  *****************************************************************************/
 import BIGU from 'bigu';
-import { LatLonEllipsoidal as LatLon, OsGridRef } from 'geodesy';
 import Log from './log';
 
 const helpers = {

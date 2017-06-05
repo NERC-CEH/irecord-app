@@ -1,7 +1,6 @@
 import LocHelp from 'helpers/location';
 import Log from 'helpers/log';
 import L from 'leaflet';
-import { OsGridRef } from 'geodesy';
 import './leaflet_singleclick_ext';
 
 const marker = {
