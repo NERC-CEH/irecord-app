@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
-import GridRefUtils from 'bigu';
+import BIGU from 'bigu';
 import { LatLonEllipsoidal as LatLon, OsGridRef } from 'geodesy';
 import Log from './log';
 
@@ -18,8 +18,8 @@ const helpers = {
    * @returns {string}
    */
   locationToGrid(location) {
-    const normalisedPrecision = GridRefUtils.GridRefParser.get_normalized_precision(location.accuracy * 2); // accuracy is radius
-    const nationaGridCoords = GridRefUtils.latlng_to_grid_coords(location.latitude, location.longitude);
+    const normalisedPrecision = BIGU.GridRefParser.get_normalized_precision(location.accuracy * 2); // accuracy is radius
+    const nationaGridCoords = BIGU.latlng_to_grid_coords(location.latitude, location.longitude);
     if (!nationaGridCoords) {
       return null;
     }
@@ -34,7 +34,7 @@ const helpers = {
   getSquareBounds(location) {
     if (location.latitude) {
       const gridRefString = helpers.locationToGrid(location);
-      const parsedRef = GridRefUtils.GridRefParser.factory(gridRefString);
+      const parsedRef = BIGU.GridRefParser.factory(gridRefString);
 
       if (parsedRef) {
         const nationalGridRefSW = parsedRef.osRef;
@@ -55,11 +55,11 @@ const helpers = {
   /**
    *
    * @param {string} gridrefString
-   * @returns {GridRefUtils.OSRef|null} SW corner of grid square
+   * @returns {BIGU.OSRef|null} SW corner of grid square
    */
   parseGrid(gridrefString) {
     let gridRef;
-    const parser = GridRefUtils.GridRefParser.factory(gridrefString);
+    const parser = BIGU.GridRefParser.factory(gridrefString);
 
     if (parser) {
       // center gridref
@@ -79,7 +79,7 @@ const helpers = {
    */
   gridrefStringToLatLng(gridrefString) {
     try {
-      const parsedRef = GridRefUtils.GridRefParser.factory(gridrefString);
+      const parsedRef = BIGU.GridRefParser.factory(gridrefString);
       if (parsedRef) {
         return parsedRef.osRef.to_latLng();
       }
@@ -98,8 +98,8 @@ const helpers = {
    */
   isValidGridRef(gridrefString) {
     try {
-      const parsedRef = GridRefUtils.GridRefParser.factory(gridrefString);
-      if (parsedRef && GridRefUtils.MappingUtils.is_gb_hectad(parsedRef.hectad)) {
+      const parsedRef = BIGU.GridRefParser.factory(gridrefString);
+      if (parsedRef && BIGU.MappingUtils.is_gb_hectad(parsedRef.hectad)) {
         return true;
       }
 
@@ -118,7 +118,7 @@ const helpers = {
    */
   isInGB(location) {
     if (location.latitude) {
-      const nationaGridCoords = GridRefUtils.latlng_to_grid_coords(location.latitude, location.longitude);
+      const nationaGridCoords = BIGU.latlng_to_grid_coords(location.latitude, location.longitude);
       if (!nationaGridCoords) {
         return false;
       }

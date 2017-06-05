@@ -243,7 +243,6 @@ const API = {
     Log(`Location:MainView:Map: executing onMapZoom: ${zoom}`);
 
     const validOSZoom = API._isValidOSZoom(zoom);
-    // console.log(`zooming to: ${this.map.getZoom()} acc ${API._mapZoomToMetres(this.getMapZoom())}`)
 
     if (this.currentLayer === 'OS' && !validOSZoom) {
       // change to WGS84
@@ -265,11 +264,16 @@ const API = {
     }
   },
 
-  _repositionMap() {
+  _repositionMap(dontZoom) {
     const location = this._getCurrentLocation();
-    let zoom = this._metresToMapZoom(location.accuracy);
-    if (this.currentLayer === 'OS') {
-      zoom = this._deNormalizeOSzoom(zoom);
+    let zoom;
+    if (!dontZoom) {
+      zoom = this._metresToMapZoom(location.accuracy);
+      if (this.currentLayer === 'OS') {
+        zoom = this._deNormalizeOSzoom(zoom);
+      }
+    } else {
+      zoom = this.map.getZoom();
     }
     this.map.setView(this._getCenter(location), zoom);
   },

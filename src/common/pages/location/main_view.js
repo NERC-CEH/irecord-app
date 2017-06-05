@@ -84,16 +84,13 @@ const LocationView = Marionette.View.extend({
   },
 
   onLocationChange() {
-
     Log('Location:MainView: executing onLocationChange.');
 
     const location = this._getCurrentLocation();
-    // console.log('-------------- LOC CHANGE!!');
-    // console.log(location.accuracy+ 'm');
 
     this.updateMapMarker(location);
 
-    this._repositionMap();
+    this._repositionMap(location.source !== 'gps');
 
     this._clearGrTimeout();
     this._refreshGrErrorState(false);
