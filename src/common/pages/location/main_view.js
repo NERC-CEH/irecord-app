@@ -90,7 +90,7 @@ const LocationView = Marionette.View.extend({
 
     this.updateMapMarker(location);
 
-    this._repositionMap(location.source !== 'gps');
+    this._repositionMap(location.source === 'map');
 
     this._clearGrTimeout();
     this._refreshGrErrorState(false);
