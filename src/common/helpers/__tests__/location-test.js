@@ -12,4 +12,20 @@ describe('Location', () => {
     expect(osCoords.x == 355000).to.be.true;
     expect(osCoords.y == 495000).to.be.true;
   });
+
+  it('should be mindful of location accuracy', () => {
+    let gridRef = location.locationToGrid({
+      latitude: 52.24394,
+      longitude: -3,
+      accuracy: 1,
+    });
+
+    expect(gridRef).to.equal('SO31816111');
+    gridRef = location.locationToGrid({
+      latitude: 52.24394,
+      longitude: -3,
+      accuracy: 5,
+    });
+    expect(gridRef).to.equal('SO318611');
+  });
 });

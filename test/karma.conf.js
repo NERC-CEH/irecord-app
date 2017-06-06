@@ -32,6 +32,7 @@ module.exports = (config) => {
     ],
 
     preprocessors: {
+      'mocks.js': ['webpack'],
       'loader.js': ['webpack'],
     },
 

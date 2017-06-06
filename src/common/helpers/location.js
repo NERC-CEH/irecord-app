@@ -17,12 +17,75 @@ const helpers = {
    * @returns {string}
    */
   locationToGrid(location) {
-    const normalisedPrecision = BIGU.GridRefParser.get_normalized_precision(location.accuracy * 2); // accuracy is radius
-    const nationaGridCoords = BIGU.latlng_to_grid_coords(location.latitude, location.longitude);
-    if (!nationaGridCoords) {
+    const gridCoords = BIGU.latlng_to_grid_coords(
+      location.latitude,
+      location.longitude
+    );
+
+    if (!gridCoords) {
       return null;
     }
-    return nationaGridCoords.to_gridref(normalisedPrecision);
+
+    const normAcc = BIGU.GridRefParser.get_normalized_precision(
+      location.accuracy * 2 // accuracy is radius
+    );
+
+    return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
+  },
+
+  /**
+   * Returns a normalized grid square that takes into account the accuracy
+   * of the location.
+   +
+   |        OK                Not OK
+   |
+   |   +------------+    +------------+
+   |   |            |    |            |
+   |   |   +------+ |    |            |
+   |   |   |      | |    |            |
+   |   |   |  XX  | |    |       +------+
+   |   |   |      | |    |       |    | |
+   |   |   +------+ |    |       |  XX| |
+   |   +------------+    +------------+ |
+   |                             +------+
+   * @param gridCoords
+   * @param location
+   * @param normAcc
+   * @returns {*}
+   */
+  normalizeGridRefAcc(gridCoords, location, normAcc) {
+    if (helpers._doesExceedGridRef(gridCoords, location, normAcc)) {
+      return helpers.normalizeGridRefAcc(gridCoords, location, normAcc * 10);
+    }
+
+    return gridCoords.to_gridref(normAcc);
+  },
+
+  /**
+   * Checks if the location fits in the calculated grid reference square.
+   * @private
+   */
+  _doesExceedGridRef(gridCoords, location, normAcc) {
+    const accuracy = location.accuracy;
+
+    const x = gridCoords.x;
+    const y = gridCoords.y;
+
+    if (((x % normAcc) - accuracy) < 0) {
+      return true;
+    }
+
+    if (((x % normAcc) + accuracy) > normAcc) {
+      return true;
+    }
+
+    if (((y % normAcc) - accuracy) < 0) {
+      return true;
+    }
+
+    if (((y % normAcc) + accuracy) > normAcc) {
+      return true;
+    }
   },
 
   /**
