@@ -172,6 +172,7 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
       // attach device information
       device: Device.getPlatform(),
       device_version: Device.getVersion(),
+      location: {},
     };
   },
 

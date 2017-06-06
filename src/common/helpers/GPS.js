@@ -2,7 +2,7 @@ import Log from './log';
 
 
 /* ---------------------------------------------- */
-// enable GPS mock
+// uncomment to enable GPS mock
 // import GPS from 'mock-geolocation';
 // import BIGU from 'bigu';
 //
@@ -15,6 +15,11 @@ import Log from './log';
 //   if (options.gridRef) {
 //     // Grid References
 //     const parsedRef = BIGU.GridRefParser.factory(options.gridRef);
+//
+//     // center
+//     parsedRef.osRef.x += parsedRef.length / 2;
+//     parsedRef.osRef.y += parsedRef.length / 2;
+//
 //     const latLng = parsedRef.osRef.to_latLng();
 //     location = {
 //       latitude: latLng.lat,

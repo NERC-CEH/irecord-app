@@ -61,7 +61,6 @@ const API = {
 
     this.currentLayerControlSelected = false;
     this.currentLayer = null;
-    this.markerAdded = false;
 
     this._refreshMapHeight();
 
