@@ -286,6 +286,9 @@ const API = {
   onPastLocationsClick(sample) {
     radio.trigger('settings:locations', {
       onSelect(location) {
+        if (sample.isGPSRunning()) {
+          sample.stopGPS();
+        }
         sample.set('location', location);
         window.history.back();
       },
