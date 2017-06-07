@@ -1,70 +1,71 @@
 'use strict';
 
 module.exports = (taxon, common, genus) => {
+  if (!taxon) {
+    return;
+  }
+
   let cleaned = taxon;
 
-  if (taxon) {
-    // #Remove ',.*().*,,' - should not have bracketed old Genus
-    cleaned = taxon.replace(/\([a-zA-Z0-9\-\.\/\,\s]*\)\s?/g, '').trim();
+  // #Remove ',.*().*,,' - should not have bracketed old Genus
+  cleaned = taxon.replace(/\([a-zA-Z0-9\-\.\/\,\s]*\)\s?/g, '')
+
+  if (common) {
+    // #Capitalize first words after comma 'a bird flea' -> 'Bird flea' ('a ' - was removed previously)
+    cleaned = taxon.charAt(0).toUpperCase() + taxon.slice(1);
   }
+
+  if (!common) {
+    // #remove 'a '
+    // line = re.sub('"a ', '"', line)
+
+    // #sensu lato -> s.l.
+    // # sensu lato
+    // # sensu.lato.
+    // # s. lat.
+    // # sens. lat.
+    // # s.lat.
+    // # s. lat.
+    // # s.l.
+    // # sens.lat.
+    cleaned = cleaned.replace(/sensu lato|Sensu lato|sensu\.lato\.|s\. lat\.|sens\. lat\.|s\.lat\.|s\. lat\.|sens\.lat\./g, 's.l.');
+
+    // #sensu stricto -> s.s.
+    // # sensu stricto
+    // # sens.strict.
+    // # sens.str.
+    // # s.str.
+    // # s. str.
+    // # s.s.
+    // # sens. str.
+    cleaned = cleaned.replace(/sensu stricto|sens\.strict\.|sens\.str\.|s\.str\.|s\. str\.|sens\. str\./g, 's.s.');
+
+    // #sensu -> s.
+    cleaned = cleaned.replace(/ sensu\.? /g, ' s. ');
+
+    // #nomen -> nom.
+    cleaned = cleaned.replace(/(^|\s)nomen /g, ' nom. ');
+
+    // #non -> n.
+    cleaned = cleaned.replace(/ non /g, ' n. ');
+
+    // #misidentification -> misid.
+    cleaned = cleaned.replace(/ misidentification| misident./g, ' misid.');
+
+    // #authors -> auth.
+    cleaned = cleaned.replace(/ authors/g, ' auth.');
+
+    // #Shorten subsp. to ssp.
+    cleaned = cleaned.replace(/subsp\./g, 'ssp.');
+  }
+
+  // #todo: remove non alphanumerics
+  // [^-_0-9,A-Za-z \.\=\(\)\'\"\/\]\[\s\&aàáâãäåæeèéêëæiìíîïoòóôõöøsßuùúûüyýÿ\+]
+  cleaned = cleaned.replace(/(\?|\:|\[|\])/g, '');
+
+  // #remove spaces
+  cleaned = cleaned.replace(/\s{2}/g, ' ');
+  cleaned = cleaned.trim();
+
   return cleaned;
 };
-
-// #Clean the master list from '[]'
-// line = re.sub('\[.*\]\s', '', line)
-//
-// #Remove ',.*().*,,' - should not have bracketed old Genus
-// line = re.sub('([0-9]+,[0-9]+,\".*) \(.*\)(.*)', r'\1\2', line)
-//
-// #todo: remove non alphanumerics
-// line = re.sub('[^-_0-9,A-Za-z \.\=\(\)\'\"\/]', '', line)
-//
-// #remove 'a '
-// line = re.sub('"a ', '"', line)
-//
-// #remove trailing and double spaces
-// line = re.sub(' \"', '"', line)
-// line = re.sub('  ', ' ', line)
-//
-// #sensu stricto -> s.s.
-// # sensu stricto
-// # sens.strict.
-// # sens.str.
-// # s.str.
-// # s. str.
-// # s.s.
-// # sens. str.
-//   line = re.sub('sensu stricto|sens\.strict\.|sens\.str\.|s\.str\.|s\. str\.|sens\. str\.', 's.s.', line)
-//
-// #sensu lato -> s.l.
-// # sensu lato
-// # sensu.lato.
-// # s. lat.
-// # sens. lat.
-// # s.lat.
-// # s. lat.
-// # s.l.
-// # sens.lat.
-//   line = re.sub('sensu lato|Sensu lato|sensu\.lato\.|s\. lat\.|sens\. lat\.|s\.lat\.|s\. lat\.|sens\.lat\.', 's.l.', line)
-//
-// #sensu -> s.
-//   line = re.sub(' sensu\.? ', ' s. ', line)
-//
-// #nomen -> nom.
-//   line = re.sub(' nomen ', ' nom. ', line)
-//
-// #non -> n.
-// # line = re.sub(' non ', ' n. ', line)
-//
-// #misidentification -> misid.
-//   line = re.sub(' misidentification| misident.', ' misid.', line)
-//
-// #authors -> auth.
-//   line = re.sub(' authors', ' auth.', line)
-//
-// #Capitalize first words after comma 'a bird flea' -> 'Bird flea' ('a ' - was removed previously)
-// line = re.sub(',\"([a-z])', lambda match: ',"' + match.group(1).upper(), line)
-//
-// #Shorten subsp. to ssp.
-//   line = re.sub('subsp\.', 'ssp.', line)
-// print(line)
