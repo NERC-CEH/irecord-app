@@ -24,6 +24,7 @@
       "url": "http://www.gnu.org/licenses/gpl.html"
     }
   ],
+  "engines" : { "node" : ">=4.5.0", "npm" : ">=3.10.0" },
   "scripts": {
     "test": "grunt",
     "postinstall": "grunt dev",
