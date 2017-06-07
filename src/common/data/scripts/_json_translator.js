@@ -6,7 +6,7 @@
 'use strict';
 
 const taxonCleaner = require('./_clean');
-const parse = require('csv-parse/lib/sync');
+const csv = require('csv');
 
 const SYNONYM = 4;
 const COMMON_NAME = 3;
@@ -93,9 +93,12 @@ function optimise(output) {
    * @returns {*}
    */
   function getLastGenus(taxa, taxaNameSplitted, index) {
+
     const lastEntry = index || optimised.length - 1;
     let lastGenus = optimised[lastEntry];
-
+    // console.log(`---------`)
+    // console.log(lastGenus)
+    // console.log(taxaNameSplitted)
     // no genus with the same name and group was found
     if (lastGenus[TAXON] !== taxaNameSplitted[0]) {
       // create a new genus with matching group
@@ -205,9 +208,10 @@ function optimise(output) {
 /**
  * Parse raw CSV file.
  */
-module.exports = (data) => {
-  const csvOutput = parse(data);
-  const jsonOutput = run(csvOutput);
-  return optimise(jsonOutput);
+module.exports = (data, callback) => {
+  csv.parse(data, (err, csvOutput) => {
+    const jsonOutput = run(csvOutput);
+    callback(err, optimise(jsonOutput));
+  });
 };
 

@@ -11,16 +11,16 @@ function transform2JSON(data, outputFileName, callback) {
 
   // transform
   console.log('Transforming to JSON...');
-  const jsonData = jsonTranslator(data);
-
-  // write it to file
-  console.log(`Writing ./${outputFileName}.data.json`);
-  fs.writeFile(`./${outputFileName}.data.json`,
-    JSON.stringify(jsonData),
-    null,
-    4,
-    writeErr => callback(writeErr, jsonData)
-  );
+  jsonTranslator(data, (err, jsonData) => {
+    // write it to file
+    console.log(`Writing ./${outputFileName}.data.json`);
+    fs.writeFile(`./${outputFileName}.data.json`,
+      JSON.stringify(jsonData),
+      null,
+      4,
+      writeErr => callback(writeErr, jsonData)
+    );
+  });
 }
 
 /**
