@@ -5,6 +5,7 @@ import Marionette from 'backbone.marionette';
 import Hammer from 'hammerjs';
 import JST from 'JST';
 import Device from 'helpers/device';
+import DateHelp from 'helpers/date';
 
 const EmptyListView = Marionette.View.extend({
   tagName: 'li',
@@ -27,11 +28,13 @@ const PastLocationView = Marionette.View.extend({
   serializeData() {
     const appModel = this.options.appModel;
     const location = appModel.printLocation(this.model.toJSON());
+    const date = this.model.get('date');
 
     return {
       name: this.model.get('name'),
       favourite: this.model.get('favourite'),
       source: this.model.get('source'),
+      date: date ? DateHelp.print(date, true) : '',
       location,
     };
   },

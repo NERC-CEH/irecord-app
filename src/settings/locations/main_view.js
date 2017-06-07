@@ -24,6 +24,7 @@ export default Marionette.View.extend({
     const location = view.model.toJSON();
     delete location.id;
     delete location.favourite;
+    delete location.date;
     this.triggerMethod('location:select', location);
   },
 

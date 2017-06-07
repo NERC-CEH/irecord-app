@@ -2,6 +2,7 @@
   <%= (obj.name ? '<strong>' + obj.name + '</strong>' : '') %>
   <p> <%- obj.location %></p>
   <span class="location-favourite icon icon-star <%- obj.favourite ? 'on' : '' %>"></span>
+  <span class="location-date"><%- obj.date %></span>
   <span class="location-source">source: <%- obj.source %></span>
 </div>
 

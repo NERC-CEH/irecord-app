@@ -46,6 +46,7 @@ export default {
 
     // add new one
     location.id = UUID();
+    location.date = new Date();
     locations.splice(0, 0, location);
 
     // check if not exceeded limits

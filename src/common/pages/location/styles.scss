@@ -72,6 +72,15 @@
   }
 }
 
+.location-date {
+  position: absolute;
+  left: 9px;
+  bottom: 0;
+  font-weight: 200;
+  font-size: $text-font-size;
+  color: $color-gray-dark;
+}
+
 .location-source {
   position: absolute;
   right: 0;
