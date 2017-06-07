@@ -45,6 +45,8 @@ const API = {
    }
    */
   search(searchPhrase, options = {}) {
+    //todo Accent Folding: https://alistapart.com/article/accent-folding-for-auto-complete
+
     let results = [];
 
     if (!searchPhrase) {
