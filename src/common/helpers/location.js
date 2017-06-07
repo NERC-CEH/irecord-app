@@ -30,7 +30,11 @@ const helpers = {
       location.accuracy * 2 // accuracy is radius
     );
 
-    return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
+    if (location.source === 'gps') {
+      return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
+    }
+
+    return gridCoords.to_gridref(normAcc);
   },
 
   /**
@@ -54,6 +58,12 @@ const helpers = {
    * @returns {*}
    */
   normalizeGridRefAcc(gridCoords, location, normAcc) {
+    // the location verges on the 10K square border and the accuracy
+    // is poor enough then don't return any valid gridref
+    if (normAcc >= 10000) {
+      return null;
+    }
+
     if (helpers._doesExceedGridRef(gridCoords, location, normAcc)) {
       return helpers.normalizeGridRefAcc(gridCoords, location, normAcc * 10);
     }

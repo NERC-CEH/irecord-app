@@ -18,14 +18,24 @@ describe('Location', () => {
       latitude: 52.24394,
       longitude: -3,
       accuracy: 1,
+      source: 'gps',
     });
-
     expect(gridRef).to.equal('SO31816111');
+
     gridRef = location.locationToGrid({
       latitude: 52.24394,
       longitude: -3,
       accuracy: 5,
+      source: 'gps',
     });
     expect(gridRef).to.equal('SO318611');
+
+    gridRef = location.locationToGrid({
+      latitude: 51.153520339775575,
+      longitude: -3.2872083106005263,
+      accuracy: 80,
+      source: 'gps',
+    });
+    expect(gridRef).to.be.null;
   });
 });
