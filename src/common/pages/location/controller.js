@@ -20,8 +20,11 @@ import './styles.scss';
 
 const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g;
 
+// overwrite how the location is set on the sample
+let locationSetFunc = null;
+
 const API = {
-  show(sampleID, subSampleID) {
+  show(sampleID, subSampleID, options) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
       const that = this;
@@ -49,6 +52,9 @@ const API = {
     if (subSampleID) {
       sample = sample.samples.get(subSampleID);
     }
+
+    // update the location setting function
+    locationSetFunc = options.setLocation;
 
     // MAIN
     const mainView = new MainView({
@@ -113,8 +119,14 @@ const API = {
   setLocation(sample, loc, reset) {
     if (typeof loc !== 'object') {
       // jQuery event object bug fix
+      // todo clean up if not needed anymore
       Log('Location:Controller:setLocation: loc is not an object.', 'e');
       return Promise.reject(new Error('Invalid location'));
+    }
+
+    // check if we need custom location setting functionality
+    if (locationSetFunc) {
+      return locationSetFunc(sample, loc, reset);
     }
 
     let location = loc;
