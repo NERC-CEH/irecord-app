@@ -16,6 +16,7 @@ export default Marionette.View.extend({
 
   triggers: {
     'click a#species-button': 'taxon:update',
+    'click a#location-button': 'location:update',
   },
 
   events: {

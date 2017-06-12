@@ -24,7 +24,7 @@ const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((
 let locationSetFunc = null;
 
 const API = {
-  show(sampleID, subSampleID, options) {
+  show(sampleID, subSampleID, options = {}) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
       const that = this;
@@ -249,7 +249,7 @@ const API = {
     const normalizedGridref = gridref.replace(/\s/g, '').toUpperCase();
 
     if (gridref !== '') {
-      const location = sample.get('location') || {};
+      const location = {};
       // check if it is in GB land and not in the sea
       if (LocHelp.isValidGridRef(normalizedGridref)) {
         // GB Grid Reference
@@ -301,6 +301,12 @@ const API = {
         if (sample.isGPSRunning()) {
           sample.stopGPS();
         }
+
+        // check if we need custom location setting functionality
+        if (locationSetFunc) {
+          return locationSetFunc(sample, location);
+        }
+
         sample.set('location', location);
         window.history.back();
       },

@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Survey Edit controller.
  *****************************************************************************/
+import $ from 'jquery';
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Indicia from 'indicia';
@@ -48,6 +49,12 @@ const API = {
     const mainView = new MainView({
       model: new Backbone.Model({ sample, appModel }),
     });
+    mainView.on('location:update', () => {
+      radio.trigger('app:location:show', sample.cid, null, {
+        setLocation: API.setLocation,
+      });
+    });
+
     radio.trigger('app:main', mainView);
 
     // on finish sync move to show
@@ -161,15 +168,60 @@ const API = {
     });
   },
 
+  showInvalidLocationMessage(sample) {
+    const squareSize = sample.metadata.surveyAccuracy;
+
+    radio.trigger('app:dialog', {
+      title: 'Sorry',
+      body: `Selected location should be a ${squareSize}`,
+      timeout: 2000,
+    });
+  },
+
+  setLocation(sample, loc, reset) {
+    // validate this new location
+    const valid = API.isSurveyLocationSet(sample, loc);
+    if (!valid) {
+      API.showInvalidLocationMessage(sample);
+      return Promise.resolve();
+    }
+
+    let location = loc;
+    // we don't need the GPS running and overwriting the selected location
+    if (sample.isGPSRunning()) {
+      sample.stopGPS();
+    }
+
+    if (!reset) {
+      // extend old location to preserve its previous attributes like name or id
+      let oldLocation = sample.get('location');
+      if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
+      location = $.extend(oldLocation, location);
+    }
+
+    // save to past locations
+    const locationID = appModel.setLocation(location);
+    location.id = locationID;
+
+    sample.set('location', location);
+    sample.trigger('change:location');
+
+    return sample.save()
+      .catch((error) => {
+        Log(error, 'e');
+        radio.trigger('app:dialog:error', error);
+      });
+  },
+
   /**
    * Checks if sample's location accuracy matches selected user default
    * accuracy.
    * @param surveySample
    * @returns {boolean}
    */
-  isSurveyLocationSet(surveySample) {
+  isSurveyLocationSet(surveySample, location) {
     const surveyAccuracy = surveySample.metadata.surveyAccuracy;
-    const surveyLocation = surveySample.get('location') || { gridref: '' };
+    const surveyLocation = location || surveySample.get('location') || { gridref: '' };
     return surveyLocation.gridref.length === LocHelp.gridref_accuracy[surveyAccuracy];
   },
 };

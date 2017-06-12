@@ -2,6 +2,7 @@
  * Surveys Sample Edit controller.
  *****************************************************************************/
 import Backbone from 'backbone';
+import BIGU from 'bigu';
 import _ from 'lodash';
 import Indicia from 'indicia';
 import Device from 'helpers/device';
@@ -54,6 +55,11 @@ const API = {
     const mainView = new MainView({
       locationEditAllowed,
       model: new Backbone.Model({ sample, appModel }),
+    });
+    mainView.on('location:update', () => {
+      radio.trigger('app:location:show', surveySampleID, sample.cid, {
+        setLocation: API.setLocation,
+      });
     });
     radio.trigger('app:main', mainView);
 
@@ -266,6 +272,67 @@ const API = {
         },
       ],
     });
+  },
+
+  showInvalidLocationMessage(sample) {
+    const squareSize = sample.metadata.surveyAccuracy;
+
+    radio.trigger('app:dialog', {
+      title: 'Sorry',
+      body: `Selected location should be a ${squareSize}`,
+      timeout: 2000,
+    });
+  },
+
+  setLocation(sample, loc, reset) {
+    // validate this new location
+    const valid = API.validateLocation(sample, loc);
+    if (!valid) {
+      API.showInvalidLocationMessage(sample);
+      return Promise.resolve();
+    }
+
+    let location = loc;
+    // we don't need the GPS running and overwriting the selected location
+    if (sample.isGPSRunning()) {
+      sample.stopGPS();
+    }
+
+    if (!reset) {
+      // extend old location to preserve its previous attributes like name or id
+      let oldLocation = sample.get('location');
+      if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
+      location = $.extend(oldLocation, location);
+    }
+
+    // save to past locations
+    const locationID = appModel.setLocation(location);
+    location.id = locationID;
+
+    sample.set('location', location);
+    sample.trigger('change:location');
+
+    return sample.save()
+      .catch((error) => {
+        Log(error, 'e');
+        radio.trigger('app:dialog:error', error);
+      });
+  },
+
+  validateLocation(sample, location) {
+    const gridCoords = BIGU.latlng_to_grid_coords(
+      location.latitude,
+      location.longitude
+    );
+
+    if (!gridCoords) {
+      return false;
+    }
+
+    const parentGridref = sample.parent.get('location').gridRef;
+    const parsedRef = BIGU.GridRefParser.factory(parentGridref);
+
+    return gridCoords.to_gridref(parsedRef.length) === parentGridref;
   },
 
   /**

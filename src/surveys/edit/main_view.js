@@ -10,6 +10,10 @@ import JST from 'JST';
 export default Marionette.View.extend({
   template: JST['surveys/edit/main'],
 
+  triggers: {
+    'click a#location-button': 'location:update',
+  },
+
   initialize() {
     const sample = this.model.get('sample');
     this.listenTo(sample, 'request sync error geolocation', this.render);

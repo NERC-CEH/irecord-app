@@ -56,6 +56,16 @@ radio.on('surveys:samples:edit:taxon', (surveySampleID, sampleID, options = {}) 
   SamplesEditTaxonController.show(options);
 });
 
+radio.on('app:location:show', (surveySampleID, sampleID, options = {}) => {
+  if (sampleID) {
+    App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit/location`, options);
+  } else {
+    App.navigate(`surveys/${surveySampleID}/edit/location`, options);
+  }
+
+  LocationController.show(surveySampleID, sampleID, options);
+});
+
 App.on('before:start', () => {
   Log('Settings:router: initializing.');
   App.settings.router = new Router();

@@ -12,8 +12,8 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a
-      <% if (obj.locationEditAllowed) { %>
+    <a id="location-button"
+    <% if (obj.locationEditAllowed) { %>
         href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/location"
       <% } %>
 
