@@ -52,6 +52,13 @@
 
 <li class="table-view-divider">Application</li>
 <li class="table-view-cell">
+  Experimental features
+  <span class="media-object pull-left icon icon-fire"></span>
+  <div id="use-experiments-btn" data-setting="useExperiments" class="toggle no-yes <%- obj.useExperiments ? 'active' : '' %>">
+    <div class="toggle-handle"></div>
+  </div>
+</li>
+<li class="table-view-cell">
   <a id="app-reset-btn">
     <span class="media-object pull-left icon icon-undo"></span>
     Reset

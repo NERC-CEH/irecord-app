@@ -16,6 +16,8 @@ export default Marionette.View.extend({
     'click #use-training-btn': 'onSettingToggled',
     'toggle #use-gridref-btn': 'useGridRef',
     'click #use-gridref-btn': 'useGridRef',
+    'toggle #use-experiments-btn': 'onSettingToggled',
+    'click #use-experiments-btn': 'onSettingToggled',
     'toggle #use-gridmap-btn': 'onSettingToggled',
     'click #use-gridmap-btn': 'onSettingToggled',
     'toggle #use-autosync-btn': 'onSettingToggled',
@@ -58,6 +60,7 @@ export default Marionette.View.extend({
       useTraining: appModel.get('useTraining'),
       useGridRef: appModel.get('useGridRef'),
       useGridMap: appModel.get('useGridMap'),
+      useExperiments: appModel.get('useExperiments'),
       autosync: appModel.get('autosync'),
       surveyAccuracy: appModel.get('surveyAccuracy'),
     };
