@@ -222,7 +222,8 @@ const API = {
    */
   isSurveyLocationSet(surveySample, location) {
     const surveyAccuracy = surveySample.metadata.surveyAccuracy;
-    const surveyLocation = location || surveySample.get('location') || { gridref: '' };
+    const surveyLocation = location || surveySample.get('location') || { };
+    surveyLocation.gridref || (surveyLocation.gridref = '');
     return surveyLocation.gridref.length === LocHelp.gridref_accuracy[surveyAccuracy];
   },
 
