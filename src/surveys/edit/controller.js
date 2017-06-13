@@ -180,8 +180,8 @@ const API = {
   },
 
   setLocation(sample, loc, reset) {
-    // validate this new location
-    const valid = API.isSurveyLocationSet(sample, loc);
+    // 1st validation of location accuracy
+    const valid = API.isSurveyLocationAccurate(sample, loc);
     if (!valid) {
       API.showInvalidLocationMessage(sample);
       return Promise.resolve();
@@ -207,11 +207,28 @@ const API = {
     sample.set('location', location);
     sample.trigger('change:location');
 
+    // 2nd validation of the location name
+    if (location.name) {
+      API.updateChildrenLocations(sample, location);
+    }
+
     return sample.save()
       .catch((error) => {
         Log(error, 'e');
         radio.trigger('app:dialog:error', error);
       });
+  },
+
+  updateChildrenLocations(sample, location) {
+    sample.samples.forEach((child) => {
+      const loc = child.get('location');
+
+      if (loc.latitude) {
+        throw new Error('Child location has a location set already.');
+      }
+
+      child.set('location', $.extend(true, {}, location));
+    });
   },
 
   /**
@@ -221,6 +238,11 @@ const API = {
    * @returns {boolean}
    */
   isSurveyLocationSet(surveySample, location) {
+   const accurateEnough = API.isSurveyLocationAccurate(surveySample, location);
+    return accurateEnough && location.name;
+  },
+
+  isSurveyLocationAccurate(surveySample, location) {
     const surveyAccuracy = surveySample.metadata.surveyAccuracy;
     const surveyLocation = location || surveySample.get('location') || { };
     surveyLocation.gridref || (surveyLocation.gridref = '');
