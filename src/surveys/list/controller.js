@@ -24,6 +24,13 @@ const API = {
       }),
       appModel,
     });
+    mainView.on('atlas:toggled', (setting, on) => {
+      Log('Samples:List:Controler: atlas toggled.');
+
+      appModel.set(setting, on);
+      appModel.save();
+    });
+
     mainView.on('childview:create', API.addSurvey);
     mainView.on('childview:sample:delete', (childView) => {
       API.sampleDelete(childView.model);

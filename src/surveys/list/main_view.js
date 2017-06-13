@@ -1,10 +1,12 @@
 /** ****************************************************************************
  * Surveys List main view.
  *****************************************************************************/
+import $ from 'jquery';
 import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import DateHelp from 'helpers/date';
+import Device from 'helpers/device';
 import Gallery from '../../common/gallery';
 import { default as _MainView, SampleView as _SampleView } from '../../samples/list/main_view';
 import './styles.scss';
@@ -92,6 +94,31 @@ const NoSamplesView = Marionette.View.extend({
 
 const MainView = _MainView.extend({
   template: JST['surveys/list/main'],
+
+  events: {
+    'toggle #use-atlas-btn': 'onSettingToggled',
+    'click #use-atlas-btn': 'onSettingToggled',
+  },
+
+  onSettingToggled(e) {
+    const setting = $(e.currentTarget).data('setting');
+    let active = $(e.currentTarget).hasClass('active');
+
+    if (e.type !== 'toggle' && !Device.isMobile()) {
+      // Device.isMobile() android generates both swipe and click
+
+      active = !active; // invert because it takes time to get the class
+      $(e.currentTarget).toggleClass('active', active);
+    }
+
+    this.trigger('atlas:toggled', setting, active);
+  },
+
+  serializeData() {
+    return {
+      useAtlas: this.options.appModel.get('useAtlas'),
+    };
+  },
 
   childView: SampleView,
   NoSamplesView,
