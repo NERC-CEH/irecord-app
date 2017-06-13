@@ -4,7 +4,7 @@
 
 <ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
   <li class="table-view-cell">
-    <a id="location-button" class="navigate-right">
+    <a id="location-button" class="navigate-right <%- obj.locationEditAllowed ? '' : 'disabled' %>">
       <span class="media-object pull-left icon icon-location"></span>
 
       <% if (obj.locationName) { %>

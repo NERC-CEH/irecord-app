@@ -4,6 +4,7 @@
 import Backbone from 'backbone';
 import BIGU from 'bigu';
 import _ from 'lodash';
+import $ from 'jquery';
 import Indicia from 'indicia';
 import Device from 'helpers/device';
 import ImageHelp from 'helpers/image';
@@ -275,11 +276,10 @@ const API = {
   },
 
   showInvalidLocationMessage(sample) {
-    const squareSize = sample.metadata.surveyAccuracy;
+    const gridref = sample.parent.get('location').gridref;
 
     radio.trigger('app:dialog', {
-      title: 'Sorry',
-      body: `Selected location should be a ${squareSize}`,
+      title: `Selected location should be within ${gridref}`,
       timeout: 2000,
     });
   },
@@ -329,7 +329,7 @@ const API = {
       return false;
     }
 
-    const parentGridref = sample.parent.get('location').gridRef;
+    const parentGridref = sample.parent.get('location').gridref;
     const parsedRef = BIGU.GridRefParser.factory(parentGridref);
 
     return gridCoords.to_gridref(parsedRef.length) === parentGridref;

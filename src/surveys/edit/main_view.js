@@ -31,6 +31,7 @@ export default Marionette.View.extend({
       training: sample.metadata.training,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
+      locationEditAllowed: this.options.locationEditAllowed,
       location: locationPrint,
       locationName: location.name,
       'vice-county': sample.get('vice-county'),

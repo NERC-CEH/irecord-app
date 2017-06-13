@@ -19,6 +19,7 @@ const marker = {
   addMapMarker() {
     this.map.on('singleclick', this._onMapClick, this);
     this.updateMapMarker(this._getCurrentLocation());
+    this.addParentMarker(this.model.get('sample'));
   },
 
   /**
@@ -42,6 +43,16 @@ const marker = {
     }
 
     this._setGBMarker(location);
+  },
+
+  addParentMarker(sample) {
+    if (sample.parent) {
+      const location = sample.parent.get('location') || {};
+      if (location.latitude) {
+        const parentMarker = this.generateRectangleMarker(location, { color: 'blue' });
+        parentMarker.addTo(this.map);
+      }
+    }
   },
 
   _setNonGBMarker(location) {
@@ -80,12 +91,12 @@ const marker = {
    * @param location
    * @returns {*}
    */
-  generateRectangleMarker(location) {
+  generateRectangleMarker(location, options = {}) {
     const dimensions = LocHelp.getSquareBounds(location) ||
       [[0, 0], [0, 0]];
 
     const newMarker = L.polygon(dimensions, {
-      color: 'red',
+      color: options.color || 'red',
       weight: 2,
       opacity: 1,
       fillOpacity: 0.2,

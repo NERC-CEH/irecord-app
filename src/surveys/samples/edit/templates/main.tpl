@@ -12,13 +12,7 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a id="location-button"
-    <% if (obj.locationEditAllowed) { %>
-        href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/location"
-      <% } %>
-
-       id="location-button"
-       class="<%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
+    <a id="location-button" class="<%- obj.locationEditAllowed ? '' : 'disabled' %> <%- obj.locks['location'] ? 'lock' : 'navigate-right' %>">
 
       <span class="media-object pull-left icon icon-location"></span>
 

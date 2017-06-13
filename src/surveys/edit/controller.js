@@ -46,7 +46,9 @@ const API = {
 
 
     // MAIN
+    const locationEditAllowed = !API.hasChildSamplesWithLocation(sample);
     const mainView = new MainView({
+      locationEditAllowed,
       model: new Backbone.Model({ sample, appModel }),
     });
     mainView.on('location:update', () => {
@@ -172,8 +174,7 @@ const API = {
     const squareSize = sample.metadata.surveyAccuracy;
 
     radio.trigger('app:dialog', {
-      title: 'Sorry',
-      body: `Selected location should be a ${squareSize}`,
+      title: `Selected location should be a ${squareSize}`,
       timeout: 2000,
     });
   },
@@ -223,6 +224,18 @@ const API = {
     const surveyAccuracy = surveySample.metadata.surveyAccuracy;
     const surveyLocation = location || surveySample.get('location') || { gridref: '' };
     return surveyLocation.gridref.length === LocHelp.gridref_accuracy[surveyAccuracy];
+  },
+
+  hasChildSamplesWithLocation(surveySample) {
+    let has = false;
+    surveySample.samples.forEach((sample) => {
+      const location = sample.get('location') || {};
+      if (location.latitude) {
+        has = true;
+      }
+    });
+
+    return has;
   },
 };
 
