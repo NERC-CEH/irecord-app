@@ -49,7 +49,10 @@ const marker = {
     if (sample.parent) {
       const location = sample.parent.get('location') || {};
       if (location.latitude) {
-        const parentMarker = this.generateRectangleMarker(location, { color: 'blue' });
+        const parentMarker = this.generateRectangleMarker(location, {
+          color: 'blue',
+          fillOpacity: 0.01,
+        });
         parentMarker.addTo(this.map);
       }
     }
@@ -99,7 +102,7 @@ const marker = {
       color: options.color || 'red',
       weight: 2,
       opacity: 1,
-      fillOpacity: 0.2,
+      fillOpacity: options.fillOpacity || 0.2,
     });
 
     return newMarker;
