@@ -284,6 +284,13 @@ const API = {
     });
   },
 
+  /**
+   * Sets location for the sample.
+   * @param sample
+   * @param loc
+   * @param reset
+   * @returns {Promise.<T>}
+   */
   setLocation(sample, loc, reset) {
     // validate this new location
     const valid = API.validateLocation(sample, loc);
@@ -319,6 +326,12 @@ const API = {
       });
   },
 
+  /**
+   * Validates if the location fits within the parent location square.
+   * @param sample
+   * @param location
+   * @returns {boolean}
+   */
   validateLocation(sample, location) {
     const gridCoords = BIGU.latlng_to_grid_coords(
       location.latitude,

@@ -179,9 +179,17 @@ const API = {
     });
   },
 
+  /**
+   * Sets new sample location and if a full location (+name) then sets that
+   * to the child samples.
+   * @param sample
+   * @param loc
+   * @param reset
+   * @returns {Promise.<T>}
+   */
   setLocation(sample, loc, reset) {
     // 1st validation of location accuracy
-    const valid = API.isSurveyLocationAccurate(sample, loc);
+    const valid = LocHelp.checkGridType(loc, sample.metadata.surveyAccuracy);
     if (!valid) {
       API.showInvalidLocationMessage(sample);
       return Promise.resolve();
@@ -209,7 +217,7 @@ const API = {
 
     // 2nd validation of the location name
     if (location.name) {
-      API.updateChildrenLocations(sample, location);
+      API.updateChildrenLocations(sample);
     }
 
     return sample.save()
@@ -219,15 +227,21 @@ const API = {
       });
   },
 
-  updateChildrenLocations(sample, location) {
+  /**
+   * Updates child sample locations to match the parent (survey) sample.
+   * @param sample
+   */
+  updateChildrenLocations(sample) {
     sample.samples.forEach((child) => {
       const loc = child.get('location');
 
+      // the child must not have any location
       if (loc.latitude) {
         throw new Error('Child location has a location set already.');
       }
 
-      child.set('location', $.extend(true, {}, location));
+      const location = _.cloneDeep(sample.get('location'));
+      child.set('location', location);
     });
   },
 
@@ -237,18 +251,17 @@ const API = {
    * @param surveySample
    * @returns {boolean}
    */
-  isSurveyLocationSet(surveySample, location) {
-   const accurateEnough = API.isSurveyLocationAccurate(surveySample, location);
+  isSurveyLocationSet(surveySample) {
+    const location = surveySample.get('location');
+    const accurateEnough = LocHelp.checkGridType(location, surveySample.metadata.surveyAccuracy);
     return accurateEnough && location.name;
   },
 
-  isSurveyLocationAccurate(surveySample, location) {
-    const surveyAccuracy = surveySample.metadata.surveyAccuracy;
-    const surveyLocation = location || surveySample.get('location') || { };
-    surveyLocation.gridref || (surveyLocation.gridref = '');
-    return surveyLocation.gridref.length === LocHelp.gridref_accuracy[surveyAccuracy];
-  },
-
+  /**
+   * Checks if the sample has child samples with any location set.
+   * @param surveySample
+   * @returns {boolean}
+   */
   hasChildSamplesWithLocation(surveySample) {
     let has = false;
     surveySample.samples.forEach((sample) => {

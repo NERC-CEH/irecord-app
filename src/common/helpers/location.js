@@ -198,6 +198,18 @@ const helpers = {
     }
     return false;
   },
+
+
+  /**
+   * Checks if location gridref size matches the provided one.
+   * @param location
+   * @param gridRefSize
+   * @returns {boolean}
+   */
+  checkGridType(location, gridRefSize) {
+    const gridref  = location.gridref || '';
+    return gridref.length === helpers.gridref_accuracy[gridRefSize];
+  },
 };
 
 export default helpers;

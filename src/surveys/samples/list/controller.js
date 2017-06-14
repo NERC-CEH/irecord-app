@@ -13,6 +13,7 @@ import CONFIG from 'config';
 import appModel from 'app_model';
 import MainView from './main_view';
 import HeaderView from './header_view';
+import SurveysEditController from '../../edit/controller';
 
 const API = {
   show(surveySampleID) {
@@ -188,10 +189,12 @@ const API = {
     // set sample location to survey's location which
     // can be corrected by GPS or user later on
     // todo: listen for surveySample attribute changes
-    const surveyLocation = _.cloneDeep(surveySample.get('location'));
-    sample.set('location', surveyLocation);
-    sample.set('recorder_count', surveySample.get('recorder_count'));
-    sample.set('recorder_names', surveySample.get('recorder_names'));
+    if (SurveysEditController.isSurveyLocationSet(surveySample)) {
+      const surveyLocation = _.cloneDeep(surveySample.get('location'));
+      sample.set('location', surveyLocation);
+      sample.set('recorder_count', surveySample.get('recorder_count'));
+      sample.set('recorder_names', surveySample.get('recorder_names'));
+    }
 
     surveySample.addSample(sample);
 

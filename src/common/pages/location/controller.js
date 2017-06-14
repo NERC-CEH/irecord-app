@@ -235,6 +235,14 @@ const API = {
     const escapedName = StringHelp.escape(locationName);
     const location = sample.get('location') || {};
     location.name = escapedName;
+
+
+    // check if we need custom location setting functionality
+    if (locationSetFunc) {
+      locationSetFunc(sample, location);
+      return
+    }
+
     sample.set('location', location);
     sample.save();
   },
