@@ -19,7 +19,7 @@ const AppModel = Backbone.Model.extend({
     useGridRef: true,
     useGridMap: true,
 
-    useExperiments: false,
+    useExperiments: process.env.EXPERIMENTS,
     useAtlas: false,
     surveyAccuracy: 'monad',
 
