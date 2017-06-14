@@ -22,7 +22,7 @@
       <span class="media-object pull-right descript error">Location missing</span>
       <% } %>
       <% } %>
-      Location
+      Square
     </a>
   </li>
   <li class="table-view-cell">
