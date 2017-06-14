@@ -164,12 +164,16 @@ const API = {
             sample.cid,
             { replace: true },
           );
-        } else {
-          radio.trigger('app:dialog', {
-            title: 'Added',
-            timeout: 500,
-          });
+          return;
         }
+
+        // reset the search field
+        radio.trigger('taxon:search:reset');
+
+        radio.trigger('app:dialog', {
+          title: 'Added',
+          timeout: 500,
+        });
       })
       .catch((err) => {
         Log(err, 'e');

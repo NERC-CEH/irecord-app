@@ -2,15 +2,9 @@
  * Taxon controller.
  *****************************************************************************/
 import Backbone from 'backbone';
-import Indicia from 'indicia';
 import App from 'app';
 import radio from 'radio';
-import Log from 'helpers/log';
-import savedSamples from 'saved_samples';
-import appModel from 'app_model';
 import userModel from 'user_model';
-import Sample from 'sample';
-import Occurrence from 'occurrence';
 import MainView from './main_view';
 import HeaderView from '../../views/header_view';
 import SpeciesSearchEngine from './search/taxon_search_engine';
@@ -20,19 +14,14 @@ const API = {
     SpeciesSearchEngine.init();
 
     // MAIN
-    const mainView = new MainView({ showEditButton: options.showEditButton, model: userModel });
-    mainView.on('taxon:selected', options.onSuccess, this);
-    mainView.on('taxon:searched', (searchPhrase) => {
-      SpeciesSearchEngine.search(searchPhrase, { informalGroups: options.informalGroups })
-        .then((suggestions) => {
-          const deDuped = API.deDuplicateSuggestions(suggestions);
-          mainView.updateSuggestions(new Backbone.Collection(deDuped), searchPhrase);
-        });
-    });
-
-    radio.trigger('app:main', mainView);
+    API._showMainView(options);
     // should be done in the view
     App.regions.getRegion('main').$el.find('#taxon').select();
+
+    // reset the view listener
+    radio.on('taxon:search:reset', () => {
+      API._showMainView(options);
+    });
 
     // HEADER
     const headerView = new HeaderView({
@@ -44,6 +33,20 @@ const API = {
 
     // FOOTER
     radio.trigger('app:footer:hide');
+  },
+
+  _showMainView(options) {
+    const mainView = new MainView({ showEditButton: options.showEditButton, model: userModel });
+    mainView.on('taxon:selected', options.onSuccess, this);
+    mainView.on('taxon:searched', (searchPhrase) => {
+      SpeciesSearchEngine.search(searchPhrase, { informalGroups: options.informalGroups })
+        .then((suggestions) => {
+          const deDuped = API.deDuplicateSuggestions(suggestions);
+          mainView.updateSuggestions(new Backbone.Collection(deDuped), searchPhrase);
+        });
+    });
+
+    radio.trigger('app:main', mainView);
   },
 
   /**
