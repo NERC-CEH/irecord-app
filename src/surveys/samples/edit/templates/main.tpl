@@ -23,7 +23,7 @@
             <span class="media-object pull-right descript"><%- obj.location %></span>
           <% } %>
       <% } else { %>
-      <span class="media-object pull-right descript error">No survey location</span>
+      <span class="media-object pull-right descript error">No list location</span>
       <% } %>
 
     Location
