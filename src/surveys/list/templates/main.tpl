@@ -1,9 +1,9 @@
 <div class="main-header surveys">
-  Surveys
+  Lists
 
   <div id="atlas-toggle">
-    Atlas
-    <div id="use-atlas-btn" data-setting="useAtlas" class="toggle no-yes <%- obj.useAtlas ? 'active' : '' %>">
+    Grid alert
+    <div id="use-atlas-btn" data-setting="useAtlas" class="toggle on-off <%- obj.useAtlas ? 'active' : '' %>">
       <div class="toggle-handle"></div>
     </div>
   </div>

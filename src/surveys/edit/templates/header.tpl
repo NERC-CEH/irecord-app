@@ -5,4 +5,4 @@
   <button id="sample-save-btn"
           class="icon <%- obj.isSynchronising ? 'icon-plus icon-spin disabled' : 'icon-send' %>"></button>
 </div>
-<h1 class="title">Plant Survey</h1>
+<h1 class="title">Plant List</h1>
