@@ -24,7 +24,7 @@
     font-size: 12px;
     text-align: right;
     position: absolute;
-    width: 120px;
+    width: 130px;
     margin-top: -5px;
     right: 0;
     top: 8px;
@@ -35,11 +35,15 @@
       margin-left: 5px;
 
       &.toggle {
-        width: 65px;
+        width: 60px;
         height: 25px;
 
         &:before {
           font-size: 10px;
+        }
+
+        &.active .toggle-handle {
+          transform: translate3d(35px, 0, 0);
         }
 
         .toggle-handle {
