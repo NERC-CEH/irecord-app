@@ -565,6 +565,10 @@ a span.pull-left.icon {
 .disabled {
   opacity: 0.5;
   pointer-events: none;
+
+  &.very {
+    opacity: 0.3;
+  }
 }
 
 #footer, #header {
