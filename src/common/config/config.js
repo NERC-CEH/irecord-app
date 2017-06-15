@@ -143,7 +143,9 @@ const CONFIG = {
           },
           status: {
             id: 507,
+            default: 'Not Recorded',
             values: {
+              'Not Recorded': 0,
               Native: 5709,
               Unknown: 5710,
               Introduced: 6775,
@@ -156,7 +158,9 @@ const CONFIG = {
           },
           stage: {
             id: 466,
+            default: 'Not Recorded',
             values: {
+              'Not Recorded': 0,
               Flowering: 5331,
               Fruiting: 5330,
               Juvenile: 5328,
@@ -245,7 +249,7 @@ const CONFIG = {
         id: 523,
         default: 'Present',
         values: {
-          Present: 671,
+          Present: 0,
           1: 665,
           '2-5': 666,
           '6-20': 667,
@@ -258,7 +262,7 @@ const CONFIG = {
         id: 106,
         default: 'Not Recorded',
         values: {
-          'Not Recorded': 1949,
+          'Not Recorded': 0,
           Adult: 1950,
           'Pre-adult': 1951,
           Other: 1952,

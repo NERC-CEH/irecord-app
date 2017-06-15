@@ -56,6 +56,19 @@ export default Marionette.View.extend({
         values[attr] = StringHelp.escape(value);
         break;
       case 'status':
+        const statusConfig = CONFIG.indicia.occurrence.stage;
+
+        $inputs = this.$el.find('input');
+        $inputs.each((int, elem) => {
+          if ($(elem).prop('checked')) {
+            const newVal = $(elem).val();
+            // don't set default
+            if (newVal !== statusConfig.default) {
+              values[attr] = newVal;
+            }
+          }
+        });
+        break;
       case 'stage':
         const stageConfig = CONFIG.indicia.occurrence.stage;
 
