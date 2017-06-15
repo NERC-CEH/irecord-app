@@ -6,6 +6,10 @@ export default Marionette.View.extend({
   tagName: 'nav',
   template: JST['common/header'],
 
+  className() {
+    return this.options.classes;
+  },
+
   regions: {
     leftPanel: '#left-panel',
     rightPanel: '#right-panel',
