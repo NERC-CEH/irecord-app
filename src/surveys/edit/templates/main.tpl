@@ -30,7 +30,7 @@
        class="<%- obj.locks['vice-county'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-address"></span>
       <span class="media-object pull-right descript short"><%- obj['vice-county'] %></span>
-      Vice County
+      Vice-county
     </a>
   </li>
   <li class="table-view-cell">
