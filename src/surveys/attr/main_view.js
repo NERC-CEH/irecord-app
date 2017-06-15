@@ -82,7 +82,7 @@ export default Marionette.View.extend({
         break;
       case 'vice-county':
         value = this.$el.find('input').val();
-        values[attr] = StringHelp.escape(value);
+        values[attr] = value;
         break;
       case 'comment':
         value = this.$el.find('textarea').val();
