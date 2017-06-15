@@ -5,8 +5,9 @@ import BIGU from 'bigu';
 import Log from './log';
 
 const helpers = {
+  // grid ref character length
   gridref_accuracy: {
-    tetrad: 4, // 2km
+    tetrad: 5, // 2km
     monad: 6, // 1km
     '100m': 8, // 100m
   },
@@ -207,8 +208,15 @@ const helpers = {
    * @returns {boolean}
    */
   checkGridType(location, gridRefSize) {
-    const gridref  = location.gridref || '';
-    return gridref.length === helpers.gridref_accuracy[gridRefSize];
+    const gridref = location.gridref || '';
+    let length = helpers.gridref_accuracy[gridRefSize];
+
+    if (/^.\d/.test(gridref)) {
+      // Irish is 1 char less than others
+      length -= 1;
+    }
+
+    return gridref.length === length;
   },
 };
 
