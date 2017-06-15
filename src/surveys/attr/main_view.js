@@ -111,6 +111,8 @@ export default Marionette.View.extend({
         templateData.value = this.model.get(this.options.attr) || [];
         break;
       case 'vice-county':
+        templateData.message = 'Please type in your vice-county. ' +
+          '<br><b>Note:</b> you can use codes or search any part of the name.';
         templateData.typeahead = true;
         const vc = this.model.get(this.options.attr) || {};
         templateData.value = vc.name;
