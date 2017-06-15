@@ -148,8 +148,8 @@ const API = {
     Log('Location:MainView:Map: adding layer controls.');
 
     this.controls = L.control.layers({
-      OS: this.layers.OS,
-      OSM: this.layers.OSM,
+      'Ordnance Survey': this.layers.OS,
+      'Open Street Map': this.layers.OSM,
       Satellite: this.layers.Satellite,
     }, {});
     this.map.addControl(this.controls);
@@ -314,7 +314,7 @@ const API = {
   _updateCoordSystem(e) {
     Log('Location:MainView:Map: updating coord system.');
 
-    const nextLayer = e.name;
+    let nextLayer = e.name;
 
     this.currentLayerControlSelected = this.controls._handlingClick;
 
@@ -322,13 +322,16 @@ const API = {
     let zoom = this.getMapZoom();
     this.map.options.crs = L.CRS.EPSG3857;
 
+
     // a change from WGS84 -> OS
-    if (nextLayer === 'OS') {
+    if (nextLayer === 'Ordnance Survey') {
       zoom = API._deNormalizeOSzoom(zoom);
       this.map.options.crs = OS_CRS;
+      nextLayer = 'OS';
     }
 
-    this.currentLayer = e.name;
+    this.currentLayer = nextLayer;
+
     this.map.setView(center, zoom, { reset: true });
     this.$container.dataset.layer = this.currentLayer; // fix the lines between the tiles
   },
