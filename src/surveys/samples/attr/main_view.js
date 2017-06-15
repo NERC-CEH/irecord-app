@@ -51,6 +51,12 @@ export default Marionette.View.extend({
         break;
       }
       case 'abundance':
+        value = this.$el.find('input').val();
+        const re = /^(\d+|[DAFOR]|LA|LF)$/;
+        if (re.test(value)) {
+          values[attr] = StringHelp.escape(value);
+        }
+        break;
       case 'identifiers':
         value = this.$el.find('input').val();
         values[attr] = StringHelp.escape(value);
