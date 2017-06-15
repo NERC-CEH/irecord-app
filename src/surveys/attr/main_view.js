@@ -34,7 +34,11 @@ export default Marionette.View.extend({
   addtypeaheadSuggestions() {
     const that = this;
     const viceCounties = this.options.viceCounties;
-    const arr = _.map(viceCounties);
+    const codes = [];
+    const names = viceCounties.map((a) => {
+      codes.push(a.code);
+      return a.name;
+    });
     const $typeahead = this.$el.find('.typeahead');
     $typeahead.typeahead(
       {
@@ -45,7 +49,7 @@ export default Marionette.View.extend({
       {
         limit: 3,
         name: 'names',
-        source: typeaheadSearchFn(arr, 3),
+        source: typeaheadSearchFn(names.concat(codes), 3),
       });
 
     $typeahead.bind('typeahead:select', () => {
@@ -108,6 +112,9 @@ export default Marionette.View.extend({
         break;
       case 'vice-county':
         templateData.typeahead = true;
+        const vc = this.model.get(this.options.attr) || {};
+        templateData.value = vc.name;
+        break;
       case 'comment':
         templateData.value = this.model.get(this.options.attr);
         break;

@@ -136,13 +136,13 @@ const API = {
         currentVal = sample.get(attr);
         newVal = null;
         // validate - check if exists in the list
-        Object.keys(viceCounties).forEach((key) => {
-          if (viceCounties[key] === values[attr]) {
-            newVal = values[attr];
+        viceCounties.forEach((vc) => {
+          if (vc.code === values[attr] || vc.name === values[attr]) {
+            newVal = vc;
           }
         });
         if (newVal) {
-          sample.set(attr, values[attr]);
+          sample.set(attr, newVal);
         }
         break;
       case 'recorders':
@@ -151,7 +151,7 @@ const API = {
         newVal = values[attr];
 
         // todo:validate before setting up
-        sample.set(attr, values[attr]);
+        sample.set(attr, newVal);
         break;
       default:
     }

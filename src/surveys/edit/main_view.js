@@ -26,6 +26,8 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
+    const vc = sample.get('vice-county') || {};
+
     return {
       id: sample.cid,
       training: sample.metadata.training,
@@ -34,7 +36,7 @@ export default Marionette.View.extend({
       locationEditAllowed: this.options.locationEditAllowed,
       location: locationPrint,
       locationName: location.name,
-      'vice-county': sample.get('vice-county'),
+      'vice-county': vc.name,
       date: DateHelp.print(sample.get('date'), true),
       species: sample.samples.length,
       recorders: (sample.get('recorders') || []).length,
