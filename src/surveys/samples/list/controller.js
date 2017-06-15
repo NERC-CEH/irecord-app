@@ -84,6 +84,9 @@ const API = {
     });
 
     radio.trigger('app:header', headerView);
+
+    // FOOTER
+    radio.trigger('app:footer:hide');
   },
 
 
