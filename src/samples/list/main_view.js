@@ -193,77 +193,16 @@ const SampleView = Marionette.View.extend({
   },
 });
 
-const NoSamplesView = Marionette.View.extend({
-  tagName: 'li',
-  className: 'table-view-cell empty',
-  template: JST['samples/list/list-none'],
-});
-
-
-
-
-Marionette.CompositeView.extend({
-  id: 'samples-list-container',
-  template: JST['samples/list/main'],
-
-  childViewContainer: '#samples-list',
-  childView: SampleView,
-
-  constructor(...args) {
-    const that = this;
-    const [options] = args;
-    if (options.collection.fetching) {
-      this.emptyView = LoaderView;
-
-      options.collection.once('fetching:done', () => {
-        that.emptyView = NoSamplesView;
-        // when the collection for the view is "reset",
-        // the view will call render on itself
-        if (!that.collection.length) {
-          if (that._isRendered) {
-            Log('Samples:MainView: showing empty view.');
-            that.render();
-          } else if (that._isRendering) {
-            Log('Samples:MainView: waiting for current rendering to finish.');
-            that.once('render', () => {
-              Log('Samples:MainView: showing empty view.');
-              that.render();
-            });
-          }
-        }
-      });
-    } else {
-      this.emptyView = NoSamplesView;
-    }
-
-    Marionette.CompositeView.prototype.constructor.apply(this, args);
-  },
-
-  // invert the order
-  attachHtml(collectionView, childView) {
-    collectionView.$el.find(this.childViewContainer).prepend(childView.el);
-  },
-
-  childViewOptions() {
-    return {
-      appModel: this.options.appModel,
-    };
-  },
-
-  serializeData() {
-    const activity = this.options.appModel.getAttrLock('activity') || {};
-    return {
-      useTraining: this.options.appModel.get('useTraining'),
-      activity: activity.title,
-    };
-  },
-});
-
 var cellHeight = 65;
 
 const $main = $('#main');
 var viewportHeight = $main.height();
-const offset = Math.floor(viewportHeight / cellHeight) + 1;
+var viewport = $main[0];
+const viewContainsNo = Math.floor(viewportHeight / cellHeight);
+
+const excessNo = viewContainsNo;
+const initialLowerBound = 0;
+const initialUpperBound = viewContainsNo + excessNo;
 
 const Slider = Marionette.SlidingView.extend({
   id: 'samples-list',
@@ -272,46 +211,41 @@ const Slider = Marionette.SlidingView.extend({
   childView: SampleView,
   emptyView: LoaderView,
 
-  initialLowerBound: 0,
+  // initialLowerBound: 0,
   // indexOffset: offset,
 
   registerUpdateEvent() {
-
+    var self = this;
     // Execute the throttled callback on scroll
     $main.on('scroll', () => {
-      this.onUpdateEvent();
+      self.onUpdateEvent();
     });
   },
 
-  initialUpperBound: function() {
-    return offset;
+  onUpdateEvent: function() {
+    var self = this;
+    requestAnimationFrame(function() {
+      self.throttledUpdateHandler();
+    });
   },
 
+  initialLowerBound,
+  initialUpperBound,
+
   getLowerBound: function() {
-    const scrollTop = $main.scrollTop() + 5;
-    var start = Math.floor(scrollTop / cellHeight);
-    // start = start - this.indexOffset;
-    // if (start < 0) { start = 0; }
-    return start;
+    return 0;
   },
 
   getUpperBound: function(lowerBound) {
-    var contained = offset;
+    const scrolledNo = Math.floor(viewport.scrollTop / cellHeight);
 
-    // Multiply the offset by 2 to account for the start index
-    let end = lowerBound + contained;
-
-    return end;
+    return lowerBound + viewContainsNo + excessNo + scrolledNo;
   },
 
   pruneCollection: function(lowerBound, upperBound) {
+    console.log(`Prune ${lowerBound} ${upperBound}`)
     return this.referenceCollection.slice(lowerBound, upperBound)
   },
-
-  // // invert the order
-  // attachHtml(collectionView, childView) {
-  //   collectionView.$el.find(this.childViewContainer).prepend(childView.el);
-  // },
 
   childViewOptions() {
     return {
@@ -331,7 +265,6 @@ const Slider = Marionette.SlidingView.extend({
 export default Marionette.View.extend({
   id: 'samples-list-container',
   template: JST['samples/list/main'],
-
 
   regions: {
     body: {
