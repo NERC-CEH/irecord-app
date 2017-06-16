@@ -52,7 +52,7 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
     testID = (Math.random() * 10).toFixed(0);
   }
 
-  const image = new Indicia.Image({
+  const image = new Indicia.Media({
     data: imageData,
     type: 'image/png',
   });
@@ -73,7 +73,7 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
     },
     comment: sampleTestID,
   });
-  occurrence.images.set(image);
+  occurrence.media.set(image);
 
   // ***create sample***
   const sample = new Sample({
@@ -93,12 +93,8 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
 
   // append locked attributes
   appModel.appendAttrLocks(sample);
-
-  savedRecords.set(sample, (saveErr) => {
-    if (saveErr) {
-      console.error(saveErr);
-      return;
-    }
+  sample.save().then(() => {
+    savedRecords.add(sample);
 
     if (--count) {
       console.log(`Adding: ${count}`);
@@ -150,11 +146,11 @@ function createSamples(manager) {
     stage: 'Adult',
     number: '2-5',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.ladybird,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -218,11 +214,11 @@ function createSamples(manager) {
     number: '21-100',
     comment: 'Saw many of those!',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.butterfly,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -281,11 +277,11 @@ function createSamples(manager) {
     number: '6-20',
     comment: 'Came very close to where we were.',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.tit,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -313,13 +309,13 @@ function createSamples(manager) {
       warehouse_id: 113813,
     },
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.squirrel,
     type: 'jpg',
     width: 1500,
     height: 2000,
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -346,11 +342,11 @@ function createSamples(manager) {
       warehouse_id: 113813,
     },
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.slug,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -379,11 +375,11 @@ function createSamples(manager) {
     stage: 'Adult',
     number: '6-20',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.bee,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
