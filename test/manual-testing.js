@@ -12,7 +12,7 @@ const testing = {};
 /**
  * Reset All Records Status
  */
-testing.resetRecordsStatus = function () {
+testing.resetRecordsStatus = () => {
   savedRecords.getAll((getError, recordsCollection) => {
     if (getError) {
       App.regions.dialog.error(getError);
@@ -31,7 +31,58 @@ testing.resetRecordsStatus = function () {
 /**
  * Add a Dummy Record.
  */
-testing.addDummyRecord = function (count = 1, imageData, testID) {
+testing.addDummyRecord = (count = 1, imageData, testID) => {
+  testing.generateImage(imageData, testID).then((image) => {
+    const sampleTestID = `test ${testID} - ${count}`;
+
+    // create occurrence
+    const occurrence = new Occurrence({
+      taxon: {
+        array_id: 12186,
+        common_name: 'Tuberous Pea',
+        found_in_name: 'common_name',
+        group: 27,
+        scientific_name: 'Lathyrus tuberosus',
+        species_id: 3,
+        synonym: 'Fyfield Pea',
+        warehouse_id: 113813,
+      },
+      comment: sampleTestID,
+    });
+    occurrence.media.set(image);
+
+    // ***create sample***
+    const sample = new Sample({
+      date: new Date(),
+      location_type: 'latlon',
+      location: {
+        accuracy: 1,
+        gridref: 'SD75',
+        latitude: 54.0310862,
+        longitude: -2.3106393,
+        name: sampleTestID,
+        source: 'map',
+      },
+    }, {
+      occurrences: [occurrence],
+    });
+
+    // append locked attributes
+    appModel.appendAttrLocks(sample);
+    return sample.save().then(() => {
+      savedRecords.add(sample);
+
+      if (--count) {
+        console.log(`Adding: ${count}`);
+        testing.addDummyRecord(count, imageData, testID);
+      } else {
+        console.log('Finished Adding');
+      }
+    });
+  });
+};
+
+testing.generateImage = (imageData, testID) => {
   if (!imageData) {
     // create random image
     const canvas = document.createElement('canvas');
@@ -57,52 +108,7 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
     type: 'image/png',
   });
 
-  const sampleTestID = `test ${testID} - ${count}`;
-
-  // create occurrence
-  const occurrence = new Occurrence({
-    taxon: {
-      array_id: 12186,
-      common_name: 'Tuberous Pea',
-      found_in_name: 'common_name',
-      group: 27,
-      scientific_name: 'Lathyrus tuberosus',
-      species_id: 3,
-      synonym: 'Fyfield Pea',
-      warehouse_id: 113813,
-    },
-    comment: sampleTestID,
-  });
-  occurrence.media.set(image);
-
-  // ***create sample***
-  const sample = new Sample({
-    date: new Date(),
-    location_type: 'latlon',
-    location: {
-      accuracy: 1,
-      gridref: 'SD75',
-      latitude: 54.0310862,
-      longitude: -2.3106393,
-      name: sampleTestID,
-      source: 'map',
-    },
-  }, {
-    occurrences: [occurrence],
-  });
-
-  // append locked attributes
-  appModel.appendAttrLocks(sample);
-  sample.save().then(() => {
-    savedRecords.add(sample);
-
-    if (--count) {
-      console.log(`Adding: ${count}`);
-      testing.addDummyRecord(count, imageData, testID);
-    } else {
-      console.log('Finished Adding');
-    }
-  });
+  return image.addThumbnail().then(() => image);
 };
 
 function createSamples(manager) {
@@ -398,7 +404,7 @@ function screenshotsRecursive(samples, callback) {
   });
 }
 
-testing.screenshotsPopulate = function (savedRecords) {
+testing.screenshotsPopulate = (savedRecords) => {
   const samples = createSamples(savedRecords);
 
   savedRecords.clear(() => {
