@@ -5,9 +5,12 @@ import Backbone from 'backbone';
 import App from 'app';
 import radio from 'radio';
 import userModel from 'user_model';
+import appModel from 'app_model';
+import Log from 'helpers/log';
 import MainView from './main_view';
-import HeaderView from '../../views/header_view';
+import HeaderView from './header_view';
 import SpeciesSearchEngine from './search/taxon_search_engine';
+import FiltersView from './filters_view';
 
 const API = {
   show(options = {}) {
@@ -24,22 +27,53 @@ const API = {
     });
 
     // HEADER
-    const headerView = new HeaderView({
-      model: new Backbone.Model({
-        title: 'Species',
-      }),
-    });
-    radio.trigger('app:header', headerView);
+    API._showHeaderView(options);
 
     // FOOTER
     radio.trigger('app:footer:hide');
+  },
+
+  _showHeaderView(options) {
+    const disableFilters = options.informalGroups;
+    const headerView = new HeaderView({ model: appModel, disableFilters });
+
+    headerView.on('filter', () => {
+      const filtersView = new FiltersView({ model: appModel });
+      filtersView.on('filter', (filter) => {
+        if (!filter) {
+          Log('Taxon:Controller: No filter provided', 'e');
+          return;
+        }
+        Log('Taxon:Controller: Filter set');
+        appModel.toggleTaxonFilter(filter);
+
+        // reset header
+        API._showHeaderView(options);
+      });
+
+      radio.trigger('app:dialog', {
+        title: 'Filter',
+        body: filtersView,
+      });
+    });
+
+    radio.trigger('app:header', headerView);
+
   },
 
   _showMainView(options) {
     const mainView = new MainView({ showEditButton: options.showEditButton, model: userModel });
     mainView.on('taxon:selected', options.onSuccess, this);
     mainView.on('taxon:searched', (searchPhrase) => {
-      SpeciesSearchEngine.search(searchPhrase, { informalGroups: options.informalGroups })
+      // get taxa group filters
+      let informalGroups = options.informalGroups;
+      if (!informalGroups) {
+        // user saved ones
+        informalGroups = appModel.get('taxonGroupFilters');
+      }
+
+      // search
+      SpeciesSearchEngine.search(searchPhrase, { informalGroups })
         .then((suggestions) => {
           const deDuped = API.deDuplicateSuggestions(suggestions);
           mainView.updateSuggestions(new Backbone.Collection(deDuped), searchPhrase);
