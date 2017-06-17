@@ -3,6 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
+import 'marionette.sliding-view';
 import Indicia from 'indicia';
 import Hammer from 'hammerjs';
 import Log from 'helpers/log';
@@ -11,7 +12,7 @@ import Device from 'helpers/device';
 import DateHelp from 'helpers/date';
 import JST from 'JST';
 import Gallery from '../../common/gallery';
-import LoaderView from '../../common/views/loader_view';
+import SlidingView from '../../common/views/sliding_view';
 import './styles.scss';
 
 const SampleView = Marionette.View.extend({
@@ -189,6 +190,7 @@ const SampleView = Marionette.View.extend({
   },
 });
 
+
 const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
@@ -199,55 +201,30 @@ const NoSamplesView = Marionette.View.extend({
   },
 });
 
-const MainView = Marionette.CompositeView.extend({
+
+const SmartCollectionView = SlidingView.extend({
+  childView: SampleView,
+  emptyView: NoSamplesView,
+});
+
+
+
+const MainView = Marionette.View.extend({
   id: 'samples-list-container',
   template: JST['samples/list/main'],
 
-  childViewContainer: '#list',
-  childView: SampleView,
-
-  NoSamplesView,
-
-  constructor(...args) {
-    const that = this;
-    const [options] = args;
-    if (options.collection.fetching) {
-      this.emptyView = LoaderView;
-
-      // todo move to controller
-      options.collection.once('fetching:done', () => {
-        that.emptyView = this.NoSamplesView;
-        // when the collection for the view is "reset",
-        // the view will call render on itself
-        if (!that.collection.length) {
-          if (that._isRendered) {
-            Log('Samples:MainView: showing empty view.');
-            that.render();
-          } else if (that._isRendering) {
-            Log('Samples:MainView: waiting for current rendering to finish.');
-            that.once('render', () => {
-              Log('Samples:MainView: showing empty view.');
-              that.render();
-            });
-          }
-        }
-      });
-    } else {
-      this.emptyView = this.NoSamplesView;
-    }
-
-    Marionette.CompositeView.prototype.constructor.apply(this, args);
+  regions: {
+    body: {
+      el: '#list',
+      replaceElement: true,
+    },
   },
 
-  // invert the order
-  attachHtml(collectionView, childView) {
-    collectionView.$el.find(this.childViewContainer).prepend(childView.el);
-  },
-
-  childViewOptions() {
-    return {
+  onRender() {
+    this.showChildView('body', new SmartCollectionView({
+      referenceCollection: this.collection,
       appModel: this.options.appModel,
-    };
+    }));
   },
 
   serializeData() {

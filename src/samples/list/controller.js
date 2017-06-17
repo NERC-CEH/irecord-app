@@ -15,6 +15,14 @@ import HeaderView from './header_view';
 const API = {
   show() {
     Log(`Samples:List:Controller: showing ${savedSamples.length}.`);
+    // wait till savedSamples is fully initialized
+    if (savedSamples.fetching) {
+      const that = this;
+      savedSamples.once('fetching:done', () => {
+        API.show.apply(that);
+      });
+      return;
+    }
 
     // MAIN
     const mainView = new MainView({

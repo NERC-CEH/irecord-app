@@ -47,6 +47,15 @@ const Collection = Indicia.Collection.extend({
         // as this can be done in the background
       });
   },
+
+  /**
+   * Reverse order so that newest are at the top of list.
+   * @param a
+   * @returns {number}
+   */
+  comparator(a) {
+    return -a.metadata.created_on;
+  },
 });
 
 
