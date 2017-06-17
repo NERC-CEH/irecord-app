@@ -126,14 +126,14 @@ radio.on('app:dialog:error', (options) => {
   App.regions.getRegion('dialog').error(options);
 });
 
-radio.on('app:main', (options) => {
-  App.regions.getRegion('main').show(options);
+radio.on('app:main', (view) => {
+  App.regions.getRegion('main').show(view);
 });
-radio.on('app:header', (options) => {
-  App.regions.getRegion('header').show(options);
+radio.on('app:header', (view) => {
+  App.regions.getRegion('header').show(view);
 });
-radio.on('app:footer', (options) => {
-  App.regions.getRegion('footer').show(options);
+radio.on('app:footer', (view) => {
+  App.regions.getRegion('footer').show(view);
 });
 radio.on('app:main:hide', (options) => {
   App.regions.getRegion('main').hide(options).empty();
