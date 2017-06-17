@@ -6,6 +6,7 @@ import Marionette from 'backbone.marionette';
 import 'marionette.sliding-view';
 import Indicia from 'indicia';
 import Hammer from 'hammerjs';
+import radio from 'radio';
 import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
@@ -205,8 +206,12 @@ const NoSamplesView = Marionette.View.extend({
 const SmartCollectionView = SlidingView.extend({
   childView: SampleView,
   emptyView: NoSamplesView,
-});
 
+  onAttach() {
+    // let the world know when the list is in place
+    radio.trigger('species:list:show');
+  },
+});
 
 
 const MainView = Marionette.View.extend({
@@ -221,9 +226,12 @@ const MainView = Marionette.View.extend({
   },
 
   onRender() {
-    this.showChildView('body', new SmartCollectionView({
+    const mainRegion = this.getRegion('body');
+
+    mainRegion.show(new SmartCollectionView({
       referenceCollection: this.collection,
       appModel: this.options.appModel,
+      scroll: this.options.scroll,
     }));
   },
 

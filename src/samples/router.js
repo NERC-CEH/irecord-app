@@ -23,19 +23,27 @@ App.samples = {};
 let scroll = 0; // last scroll position
 const $mainRegion = $('#main');
 
+/**
+ * Scroll to the last position
+ */
+radio.on('species:list:show', () => {
+  if (Device.isIOS()) {
+    // iOS scroll glitch fix
+    setTimeout(() => {
+      $mainRegion.scrollTop(scroll);
+    }, 1);
+  } else {
+    $mainRegion.scrollTop(scroll);
+  }
+});
+
 const Router = Marionette.AppRouter.extend({
   routes: {
     'samples(/)': {
-      route: ListController.show,
-      after() {
-        if (Device.isIOS()) {
-          // iOS scroll glitch fix
-          setTimeout(() => {
-            $mainRegion.scrollTop(scroll);
-          }, 1);
-        } else {
-          $mainRegion.scrollTop(scroll);
-        }
+      route: () => {
+        ListController.show({
+          scroll, // inform about the last scroll
+        });
       },
       leave() {
         scroll = $mainRegion.scrollTop();

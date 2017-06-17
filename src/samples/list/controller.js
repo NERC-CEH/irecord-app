@@ -10,10 +10,11 @@ import appModel from 'app_model';
 import savedSamples from 'saved_samples';
 import Sample from 'sample';
 import MainView from './main_view';
+import LoaderView from '../../common/views/loader_view';
 import HeaderView from './header_view';
 
 const API = {
-  show() {
+  show(options = {}) {
     Log(`Samples:List:Controller: showing ${savedSamples.length}.`);
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
@@ -21,14 +22,38 @@ const API = {
       savedSamples.once('fetching:done', () => {
         API.show.apply(that);
       });
-      return;
+      radio.trigger('app:main', new LoaderView());
+    } else {
+      API.showMainView(options);
     }
 
-    // MAIN
+    // HEADER
+    const headerView = new HeaderView({ model: appModel });
+
+    headerView.on('photo:upload', (e) => {
+      const photo = e.target.files[0];
+      API.photoUpload(photo);
+    });
+
+    // android gallery/camera selection
+    headerView.on('photo:selection', API.photoSelect);
+    headerView.on('create', () => API.createNewSample());
+    headerView.on('surveys', () => {
+      radio.trigger('surveys:list', { replace: true });
+    });
+
+    radio.trigger('app:header', headerView);
+
+    // FOOTER
+    radio.trigger('app:footer:hide');
+  },
+
+  showMainView(options) {
     const mainView = new MainView({
       collection: savedSamples.subcollection({
         filter: model => !model.metadata.complex_survey,
       }),
+      scroll: options.scroll,
       appModel,
     });
 
@@ -50,27 +75,8 @@ const API = {
     mainView.on('childview:sample:delete', (childView) => {
       API.sampleDelete(childView.model);
     });
+
     radio.trigger('app:main', mainView);
-
-    // HEADER
-    const headerView = new HeaderView({ model: appModel });
-
-    headerView.on('photo:upload', (e) => {
-      const photo = e.target.files[0];
-      API.photoUpload(photo);
-    });
-
-    // android gallery/camera selection
-    headerView.on('photo:selection', API.photoSelect);
-    headerView.on('create', () => API.createNewSample());
-    headerView.on('surveys', () => {
-      radio.trigger('surveys:list', { replace: true });
-    });
-
-    radio.trigger('app:header', headerView);
-
-    // FOOTER
-    radio.trigger('app:footer:hide');
   },
 
   sampleDelete(sample) {

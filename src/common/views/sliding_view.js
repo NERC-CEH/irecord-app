@@ -1,16 +1,12 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 
-var cellHeight = 65;
+const cellHeight = 65;
 
 const $main = $('#main');
-var viewportHeight = $main.height();
-var viewport = $main[0];
+const viewportHeight = $main.height();
+const viewport = $main[0];
 const viewContainsNo = Math.floor(viewportHeight / cellHeight);
-
-const excessNo = viewContainsNo;
-const initialLowerBound = 0;
-const initialUpperBound = viewContainsNo + excessNo;
 
 const Slider = Marionette.SlidingView.extend({
   id: 'list',
@@ -18,36 +14,42 @@ const Slider = Marionette.SlidingView.extend({
   className: 'table-view no-top',
 
   registerUpdateEvent() {
-    var self = this;
     // Execute the throttled callback on scroll
     $main.on('scroll', () => {
-      self.onUpdateEvent();
+      this.onUpdateEvent();
     });
   },
 
-  onUpdateEvent: function() {
-    var self = this;
-    requestAnimationFrame(function() {
-      self.throttledUpdateHandler();
+  onUpdateEvent() {
+    requestAnimationFrame(() => {
+      this.throttledUpdateHandler();
     });
   },
 
-  initialLowerBound,
-  initialUpperBound,
-
-  getLowerBound: function() {
-    return 0;
+  initialLowerBound: 0,
+  initialUpperBound() {
+    return this.getUpperBound(this.initialLowerBound, this.options.scroll);
   },
 
-  getUpperBound: function(lowerBound) {
-    const scrolledNo = Math.floor(viewport.scrollTop / cellHeight);
+  getLowerBound: () => 0,
 
-    return lowerBound + viewContainsNo + excessNo + scrolledNo;
+  /**
+   *
+   * @param lowerBound
+   * @param scrollTop  initial scroll if coming back to the list
+   * @returns {*}
+   */
+  getUpperBound(lowerBound, scrollTop) {
+    scrollTop || (scrollTop  = viewport.scrollTop); // eslint-disable-line
+
+    const scrolledNo = Math.floor(scrollTop / cellHeight);
+
+    return lowerBound + viewContainsNo * 2 + scrolledNo;
   },
 
-  pruneCollection: function(lowerBound, upperBound) {
-    console.log(`Prune ${lowerBound} ${upperBound}`)
-    return this.referenceCollection.slice(lowerBound, upperBound)
+  pruneCollection(lowerBound, upperBound) {
+    console.log(`Prune ${lowerBound} ${upperBound}`);
+    return this.referenceCollection.slice(lowerBound, upperBound);
   },
 
   childViewOptions() {
