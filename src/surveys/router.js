@@ -2,9 +2,11 @@
  * Settings router.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
+import $ from 'jquery';
 import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
+import Device from 'helpers/device';
 import ListController from './list/controller';
 import ShowController from './show/controller';
 import EditAttrController from './attr/controller';
@@ -17,9 +19,35 @@ import LocationController from '../common/pages/location/controller';
 
 App.settings = {};
 
+let scroll = 0; // last scroll position
+const $mainRegion = $('#main');
+
+/**
+ * Scroll to the last position
+ */
+radio.on('surveys:list:show', () => {
+  if (Device.isIOS()) {
+    // iOS scroll glitch fix
+    setTimeout(() => {
+      $mainRegion.scrollTop(scroll);
+    }, 1);
+  } else {
+    $mainRegion.scrollTop(scroll);
+  }
+});
+
 const Router = Marionette.AppRouter.extend({
   routes: {
-    'surveys(/)': ListController.show,
+    'surveys(/)': {
+      route: () => {
+        ListController.show({
+          scroll, // inform about the last scroll
+        });
+      },
+      leave() {
+        scroll = $mainRegion.scrollTop();
+      },
+    },
     'surveys/:id': ShowController.show,
     'surveys/:id/edit(/)': EditController.show,
 

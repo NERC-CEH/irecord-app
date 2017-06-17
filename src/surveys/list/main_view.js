@@ -4,12 +4,15 @@
 import $ from 'jquery';
 import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
+import radio from 'radio';
 import JST from 'JST';
 import DateHelp from 'helpers/date';
 import Device from 'helpers/device';
 import Gallery from '../../common/gallery';
-import { default as _MainView, SampleView as _SampleView } from '../../samples/list/main_view';
+import _MainView, { SampleView as _SampleView } from '../../samples/list/main_view';
 import './styles.scss';
+import SlidingView from '../../common/views/sliding_view';
+import 'marionette.sliding-view';
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
@@ -92,6 +95,18 @@ const NoSamplesView = Marionette.View.extend({
   },
 });
 
+
+const SmartCollectionView = SlidingView.extend({
+  childView: SampleView,
+  emptyView: NoSamplesView,
+
+  onAttach() {
+    // let the world know when the list is in place
+    radio.trigger('surveys:list:show');
+  },
+});
+
+
 const MainView = _MainView.extend({
   template: JST['surveys/list/main'],
 
@@ -99,6 +114,17 @@ const MainView = _MainView.extend({
     'toggle #use-atlas-btn': 'onSettingToggled',
     'click #use-atlas-btn': 'onSettingToggled',
   },
+
+  onRender() {
+    const mainRegion = this.getRegion('body');
+
+    mainRegion.show(new SmartCollectionView({
+      referenceCollection: this.collection,
+      appModel: this.options.appModel,
+      scroll: this.options.scroll,
+    }));
+  },
+
 
   onSettingToggled(e) {
     const setting = $(e.currentTarget).data('setting');
@@ -119,9 +145,6 @@ const MainView = _MainView.extend({
       useAtlas: this.options.appModel.get('useAtlas'),
     };
   },
-
-  childView: SampleView,
-  NoSamplesView,
 });
 
 export default MainView;

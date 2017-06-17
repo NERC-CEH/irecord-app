@@ -9,34 +9,23 @@ import Analytics from 'helpers/analytics';
 import Sample from 'sample';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
-import CONFIG from 'config';
 import MainView from './main_view';
+import LoaderView from '../../common/views/loader_view';
 import HeaderView from './header_view';
 
 const API = {
-  show() {
+  show(options = {}) {
     Log('Surveys:List:Controller: showing.');
-
-    // MAIN
-    const mainView = new MainView({
-      collection: savedSamples.subcollection({
-        filter: model => model.metadata.complex_survey,
-      }),
-      appModel,
-    });
-    mainView.on('atlas:toggled', (setting, on) => {
-      Log('Samples:List:Controler: atlas toggled.');
-
-      appModel.set(setting, on);
-      appModel.save();
-    });
-
-    mainView.on('childview:create', API.addSurvey);
-    mainView.on('childview:sample:delete', (childView) => {
-      API.sampleDelete(childView.model);
-    });
-    radio.trigger('app:main', mainView);
-
+    // wait till savedSamples is fully initialized
+    if (savedSamples.fetching) {
+      const that = this;
+      savedSamples.once('fetching:done', () => {
+        API.show.apply(that);
+      });
+      radio.trigger('app:main', new LoaderView());
+    } else {
+      API.showMainView(options);
+    }
 
     // HEADER
     const headerView = new HeaderView({
@@ -53,6 +42,30 @@ const API = {
 
     // FOOTER
     radio.trigger('app:footer:hide');
+  },
+
+  showMainView(options) {
+    const mainView = new MainView({
+      collection: savedSamples.subcollection({
+        filter: model => model.metadata.complex_survey,
+      }),
+      scroll: options.scroll,
+      appModel,
+    });
+
+    mainView.on('atlas:toggled', (setting, on) => {
+      Log('Samples:List:Controler: atlas toggled.');
+
+      appModel.set(setting, on);
+      appModel.save();
+    });
+
+    mainView.on('childview:create', API.addSurvey);
+    mainView.on('childview:sample:delete', (childView) => {
+      API.sampleDelete(childView.model);
+    });
+
+    radio.trigger('app:main', mainView);
   },
 
   sampleDelete(sample) {
