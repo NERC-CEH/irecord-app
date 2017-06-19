@@ -83,8 +83,39 @@ const CONFIG = {
               return location.gridref;
             },
           },
-          recorder_names: {
+          recorders: {
             id: 1018,
+            values(val, submission) {
+              const attributes = {};
+              const recorderCount = CONFIG.indicia.surveys.plant.sample.recorder_count;
+
+              // add recorder count
+              switch (true) {
+                case val.length === 1:
+                  attributes[recorderCount.id] = recorderCount.values['1'];
+                  break;
+                case val.length === 2:
+                  attributes[recorderCount.id] = recorderCount.values['2'];
+                  break;
+                case val.length <= 5:
+                  attributes[recorderCount.id] = recorderCount.values['3-5'];
+                  break;
+                case val.length <= 10:
+                  attributes[recorderCount.id] = recorderCount.values['6-10'];
+                  break;
+                case val.length <= 20:
+                  attributes[recorderCount.id] = recorderCount.values['11-20'];
+                  break;
+                case val.length >= 21:
+                  attributes[recorderCount] = recorderCount.values['21+'];
+                  break;
+                default:
+                  throw new Error('No such recorderCount case found!');
+              }
+              $.extend(submission.fields, attributes);
+
+              return val;
+            },
           },
           recorder_count: {
             id: 992,

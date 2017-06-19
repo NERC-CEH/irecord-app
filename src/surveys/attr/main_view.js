@@ -106,7 +106,7 @@ export default Marionette.View.extend({
         templateData.maxDate = DateHelp.toDateInputValue(new Date());
         break;
       case 'recorders':
-        templateData.message = 'If anyone helped with the identification please enter their name here.';
+        templateData.message = 'Please enter the names of all recorders.';
         templateData.value = this.model.get(this.options.attr) || [];
         break;
       case 'vice-county':

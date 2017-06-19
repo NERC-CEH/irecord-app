@@ -71,9 +71,11 @@ const surveyVerify = {
     const samples = {};
     const occurrences = {};
 
+    const isChildSample = this.parent;
+
     // todo: remove this bit once sample DB update is possible
     // check if saved or already send
-    if (!this.parent && (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)) {
+    if (!isChildSample && (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)) {
       attributes.send = false;
     }
 
@@ -82,9 +84,17 @@ const surveyVerify = {
     if (!location.latitude) {
       attributes.location = 'missing';
     }
-    // location name only for survey level
-    if (!this.parent && !location.name) {
-      attributes['location name'] = 'missing';
+
+    // survey level
+    if (!isChildSample) {
+      if (!location.name) {
+        attributes['location name'] = 'missing';
+      }
+
+      // recorder names
+      if (!attrs.recorders || !attrs.recorders.length) {
+        attributes.recorder_names = 'can\'t be blank';
+      }
     }
 
     // date
@@ -100,16 +110,6 @@ const surveyVerify = {
     // location type
     if (!attrs.location_type) {
       attributes.location_type = 'can\'t be blank';
-    }
-
-    // recorder names
-    if (!attrs.recorder_names) {
-      attributes.recorder_names = 'can\'t be blank';
-    }
-
-    // recorder count
-    if (!attrs.recorder_count) {
-      attributes.recorder_count = 'can\'t be blank';
     }
 
     // subsamples
@@ -314,9 +314,16 @@ const helpers = {
 
     // plant survey
     if (survey === 'plant') {
+      // add currently logged in user as one of the recorders
+      const recorders = [];
+      if (userModel.hasLogIn()) {
+        recorders.push(`${userModel.get('firstname')} ${userModel.get('secondname')}`);
+      }
+
       sample = new Sample({
         location_type: 'british',
         sample_method_id: 7305,
+        recorders,
       }, {
         metadata: {
           survey: 'plant',

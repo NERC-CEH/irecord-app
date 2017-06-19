@@ -27,7 +27,7 @@ const API = {
       return;
     }
 
-    Log('Samples:Edit:Controller: showing.');
+    Log('Surveys:Edit:Controller: showing.');
 
     const sample = savedSamples.get(sampleID);
     // Not found
@@ -88,7 +88,7 @@ const API = {
   },
 
   save(sample) {
-    Log('Samples:Edit:Controller: save clicked.');
+    Log('Surveys:Edit:Controller: save clicked.');
 
     const promise = sample.setToSend();
 
