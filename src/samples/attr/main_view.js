@@ -71,8 +71,8 @@ export default Marionette.View.extend({
       case 'date': {
         value = this.$el.find('input').val();
         const date = new Date(value);
-        if (date.toString() !== 'Invalid Date') {
-          values[attr] = new Date(date);
+        if (DateHelp.validate(date)) {
+          values[attr] = date;
         }
         break;
       }

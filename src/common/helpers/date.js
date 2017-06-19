@@ -20,4 +20,13 @@ export default {
 
     return (pretty && isToday ? 'Today' : sampleDate);
   },
+
+  /**
+   * Validates the date
+   * @param date
+   * @returns {boolean}
+   */
+  validate(date) {
+    return date.toString() !== 'Invalid Date' && date <= new Date();
+  },
 };

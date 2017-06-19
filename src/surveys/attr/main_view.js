@@ -1,7 +1,6 @@
 /** ****************************************************************************
  * Surveys List main view.
  *****************************************************************************/
-import _ from 'lodash';
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Device from 'helpers/device';
@@ -69,7 +68,7 @@ export default Marionette.View.extend({
       case 'date': {
         value = this.$el.find('input').val();
         const date = new Date(value);
-        if (date.toString() !== 'Invalid Date') {
+        if (DateHelp.validate(date)) {
           values[attr] = new Date(date);
         }
         break;
