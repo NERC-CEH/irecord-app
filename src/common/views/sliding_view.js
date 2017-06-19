@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
+import 'marionette.sliding-view';
 
 const cellHeight = 65;
 

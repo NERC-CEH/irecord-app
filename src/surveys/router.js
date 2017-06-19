@@ -20,18 +20,27 @@ import LocationController from '../common/pages/location/controller';
 App.settings = {};
 
 let scroll = 0; // last scroll position
+let scrollSamples = 0; // last scroll position
 const $mainRegion = $('#main');
 
 /**
  * Scroll to the last position
  */
-radio.on('surveys:list:show', () => {
+radio.on('surveys:list:show', (samples) => {
   if (Device.isIOS()) {
     // iOS scroll glitch fix
     setTimeout(() => {
+      if (samples) {
+        $mainRegion.scrollTop(scrollSamples);
+        return;
+      }
       $mainRegion.scrollTop(scroll);
     }, 1);
   } else {
+    if (samples) {
+      $mainRegion.scrollTop(scrollSamples);
+      return;
+    }
     $mainRegion.scrollTop(scroll);
   }
 });
@@ -39,8 +48,9 @@ radio.on('surveys:list:show', () => {
 const Router = Marionette.AppRouter.extend({
   routes: {
     'surveys(/)': {
-      route: () => {
+      route: (surveySampleID) => {
         ListController.show({
+          surveySampleID,
           scroll, // inform about the last scroll
         });
       },
@@ -50,8 +60,17 @@ const Router = Marionette.AppRouter.extend({
     },
     'surveys/:id': ShowController.show,
     'surveys/:id/edit(/)': EditController.show,
-
-    'surveys/:id/edit/samples(/)': SamplesListController.show,
+    'surveys/:id/edit/samples(/)': {
+      route: (surveySampleID) => {
+        SamplesListController.show({
+          surveySampleID,
+          scroll: scrollSamples, // inform about the last scroll
+        });
+      },
+      leave() {
+        scrollSamples = $mainRegion.scrollTop();
+      },
+    },
     'surveys/:id/edit/samples/new(/)': SamplesEditTaxonController.show,
     'surveys/:id/edit/samples/:id/edit(/)': SamplesEditController.show,
     'surveys/:id/edit/samples/:id/edit/taxon(/)': SamplesEditTaxonController.show,

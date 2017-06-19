@@ -10,9 +10,8 @@ import DateHelp from 'helpers/date';
 import Device from 'helpers/device';
 import Gallery from '../../common/gallery';
 import _MainView, { SampleView as _SampleView } from '../../samples/list/main_view';
-import './styles.scss';
 import SlidingView from '../../common/views/sliding_view';
-import 'marionette.sliding-view';
+import './styles.scss';
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
@@ -115,7 +114,7 @@ const MainView = _MainView.extend({
     'click #use-atlas-btn': 'onSettingToggled',
   },
 
-  onRender() {
+   onRender() {
     const mainRegion = this.getRegion('body');
 
     mainRegion.show(new SmartCollectionView({

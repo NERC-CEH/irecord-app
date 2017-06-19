@@ -3,7 +3,9 @@
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
-import { default as _MainView, SampleView as _SampleView } from '../../../samples/list/main_view';
+import radio from 'radio';
+import _MainView, { SampleView as _SampleView } from '../../../samples/list/main_view';
+import SlidingView from '../../../common/views/sliding_view';
 import './styles.scss';
 
 const SampleView = Marionette.View.extend({
@@ -70,18 +72,39 @@ const NoSamplesView = Marionette.View.extend({
   },
 });
 
-const MainView = _MainView.extend({
-  template: JST['surveys/samples/list/main'],
 
+const SmartCollectionView = SlidingView.extend({
   childView: SampleView,
-  NoSamplesView,
-  serializeData() {},
+  emptyView: NoSamplesView,
+
+  onAttach() {
+    // let the world know when the list is in place
+    radio.trigger('surveys:list:show', 'samples');
+  },
 
   childViewOptions() {
     return {
       surveySampleID: this.options.surveySampleID,
     };
   },
+});
+
+
+const MainView = _MainView.extend({
+  template: JST['surveys/samples/list/main'],
+
+  onRender() {
+    const mainRegion = this.getRegion('body');
+
+    mainRegion.show(new SmartCollectionView({
+      referenceCollection: this.collection,
+      appModel: this.options.appModel,
+      scroll: this.options.scroll,
+      surveySampleID: this.options.surveySampleID,
+    }));
+  },
+
+  serializeData() {}, // overwrite the _MainView serializeData
 });
 
 export { MainView as default, SampleView };

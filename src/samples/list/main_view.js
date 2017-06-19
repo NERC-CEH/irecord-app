@@ -3,7 +3,6 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import 'marionette.sliding-view';
 import Indicia from 'indicia';
 import Hammer from 'hammerjs';
 import radio from 'radio';

@@ -16,19 +16,19 @@ import HeaderView from './header_view';
 import SurveysEditController from '../../edit/controller';
 
 const API = {
-  show(surveySampleID) {
+  show(options = {}) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
       const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [surveySampleID]);
+        API.show.apply(that, [options]);
       });
       return;
     }
 
     Log('Surveys:Samples:List:Controller: showing.');
 
-    const surveySample = savedSamples.get(surveySampleID);
+    const surveySample = savedSamples.get(options.surveySampleID);
     // Not found
     if (!surveySample) {
       Log('No sample model found.', 'e');
@@ -39,7 +39,7 @@ const API = {
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
     if (surveySample.getSyncStatus() === Indicia.SYNCED) {
-      radio.trigger('samples:show', surveySampleID, { replace: true });
+      radio.trigger('samples:show', options.surveySampleID, { replace: true });
       return;
     }
 
@@ -47,10 +47,12 @@ const API = {
     const mainView = new MainView({
       collection: surveySample.samples,
       surveySampleID: surveySample.cid,
+      scroll: options.scroll,
     });
+
     // 'Add +' list button
     mainView.on('childview:create', () => {
-      radio.trigger('surveys:samples:edit:taxon', surveySampleID, null, {
+      radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
         onSuccess(taxon, editButtonClicked) {
           API.createNewSample(surveySample, taxon, editButtonClicked);
         },
@@ -74,7 +76,7 @@ const API = {
     // android gallery/camera selection
     headerView.on('photo:selection', () => API.photoSelect(surveySample));
     headerView.on('create', () => {
-      radio.trigger('surveys:samples:edit:taxon', surveySampleID, null, {
+      radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
         onSuccess(taxon, editButtonClicked) {
           API.createNewSample(surveySample, taxon, editButtonClicked);
         },
