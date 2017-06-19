@@ -129,11 +129,14 @@ export default Marionette.View.extend({
       });
     }
 
-    const userModel = this.model;
-    const statistics = userModel.get('statistics') || { species: [] };
-    const favouriteSpecies = statistics.species;
-    if (favouriteSpecies.length) {
-      this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
+    const hideFavourites = this.options.hideFavourites;
+    if (!hideFavourites) {
+      const userModel = this.model;
+      const statistics = userModel.get('statistics') || { species: [] };
+      const favouriteSpecies = statistics.species;
+      if (favouriteSpecies.length) {
+        this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
+      }
     }
   },
 

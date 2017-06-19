@@ -62,7 +62,11 @@ const API = {
   },
 
   _showMainView(options) {
-    const mainView = new MainView({ showEditButton: options.showEditButton, model: userModel });
+    const mainView = new MainView({
+      model: userModel,
+      showEditButton: options.showEditButton,
+      hideFavourites: options.informalGroups,
+    });
     mainView.on('taxon:selected', options.onSuccess, this);
     mainView.on('taxon:searched', (searchPhrase) => {
       // get taxa group filters
