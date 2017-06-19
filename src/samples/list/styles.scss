@@ -250,6 +250,14 @@
 
           .attributes {
             clear: both;
+
+            .icon {
+              float: right;
+
+              &:before {
+                font-size: 14px;
+              }
+            }
           }
 
           div.stage,
@@ -261,6 +269,8 @@
 
           div.comment {
             float: left;
+            width: 80px;
+
             font-size: 12px;
             margin-right: 10px;
             overflow: hidden;

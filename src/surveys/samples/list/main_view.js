@@ -42,17 +42,24 @@ const SampleView = Marionette.View.extend({
 
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
+    const surveylocation = sample.parent.get('location') || {};
+
+    const customLocation = surveylocation.gridref !== location.gridref;
 
     return {
       surveySampleID: this.options.surveySampleID,
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
-      location: locationPrint,
+      location: customLocation ? locationPrint : null,
       locationName: location.name,
       scientificName,
       commonName,
       status: occ.get('status'),
       comment: occ.get('comment'),
+      stage: occ.get('stage'),
+      identifiers: occ.get('identifiers'),
+      abundance: occ.get('abundance'),
+      sensitive: occ.metadata.sensitive,
       img: img ? `<img src="${img}"/>` : '',
     };
   },

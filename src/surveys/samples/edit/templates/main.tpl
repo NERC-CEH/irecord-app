@@ -30,6 +30,14 @@
     </a>
   </li>
   <li class="table-view-cell">
+    <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/status" id="comment-button"
+       class="<%- obj.locks['status'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-edit"></span>
+      <span class="media-object pull-right descript"><%= obj.status %></span>
+      Status
+    </a>
+  </li>
+  <li class="table-view-cell">
     <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/stage" id="comment-button"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-stage"></span>
@@ -43,14 +51,6 @@
       <span class="media-object pull-left icon icon-number"></span>
       <span class="media-object pull-right descript"><%= obj.abundance %></span>
       Abundance
-    </a>
-  </li>
-  <li class="table-view-cell">
-    <a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit/status" id="comment-button"
-       class="<%- obj.locks['status'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-edit"></span>
-      <span class="media-object pull-right descript"><%= obj.status %></span>
-      Status
     </a>
   </li>
   <li class="table-view-cell">
