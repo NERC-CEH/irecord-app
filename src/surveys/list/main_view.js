@@ -114,7 +114,7 @@ const MainView = _MainView.extend({
     'click #use-atlas-btn': 'onSettingToggled',
   },
 
-   onRender() {
+  onRender() {
     const mainRegion = this.getRegion('body');
 
     mainRegion.show(new SmartCollectionView({
@@ -141,6 +141,7 @@ const MainView = _MainView.extend({
 
   serializeData() {
     return {
+      useTraining: this.options.appModel.get('useTraining'),
       useAtlas: this.options.appModel.get('useAtlas'),
     };
   },

@@ -2,6 +2,7 @@ import DateHelp from 'helpers/date';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
 import userModel from 'user_model';
+import appModel from 'app_model';
 import { savedSamples, Collection } from '../../saved_samples';
 import store from '../../store';
 
@@ -35,6 +36,19 @@ describe('Sample', () => {
 
     expect(DateHelp.print(date)).to.be.equal(DateHelp.print(new Date()));
   });
+
+  it('should set training mode', () => {
+    appModel.set('useTraining', false);
+
+    let sample = getRandomSample();
+    expect(sample.metadata.training).to.be.equal(false);
+
+    appModel.set('useTraining', true);
+
+    sample = getRandomSample();
+    expect(sample.metadata.training).to.be.equal(true);
+  });
+
 
   describe('validation', () => {
     it('should return sample send false invalid if not saved', () => {

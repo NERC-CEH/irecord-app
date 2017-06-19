@@ -3,7 +3,7 @@
 <% } %>
 
 <% if (obj.useTraining) { %>
-<div class="main-header training">training mode</div>
+<div class="main-header training">Training</div>
 <% } %>
 
 <ul id="list" class="table-view no-top"></ul>
