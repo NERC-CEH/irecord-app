@@ -14,6 +14,12 @@ const Slider = Marionette.SlidingView.extend({
   tagName: 'ul',
   className: 'table-view no-top',
 
+  initialize() {
+    this.listenTo(this.referenceCollection, 'update', () => {
+      this._updateCollection();
+    });
+  },
+
   registerUpdateEvent() {
     // Execute the throttled callback on scroll
     $main.on('scroll', () => {
@@ -22,6 +28,7 @@ const Slider = Marionette.SlidingView.extend({
   },
 
   onUpdateEvent() {
+    // Execute the throttled callback on scroll
     requestAnimationFrame(() => {
       this.throttledUpdateHandler();
     });

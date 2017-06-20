@@ -43,27 +43,7 @@ const API = {
       return;
     }
 
-    // MAIN
-    const mainView = new MainView({
-      collection: surveySample.samples,
-      surveySampleID: surveySample.cid,
-      scroll: options.scroll,
-    });
-
-    // 'Add +' list button
-    mainView.on('childview:create', () => {
-      radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
-        onSuccess(taxon, editButtonClicked) {
-          API.createNewSample(surveySample, taxon, editButtonClicked);
-        },
-        showEditButton: true,
-        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
-      });
-    });
-    mainView.on('childview:sample:delete', (childView) => {
-      API.sampleDelete(childView.model);
-    });
-    radio.trigger('app:main', mainView);
+    API._showMainView(surveySample, options);
 
     // HEADER
     const headerView = new HeaderView({ model: appModel });
@@ -91,6 +71,29 @@ const API = {
     radio.trigger('app:footer:hide');
   },
 
+  _showMainView(surveySample, options) {
+    // MAIN
+    const mainView = new MainView({
+      collection: surveySample.samples,
+      surveySampleID: surveySample.cid,
+      scroll: options.scroll,
+    });
+
+    // 'Add +' list button
+    mainView.on('childview:create', () => {
+      radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
+        onSuccess(taxon, editButtonClicked) {
+          API.createNewSample(surveySample, taxon, editButtonClicked);
+        },
+        showEditButton: true,
+        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
+      });
+    });
+    mainView.on('childview:sample:delete', (childView) => {
+      API.sampleDelete(childView.model);
+    });
+    radio.trigger('app:main', mainView);
+  },
 
   sampleDelete(sample) {
     Log('Surveys:Samples:List:Controller: deleting sample.');
@@ -143,6 +146,8 @@ const API = {
     // todo: show loader
     return Sample.createNewSampleWithPhoto('plant', photo)
       .then(sample => API.configNewSample(surveySample, sample))
+      // rerender the view since smart list doesn't do that yet
+      .then(() => API._showMainView(surveySample, {}))
       .catch((err) => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
