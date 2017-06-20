@@ -9,7 +9,7 @@ const helpers = {
   gridref_accuracy: {
     tetrad: 5, // 2km
     monad: 6, // 1km
-    '100m': 8, // 100m
+    // '100m': 8, // 100m
   },
 
   /**
