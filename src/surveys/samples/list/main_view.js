@@ -59,7 +59,7 @@ const SampleView = Marionette.View.extend({
       stage: occ.get('stage'),
       identifiers: occ.get('identifiers'),
       abundance: occ.get('abundance'),
-      sensitive: occ.metadata.sensitive,
+      sensitive: occ.metadata.sensitivity_precision,
       img: img ? `<img src="${img}"/>` : '',
     };
   },

@@ -77,7 +77,7 @@ const API = {
     });
     mainView.on('setting:toggled', (setting, on) => {
       const occ = sample.getOccurrence();
-      occ.metadata.sensitive = on;
+      occ.metadata.sensitivity_precision = on ? 1 : null;
       occ.save();
     });
     mainView.on('taxon:update', () => {

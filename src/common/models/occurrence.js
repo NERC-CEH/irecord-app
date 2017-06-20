@@ -5,5 +5,16 @@ import ImageModel from './image';
 export default Indicia.Occurrence.extend({
   Image: ImageModel,
 
-  keys: CONFIG.indicia.occurrence, // warehouse attribute keys
+  // warehouse attribute keys
+  keys() {
+    if (this.parent.metadata.survey === 'plant') {
+      return _.extend(
+        {},
+        CONFIG.indicia.occurrence, // general keys
+        CONFIG.indicia.surveys.plant.occurrence // plant specific keys
+      );
+    }
+    return CONFIG.indicia.occurrence;
+  },
+
 });
