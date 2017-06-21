@@ -163,7 +163,7 @@ const API = {
       position: 'topright',
       className: 'past-btn',
       title: 'navigate to past locations',
-      body: '<span class="icon icon-clock"></span>',
+      body: '<span class="icon icon-history"></span>',
       onClick() {
         that.trigger('past:click');
       },

@@ -223,12 +223,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "8663320a860b00f26e94d3d15c9ba99a",
-      "css": "clock",
-      "code": 59430,
-      "src": "entypo"
-    },
-    {
       "uid": "7222571caa5c15f83dcfd447c58d68d9",
       "css": "search",
       "code": 59397,
@@ -297,6 +291,18 @@
       "css": "fire",
       "code": 59436,
       "src": "linecons"
+    },
+    {
+      "uid": "d4816c0845aa43767213d45574b3b145",
+      "css": "history",
+      "code": 61914,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "440e5cbb0f604b4be0c0183e63a0cde3",
+      "css": "low-vision",
+      "code": 62120,
+      "src": "fontawesome"
     }
   ]
 }

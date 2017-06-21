@@ -72,7 +72,7 @@
   <li id="sensitive-btn-parent" class="table-view-cell">
     <a>
       Sensitive
-      <span class="media-object pull-left icon icon-location toggle-icon"></span>
+      <span class="media-object pull-left icon icon-low-vision toggle-icon"></span>
       <div id="sensitive-btn" data-setting="sensitive"
            class="toggle no-yes <%- obj.sensitive ? 'active' : '' %>">
         <div class="toggle-handle"></div>

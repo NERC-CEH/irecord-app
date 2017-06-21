@@ -36,7 +36,7 @@
       <% if (obj.abundance) { %> <span class="icon icon-number"></span> <% } %>
       <% if (obj.comment) { %> <span class="icon icon-comment"></span> <% } %>
       <% if (obj.identifiers) { %> <span class="icon icon-user-plus"></span> <% } %>
-      <% if (obj.sensitive) { %> <span class="icon icon-location"></span> <% } %>
+      <% if (obj.sensitive) { %> <span class="icon icon-low-vision"></span> <% } %>
     </div>
     <% } %>
 
