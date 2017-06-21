@@ -42,7 +42,10 @@ export default Marionette.View.extend({
   serializeData() {
     const templateData = {
       message: 'Please pick the life stage.',
-      selection: Object.keys(LocHelp.gridref_accuracy),
+      selection: Object.keys(LocHelp.gridref_accuracy).map(key => ({
+        label: LocHelp.gridref_accuracy[key].label,
+        value: key,
+      })),
       selected: this.model.get('surveyAccuracy'),
     };
 

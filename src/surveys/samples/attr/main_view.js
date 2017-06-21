@@ -124,7 +124,7 @@ export default Marionette.View.extend({
         selected = occ.get('status') || statusConfig.default;
         templateData = {
           message: 'Please pick the status.',
-          selection: Object.keys(statusConfig.values),
+          selection: Object.keys(statusConfig.values).map(key => ({ value: key })),
           selected,
         };
         break;
@@ -133,7 +133,7 @@ export default Marionette.View.extend({
         selected = occ.get('stage') || stageConfig.default;
         templateData = {
           message: 'Please pick the life stage.',
-          selection: Object.keys(stageConfig.values),
+          selection: Object.keys(stageConfig.values).map(key => ({ value: key })),
           selected,
         };
         break;

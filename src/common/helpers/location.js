@@ -7,8 +7,14 @@ import Log from './log';
 const helpers = {
   // grid ref character length
   gridref_accuracy: {
-    tetrad: 5, // 2km
-    monad: 6, // 1km
+    tetrad: {
+      label: 'Tetrad (2km square)',
+      length: 5,
+    },
+    monad: {
+      label: 'Monad (1km square)',
+      length: 6,
+    },
     // '100m': 8, // 100m
   },
 
@@ -209,7 +215,7 @@ const helpers = {
    */
   checkGridType(location, gridRefSize) {
     const gridref = location.gridref || '';
-    let length = helpers.gridref_accuracy[gridRefSize];
+    let length = helpers.gridref_accuracy[gridRefSize].length;
 
     if (/^.\d/.test(gridref)) {
       // Irish is 1 char less than others

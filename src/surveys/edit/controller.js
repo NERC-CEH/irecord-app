@@ -172,9 +172,10 @@ const API = {
 
   showInvalidLocationMessage(sample) {
     const squareSize = sample.metadata.surveyAccuracy;
+    const prettyName = LocHelp.gridref_accuracy[squareSize].label;
 
     radio.trigger('app:dialog', {
-      title: `Selected location should be a ${squareSize}`,
+      title: `Selected location should be a ${prettyName}`,
       timeout: 2000,
     });
   },
