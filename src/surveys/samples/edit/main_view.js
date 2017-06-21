@@ -87,7 +87,7 @@ export default Marionette.View.extend({
       id: sample.cid,
       scientificName,
       commonName,
-      training: occ.metadata.training,
+      training: sample.metadata.training,
       sensitive: occ.metadata.sensitivity_precision,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
