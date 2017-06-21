@@ -8,7 +8,7 @@
 <li class="table-view-cell">
   <a id="delete-all-btn">
     <span class="media-object pull-left icon icon-delete"></span>
-    Delete All Saved
+    Clear All Saved
   </a>
 </li>
 <li id="use-training-btn-parent" class="table-view-cell">
