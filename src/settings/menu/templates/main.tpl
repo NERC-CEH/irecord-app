@@ -46,13 +46,13 @@
   <a href="#settings/survey" class="navigate-right">
     <span class="media-object pull-left icon icon-grid"></span>
     <span class="media-object pull-right descript" style="width: 25%;"><%= obj.surveyAccuracy %></span>
-    Survey Accuracy
+    Grid Square Unit
   </a>
 </li>
 
 <li class="table-view-divider">Application</li>
 <li class="table-view-cell">
-  Experimental features
+  Experimental Features
   <span class="media-object pull-left icon icon-fire"></span>
   <div id="use-experiments-btn" data-setting="useExperiments" class="toggle no-yes <%- obj.useExperiments ? 'active' : '' %>">
     <div class="toggle-handle"></div>
