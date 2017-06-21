@@ -145,17 +145,27 @@ const API = {
      * Creates an invalids message recursively.
      * @param errorModel
      */
-    function deepErrorsMsg(errorModel) {
+    function deepErrorsMsg(errorModel, child) {
       let missing = '';
       _.each(errorModel.attributes, (message, invalid) => {
+        if (child) {
+          missing += `species <b>${invalid}</b> - ${message}</br>`;
+          return;
+        }
+
         missing += `<b>${invalid}</b> - ${message}</br>`;
       });
 
+      // separate child models
+      if (!child) {
+        missing += '<hr>';
+      }
+
       _.each(errorModel.samples, (model) => {
-        missing += deepErrorsMsg(model);
+        missing += deepErrorsMsg(model, true);
       });
       _.each(errorModel.occurrences, (model) => {
-        missing += deepErrorsMsg(model);
+        missing += deepErrorsMsg(model, true);
       });
 
       return missing;

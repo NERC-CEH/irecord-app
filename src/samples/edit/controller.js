@@ -158,7 +158,7 @@ const API = {
 
   showInvalidsMessage(invalids) {
     // it wasn't saved so of course this error
-    delete invalids.sample.saved; // eslint-disable-line
+    delete invalids.attributes.saved; // eslint-disable-line
 
     let missing = '';
     if (invalids.occurrences) {
@@ -166,8 +166,8 @@ const API = {
         missing += `<b>${invalid}</b> - ${message}</br>`;
       });
     }
-    if (invalids.sample) {
-      _.each(invalids.sample, (message, invalid) => {
+    if (invalids.attributes) {
+      _.each(invalids.attributes, (message, invalid) => {
         missing += `<b>${invalid}</b> - ${message}</br>`;
       });
     }
