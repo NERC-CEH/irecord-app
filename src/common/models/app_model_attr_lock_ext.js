@@ -7,11 +7,16 @@ import Analytics from 'helpers/analytics';
 import userModel from 'user_model';
 
 export default {
+  _getRawLocks(survey) {
+    const locks = this.get('attrLocks');
+    locks[survey] || (locks[survey] = {});
+
+    return locks;
+  },
   setAttrLock(attr, value, survey = 'general') {
     const val = _.cloneDeep(value);
-    const locks = this.get('attrLocks');
+    const locks = this._getRawLocks(survey);
 
-    locks[survey] || (locks[survey] = {});
     locks[survey][attr] = val;
     this.set(locks);
     this.save();
@@ -23,9 +28,7 @@ export default {
   },
 
   unsetAttrLock(attr, survey = 'general') {
-    const locks = this.get('attrLocks');
-    locks[survey] || (locks[survey] = {});
-
+    const locks = this._getRawLocks(survey);
     delete locks[survey][attr];
     this.set(locks);
     this.save();
@@ -33,8 +36,7 @@ export default {
   },
 
   getAttrLock(attr, survey = 'general') {
-    const locks = this.get('attrLocks');
-    locks[survey] || (locks[survey] = {});
+    const locks = this._getRawLocks(survey);
     return locks[survey][attr];
   },
 
