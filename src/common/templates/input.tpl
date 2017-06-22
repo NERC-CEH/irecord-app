@@ -4,5 +4,5 @@
 </div>
 <% } %>
 <div class="input-group">
-  <input type="text" class="<%= obj.typeahead ? 'typeahead' : '' %>" pattern="<%= obj.pattern ? obj.pattern : '' %>" value="<%= obj.value %>"/>
+  <input type="<%- obj.type %>" class="<%= obj.typeahead ? 'typeahead' : '' %>" max="<%- obj.max %>" value="<%= obj.value %>"/>
 </div>
