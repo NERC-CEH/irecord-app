@@ -40,6 +40,10 @@ export default Marionette.View.extend({
         this.template = JST['common/radio'];
         break;
 
+      case 'comment':
+        this.template = JST['common/textarea'];
+        break;
+
       case 'identifiers':
         this.template = JST['common/input'];
         break;
@@ -161,6 +165,7 @@ export default Marionette.View.extend({
         templateData.value = occ.get(this.options.attr);
         break;
       case 'comment':
+        templateData.message = 'Please add any extra info about this record.';
         templateData.value = occ.get(this.options.attr);
         break;
 

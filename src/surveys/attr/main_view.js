@@ -17,6 +17,10 @@ export default Marionette.View.extend({
         this.template = JST['surveys/attr/recorders'];
         break;
 
+      case 'comment':
+        this.template = JST['common/textarea'];
+        break;
+
       case 'vice-county':
         this.template = JST['common/input'];
         break;
@@ -117,11 +121,14 @@ export default Marionette.View.extend({
         templateData.value = vc.name;
         break;
       case 'comment':
+        templateData.message = 'Please include any additional notes about the grid square\'s ' +
+          'environment or your survey methodology. Do not include details about indivual ' +
+          'occurences here.';
         templateData.value = this.model.get(this.options.attr);
         break;
 
       default:
-        Log('Samples:Attribute:MainView: no such attribute.', 'e');
+        Log('Surveys:Attribute:MainView: no such attribute.', 'e');
         return null;
     }
 
