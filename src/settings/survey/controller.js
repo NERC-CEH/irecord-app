@@ -20,7 +20,7 @@ const API = {
     // if exit on selection click
     mainView.on('save', () => {
       const newVal = mainView.getValues();
-      appModel.set('surveyAccuracy', newVal);
+      appModel.set('gridSquareUnit', newVal);
       appModel.save();
       window.history.back();
     });

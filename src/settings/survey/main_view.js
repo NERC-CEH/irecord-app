@@ -46,7 +46,7 @@ export default Marionette.View.extend({
         label: LocHelp.gridref_accuracy[key].label,
         value: key,
       })),
-      selected: this.model.get('surveyAccuracy'),
+      selected: this.model.get('gridSquareUnit'),
     };
 
     return templateData;

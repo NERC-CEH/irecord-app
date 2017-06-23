@@ -62,7 +62,7 @@ export default Marionette.View.extend({
       useGridMap: appModel.get('useGridMap'),
       useExperiments: appModel.get('useExperiments'),
       autosync: appModel.get('autosync'),
-      surveyAccuracy: appModel.get('surveyAccuracy'),
+      gridSquareUnit: appModel.get('gridSquareUnit'),
     };
   },
 });

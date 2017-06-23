@@ -22,7 +22,7 @@ describe('App Model', () => {
     expect(appModel.get('useGridRef')).to.be.equal(true);
     expect(appModel.get('useGridMap')).to.be.equal(true);
     expect(appModel.get('useTraining')).to.be.equal(false);
-    expect(appModel.get('surveyAccuracy')).to.be.equal('monad');
+    expect(appModel.get('gridSquareUnit')).to.be.equal('monad');
   });
 
   describe('Locking attributes extension', () => {

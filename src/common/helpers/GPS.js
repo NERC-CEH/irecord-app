@@ -3,42 +3,47 @@ import Log from './log';
 
 /* ---------------------------------------------- */
 // uncomment to enable GPS mock
-// import GPS from 'mock-geolocation';
-// import BIGU from 'bigu';
-//
-// GPS.use();
-// window.GPS = GPS;
-//
-//
-// GPS.update = (options) => {
-//   let location = options;
-//   if (options.gridRef) {
-//     // Grid References
-//     const parsedRef = BIGU.GridRefParser.factory(options.gridRef);
-//
-//     // center
-//     parsedRef.osRef.x += parsedRef.length / 2;
-//     parsedRef.osRef.y += parsedRef.length / 2;
-//
-//     // allow manual corrections for grid reference square center
-//     if (options.xCorrect) {
-//       parsedRef.osRef.x += options.xCorrect;
-//     }
-//     if (options.yCorrect) {
-//       parsedRef.osRef.y += options.yCorrect;
-//     }
-//
-//     const latLng = parsedRef.osRef.to_latLng();
-//     location = {
-//       latitude: latLng.lat,
-//       longitude: latLng.lng,
-//       accuracy: options.accuracy || parsedRef.length / 2,
-//     };
-//   }
-//
-//   console.log(location);
-//   return GPS.change(location);
-// };
+import GPS from 'mock-geolocation';
+import BIGU from 'bigu';
+
+GPS.use();
+window.GPS = GPS;
+
+/**
+ * GPS.update({ gridRef: 'TQ1212', xCorrect: -19, yCorrect: 12 })
+ *
+ * @param options
+ * @returns {*}
+ */
+GPS.update = (options) => {
+  let location = options;
+  if (options.gridRef) {
+    // Grid References
+    const parsedRef = BIGU.GridRefParser.factory(options.gridRef);
+
+    // center
+    parsedRef.osRef.x += parsedRef.length / 2;
+    parsedRef.osRef.y += parsedRef.length / 2;
+
+    // allow manual corrections for grid reference square center
+    if (options.xCorrect) {
+      parsedRef.osRef.x += options.xCorrect;
+    }
+    if (options.yCorrect) {
+      parsedRef.osRef.y += options.yCorrect;
+    }
+
+    const latLng = parsedRef.osRef.to_latLng();
+    location = {
+      latitude: latLng.lat,
+      longitude: latLng.lng,
+      accuracy: options.accuracy || parsedRef.length / 2,
+    };
+  }
+
+  console.log(location);
+  return GPS.change(location);
+};
 
 /* ---------------------------------------------- */
 

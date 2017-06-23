@@ -20,8 +20,8 @@ const AppModel = Backbone.Model.extend({
     useGridMap: true,
 
     useExperiments: process.env.EXPERIMENTS,
-    useAtlas: false,
-    surveyAccuracy: 'monad',
+    useGridNotifications: false,
+    gridSquareUnit: 'monad',
 
     taxonGroupFilters: [],
 

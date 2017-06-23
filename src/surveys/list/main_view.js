@@ -3,6 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Indicia from 'indicia';
+import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import radio from 'radio';
 import JST from 'JST';
@@ -11,6 +12,7 @@ import Device from 'helpers/device';
 import Gallery from '../../common/gallery';
 import _MainView, { SampleView as _SampleView } from '../../samples/list/main_view';
 import SlidingView from '../../common/views/sliding_view';
+import gridAlertService from './gridAlertService';
 import './styles.scss';
 
 const SampleView = Marionette.View.extend({
@@ -109,40 +111,83 @@ const SmartCollectionView = SlidingView.extend({
 const MainView = _MainView.extend({
   template: JST['surveys/list/main'],
 
-  events: {
-    'toggle #use-atlas-btn': 'onSettingToggled',
-    'click #use-atlas-btn': 'onSettingToggled',
+  regions: {
+    body: {
+      el: '#list',
+      replaceElement: true,
+    },
+    toggle: {
+      el: '#toggle',
+      replaceElement: true,
+    },
   },
 
   onRender() {
-    const mainRegion = this.getRegion('body');
-
-    mainRegion.show(new SmartCollectionView({
+    this.showChildView('body', new SmartCollectionView({
       referenceCollection: this.collection,
       appModel: this.options.appModel,
       scroll: this.options.scroll,
     }));
+
+    this.addToggle();
   },
 
+  addToggle() {
+    const appModel = this.options.appModel;
 
-  onSettingToggled(e) {
-    const setting = $(e.currentTarget).data('setting');
-    let active = $(e.currentTarget).hasClass('active');
+    const ToggleView = Marionette.View.extend({
+      events: {
+        'toggle #use-atlas-btn': 'onSettingToggled',
+        // 'click #use-atlas-btn': 'onSettingClicked',
+      },
 
-    if (e.type !== 'toggle' && !Device.isMobile()) {
-      // Device.isMobile() android generates both swipe and click
+      template: _.template(`
+         <div id="atlas-toggle">
+          <span id="alert-label"><%- obj.gridSquareUnit %></span>
+            <div id="use-atlas-btn" class="toggle on-off <%- obj.locating ? 'active' : '' %>">
+              <div class="toggle-handle"></div>
+            </div>
+          </div>
+       `),
 
-      active = !active; // invert because it takes time to get the class
-      $(e.currentTarget).toggleClass('active', active);
-    }
+      serializeData() {
+        const locating = gridAlertService.locating;
+        const gridSquareUnit = locating ? appModel.get('gridSquareUnit') : 'Grid Alert';
+        return {
+          locating,
+          gridSquareUnit,
+        };
+      },
 
+      // onSettingClicked(e) {      },
+
+      onSettingToggled(e) {
+        let active = $(e.currentTarget).hasClass('active');
+
+        if (e.type !== 'toggle' && !Device.isMobile()) {
+          // Device.isMobile() android generates both swipe and click
+
+          active = !active; // invert because it takes time to get the class
+          $(e.currentTarget).toggleClass('active', active);
+        }
+
+        this.trigger('toggled', active);
+      },
+    });
+
+    const toggleView = new ToggleView();
+    toggleView.on('toggled', (setting, active) => this.onToggled(setting, active));
+    this.showChildView('toggle', toggleView);
+  },
+
+  onToggled(setting, active) {
     this.trigger('atlas:toggled', setting, active);
+    this.addToggle();
   },
 
   serializeData() {
     return {
       useTraining: this.options.appModel.get('useTraining'),
-      useAtlas: this.options.appModel.get('useAtlas'),
     };
   },
 });

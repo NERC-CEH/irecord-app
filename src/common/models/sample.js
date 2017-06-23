@@ -328,7 +328,7 @@ const helpers = {
         metadata: {
           survey: 'plant',
           complex_survey: true,
-          surveyAccuracy: appModel.get('surveyAccuracy'),
+          gridSquareUnit: appModel.get('gridSquareUnit'),
         },
       });
 

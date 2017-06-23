@@ -181,7 +181,7 @@ const API = {
   },
 
   showInvalidLocationMessage(sample) {
-    const squareSize = sample.metadata.surveyAccuracy;
+    const squareSize = sample.metadata.gridSquareUnit;
     const prettyName = LocHelp.gridref_accuracy[squareSize].label;
 
     radio.trigger('app:dialog', {
@@ -200,7 +200,7 @@ const API = {
    */
   setLocation(sample, loc, reset) {
     // 1st validation of location accuracy
-    const valid = LocHelp.checkGridType(loc, sample.metadata.surveyAccuracy);
+    const valid = LocHelp.checkGridType(loc, sample.metadata.gridSquareUnit);
     if (!valid) {
       API.showInvalidLocationMessage(sample);
       return Promise.resolve();
@@ -264,7 +264,7 @@ const API = {
    */
   isSurveyLocationSet(surveySample) {
     const location = surveySample.get('location');
-    const accurateEnough = LocHelp.checkGridType(location, surveySample.metadata.surveyAccuracy);
+    const accurateEnough = LocHelp.checkGridType(location, surveySample.metadata.gridSquareUnit);
     return accurateEnough && location.name;
   },
 

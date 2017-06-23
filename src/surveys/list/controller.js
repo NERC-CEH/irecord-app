@@ -12,6 +12,7 @@ import savedSamples from 'saved_samples';
 import MainView from './main_view';
 import LoaderView from '../../common/views/loader_view';
 import HeaderView from './header_view';
+import gridAlertService from './gridAlertService';
 
 const API = {
   show(options = {}) {
@@ -53,12 +54,7 @@ const API = {
       appModel,
     });
 
-    mainView.on('atlas:toggled', (setting, on) => {
-      Log('Samples:List:Controler: atlas toggled.');
-
-      appModel.set(setting, on);
-      appModel.save();
-    });
+    mainView.on('atlas:toggled', API.toggleGridAlertService);
 
     mainView.on('childview:create', API.addSurvey);
     mainView.on('childview:sample:delete', (childView) => {
@@ -66,6 +62,27 @@ const API = {
     });
 
     radio.trigger('app:main', mainView);
+  },
+
+  toggleGridAlertService(on) {
+    if (!on) {
+      gridAlertService.stop();
+      return;
+    }
+
+    gridAlertService.start((location) => {
+      console.log(location.gridref);
+      API.showGridNotification(location);
+    });
+  },
+
+  showGridNotification(location) {
+    const body = `<center><h1>${location.gridref}</h1></center>`;
+
+    radio.trigger('app:dialog', {
+      title: 'Grid Square',
+      body,
+    });
   },
 
   sampleDelete(sample) {
