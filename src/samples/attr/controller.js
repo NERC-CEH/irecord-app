@@ -131,7 +131,7 @@ const API = {
           newVal = values.number;
           occ.set('number', newVal);
           occ.unset('number-ranges');
-        } else if (values['number-ranges']) {
+        } else {
           // number ranges
           attr = 'number-ranges'; // eslint-disable-line
           newVal = values[attr];

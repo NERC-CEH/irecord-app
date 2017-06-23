@@ -1,3 +1,6 @@
+/**
+ * Radio input view.
+ */
 import Backbone from 'backbone';
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
@@ -31,12 +34,13 @@ export default Marionette.View.extend({
 
   getValues() {
     let values;
+    const that = this;
     const $inputs = this.$el.find('input');
     $inputs.each((int, elem) => {
       if ($(elem).prop('checked')) {
         const newVal = $(elem).val();
         // don't set default
-        if (newVal !== this.model.get('default')) {
+        if (newVal !== that.options.config.default) {
           values = newVal;
         }
       }
