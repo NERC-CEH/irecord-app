@@ -4,6 +4,7 @@ import JST from 'JST';
 import StringHelp from 'helpers/string';
 import DateHelp from 'helpers/date';
 import Device from 'helpers/device';
+import typeaheadSearchFn from 'common/typeahead_search';
 
 export default Marionette.View.extend({
   template: JST['common/input'],
@@ -62,5 +63,30 @@ export default Marionette.View.extend({
         window.Keyboard.hide();
       });
     }
+
+    if (this.options.typeahead) {
+      this.addtypeaheadSuggestions();
+    }
+  },
+
+  addtypeaheadSuggestions() {
+    const that = this;
+    const lookup = this.options.typeahead;
+    const $typeahead = this.$el.find('input');
+    $typeahead.typeahead(
+      {
+        hint: false,
+        highlight: true,
+        minLength: 2,
+      },
+      {
+        limit: 3,
+        name: 'names',
+        source: typeaheadSearchFn(lookup, 3),
+      });
+
+    $typeahead.bind('typeahead:select', () => {
+      that.trigger('save');
+    });
   },
 });

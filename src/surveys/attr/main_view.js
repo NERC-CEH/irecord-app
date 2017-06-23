@@ -1,181 +1,96 @@
 /** ****************************************************************************
  * Surveys List main view.
  *****************************************************************************/
-import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import Device from 'helpers/device';
 import Log from 'helpers/log';
-import DateHelp from 'helpers/date';
-import StringHelp from 'helpers/string';
-import JST from 'JST';
-import typeaheadSearchFn from 'common/typeahead_search';
+import InputView from 'common/views/inputView';
+import TextareaView from 'common/views/textareaInputView';
+import CONFIG from 'config';
+import viceCounties from 'vice_counties.data';
+import RecordersAttrView from './recordersAttrView';
 
 export default Marionette.View.extend({
-  initialize(options) {
-    switch (options.attr) {
-      case 'recorders':
-        this.template = JST['surveys/attr/recorders'];
-        break;
-
-      case 'comment':
-        this.template = JST['common/textarea'];
-        break;
-
-      case 'vice-county':
-        this.template = JST['common/input'];
-        break;
-
-      default:
-        this.template = JST[`samples/attr/${options.attr}`];
-    }
+  template: _.template('<div id="attribute"></div>'),
+  regions: {
+    attribute: {
+      el: '#attribute',
+      replaceElement: true,
+    },
   },
 
-  events: {
-    'click button.add-new': 'addNew',
+  onRender() {
+    const attrView = this._getAttrView();
+
+    attrView.on('save', () => this.trigger('save'));
+
+    const mainRegion = this.getRegion('attribute');
+    mainRegion.show(attrView);
+    this.attrView = attrView;
   },
 
-  addtypeaheadSuggestions() {
-    const that = this;
-    const viceCounties = this.options.viceCounties;
-    const codes = [];
-    const names = viceCounties.map((a) => {
-      codes.push(a.code);
-      return a.name;
-    });
-    const $typeahead = this.$el.find('.typeahead');
-    $typeahead.typeahead(
-      {
-        hint: false,
-        highlight: true,
-        minLength: 2,
-      },
-      {
-        limit: 3,
-        name: 'names',
-        source: typeaheadSearchFn(names.concat(codes), 3),
-      });
-
-    $typeahead.bind('typeahead:select', () => {
-      that.trigger('save');
-    });
-  },
-
-  addNew() {
-    $('<input type="text"/>').insertAfter(this.$el.find('button'));
-  },
-
-  getValues() {
-    const values = {};
-    let value;
-    const attr = this.options.attr;
-    switch (attr) {
-      case 'date': {
-        value = this.$el.find('input').val();
-        const date = new Date(value);
-        if (DateHelp.validate(date)) {
-          values[attr] = new Date(date);
-        }
-        break;
-      }
-      case 'recorders':
-        values[attr] = [];
-        const $inputs = this.$el.find('input');
-        $inputs.each((index, input) => {
-          const val = input.value;
-          if (val) {
-            values[attr].unshift(StringHelp.escape(val));
-          }
+  /**
+   * Selects and initializes the attribute view.
+   * @returns {*}
+   * @private
+   */
+  _getAttrView() {
+    const sample = this.model;
+    const surveyConfig = CONFIG.indicia.surveys.plant;
+    let attrView;
+    switch (this.options.attr) {
+      case 'date':
+        attrView = new InputView({
+          default: sample.get('date'),
+          type: 'date',
+          max: new Date(),
         });
         break;
+      case 'recorders':
+        attrView = new RecordersAttrView({
+          config: surveyConfig.sample.recorders,
+          default: sample.get('recorders') || [],
+        });
+        break;
+
       case 'vice-county':
-        value = this.$el.find('input').val();
-        values[attr] = value;
+        const codes = [];
+        const names = viceCounties.map((a) => {
+          codes.push(a.code);
+          return a.name;
+        });
+        const typeahead = names.concat(codes);
+
+        const value = sample.get('vice-county') || {};
+
+        attrView = new InputView({
+          config: surveyConfig.sample['vice-county'],
+          typeahead,
+          default: value.name,
+        });
         break;
+
       case 'comment':
-        value = this.$el.find('textarea').val();
-        values[attr] = StringHelp.escape(value);
+        attrView = new TextareaView({
+          config: surveyConfig.sample.comment,
+          default: sample.get('comment'),
+        });
         break;
+
       default:
+        Log('Surveys:Attr:MainView: no such attribute to show!', 'e');
     }
+
+    return attrView;
+  },
+
+  /**
+   * Returns the attribute value extracted from the attribute view.
+   * @returns {{}}
+   */
+  getValues() {
+    const values = {};
+    values[this.options.attr] = this.attrView.getValues();
 
     return values;
-  },
-
-  serializeData() {
-    const templateData = {};
-
-    switch (this.options.attr) {
-      case 'date':
-        templateData.date = DateHelp.toDateInputValue(this.model.get('date'));
-        templateData.maxDate = DateHelp.toDateInputValue(new Date());
-        break;
-      case 'recorders':
-        templateData.message = 'Please enter the names of all recorders.';
-        templateData.value = this.model.get(this.options.attr) || [];
-        break;
-      case 'vice-county':
-        templateData.message = 'Please type in your vice-county. ' +
-          '<br><b>Note:</b> you can use codes or search any part of the name.';
-        templateData.typeahead = true;
-        const vc = this.model.get(this.options.attr) || {};
-        templateData.value = vc.name;
-        break;
-      case 'comment':
-        templateData.message = 'Please include any additional notes about the grid square\'s ' +
-          'environment or your survey methodology. Do not include details about indivual ' +
-          'occurences here.';
-        templateData.value = this.model.get(this.options.attr);
-        break;
-
-      default:
-        Log('Surveys:Attribute:MainView: no such attribute.', 'e');
-        return null;
-    }
-
-    return templateData;
-  },
-
-  onAttach() {
-    let $input;
-    switch (this.options.attr) {
-      case 'date':
-        $input = this.$el.find('input').focus();
-        if (Device.isAndroid()) {
-          const options = {
-            date: new Date(this.model.get('date')),
-            mode: 'date',
-            androidTheme: 5,
-            allowOldDates: true,
-            allowFutureDates: false,
-          };
-
-          window.datePicker.show(options, (date) => {
-            $input.val(DateHelp.toDateInputValue(new Date(date)));
-          });
-        }
-        break;
-      case 'comment':
-        $input = this.$el.find('textarea').focus();
-        if (window.cordova && Device.isAndroid()) {
-          window.Keyboard.show();
-          $input.focusout(() => {
-            window.Keyboard.hide();
-          });
-        }
-        break;
-      case 'vice-county':
-      case 'recorders':
-        $input = this.$el.find('input').focus();
-        if (window.cordova && Device.isAndroid()) {
-          window.Keyboard.show();
-          $input.focusout(() => {
-            window.Keyboard.hide();
-          });
-        }
-        break;
-      default:
-    }
-
-    this.addtypeaheadSuggestions();
   },
 });

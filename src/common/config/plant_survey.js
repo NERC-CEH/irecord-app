@@ -20,6 +20,7 @@ const config = {
     },
     recorders: {
       id: 1018,
+      label: 'If anyone helped with the identification please enter their name here.',
       values(val, submission) {
         const attributes = {};
         const recorderCount = config.sample.recorder_count;
@@ -109,6 +110,7 @@ const config = {
     },
     status: {
       id: 507,
+      label: 'Please pick the status.',
       default: 'Not Recorded',
       values: {
         'Not Recorded': 0,
@@ -124,6 +126,7 @@ const config = {
     },
     stage: {
       id: 466,
+      label: 'Please pick the life stage.',
       default: 'Not Recorded',
       values: {
         'Not Recorded': 0,

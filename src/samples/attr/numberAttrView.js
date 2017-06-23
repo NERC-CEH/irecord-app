@@ -36,7 +36,7 @@ export default Marionette.View.extend({
       default: this.options.default,
     });
     selectionView.on('save', e => {
-      sliderView.resetValue();
+      sliderView.resetValue(); // so that getValues wouldn't pick it up
       this.trigger('save', e);
     });
     this.selectionView = selectionView;
