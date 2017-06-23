@@ -102,6 +102,10 @@ const config = {
         '10hrs or longer': 7488,
       },
     },
+
+    comment: {
+      label: 'Please include any additional notes about the grid square\'s environment or your survey methodology. Do not include details about indivual occurences here.',
+    },
   },
 
   occurrence: {
@@ -138,6 +142,10 @@ const config = {
     },
     identifiers: {
       id: 125,
+    },
+
+    comment: {
+      label: 'Please add any extra info about this record.',
     },
   },
 };

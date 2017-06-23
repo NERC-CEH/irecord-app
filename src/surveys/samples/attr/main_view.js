@@ -40,7 +40,7 @@ export default Marionette.View.extend({
     switch (this.options.attr) {
       case 'abundance':
         attrView = new InputView({
-          message: 'Abundance (DAFOR, LA, LF or count).',
+          label: 'Abundance (DAFOR, LA, LF or count).',
           default: occ.get(this.options.attr),
         });
         break;
@@ -67,7 +67,7 @@ export default Marionette.View.extend({
 
       case 'comment':
         attrView = new TextareaView({
-          config: surveyConfig.sample.comment,
+          config: surveyConfig.occurrence.comment,
           default: occ.get('comment'),
         });
         break;
