@@ -87,7 +87,6 @@ const config = {
       id: 523,
       default: 'Present',
       values: {
-        Present: 0,
         1: 665,
         '2-5': 666,
         '6-20': 667,
@@ -101,7 +100,6 @@ const config = {
       label: 'Please pick the life stage.',
       default: 'Not Recorded',
       values: {
-        'Not Recorded': 0,
         Adult: 1950,
         'Pre-adult': 1951,
         Other: 1952,

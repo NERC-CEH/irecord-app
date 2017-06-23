@@ -43,7 +43,7 @@ export default Marionette.View.extend({
       value: this.options.default || config.default,
     });
 
-    this.model.set('position', logsl.position(this.model.get('value')).toFixed(0));
+    this.model.set('position', logsl.position(this.model.get('value') || 1).toFixed(0));
   },
 
   getValues() {
@@ -61,6 +61,7 @@ export default Marionette.View.extend({
 
     const value = logsl.value($input.val()).toFixed(0);
     $rangeOutput.val(value);
+    this.trigger('change');
   },
 
   updateRangeSliderValue(e) {
@@ -69,6 +70,7 @@ export default Marionette.View.extend({
 
     const value = logsl.position($input.val()).toFixed(0);
     $rangeOutput.val(value);
+    this.trigger('change');
   },
 
   resetValue() {

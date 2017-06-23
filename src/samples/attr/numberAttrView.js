@@ -2,9 +2,15 @@ import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import RadioInputView from 'common/views/radioInputView';
 import RangeInputView from 'common/views/rangeInputView';
+import CONFIG from 'config';
 
 export default Marionette.View.extend({
   template: _.template(`
+    <div class="info-message">
+      <p>
+        ${CONFIG.indicia.surveys.general.occurrence.number.label}
+      </p>
+    </div>
     <div id="slider"></div>
     <div id="selection"></div>
   `),
@@ -21,21 +27,26 @@ export default Marionette.View.extend({
   },
 
   onRender() {
+    // slider view
     const sliderView = new RangeInputView({
-      config: this.options.config,
-      default: this.options.default,
+      default: this.options.defaultNumber,
     });
-    sliderView.on('change', this.resetRangeInputValue);
+    // reset ranges on slider change
+    sliderView.on('change', () => this.resetRangeInputValue());
     this.sliderView = sliderView;
     const sliderRegion = this.getRegion('slider');
     sliderRegion.show(sliderView);
 
 
+    // ranges selection
+    // don't show any selected default range if the slider value exists
+    const defaultRange = this.options.defaultNumber ? -1 : this.options.default;
     const selectionView = new RadioInputView({
       config: this.options.config,
-      default: this.options.default,
+      default: defaultRange,
     });
-    selectionView.on('save', e => {
+    // on save
+    selectionView.on('save', (e) => {
       sliderView.resetValue(); // so that getValues wouldn't pick it up
       this.trigger('save', e);
     });
@@ -53,6 +64,6 @@ export default Marionette.View.extend({
 
   resetRangeInputValue() {
     // unset ranges selection
-    this.selectRegion.resetValue();
+    this.selectionView.resetValue();
   },
 });

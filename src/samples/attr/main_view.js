@@ -53,7 +53,8 @@ export default Marionette.View.extend({
       case 'number':
         attrView = new NumberAttrView({
           config: surveyConfig.occurrence['number-ranges'],
-          default: occ.get('number'),
+          defaultNumber: occ.get('number'),
+          default: occ.get('number-ranges'),
         });
         break;
 
@@ -103,7 +104,7 @@ export default Marionette.View.extend({
     if (this.options.attr === 'number') {
       const [value, range] = this.attrView.getValues();
       values[this.options.attr] = value;
-      values['number-range'] = range;
+      values['number-ranges'] = range;
       return values;
     }
 

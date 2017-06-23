@@ -113,7 +113,6 @@ const config = {
       label: 'Please pick the status.',
       default: 'Not Recorded',
       values: {
-        'Not Recorded': 0,
         Native: 5709,
         Unknown: 5710,
         Introduced: 6775,
@@ -129,7 +128,6 @@ const config = {
       label: 'Please pick the life stage.',
       default: 'Not Recorded',
       values: {
-        'Not Recorded': 0,
         Flowering: 5331,
         Fruiting: 5330,
         Juvenile: 5328,

@@ -14,10 +14,17 @@ export default Marionette.View.extend({
   initialize() {
     const config = this.options.config || {};
 
+    let selection = this.options.selection;
+    if (!selection) {
+      selection = Object.keys(config.values).map(key => ({ value: key }));
+      // add default
+      config.default && selection.unshift({ value: config.default });
+    }
+
     this.model = new Backbone.Model({
       value: this.options.default || config.default,
       message: this.options.label || config.label,
-      selection: this.options.selection || Object.keys(config.values).map(key => ({ value: key })),
+      selection,
       selected: this.options.default || config.default,
     });
   },
