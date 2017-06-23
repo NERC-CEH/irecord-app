@@ -40,8 +40,15 @@ const extension = {
         const oldLocation = that.get('location');
         location = $.extend(oldLocation, location);
 
-        that.set('location', location);
-        that.save();
+        if (that.setGPSLocation) {
+          const valid = that.setGPSLocation(location);
+          if (!valid) {
+            return;
+          }
+        } else {
+          that.set('location', location);
+          that.save();
+        }
 
         that.trigger('change:location');
         that.trigger('geolocation', location);

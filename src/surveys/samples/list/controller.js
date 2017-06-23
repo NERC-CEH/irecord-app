@@ -205,9 +205,13 @@ const API = {
     // todo: listen for surveySample attribute changes
     if (SurveysEditController.isSurveyLocationSet(surveySample)) {
       const surveyLocation = _.cloneDeep(surveySample.get('location'));
+      delete surveyLocation.name;
+
       sample.set('location', surveyLocation);
       sample.set('recorder_count', surveySample.get('recorder_count'));
       sample.set('recorder_names', surveySample.get('recorder_names'));
+
+      sample.startGPS();
     }
 
     surveySample.addSample(sample);

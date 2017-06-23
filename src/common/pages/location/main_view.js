@@ -71,6 +71,7 @@ const LocationView = Marionette.View.extend({
     const nameLocked = appModel.isAttrLocked('locationName', location.name);
 
     return {
+      hideName: this.options.hideName,
       locationName: location.name,
       value,
       locationSource: location.source,

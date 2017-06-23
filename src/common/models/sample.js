@@ -3,6 +3,7 @@
  *****************************************************************************/
 import _ from 'lodash';
 import Indicia from 'indicia';
+import BIGU from 'bigu';
 import CONFIG from 'config';
 import userModel from 'user_model';
 import appModel from 'app_model';
@@ -338,6 +339,46 @@ const helpers = {
         occurrence.addMedia(image);
         sample.addOccurrence(occurrence);
       }
+
+      // modify GPS service
+      sample.setGPSLocation = (function (location) {
+        // child samples
+        if (this.parent) {
+          this.set('location', location);
+          return this.save();
+        }
+
+        const gridSquareUnit = this.metadata.gridSquareUnit;
+        const gridCoords = BIGU.latlng_to_grid_coords(
+          location.latitude,
+          location.longitude
+        );
+
+        if (!gridCoords) {
+          return null;
+        }
+
+        location.source = 'gridref';
+        if (gridSquareUnit === 'monad') {
+          // monad
+          location.accuracy = 500;
+
+          gridCoords.x += -gridCoords.x % 1000 + 500;
+          gridCoords.y += -gridCoords.y % 1000 + 500;
+          location.gridref = gridCoords.to_gridref(1000);
+        } else {
+          // tetrad
+          location.accuracy = 1000;
+
+          gridCoords.x += -gridCoords.x % 2000 + 1000;
+          gridCoords.y += -gridCoords.y % 2000 + 1000;
+          location.gridref = gridCoords.to_gridref(2000);
+          location.accuracy = 1000;
+        }
+
+        this.set('location', location);
+        return this.save();
+      }).bind(sample);
 
       return Promise.resolve(sample);
     }

@@ -60,6 +60,7 @@ const API = {
     mainView.on('location:update', () => {
       radio.trigger('app:location:show', surveySampleID, sample.cid, {
         setLocation: API.setLocation,
+        hideName: true,
       });
     });
     radio.trigger('app:main', mainView);

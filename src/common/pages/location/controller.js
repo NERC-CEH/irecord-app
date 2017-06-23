@@ -60,6 +60,7 @@ const API = {
     const mainView = new MainView({
       model: new Backbone.Model({ sample, appModel }),
       vent: App,
+      hideName: options.hideName,
     });
     API.attachMainViewEvents(mainView, sample);
 

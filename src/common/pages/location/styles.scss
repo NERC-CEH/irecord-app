@@ -44,10 +44,17 @@
       top: 95px;
     }
 
+    &.hiddenName {
+      .leaflet-control-container .leaflet-top {
+        top: 50px;
+      }
+    }
+
     .leaflet-control-layers label {
       margin: 10px 5px;
     }
   }
+
 }
 
 .leaflet-container {
