@@ -1,4 +1,4 @@
-<% if (obj.group) { %>
+<% if (obj.group_title) { %>
 <div class="main-header activity"></div>
 <% } %>
 <% if (obj.training) { %>

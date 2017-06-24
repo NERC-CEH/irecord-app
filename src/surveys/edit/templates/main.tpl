@@ -1,3 +1,5 @@
+<div class="main-header surveys"></div>
+
 <% if (obj.training) { %>
 <div class="main-header training"></div>
 <% } %>
@@ -65,4 +67,4 @@
       Comment
     </a>
   </li>
- </ul>
+</ul>

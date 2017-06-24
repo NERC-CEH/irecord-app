@@ -75,7 +75,7 @@ const API = {
     // MAIN
     const mainView = new MainView({
       collection: surveySample.samples,
-      surveySampleID: surveySample.cid,
+      surveySample,
       scroll: options.scroll,
     });
 

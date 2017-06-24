@@ -107,11 +107,16 @@ const MainView = _MainView.extend({
       referenceCollection: this.collection,
       appModel: this.options.appModel,
       scroll: this.options.scroll,
-      surveySampleID: this.options.surveySampleID,
+      surveySampleID: this.options.surveySample.cid,
     }));
   },
 
-  serializeData() {}, // overwrite the _MainView serializeData
+  serializeData() {
+    const surveySample = this.options.surveySample;
+    return {
+      training: surveySample.metadata.training,
+    };
+  },
 });
 
 export { MainView as default, SampleView };
