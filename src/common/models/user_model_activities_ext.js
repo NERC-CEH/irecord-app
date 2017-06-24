@@ -118,14 +118,14 @@ export default {
       user: this.getUser.bind(this),
       password: this.getPassword.bind(this),
       params: {
-        path: CONFIG.indicia.input_form,
+        path: CONFIG.indicia.surveys.general.input_form,
       },
     });
 
     const promise = report.run()
       .then((receivedData) => {
         const data = receivedData.data;
-        if (!data) {
+        if (!data || !(data instanceof Array)) {
           const err = new Error('Error while retrieving activities response.');
           return Promise.reject(err);
         }

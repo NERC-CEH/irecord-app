@@ -67,7 +67,7 @@ export default {
 
     const promise = report.run().then((receivedData) => {
       const data = receivedData.data;
-      if (!data) {
+      if (!data || !(data instanceof Array)) {
         const err = new Error('Error while retrieving stats response.');
         return Promise.reject(err);
       }
