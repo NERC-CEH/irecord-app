@@ -42,6 +42,10 @@ export default Marionette.View.extend({
         attrView = new InputView({
           label: 'Abundance (DAFOR, LA, LF or count).',
           default: occ.get(this.options.attr),
+          validate(value) {
+            const re = /^(\d+|[DAFOR]|LA|LF)$/;
+            return re.test(value);
+          },
         });
         break;
       case 'identifiers':

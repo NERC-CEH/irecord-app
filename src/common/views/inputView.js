@@ -33,6 +33,11 @@ export default Marionette.View.extend({
   getValues() {
     const value = this.$el.find('input').val();
 
+    const valid = this.validate(value);
+    if (!valid) {
+      return;
+    }
+
     if (this.type === 'date') {
       const date = new Date(value);
       if (DateHelp.validate(date)) {
@@ -41,6 +46,21 @@ export default Marionette.View.extend({
     }
 
     return StringHelp.escape(value);
+  },
+
+  validate(value) {
+    if (this.options.validate) {
+      const valid = this.options.validate(value);
+      if (!valid) {
+        return false;
+      }
+    }
+
+    if (this.type === 'date') {
+      return DateHelp.validate(new Date(value));
+    }
+
+    return true;
   },
 
   onAttach() {
