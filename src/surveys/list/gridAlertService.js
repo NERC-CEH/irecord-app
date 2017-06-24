@@ -2,7 +2,6 @@ import $ from 'jquery';
 import GPS from 'helpers/GPS';
 import Log from 'helpers/log';
 import BIGU from 'bigu';
-import LocHelp from 'helpers/location';
 import appModel from 'app_model';
 
 const service = {
@@ -19,16 +18,19 @@ const service = {
       accuracyLimit: 100, // meters
 
       callback(error, loc) {
-          const gridref = service._getSquare(loc);
+        if (error) {
+          Log(error, 'e');
+          service.stop();
+          return;
+        }
+
+        const gridref = service._getSquare(loc);
         const location = $.extend({ gridref }, loc);
 
         // check if square has changes
         if (that.gridref !== gridref) {
           that.gridref = gridref;
-          console.log('____Changed')
           callback(location);
-        } else {
-          console.log('____No changes')
         }
       },
     };
