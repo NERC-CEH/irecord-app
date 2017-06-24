@@ -120,6 +120,11 @@ export default Marionette.View.extend({
   },
 
   onAttach() {
+    // don't show keyboard on list reset
+    if (this.options.reset) {
+      return;
+    }
+
     // preselect the input for typing
     const $input = this.$el.find('#taxon').focus();
     if (window.cordova && Device.isAndroid()) {

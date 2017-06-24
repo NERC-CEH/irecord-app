@@ -23,7 +23,7 @@ const API = {
 
     // reset the view listener
     radio.on('taxon:search:reset', () => {
-      API._showMainView(options);
+      API._showMainView(options, true);
     });
 
     // HEADER
@@ -61,11 +61,12 @@ const API = {
 
   },
 
-  _showMainView(options) {
+  _showMainView(options, reset) {
     const mainView = new MainView({
       model: userModel,
       showEditButton: options.showEditButton,
       hideFavourites: options.informalGroups,
+      reset,
     });
     mainView.on('taxon:selected', options.onSuccess, this);
     mainView.on('taxon:searched', (searchPhrase) => {
