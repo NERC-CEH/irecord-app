@@ -10,15 +10,7 @@ const config = {
     location: {
       values(location, submission) {
         // convert accuracy for map and gridref sources
-        let accuracy = location.accuracy;
-        if (location.source !== 'gps') {
-          if (location.source === 'map') {
-            accuracy = LocHelp.mapZoom2meters(location.accuracy);
-          } else {
-            accuracy = null;
-          }
-        }
-
+        const accuracy = location.accuracy;
         const attributes = {};
         const keys = config.sample;
         attributes.location_name = location.name; // this is a native indicia attr
@@ -54,9 +46,9 @@ const config = {
       values(date) {
         return DateHelp.print(date);
       },
-      validate(date) {
-
-      },
+      // validate(date) {
+      //
+      // },
     },
 
     group: {
