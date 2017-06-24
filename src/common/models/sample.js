@@ -157,11 +157,11 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
     if (this.metadata.survey === 'plant') {
       return _.extend(
         {},
-        CONFIG.indicia.sample, // general keys
+        CONFIG.indicia.surveys.general.sample, // general keys
         CONFIG.indicia.surveys.plant.sample // plant specific keys
       );
     }
-    return CONFIG.indicia.sample;
+    return CONFIG.indicia.surveys.general.sample;
   },
 
   /**

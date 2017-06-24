@@ -10,11 +10,11 @@ export default Indicia.Occurrence.extend({
     if (this.parent.metadata.survey === 'plant') {
       return _.extend(
         {},
-        CONFIG.indicia.occurrence, // general keys
+        CONFIG.indicia.surveys.general.occurrence, // general keys
         CONFIG.indicia.surveys.plant.occurrence // plant specific keys
       );
     }
-    return CONFIG.indicia.occurrence;
+    return CONFIG.indicia.surveys.general.occurrence;
   },
 
 });
