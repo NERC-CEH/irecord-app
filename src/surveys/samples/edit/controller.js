@@ -61,6 +61,7 @@ const API = {
       radio.trigger('app:location:show', surveySampleID, sample.cid, {
         setLocation: API.setLocation,
         hideName: true,
+        hideLocks: true,
       });
     });
     radio.trigger('app:main', mainView);

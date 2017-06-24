@@ -68,7 +68,7 @@ const API = {
           window.history.back();
         });
       },
-      rightPanel: lockView,
+      // rightPanel: lockView,
       model: new Backbone.Model({ title: attr }),
     });
 

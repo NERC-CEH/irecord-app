@@ -72,6 +72,7 @@ const LocationView = Marionette.View.extend({
 
     return {
       hideName: this.options.hideName,
+      hideLocks: this.options.hideLocks,
       locationName: location.name,
       value,
       locationSource: location.source,

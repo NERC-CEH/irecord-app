@@ -61,6 +61,7 @@ const API = {
       model: new Backbone.Model({ sample, appModel }),
       vent: App,
       hideName: options.hideName,
+      hideLocks: options.hideLocks,
     });
     API.attachMainViewEvents(mainView, sample);
 
