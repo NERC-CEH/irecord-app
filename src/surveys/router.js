@@ -93,6 +93,12 @@ radio.on('surveys:edit', (sampleID, options) => {
   EditController.show(sampleID);
 });
 
+radio.on('surveys:show', (sampleID, options) => {
+  App.navigate(`surveys/${sampleID}`, options);
+  ShowController.show(sampleID);
+});
+
+
 radio.on('surveys:samples:edit', (surveySampleID, sampleID, options) => {
   App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit`, options);
   SamplesEditController.show(surveySampleID, sampleID);

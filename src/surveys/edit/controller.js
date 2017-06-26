@@ -40,7 +40,7 @@ const API = {
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
     if (sample.getSyncStatus() === Indicia.SYNCED) {
-      radio.trigger('samples:show', sampleID, { replace: true });
+      radio.trigger('surveys:show', sampleID, { replace: true });
       return;
     }
 
@@ -63,7 +63,7 @@ const API = {
     // on finish sync move to show
     function checkIfSynced() {
       if (sample.getSyncStatus() === Indicia.SYNCED) {
-        radio.trigger('samples:show', sampleID, { replace: true });
+        radio.trigger('surveys:show', sampleID, { replace: true });
       }
     }
     sample.on('request sync error', checkIfSynced);

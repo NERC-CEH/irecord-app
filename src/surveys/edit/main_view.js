@@ -21,7 +21,6 @@ export default Marionette.View.extend({
 
   serializeData() {
     const sample = this.model.get('sample');
-    // const appModel = this.model.get('appModel');
 
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
