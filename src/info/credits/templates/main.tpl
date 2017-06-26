@@ -12,6 +12,7 @@
       <li>John van Breda (Biodiverse IT)</li>
       <li>Tom Humphrey (BSBI)</li>
       <li>Martin Harvey (CEH)</li>
+      <li>Sally Rankin</li>
       <li>Colin Harrower (CEH)</li>
       <li>Tom August (CEH)</li>
       <li>Chris Raper (NHM)</li>
