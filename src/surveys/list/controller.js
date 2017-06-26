@@ -135,8 +135,8 @@ const API = {
    */
   addSurveySample() {
     return Sample.createNewSample('plant', null, null).then((sample) => {
-      sample.set('recorder_count', 1);
-      sample.set('recorder_names', 'me');
+    //  sample.set('recorder_count', 1);
+     // sample.set('recorder_names', 'me');
 
       return sample.save().then(() => {
         savedSamples.add(sample);

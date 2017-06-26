@@ -208,8 +208,8 @@ const API = {
       delete surveyLocation.name;
 
       sample.set('location', surveyLocation);
-      sample.set('recorder_count', surveySample.get('recorder_count'));
-      sample.set('recorder_names', surveySample.get('recorder_names'));
+      //sample.set('recorder_count', surveySample.get('recorder_count'));
+     // sample.set('recorder_names', surveySample.get('recorder_names'));
 
       sample.startGPS();
     }
