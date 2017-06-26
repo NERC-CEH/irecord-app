@@ -21,7 +21,8 @@ const API = {
       model: appModel,
     });
 
-    if (options.onSelect) {
+    if (options && options.onSelect) {
+      // check for options because for some reason a null is passed
       mainView.on('location:select', options.onSelect);
     }
     mainView.on('location:delete', API.deleteLocation);
