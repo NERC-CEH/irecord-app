@@ -62,6 +62,7 @@ const API = {
       vent: App,
       hideName: options.hideName,
       hideLocks: options.hideLocks,
+      hidePast: options.hidePast,
     });
     API.attachMainViewEvents(mainView, sample);
 
@@ -242,7 +243,7 @@ const API = {
     // check if we need custom location setting functionality
     if (locationSetFunc) {
       locationSetFunc(sample, location);
-      return
+      return;
     }
 
     sample.set('location', location);
@@ -312,10 +313,11 @@ const API = {
           sample.stopGPS();
         }
 
-        // check if we need custom location setting functionality
-        if (locationSetFunc) {
-          return locationSetFunc(sample, location);
-        }
+        // // check if we need custom location setting functionality
+        // if (locationSetFunc) {
+        //   locationSetFunc(sample, location).then(() => window.history.back());
+        //   return;
+        // }
 
         sample.set('location', location);
         window.history.back();

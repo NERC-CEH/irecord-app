@@ -55,6 +55,7 @@ const API = {
       radio.trigger('app:location:show', sample.cid, null, {
         setLocation: API.setLocation,
         hideLocks: true,
+        hidePast: true,
       });
     });
 

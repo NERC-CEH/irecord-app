@@ -156,6 +156,10 @@ const API = {
   },
 
   addPastLocations() {
+    if (this.options.hidePast) {
+      return;
+    }
+
     Log('Location:MainView:Map: adding past locations button.');
 
     const that = this;

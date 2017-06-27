@@ -62,6 +62,7 @@ const API = {
         setLocation: API.setLocation,
         hideName: true,
         hideLocks: true,
+        hidePast: true,
       });
     });
     radio.trigger('app:main', mainView);
