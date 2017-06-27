@@ -9,6 +9,7 @@ export default {
   escape(string) {
     const div = document.createElement('div');
     div.appendChild(document.createTextNode(string.toString()));
-    return div.innerHTML;
+    const escaped = div.innerHTML.trim();
+    return escaped;
   },
 };
