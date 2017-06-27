@@ -27,7 +27,8 @@ export default Marionette.View.extend({
 
     return {
       site_url: CONFIG.site_url,
-      cid: this.model.cid,
+      id: sample.id,
+      cid: sample.cid,
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       onDatabase: syncStatus === Indicia.SYNCED,
       location: locationPrint,
