@@ -1,5 +1,10 @@
 <% if (obj.taxon) { %>
-<a href="#samples/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>" class="mobile">
+  <a
+    <% if (!obj.isSynchronising) { %>
+      href="#samples/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>"
+    <% } %>
+    class="mobile">
+
   <% } else { %>
   <a id="add-species-btn" class="mobile">
     <% } %>

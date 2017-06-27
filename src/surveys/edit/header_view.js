@@ -18,7 +18,7 @@ export default Marionette.View.extend({
   },
 
   modelEvents: {
-    'request sync error': 'render',
+    'request:remote sync:remote error:remote': 'render',
   },
 
   navigateBack() {

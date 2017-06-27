@@ -18,7 +18,7 @@ export default Marionette.View.extend({
 
   initialize() {
     const sample = this.model.get('sample');
-    this.listenTo(sample, 'request sync error geolocation', this.render);
+    this.listenTo(sample, 'geolocation', this.render);
   },
 
   serializeData() {

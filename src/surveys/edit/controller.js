@@ -60,19 +60,6 @@ const API = {
 
     radio.trigger('app:main', mainView);
 
-    // on finish sync move to show
-    function checkIfSynced() {
-      if (sample.getSyncStatus() === Indicia.SYNCED) {
-        radio.trigger('surveys:show', sampleID, { replace: true });
-      }
-    }
-    sample.on('request sync error', checkIfSynced);
-    mainView.on('destroy', () => {
-      // unbind when page destroyed
-      sample.off('request sync error', checkIfSynced);
-    });
-
-
     // HEADER
     const headerView = new HeaderView({
       model: sample,
