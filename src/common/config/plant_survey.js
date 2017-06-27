@@ -66,14 +66,16 @@ const config = {
     },
     'vice-county': {
       id: 991,
-      values(val) {
-        for (const vcID in viceCounties) { // eslint-disable-line
-          if (val === viceCounties[vcID]) {
-            return vcID;
-          }
-        }
+      values(val, submission) {
+        const attributes = {};
 
-        return null;
+        const name = `smpAttr:${this.id}:name`;
+        const nameVal = val.name;
+        attributes[name] = nameVal;
+
+        $.extend(submission.fields, attributes);
+
+        return parseInt(val.id, 10);
       },
     },
     'time-surveying': {
