@@ -241,6 +241,7 @@ const API = {
       }
 
       const location = _.cloneDeep(sample.get('location'));
+      delete location.name;
       child.set('location', location);
     });
   },
