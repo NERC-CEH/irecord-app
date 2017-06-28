@@ -169,8 +169,7 @@ const API = {
     });
   },
 
-  showInvalidLocationMessage(sample) {
-    const squareSize = sample.metadata.gridSquareUnit;
+  showInvalidLocationMessage(squareSize) {
     const prettyName = LocHelp.gridref_accuracy[squareSize].label;
 
     radio.trigger('app:dialog', {
@@ -189,10 +188,15 @@ const API = {
    */
   setLocation(sample, loc, reset) {
     // 1st validation of location accuracy
-    const valid = LocHelp.checkGridType(loc, sample.metadata.gridSquareUnit);
-    if (!valid) {
-      API.showInvalidLocationMessage(sample);
-      return Promise.resolve();
+    let gridSquareUnit = sample.metadata.gridSquareUnit;
+    if (!LocHelp.checkGridType(loc, gridSquareUnit)) {
+      // check if the grid unit has been changed and it matches the new unit
+      // or this is the first time we are setting a location
+      gridSquareUnit = appModel.get('gridSquareUnit');
+      if (!LocHelp.checkGridType(loc, gridSquareUnit)) {
+        API.showInvalidLocationMessage(gridSquareUnit);
+        return Promise.resolve();
+      }
     }
 
     let location = loc;
@@ -211,6 +215,10 @@ const API = {
     // save to past locations
     const locationID = appModel.setLocation(location);
     location.id = locationID;
+
+    // set the gridSquareUnit so that future changes in the settings don't change that;
+    sample.metadata.gridSquareUnit = gridSquareUnit;
+
 
     sample.set('location', location);
     sample.trigger('change:location');

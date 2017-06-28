@@ -214,6 +214,10 @@ const helpers = {
    * @returns {boolean}
    */
   checkGridType(location, gridRefSize) {
+    if (!gridRefSize) {
+      return false;
+    }
+
     const gridref = location.gridref || '';
     let length = helpers.gridref_accuracy[gridRefSize].length;
 
