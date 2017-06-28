@@ -49,10 +49,15 @@ const API = {
   },
 
   showMainView(options) {
+    // get subcollection
+    const collection = savedSamples.subcollection({
+      filter: model => !model.metadata.complex_survey,
+    });
+    collection.comparator = savedSamples.comparator;
+    collection.sort();
+
     const mainView = new MainView({
-      collection: savedSamples.subcollection({
-        filter: model => !model.metadata.complex_survey,
-      }),
+      collection,
       scroll: options.scroll,
       appModel,
     });
