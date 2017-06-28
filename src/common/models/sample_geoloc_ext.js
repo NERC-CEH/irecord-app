@@ -41,13 +41,12 @@ const extension = {
         location = $.extend(oldLocation, location);
 
         if (that.setGPSLocation) {
-          const valid = that.setGPSLocation(location);
-          if (!valid) {
-            return;
+          if (that.setGPSLocation(location)) {
+            that.trigger('change:location');
+            that.trigger('geolocation', location);
+            that.trigger('geolocation:success', location);
           }
-        } else {
-          that.set('location', location);
-          that.save();
+          return;
         }
 
         that.trigger('change:location');

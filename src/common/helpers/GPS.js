@@ -2,7 +2,7 @@ import Log from './log';
 
 //
 // /* ---------------------------------------------- */
-// // uncomment to enable GPS mock
+// uncomment to enable GPS mock
 // import GPS from 'mock-geolocation';
 // import BIGU from 'bigu';
 //
@@ -44,7 +44,7 @@ import Log from './log';
 //   console.log(location);
 //   return GPS.change(location);
 // };
-//
+
 // /* ---------------------------------------------- */
 //
 

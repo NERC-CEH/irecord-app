@@ -180,7 +180,9 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
   initialize() {
     this.checkExpiredGroup(); // activities
     this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
+    this._setGPSlocationSetter();
   },
+
 
   validateRemote() {
     if (!surveyVerify[this.metadata.survey]) {
@@ -244,6 +246,52 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
 
     // save sample
     return this.save();
+  },
+
+  _setGPSlocationSetter() {
+    if (!this.metadata.survey === 'plant') {
+      return;
+    }
+
+    // modify GPS service
+    this.setGPSLocation = (location) => {
+      // child samples
+      if (this.parent) {
+        this.set('location', location);
+        return this.save();
+      }
+
+      const gridSquareUnit = this.metadata.gridSquareUnit;
+      const gridCoords = BIGU.latlng_to_grid_coords(
+        location.latitude,
+        location.longitude
+      );
+
+      if (!gridCoords) {
+        return null;
+      }
+
+      location.source = 'gridref';
+      if (gridSquareUnit === 'monad') {
+        // monad
+        location.accuracy = 500;
+
+        gridCoords.x += -gridCoords.x % 1000 + 500;
+        gridCoords.y += -gridCoords.y % 1000 + 500;
+        location.gridref = gridCoords.to_gridref(1000);
+      } else {
+        // tetrad
+        location.accuracy = 1000;
+
+        gridCoords.x += -gridCoords.x % 2000 + 1000;
+        gridCoords.y += -gridCoords.y % 2000 + 1000;
+        location.gridref = gridCoords.to_gridref(2000);
+        location.accuracy = 1000;
+      }
+
+      this.set('location', location);
+      return this.save();
+    };
   },
 
   checkExpiredGroup() {
@@ -339,46 +387,6 @@ const helpers = {
         occurrence.addMedia(image);
         sample.addOccurrence(occurrence);
       }
-
-      // modify GPS service
-      sample.setGPSLocation = (function (location) {
-        // child samples
-        if (this.parent) {
-          this.set('location', location);
-          return this.save();
-        }
-
-        const gridSquareUnit = this.metadata.gridSquareUnit;
-        const gridCoords = BIGU.latlng_to_grid_coords(
-          location.latitude,
-          location.longitude
-        );
-
-        if (!gridCoords) {
-          return null;
-        }
-
-        location.source = 'gridref';
-        if (gridSquareUnit === 'monad') {
-          // monad
-          location.accuracy = 500;
-
-          gridCoords.x += -gridCoords.x % 1000 + 500;
-          gridCoords.y += -gridCoords.y % 1000 + 500;
-          location.gridref = gridCoords.to_gridref(1000);
-        } else {
-          // tetrad
-          location.accuracy = 1000;
-
-          gridCoords.x += -gridCoords.x % 2000 + 1000;
-          gridCoords.y += -gridCoords.y % 2000 + 1000;
-          location.gridref = gridCoords.to_gridref(2000);
-          location.accuracy = 1000;
-        }
-
-        this.set('location', location);
-        return this.save();
-      }).bind(sample);
 
       return Promise.resolve(sample);
     }
