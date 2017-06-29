@@ -42,6 +42,7 @@ const service = {
     Log('GridAtlasService: stop.');
 
     GPS.stop(this.locating);
+    delete this.gridref;
     delete this.locating;
   },
 
