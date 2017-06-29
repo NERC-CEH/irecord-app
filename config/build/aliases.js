@@ -76,6 +76,13 @@ module.exports = (grunt) => {
       'exec:cordova_rebuild',
     ],
 
+    /**
+     * Runs the app to a connected Android device/emulator
+     */
+    'cordova:android:run': [
+      'exec:cordova_run_android',
+    ],
+
     'cordova:android': [
       'prompt:keystore',
       // new
