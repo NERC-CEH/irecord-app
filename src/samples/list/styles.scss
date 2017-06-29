@@ -27,38 +27,6 @@
   }
 }
 
-// SUBHEADER
-#main.content{
-  // make the subheader fixed
-  .main-header:not(:empty) {
-    position: fixed !important;
-    width: 100%;
-    z-index: 1000;
-
-    @media only screen and (min-width: 650px) {
-      width: 650px;
-      margin-left: -325px !important;
-      left: 50% !important;
-    }
-  }
-
-  // move sub-subheader underneeth the first one
-  .main-header:not(:empty) + .main-header:not(:empty) {
-    margin-top: 36px;
-  }
-
-  // push the main page bellow
-  .main-header:not(:empty) + ul#list {
-    padding-top: 36px;
-  }
-
-  // push the main page bellow x2
-  .main-header:not(:empty) + .main-header:not(:empty) + ul#list {
-    padding-top: 72px;
-  }
-}
-
-
 //LIST
 #samples-list-container {
   #list {

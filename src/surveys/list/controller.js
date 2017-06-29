@@ -33,11 +33,13 @@ const API = {
       model: new Backbone.Model({
         title: 'Surveys',
       }),
+      appModel,
     });
     headerView.on('surveys', () => {
       radio.trigger('samples:list', { replace: true });
     });
     headerView.on('create', API.addSurvey);
+    headerView.on('atlas:toggled', API.toggleGridAlertService);
 
     radio.trigger('app:header', headerView);
 
@@ -58,8 +60,6 @@ const API = {
       scroll: options.scroll,
       appModel,
     });
-
-    mainView.on('atlas:toggled', API.toggleGridAlertService);
 
     mainView.on('childview:create', API.addSurvey);
     mainView.on('childview:sample:delete', (childView) => {

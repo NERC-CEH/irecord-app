@@ -217,6 +217,28 @@ const MainView = Marionette.View.extend({
   id: 'samples-list-container',
   template: JST['samples/list/main'],
 
+  /**
+   * Need to push the main content down due to the subheader
+   * @returns {string}
+   */
+  className() {
+    let classes = '';
+    let amount = 0;
+
+    const activity = this.options.appModel.getAttrLock('activity') || {};
+    if (activity.title) {
+      amount++;
+    }
+
+    if (this.options.appModel.get('useTraining')) {
+      amount++;
+    }
+
+    // eslint-disable-next-line
+    classes += amount > 0 ? `band-margin-${amount}` : '';
+    return classes;
+  },
+
   regions: {
     body: {
       el: '#list',
@@ -232,14 +254,6 @@ const MainView = Marionette.View.extend({
       appModel: this.options.appModel,
       scroll: this.options.scroll,
     }));
-  },
-
-  serializeData() {
-    const activity = this.options.appModel.getAttrLock('activity') || {};
-    return {
-      useTraining: this.options.appModel.get('useTraining'),
-      activity: activity.title,
-    };
   },
 });
 

@@ -14,6 +14,25 @@ export default Marionette.View.extend({
     'click a#location-button': 'location:update',
   },
 
+  /**
+   * Need to push the main content down due to the subheader
+   * @returns {string}
+   */
+  className() {
+    const sample = this.model.get('sample');
+    let amount = 1;
+
+    let classes = 'slim ';
+
+    if (sample.metadata.training) {
+      amount++;
+    }
+
+    // eslint-disable-next-line
+    classes += amount > 0 ? `band-margin-${amount}` : '';
+    return classes;
+  },
+
   initialize() {
     const sample = this.model.get('sample');
     this.listenTo(sample, 'request:remote sync:remote error:remote geolocation', this.render);

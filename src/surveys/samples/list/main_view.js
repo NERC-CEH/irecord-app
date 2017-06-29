@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * Surveys List main view.
+ * Surveys Sample List main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
@@ -100,6 +100,24 @@ const SmartCollectionView = SlidingView.extend({
 const MainView = _MainView.extend({
   template: JST['surveys/samples/list/main'],
 
+  /**
+   * Need to push the main content down due to the subheader
+   * @returns {string}
+   */
+  className() {
+    const surveySample = this.options.surveySample;
+    let classes = 'slim ';
+    let amount = 1;
+
+    if (surveySample.metadata.training) {
+      amount++;
+    }
+
+    // eslint-disable-next-line
+    classes += amount > 0 ? `band-margin-${amount}` : '';
+    return classes;
+  },
+
   onRender() {
     const mainRegion = this.getRegion('body');
 
@@ -109,13 +127,6 @@ const MainView = _MainView.extend({
       scroll: this.options.scroll,
       surveySampleID: this.options.surveySample.cid,
     }));
-  },
-
-  serializeData() {
-    const surveySample = this.options.surveySample;
-    return {
-      training: surveySample.metadata.training,
-    };
   },
 });
 

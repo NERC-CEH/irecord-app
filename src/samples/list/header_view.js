@@ -36,8 +36,11 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
+    const group = this.model.getAttrLock('activity');
+
     return {
-      activityOn: this.model.getAttrLock('activity'),
+      training: this.model.get('useTraining'),
+      group_title: group ? group.title : null,
       useExperiments: this.model.get('useExperiments'),
     };
   },

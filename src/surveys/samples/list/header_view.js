@@ -41,7 +41,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     return {
-      activityOn: this.model.getAttrLock('activity'),
+      training: this.model.metadata.training,
     };
   },
 });

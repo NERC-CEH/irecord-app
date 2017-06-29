@@ -1,10 +1,3 @@
-<% if (obj.group_title) { %>
-<div class="main-header activity"></div>
-<% } %>
-<% if (obj.training) { %>
-<div class="main-header training"></div>
-<% } %>
-
 <ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
   <li class="table-view-cell">
     <a id="species-button" class="navigate-right">

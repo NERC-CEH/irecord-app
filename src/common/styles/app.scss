@@ -203,6 +203,61 @@ header .subtitle {
   white-space: nowrap;
 }
 
+
+// SUBHEADER
+#subheader {
+  position: absolute;
+  top: $header-height;
+  width: 100%;
+
+  margin-left: -5px;
+
+  & > * {
+    text-align: center;
+    padding: 8px 0;
+    font-weight: 700;
+  }
+
+  .activity {
+    color: $color-white;
+    background-color: $color-main-dark;
+  }
+
+  .surveys {
+    color: $color-white;
+    background-color: $color-brown;
+  }
+
+  .training {
+    color: $color-white;
+    background-color: $color-black;
+  }
+}
+
+// take into account iOS info header
+body.ios header #subheader {
+  margin-top: 18px;
+}
+
+// content bands
+.band-margin-1
+{
+  margin-top: 36px;
+
+  &.slim {
+    margin-top: 18px;
+  }
+}
+
+.band-margin-2 {
+  margin-top: 72px;
+
+  &.slim {
+    margin-top: 36px
+  }
+}
+
+
 .navigate-right:after, .push-right:after {
   content: '\e818';
 }
@@ -720,31 +775,6 @@ header .pull-right {
     }
   }
 }
-
-// main page component header
-.main-header {
-  margin-left: -$main-content-margin;
-  margin-right: -$main-content-margin;
-  text-align: center;
-  padding: 8px 0;
-  font-weight: 700;
-
-  &.activity {
-    color: $color-white;
-    background-color: $color-main-dark;
-  }
-
-  &.surveys {
-    color: $color-white;
-    background-color: $color-brown;
-  }
-
-  &.training {
-    color: $color-white;
-    background-color: $color-black;
-  }
-}
-
 
 // increase margin on pull left list items
 .table-view .media-object.pull-left {

@@ -65,14 +65,6 @@ const Slider = Marionette.SlidingView.extend({
       appModel: this.options.appModel,
     };
   },
-
-  serializeData() {
-    const activity = this.options.appModel.getAttrLock('activity') || {};
-    return {
-      useTraining: this.options.appModel.get('useTraining'),
-      activity: activity.title,
-    };
-  },
 });
 
 export default Slider;

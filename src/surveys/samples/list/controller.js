@@ -46,7 +46,7 @@ const API = {
     API._showMainView(surveySample, options);
 
     // HEADER
-    const headerView = new HeaderView({ model: appModel });
+    const headerView = new HeaderView({ model: surveySample });
     // header pic upload
     headerView.on('photo:upload', (e) => {
       const photo = e.target.files[0];

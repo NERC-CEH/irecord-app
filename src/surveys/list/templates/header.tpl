@@ -7,3 +7,14 @@
   <div class="img-picker icon icon-camera disabled very"></div>
   <button id="create-new-btn" class="icon icon-plus"></button>
 </div>
+
+<div id="subheader">
+  <div class="surveys">
+    Lists
+    <div id="toggle"></div>
+  </div>
+
+  <% if (obj.training) { %>
+  <div class="training">Training</div>
+  <% } %>
+</div>

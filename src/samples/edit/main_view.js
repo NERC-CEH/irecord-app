@@ -16,6 +16,29 @@ export default Marionette.View.extend({
     'click a#species-button': 'taxon:update',
   },
 
+  /**
+   * Need to push the main content down due to the subheader
+   * @returns {string}
+   */
+  className() {
+    const sample = this.model.get('sample');
+    let amount = 0;
+
+    let classes = 'slim ';
+
+    if (sample.get('group')) {
+      amount++;
+    }
+
+    if (sample.metadata.training) {
+      amount++;
+    }
+
+    // eslint-disable-next-line
+    classes += amount > 0 ? `band-margin-${amount}` : '';
+    return classes;
+  },
+
   initialize() {
     const sample = this.model.get('sample');
     this.listenTo(sample, 'geolocation', this.render);
@@ -61,7 +84,6 @@ export default Marionette.View.extend({
       id: sample.cid,
       scientificName,
       commonName,
-      training: sample.metadata.training,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
