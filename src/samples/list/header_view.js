@@ -41,7 +41,6 @@ export default Marionette.View.extend({
     return {
       training: this.model.get('useTraining'),
       group_title: group ? group.title : null,
-      useExperiments: this.model.get('useExperiments'),
     };
   },
 });
