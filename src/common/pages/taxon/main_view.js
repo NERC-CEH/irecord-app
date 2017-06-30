@@ -121,7 +121,7 @@ export default Marionette.View.extend({
 
   onAttach() {
     // don't show keyboard on list reset
-    if (this.options.reset) {
+    if (this.options.reset && Device.isIOS()) {
       return;
     }
 
