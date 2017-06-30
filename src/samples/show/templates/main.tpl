@@ -72,4 +72,8 @@
   <% } %>
 </ul>
 
+<% if (obj.useExperiments) { %>
+  <button id="resend-btn" class="btn btn-narrow btn-negative btn-block">Resend the record</button>
+<% } %>
+
 <div id="occurrence-id"><%- obj.cid %></div>
