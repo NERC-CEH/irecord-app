@@ -272,7 +272,7 @@ const API = {
    * The sequence of updates that should take place.
    * @type {string[]}
    */
-  updatesSeq: ['1.2.2'],
+  updatesSeq: ['2.0.0'],
 
   /**
    * Update functions.
@@ -282,12 +282,23 @@ const API = {
     /**
      *  Migrate to new indicia database.
      */
-    '1.2.2': (callback) => {
-      Log('Update: version 1.2.2', 'i');
+    '2.0.0': (callback) => {
+      Log('Update: version 2.0.0', 'i');
 
-      // copy over all the samples to SQLite db
-      const oldDB = new DatabaseStorage({ appname: 'test' });
-      oldDB.getAll((err, samples = []) => {
+      function finishUpdate() {
+        // reset app and user models
+        appModel.clear().set(appModel.defaults);
+        appModel.save();
+
+        userModel.clear().set(userModel.defaults);
+        userModel.save();
+
+
+        Log('Update: finished.', 'i');
+        callback(); // fully restart afterwards
+      }
+
+      function moveRecords(err, samples = []) {
         if (err) {
           Log(err, 'e');
           return;
@@ -295,39 +306,53 @@ const API = {
 
         const samplesCount = Object.keys(samples).length;
         Log(`Update: copying ${samplesCount} samples to SQLite.`, 'i');
+
+
         // samples
-        for (const sample in samples) {
-          savedSamples.add(samples[sample]);
+        function updateSampleStructure(sample) {
+          const newSample = sample;
+          if (newSample.occurrences.length) {
+            newSample.occurrences[0].media = newSample.occurrences[0].images;
+            delete newSample.occurrences[0].images;
+          }
+
+          newSample.metadata.survey = 'general';
+
+          return newSample;
         }
 
-        savedSamples.save().then(() => {
+        for (const sample in samples) {
+          const updatedSample = updateSampleStructure(samples[sample]);
+          savedSamples.add(updatedSample);
+        }
+
+        return savedSamples.save().then(() => {
           Log('Update: copying done.', 'i');
+        });
+      }
 
-          // check if correct copy
-          Log('Update: checking if correct copy.', 'i');
-          savedSamples.size().then((size) => {
-            if (samplesCount !== size) {
-              callback(true);
-              return;
-            }
+      // copy over all the samples to SQLite db
+      const oldDB = new DatabaseStorage({ appname: 'test' });
+      oldDB.getAll((err, samples = []) => {
+        moveRecords(err, samples).then(() => {
+          // clean up old db
+          Log('Update: clearing test db.', 'i');
+          oldDB.delete();
 
-            // clean up old db
-            Log('Update: clearing old db.', 'i');
-            oldDB.delete();
+          // recover lost records too
+          const evenOlderDB = new DatabaseStorage({ appname: 'ir' });
+          evenOlderDB.getAll((err, samples = []) => {
+            moveRecords(err, samples).then(() => {
+              // clean up old db
+              Log('Update: clearing ir db.', 'i');
+              evenOlderDB.delete();
 
-            const oldFirstName = userModel.get('name');
-            const oldSecondName = userModel.get('surname');
-            userModel.set('firstname', oldFirstName);
-            userModel.set('secondname', oldSecondName);
-            userModel.set('name', '');
-            userModel.unset('surname');
-            userModel.save();
-
-            Log('Update: finished.', 'i');
-            callback(); // fully restart afterwards
+              finishUpdate();
+            });
           });
         });
       });
+
     },
   },
 
