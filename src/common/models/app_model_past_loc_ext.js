@@ -19,7 +19,7 @@ export default {
     const location = _.cloneDeep(origLocation);
     const locations = this.get('locations');
 
-    if (!location.latitude || !location.longitude) {
+    if (!location.latitude) {
       return null;
     }
 
@@ -46,6 +46,7 @@ export default {
 
     // add new one
     location.id = UUID();
+    location.date = new Date();
     locations.splice(0, 0, location);
 
     // check if not exceeded limits
@@ -96,7 +97,7 @@ export default {
   printLocation(location) {
     const useGridRef = this.get('useGridRef');
 
-    if (location.latitude && location.longitude) {
+    if (location.latitude) {
       if (useGridRef || location.source === 'gridref') {
         let accuracy = location.accuracy;
 
@@ -109,7 +110,7 @@ export default {
         }
 
         // check if location is within UK
-        let prettyLocation = LocHelp.coord2grid(location, accuracy);
+        let prettyLocation = LocHelp.locationToGrid(location, accuracy);
         if (!prettyLocation) {
           prettyLocation = `${parseFloat(location.latitude).toFixed(4)}, ${
             parseFloat(location.longitude).toFixed(4)}`;

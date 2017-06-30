@@ -9,6 +9,11 @@ export default Marionette.View.extend({
   tagName: 'nav',
   template: JST['samples/list/header'],
 
+  triggers: {
+    'click #surveys-btn': 'surveys',
+    'click #create-new-btn': 'create',
+  },
+
   events: {
     'change input': 'photoUpload',
   },
@@ -31,8 +36,11 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
+    const group = this.model.getAttrLock('activity');
+
     return {
-      activityOn: this.model.getAttrLock('activity'),
+      training: this.model.get('useTraining'),
+      group_title: group ? group.title : null,
     };
   },
 });

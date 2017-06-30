@@ -12,9 +12,36 @@ import './styles.scss';
 export default Marionette.View.extend({
   template: JST['samples/edit/main'],
 
+  triggers: {
+    'click a#species-button': 'taxon:update',
+  },
+
+  /**
+   * Need to push the main content down due to the subheader
+   * @returns {string}
+   */
+  className() {
+    const sample = this.model.get('sample');
+    let amount = 0;
+
+    let classes = 'slim ';
+
+    if (sample.get('group')) {
+      amount++;
+    }
+
+    if (sample.metadata.training) {
+      amount++;
+    }
+
+    // eslint-disable-next-line
+    classes += amount > 0 ? `band-margin-${amount}` : '';
+    return classes;
+  },
+
   initialize() {
     const sample = this.model.get('sample');
-    this.listenTo(sample, 'request sync error geolocation', this.render);
+    this.listenTo(sample, 'geolocation', this.render);
   },
 
   serializeData() {
@@ -34,11 +61,11 @@ export default Marionette.View.extend({
     if (!numberLock) {
       numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
     }
-
     const attrLocks = {
       date: appModel.isAttrLocked('date', sample.get('date')),
-      location: appModel.isAttrLocked('location', sample.get('location')),
+      location: appModel.isAttrLocked('location', location),
       number: numberLock,
+      locationName: appModel.isAttrLocked('locationName', location.name),
       stage: appModel.isAttrLocked('stage', occ.get('stage')),
       identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
       comment: appModel.isAttrLocked('comment', occ.get('comment')),
@@ -57,11 +84,10 @@ export default Marionette.View.extend({
       id: sample.cid,
       scientificName,
       commonName,
-      training: occ.metadata.training,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       date: DateHelp.print(sample.get('date'), true),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),

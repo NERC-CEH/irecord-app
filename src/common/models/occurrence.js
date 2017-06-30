@@ -1,16 +1,19 @@
 import Indicia from 'indicia';
 import CONFIG from 'config';
-import appModel from 'app_model';
 import ImageModel from './image';
 
 export default Indicia.Occurrence.extend({
-  Image: ImageModel,
+  Media: ImageModel,
 
-  keys: CONFIG.indicia.occurrence, // warehouse attribute keys
-
-  metadata() {
-    return {
-      training: appModel.get('useTraining'),
-    };
+  // warehouse attribute keys
+  keys() {
+    if (this.parent.metadata.survey === 'plant') {
+      return _.extend(
+        {},
+        CONFIG.indicia.surveys.general.occurrence, // general keys
+        CONFIG.indicia.surveys.plant.occurrence // plant specific keys
+      );
+    }
+    return CONFIG.indicia.surveys.general.occurrence;
   },
 });

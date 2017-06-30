@@ -18,7 +18,7 @@ export default Marionette.View.extend({
   },
 
   modelEvents: {
-    'request sync error': 'render',
+    'request:remote sync:remote error:remote': 'render',
   },
 
   navigateBack() {
@@ -26,7 +26,12 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
+    // show activity title.
+    const group = this.model.get('group');
+
     return {
+      group_title: group ? group.title : null,
+      training: this.model.metadata.training,
       isSynchronising: this.model.getSyncStatus() === Indicia.SYNCHRONISING,
     };
   },

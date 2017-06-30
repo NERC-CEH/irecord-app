@@ -19,7 +19,7 @@
   </li>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-location"></span>
-    <span class="media-object pull-right descript"><%- obj.location_name %></span>
+    <span class="media-object pull-right descript"><%- obj.locationName %></span>
     <span class="media-object pull-right descript"><%- obj.location %></span>
     Location
   </li>
@@ -71,5 +71,9 @@
     </li>
   <% } %>
 </ul>
+
+<% if (obj.useExperiments) { %>
+  <button id="resend-btn" class="btn btn-narrow btn-negative btn-block">Resend the record</button>
+<% } %>
 
 <div id="occurrence-id"><%- obj.cid %></div>

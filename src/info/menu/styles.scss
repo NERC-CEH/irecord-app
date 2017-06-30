@@ -3,3 +3,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+#common-header.non-capitalize h1.title {
+  text-transform: none;
+}

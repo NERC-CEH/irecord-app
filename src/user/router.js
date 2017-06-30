@@ -24,9 +24,9 @@ const Router = Marionette.AppRouter.extend({
   },
 });
 
-radio.on('user:login', (options) => {
+radio.on('user:login', (options = {}) => {
   App.navigate('user/login', options);
-  LoginController.show();
+  LoginController.show(options.onSuccess);
 });
 
 App.on('before:start', () => {

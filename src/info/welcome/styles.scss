@@ -12,10 +12,10 @@ $width: 500vw;
 
   button#exit {
     position: fixed;
-    bottom: 0;
+    bottom: 15px;
     margin: 0;
-
-    width: 100%;
+    width: 80%;
+    left: 10%;
   }
 
   #swaps-container {
@@ -130,6 +130,13 @@ $width: 500vw;
   .message {
     position: absolute;
     width: 50%;
+    padding-left: 10px;
+
+    // Hack around the tablet hidden message issue
+    @media only screen and (min-width: 650px) {
+      margin-left: -325px !important;
+      left: 50% !important;
+    }
   }
 
   .message p,
@@ -148,30 +155,25 @@ $width: 500vw;
   .first .message {
     text-align: left;
     bottom: $bottom;
-    left: 14px;
   }
 
   .second .message {
     text-align: left;
     top: 10vh;
-    left: 14px;
   }
 
   .third .message {
     text-align: left;
     bottom: $bottom;
-    left: 14px;
   }
 
   .fourth .message {
-    text-align: right;
+    text-align: left;
     bottom: $bottom;
-    right: 14px;
   }
 
   .fifth .message {
     text-align: left;
     bottom: $bottom;
-    left: 14px;
   }
 }

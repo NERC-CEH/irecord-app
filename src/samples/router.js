@@ -23,19 +23,27 @@ App.samples = {};
 let scroll = 0; // last scroll position
 const $mainRegion = $('#main');
 
+/**
+ * Scroll to the last position
+ */
+radio.on('species:list:show', () => {
+  if (Device.isIOS()) {
+    // iOS scroll glitch fix
+    setTimeout(() => {
+      $mainRegion.scrollTop(scroll);
+    }, 1);
+  } else {
+    $mainRegion.scrollTop(scroll);
+  }
+});
+
 const Router = Marionette.AppRouter.extend({
   routes: {
     'samples(/)': {
-      route: ListController.show,
-      after() {
-        if (Device.isIOS()) {
-          // iOS scroll glitch fix
-          setTimeout(() => {
-            $mainRegion.scrollTop(scroll);
-          }, 1);
-        } else {
-          $mainRegion.scrollTop(scroll);
-        }
+      route: () => {
+        ListController.show({
+          scroll, // inform about the last scroll
+        });
       },
       leave() {
         scroll = $mainRegion.scrollTop();
@@ -67,14 +75,14 @@ radio.on('samples:edit', (sampleID, options) => {
   EditController.show(sampleID);
 });
 
-radio.on('samples:edit:attr', (sampleID, attrID, options) => {
+radio.on('samples:edit:attr', (sampleID, attrID, options = {}) => {
   App.navigate(`samples/${sampleID}/edit/${attrID}`, options);
   switch (attrID) {
     case 'location':
       EditLocationController.show(sampleID);
       break;
     case 'taxon':
-      TaxonController.show(sampleID);
+      TaxonController.show(options);
       break;
     case 'activity':
       ActivitiesController.show(sampleID);

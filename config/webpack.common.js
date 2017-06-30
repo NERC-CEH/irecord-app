@@ -76,6 +76,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.TRAINING': process.env.TRAINING || false,
+      'process.env.EXPERIMENTS': process.env.EXPERIMENTS || false,
       APP_BUILD: JSON.stringify(process.env.TRAVIS_BUILD_ID || pkg.build || new Date().getTime()),
       APP_NAME: JSON.stringify(pkg.name),
       APP_VERSION: JSON.stringify(pkg.version),

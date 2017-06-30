@@ -1,8 +1,7 @@
 import Indicia from 'indicia';
-import Backbone from 'backbone';
 import savedSamples from 'saved_samples';
 import userModel from 'user_model';
-import { getRandomSample, generateSampleResponse } from 'test-helpers';
+// import { getRandomSample, generateSampleResponse } from 'test-helpers';
 
 describe('Saved samples', () => {
   let server;
@@ -11,7 +10,7 @@ describe('Saved samples', () => {
   before((done) => {
     server = sinon.fakeServer.create();
     server.respondImmediately = true;
-    userLogin = sinon.stub(userModel, 'hasLogIn').returns(true);
+    // userLogin = sinon.stub(userModel, 'hasLogIn').returns(true);
 
     // clean up in case of trash
     savedSamples.fetch()
@@ -27,7 +26,7 @@ describe('Saved samples', () => {
   });
 
   after((done) => {
-    userLogin.reset();
+    // userLogin.reset();
 
     // clean up afterwards
     savedSamples.fetch()

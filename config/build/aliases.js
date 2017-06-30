@@ -2,12 +2,12 @@ module.exports = (grunt) => {
   return {
     default: [
       'init',
-      'run',
+      'jst',
       'webpack:main',
     ],
 
     init: [
-      'exec:data_init',
+      'exec:data',
       'copy',
       'vendor',
     ],
@@ -20,26 +20,22 @@ module.exports = (grunt) => {
       'replace:photoswipe',
     ],
 
-    run: [
-      'jst',
-    ],
-
     // Development run
     update: [
-      'run',
+      'jst',
       'webpack:main',
     ],
 
     // Development update
     dev: [
       'init',
-      'run',
+      'jst',
       'webpack:dev',
     ],
 
     // Development run
     'dev:update': [
-      'run',
+      'jst',
       'webpack:dev',
     ],
 
@@ -78,6 +74,13 @@ module.exports = (grunt) => {
       'replace:cordova_config',
       'replace:cordova_build',
       'exec:cordova_rebuild',
+    ],
+
+    /**
+     * Runs the app to a connected Android device/emulator
+     */
+    'cordova:android:run': [
+      'exec:cordova_run_android',
     ],
 
     'cordova:android': [

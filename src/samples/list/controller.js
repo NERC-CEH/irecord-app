@@ -9,30 +9,23 @@ import ImageHelp from 'helpers/image';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
 import Sample from 'sample';
-import Occurrence from 'occurrence';
-import ImageModel from '../../common/models/image';
 import MainView from './main_view';
+import LoaderView from '../../common/views/loader_view';
 import HeaderView from './header_view';
 
 const API = {
-  show() {
+  show(options = {}) {
     Log(`Samples:List:Controller: showing ${savedSamples.length}.`);
-
-    // MAIN
-    const mainView = new MainView({
-      collection: savedSamples,
-      appModel,
-    });
-
-    mainView.on('childview:sample:edit:attr', (childView, attr) => {
-      radio.trigger('samples:edit:attr', childView.model.cid, attr);
-    });
-
-    mainView.on('childview:sample:delete', (childView) => {
-      const sample = childView.model;
-      API.sampleDelete(sample);
-    });
-    radio.trigger('app:main', mainView);
+    // wait till savedSamples is fully initialized
+    if (savedSamples.fetching) {
+      const that = this;
+      savedSamples.once('fetching:done', () => {
+        API.show.apply(that);
+      });
+      radio.trigger('app:main', new LoaderView());
+    } else {
+      API.showMainView(options);
+    }
 
     // HEADER
     const headerView = new HeaderView({ model: appModel });
@@ -44,11 +37,51 @@ const API = {
 
     // android gallery/camera selection
     headerView.on('photo:selection', API.photoSelect);
+    headerView.on('create', () => API.createNewSample());
+    headerView.on('surveys', () => {
+      radio.trigger('surveys:list', { replace: true });
+    });
 
     radio.trigger('app:header', headerView);
 
     // FOOTER
     radio.trigger('app:footer:hide');
+  },
+
+  showMainView(options) {
+    // get subcollection
+    const collection = savedSamples.subcollection({
+      filter: model => !model.metadata.complex_survey,
+    });
+    collection.comparator = savedSamples.comparator;
+    collection.sort();
+
+    const mainView = new MainView({
+      collection,
+      scroll: options.scroll,
+      appModel,
+    });
+
+    mainView.on('childview:create', () => API.createNewSample());
+    mainView.on('childview:sample:edit:attr', (childView, attr) => {
+      radio.trigger('samples:edit:attr', childView.model.cid, attr);
+    });
+
+    mainView.on('childview:taxon:add', (childView) => {
+      const sample = childView.model;
+      radio.trigger('samples:edit:attr', sample.cid, 'taxon', {
+        onSuccess(taxon, editButtonClicked) {
+          API.setTaxon(sample, taxon, editButtonClicked);
+        },
+        showEditButton: true,
+      });
+    });
+
+    mainView.on('childview:sample:delete', (childView) => {
+      API.sampleDelete(childView.model);
+    });
+
+    radio.trigger('app:main', mainView);
   },
 
   sampleDelete(sample) {
@@ -89,10 +122,7 @@ const API = {
     Log('Samples:List:Controller: photo upload.');
 
     // todo: show loader
-    API.createNewSample(photo).catch((err) => {
-      Log(err, 'e');
-      radio.trigger('app:dialog:error', err);
-    });
+    API.createNewSampleWithPhoto('general', photo);
   },
 
   photoSelect() {
@@ -105,7 +135,7 @@ const API = {
           title: 'Camera',
           onClick() {
             ImageHelp.getImage((entry) => {
-              API.createNewSample(entry.nativeURL, () => {});
+              API.createNewSampleWithPhoto('general', entry.nativeURL);
             });
             radio.trigger('app:dialog:hide');
           },
@@ -114,7 +144,7 @@ const API = {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage((entry) => {
-              API.createNewSample(entry.nativeURL, () => {});
+              API.createNewSampleWithPhoto('general', entry.nativeURL, () => {});
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
@@ -126,37 +156,59 @@ const API = {
     });
   },
 
-  /**
-   * Creates a new sample with an image passed as an argument.
-   */
-  createNewSample(photo) {
-    return ImageHelp.getImageModel(ImageModel, photo)
-      .then((image) => {
-        const occurrence = new Occurrence();
-        occurrence.addMedia(image);
-
-        const sample = new Sample();
-        sample.addOccurrence(occurrence);
-
-        // append locked attributes
-        appModel.appendAttrLocks(sample);
-
-        return sample.save().then(() => {
-          savedSamples.add(sample);
-          // check if location attr is not locked
-          const locks = appModel.get('attrLocks');
-
-          if (!locks.location) {
-            // no previous location
-            sample.startGPS();
-          } else if (!locks.location.latitude || !locks.location.longitude) {
-            // previously locked location was through GPS
-            // so try again
-            sample.startGPS();
-          }
-          return sample;
-        });
+  createNewSampleWithPhoto() {
+    Sample.createNewSampleWithPhoto.apply(this, arguments)
+      .then(sample => sample.save())
+      .then((sample) => {
+        // add to main collection
+        savedSamples.add(sample);
+      })
+      .catch((err) => {
+        Log(err, 'e');
+        radio.trigger('app:dialog:error', err);
       });
+  },
+
+  createNewSample() {
+    radio.trigger('samples:edit:attr', null, 'taxon', {
+      onSuccess(taxon, editButtonClicked) {
+        Sample.createNewSample('general', null, taxon)
+          .then(sample => sample.save())
+          .then((sample) => {
+            // add to main collection
+            savedSamples.add(sample);
+
+            // navigate
+            if (editButtonClicked) {
+              radio.trigger('samples:edit', sample.cid, { replace: true });
+            } else {
+              // return back to list page
+              window.history.back();
+            }
+          });
+      },
+      showEditButton: true,
+    });
+  },
+
+  /**
+   * Sets a new taxon to an occurrence created by a photo-first method.
+   * @param sample
+   * @param taxon
+   * @param editButtonClicked
+   * @returns {*}
+   */
+  setTaxon(sample, taxon, editButtonClicked) {
+    sample.getOccurrence().set('taxon', taxon);
+    // return to previous - edit page
+    return sample.save().then(() => {
+      if (editButtonClicked) {
+        radio.trigger('samples:edit', sample.cid, { replace: true });
+      } else {
+        // return back to list page
+        window.history.back();
+      }
+    });
   },
 };
 

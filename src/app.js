@@ -18,6 +18,7 @@ import CommonController from './common/controller';
 import DialogRegion from './common/views/dialog_region';
 import HideableRegion from './common/views/hideable_region';
 import './common/router_extension';
+// import '../test/manual-testing';
 
 // init Analytics
 Analytics.init();
@@ -26,7 +27,7 @@ const App = new Marionette.Application();
 
 App.navigate = (route, options = {}) => {
   Log(`App: navigating to ${route}.`);
-  const defaultOptions = { trigger: true };
+  const defaultOptions = { trigger: false };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
 
@@ -125,14 +126,14 @@ radio.on('app:dialog:error', (options) => {
   App.regions.getRegion('dialog').error(options);
 });
 
-radio.on('app:main', (options) => {
-  App.regions.getRegion('main').show(options);
+radio.on('app:main', (view) => {
+  App.regions.getRegion('main').show(view);
 });
-radio.on('app:header', (options) => {
-  App.regions.getRegion('header').show(options);
+radio.on('app:header', (view) => {
+  App.regions.getRegion('header').show(view);
 });
-radio.on('app:footer', (options) => {
-  App.regions.getRegion('footer').show(options);
+radio.on('app:footer', (view) => {
+  App.regions.getRegion('footer').show(view);
 });
 radio.on('app:main:hide', (options) => {
   App.regions.getRegion('main').hide(options).empty();

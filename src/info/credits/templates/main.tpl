@@ -1,5 +1,5 @@
 <ul class="table-view">
-  <li><img src="media/sponsor_logo.png" alt=""></li>
+  <li><img src="images/sponsor_logo.png" alt=""></li>
   <li>
     <p>
       <strong>We are very grateful for all the people that helped to
@@ -12,6 +12,7 @@
       <li>John van Breda (Biodiverse IT)</li>
       <li>Tom Humphrey (BSBI)</li>
       <li>Martin Harvey (CEH)</li>
+      <li>Sally Rankin</li>
       <li>Colin Harrower (CEH)</li>
       <li>Tom August (CEH)</li>
       <li>Chris Raper (NHM)</li>

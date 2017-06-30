@@ -1,7 +1,12 @@
 <% if (obj.taxon) { %>
-<a href="#samples/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>" class="mobile">
+  <a
+    <% if (!obj.isSynchronising) { %>
+      href="#samples/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>"
+    <% } %>
+    class="mobile">
+
   <% } else { %>
-  <a href="#samples/<%- obj.id %>/edit/taxon" class="mobile">
+  <a id="add-species-btn" class="mobile">
     <% } %>
     <% if (obj.training) { %>
     <div class="media-object pull-left training"></div>
@@ -37,8 +42,8 @@
         @
 
         <% if (obj.location) { %>
-          <% if (obj.location_name) { %>
-          <span class="location"><%= obj.location_name %></span>
+          <% if (obj.locationName) { %>
+          <span class="location"><%= obj.locationName %></span>
           <%  } else { %>
             <span class="location error">No location name</span>
           <% } %>

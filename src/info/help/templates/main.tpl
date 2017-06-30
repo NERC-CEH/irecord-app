@@ -104,7 +104,7 @@
        aria-labelledby="headingTwo" aria-expanded="false">
       To delete a record, swipe it left in the home-list page and click
       the delete <span class="icon icon-delete"></span> button.
-      <img src="media/swipe_record.png">
+      <img src="images/swipe_record.png">
       <br><br>
       You can also delete all the locally saved records that have been
       successfully synchronised

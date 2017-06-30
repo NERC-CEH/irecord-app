@@ -20,6 +20,9 @@ function getRandomSample(occurrence) {
     },
     {
       occurrences: [occurrence],
+      metadata: {
+        survey: 'general',
+      },
     }
   );
 

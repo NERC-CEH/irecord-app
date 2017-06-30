@@ -34,14 +34,20 @@ const extension = {
 
         location.source = 'gps';
         location.updateTime = new Date(); // track when gps was acquired
-        location.gridref = LocHelp.coord2grid(location);
+        location.gridref = LocHelp.locationToGrid(location);
 
         // extend old location to preserve its previous attributes like name or id
         const oldLocation = that.get('location');
         location = $.extend(oldLocation, location);
 
-        that.set('location', location);
-        that.save();
+        if (that.setGPSLocation) {
+          if (that.setGPSLocation(location)) {
+            that.trigger('change:location');
+            that.trigger('geolocation', location);
+            that.trigger('geolocation:success', location);
+          }
+          return;
+        }
 
         that.trigger('change:location');
         that.trigger('geolocation', location);

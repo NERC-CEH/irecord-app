@@ -17,7 +17,8 @@ const MAX = 20;
  * @param searchPhrase
  * @returns {Array}
  */
-function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, hybridRun) {
+function searchSciNames(species, searchPhrase, results = [],
+                        maxResults, hybridRun, informalGroups = []) {
   const searchWords = searchPhrase.split(' ');
 
   // prepare first word regex
@@ -34,7 +35,7 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
 
   // check if hybrid eg. X Cupressocyparis
   if (!hybridRun && searchPhrase.match(/X\s.*/i)) {
-    searchSciNames(species, searchPhrase, results, maxResults, true);
+    searchSciNames(species, searchPhrase, results, maxResults, true, informalGroups);
   } else if (hybridRun) {
     // run with different first word
     firstWord = helpers.normalizeFirstWord(searchPhrase);
@@ -53,6 +54,15 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
   speciesArrayIndex < speciesArrayLength &&
   results.length < maxResults) {
     const speciesEntry = species[speciesArrayIndex];
+
+    // check if species is in informal groups to search
+    if (informalGroups.length &&
+      informalGroups.indexOf(speciesEntry[GROUP_INDEX]) < 0) {
+      // skip this taxa because not in the searched informal groups
+      speciesArrayIndex++;
+      continue;
+    }
+
     // check if matches
     if (firstWordRegex.test(speciesEntry[SCI_NAME_INDEX])) {
       // find species array

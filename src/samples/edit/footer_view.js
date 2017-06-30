@@ -63,7 +63,7 @@ export default Marionette.CompositeView.extend({
   emptyView: EmptyView,
 
   modelEvents: {
-    'request sync error': 'render',
+    'request:remote sync:remote error:remote': 'render',
   },
 
   serializeData() {

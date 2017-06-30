@@ -46,25 +46,18 @@ const API = {
       return;
     }
 
-
     // MAIN
     const mainView = new MainView({
       model: new Backbone.Model({ sample, appModel }),
     });
-    radio.trigger('app:main', mainView);
-
-    // on finish sync move to show
-    function checkIfSynced() {
-      if (sample.getSyncStatus() === Indicia.SYNCED) {
-        radio.trigger('samples:show', sampleID, { replace: true });
-      }
-    }
-    sample.on('request sync error', checkIfSynced);
-    mainView.on('destroy', () => {
-      // unbind when page destroyed
-      sample.off('request sync error', checkIfSynced);
+    mainView.on('taxon:update', () => {
+      radio.trigger('samples:edit:attr', sampleID, 'taxon', {
+        onSuccess(taxon) {
+          API.updateTaxon(sample, taxon);
+        },
+      });
     });
-
+    radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({
@@ -151,7 +144,7 @@ const API = {
 
   showInvalidsMessage(invalids) {
     // it wasn't saved so of course this error
-    delete invalids.sample.saved; // eslint-disable-line
+    delete invalids.attributes.saved; // eslint-disable-line
 
     let missing = '';
     if (invalids.occurrences) {
@@ -159,8 +152,8 @@ const API = {
         missing += `<b>${invalid}</b> - ${message}</br>`;
       });
     }
-    if (invalids.sample) {
-      _.each(invalids.sample, (message, invalid) => {
+    if (invalids.attributes) {
+      _.each(invalids.attributes, (message, invalid) => {
         missing += `<b>${invalid}</b> - ${message}</br>`;
       });
     }
@@ -264,6 +257,13 @@ const API = {
         occurrence.addMedia(image);
         return occurrence.save();
       });
+  },
+
+  updateTaxon(sample, taxon) {
+    // edit existing one
+    sample.getOccurrence().set('taxon', taxon);
+    // return to previous - edit page
+    return sample.save().then(() => window.history.back());
   },
 };
 

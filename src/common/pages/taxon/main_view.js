@@ -33,21 +33,36 @@ const SpeciesView = Marionette.View.extend({
   serializeData() {
     const foundInName = this.model.get('found_in_name');
 
-    let name = this._prettifyName(this.model.get(foundInName), this.options.searchPhrase);
-    name = this.model.get(foundInName);
+    let name;
+    if (foundInName === 'common_name' && this.model.get('_deduped_common_name')) {
+      name = this.model.get('_deduped_common_name');
+    } else {
+      name = this.model.get(foundInName);
+    }
+
+    const prettyName = this._prettifyName(name, this.options.searchPhrase);
+    // name = this.model.get(foundInName);
 
     return {
-      name,
-      removeEditBtn: this.options.removeEditBtn,
+      name: prettyName,
+      showEditButton: this.options.showEditButton,
       group: informalGroups[this.model.get('group')],
     };
   },
 
+  /**
+   * Highlight the searched parts of taxa names.
+   * @param name
+   * @param searchPhrase
+   * @returns {*}
+   * @private
+   */
   _prettifyName(name, searchPhrase) {
+    let prettyName = name;
     const searchPos = name.toLowerCase().indexOf(searchPhrase);
-    const prettyName = `${name.slice(0, searchPos)}
-    <b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>
-    ${name.slice(searchPos + searchPhrase.length)}`;
+    if (searchPos >= 0) {
+      prettyName = `${name.slice(0, searchPos)}<b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>${name.slice(searchPos + searchPhrase.length)}`;
+    }
 
     return prettyName;
   },
@@ -81,7 +96,7 @@ const SuggestionsView = Marionette.CollectionView.extend({
   childView: SpeciesView,
   childViewOptions() {
     return {
-      removeEditBtn: this.options.removeEditBtn,
+      showEditButton: this.options.showEditButton,
       searchPhrase: this.options.searchPhrase,
     };
   },
@@ -105,6 +120,11 @@ export default Marionette.View.extend({
   },
 
   onAttach() {
+    // don't show keyboard on list reset
+    if (this.options.reset && Device.isIOS()) {
+      return;
+    }
+
     // preselect the input for typing
     const $input = this.$el.find('#taxon').focus();
     if (window.cordova && Device.isAndroid()) {
@@ -114,11 +134,14 @@ export default Marionette.View.extend({
       });
     }
 
-    const userModel = this.model;
-    const statistics = userModel.get('statistics') || { species: [] };
-    const favouriteSpecies = statistics.species;
-    if (favouriteSpecies.length) {
-      this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
+    const hideFavourites = this.options.hideFavourites;
+    if (!hideFavourites) {
+      const userModel = this.model;
+      const statistics = userModel.get('statistics') || { species: [] };
+      const favouriteSpecies = statistics.species;
+      if (favouriteSpecies.length) {
+        this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
+      }
     }
   },
 
@@ -141,9 +164,10 @@ export default Marionette.View.extend({
 
     const suggestionsColView = new SuggestionsView({
       collection: this.suggestionsCol,
-      removeEditBtn: this.options.removeEditBtn,
+      showEditButton: this.options.showEditButton,
       searchPhrase,
     });
+
     suggestionsColView.on('childview:taxon:selected',
       (speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
 

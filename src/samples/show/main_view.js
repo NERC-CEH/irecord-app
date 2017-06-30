@@ -15,6 +15,7 @@ export default Marionette.View.extend({
 
   events: {
     'click img': 'photoView',
+    'click #resend-btn': 'resend',
   },
 
   photoView(e) {
@@ -37,6 +38,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const sample = this.model.get('sample');
+    const appModel = this.model.get('appModel');
     const occ = sample.getOccurrence();
     const specie = occ.get('taxon');
 
@@ -61,13 +63,14 @@ export default Marionette.View.extend({
     return {
       id: occ.id,
       cid: occ.cid,
+      useExperiments: appModel.get('useExperiments'),
       site_url: CONFIG.site_url,
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       onDatabase: syncStatus === Indicia.SYNCED,
       scientific_name: scientificName,
       commonName,
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       date: DateHelp.print(sample.get('date'), true),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
@@ -76,6 +79,26 @@ export default Marionette.View.extend({
       group_title: group ? group.title : null,
       media: occ.media,
     };
+  },
+
+  /**
+   * Force resend the record.
+   *
+   * Wipes its server values and makes it local again. Resubmitting should
+   * generate a server conflict and the record should update with the same values
+   * if exists already. Otherwise, a new record will be created on the server.
+   */
+  resend() {
+    // reset the values
+    const sample = this.model.get('sample');
+    sample.id = null;
+    sample.metadata.server_on = null;
+    sample.metadata.updated_on = null;
+    sample.metadata.synced_on = null;
+
+    sample.save(null, { remote: true });
+
+    window.history.back();
   },
 });
 

@@ -5,21 +5,25 @@ import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
 import Hammer from 'hammerjs';
+import radio from 'radio';
 import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
 import DateHelp from 'helpers/date';
 import JST from 'JST';
 import Gallery from '../../common/gallery';
-import LoaderView from '../../common/views/loader_view';
+import SlidingView from '../../common/views/sliding_view';
 import './styles.scss';
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell swipe',
 
+  template: JST['samples/list/sample'],
+
   triggers: {
     'click #delete': 'sample:delete',
+    'click #add-species-btn': 'taxon:add',
   },
 
   events: {
@@ -32,12 +36,8 @@ const SampleView = Marionette.View.extend({
   },
 
   modelEvents: {
-    'request sync error': 'render',
+    'request:remote sync:remote error:remote': 'render',
     geolocation: 'render',
-  },
-
-  initialize() {
-    this.template = JST['samples/list/sample'];
   },
 
   photoView(e) {
@@ -131,11 +131,11 @@ const SampleView = Marionette.View.extend({
     return {
       id: sample.cid,
       saved: sample.metadata.saved,
-      training: occ.metadata.training,
+      training: sample.metadata.training,
       onDatabase: syncStatus === Indicia.SYNCED,
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
-      location_name: location.name,
+      locationName: location.name,
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       date,
       taxon,
@@ -190,65 +190,71 @@ const SampleView = Marionette.View.extend({
   },
 });
 
+
 const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
   template: JST['samples/list/list-none'],
+
+  triggers: {
+    'click #create-new-btn': 'create',
+  },
 });
 
-export default Marionette.CompositeView.extend({
+
+const SmartCollectionView = SlidingView.extend({
+  childView: SampleView,
+  emptyView: NoSamplesView,
+
+  onAttach() {
+    // let the world know when the list is in place
+    radio.trigger('species:list:show');
+  },
+});
+
+
+const MainView = Marionette.View.extend({
   id: 'samples-list-container',
   template: JST['samples/list/main'],
 
-  childViewContainer: '#samples-list',
-  childView: SampleView,
+  /**
+   * Need to push the main content down due to the subheader
+   * @returns {string}
+   */
+  className() {
+    let classes = '';
+    let amount = 0;
 
-  constructor(...args) {
-    const that = this;
-    const [options] = args;
-    if (options.collection.fetching) {
-      this.emptyView = LoaderView;
-
-      options.collection.once('fetching:done', () => {
-        that.emptyView = NoSamplesView;
-        // when the collection for the view is "reset",
-        // the view will call render on itself
-        if (!that.collection.length) {
-          if (that._isRendered) {
-            Log('Samples:MainView: showing empty view.');
-            that.render();
-          } else if (that._isRendering) {
-            Log('Samples:MainView: waiting for current rendering to finish.');
-            that.once('render', () => {
-              Log('Samples:MainView: showing empty view.');
-              that.render();
-            });
-          }
-        }
-      });
-    } else {
-      this.emptyView = NoSamplesView;
+    const activity = this.options.appModel.getAttrLock('activity') || {};
+    if (activity.title) {
+      amount++;
     }
 
-    Marionette.CompositeView.prototype.constructor.apply(this, args);
+    if (this.options.appModel.get('useTraining')) {
+      amount++;
+    }
+
+    // eslint-disable-next-line
+    classes += amount > 0 ? `band-margin-${amount}` : '';
+    return classes;
   },
 
-  // invert the order
-  attachHtml(collectionView, childView) {
-    collectionView.$el.find(this.childViewContainer).prepend(childView.el);
+  regions: {
+    body: {
+      el: '#list',
+      replaceElement: true,
+    },
   },
 
-  childViewOptions() {
-    return {
+  onRender() {
+    const mainRegion = this.getRegion('body');
+
+    mainRegion.show(new SmartCollectionView({
+      referenceCollection: this.collection,
       appModel: this.options.appModel,
-    };
-  },
-
-  serializeData() {
-    const activity = this.options.appModel.getAttrLock('activity') || {};
-    return {
-      useTraining: this.options.appModel.get('useTraining'),
-      activity: activity.title,
-    };
+      scroll: this.options.scroll,
+    }));
   },
 });
+
+export { MainView as default, SampleView };

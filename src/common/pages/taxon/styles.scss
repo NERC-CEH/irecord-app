@@ -1,5 +1,19 @@
 @import "../../styles/_variables.scss";
 
+#filter-btn {
+  width: 50%;
+  max-width: 55px;
+
+  &.on {
+    color: $color-yellow;
+  }
+}
+
+.filter-label {
+  text-transform: capitalize;
+}
+
+
 #suggestions .table-view {
   border-top: none;
 }

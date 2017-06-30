@@ -13,13 +13,18 @@ const AppModel = Backbone.Model.extend({
   defaults: {
     showWelcome: true,
 
-    exceptions: [],
-
     locations: [],
     attrLocks: {},
     autosync: true,
     useGridRef: true,
     useGridMap: true,
+
+    useExperiments: process.env.EXPERIMENTS,
+    useGridNotifications: false,
+    gridSquareUnit: 'monad',
+
+    taxonGroupFilters: [],
+
     useTraining: process.env.TRAINING,
   },
 
@@ -31,6 +36,18 @@ const AppModel = Backbone.Model.extend({
   initialize() {
     this.fetch();
     this.checkExpiredAttrLocks();
+  },
+
+  toggleTaxonFilter(filter) {
+    const taxonGroupFilters = this.get('taxonGroupFilters');
+    const index = taxonGroupFilters.indexOf(filter);
+    if (index >= 0) {
+      taxonGroupFilters.splice(index, 1);
+    } else {
+      taxonGroupFilters.push(filter);
+    }
+
+    this.save();
   },
 });
 

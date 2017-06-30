@@ -13,13 +13,16 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(7);
+    expect(_.keys(appModel.attributes).length).to.be.equal(11);
     // should set the exact value checks in the modules requiring them
+    expect(appModel.get('showWelcome')).to.be.equal(true);
     expect(appModel.get('locations')).to.be.an('array');
     expect(appModel.get('attrLocks')).to.be.an('object');
     expect(appModel.get('autosync')).to.be.equal(true);
     expect(appModel.get('useGridRef')).to.be.equal(true);
+    expect(appModel.get('useGridMap')).to.be.equal(true);
     expect(appModel.get('useTraining')).to.be.equal(false);
+    expect(appModel.get('gridSquareUnit')).to.be.equal('monad');
   });
 
   describe('Locking attributes extension', () => {

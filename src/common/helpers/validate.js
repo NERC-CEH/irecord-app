@@ -32,4 +32,11 @@ export default {
       $controlGroup.attr('error-message', value);
     });
   },
+
+  /**
+   * A generic sample/occurrence attribute validator
+   */
+  // attribute() {
+  // todo
+  // },
 };

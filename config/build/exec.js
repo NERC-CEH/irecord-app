@@ -2,15 +2,13 @@ require('dotenv').config({ silent: true }); // get local environment variables f
 
 module.exports = function (grunt) {
   return {
-    data_init: {
+    data: {
       command() {
         return 'cd src/common/data && ' +
-          'cp species.csv species_cleaned.csv && ' +
-          'python make.py species && ' +
+          'node --harmony make.js && ' +
           'mkdir -p ../../../dist/_build/ && ' +
           'mv species*data.json ../../../dist/_build/ && ' +
-          'cp *data.json ../../../dist/_build/ && ' +
-          'rm -f warnings.log species_cleaned.csv scripts/*.pyc';
+          'cp *data.json ../../../dist/_build/ ';
       },
       stdout: true,
     },
