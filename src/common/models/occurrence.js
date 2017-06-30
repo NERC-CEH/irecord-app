@@ -3,7 +3,7 @@ import CONFIG from 'config';
 import ImageModel from './image';
 
 export default Indicia.Occurrence.extend({
-  Image: ImageModel,
+  Media: ImageModel,
 
   // warehouse attribute keys
   keys() {
@@ -16,5 +16,4 @@ export default Indicia.Occurrence.extend({
     }
     return CONFIG.indicia.surveys.general.occurrence;
   },
-
 });

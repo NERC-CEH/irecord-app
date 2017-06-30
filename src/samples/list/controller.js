@@ -122,16 +122,7 @@ const API = {
     Log('Samples:List:Controller: photo upload.');
 
     // todo: show loader
-    Sample.createNewSampleWithPhoto('general', photo)
-      .then(sample => sample.save())
-      .then((sample) => {
-        // add to main collection
-        savedSamples.add(sample);
-      })
-      .catch((err) => {
-        Log(err, 'e');
-        radio.trigger('app:dialog:error', err);
-      });
+    API.createNewSampleWithPhoto('general', photo);
   },
 
   photoSelect() {
@@ -144,7 +135,7 @@ const API = {
           title: 'Camera',
           onClick() {
             ImageHelp.getImage((entry) => {
-              Sample.createNewSampleWithPhoto('general', entry.nativeURL);
+              API.createNewSampleWithPhoto('general', entry.nativeURL);
             });
             radio.trigger('app:dialog:hide');
           },
@@ -153,7 +144,7 @@ const API = {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage((entry) => {
-              Sample.createNewSampleWithPhoto('general', entry.nativeURL, () => {});
+              API.createNewSampleWithPhoto('general', entry.nativeURL, () => {});
             }, {
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
@@ -163,6 +154,19 @@ const API = {
         },
       ],
     });
+  },
+
+  createNewSampleWithPhoto() {
+    Sample.createNewSampleWithPhoto.apply(this, arguments)
+      .then(sample => sample.save())
+      .then((sample) => {
+        // add to main collection
+        savedSamples.add(sample);
+      })
+      .catch((err) => {
+        Log(err, 'e');
+        radio.trigger('app:dialog:error', err);
+      });
   },
 
   createNewSample() {
