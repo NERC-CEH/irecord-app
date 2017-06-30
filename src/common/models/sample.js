@@ -249,7 +249,7 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
   },
 
   _setGPSlocationSetter() {
-    if (!this.metadata.survey === 'plant') {
+    if (this.metadata.survey !== 'plant') {
       return;
     }
 
