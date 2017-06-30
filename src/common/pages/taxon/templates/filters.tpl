@@ -1,12 +1,12 @@
-<ul class="list" style="overflow: hidden;">
+<ul class="list">
 
-  <% for (filterID in obj.informalGroups) { %>
+  <% for (var i = 0; i < obj.filters.length; i++) { %>
     <li class="item item-checkbox item-small">
       <label class="checkbox">
-        <input type="checkbox" value="<%- filterID %>"
-        <%- obj.selectedFilters.indexOf(parseInt(filterID, 10)) >= 0 ? 'checked' : '' %> >
+        <input type="checkbox" value="<%- obj.filters[i].id %>"
+        <%- obj.selectedFilters.indexOf(parseInt(obj.filters[i].id, 10)) >= 0 ? 'checked' : '' %> >
       </label>
-      <span class="filter-label"><%- obj.informalGroups[filterID] %></span>
+      <span class="filter-label"><%- obj.filters[i].label %></span>
     </li>
   <% } %>
 
