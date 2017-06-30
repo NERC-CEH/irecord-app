@@ -58,7 +58,7 @@ module.exports = {
         loader: 'babel-loader',
       },
       { test: /\.json/, loader: 'json' },
-      { test: /(\.png)|(\.svg)|(\.jpg)/, loader: 'file?name=media/[name].[ext]' },
+      { test: /(\.png)|(\.svg)|(\.jpg)/, loader: 'file?name=images/[name].[ext]' },
       { test: /(\.woff)|(\.ttf)/, loader: 'file?name=font/[name].[ext]' },
       {
         test: /\.s?css$/,

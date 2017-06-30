@@ -1,4 +1,4 @@
-<img src="media/BRC_approved_logo.png" class="brc-approved-logo"/>
+<img src="images/BRC_approved_logo.png" class="brc-approved-logo"/>
 <ul class="table-view">
   <li>
     <p>Wherever you see this logo on a biological recording app you can be assured that the
