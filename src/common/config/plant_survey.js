@@ -1,5 +1,7 @@
+/** ****************************************************************************
+ * Plant survey configuration file.
+ *****************************************************************************/
 import $ from 'jquery';
-import viceCounties from 'vice_counties.data';
 
 const config = {
   survey_id: 325,

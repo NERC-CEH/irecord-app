@@ -1,6 +1,8 @@
+/** ****************************************************************************
+ * General survey configuration file.
+ *****************************************************************************/
 import $ from 'jquery';
 import DateHelp from 'helpers/date';
-import LocHelp from 'helpers/location';
 
 const config = {
   survey_id: 374,
@@ -46,9 +48,6 @@ const config = {
       values(date) {
         return DateHelp.print(date);
       },
-      // validate(date) {
-      //
-      // },
     },
 
     group: {

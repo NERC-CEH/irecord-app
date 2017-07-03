@@ -4,6 +4,7 @@
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
 import CONFIG from 'config';
+import Log from 'helpers/log';
 import pastLocationsExtension from './app_model_past_loc_ext';
 import attributeLockExtension from './app_model_attr_lock_ext';
 
@@ -19,13 +20,13 @@ const AppModel = Backbone.Model.extend({
     useGridRef: true,
     useGridMap: true,
 
-    useExperiments: process.env.EXPERIMENTS,
+    useExperiments: CONFIG.experiments,
     useGridNotifications: false,
     gridSquareUnit: 'monad',
 
     taxonGroupFilters: [],
 
-    useTraining: process.env.TRAINING,
+    useTraining: CONFIG.training,
   },
 
   localStorage: new Store(CONFIG.name),
@@ -34,6 +35,8 @@ const AppModel = Backbone.Model.extend({
    * Initializes the object.
    */
   initialize() {
+    Log('AppModel: initializing');
+
     this.fetch();
     this.checkExpiredAttrLocks();
   },
