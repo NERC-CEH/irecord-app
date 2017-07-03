@@ -56,7 +56,7 @@ const Slider = Marionette.SlidingView.extend({
   },
 
   pruneCollection(lowerBound, upperBound) {
-    console.log(`Prune ${lowerBound} ${upperBound}`);
+    // console.log(`Prune ${lowerBound} ${upperBound}`);
     return this.referenceCollection.slice(lowerBound, upperBound);
   },
 
