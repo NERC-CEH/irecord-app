@@ -6,32 +6,34 @@ import Indicia from 'indicia';
 import generalSurvey from './general_survey';
 import plantSurvey from './plant_survey';
 
-const HOST = 'https://www.brc.ac.uk/irecord/';
+const HOST = process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
 
 const CONFIG = {
   // variables replaced on build
-  /* global APP_VERSION, APP_BUILD, APP_NAME, REGISTER_URL, API_KEY, API_SECRET,
-   REPORT_URL, STATISTICS_URL, RECORD_URL, APP_SECRET */
-  version: APP_VERSION,
-  build: APP_BUILD,
-  name: APP_NAME,
+  /* global APP_VERSION, APP_BUILD, APP_NAME, APP_INDICIA_API_KEY */
+  version: process.env.APP_VERSION,
+  build: process.env.APP_BUILD,
+  name: process.env.APP_NAME,
+
+  environment: process.env.ENV,
+  experiments: process.env.APP_EXPERIMENTS,
+  training: process.env.APP_TRAINING,
 
   gps_accuracy_limit: 100,
 
   site_url: HOST,
 
-  // logging
-  log: true,
+  // use prod logging if testing otherwise full log
+  log: process.env.ENV !== 'testing',
 
   // google analytics
   ga: {
-    status: true,
-    ID: 'UA-58378803-4',
+    id: process.env.APP_GA,
   },
 
   // error analytics
   sentry: {
-    key: 'fdde66f95b1c4f50a8186e828b595351',
+    key: process.env.APP_SENTRY_KEY,
     project: '128357',
   },
 
@@ -47,8 +49,8 @@ const CONFIG = {
 
   // mapping
   map: {
-    os_api_key: '28994B5673A86451E0530C6CA40A91A5',
-    mapbox_api_key: 'pk.eyJ1IjoiY2VoYXBwcyIsImEiOiJjaXBxdTZyOWYwMDZoaWVuYjI3Y3Z0a2x5In0.YXrZA_DgWCdjyE0vnTCrmw',
+    os_api_key: process.env.APP_OS_MAP_KEY,
+    mapbox_api_key: process.env.APP_MAPBOX_MAP_KEY,
     mapbox_osm_id: 'cehapps.0fenl1fe',
     mapbox_satellite_id: 'cehapps.0femh3mh',
   },
@@ -56,7 +58,7 @@ const CONFIG = {
   // indicia configuration
   indicia: {
     host: HOST,
-    api_key: API_KEY,
+    api_key: process.env.APP_INDICIA_API_KEY,
     website_id: 23,
 
     surveys: {

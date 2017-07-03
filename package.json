@@ -2,9 +2,9 @@
   "name": "irecord-app",
   "id": "uk.ac.ceh.ir",
   "title": "iRecord App",
-  "description": "iRecord application.",
+  "description": "iRecord mobile application.",
   "version": "2.0.0",
-  "build": "1",
+  "build": "2",
   "homepage": "https://irecord.org.uk",
   "author": {
     "name": "Karolis Kazlauskis",
