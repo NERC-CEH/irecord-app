@@ -8,7 +8,7 @@ describe('Occurrence', () => {
     occurrence.clear();
 
     const invalids = occurrence.validate(null, { remote: true });
-    expect(invalids.occurrence).to.be.an('object')
+    expect(invalids.attributes).to.be.an('object')
       .and.have.property('taxon');
   });
 });
