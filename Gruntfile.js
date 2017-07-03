@@ -1,3 +1,5 @@
+require('dotenv').config({ silent: true }); // get local environment variables from .env
+
 var path = require('path');
 
 module.exports = function(grunt) {
