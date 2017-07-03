@@ -37,6 +37,8 @@ let UserModel = Backbone.Model.extend({
    * Initializes the user.
    */
   initialize() {
+    Log('UserModel: initializing');
+
     this.fetch();
     this.syncActivities();
     this.syncStats();
@@ -46,7 +48,7 @@ let UserModel = Backbone.Model.extend({
    * Resets the user login information.
    */
   logOut() {
-    Log('User: logging out.');
+    Log('UserModel: logging out.');
 
     this.set('email', '');
     this.set('password', '');
@@ -69,7 +71,7 @@ let UserModel = Backbone.Model.extend({
    * @param user User object or empty object
    */
   logIn(user) {
-    Log('User: logging in.');
+    Log('UserModel: logging in.');
 
     this.set('drupalID', user.id || '');
     this.set('password', user.password || '');
