@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
-import BIGU from 'bigu';
+import BIGU from 'BIGU';
 import Log from './log';
 
 const helpers = {

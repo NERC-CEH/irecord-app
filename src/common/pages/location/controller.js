@@ -9,7 +9,7 @@ import Log from 'helpers/log';
 import Validate from 'helpers/validate';
 import StringHelp from 'helpers/string';
 import LocHelp from 'helpers/location';
-import GridRefUtils from 'bigu';
+import GridRefUtils from 'BIGU';
 import App from 'app';
 import radio from 'radio';
 import savedSamples from 'saved_samples';

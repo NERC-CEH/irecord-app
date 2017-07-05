@@ -36,7 +36,7 @@ import LocHelp from 'helpers/location';
 import Log from 'helpers/log';
 import 'os-leaflet';
 import 'leaflet.gridref';
-import BIGU from 'bigu';
+import BIGU from 'BIGU';
 import LeafletButton from './leaflet_button_ext';
 import mapMarker from './marker';
 import gpsFunctions from './gps';
