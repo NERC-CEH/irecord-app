@@ -21,4 +21,4 @@ import 'backbone.collectionsubset';
 import 'indicia';
 import 'photoswipe-lib';
 import 'photoswipe-ui-default';
-import 'bigu';
+import 'BIGU';
