@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import GPS from 'helpers/GPS';
 import Log from 'helpers/log';
-import BIGU from 'bigu';
+import BIGU from 'BIGU';
 import appModel from 'app_model';
 
 const service = {

@@ -3,7 +3,7 @@
  *****************************************************************************/
 import _ from 'lodash';
 import Indicia from 'indicia';
-import BIGU from 'bigu';
+import BIGU from 'BIGU';
 import CONFIG from 'config';
 import userModel from 'user_model';
 import appModel from 'app_model';

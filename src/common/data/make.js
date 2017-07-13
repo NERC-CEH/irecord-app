@@ -17,7 +17,6 @@ function transform2JSON(data, outputFileName, callback) {
     fs.writeFile(`./${outputFileName}.data.json`,
       JSON.stringify(jsonData),
       null,
-      4,
       writeErr => callback(writeErr, jsonData)
     );
   });

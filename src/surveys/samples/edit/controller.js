@@ -2,7 +2,7 @@
  * Surveys Sample Edit controller.
  *****************************************************************************/
 import Backbone from 'backbone';
-import BIGU from 'bigu';
+import BIGU from 'BIGU';
 import _ from 'lodash';
 import $ from 'jquery';
 import Indicia from 'indicia';
