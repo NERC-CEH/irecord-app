@@ -81,13 +81,25 @@ const API = {
 
     // 'Add +' list button
     mainView.on('childview:create', () => {
-      radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
-        onSuccess(taxon, editButtonClicked) {
-          API.createNewSample(surveySample, taxon, editButtonClicked);
-        },
-        showEditButton: true,
-        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
-      });
+      for (let i = 0; i < 300; i++) {
+        API.createNewSample(surveySample, {
+          array_id: 20020,
+          common_name: 'Polypody',
+          found_in_name: 'common_name',
+          group: 87,
+          scientific_name: 'Polypodium interjectum x cambricum = P. x shivasiae',
+          species_id: 3,
+          warehouse_id: 20167,
+          _deduped_common_name: 'Polypody <small><i>(Polypodium interjectum x cambricum = P. x shivasiae)</i></small>'
+        });
+      }
+      // radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
+      //   onSuccess(taxon, editButtonClicked) {
+      //     API.createNewSample(surveySample, taxon, editButtonClicked);
+      //   },
+      //   showEditButton: true,
+      //   informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
+      // });
     });
     mainView.on('childview:sample:delete', (childView) => {
       API.sampleDelete(childView.model);
