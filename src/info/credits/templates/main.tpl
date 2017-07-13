@@ -26,5 +26,14 @@
       This app was part-funded by the Centre for Ecology & Hydrology/Joint Nature
       Conservation Committee partnership supporting BRC.
     </p>
+    <p>
+      <strong>Welcome screen credits:</strong>
+    </p>
+    <ul style="list-style-type: none;">
+      <li>David Kitching</li>
+      <li>Nadine Mitschunas</li>
+      <li>UK Ladybird Survey</li>
+    </ul>
+
   </li>
 </ul>
