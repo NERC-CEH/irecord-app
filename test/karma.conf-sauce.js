@@ -2,8 +2,9 @@
  * Config copied with mods from backbone karma sauce config
  */
 'use strict';
+
+const path = require('path');
 const _ = require('lodash');
-const fs = require('fs');
 
 const webpack = require('webpack');
 const ENV = process.env.NODE_ENV || process.env.ENV || 'testing';
@@ -42,12 +43,6 @@ const sauceBrowsers = _.reduce([
   ['android', '5.1'],
   ['android', '5'],
   ['android', '4.4'],
-  //['android', '4.3'],
-  //['android', '4.2'],
-  //['android', '4.1'],
-
-  //['safari', '9'],
-  //['safari', '8.0', 'OS X 10.10'],
 
 ], function (memo, platform) {
   // internet explorer -> ie
