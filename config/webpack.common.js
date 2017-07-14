@@ -42,6 +42,7 @@ module.exports = {
       occurrence: 'common/models/occurrence',
       app_model: 'common/models/app_model',
       user_model: 'common/models/user_model',
+      model_factory: 'common/models/model_factory',
 
       // vendor
       typeahead: 'typeahead.js/dist/typeahead.jquery',
