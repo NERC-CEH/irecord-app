@@ -20,11 +20,13 @@
       <li>Matt Smith</li>
       <li>Alan Rowland</li>
       <li>David Genney</li>
+      <li>Graham Checkley</li>
     </ul>
     </p>
     <p>
-      This app was part-funded by the Centre for Ecology & Hydrology/Joint Nature
-      Conservation Committee partnership supporting BRC.
+      This app was part-funded by the
+      <a href="https://www.ceh.ac.uk/">Centre for Ecology & Hydrology</a>/<a href="http://jncc.defra.gov.uk/">Joint Nature Conservation Committee</a>
+      partnership supporting BRC.
     </p>
     <p>
       <strong>Welcome screen credits:</strong>
