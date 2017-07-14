@@ -3,15 +3,41 @@
  *****************************************************************************/
 import $ from 'jquery';
 import LocHelp from 'helpers/location';
+import Marionette from 'backbone.marionette';
+import JST from 'JST';
 import Log from 'helpers/log';
 import typeaheadSearchFn from 'common/typeahead_search';
+import 'typeahead';
 
-const API = {
+const HeaderView = Marionette.View.extend({
+  template: JST['common/location/header'],
+
+  events: {
+    'change #location-name': 'changeName',
+    'typeahead:select #location-name': 'changeName',
+    'change #location-gridref': 'changeGridRef',
+    'keyup #location-gridref': 'keyupGridRef',
+    // 'blur #location-name': 'blurInput',
+    // 'blur #location-gridref': 'blurInput',
+  },
+
+  initialize() {
+    Log('Location:Controller:MainViewHeader: initializing.');
+
+    const appModel = this.model.get('appModel');
+    this.listenTo(appModel, 'change:attrLocks', this.updateLocks);
+  },
+
+  _onLocationChange(location) {
+    this._clearGrTimeout();
+    this._refreshGrErrorState(false);
+    this._refreshGridRefElement(location);
+  },
 
   /**
    * Attaches suggestions to the location name search.
    */
-  initHeader() {
+  onAttach() {
     const appModel = this.model.get('appModel');
     const strs = appModel.get('locations');
 
@@ -29,12 +55,12 @@ const API = {
   },
 
   changeName(e) {
-    this.triggerMethod('location:name:change', $(e.target).val());
+    this.triggerMethod('name:change', $(e.target).val());
   },
-
-  blurInput() {
-    this._refreshMapHeight();
-  },
+  //
+  // blurInput() {
+  //   this._refreshMapHeight();
+  // },
 
   /**
    * after delay, if gridref is valid then apply change
@@ -73,7 +99,7 @@ const API = {
           // Set new timeout - don't run if user is typing
           this.grRefreshTimeout = setTimeout(() => {
             // let controller know
-            that.trigger('location:gridref:change', value);
+            that.triggerMethod('gridref:change', value);
           }, 200);
         } else {
           this._refreshGrErrorState(true);
@@ -97,7 +123,7 @@ const API = {
     Log('Location:MainView:Header: executing changeGridRef.');
 
     this._clearGrTimeout();
-    this.triggerMethod('location:gridref:change', $(e.target).val());
+    this.triggerMethod('gridref:change', $(e.target).val());
   },
 
   _refreshGrErrorState(isError) {
@@ -105,7 +131,7 @@ const API = {
     if (grInputEl) {
       if (isError) {
         grInputEl.setAttribute('data-gr-error', 'error');
-        this._removeMapMarker();
+       // this._removeMapMarker();
       } else {
         grInputEl.removeAttribute('data-gr-error');
       }
@@ -126,15 +152,6 @@ const API = {
 
     $GR.val(value);
     $GR.attr('data-source', location.source);
-
-    const $gpsBtn = this.$el.find('.gps-btn');
-    if ($gpsBtn) {
-      $gpsBtn.attr('data-source', location.source);
-
-      if (location.source !== 'gps') {
-        this._set_gps_progress_feedback('');
-      }
-    }
   },
 
   updateLocks() {
@@ -166,6 +183,39 @@ const API = {
       $nameLockBtn.removeClass('icon-lock-closed');
     }
   },
-};
 
-export default API;
+  _getCurrentLocation() {
+    return this.model.get('sample').get('location') || {};
+  },
+
+
+  serializeData() {
+    Log('Location:Controller:MainViewHeader: serializing.');
+
+    const appModel = this.model.get('appModel');
+    const location = this._getCurrentLocation();
+    let value = location.gridref;
+
+
+    // avoid testing location.longitude as this can validly be zero within the UK
+    if ((!appModel.get('useGridRef') || !value) && location.latitude) {
+      value = `${location.latitude}, ${location.longitude}`;
+    }
+
+    const locationLocked = appModel.isAttrLocked('location', location);
+    const nameLocked = appModel.isAttrLocked('locationName', location.name);
+
+    const disableLocationLock = location.source === 'gps';
+    return {
+      hideName: this.options.hideName,
+      hideLocks: this.options.hideLocks,
+      disableLocationLock,
+      locationName: location.name,
+      value,
+      locationLocked,
+      nameLocked,
+    };
+  },
+});
+
+export default HeaderView;

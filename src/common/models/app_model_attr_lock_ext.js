@@ -53,15 +53,14 @@ export default {
         }
 
         // map or gridref
-        const mapGrid = lockedVal.name === value.name &&
-          lockedVal.latitude === value.latitude &&
+        return lockedVal.latitude === value.latitude &&
           lockedVal.longitude === value.longitude;
+      case 'locationName':
+        if (!lockedVal) {
+          return false;
+        }
 
-        // GPS only locks the name
-        const gps = lockedVal.name === value.name &&
-          !lockedVal.latitude && !lockedVal.longitude;
-
-        return mapGrid || gps;
+        return lockedVal.name === value.name;
       case 'date':
         if (isNaN(Date.parse(value)) || isNaN(Date.parse(lockedVal))) {
           return false;
@@ -104,7 +103,7 @@ export default {
           break;
         case 'location':
           let location = sample.get('location');
-          val.name = location.name; // don't overwrite old one
+          val.name = location.name; // don't overwrite old name
           sample.set('location', val);
           break;
         case 'locationName':

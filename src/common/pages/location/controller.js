@@ -181,7 +181,6 @@ const API = {
       });
   },
 
-
   /**
    * Updates the locks.
    * @param sample
@@ -194,6 +193,11 @@ const API = {
 
     // location
     if (location.source !== 'gps' && location.latitude) {
+      const clonedLocation = _.cloneDeep(location);
+
+      // remove location name as it is locked separately
+      delete clonedLocation.name;
+
       // we can lock location and name on their own
       // don't lock GPS though, because it varies more than a map or gridref
       if (currentLock &&
@@ -201,7 +205,7 @@ const API = {
         // update locked value if attr is locked
         // check if previously the value was locked and we are updating
         Log('Updating lock.');
-        appModel.setAttrLock('location', location);
+        appModel.setAttrLock('location', clonedLocation);
       }
     } else if (currentLock === true) {
       // reset if no location or location name selected but locked is clicked

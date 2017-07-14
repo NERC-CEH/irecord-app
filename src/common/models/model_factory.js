@@ -11,45 +11,51 @@ const Factory = {
       return Promise.reject(new Error('Survey options are missing.'));
     }
 
-    let sample;
-
     // plant survey
     if (survey === 'plant') {
-      // add currently logged in user as one of the recorders
-      const recorders = [];
-      if (userModel.hasLogIn()) {
-        recorders.push(`${userModel.get('firstname')} ${userModel.get('secondname')}`);
-      }
-
-      sample = new Sample({
-        location_type: 'british',
-        sample_method_id: 7305,
-        recorders,
-      }, {
-        metadata: {
-          survey: 'plant',
-          complex_survey: true,
-          gridSquareUnit: appModel.get('gridSquareUnit'),
-        },
-      });
-
-      // occurrence with image - pic select-first only
-      if (image) {
-        const occurrence = new Occurrence({ taxon });
-        occurrence.addMedia(image);
-        sample.addOccurrence(occurrence);
-      }
-
-      return Promise.resolve(sample);
+      return Factory._getPlantSample(image, taxon);
     }
 
+    return Factory._getGeneralSample(image, taxon);
+  },
+
+  _getPlantSample(image, taxon) {
+    // add currently logged in user as one of the recorders
+    const recorders = [];
+    if (userModel.hasLogIn()) {
+      recorders.push(`${userModel.get('firstname')} ${userModel.get('secondname')}`);
+    }
+
+    const sample = new Sample({
+      location_type: 'british',
+      sample_method_id: 7305,
+      recorders,
+    }, {
+      metadata: {
+        survey: 'plant',
+        complex_survey: true,
+        gridSquareUnit: appModel.get('gridSquareUnit'),
+      },
+    });
+
+    // occurrence with image - pic select-first only
+    if (image) {
+      const occurrence = new Occurrence({ taxon });
+      occurrence.addMedia(image);
+      sample.addOccurrence(occurrence);
+    }
+
+    return Promise.resolve(sample);
+  },
+
+  _getGeneralSample(image, taxon) {
     // general survey
     const occurrence = new Occurrence({ taxon });
     if (image) {
       occurrence.addMedia(image);
     }
 
-    sample = new Sample(null, {
+    const sample = new Sample(null, {
       metadata: {
         survey: 'general',
       },
@@ -62,14 +68,11 @@ const Factory = {
     // check if location attr is not locked
     const locks = appModel.get('attrLocks');
 
-    if (!locks.location) {
+    if (!locks.general || !locks.general.location) {
       // no previous location
       sample.startGPS();
-    } else if (!locks.location.latitude) {
-      // previously locked location was through GPS
-      // so try again
-      sample.startGPS();
     }
+
     return Promise.resolve(sample);
   },
 
