@@ -129,8 +129,10 @@
       button in the attribute edit page header. This will change the symbol to
       locked <span class="icon icon-lock-closed"></span> both on the button and next to the attribute.
       <br><br>
-      Note: locking a location that was acquired through GPS will only lock its
-      name (if one exists).
+      Note: locations acquired through GPS can not be locked. Also, running the GPS on a record
+      that has a locked location will overwrite the location with the newly acquired GPS position
+      but will not overwrite the existing lock, so subsequent records will still
+      have the initially locked location.
     </p>
   </li>
 

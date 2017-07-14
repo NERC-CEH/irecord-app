@@ -37,46 +37,49 @@ const helpers = {
       location.accuracy * 2 // accuracy is radius
     );
 
-    if (location.source === 'gps') {
-      return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
-    }
+    // Disabled because users 'want' higher precision rather correctness
+    // if (location.source === 'gps') {
+    //   return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
+    // }
 
     return gridCoords.to_gridref(normAcc);
   },
 
-  /**
-   * Returns a normalized grid square that takes into account the accuracy
-   * of the location.
-   +
-   |        OK                Not OK
-   |
-   |   +------------+    +------------+
-   |   |            |    |            |
-   |   |   +------+ |    |            |
-   |   |   |      | |    |            |
-   |   |   |  XX  | |    |       +------+
-   |   |   |      | |    |       |    | |
-   |   |   +------+ |    |       |  XX| |
-   |   +------------+    +------------+ |
-   |                             +------+
-   * @param gridCoords
-   * @param location
-   * @param normAcc
-   * @returns {*}
-   */
-  normalizeGridRefAcc(gridCoords, location, normAcc) {
-    // the location verges on the 10K square border and the accuracy
-    // is poor enough then don't return any valid gridref
-    if (normAcc >= 10000) {
-      return null;
-    }
-
-    if (helpers._doesExceedGridRef(gridCoords, location, normAcc)) {
-      return helpers.normalizeGridRefAcc(gridCoords, location, normAcc * 10);
-    }
-
-    return gridCoords.to_gridref(normAcc);
-  },
+  // /**
+  //  * Returns a normalized grid square that takes into account the accuracy
+  //  * of the location.
+  //  +
+  //  |        OK                Not OK
+  //  |
+  //  |   +------------+    +------------+
+  //  |   |            |    |            |
+  //  |   |   +------+ |    |            |
+  //  |   |   |      | |    |            |
+  //  |   |   |  XX  | |    |       +------+
+  //  |   |   |      | |    |       |    | |
+  //  |   |   +------+ |    |       |  XX| |
+  //  |   +------------+    +------------+ |
+  //  |                             +------+
+  //  * @param gridCoords
+  //  * @param location
+  //  * @param normAcc
+  //  * @returns {*}
+  //  */
+  // normalizeGridRefAcc(gridCoords, location, normAcc) {
+  //   // NOTE: is buggy! returns null with GPS.update({gridRef:'TQ12B', accuracy:20, xCorrect:1})
+  //
+  //   // the location verges on the 10K square border and the accuracy
+  //   // is poor enough then don't return any valid gridref
+  //   if (normAcc >= 10000) {
+  //     return null;
+  //   }
+  //
+  //   if (helpers._doesExceedGridRef(gridCoords, location, normAcc)) {
+  //     return helpers.normalizeGridRefAcc(gridCoords, location, normAcc * 10);
+  //   }
+  //
+  //   return gridCoords.to_gridref(normAcc);
+  // },
 
   /**
    * Checks if the location fits in the calculated grid reference square.

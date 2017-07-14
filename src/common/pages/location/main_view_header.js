@@ -17,18 +17,31 @@ const HeaderView = Marionette.View.extend({
     'typeahead:select #location-name': 'changeName',
     'change #location-gridref': 'changeGridRef',
     'keyup #location-gridref': 'keyupGridRef',
-    // 'blur #location-name': 'blurInput',
-    // 'blur #location-gridref': 'blurInput',
+    'blur #location-name': 'blurInput',
+    'blur #location-gridref': 'blurInput',
   },
 
   initialize() {
     Log('Location:Controller:MainViewHeader: initializing.');
+    const sample = this.model.get('sample');
+    this.listenTo(sample, 'change:location', this.onLocationChange);
+
 
     const appModel = this.model.get('appModel');
+    this.locationInitiallyLocked = appModel.isAttrLocked('location', this._getCurrentLocation());
     this.listenTo(appModel, 'change:attrLocks', this.updateLocks);
   },
 
-  _onLocationChange(location) {
+  onLocationChange() {
+    Log('Location:Controller:MainViewHeader: on location change.');
+    const location = this._getCurrentLocation();
+
+    if (location.source !== 'gridref') {
+      this.render();
+      return;
+    }
+
+    this.updateLocks();
     this._clearGrTimeout();
     this._refreshGrErrorState(false);
     this._refreshGridRefElement(location);
@@ -57,10 +70,10 @@ const HeaderView = Marionette.View.extend({
   changeName(e) {
     this.triggerMethod('name:change', $(e.target).val());
   },
-  //
-  // blurInput() {
-  //   this._refreshMapHeight();
-  // },
+
+  blurInput() {
+    this.triggerMethod('input:blur');
+  },
 
   /**
    * after delay, if gridref is valid then apply change
@@ -131,7 +144,7 @@ const HeaderView = Marionette.View.extend({
     if (grInputEl) {
       if (isError) {
         grInputEl.setAttribute('data-gr-error', 'error');
-       // this._removeMapMarker();
+        // this._removeMapMarker();
       } else {
         grInputEl.removeAttribute('data-gr-error');
       }
@@ -167,6 +180,7 @@ const HeaderView = Marionette.View.extend({
     if (locationLocked) {
       $locationLockBtn.addClass('icon-lock-closed');
       $locationLockBtn.removeClass('icon-lock-open');
+      $locationLockBtn.removeClass('disabled');
     } else {
       $locationLockBtn.addClass('icon-lock-open');
       $locationLockBtn.removeClass('icon-lock-closed');
@@ -202,10 +216,14 @@ const HeaderView = Marionette.View.extend({
       value = `${location.latitude}, ${location.longitude}`;
     }
 
-    const locationLocked = appModel.isAttrLocked('location', location);
+    const disableLocationLock = location.source === 'gps';
+
+    const currentLock = appModel.getAttrLock('location');
+    const locationLocked = !disableLocationLock && currentLock &&
+      (currentLock === true || this.locationInitiallyLocked);
+
     const nameLocked = appModel.isAttrLocked('locationName', location.name);
 
-    const disableLocationLock = location.source === 'gps';
     return {
       hideName: this.options.hideName,
       hideLocks: this.options.hideLocks,

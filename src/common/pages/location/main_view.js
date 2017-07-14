@@ -33,7 +33,10 @@ const LocationView = Marionette.View.extend({
       this.triggerMethod('location:gridref:change', val);
     },
     'name:change': function (val) {
-      this.triggerMethod('location:gridref:change', val);
+      this.triggerMethod('location:name:change', val);
+    },
+    'input:blur': function () {
+      this._refreshMapHeight();
     },
   },
 
@@ -49,14 +52,10 @@ const LocationView = Marionette.View.extend({
     this.listenTo(sample, 'geolocation:update', this.geolocationUpdate);
     this.listenTo(sample, 'geolocation:success', this.geolocationSuccess);
     this.listenTo(sample, 'change:location', this.onLocationChange);
-
-    const appModel = this.model.get('appModel');
-    this.listenTo(appModel, 'change:attrLocks', this.updateLocks);
   },
 
   onAttach() {
     Log('Location:Controller:MainView: attaching.');
-
     this.initMap();
   },
 
@@ -64,10 +63,10 @@ const LocationView = Marionette.View.extend({
     const appModel = this.model.get('appModel');
     const sample = this.model.get('sample');
 
-    this.headerView = new HeaderView({
+    const headerView = new HeaderView({
       model: new Backbone.Model({ appModel, sample }),
     });
-    this.showChildView('header', this.headerView);
+    this.showChildView('header', headerView);
   },
 
   serializeData() {
@@ -100,8 +99,6 @@ const LocationView = Marionette.View.extend({
         this._set_gps_progress_feedback('');
       }
     }
-
-    this.headerView._onLocationChange(location);
   },
 
   _getCurrentLocation() {
