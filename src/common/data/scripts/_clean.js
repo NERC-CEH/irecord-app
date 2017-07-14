@@ -1,17 +1,18 @@
-'use strict';
+'use strict'; // eslint-disable-line
 
-module.exports = (taxon, common, genus) => {
+module.exports = (taxon, common) => {
   if (!taxon) {
-    return;
+    return null;
   }
 
   let cleaned = taxon;
 
   // #Remove ',.*().*,,' - should not have bracketed old Genus
-  cleaned = taxon.replace(/\([a-zA-Z0-9\-\.\/\,\s]*\)\s?/g, '')
+  cleaned = taxon.replace(/\([a-zA-Z0-9\-\.\/\,\s]*\)\s?/g, ''); // eslint-disable-line
 
   if (common) {
-    // #Capitalize first words after comma 'a bird flea' -> 'Bird flea' ('a ' - was removed previously)
+    // #Capitalize first words after comma
+    // 'a bird flea' -> 'Bird flea' ('a ' - was removed previously)
     cleaned = taxon.charAt(0).toUpperCase() + taxon.slice(1);
   }
 
@@ -61,7 +62,7 @@ module.exports = (taxon, common, genus) => {
 
   // #todo: remove non alphanumerics
   // [^-_0-9,A-Za-z \.\=\(\)\'\"\/\]\[\s\&aàáâãäåæeèéêëæiìíîïoòóôõöøsßuùúûüyýÿ\+]
-  cleaned = cleaned.replace(/(\?|\:|\[|\])/g, '');
+  cleaned = cleaned.replace(/(\?|\:|\[|\])/g, ''); // eslint-disable-line
 
   // #remove spaces
   cleaned = cleaned.replace(/\s{2}/g, ' ');

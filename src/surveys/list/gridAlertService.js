@@ -63,9 +63,9 @@ const service = {
     const gridSquareUnit = appModel.get('gridSquareUnit');
     if (gridSquareUnit === 'monad') {
       return gridCoords.to_gridref(1000);
-    } else {
-      return gridCoords.to_gridref(2000);
     }
+
+    return gridCoords.to_gridref(2000);
   },
 };
 

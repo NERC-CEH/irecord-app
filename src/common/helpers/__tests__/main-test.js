@@ -1,8 +1,6 @@
 import validate from '../validate';
-import device from '../device';
-import analytics from '../analytics';
-import appModel from 'app_model';
-import CONFIG from 'config';
+
+/* eslint-disable */
 
 describe('Validate', function () {
   it('should detect correct email', function () {

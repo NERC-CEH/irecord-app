@@ -6,7 +6,6 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
-import Validate from 'helpers/validate';
 import StringHelp from 'helpers/string';
 import LocHelp from 'helpers/location';
 import GridRefUtils from 'BIGU';
@@ -18,7 +17,7 @@ import MainView from './main_view';
 // import PastLocationsController from '../../../settings/locations/controller';
 import './styles.scss';
 
-const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g;
+const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g; // eslint-disable-line
 
 // overwrite how the location is set on the sample
 let locationSetFunc = null;

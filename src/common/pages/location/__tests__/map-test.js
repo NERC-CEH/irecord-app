@@ -36,5 +36,4 @@ describe('Map', () => {
   //   // for both OSGB and WGS84 maps
   //   expect(false).to.be.true;
   // });
-
 });

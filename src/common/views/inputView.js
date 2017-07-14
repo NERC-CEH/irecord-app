@@ -35,7 +35,7 @@ export default Marionette.View.extend({
 
     const valid = this.validate(value);
     if (!valid) {
-      return;
+      return null;
     }
 
     if (this.type === 'date') {

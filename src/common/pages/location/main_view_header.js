@@ -15,7 +15,8 @@ const API = {
     const appModel = this.model.get('appModel');
     const strs = appModel.get('locations');
 
-    this.$el.find('.typeahead').typeahead({
+    this.$el.find('.typeahead').typeahead(
+      {
         hint: false,
         highlight: false,
         minLength: 0,

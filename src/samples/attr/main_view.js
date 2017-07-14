@@ -4,12 +4,11 @@
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import Log from 'helpers/log';
+import CONFIG from 'config';
 import InputView from 'common/views/inputView';
 import RadioInputView from 'common/views/radioInputView';
 import TextareaView from 'common/views/textareaInputView';
 import NumberAttrView from './numberAttrView';
-
-import CONFIG from 'config';
 
 export default Marionette.View.extend({
   template: _.template('<div id="attribute"></div>'),

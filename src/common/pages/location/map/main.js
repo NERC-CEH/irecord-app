@@ -118,7 +118,7 @@ const API = {
     const end = new BIGU.OSRef(7 * GRID_STEP, 13 * GRID_STEP).to_latLng();
     const bounds = L.latLngBounds([start.lat, start.lng], [end.lat, end.lng]);
 
-    layers.OS = L.tileLayer.OSOpenSpace(CONFIG.map.os_api_key);
+    layers.OS = L.tileLayer.OSOpenSpace(CONFIG.map.os_api_key); // eslint-disable-line
 
     layers.OS.options.bounds = bounds;
 
@@ -134,13 +134,12 @@ const API = {
           // eslint-disable-next-line
           tile.tile.src = tile.tile.src.replace(/missingTileString=(\d+)/i, '&missingTileString=' + index);
         }
-      } else {
-        if (index === 0) {
-          // eslint-disable-next-line
-          tile.tile.src = tile.tile.src + '&missingTileString=' + index;
-        }
+      } else if (index === 0) {
+        // eslint-disable-next-line
+        tile.tile.src = tile.tile.src + '&missingTileString=' + index;
       }
     });
+
     return layers;
   },
 
@@ -232,13 +231,13 @@ const API = {
    * @returns {*}
    */
   getMapZoom(zoom) {
-    zoom = zoom || this.map.getZoom();
+    let normalZoom = zoom || this.map.getZoom();
 
     if (this.currentLayer === 'OS') {
-      zoom += OS_ZOOM_DIFF;
+      normalZoom += OS_ZOOM_DIFF;
     }
 
-    return zoom;
+    return normalZoom;
   },
 
   onMapZoom() {

@@ -3,7 +3,6 @@
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
-import LocHelp from 'helpers/location';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 import 'typeahead';

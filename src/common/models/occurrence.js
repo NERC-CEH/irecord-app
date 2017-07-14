@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Indicia from 'indicia';
 import CONFIG from 'config';
 import ImageModel from './image';

@@ -58,7 +58,6 @@ const API = {
     });
 
     radio.trigger('app:header', headerView);
-
   },
 
   _showMainView(options, reset) {

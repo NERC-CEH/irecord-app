@@ -9,7 +9,6 @@ const SCI_NAME_INDEX = 2; // in genera and above
 const SPECIES_SCI_NAME_INDEX = 1; // in species and bellow
 const SPECIES_COMMON_INDEX = 2; // in species and bellow
 const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
-const MAX = 20;
 
 /**
  * Search Scientific names
@@ -60,7 +59,7 @@ function searchSciNames(species, searchPhrase, results = [],
       informalGroups.indexOf(speciesEntry[GROUP_INDEX]) < 0) {
       // skip this taxa because not in the searched informal groups
       speciesArrayIndex++;
-      continue;
+      continue;  // eslint-disable-line
     }
 
     // check if matches

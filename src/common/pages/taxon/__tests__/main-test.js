@@ -1,6 +1,8 @@
 import 'species.data';
 import searchEngine from '../search/taxon_search_engine';
 
+/* eslint-disable no-unused-expressions */
+
 const NAME = 1;
 const WAREHOUSE_ID = 0;
 
@@ -8,7 +10,7 @@ const WAREHOUSE_ID = 0;
  * Gets a random species from the species list
  * @returns {Array}
  */
-function getRandomSpecies() {
+function getRandomSpecies() {  // eslint-disable-line
   let randArrayIndex = (Math.random() * (window.species_list.length - 1)).toFixed(0);
   const sp = window.species_list[randArrayIndex];
   let species = [];
@@ -73,7 +75,7 @@ describe('Taxon Search Engine', () => {
         searchEngine.search('Isle of Man Cabbage').then((resultsDash) => {
           expect(results).to.deep.equal(resultsDash);
 
-          searchEngine.search('Perfoliate (Cotswold) Pennycress').then((results) => {
+          searchEngine.search('Perfoliate (Cotswold) Pennycress').then((results) => { // eslint-disable-line
             searchEngine.search('Perfoliate Cotswold Pennycress').then((resultsBracket) => {
               expect(results).to.deep.equal(resultsBracket);
               done();
@@ -87,7 +89,7 @@ describe('Taxon Search Engine', () => {
         expect(results).to.be.an('array');
         expect(results.length).to.equal(1);
 
-        searchEngine.search('X Cupressocyparis').then((results) => {
+        searchEngine.search('X Cupressocyparis').then((results) => { // eslint-disable-line
           expect(results).to.be.an('array');
           expect(results.length).to.equal(1);
           done();
@@ -104,7 +106,7 @@ describe('Taxon Search Engine', () => {
             result.synonym === 'Willow') found = true;
         });
         expect(found).to.be.true;
-        searchEngine.search('Jumping spiders').then((results) => {
+        searchEngine.search('Jumping spiders').then((results) => { // eslint-disable-line
           expect(results).to.be.an('array');
           expect(results.length).to.equal(1);
           done();
@@ -166,24 +168,24 @@ describe('Taxon Search Engine', () => {
         expect(result.scientific_name).to.be.equal('Phytomyza ilicis');
 
         // genus
-        searchEngine.search('Rotaliella').then((results) => {
+        searchEngine.search('Rotaliella').then((results) => { // eslint-disable-line
           expect(results).to.not.be.empty;
-          const result = results[0];
+          const result = results[0]; // eslint-disable-line
 
           expect(result.warehouse_id).to.be.equal(213771);
           expect(result.scientific_name).to.be.equal('Rotaliella');
 
           // common name
-          searchEngine.search('Giant Blackberry').then((results) => {
+          searchEngine.search('Giant Blackberry').then((results) => { // eslint-disable-line
             expect(results).to.not.be.empty;
-            const result = results[0];
+            const result = results[0]; // eslint-disable-line
 
             expect(result.warehouse_id).to.be.equal(208098);
             expect(result.common_name).to.be.equal('Giant Blackberry');
             expect(result.scientific_name).to.be.equal('Rubus armeniacus');
 
            // specific cases
-            searchEngine.search('cockle').then((results) => {
+            searchEngine.search('cockle').then((results) => { // eslint-disable-line
               expect(results).to.not.be.empty;
               let found = false;
               results.forEach((species) => {
@@ -191,9 +193,9 @@ describe('Taxon Search Engine', () => {
               });
               expect(found).to.be.true;
 
-              searchEngine.search('blackthorn').then((results) => {
+              searchEngine.search('blackthorn').then((results) => { // eslint-disable-line
                 expect(results).to.not.be.empty;
-                let found = false;
+                let found = false; // eslint-disable-line
                 results.forEach((species) => {
                   if (species.common_name === 'Blackthorn') found = true;
                 });

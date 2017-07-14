@@ -103,6 +103,8 @@ const helpers = {
     if (((y % normAcc) + accuracy) > normAcc) {
       return true;
     }
+
+    return false;
   },
 
   /**
@@ -117,18 +119,21 @@ const helpers = {
 
       if (parsedRef) {
         const nationalGridRefSW = parsedRef.osRef;
+        const a = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y);  // eslint-disable-line
+        const b = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
+        const c = new parsedRef.NationalRef(nationalGridRefSW.x, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
         return [
           nationalGridRefSW.to_latLng(),
-          (new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y)).to_latLng(),
-          (new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y + parsedRef.length)).to_latLng(),
-          (new parsedRef.NationalRef(nationalGridRefSW.x, nationalGridRefSW.y + parsedRef.length)).to_latLng()
+          a.to_latLng(),
+          b.to_latLng(),
+          c.to_latLng(),
         ];
-      } else {
-        return null;
       }
-    } else {
+
       return null;
     }
+
+    return null;
   },
 
   /**

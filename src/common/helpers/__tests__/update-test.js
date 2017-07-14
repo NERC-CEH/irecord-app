@@ -1,6 +1,8 @@
-import Update from '../update';
 import appModel from 'app_model';
 import CONFIG from 'config'; // Replaced with alias
+import Update from '../update';
+
+/* eslint-disable */
 
 Update.updatesSeq = ['3.0.0', '3.1.2', '3.2.0', '4.0.0'];
 

@@ -52,7 +52,7 @@ const Slider = Marionette.SlidingView.extend({
 
     const scrolledNo = Math.floor(scrollTop / cellHeight);
 
-    return lowerBound + viewContainsNo * 2 + scrolledNo;
+    return lowerBound + (viewContainsNo * 2) + scrolledNo;
   },
 
   pruneCollection(lowerBound, upperBound) {

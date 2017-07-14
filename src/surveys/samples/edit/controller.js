@@ -5,7 +5,6 @@ import Backbone from 'backbone';
 import BIGU from 'BIGU';
 import _ from 'lodash';
 import $ from 'jquery';
-import Indicia from 'indicia';
 import Device from 'helpers/device';
 import ImageHelp from 'helpers/image';
 import Analytics from 'helpers/analytics';

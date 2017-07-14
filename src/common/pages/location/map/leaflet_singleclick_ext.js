@@ -1,6 +1,8 @@
 // https://github.com/Outdooractive/leaflet-singleclick_0.7
 import L from 'leaflet';
 
+/* eslint-disable */
+
 L.Map.addInitHook(function () {
   let that = this
     , h

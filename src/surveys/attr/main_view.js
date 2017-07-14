@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Surveys List main view.
  *****************************************************************************/
+import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import InputView from 'common/views/inputView';

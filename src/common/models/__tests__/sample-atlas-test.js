@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 describe('Sample atlas', () => {
-  //todo
+  // todo
   it('should only allow subsample location edit if exists (survey)', () => {
    // expect(true).to.be.false;
   });

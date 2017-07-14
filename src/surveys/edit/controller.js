@@ -217,8 +217,7 @@ const API = {
     location.id = locationID;
 
     // set the gridSquareUnit so that future changes in the settings don't change that;
-    sample.metadata.gridSquareUnit = gridSquareUnit;
-
+    sample.metadata.gridSquareUnit = gridSquareUnit; // eslint-disable-line
 
     sample.set('location', location);
     sample.trigger('change:location');

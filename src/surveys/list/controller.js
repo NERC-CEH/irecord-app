@@ -139,19 +139,13 @@ const API = {
    * Creates a new survey.
    */
   addSurveySample() {
-    return Factory.createSample('plant', null, null).then((sample) => {
-    //  sample.set('recorder_count', 1);
-     // sample.set('recorder_names', 'me');
-
-      return sample.save().then(() => {
+    return Factory.createSample('plant', null, null).then(sample =>
+      sample.save().then(() => {
         savedSamples.add(sample);
         sample.startGPS();
         return sample;
-      });
-    });
-
-    // append locked attributes
-    // appModel.appendAttrLocks(sample);
+      })
+    );
   },
 };
 

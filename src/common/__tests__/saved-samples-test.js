@@ -1,12 +1,10 @@
 import Indicia from 'indicia';
 import savedSamples from 'saved_samples';
-import userModel from 'user_model';
 // import { getRandomSample, generateSampleResponse } from 'test-helpers';
 
 describe('Saved samples', () => {
   let server;
 
-  let userLogin;
   before((done) => {
     server = sinon.fakeServer.create();
     server.respondImmediately = true;

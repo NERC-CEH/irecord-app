@@ -13,7 +13,7 @@ class ComplexMarker {
     this.square.setLocation(location);
     this.circle.setLocation(location);
   }
-};
+}
 
 const marker = {
   addMapMarker() {

@@ -11,7 +11,7 @@ import Analytics from 'helpers/analytics';
 import activitiesExtension from './user_model_activities_ext';
 import statisticsExtension from './user_model_statistics_ext';
 
-let UserModel = Backbone.Model.extend({
+let UserModel = Backbone.Model.extend({  // eslint-disable-line
   id: 'user',
 
   defaults: {

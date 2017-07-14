@@ -3,7 +3,7 @@
 // # A, B, C[], C[], C[], D[], E{A}, E{B}, F{P{L[]}}
 // #
 // # {A, B, [C, C, C], [D], E:{A, B}}, F:{P:[L]}
-'use strict';
+'use strict'; // eslint-disable-line
 
 const taxonCleaner = require('./_clean');
 const csv = require('csv');
@@ -93,7 +93,6 @@ function optimise(output) {
    * @returns {*}
    */
   function getLastGenus(taxa, taxaNameSplitted, index) {
-
     const lastEntry = index || optimised.length - 1;
     let lastGenus = optimised[lastEntry];
     // console.log(`---------`)

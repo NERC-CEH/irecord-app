@@ -259,7 +259,7 @@ export default Marionette.View.extend({
     return null;
   },
 
-  _keyup(e) {
+  _keyup(e) { // eslint-disable-line
     const that = this;
     const input = e.target.value;
     if (!input) {

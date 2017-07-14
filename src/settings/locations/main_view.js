@@ -2,8 +2,8 @@
  * Settings Locations main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
-import PastLocationsView from './past_locations_view';
 import JST from 'JST';
+import PastLocationsView from './past_locations_view';
 
 export default Marionette.View.extend({
   template: JST['settings/locations/main'],
