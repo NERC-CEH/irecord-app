@@ -63,10 +63,13 @@ export default {
 
         return mapGrid || gps;
       case 'date':
-        lockedVal = new Date(lockedVal);
-        if (lockedVal === 'Invalid Date') return false;
+        if (isNaN(Date.parse(value)) || isNaN(Date.parse(lockedVal))) {
+          return false;
+        }
 
-        return lockedVal.getTime() === value.getTime();
+        lockedVal = new Date(lockedVal);
+        const currentValue = new Date(value);
+        return lockedVal.getTime() === currentValue.getTime();
       default:
         return value === lockedVal;
     }
