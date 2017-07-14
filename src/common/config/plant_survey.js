@@ -2,6 +2,7 @@
  * Plant survey configuration file.
  *****************************************************************************/
 import $ from 'jquery';
+import Indicia from 'indicia';
 
 const config = {
   survey_id: 325,
@@ -151,6 +152,74 @@ const config = {
     comment: {
       label: 'Please add any extra info about this record.',
     },
+  },
+
+  verify(attrs) {
+    const attributes = {};
+    const samples = {};
+    const occurrences = {};
+
+    const isChildSample = this.parent;
+
+    // todo: remove this bit once sample DB update is possible
+    // check if saved or already send
+    if (!isChildSample && (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)) {
+      attributes.send = false;
+    }
+
+    // location
+    const location = attrs.location || {};
+    if (!location.latitude) {
+      attributes.location = 'missing';
+    }
+
+    // survey level
+    if (!isChildSample) {
+      if (!location.name) {
+        attributes['location name'] = 'missing';
+      }
+
+      // recorder names
+      if (!attrs.recorders || !attrs.recorders.length) {
+        attributes.recorder_names = 'can\'t be blank';
+      }
+    }
+
+    // date
+    if (!attrs.date) {
+      attributes.date = 'missing';
+    } else {
+      const date = new Date(attrs.date);
+      if (date === 'Invalid Date' || date > new Date()) {
+        attributes.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
+      }
+    }
+
+    // location type
+    if (!attrs.location_type) {
+      attributes.location_type = 'can\'t be blank';
+    }
+
+    // subsamples
+    this.samples.each((subSample) => {
+      const errors = subSample.validate(null, { remote: true });
+      if (errors) {
+        const sampleID = subSample.cid;
+        samples[sampleID] = errors;
+      }
+    });
+
+    // occurrences
+    this.occurrences.each((occurrence) => {
+      const errors = occurrence.validate(null, { remote: true });
+      if (errors) {
+        const occurrenceID = occurrence.cid;
+        occurrences[occurrenceID] = errors;
+      }
+    });
+
+
+    return [attributes, samples, occurrences];
   },
 };
 

@@ -15,127 +15,6 @@ import store from '../store';
 import ImageModel from '../../common/models/image';
 import GeolocExtension from './sample_geoloc_ext';
 
-const surveyVerify = {
-  general(attrs) {
-    const attributes = {};
-    const occurrences = {};
-
-    // todo: remove this bit once sample DB update is possible
-    // check if saved or already send
-    if (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED) {
-      attributes.send = false;
-    }
-
-    // location
-    const location = attrs.location || {};
-    if (!location.latitude) {
-      attributes.location = 'missing';
-    }
-    // location name
-    if (!location.name) {
-      attributes['location name'] = 'missing';
-    }
-
-    // date
-    if (!attrs.date) {
-      attributes.date = 'missing';
-    } else {
-      const date = new Date(attrs.date);
-      if (date === 'Invalid Date' || date > new Date()) {
-        attributes.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
-      }
-    }
-
-    // location type
-    if (!attrs.location_type) {
-      attributes.location_type = 'can\'t be blank';
-    }
-
-    // occurrences
-    if (this.occurrences.length === 0) {
-      attributes.occurrences = 'no species selected';
-    } else {
-      this.occurrences.each((occurrence) => {
-        const errors = occurrence.validate(null, { remote: true });
-        if (errors) {
-          const occurrenceID = occurrence.cid;
-          occurrences[occurrenceID] = errors;
-        }
-      });
-    }
-
-    return [attributes, null, occurrences];
-  },
-
-  plant(attrs) {
-    const attributes = {};
-    const samples = {};
-    const occurrences = {};
-
-    const isChildSample = this.parent;
-
-    // todo: remove this bit once sample DB update is possible
-    // check if saved or already send
-    if (!isChildSample && (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)) {
-      attributes.send = false;
-    }
-
-    // location
-    const location = attrs.location || {};
-    if (!location.latitude) {
-      attributes.location = 'missing';
-    }
-
-    // survey level
-    if (!isChildSample) {
-      if (!location.name) {
-        attributes['location name'] = 'missing';
-      }
-
-      // recorder names
-      if (!attrs.recorders || !attrs.recorders.length) {
-        attributes.recorder_names = 'can\'t be blank';
-      }
-    }
-
-    // date
-    if (!attrs.date) {
-      attributes.date = 'missing';
-    } else {
-      const date = new Date(attrs.date);
-      if (date === 'Invalid Date' || date > new Date()) {
-        attributes.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
-      }
-    }
-
-    // location type
-    if (!attrs.location_type) {
-      attributes.location_type = 'can\'t be blank';
-    }
-
-    // subsamples
-    this.samples.each((subSample) => {
-      const errors = subSample.validate(null, { remote: true });
-      if (errors) {
-        const sampleID = subSample.cid;
-        samples[sampleID] = errors;
-      }
-    });
-
-    // occurrences
-    this.occurrences.each((occurrence) => {
-      const errors = occurrence.validate(null, { remote: true });
-      if (errors) {
-        const occurrenceID = occurrence.cid;
-        occurrences[occurrenceID] = errors;
-      }
-    });
-
-
-    return [attributes, samples, occurrences];
-  },
-};
-
 let Sample = Indicia.Sample.extend({ // eslint-disable-line
   api_key: CONFIG.indicia.api_key,
   host_url: CONFIG.indicia.host,
@@ -185,12 +64,13 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
 
 
   validateRemote() {
-    if (!surveyVerify[this.metadata.survey]) {
+    const survey = CONFIG.indicia.surveys[this.metadata.survey];
+    if (!survey || !survey.verify) {
       Log('Sample:model: no such survey in remote verify.', 'e');
       throw new Error('No sample survey to verify.');
     }
 
-    const verify = surveyVerify[this.metadata.survey].bind(this);
+    const verify = survey.verify.bind(this);
     const [attributes, samples, occurrences] = verify(this.attributes);
 
     if (!_.isEmpty(attributes) || !_.isEmpty(samples) || !_.isEmpty(occurrences)) {
@@ -271,22 +151,22 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
         return null;
       }
 
-      location.source = 'gridref';
+      location.source = 'gridref'; // eslint-disable-line
       if (gridSquareUnit === 'monad') {
         // monad
-        location.accuracy = 500;
+        location.accuracy = 500; // eslint-disable-line
 
-        gridCoords.x += -gridCoords.x % 1000 + 500;
-        gridCoords.y += -gridCoords.y % 1000 + 500;
-        location.gridref = gridCoords.to_gridref(1000);
+        gridCoords.x += (-gridCoords.x % 1000) + 500;
+        gridCoords.y += (-gridCoords.y % 1000) + 500;
+        location.gridref = gridCoords.to_gridref(1000); // eslint-disable-line
       } else {
         // tetrad
-        location.accuracy = 1000;
+        location.accuracy = 1000; // eslint-disable-line
 
-        gridCoords.x += -gridCoords.x % 2000 + 1000;
-        gridCoords.y += -gridCoords.y % 2000 + 1000;
-        location.gridref = gridCoords.to_gridref(2000);
-        location.accuracy = 1000;
+        gridCoords.x += (-gridCoords.x % 2000) + 1000;
+        gridCoords.y += (-gridCoords.y % 2000) + 1000;
+        location.gridref = gridCoords.to_gridref(2000); // eslint-disable-line
+        location.accuracy = 1000; // eslint-disable-line
       }
 
       this.set('location', location);
