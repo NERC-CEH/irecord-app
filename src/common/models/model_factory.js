@@ -80,7 +80,7 @@ const Factory = {
    */
   createSampleWithPhoto(survey, photo) {
     return ImageHelp.getImageModel(ImageModel, photo)
-      .then(image => Factory.createSample(Sample, survey, image));
+      .then(image => Factory.createSample(survey, image));
   },
 };
 
