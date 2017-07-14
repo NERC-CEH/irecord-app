@@ -35,7 +35,7 @@ const Factory = {
 
       // occurrence with image - pic select-first only
       if (image) {
-        const occurrence = new Occurrence({taxon});
+        const occurrence = new Occurrence({ taxon });
         occurrence.addMedia(image);
         sample.addOccurrence(occurrence);
       }
@@ -44,7 +44,7 @@ const Factory = {
     }
 
     // general survey
-    const occurrence = new Occurrence({taxon});
+    const occurrence = new Occurrence({ taxon });
     if (image) {
       occurrence.addMedia(image);
     }
