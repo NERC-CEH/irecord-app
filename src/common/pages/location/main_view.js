@@ -65,6 +65,8 @@ const LocationView = Marionette.View.extend({
 
     const headerView = new HeaderView({
       model: new Backbone.Model({ appModel, sample }),
+      hideName: this.options.hideName,
+      hideLocks: this.options.hideLocks,
     });
     this.showChildView('header', headerView);
   },
@@ -74,6 +76,7 @@ const LocationView = Marionette.View.extend({
     const location = this._getCurrentLocation();
 
     return {
+      hideName: this.options.hideName,
       locationSource: location.source,
       accuracy: location.accuracy,
       latitude: location.latitude,

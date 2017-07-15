@@ -334,9 +334,13 @@ const API = {
     }
 
     const parentGridref = sample.parent.get('location').gridref;
-    const parsedRef = BIGU.GridRefParser.factory(parentGridref);
+    const parentParsedRef = BIGU.GridRefParser.factory(parentGridref);
 
-    return gridCoords.to_gridref(parsedRef.length) === parentGridref;
+    if (location.gridref.length < parentGridref.length) {
+      return false;
+    }
+
+    return gridCoords.to_gridref(parentParsedRef.length) === parentGridref;
   },
 
   /**

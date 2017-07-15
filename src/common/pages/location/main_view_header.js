@@ -176,7 +176,10 @@ const HeaderView = Marionette.View.extend({
 
     // location lock
     const $locationLockBtn = this.$el.find('#location-lock-btn');
-    const locationLocked = appModel.isAttrLocked('location', location);
+
+    const disableLocationLock = location.source === 'gps';
+    const locationLocked = this.isLocationLocked(disableLocationLock);
+
     if (locationLocked) {
       $locationLockBtn.addClass('icon-lock-closed');
       $locationLockBtn.removeClass('icon-lock-open');
@@ -202,7 +205,6 @@ const HeaderView = Marionette.View.extend({
     return this.model.get('sample').get('location') || {};
   },
 
-
   serializeData() {
     Log('Location:Controller:MainViewHeader: serializing.');
 
@@ -218,10 +220,7 @@ const HeaderView = Marionette.View.extend({
 
     const disableLocationLock = location.source === 'gps';
 
-    const currentLock = appModel.getAttrLock('location');
-    const locationLocked = !disableLocationLock && currentLock &&
-      (currentLock === true || this.locationInitiallyLocked);
-
+    const locationLocked = this.isLocationLocked(disableLocationLock);
     const nameLocked = appModel.isAttrLocked('locationName', location.name);
 
     return {
@@ -233,6 +232,14 @@ const HeaderView = Marionette.View.extend({
       locationLocked,
       nameLocked,
     };
+  },
+
+  isLocationLocked(disableLocationLock = false) {
+    const appModel = this.model.get('appModel');
+
+    const currentLock = appModel.getAttrLock('location');
+    return !disableLocationLock && currentLock &&
+      (currentLock === true || this.locationInitiallyLocked);
   },
 });
 
