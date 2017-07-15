@@ -5,4 +5,12 @@
   </label>
   <span class="delete media-object pull-right icon icon-cancel"></span>
 </div>
-<div id="suggestions"></div>
+<div id="suggestions">
+  <p id="taxa-shortcuts-info">For quicker searching of the taxa you can use different shortcuts.
+    For example, to find <i>Puffinus baroli</i> you can type in the search bar:
+    <br>
+    <br><i>puffinus ba</i>
+    <br><i>puffinus .oli</i>
+    <br><i>. baroli</i>
+  </p>
+</div>
