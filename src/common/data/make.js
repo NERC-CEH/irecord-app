@@ -8,7 +8,6 @@ const commonNameMaker = require('./scripts/_makeCommonNameMap');
  * @param callback
  */
 function transform2JSON(data, outputFileName, callback) {
-
   // transform
   console.log('Transforming to JSON...');
   jsonTranslator(data, (err, jsonData) => {

@@ -1,8 +1,7 @@
-import API from '../controller';
 import savedSamples from 'saved_samples';
+import API from '../controller';
 
-
-describe('List Controller', function () {
+describe('List Controller', function () { // eslint-disable-line
   // it can take time to add/remove samples
   this.timeout(10000);
 

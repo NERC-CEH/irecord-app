@@ -39,7 +39,7 @@ export default function (species, commonNamePointersArray, searchPhrase,
   }
 
 
-  function informalGroupMatch(informalGroups, group) {
+  function informalGroupMatch(informalGroups, group) {  // eslint-disable-line
     // check if species is in informal groups to search
     if (informalGroups.length &&
       informalGroups.indexOf(group) < 0) {
@@ -74,7 +74,7 @@ export default function (species, commonNamePointersArray, searchPhrase,
 
         if (!informalGroupMatch(informalGroups, genus[GROUP_INDEX])) {
           pointersArrayIndex++;
-          continue;
+          continue; // eslint-disable-line
         }
 
         let name = genus[p[1]];
@@ -103,7 +103,7 @@ export default function (species, commonNamePointersArray, searchPhrase,
 
         if (!informalGroupMatch(informalGroups, genus[GROUP_INDEX])) {
           pointersArrayIndex++;
-          continue;
+          continue; // eslint-disable-line
         }
 
         // carry on while it matches the first name

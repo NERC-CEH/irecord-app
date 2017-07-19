@@ -5,7 +5,6 @@ import Backbone from 'backbone';
 import BIGU from 'BIGU';
 import _ from 'lodash';
 import $ from 'jquery';
-import Indicia from 'indicia';
 import Device from 'helpers/device';
 import ImageHelp from 'helpers/image';
 import Analytics from 'helpers/analytics';
@@ -335,9 +334,13 @@ const API = {
     }
 
     const parentGridref = sample.parent.get('location').gridref;
-    const parsedRef = BIGU.GridRefParser.factory(parentGridref);
+    const parentParsedRef = BIGU.GridRefParser.factory(parentGridref);
 
-    return gridCoords.to_gridref(parsedRef.length) === parentGridref;
+    if (location.gridref.length < parentGridref.length) {
+      return false;
+    }
+
+    return gridCoords.to_gridref(parentParsedRef.length) === parentGridref;
   },
 
   /**

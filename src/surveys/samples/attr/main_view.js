@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * Surveys Sample Attr main view.
  *****************************************************************************/
+import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import RadioInputView from 'common/views/radioInputView';

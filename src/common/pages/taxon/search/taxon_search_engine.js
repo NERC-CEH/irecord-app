@@ -23,8 +23,8 @@ const API = {
       loading = true;
       require.ensure([], () => {
         loading = false;
-        species = require('species.data');
-        commonNamePointers = require('species_names.data');
+        species = require('species.data'); // eslint-disable-line
+        commonNamePointers = require('species_names.data'); // eslint-disable-line
         that.trigger('data:loaded');
         resolve();
       }, 'data');
@@ -45,7 +45,7 @@ const API = {
    }
    */
   search(searchPhrase, options = {}) {
-    //todo Accent Folding: https://alistapart.com/article/accent-folding-for-auto-complete
+    // todo Accent Folding: https://alistapart.com/article/accent-folding-for-auto-complete
 
     let results = [];
 
@@ -87,7 +87,7 @@ const API = {
         results, maxResults, null, informalGroups);
     } else {
       // search common names
-      results = searchCommonNames(species, commonNamePointers, normSearchPhrase, MAX, informalGroups);
+      results = searchCommonNames(species, commonNamePointers, normSearchPhrase, MAX, informalGroups);  // eslint-disable-line
 
       // if not enough
       if (results.length <= MAX) {

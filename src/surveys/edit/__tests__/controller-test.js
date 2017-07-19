@@ -5,7 +5,7 @@ describe('Surveys List Controller', () => {
     expect(API.show).to.be.a('function');
   });
   it('should check if survey location accuracy is good enough', () => {
-    //todo
+    // todo
     // const sample = new Sample();
     // expect(API.isSurveyLocationSet(sample)).to.be.false;
     // sample.set('location', {

@@ -42,7 +42,7 @@ const Collection = Indicia.Collection.extend({
           }
           toWaitSend.push(validPromise);
         });
-        Promise.all(toWaitSend);
+        // return Promise.all(toWaitSend);
         // no promise return since we don't want wait till all are submitted
         // as this can be done in the background
       });

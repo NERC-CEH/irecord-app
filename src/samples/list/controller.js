@@ -8,7 +8,7 @@ import Analytics from 'helpers/analytics';
 import ImageHelp from 'helpers/image';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
-import Sample from 'sample';
+import Factory from 'model_factory';
 import MainView from './main_view';
 import LoaderView from '../../common/views/loader_view';
 import HeaderView from './header_view';
@@ -157,7 +157,7 @@ const API = {
   },
 
   createNewSampleWithPhoto() {
-    Sample.createNewSampleWithPhoto.apply(this, arguments)
+    Factory.createSampleWithPhoto.apply(this, arguments)
       .then(sample => sample.save())
       .then((sample) => {
         // add to main collection
@@ -172,7 +172,7 @@ const API = {
   createNewSample() {
     radio.trigger('samples:edit:attr', null, 'taxon', {
       onSuccess(taxon, editButtonClicked) {
-        Sample.createNewSample('general', null, taxon)
+        Factory.createSample('general', null, taxon)
           .then(sample => sample.save())
           .then((sample) => {
             // add to main collection

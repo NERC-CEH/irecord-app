@@ -12,6 +12,7 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import Update from 'helpers/update';
 import Device from 'helpers/device';
+import Analytics from 'helpers/analytics';
 import appModel from 'app_model';
 import CommonController from './common/controller';
 import DialogRegion from './common/views/dialog_region';

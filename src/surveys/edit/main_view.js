@@ -46,6 +46,16 @@ export default Marionette.View.extend({
 
     const vc = sample.get('vice-county') || {};
 
+    // calculate unique taxa
+    const uniqueTaxa = {};
+    sample.samples.each((childSample) => {
+      const occ = childSample.getOccurrence();
+      if (occ) {
+        const taxon = occ.get('taxon') || {};
+        uniqueTaxa[taxon.warehouse_id] = true;
+      }
+    });
+
     return {
       id: sample.cid,
       training: sample.metadata.training,
@@ -56,7 +66,7 @@ export default Marionette.View.extend({
       locationName: location.name,
       'vice-county': vc.name,
       date: DateHelp.print(sample.get('date'), true),
-      species: sample.samples.length,
+      species: Object.keys(uniqueTaxa).length,
       recorders: (sample.get('recorders') || []).length,
       comment: sample.get('comment') && StringHelp.limit(sample.get('comment')),
       locks: {},

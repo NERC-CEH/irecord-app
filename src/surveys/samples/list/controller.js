@@ -7,10 +7,9 @@ import radio from 'radio';
 import savedSamples from 'saved_samples';
 import Log from 'helpers/log';
 import Occurrence from 'occurrence';
-import Sample from 'sample';
+import Factory from 'model_factory';
 import ImageHelp from 'helpers/image';
 import CONFIG from 'config';
-import appModel from 'app_model';
 import MainView from './main_view';
 import HeaderView from './header_view';
 import SurveysEditController from '../../edit/controller';
@@ -144,7 +143,7 @@ const API = {
    */
   createNewSampleWithPhoto(surveySample, photo) {
     // todo: show loader
-    return Sample.createNewSampleWithPhoto('plant', photo)
+    return Factory.createSampleWithPhoto('plant', photo)
       .then(sample => API.configNewSample(surveySample, sample))
       // rerender the view since smart list doesn't do that yet
       .then(() => API._showMainView(surveySample, {}))
@@ -160,7 +159,7 @@ const API = {
    * @param taxon
    */
   createNewSample(surveySample, taxon, editButtonClicked) {
-    return Sample.createNewSample('plant')
+    return Factory.createSample('plant')
       .then((sample) => {
         const occurrence = new Occurrence({ taxon });
         sample.addOccurrence(occurrence);
@@ -208,8 +207,8 @@ const API = {
       delete surveyLocation.name;
 
       sample.set('location', surveyLocation);
-      //sample.set('recorder_count', surveySample.get('recorder_count'));
-     // sample.set('recorder_names', surveySample.get('recorder_names'));
+      // sample.set('recorder_count', surveySample.get('recorder_count'));
+      // sample.set('recorder_names', surveySample.get('recorder_names'));
 
       sample.startGPS();
     }

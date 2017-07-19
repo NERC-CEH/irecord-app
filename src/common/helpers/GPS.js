@@ -4,7 +4,7 @@ import Log from './log';
 // /* ---------------------------------------------- */
 // uncomment to enable GPS mock
 // import GPS from 'mock-geolocation';
-// import BIGU from 'bigu';
+// import BIGU from 'BIGU';
 //
 // GPS.use();
 // window.GPS = GPS;

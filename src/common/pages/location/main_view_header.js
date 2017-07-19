@@ -3,19 +3,59 @@
  *****************************************************************************/
 import $ from 'jquery';
 import LocHelp from 'helpers/location';
+import Marionette from 'backbone.marionette';
+import JST from 'JST';
 import Log from 'helpers/log';
 import typeaheadSearchFn from 'common/typeahead_search';
+import 'typeahead';
 
-const API = {
+const HeaderView = Marionette.View.extend({
+  template: JST['common/location/header'],
+
+  events: {
+    'change #location-name': 'changeName',
+    'typeahead:select #location-name': 'changeName',
+    'change #location-gridref': 'changeGridRef',
+    'keyup #location-gridref': 'keyupGridRef',
+    'blur #location-name': 'blurInput',
+    'blur #location-gridref': 'blurInput',
+  },
+
+  initialize() {
+    Log('Location:Controller:MainViewHeader: initializing.');
+    const sample = this.model.get('sample');
+    this.listenTo(sample, 'change:location', this.onLocationChange);
+
+
+    const appModel = this.model.get('appModel');
+    this.locationInitiallyLocked = appModel.isAttrLocked('location', this._getCurrentLocation());
+    this.listenTo(appModel, 'change:attrLocks', this.updateLocks);
+  },
+
+  onLocationChange() {
+    Log('Location:Controller:MainViewHeader: on location change.');
+    const location = this._getCurrentLocation();
+
+    if (location.source !== 'gridref') {
+      this.render();
+      return;
+    }
+
+    this.updateLocks();
+    this._clearGrTimeout();
+    this._refreshGrErrorState(false);
+    this._refreshGridRefElement(location);
+  },
 
   /**
    * Attaches suggestions to the location name search.
    */
-  initHeader() {
+  onAttach() {
     const appModel = this.model.get('appModel');
     const strs = appModel.get('locations');
 
-    this.$el.find('.typeahead').typeahead({
+    this.$el.find('.typeahead').typeahead(
+      {
         hint: false,
         highlight: false,
         minLength: 0,
@@ -28,11 +68,11 @@ const API = {
   },
 
   changeName(e) {
-    this.triggerMethod('location:name:change', $(e.target).val());
+    this.triggerMethod('name:change', $(e.target).val());
   },
 
   blurInput() {
-    this._refreshMapHeight();
+    this.triggerMethod('input:blur');
   },
 
   /**
@@ -72,7 +112,7 @@ const API = {
           // Set new timeout - don't run if user is typing
           this.grRefreshTimeout = setTimeout(() => {
             // let controller know
-            that.trigger('location:gridref:change', value);
+            that.triggerMethod('gridref:change', value);
           }, 200);
         } else {
           this._refreshGrErrorState(true);
@@ -96,7 +136,7 @@ const API = {
     Log('Location:MainView:Header: executing changeGridRef.');
 
     this._clearGrTimeout();
-    this.triggerMethod('location:gridref:change', $(e.target).val());
+    this.triggerMethod('gridref:change', $(e.target).val());
   },
 
   _refreshGrErrorState(isError) {
@@ -104,7 +144,7 @@ const API = {
     if (grInputEl) {
       if (isError) {
         grInputEl.setAttribute('data-gr-error', 'error');
-        this._removeMapMarker();
+        // this._removeMapMarker();
       } else {
         grInputEl.removeAttribute('data-gr-error');
       }
@@ -125,15 +165,6 @@ const API = {
 
     $GR.val(value);
     $GR.attr('data-source', location.source);
-
-    const $gpsBtn = this.$el.find('.gps-btn');
-    if ($gpsBtn) {
-      $gpsBtn.attr('data-source', location.source);
-
-      if (location.source !== 'gps') {
-        this._set_gps_progress_feedback('');
-      }
-    }
   },
 
   updateLocks() {
@@ -145,10 +176,14 @@ const API = {
 
     // location lock
     const $locationLockBtn = this.$el.find('#location-lock-btn');
-    const locationLocked = appModel.isAttrLocked('location', location);
+
+    const disableLocationLock = location.source === 'gps';
+    const locationLocked = this.isLocationLocked(disableLocationLock);
+
     if (locationLocked) {
       $locationLockBtn.addClass('icon-lock-closed');
       $locationLockBtn.removeClass('icon-lock-open');
+      $locationLockBtn.removeClass('disabled');
     } else {
       $locationLockBtn.addClass('icon-lock-open');
       $locationLockBtn.removeClass('icon-lock-closed');
@@ -165,6 +200,47 @@ const API = {
       $nameLockBtn.removeClass('icon-lock-closed');
     }
   },
-};
 
-export default API;
+  _getCurrentLocation() {
+    return this.model.get('sample').get('location') || {};
+  },
+
+  serializeData() {
+    Log('Location:Controller:MainViewHeader: serializing.');
+
+    const appModel = this.model.get('appModel');
+    const location = this._getCurrentLocation();
+    let value = location.gridref;
+
+
+    // avoid testing location.longitude as this can validly be zero within the UK
+    if ((!appModel.get('useGridRef') || !value) && location.latitude) {
+      value = `${location.latitude}, ${location.longitude}`;
+    }
+
+    const disableLocationLock = location.source === 'gps';
+
+    const locationLocked = this.isLocationLocked(disableLocationLock);
+    const nameLocked = appModel.isAttrLocked('locationName', location.name);
+
+    return {
+      hideName: this.options.hideName,
+      hideLocks: this.options.hideLocks,
+      disableLocationLock,
+      locationName: location.name,
+      value,
+      locationLocked,
+      nameLocked,
+    };
+  },
+
+  isLocationLocked(disableLocationLock = false) {
+    const appModel = this.model.get('appModel');
+
+    const currentLock = appModel.getAttrLock('location');
+    return !disableLocationLock && currentLock &&
+      (currentLock === true || this.locationInitiallyLocked);
+  },
+});
+
+export default HeaderView;

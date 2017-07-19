@@ -37,46 +37,49 @@ const helpers = {
       location.accuracy * 2 // accuracy is radius
     );
 
-    if (location.source === 'gps') {
-      return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
-    }
+    // Disabled because users 'want' higher precision rather correctness
+    // if (location.source === 'gps') {
+    //   return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
+    // }
 
     return gridCoords.to_gridref(normAcc);
   },
 
-  /**
-   * Returns a normalized grid square that takes into account the accuracy
-   * of the location.
-   +
-   |        OK                Not OK
-   |
-   |   +------------+    +------------+
-   |   |            |    |            |
-   |   |   +------+ |    |            |
-   |   |   |      | |    |            |
-   |   |   |  XX  | |    |       +------+
-   |   |   |      | |    |       |    | |
-   |   |   +------+ |    |       |  XX| |
-   |   +------------+    +------------+ |
-   |                             +------+
-   * @param gridCoords
-   * @param location
-   * @param normAcc
-   * @returns {*}
-   */
-  normalizeGridRefAcc(gridCoords, location, normAcc) {
-    // the location verges on the 10K square border and the accuracy
-    // is poor enough then don't return any valid gridref
-    if (normAcc >= 10000) {
-      return null;
-    }
-
-    if (helpers._doesExceedGridRef(gridCoords, location, normAcc)) {
-      return helpers.normalizeGridRefAcc(gridCoords, location, normAcc * 10);
-    }
-
-    return gridCoords.to_gridref(normAcc);
-  },
+  // /**
+  //  * Returns a normalized grid square that takes into account the accuracy
+  //  * of the location.
+  //  +
+  //  |        OK                Not OK
+  //  |
+  //  |   +------------+    +------------+
+  //  |   |            |    |            |
+  //  |   |   +------+ |    |            |
+  //  |   |   |      | |    |            |
+  //  |   |   |  XX  | |    |       +------+
+  //  |   |   |      | |    |       |    | |
+  //  |   |   +------+ |    |       |  XX| |
+  //  |   +------------+    +------------+ |
+  //  |                             +------+
+  //  * @param gridCoords
+  //  * @param location
+  //  * @param normAcc
+  //  * @returns {*}
+  //  */
+  // normalizeGridRefAcc(gridCoords, location, normAcc) {
+  //   // NOTE: is buggy! returns null with GPS.update({gridRef:'TQ12B', accuracy:20, xCorrect:1})
+  //
+  //   // the location verges on the 10K square border and the accuracy
+  //   // is poor enough then don't return any valid gridref
+  //   if (normAcc >= 10000) {
+  //     return null;
+  //   }
+  //
+  //   if (helpers._doesExceedGridRef(gridCoords, location, normAcc)) {
+  //     return helpers.normalizeGridRefAcc(gridCoords, location, normAcc * 10);
+  //   }
+  //
+  //   return gridCoords.to_gridref(normAcc);
+  // },
 
   /**
    * Checks if the location fits in the calculated grid reference square.
@@ -103,6 +106,8 @@ const helpers = {
     if (((y % normAcc) + accuracy) > normAcc) {
       return true;
     }
+
+    return false;
   },
 
   /**
@@ -117,18 +122,21 @@ const helpers = {
 
       if (parsedRef) {
         const nationalGridRefSW = parsedRef.osRef;
+        const a = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y);  // eslint-disable-line
+        const b = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
+        const c = new parsedRef.NationalRef(nationalGridRefSW.x, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
         return [
           nationalGridRefSW.to_latLng(),
-          (new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y)).to_latLng(),
-          (new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y + parsedRef.length)).to_latLng(),
-          (new parsedRef.NationalRef(nationalGridRefSW.x, nationalGridRefSW.y + parsedRef.length)).to_latLng()
+          a.to_latLng(),
+          b.to_latLng(),
+          c.to_latLng(),
         ];
-      } else {
-        return null;
       }
-    } else {
+
       return null;
     }
+
+    return null;
   },
 
   /**

@@ -1,4 +1,3 @@
-import Sample from 'sample';
 import API from '../controller';
 
 /* eslint-disable no-unused-expressions */

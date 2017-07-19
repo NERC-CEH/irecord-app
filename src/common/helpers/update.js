@@ -102,7 +102,7 @@ class DatabaseStorage {
             } else {
               callback(null, data);
             }
-          } catch (err) {
+          } catch (err) {  // eslint-disable-line
             callback && callback(err);
           }
         };
@@ -113,7 +113,7 @@ class DatabaseStorage {
           const error = new Error(e.target.error);
           callback(error);
         };
-      } catch (err) {
+      } catch (err) {  // eslint-disable-line
         callback && callback(err);
       }
     });
@@ -301,7 +301,7 @@ const API = {
       function moveRecords(err, samples = []) {
         if (err) {
           Log(err, 'e');
-          return;
+          return null;
         }
 
         const samplesCount = Object.keys(samples).length;
@@ -321,7 +321,7 @@ const API = {
           return newSample;
         }
 
-        for (const sample in samples) {
+        for (const sample in samples) {  // eslint-disable-line
           const updatedSample = updateSampleStructure(samples[sample]);
           savedSamples.add(updatedSample);
         }
@@ -341,7 +341,7 @@ const API = {
 
           // recover lost records too
           const evenOlderDB = new DatabaseStorage({ appname: 'ir' });
-          evenOlderDB.getAll((err, samples = []) => {
+          evenOlderDB.getAll((err, samples = []) => {  // eslint-disable-line
             moveRecords(err, samples).then(() => {
               // clean up old db
               Log('Update: clearing ir db.', 'i');
@@ -352,7 +352,6 @@ const API = {
           });
         });
       });
-
     },
   },
 

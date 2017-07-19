@@ -60,6 +60,16 @@ const SampleView = Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
+    // calculate unique taxa
+    const uniqueTaxa = {};
+    sample.samples.each((childSample) => {
+      const occ = childSample.getOccurrence();
+      if (occ) {
+        const taxon = occ.get('taxon') || {};
+        uniqueTaxa[taxon.warehouse_id] = true;
+      }
+    });
+
     return {
       surveyLabel: 'Plant',
       id: sample.cid,
@@ -69,7 +79,7 @@ const SampleView = Marionette.View.extend({
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
       locationName: location.name,
-      samples: sample.samples.length,
+      samples: Object.keys(uniqueTaxa).length,
       comment: sample.get('comment'),
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       date,

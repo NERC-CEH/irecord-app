@@ -22,7 +22,7 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#surveys/<%- obj.id %>/edit/vice-county" id="date-button"
+    <a href="#surveys/<%- obj.id %>/edit/vice-county"
        class="<%- obj.locks['vice-county'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-address"></span>
       <span class="media-object pull-right descript short"><%- obj['vice-county'] %></span>
@@ -38,7 +38,7 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#surveys/<%- obj.id %>/edit/samples" id="stage-button"
+    <a href="#surveys/<%- obj.id %>/edit/samples"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-stage"></span>
       <span class="media-object pull-right descript"><%- obj.species ? obj.species : '' %></span>
@@ -46,7 +46,7 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#surveys/<%- obj.id %>/edit/recorders" id="stage-button"
+    <a href="#surveys/<%- obj.id %>/edit/recorders"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-users"></span>
       <span class="media-object pull-right descript"><%- obj.recorders ? obj.recorders : '' %></span>

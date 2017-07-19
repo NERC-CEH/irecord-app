@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { AppModel } from '../app_model';
 
 function genLocation() {

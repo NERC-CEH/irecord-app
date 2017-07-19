@@ -6,7 +6,6 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
-import Validate from 'helpers/validate';
 import StringHelp from 'helpers/string';
 import LocHelp from 'helpers/location';
 import GridRefUtils from 'BIGU';
@@ -18,7 +17,7 @@ import MainView from './main_view';
 // import PastLocationsController from '../../../settings/locations/controller';
 import './styles.scss';
 
-const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g;
+const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g; // eslint-disable-line
 
 // overwrite how the location is set on the sample
 let locationSetFunc = null;
@@ -182,7 +181,6 @@ const API = {
       });
   },
 
-
   /**
    * Updates the locks.
    * @param sample
@@ -195,6 +193,11 @@ const API = {
 
     // location
     if (location.source !== 'gps' && location.latitude) {
+      const clonedLocation = _.cloneDeep(location);
+
+      // remove location name as it is locked separately
+      delete clonedLocation.name;
+
       // we can lock location and name on their own
       // don't lock GPS though, because it varies more than a map or gridref
       if (currentLock &&
@@ -202,7 +205,7 @@ const API = {
         // update locked value if attr is locked
         // check if previously the value was locked and we are updating
         Log('Updating lock.');
-        appModel.setAttrLock('location', location);
+        appModel.setAttrLock('location', clonedLocation);
       }
     } else if (currentLock === true) {
       // reset if no location or location name selected but locked is clicked

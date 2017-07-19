@@ -23,7 +23,7 @@ _.extend(Backbone.Router.prototype, Backbone.Events, {
     if (!fn)
       fn = name;
 
-    if (typeof callback == 'object') {
+    if (typeof callback === 'object') {
       before = callback.before;
       fn = callback.route;
       after = callback.after;
@@ -45,7 +45,7 @@ _.extend(Backbone.Router.prototype, Backbone.Events, {
 
       if (after && after.apply(this, args) === false) return;
 
-      if (typeof callback == 'object') {
+      if (typeof callback === 'object') {
         leave = callback.leave;
         leaveArgs = args;
       }

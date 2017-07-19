@@ -9,10 +9,21 @@
   }
 }
 
+#species-list-filters {
+  height: 48%;
+  border-bottom: none;
+}
+
 .filter-label {
   text-transform: capitalize;
 }
 
+#taxa-shortcuts-info {
+  padding: 15px;
+  background: rgba(238, 238, 238, 0.6);
+  margin: 20px;
+  color: #353535;
+}
 
 #suggestions .table-view {
   border-top: none;

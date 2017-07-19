@@ -3,7 +3,7 @@
  */
 import _ from 'lodash';
 
-export default (strs, max, strProcessor) => {
+export default function (strs, max, strProcessor) {
   return function findMatches(q, cb) {
     // an array that will be populated with substring matches
     const matches = [];
@@ -29,4 +29,4 @@ export default (strs, max, strProcessor) => {
 
     cb(matches);
   };
-};
+}

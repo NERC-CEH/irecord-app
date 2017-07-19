@@ -20,7 +20,6 @@ const API = {
       maxWidth: 30,  // number
     });
 
-
     this.map.addControl(button);
     const sample = this.model.get('sample');
     if (sample.isGPSRunning()) {

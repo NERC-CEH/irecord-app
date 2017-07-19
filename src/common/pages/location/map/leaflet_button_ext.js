@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import './leaflet_button_ext.scss';
 
+/* global L */
+
 /**
  * https://gist.github.com/ejh/2935327
  */
@@ -16,13 +18,12 @@ export default L.Control.extend({
 
   onAdd(map) {
     this._map = map;
-    const containerClassName = 'leaflet-control-button ' + (this.options.containerClassName || '');
+    const containerClassName = 'leaflet-control-button ' + (this.options.containerClassName || '');  // eslint-disable-line
     const container = L.DomUtil.create('div', containerClassName);
-    
+
     if (this.options.title) {
       container.title = this.options.title;
     }
-    //console.log(container);
 
     this._container = container;
 
@@ -30,20 +31,19 @@ export default L.Control.extend({
     return this._container;
   },
 
-  onRemove(map) {
-  },
+  onRemove() {},
 
   setButton(options) {
     const button = {
-      body: options.body,                 // string
-      'text': options.text,                 // string
-      'iconUrl': options.iconUrl,           // string
-      'onClick': options.onClick,           // callback function
-      'hideText': !!options.hideText,         // forced bool
-      'maxWidth': options.maxWidth || 70,     // number
-      'doToggle': options.doToggle,			// bool
-      'toggleStatus': options.toggleStatus,					// bool
-      'title': options.title ? options.title : '', // string
+      body: options.body, // string
+      text: options.text, // string
+      iconUrl: options.iconUrl, // string
+      onClick: options.onClick, // callback function
+      hideText: !!options.hideText, // forced bool
+      maxWidth: options.maxWidth || 70, // number
+      doToggle: options.doToggle, // bool
+      toggleStatus: options.toggleStatus, // bool
+      title: options.title ? options.title : '', // string
     };
 
     this._button = button;
@@ -66,8 +66,7 @@ export default L.Control.extend({
   toggle(e) {
     if (typeof e === 'boolean') {
       this._button.toggleStatus = e;
-    }
-    else {
+    } else {
       this._button.toggleStatus = !this._button.toggleStatus;
     }
     this._update();
@@ -83,11 +82,11 @@ export default L.Control.extend({
   },
 
   _makeButton(button) {
-    const className = 'leaflet-buttons-control-button ' + (this.options.className || '');
+    const className = 'leaflet-buttons-control-button ' + (this.options.className || ''); // eslint-disable-line
     const newButton = L.DomUtil.create('div', className, this._container);
-    if (button.toggleStatus)
+    if (button.toggleStatus) {
       L.DomUtil.addClass(newButton, 'leaflet-buttons-control-toggleon');
-
+    }
     if (button.body) {
       // MY MOD
       newButton.innerHTML = button.body;
@@ -101,8 +100,9 @@ export default L.Control.extend({
         const span = L.DomUtil.create('span', 'leaflet-buttons-control-text', newButton);
         const text = document.createTextNode(button.text);  // is there an L.DomUtil for this?
         span.appendChild(text);
-        if (button.hideText)
+        if (button.hideText) {
           L.DomUtil.addClass(span, 'leaflet-buttons-control-text-hide');
+        }
       }
     }
 
@@ -116,10 +116,9 @@ export default L.Control.extend({
 
   _clicked() {  // 'this' refers to button
     if (this._button.doToggle) {
-      if (this._button.toggleStatus) {	// currently true, remove class
+      if (this._button.toggleStatus) { // currently true, remove class
         L.DomUtil.removeClass(this._container.childNodes[0], 'leaflet-buttons-control-toggleon');
-      }
-      else {
+      } else {
         L.DomUtil.addClass(this._container.childNodes[0], 'leaflet-buttons-control-toggleon');
       }
       this.toggle();

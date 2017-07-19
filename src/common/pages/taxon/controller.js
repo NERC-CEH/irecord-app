@@ -54,11 +54,18 @@ const API = {
       radio.trigger('app:dialog', {
         title: 'Filter',
         body: filtersView,
+        buttons: [
+          {
+            title: 'Done',
+            onClick() {
+              radio.trigger('app:dialog:hide');
+            },
+          },
+        ],
       });
     });
 
     radio.trigger('app:header', headerView);
-
   },
 
   _showMainView(options, reset) {

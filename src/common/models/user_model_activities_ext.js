@@ -94,11 +94,7 @@ export default {
     }
 
     // activity not found in available list, or activity found but out of date range
-    if (tooEarly || tooLate) {
-      return true;
-    }
-
-    return false;
+    return tooEarly || tooLate;
   },
 
   /**
@@ -143,7 +139,7 @@ export default {
 
         data.forEach((activity) => {
           const fullActivity = $.extend({}, defaultActivity, activity);
-          fullActivity.id = parseInt(fullActivity.id);
+          fullActivity.id = parseInt(fullActivity.id, 10);
 
           // from
           let date;
@@ -163,6 +159,8 @@ export default {
 
         that.set('activities', activities);
         that.save();
+
+        return null;
       });
 
     return promise;
