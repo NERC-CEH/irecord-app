@@ -9,7 +9,6 @@ const SCI_NAME_INDEX = 2; // in genera and above
 const SPECIES_SCI_NAME_INDEX = 1; // in species and bellow
 const SPECIES_COMMON_INDEX = 2; // in species and bellow
 const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
-const MAX = 20;
 
 /**
  * Search Scientific names
@@ -17,7 +16,8 @@ const MAX = 20;
  * @param searchPhrase
  * @returns {Array}
  */
-function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, hybridRun) {
+function searchSciNames(species, searchPhrase, results = [],
+                        maxResults, hybridRun, informalGroups = []) {
   const searchWords = searchPhrase.split(' ');
 
   // prepare first word regex
@@ -34,7 +34,7 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
 
   // check if hybrid eg. X Cupressocyparis
   if (!hybridRun && searchPhrase.match(/X\s.*/i)) {
-    searchSciNames(species, searchPhrase, results, maxResults, true);
+    searchSciNames(species, searchPhrase, results, maxResults, true, informalGroups);
   } else if (hybridRun) {
     // run with different first word
     firstWord = helpers.normalizeFirstWord(searchPhrase);
@@ -53,6 +53,15 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
   speciesArrayIndex < speciesArrayLength &&
   results.length < maxResults) {
     const speciesEntry = species[speciesArrayIndex];
+
+    // check if species is in informal groups to search
+    if (informalGroups.length &&
+      informalGroups.indexOf(speciesEntry[GROUP_INDEX]) < 0) {
+      // skip this taxa because not in the searched informal groups
+      speciesArrayIndex++;
+      continue;  // eslint-disable-line
+    }
+
     // check if matches
     if (firstWordRegex.test(speciesEntry[SCI_NAME_INDEX])) {
       // find species array
@@ -80,7 +89,10 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
       // if this is genus
       if (speciesArray) {
         // go through all species
-        for (let speciesIndex = 0, length = speciesArray.length; speciesIndex < length && results.length < maxResults; speciesIndex++) {
+        for (
+          let speciesIndex = 0, length = speciesArray.length;
+          speciesIndex < length && results.length < maxResults;
+          speciesIndex++) {
           const speciesInArray = speciesArray[speciesIndex];
           if (otherWordsRegex) {
             // if search through species
@@ -93,7 +105,7 @@ function searchSciNames(species, searchPhrase, results = [], maxResults = MAX, h
                 found_in_name: 'scientific_name',
                 warehouse_id: speciesInArray[WAREHOUSE_INDEX],
                 group: speciesEntry[GROUP_INDEX],
-                scientific_name: speciesEntry[SCI_NAME_INDEX] + ' ' + speciesInArray[SPECIES_SCI_NAME_INDEX],
+                scientific_name: `${speciesEntry[SCI_NAME_INDEX]} ${speciesInArray[SPECIES_SCI_NAME_INDEX]}`,
                 common_name: speciesInArray[SPECIES_COMMON_INDEX],
                 synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
               };

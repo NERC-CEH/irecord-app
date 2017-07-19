@@ -223,12 +223,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "8663320a860b00f26e94d3d15c9ba99a",
-      "css": "clock",
-      "code": 59430,
-      "src": "entypo"
-    },
-    {
       "uid": "7222571caa5c15f83dcfd447c58d68d9",
       "css": "search",
       "code": 59397,
@@ -271,6 +265,44 @@
       "css": "training",
       "code": 59434,
       "src": "linecons"
+    },
+    {
+      "uid": "e15f0d620a7897e2035c18c80142f6d9",
+      "css": "link-ext",
+      "code": 61582,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "abc2900bdbc0fd3390a4ce8b837fc0a9",
+      "css": "surveys",
+      "code": 59435,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M999.2 1000.1L328.9 1000.5 328.7 657.1 417.6 657.1 417.8 911.5 910.3 911.3 910 418.4 657.6 418.6 657.5 329.7 998.9 329.4 999.2 1000.1ZM658 328.7L328.7 328.7 328.7 658 0.4 658.2 0 0.4 657.9 0 658 328.7ZM658 417.6L658 658 417.6 658 417.6 417.6 658 417.6Z",
+        "width": 1000
+      },
+      "search": [
+        "surveys-icon"
+      ]
+    },
+    {
+      "uid": "04309fefab5210bf502d278d65d134cf",
+      "css": "fire",
+      "code": 59436,
+      "src": "linecons"
+    },
+    {
+      "uid": "d4816c0845aa43767213d45574b3b145",
+      "css": "history",
+      "code": 61914,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "440e5cbb0f604b4be0c0183e63a0cde3",
+      "css": "low-vision",
+      "code": 62120,
+      "src": "fontawesome"
     }
   ]
 }

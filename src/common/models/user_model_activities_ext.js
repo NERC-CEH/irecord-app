@@ -3,38 +3,52 @@
  *****************************************************************************/
 import $ from 'jquery';
 import _ from 'lodash';
-import { Log } from 'helpers';
+import Indicia from 'indicia';
+import Log from 'helpers/log';
 import CONFIG from 'config';
 
 export default {
   syncActivities(force) {
+    Log('UserModel:Activities: synchronising.');
+
     const that = this;
     if (this.synchronizingActivities) {
-      return;
+      return this.synchronizingActivities;
     }
-    this.synchronizingActivities = true;
 
-    if (this.hasLogIn() && this._lastSyncExpired() || force) {
+    if ((this.hasLogIn() && this._lastSyncExpired()) || force) {
       // init or refresh
-      this.fetchActivities(() => {
-        that.synchronizingActivities = false;
-      });
-    } else {
-      const activities = this.get('activities') || [];
-      // remove expired activities
-      for (let i = activities.length - 1; i >= 0; i--) {
-        const activity = activities[i];
-        if (this.hasActivityExpired(activity)) {
-          Log('UserModel: removing expired activity');
-          activities.splice(i, 1);
-        }
-      }
-      this.synchronizingActivities = false;
+      this.trigger('sync:activities:start');
+
+      this.synchronizingActivities = this.fetchActivities()
+        .then(() => {
+          delete that.synchronizingActivities;
+          that.trigger('sync:activities:end');
+        })
+        .catch((err) => {
+          delete that.synchronizingActivities;
+          that.trigger('sync:activities:end');
+          return Promise.reject(err);
+        });
+
+      return this.synchronizingActivities;
     }
+
+    // remove expired activities
+    const activities = this.get('activities') || [];
+    for (let i = activities.length - 1; i >= 0; i--) {
+      const activity = activities[i];
+      if (this.hasActivityExpired(activity)) {
+        Log('UserModel:Activities: removing expired one.');
+        activities.splice(i, 1);
+      }
+    }
+
+    return Promise.resolve();
   },
 
   resetActivities() {
-    Log('UserModel: resetting activities');
+    Log('UserModel:Activities: resetting.');
     this.set('activities', []);
     this.save();
   },
@@ -80,38 +94,38 @@ export default {
     }
 
     // activity not found in available list, or activity found but out of date range
-    if (tooEarly || tooLate) {
-      return true;
-    }
-
-    return false;
+    return tooEarly || tooLate;
   },
 
   /**
    * Loads the list of available activities from the warehouse then updates the
    * collection in the main view.
    */
-  fetchActivities(callback) {
-    // Log('UserModel: fetching activities');
-    this.trigger('sync:activities:start');
-    const that = this;
-    const data = {
-      report: 'library/groups/groups_for_app.xml',
-      // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.morel.manager.input_form,
-      email: this.get('email'),
-      appname: CONFIG.morel.manager.appname,
-      appsecret: CONFIG.morel.manager.appsecret,
-      usersecret: this.get('secret'),
-    };
+  fetchActivities() {
+    Log('UserModel:Activities: fetching.');
 
-    $.ajax({
-      url: CONFIG.report.url,
-      type: 'POST',
-      data,
-      dataType: 'JSON',
-      timeout: CONFIG.report.timeout,
-      success(receivedData) {
+    const that = this;
+
+    const report = new Indicia.Report({
+      report: '/library/groups/groups_for_app.xml',
+
+      api_key: CONFIG.indicia.api_key,
+      host_url: CONFIG.indicia.host,
+      user: this.getUser.bind(this),
+      password: this.getPassword.bind(this),
+      params: {
+        path: CONFIG.indicia.surveys.general.input_form,
+      },
+    });
+
+    const promise = report.run()
+      .then((receivedData) => {
+        const data = receivedData.data;
+        if (!data || !(data instanceof Array)) {
+          const err = new Error('Error while retrieving activities response.');
+          return Promise.reject(err);
+        }
+
         const activities = [];
         const defaultActivity = {
           synced_on: new Date().toString(),
@@ -123,9 +137,9 @@ export default {
           group_to_date: '',
         };
 
-        receivedData.forEach((activity) => {
+        data.forEach((activity) => {
           const fullActivity = $.extend({}, defaultActivity, activity);
-          fullActivity.id = parseInt(fullActivity.id);
+          fullActivity.id = parseInt(fullActivity.id, 10);
 
           // from
           let date;
@@ -145,15 +159,11 @@ export default {
 
         that.set('activities', activities);
         that.save();
-        callback();
-        that.trigger('sync:activities:end');
-      },
-      error(err) {
-        Log('Activities load failed');
-        callback(err);
-        that.trigger('sync:activities:end');
-      },
-    });
+
+        return null;
+      });
+
+    return promise;
   },
 
   /**
@@ -172,8 +182,6 @@ export default {
       return Math.round((second - first) / (1000 * 60 * 60 * 24));
     }
 
-    if (daydiff(lastSync, new Date()) >= 1) return true;
-
-    return false;
+    return daydiff(lastSync, new Date()) >= 1;
   },
 };

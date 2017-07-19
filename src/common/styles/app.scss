@@ -51,6 +51,19 @@ img {
   min-height: $button-height;
 }
 
+.input-group {
+  button {
+    position: absolute;
+    right: 0;
+    height: $button-height;
+    background-color: $color-white;
+
+    &+input {
+      padding-right: $button-height;
+    }
+  }
+}
+
 .input-row.error {
   height: 50px;
   border-bottom: 1px solid $color-orange;
@@ -118,6 +131,7 @@ header a:hover {
 header button:hover {
   background-color: $color-gray-light !important;
   color: $button-black!important;
+  border: none;
 }
 
 button {
@@ -149,14 +163,17 @@ header {
       margin-right: 2px;
     }
 
-    //if has any text then leave it auto width
     button:empty,
     a:empty {
       width: 50%;
-      max-width: 55px;
       margin-left: 0;
 
       text-align: center;
+    }
+
+    //if has any text then leave it auto width
+    a[data-rel="back"]:empty {
+      max-width: 55px;
     }
   }
 }
@@ -185,6 +202,61 @@ header .subtitle {
   text-align: center;
   white-space: nowrap;
 }
+
+
+// SUBHEADER
+#subheader {
+  position: absolute;
+  top: $header-height;
+  width: 100%;
+
+  margin-left: -5px;
+
+  & > * {
+    text-align: center;
+    padding: 8px 0;
+    font-weight: 700;
+  }
+
+  .activity {
+    color: $color-white;
+    background-color: $color-main-dark;
+  }
+
+  .surveys {
+    color: $color-white;
+    background-color: $color-brown;
+  }
+
+  .training {
+    color: $color-white;
+    background-color: $color-black;
+  }
+}
+
+// take into account iOS info header
+body.ios header #subheader {
+  margin-top: 18px;
+}
+
+// content bands
+.band-margin-1
+{
+  margin-top: 36px;
+
+  &.slim {
+    margin-top: 18px;
+  }
+}
+
+.band-margin-2 {
+  margin-top: 72px;
+
+  &.slim {
+    margin-top: 36px
+  }
+}
+
 
 .navigate-right:after, .push-right:after {
   content: '\e818';
@@ -297,6 +369,7 @@ li h3 {
   width: 100%;
   margin: 0 auto;
   margin-top: 50%;
+  margin-bottom: 50%;
   text-align: center;
 }
 
@@ -352,6 +425,17 @@ li h3 {
   a {
     color: $color-white;
     font-weight: bold;
+  }
+
+  .btn {
+    color: $color-black;
+    padding: 15px 0;
+
+    span.pull-right {
+      position: absolute;
+      right: 15px;
+      top: 0;
+    }
   }
 }
 
@@ -493,6 +577,10 @@ li.table-view-cell {
   }
 }
 
+li.table-view-cell.wide {
+  padding: 11px 15px 11px 15px;
+}
+
 ul.no-style {
   list-style: none;
   padding: 0;
@@ -532,6 +620,10 @@ a span.pull-left.icon {
 .disabled {
   opacity: 0.5;
   pointer-events: none;
+
+  &.very {
+    opacity: 0.3;
+  }
 }
 
 #footer, #header {
@@ -586,6 +678,10 @@ button, input, select, textarea {
   background-color: $color-gray-light;
   font-size: $button-font-size;
   color: $color-black;
+}
+
+.table-view-divider.dark {
+  background-color: $color-gray;
 }
 
 //remove top margin on lists
@@ -648,7 +744,7 @@ button, input, select, textarea {
 .item-small {
   &.item-checkbox {
     padding-top: 7px;
-    height: 37px;
+    padding-bottom: 7px;
     font-style: $text-font-size!important;
   }
 

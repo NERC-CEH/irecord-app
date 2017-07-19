@@ -1,19 +1,19 @@
 /** ********************************************************************
  * Manual testing functions.
  *********************************************************************/
-import appModel from 'components/common/models/app_model';
-import recordManager from 'components/common/record_manager';
-import Sample from 'components/common/models/sample';
-import Occurrence from 'components/common/models/occurrence';
-import Morel from 'morel';
+import appModel from 'app_model';
+import savedRecords from 'saved_samples';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import Indicia from 'indicia';
 
 const testing = {};
 
 /**
  * Reset All Records Status
  */
-testing.resetRecordsStatus = function () {
-  recordManager.getAll((getError, recordsCollection) => {
+testing.resetRecordsStatus = () => {
+  savedRecords.getAll((getError, recordsCollection) => {
     if (getError) {
       App.regions.dialog.error(getError);
       return;
@@ -31,7 +31,58 @@ testing.resetRecordsStatus = function () {
 /**
  * Add a Dummy Record.
  */
-testing.addDummyRecord = function (count = 1, imageData, testID) {
+testing.addDummyRecord = (count = 1, imageData, testID) => {
+  testing.generateImage(imageData, testID).then((image) => {
+    const sampleTestID = `test ${testID} - ${count}`;
+
+    // create occurrence
+    const occurrence = new Occurrence({
+      taxon: {
+        array_id: 12186,
+        common_name: 'Tuberous Pea',
+        found_in_name: 'common_name',
+        group: 27,
+        scientific_name: 'Lathyrus tuberosus',
+        species_id: 3,
+        synonym: 'Fyfield Pea',
+        warehouse_id: 113813,
+      },
+      comment: sampleTestID,
+    });
+    occurrence.media.set(image);
+
+    // ***create sample***
+    const sample = new Sample({
+      date: new Date(),
+      location_type: 'latlon',
+      location: {
+        accuracy: 1,
+        gridref: 'SD75',
+        latitude: 54.0310862,
+        longitude: -2.3106393,
+        name: sampleTestID,
+        source: 'map',
+      },
+    }, {
+      occurrences: [occurrence],
+    });
+
+    // append locked attributes
+    appModel.appendAttrLocks(sample);
+    return sample.save().then(() => {
+      savedRecords.add(sample);
+
+      if (--count) {
+        console.log(`Adding: ${count}`);
+        testing.addDummyRecord(count, imageData, testID);
+      } else {
+        console.log('Finished Adding');
+      }
+    });
+  });
+};
+
+testing.generateImage = (imageData, testID) => {
   if (!imageData) {
     // create random image
     const canvas = document.createElement('canvas');
@@ -52,61 +103,12 @@ testing.addDummyRecord = function (count = 1, imageData, testID) {
     testID = (Math.random() * 10).toFixed(0);
   }
 
-  const image = new Morel.Image({
+  const image = new Indicia.Media({
     data: imageData,
     type: 'image/png',
   });
 
-  const sampleTestID = `test ${testID} - ${count}`;
-
-  // create occurrence
-  const occurrence = new Occurrence({
-    taxon: {
-      array_id: 12186,
-      common_name: 'Tuberous Pea',
-      found_in_name: 'common_name',
-      group: 27,
-      scientific_name: 'Lathyrus tuberosus',
-      species_id: 3,
-      synonym: 'Fyfield Pea',
-      warehouse_id: 113813,
-    },
-    comment: sampleTestID,
-  });
-  occurrence.images.set(image);
-
-  // ***create sample***
-  const sample = new Sample({
-    date: new Date(),
-    location_type: 'latlon',
-    location: {
-      accuracy: 1,
-      gridref: 'SD75',
-      latitude: 54.0310862,
-      longitude: -2.3106393,
-      name: sampleTestID,
-      source: 'map',
-    },
-  }, {
-    occurrences: [occurrence],
-  });
-
-  // append locked attributes
-  appModel.appendAttrLocks(sample);
-
-  recordManager.set(sample, (saveErr) => {
-    if (saveErr) {
-      console.error(saveErr);
-      return;
-    }
-
-    if (--count) {
-      console.log(`Adding: ${count}`);
-      testing.addDummyRecord(count, imageData, testID);
-    } else {
-      console.log('Finished Adding');
-    }
-  });
+  return image.addThumbnail().then(() => image);
 };
 
 function createSamples(manager) {
@@ -150,11 +152,11 @@ function createSamples(manager) {
     stage: 'Adult',
     number: '2-5',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.ladybird,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -218,11 +220,11 @@ function createSamples(manager) {
     number: '21-100',
     comment: 'Saw many of those!',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.butterfly,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -281,11 +283,11 @@ function createSamples(manager) {
     number: '6-20',
     comment: 'Came very close to where we were.',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.tit,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -313,13 +315,13 @@ function createSamples(manager) {
       warehouse_id: 113813,
     },
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.squirrel,
     type: 'jpg',
     width: 1500,
     height: 2000,
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -346,11 +348,11 @@ function createSamples(manager) {
       warehouse_id: 113813,
     },
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.slug,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -379,11 +381,11 @@ function createSamples(manager) {
     stage: 'Adult',
     number: '6-20',
   });
-  image = new occurrence.Image({
+  image = new occurrence.Media({
     data: images.bee,
     type: 'jpg',
   });
-  occurrence.addImage(image);
+  occurrence.addMedia(image);
   sample.addOccurrence(occurrence);
   samples.push(sample);
 
@@ -402,10 +404,10 @@ function screenshotsRecursive(samples, callback) {
   });
 }
 
-testing.screenshotsPopulate = function (recordManager) {
-  const samples = createSamples(recordManager);
+testing.screenshotsPopulate = (savedRecords) => {
+  const samples = createSamples(savedRecords);
 
-  recordManager.clear(() => {
+  savedRecords.clear(() => {
     screenshotsRecursive(samples, () => {
 
     });

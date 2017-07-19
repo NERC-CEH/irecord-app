@@ -2,13 +2,18 @@
  * App start.
  *****************************************************************************/
 
+import 'helpers/system_checkup';
+import 'helpers/analytics';
+
 import App from 'app';
+
 import 'photoswipe/dist/photoswipe.css';
 import 'photoswipe/dist/default-skin/default-skin.css';
 import 'photoswipe/dist/default-skin/default-skin.png';
 import 'photoswipe/dist/default-skin/default-skin.svg';
 
-import './records/router';
+import './samples/router';
+import './surveys/router';
 import './info/router';
 import './settings/router';
 import './user/router';

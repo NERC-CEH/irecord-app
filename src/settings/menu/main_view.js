@@ -3,7 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import { Device } from 'helpers';
+import Device from 'helpers/device';
 import JST from 'JST';
 
 export default Marionette.View.extend({
@@ -16,6 +16,8 @@ export default Marionette.View.extend({
     'click #use-training-btn': 'onSettingToggled',
     'toggle #use-gridref-btn': 'useGridRef',
     'click #use-gridref-btn': 'useGridRef',
+    'toggle #use-experiments-btn': 'onSettingToggled',
+    'click #use-experiments-btn': 'onSettingToggled',
     'toggle #use-gridmap-btn': 'onSettingToggled',
     'click #use-gridmap-btn': 'onSettingToggled',
     'toggle #use-autosync-btn': 'onSettingToggled',
@@ -23,8 +25,8 @@ export default Marionette.View.extend({
   },
 
   triggers: {
-    'click #delete-all-btn': 'records:delete:all',
-    'click #submit-all-btn': 'records:submit:all',
+    'click #delete-all-btn': 'samples:delete:all',
+    'click #submit-all-btn': 'samples:submit:all',
     'click #app-reset-btn': 'app:reset',
   },
 
@@ -58,7 +60,9 @@ export default Marionette.View.extend({
       useTraining: appModel.get('useTraining'),
       useGridRef: appModel.get('useGridRef'),
       useGridMap: appModel.get('useGridMap'),
+      useExperiments: appModel.get('useExperiments'),
       autosync: appModel.get('autosync'),
+      gridSquareUnit: appModel.get('gridSquareUnit'),
     };
   },
 });

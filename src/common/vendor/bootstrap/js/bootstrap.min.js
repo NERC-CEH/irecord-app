@@ -4,6 +4,8 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
+/* eslint-disable */
+
 /*!
  * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=e5985b9cfb057400706a)
  * Config saved to config.json and https://gist.github.com/e5985b9cfb057400706a

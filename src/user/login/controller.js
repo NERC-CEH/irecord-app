@@ -2,17 +2,19 @@
  * User Login controller.
  *****************************************************************************/
 import $ from 'jquery';
+import _ from 'lodash';
 import Backbone from 'backbone';
-import App from 'app';
-import { Log, Device } from 'helpers';
+import radio from 'radio';
+import Log from 'helpers/log';
+import Device from 'helpers/device';
 import CONFIG from 'config';
-import userModel from '../../common/models/user_model';
+import userModel from 'user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
 const API = {
-  show() {
-    Log('User:Register:Controller: showing');
+  show(onSuccess) {
+    Log('User:Register:Controller: showing.');
     // don't show if logged in
     if (userModel.hasLogIn()) {
       window.history.back();
@@ -20,7 +22,7 @@ const API = {
 
     // MAIN
     const mainView = new MainView();
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({
@@ -28,11 +30,11 @@ const API = {
         title: 'Login',
       }),
     });
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     mainView.on('form:submit', (data) => {
       if (!Device.isOnline()) {
-        App.regions.getRegion('dialog').show({
+        radio.trigger('app:dialog', {
           title: 'Sorry',
           body: 'Looks like you are offline!',
         });
@@ -42,36 +44,24 @@ const API = {
       const validationError = userModel.validateLogin(data);
       if (!validationError) {
         mainView.triggerMethod('form:data:invalid', {}); // update form
-        App.regions.getRegion('dialog').showLoader();
-
-        API.login(data, (err) => {
-          if (err) {
-            let response = '';
-            if (err.xhr.responseText && (err.xhr.responseText === 'Missing name parameter'
-              || err.xhr.responseText.indexOf('Bad') >= 0)) {
-              response = 'Bad Username or Password';
-            } else if (err.thrownError && err.thrownError.indexOf('Unauthorised')) {
-              response = 'Invalid password';
-            } else if (err.thrownError && typeof err.thrownError === 'string') {
-              response = err.thrownError;
-            } else {
-              response = 'Unknown error occurred';
-            }
-
-            App.regions.getRegion('dialog').error({ message: response });
-            return;
-          }
-
-          App.regions.getRegion('dialog').hideLoader();
-          window.history.back();
-        });
+        radio.trigger('app:loader');
+        API.login(data)
+          .then(() => {
+            radio.trigger('app:loader:hide');
+            onSuccess && onSuccess();
+            window.history.back();
+          })
+          .catch((err) => {
+            Log(err, 'e');
+            radio.trigger('app:dialog:error', err);
+          });
       } else {
         mainView.triggerMethod('form:data:invalid', validationError);
       }
     });
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
   },
 
   /**
@@ -80,60 +70,46 @@ const API = {
    * should be a Drupal sight using iForm Mobile Auth Module.
    *
    * It is important that the app authorises itself providing
-   * appname and appsecret for the mentioned module.
+   * api_key for the mentioned module.
    */
-  login(data, callback) {
-    Log('User:Login:Controller: logging in');
-    const person = {
-      // user logins
-      email: data.email,
-      password: data.password,
+  login(details) {
+    Log('User:Login:Controller: logging in.');
+    const promise = new Promise((fulfill, reject) => {
+      $.get({
+        url: CONFIG.users.url + encodeURIComponent(details.name), // url + user id
+        timeout: CONFIG.users.timeout,
+        beforeSend(xhr) {
+          const userAuth = btoa(`${details.name}:${details.password}`);
+          xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
+          xhr.setRequestHeader('x-api-key', CONFIG.indicia.api_key);
+          xhr.setRequestHeader('content-type', 'application/json');
+        },
+        success(receivedData) {
+          const data = receivedData.data || {};
+          if (!data.id || !data.email || !data.name) {
+            const err = new Error('Error while retrieving login response.');
+            reject(err);
+            return;
+          }
 
-      // app logins
-      appname: CONFIG.morel.manager.appname,
-      appsecret: CONFIG.morel.manager.appsecret,
-    };
-
-    $.ajax({
-      url: CONFIG.login.url,
-      type: 'POST',
-      data: person,
-      callback_data: person,
-      dataType: 'text',
-      timeout: CONFIG.login.timeout,
-      success(receivedData) {
-        const details = API.extractUserDetails(receivedData);
-        details.email = person.email;
-        userModel.logIn(details);
-
-        callback(null, details);
-      },
-      error(xhr, ajaxOptions, thrownError) {
-        callback({
-          xhr,
-          ajaxOptions,
-          thrownError,
-        });
-      },
+          const fullData = _.extend(data, { password: details.password });
+          userModel.logIn(fullData);
+          fulfill(fullData);
+        },
+        error(xhr, textStatus) {
+          let message = textStatus;
+          if (xhr.responseJSON && xhr.responseJSON.errors) {
+            message = xhr.responseJSON.errors.reduce(
+              (name, err) => `${name}${err.title}\n`,
+              ''
+            );
+          }
+          reject(new Error(message));
+        },
+      });
     });
-  },
 
-  /**
-   * Since the server response is not JSON, it gets user details from the response.
-   * @param data
-   * @returns {*}
-   */
-  extractUserDetails(data) {
-    const lines = (data && data.split(/\r\n|\r|\n/g));
-    if (lines && lines.length >= 3 && lines[0].length > 0) {
-      return {
-        secret: lines[0],
-        name: lines[1],
-        surname: lines[2],
-      };
-    }
-    Log('login:extractdetails: problems with received secret.', 'w');
-    return null;
+    return promise;
   },
 };
 

@@ -1,13 +1,11 @@
 /** ****************************************************************************
- * Functions to work with images.
+ * Functions to work with media.
  *****************************************************************************/
-import Morel from 'morel';
+import Indicia from 'indicia';
 import _ from 'lodash';
 import Log from './log';
 import Analytics from './analytics';
-import Error from './error';
 import Device from './device';
-import ImageModel from '../models/image';
 
 const Image = {
   deleteInternalStorage(name, callback) {
@@ -37,6 +35,8 @@ const Image = {
    * @param options
    */
   getImage(callback, options = {}) {
+    Log('Helpers:Image: getting.');
+
     const cameraOptions = {
       sourceType: window.Camera.PictureSourceType.CAMERA,
       // allow edit is unpredictable on Android and it should not be used!
@@ -65,16 +65,19 @@ const Image = {
       let URI = fileURI;
       function copyFile(fileEntry) {
         const name = `${Date.now()}.jpeg`;
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (fileSystem) => {
+        window.resolveLocalFileSystemURL(
+          cordova.file.dataDirectory,
+          (fileSystem) => {
             // copy to app data directory
-          fileEntry.copyTo(
+            fileEntry.copyTo(
               fileSystem,
               name,
               callback,
               fail
             );
-        },
-          fail);
+          },
+          fail
+        );
       }
 
       // for some reason when selecting from Android gallery
@@ -96,14 +99,10 @@ const Image = {
   /**
    * Create new record with a photo
    */
-  getImageModel(file, callback) {
+  getImageModel(ImageModel, file) {
     // create and add new record
-    const success = (err, data, type, width, height) => {
-      if (err) {
-        callback(err);
-        return;
-      }
-
+    const success = (args) => {
+      const [data, type, width, height] = args;
       const imageModel = new ImageModel({
         data,
         type,
@@ -111,31 +110,32 @@ const Image = {
         height,
       });
 
-      imageModel.addThumbnail((thumbErr) => {
-        if (thumbErr) {
-          Log(thumbErr, 'e');
-          return;
-        }
-        callback(null, imageModel);
-      });
+      return imageModel.addThumbnail().then(() => imageModel);
     };
 
     if (window.cordova) {
-      // don't resize, only get width and height
-      Morel.Image.getDataURI(file, (err, data, type, width, height) => {
-        let fileName = file;
+      // cordova environment
+      return Indicia.Media.getDataURI(file)
+        .then((args) => {
+          // don't resize, only get width and height
+          const [, , width, height] = args;
+          let fileName = file;
 
-        if (Device.isIOS()) {
-          // save only the file name or iOS, because the app UUID changes
-          // on every app update
-          const pathArray = file.split('/');
-          fileName = pathArray[pathArray.length - 1];
-        }
-        success(null, fileName, 'jpeg', width, height);
-      });
+          if (Device.isIOS()) {
+            // save only the file name or iOS, because the app UUID changes
+            // on every app update
+            const pathArray = file.split('/');
+            fileName = pathArray[pathArray.length - 1];
+          }
+          return success([fileName, 'jpeg', width, height]);
+        });
     } else if (file instanceof File) {
-      Morel.Image.getDataURI(file, success);
+      // browser environment
+      return Indicia.Media.getDataURI(file).then(success);
     }
+
+    const err = new Error('File not found while creating image model.');
+    return Promise.reject(err);
   },
 };
 

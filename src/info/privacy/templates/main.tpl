@@ -34,12 +34,12 @@
     <p><strong>Who will have access to my personal data?</strong></p>
 
     <p>Only those directly involved in developing this app and running this recording scheme
-      or verifying records as experts or involved in the management of Asian Hornets, will have access to your email address.
+      or verifying records as experts, will have access to your email address.
       Unless required by law, data will not be made available to any third parties unless we have
       obtained your permission to do so.</p>
   </li>
   <li>
-    <p><strong>Use of images submitted with the app</strong></p>
+    <p><strong>Use of media submitted with the app</strong></p>
 
     <p>By submitting a photograph with this app you:</p>
     <ul>

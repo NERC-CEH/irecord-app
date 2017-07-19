@@ -2,15 +2,13 @@ require('dotenv').config({ silent: true }); // get local environment variables f
 
 module.exports = function (grunt) {
   return {
-    data_init: {
+    data: {
       command() {
         return 'cd src/common/data && ' +
-          'cp species.csv species_cleaned.csv && ' +
-          'python make.py species && ' +
+          'node --harmony make.js && ' +
           'mkdir -p ../../../dist/_build/ && ' +
           'mv species*data.json ../../../dist/_build/ && ' +
-          'cp *data.json ../../../dist/_build/ && ' +
-          'rm warnings.log species_cleaned.csv';
+          'cp *data.json ../../../dist/_build/ ';
       },
       stdout: true,
     },
@@ -91,9 +89,16 @@ module.exports = function (grunt) {
           'mv -f arm7.apk ../../../../../dist/ && ' +
           'mv -f x86.apk ../../../../../dist/';
       },
+    },
 
+    cordova_build_ios: {
+      command: 'cd dist/cordova && cordova build ios',
       stdout: true,
-      stdin: true,
+    },
+
+    cordova_run_android: {
+      command: 'cd dist/cordova && cordova run android',
+      stdout: true,
     },
   };
 };

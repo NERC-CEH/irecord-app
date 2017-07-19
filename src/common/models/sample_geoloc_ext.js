@@ -1,15 +1,19 @@
 /** ****************************************************************************
- * Morel Sample geolocation functions.
+ * Indicia Sample geolocation functions.
  *
  * Sample geolocation events:
  * start, update, error, success, stop
  *****************************************************************************/
 import $ from 'jquery';
-import { GPS, LocHelp } from 'helpers';
-import appModel from './app_model';
+import GPS from 'helpers/GPS';
+import Log from 'helpers/log';
+import LocHelp from 'helpers/location';
+import appModel from 'app_model';
 
 const extension = {
   startGPS(accuracyLimit) {
+    Log('SampleModel:GPS: start.');
+
     const that = this;
     const options = {
       accuracyLimit,
@@ -30,14 +34,20 @@ const extension = {
 
         location.source = 'gps';
         location.updateTime = new Date(); // track when gps was acquired
-        location.gridref = LocHelp.coord2grid(location);
+        location.gridref = LocHelp.locationToGrid(location);
 
         // extend old location to preserve its previous attributes like name or id
         const oldLocation = that.get('location');
         location = $.extend(oldLocation, location);
 
-        that.set('location', location);
-        that.save();
+        if (that.setGPSLocation) {
+          if (that.setGPSLocation(location)) {
+            that.trigger('change:location');
+            that.trigger('geolocation', location);
+            that.trigger('geolocation:success', location);
+          }
+          return;
+        }
 
         that.trigger('change:location');
         that.trigger('geolocation', location);
@@ -51,6 +61,8 @@ const extension = {
   },
 
   stopGPS(options = {}) {
+    Log('SampleModel:GPS: stop.');
+
     GPS.stop(this.locating);
     delete this.locating;
 

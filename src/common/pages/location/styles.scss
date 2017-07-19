@@ -23,9 +23,10 @@
   //make it full width
   margin-left: -2%;
   margin-right: -2%;
+  height: 100vh;
 
   #map {
-    height: 76vh;
+    height: 100vh; /* was 76vh */
     width: 100%;
 
     //workaround the visible lines between tiles
@@ -40,13 +41,20 @@
     }
 
     .leaflet-control-container .leaflet-top {
-      top: 50px;
+      top: 95px;
+    }
+
+    &.hiddenName {
+      .leaflet-control-container .leaflet-top {
+        top: 50px;
+      }
     }
 
     .leaflet-control-layers label {
       margin: 10px 5px;
     }
   }
+
 }
 
 .leaflet-container {
@@ -69,6 +77,15 @@
   &:before {
     font-size: 34px;
   }
+}
+
+.location-date {
+  position: absolute;
+  left: 9px;
+  bottom: 0;
+  font-weight: 200;
+  font-size: $text-font-size;
+  color: $color-gray-dark;
 }
 
 .location-source {
@@ -184,4 +201,84 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
     display: none;
 
   }
+}
+
+#location-container {
+  margin-top: -44px;
+
+  #header-controls {
+    position: absolute;
+    margin-left: -2%;
+    z-index: 1000;
+    width: 100%;
+    padding: 0 2%;
+
+    .input-group {
+      background: rgba(256,256,256,0.9);
+      margin-left: -2%;
+      margin-right: -2%;
+    }
+    
+    #location-name-row {
+      overflow: initial;
+      span {
+        width: 80%;
+      }
+    }
+  }
+}
+
+#back-btn {
+  background-color: $color-main;
+  margin: -1 10 0 -2%;
+  height: 45px;
+  color: $color-white;
+  width: 55px;
+
+  a {
+    width: 100%;
+    height: 100%;
+    padding: 13px;
+  }
+}
+
+button.lock-btn {
+  height: 100%;
+  width: 40px;
+  position: absolute;
+  right: -5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  outline-style: none;
+  border-left: 1px solid #ddd;
+}
+
+.leaflet-control-button.leaflet-control {
+  .leaflet-buttons-control-button {
+    &.gps-btn[data-gps-progress='fixed'] {
+      background-color: $color-green;
+      border-color: $color-green;
+    }
+
+    &.gps-btn[data-gps-progress='pending'] {
+      background-color: $color-yellow;
+      border-color: $color-yellow;
+    }
+
+    &.gps-btn[data-gps-progress='failed'] {
+      background-color: $color-orange;
+      border-color: $color-orange;
+    }
+  }
+}
+input#location-gridref {
+  text-transform: uppercase;
+}
+
+input#location-gridref[data-source='gps'] {
+  color: $color-green
+}
+
+input#location-gridref[data-gr-error='error'] {
+  color: $color-orange;
 }

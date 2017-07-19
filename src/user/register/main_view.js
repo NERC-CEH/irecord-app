@@ -3,7 +3,7 @@
  *****************************************************************************/
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import { Validate } from 'helpers';
+import Validate from 'helpers/validate';
 import JST from 'JST';
 
 export default Marionette.View.extend({
@@ -28,6 +28,7 @@ export default Marionette.View.extend({
     const password = $passwordInput.val();
     const passwordConfirm = $passwordConfInput.val();
 
+    data.type = 'users';
     data.email = this.email;
     data.firstname = firstname;
     data.secondname = secondname;

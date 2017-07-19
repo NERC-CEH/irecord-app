@@ -11,7 +11,6 @@ const GENUS_COMMON_SYN_INDEX = 4;
 const SPECIES_SCI_NAME_INDEX = 1; // in species and bellow
 const SPECIES_COMMON_INDEX = 2; // in species and bellow
 const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
-const MAX = 20;
 
 /**
  * Search for Common names
@@ -20,8 +19,10 @@ const MAX = 20;
  * @param searchPhrase
  * @returns {Array}
  */
-export default function (species, commonNamePointersArray, searchPhrase, results = [], maxResults = MAX) {
+export default function (species, commonNamePointersArray, searchPhrase,
+                         maxResults, informalGroups) {
   const searchWords = searchPhrase.split(' ');
+  const results = [];
 
   // prepare first word regex
   const firstWord = helpers.normalizeFirstWord(searchWords[0]);
@@ -37,6 +38,17 @@ export default function (species, commonNamePointersArray, searchPhrase, results
     otherWordsRegex = new RegExp(otherWordsRegexStr, 'i');
   }
 
+
+  function informalGroupMatch(informalGroups, group) {  // eslint-disable-line
+    // check if species is in informal groups to search
+    if (informalGroups.length &&
+      informalGroups.indexOf(group) < 0) {
+      // skip this taxa because not in the searched informal groups
+      return false;
+    }
+    return true;
+  }
+
   // for each word index
   for (let wordCount = 0;
        wordCount < commonNamePointersArray.length && results.length < maxResults;
@@ -48,7 +60,8 @@ export default function (species, commonNamePointersArray, searchPhrase, results
     let pointersArrayIndex = helpers.findFirstMatching(
       species,
       commonNamePointers,
-      searchPhrase, wordCount
+      searchPhrase,
+      wordCount
     );
 
     // go through all common name pointers
@@ -58,6 +71,12 @@ export default function (species, commonNamePointersArray, searchPhrase, results
       const p = commonNamePointers[pointersArrayIndex];
       if (helpers.isGenusPointer(p)) {
         const genus = species[p[0]];
+
+        if (!informalGroupMatch(informalGroups, genus[GROUP_INDEX])) {
+          pointersArrayIndex++;
+          continue; // eslint-disable-line
+        }
+
         let name = genus[p[1]];
         name = name.split(/\s+/).slice(wordCount).join(' ');
         // stop looking further if first name does not match
@@ -81,6 +100,12 @@ export default function (species, commonNamePointersArray, searchPhrase, results
       } else {
         const genus = species[p[0]];
         const speciesEntry = genus[p[1]][p[2]];
+
+        if (!informalGroupMatch(informalGroups, genus[GROUP_INDEX])) {
+          pointersArrayIndex++;
+          continue; // eslint-disable-line
+        }
+
         // carry on while it matches the first name
         const foundInName = p[3] === SPECIES_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
         let name = speciesEntry[p[3]];
@@ -106,5 +131,6 @@ export default function (species, commonNamePointersArray, searchPhrase, results
       pointersArrayIndex++;
     }
   }
+
   return results;
 }

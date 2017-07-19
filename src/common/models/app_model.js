@@ -4,21 +4,29 @@
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
 import CONFIG from 'config';
+import Log from 'helpers/log';
 import pastLocationsExtension from './app_model_past_loc_ext';
 import attributeLockExtension from './app_model_attr_lock_ext';
 
-let AppModel = Backbone.Model.extend({
+const AppModel = Backbone.Model.extend({
   id: 'app',
 
   defaults: {
-    exceptions: [],
+    showWelcome: true,
 
     locations: [],
     attrLocks: {},
     autosync: true,
     useGridRef: true,
     useGridMap: true,
-    useTraining: false,
+
+    useExperiments: CONFIG.experiments,
+    useGridNotifications: false,
+    gridSquareUnit: 'monad',
+
+    taxonGroupFilters: [],
+
+    useTraining: CONFIG.training,
   },
 
   localStorage: new Store(CONFIG.name),
@@ -27,15 +35,29 @@ let AppModel = Backbone.Model.extend({
    * Initializes the object.
    */
   initialize() {
+    Log('AppModel: initializing');
+
     this.fetch();
     this.checkExpiredAttrLocks();
+  },
+
+  toggleTaxonFilter(filter) {
+    const taxonGroupFilters = this.get('taxonGroupFilters');
+    const index = taxonGroupFilters.indexOf(filter);
+    if (index >= 0) {
+      taxonGroupFilters.splice(index, 1);
+    } else {
+      taxonGroupFilters.push(filter);
+    }
+
+    this.save();
   },
 });
 
 // add previous/pased saved locations management
-AppModel = AppModel.extend(pastLocationsExtension);
+const AppModelLocations = AppModel.extend(pastLocationsExtension);
 // add sample/occurrence attribute management
-AppModel = AppModel.extend(attributeLockExtension);
+const AppModelLocationsLock = AppModelLocations.extend(attributeLockExtension);
 
-const appModel = new AppModel();
-export { appModel as default, AppModel };
+const appModel = new AppModelLocationsLock();
+export { appModel as default, AppModelLocationsLock as AppModel };

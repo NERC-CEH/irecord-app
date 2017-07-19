@@ -12,6 +12,7 @@
       <li>John van Breda (Biodiverse IT)</li>
       <li>Tom Humphrey (BSBI)</li>
       <li>Martin Harvey (CEH)</li>
+      <li>Sally Rankin</li>
       <li>Colin Harrower (CEH)</li>
       <li>Tom August (CEH)</li>
       <li>Chris Raper (NHM)</li>
@@ -19,11 +20,22 @@
       <li>Matt Smith</li>
       <li>Alan Rowland</li>
       <li>David Genney</li>
+      <li>Graham Checkley</li>
     </ul>
     </p>
     <p>
-      This app was part-funded by the Centre for Ecology & Hydrology/Joint Nature
-      Conservation Committee partnership supporting BRC.
+      This app was part-funded by the
+      <a href="https://www.ceh.ac.uk/">Centre for Ecology & Hydrology</a>/<a href="http://jncc.defra.gov.uk/">Joint Nature Conservation Committee</a>
+      partnership supporting BRC.
     </p>
+    <p>
+      <strong>Welcome screen credits:</strong>
+    </p>
+    <ul style="list-style-type: none;">
+      <li>David Kitching</li>
+      <li>Nadine Mitschunas</li>
+      <li>UK Ladybird Survey</li>
+    </ul>
+
   </li>
 </ul>

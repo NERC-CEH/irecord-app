@@ -1,3 +1,6 @@
+/** ****************************************************************************
+ * A production webpack configuration. Will minify and optimise the code build.
+ *****************************************************************************/
 const path = require('path');
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');

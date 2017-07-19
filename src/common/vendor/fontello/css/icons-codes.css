@@ -37,8 +37,12 @@
 .icon-undo:before { content: '\e823'; } /* '' */
 .icon-delete:before { content: '\e824'; } /* '' */
 .icon-arrows-cw:before { content: '\e825'; } /* '' */
-.icon-clock:before { content: '\e826'; } /* '' */
 .icon-grid:before { content: '\e827'; } /* '' */
 .icon-star:before { content: '\e828'; } /* '' */
 .icon-statistics:before { content: '\e829'; } /* '' */
 .icon-training:before { content: '\e82a'; } /* '' */
+.icon-surveys:before { content: '\e82b'; } /* '' */
+.icon-fire:before { content: '\e82c'; } /* '' */
+.icon-link-ext:before { content: '\f08e'; } /* '' */
+.icon-history:before { content: '\f1da'; } /* '' */
+.icon-low-vision:before { content: '\f2a8'; } /* '' */

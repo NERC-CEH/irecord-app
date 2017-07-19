@@ -3,16 +3,17 @@
  ******************************************************************************/
 
 import Backbone from 'backbone';
-import { Log, Analytics } from 'helpers';
-import App from 'app';
+import Log from 'helpers/log';
+import Analytics from 'helpers/analytics';
+import radio from 'radio';
+import userModel from 'user_model';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 import RefreshView from './refresh_view';
-import userModel from '../../common/models/user_model';
 
 const API = {
   show() {
-    Log('User:Statistics:Controller: showing');
+    Log('User:Statistics:Controller: showing.');
 
     // HEADER
     const refreshView = new RefreshView();
@@ -24,26 +25,30 @@ const API = {
       }),
     });
 
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
 
     // MAIN
     const mainView = new MainView({
       model: userModel,
     });
 
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     refreshView.on('refreshClick', () => {
-      Log('User:Statistics:Controller: refresh clicked');
+      Log('User:Statistics:Controller: refresh clicked.');
       API.refresh();
     });
   },
 
   refresh() {
-    userModel.syncStats(true);
+    userModel.syncStats(true)
+      .catch((err) => {
+        Log(err, 'e');
+        radio.trigger('app:dialog:error', err);
+      });
     Analytics.trackEvent('Statistics', 'refresh');
   },
 };

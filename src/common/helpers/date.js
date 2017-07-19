@@ -10,8 +10,23 @@ export default {
     return local.toJSON().slice(0, 10);
   },
 
-  print(date) {
+  print(date, pretty) {
     const local = new Date(date);
-    return `${local.getDate()}/${(local.getMonth() + 1)}/${local.getFullYear()}`;
+    const sampleDate = `${local.getDate()}/${(local.getMonth() + 1)}/${local.getFullYear()}`;
+
+    const today = new Date();
+    const todayDateOnly = `${today.getDate()}/${(today.getMonth() + 1)}/${today.getFullYear()}`;
+    const isToday = (todayDateOnly === sampleDate);
+
+    return (pretty && isToday ? 'Today' : sampleDate);
+  },
+
+  /**
+   * Validates the date
+   * @param date
+   * @returns {boolean}
+   */
+  validate(date) {
+    return date.toString() !== 'Invalid Date' && date <= new Date();
   },
 };

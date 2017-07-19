@@ -1,19 +1,17 @@
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import { Log } from 'helpers';
+import Log from 'helpers/log';
 import JST from 'JST';
-import App from 'app';
+import radio from 'radio';
 import HeaderView from './views/header_view';
 
 const API = {
   show(options) {
-    Log(`Common:Controller:${options.route}: showing`);
-    const app = options.App || App; // passed when showing 404
-
+    Log(`Common:Controller:${options.route}: showing.`);
     const MainView = options.mainView || Marionette.View.extend({
       template: JST[options.route],
     });
-    app.regions.getRegion('main').show(new MainView({
+    radio.trigger('app:main', new MainView({
       model: options.model || new Backbone.Model(),
     }));
 
@@ -22,7 +20,7 @@ const API = {
         title: options.title || '',
       }),
     });
-    app.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
   },
 };
 

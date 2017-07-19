@@ -1,30 +1,41 @@
 /** ****************************************************************************
  * App Model statistics functions.
  *****************************************************************************/
-import $ from 'jquery';
-import { Log } from 'helpers';
-import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
+import Indicia from 'indicia';
+import Log from 'helpers/log';
 import CONFIG from 'config';
+import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 
 export default {
   syncStats(force) {
+    Log('UserModel:Statistics: synchronising.');
+
     const that = this;
     if (this.synchronizingStatistics) {
-      return;
+      return this.synchronizingStatistics;
     }
 
-    if (this.hasLogIn() && this._lastStatsSyncExpired() || force) {
+    if ((this.hasLogIn() && this._lastStatsSyncExpired()) || force) {
       // init or refresh
-      this.synchronizingStatistics = true;
+      this.trigger('sync:statistics:species:start');
 
-      this.fetchStatsSpecies(() => {
-        that.synchronizingStatistics = false;
-      });
+      this.synchronizingStatistics = this.fetchStatsSpecies()
+        .then(() => {
+          delete that.synchronizingStatistics;
+          that.trigger('sync:statistics:species:end');
+        })
+        .catch((err) => {
+          delete that.synchronizingStatistics;
+          that.trigger('sync:statistics:species:end');
+          return Promise.reject(err);
+        });
     }
+
+    return this.synchronizingStatistics;
   },
 
   resetStats() {
-    Log('UserModel: resetting statistics');
+    Log('UserModel:Statistics: resetting.');
     this.set('statistics', this.defaults.statistics);
     this.save();
   },
@@ -33,71 +44,73 @@ export default {
    * Loads the list of available stats from the warehouse then updates the
    * collection in the main view.
    */
-  fetchStatsSpecies(callback) {
-    // Log('UserModel: fetching statistics - species');
-    this.trigger('sync:statistics:species:start');
+  fetchStatsSpecies() {
+    Log('UserModel:Statistics: fetching.');
     const that = this;
     const statistics = this.get('statistics');
 
-    const data = {
-      report: 'library/taxa/filterable_explore_list.xml',
-      // user_id filled in by iform_mobile_auth proxy
-      path: CONFIG.morel.manager.input_form,
-      email: this.get('email'),
-      appname: CONFIG.morel.manager.appname,
-      appsecret: CONFIG.morel.manager.appsecret,
-      usersecret: this.get('secret'),
+    const report = new Indicia.Report({
+      report: '/library/taxa/filterable_explore_list.xml',
 
-      my_records: 1,
-      limit: 10,
-      orderby: 'count',
-      sortdir: 'DESC',
-    };
-
-    $.ajax({
-      url: CONFIG.report.url,
-      type: 'POST',
-      data,
-      dataType: 'JSON',
-      timeout: CONFIG.report.timeout,
-      success(receivedData) {
-        const species = [];
-        const toWait = [];
-
-        receivedData.forEach((stat) => {
-          const promise = new $.Deferred();
-          toWait.push(promise);
-          // turn it to a full species descriptor from species data set
-          SpeciesSearchEngine.search(stat.taxon, (results) => {
-            const foundedSpecies = results[0];
-            if (results.length && foundedSpecies.scientific_name === stat.taxon) {
-              if (foundedSpecies.common_name) {
-                foundedSpecies.found_in_name = 'common_name';
-              }
-              species.push(foundedSpecies);
-            }
-            promise.resolve();
-          }, 1, true);
-        });
-
-        const dfd = $.when.apply($, toWait);
-        dfd.then(() => {
-          // save and exit
-          statistics.synced_on = new Date().toString();
-          statistics.species = species;
-          statistics.speciesRaw = receivedData;
-          that.set('statistics', statistics);
-          that.save();
-          callback();
-          that.trigger('sync:statistics:species:end');
-        });
-      },
-      error(err) {
-        Log('Stats load failed');
-        callback(err);
-        that.trigger('sync:statistics:species:end');
+      api_key: CONFIG.indicia.api_key,
+      host_url: CONFIG.indicia.host,
+      user: this.getUser.bind(this),
+      password: this.getPassword.bind(this),
+      params: {
+        path: CONFIG.indicia.input_form,
+        my_records: 1,
+        limit: 10,
+        orderby: 'count',
+        sortdir: 'DESC',
       },
     });
+
+    const promise = report.run().then((receivedData) => {
+      const data = receivedData.data;
+      if (!data || !(data instanceof Array)) {
+        const err = new Error('Error while retrieving stats response.');
+        return Promise.reject(err);
+      }
+
+      const species = [];
+      const toWait = [];
+
+      // try to find all species in the internal taxa database
+      data.forEach((stat) => {
+        const parsePromise = new Promise((fulfill) => {
+          const options = {
+            maxResults: 1,
+            scientificOnly: true,
+          };
+
+          // turn it to a full species descriptor from species data set
+          SpeciesSearchEngine.search(stat.taxon, options)
+            .then((results) => {
+              const foundedSpecies = results[0];
+              if (results.length && foundedSpecies.scientific_name === stat.taxon) {
+                if (foundedSpecies.common_name) {
+                  foundedSpecies.found_in_name = 'common_name';
+                }
+                species.push(foundedSpecies);
+              }
+              fulfill();
+            });
+        });
+
+        toWait.push(parsePromise);
+      });
+
+      // save the user and exit
+      return Promise.all(toWait).then(() => {
+        statistics.synced_on = new Date().toString();
+        statistics.species = species;
+        statistics.speciesRaw = receivedData.data;
+        that.set('statistics', statistics);
+        that.save();
+      });
+    });
+
+    return promise;
   },
 
   /**
@@ -116,8 +129,6 @@ export default {
       return Math.round((second - first) / (1000 * 60 * 60 * 24));
     }
 
-    if (daydiff(lastSync, new Date()) >= 1) return true;
-
-    return false;
+    return daydiff(lastSync, new Date()) >= 1;
   },
 };

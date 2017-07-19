@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Takes care of application execution logging.
  *
- * Depends on morel.
+ * Depends on indicia.
  *
  * Uses 5 levels of logging:
  *  0: none
@@ -12,8 +12,8 @@
  *
  * Levels values defined in core app module.
  *****************************************************************************/
+import Raven from 'raven-js';
 import CONFIG from 'config';
-import Analytics from './analytics';
 
 const ERROR = 'e';
 const WARNING = 'w';
@@ -29,25 +29,28 @@ const DEBUG = 'd';
  */
 function error(err = {}) {
   if (typeof err === 'string' || err instanceof String) {
-    err = {
+    err = { // eslint-disable-line
       message: err,
     };
   }
+
+  if (Raven) {
+    Raven.captureException(err);
+  }
+
   console.error(err.message, err.url, err.line, err.column, err.obj);
-  Analytics.trackException(err);
 }
 
 function log(message, type = DEBUG) {
-  // do nothing if logging turned off
-  if (!(CONFIG.log && CONFIG.log.states)) {
+  // always print errors
+  if (type === ERROR) {
+    error(message);
     return;
   }
 
-  if (CONFIG.log.states.indexOf(type) >= 0) {
+  // do nothing if logging turned off
+  if (CONFIG.log) {
     switch (type) {
-      case ERROR:
-        error(message);
-        break;
       case WARNING:
         console.warn(message);
         break;
@@ -63,20 +66,8 @@ function log(message, type = DEBUG) {
           break;
         }
         console.debug(message);
-        // if (typeof console.trace === 'function') console.trace();
     }
   }
 }
-
-// Hook into window.error function
-window.onerror = (message, url, line, column, obj) => {
-  const onerror = window.onerror;
-  window.onerror = null;
-
-  error({ message, url, line, column, obj });
-
-  window.onerror = onerror; // turn on error handling again
-  return true; // suppress normal error reporting
-};
 
 export { log as default };

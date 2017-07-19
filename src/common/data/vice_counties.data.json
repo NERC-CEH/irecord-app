@@ -1,0 +1,932 @@
+[
+  {
+    "id": "697",
+    "name": "Anglesey",
+    "code": "52",
+    "centroid_sref": "53.30628N 4.41301W"
+  },
+  {
+    "id": "650",
+    "name": "Angus",
+    "code": "90",
+    "centroid_sref": "56.70241N 2.88676W"
+  },
+  {
+    "id": "1128",
+    "name": "Antrim",
+    "code": "H39",
+    "centroid_sref": "54.86668N, 6.19624W"
+  },
+  {
+    "id": "653",
+    "name": "Argyllshire",
+    "code": "98",
+    "centroid_sref": "56.31202N 5.16402W"
+  },
+  {
+    "id": "1129",
+    "name": "Armagh",
+    "code": "H37",
+    "centroid_sref": "54.29928N 6.54947W"
+  },
+  {
+    "id": "662",
+    "name": "Ayrshire",
+    "code": "75",
+    "centroid_sref": "55.42701N 4.58963W"
+  },
+  {
+    "id": "646",
+    "name": "Banffshire",
+    "code": "94",
+    "centroid_sref": "57.4946N 2.96348W"
+  },
+  {
+    "id": "707",
+    "name": "Bedfordshire",
+    "code": "30",
+    "centroid_sref": "52.08006N 0.44819W"
+  },
+  {
+    "id": "733",
+    "name": "Berkshire",
+    "code": "22",
+    "centroid_sref": "51.51419N 1.20727W"
+  },
+  {
+    "id": "670",
+    "name": "Berwickshire",
+    "code": "81",
+    "centroid_sref": "55.78467N 2.40965W"
+  },
+  {
+    "id": "715",
+    "name": "Breconshire",
+    "code": "42",
+    "centroid_sref": "51.9778N 3.45446W"
+  },
+  {
+    "id": "708",
+    "name": "Buckinghamshire",
+    "code": "24",
+    "centroid_sref": "51.82898N 0.79077W"
+  },
+  {
+    "id": "696",
+    "name": "Caernarvonshire",
+    "code": "49",
+    "centroid_sref": "53.02165N 4.25221W"
+  },
+  {
+    "id": "637",
+    "name": "Caithness",
+    "code": "109",
+    "centroid_sref": "58.45297N 3.41048W"
+  },
+  {
+    "id": "704",
+    "name": "Cambridgeshire",
+    "code": "29",
+    "centroid_sref": "52.34042N 0.13207E"
+  },
+  {
+    "id": "714",
+    "name": "Cardiganshire",
+    "code": "46",
+    "centroid_sref": "52.26311N 4.12103W"
+  },
+  {
+    "id": "1117",
+    "name": "Carlow",
+    "code": "H13",
+    "centroid_sref": "52.7295N 6.82205W"
+  },
+  {
+    "id": "716",
+    "name": "Carmarthenshire",
+    "code": "44",
+    "centroid_sref": "51.88814N 4.18409W"
+  },
+  {
+    "id": "1101",
+    "name": "Cavan",
+    "code": "H30",
+    "centroid_sref": "53.99552N 7.35172W"
+  },
+  {
+    "id": "1135",
+    "name": "Channel Isles",
+    "code": "113",
+    "centroid_sref": "49.34515N, 2.37501W"
+  },
+  {
+    "id": "693",
+    "name": "Cheshire",
+    "code": "58",
+    "centroid_sref": "53.24739N 2.55765W"
+  },
+  {
+    "id": "1134",
+    "name": "Clare",
+    "code": "H9",
+    "centroid_sref": "52.85132N, 9.02859W"
+  },
+  {
+    "id": "661",
+    "name": "Clyde Isles",
+    "code": "100",
+    "centroid_sref": "55.62383N, 5.17770W"
+  },
+  {
+    "id": "679",
+    "name": "County Durham",
+    "code": "66",
+    "centroid_sref": "54.73758N 1.65242W"
+  },
+  {
+    "id": "674",
+    "name": "Cumberland",
+    "code": "70",
+    "centroid_sref": "54.70719N 3.09869W"
+  },
+  {
+    "id": "695",
+    "name": "Denbighshire",
+    "code": "50",
+    "centroid_sref": "53.08037N 3.36757W"
+  },
+  {
+    "id": "692",
+    "name": "Derbyshire",
+    "code": "57",
+    "centroid_sref": "53.13564N 1.60308W"
+  },
+  {
+    "id": "727",
+    "name": "Dorset",
+    "code": "9",
+    "centroid_sref": "50.7635N 2.34092W"
+  },
+  {
+    "id": "1131",
+    "name": "Down",
+    "code": "H38",
+    "centroid_sref": "54.36011N, 5.93700W"
+  },
+  {
+    "id": "1109",
+    "name": "Dublin",
+    "code": "H21",
+    "centroid_sref": "53.39193N, 6.28410W"
+  },
+  {
+    "id": "675",
+    "name": "Dumfriesshire",
+    "code": "72",
+    "centroid_sref": "55.19983N 3.47376W"
+  },
+  {
+    "id": "657",
+    "name": "Dunbartonshire",
+    "code": "99",
+    "centroid_sref": "56.06166N 4.6544W"
+  },
+  {
+    "id": "1125",
+    "name": "East Cork",
+    "code": "H5",
+    "centroid_sref": "52.06368N, 8.30050W"
+  },
+  {
+    "id": "725",
+    "name": "East Cornwall",
+    "code": "2",
+    "centroid_sref": "50.49079N 4.62165W"
+  },
+  {
+    "id": "1095",
+    "name": "East Donegal",
+    "code": "H34",
+    "centroid_sref": "54.92261N, 7.62504W"
+  },
+  {
+    "id": "1108",
+    "name": "East Galway",
+    "code": "H17",
+    "centroid_sref": "53.47939N 8.69923W"
+  },
+  {
+    "id": "709",
+    "name": "East Gloucestershire",
+    "code": "33",
+    "centroid_sref": "51.88082N 1.94574W"
+  },
+  {
+    "id": "644",
+    "name": "East Inverness-shire",
+    "code": "96",
+    "centroid_sref": "57.24823N 4.31594W"
+  },
+  {
+    "id": "737",
+    "name": "East Kent",
+    "code": "15",
+    "centroid_sref": "51.21301N 0.97766E"
+  },
+  {
+    "id": "666",
+    "name": "East Lothian",
+    "code": "82",
+    "centroid_sref": "55.96934N 2.69243W"
+  },
+  {
+    "id": "1102",
+    "name": "East Mayo",
+    "code": "H26",
+    "centroid_sref": "53.8033N 8.99732W"
+  },
+  {
+    "id": "703",
+    "name": "East Norfolk",
+    "code": "27",
+    "centroid_sref": "52.68746N 1.32645E"
+  },
+  {
+    "id": "655",
+    "name": "East Perthshire",
+    "code": "89",
+    "centroid_sref": "56.69797N 3.57865W"
+  },
+  {
+    "id": "664",
+    "name": "East Ross & Cromarty",
+    "code": "106",
+    "centroid_sref": "57.69865N 4.55677W"
+  },
+  {
+    "id": "745",
+    "name": "East Suffolk",
+    "code": "25",
+    "centroid_sref": "52.22379N 1.39543E"
+  },
+  {
+    "id": "736",
+    "name": "East Sussex",
+    "code": "14",
+    "centroid_sref": "50.92443N 0.24215E"
+  },
+  {
+    "id": "639",
+    "name": "East Sutherland",
+    "code": "107",
+    "centroid_sref": "58.09881N 4.22134W"
+  },
+  {
+    "id": "1132",
+    "name": "Fermanagh",
+    "code": "H33",
+    "centroid_sref": "54.35039N 7.64028W"
+  },
+  {
+    "id": "665",
+    "name": "Fifeshire",
+    "code": "85",
+    "centroid_sref": "56.2284N 3.05027W"
+  },
+  {
+    "id": "694",
+    "name": "Flintshire",
+    "code": "51",
+    "centroid_sref": "53.25015N 3.23746W"
+  },
+  {
+    "id": "718",
+    "name": "Glamorganshire",
+    "code": "41",
+    "centroid_sref": "51.57124N 3.6463W"
+  },
+  {
+    "id": "712",
+    "name": "Herefordshire",
+    "code": "36",
+    "centroid_sref": "52.10492N, 2.74747W"
+  },
+  {
+    "id": "740",
+    "name": "Hertfordshire",
+    "code": "20",
+    "centroid_sref": "51.82984N 0.21809W"
+  },
+  {
+    "id": "705",
+    "name": "Huntingdonshire",
+    "code": "31",
+    "centroid_sref": "52.38194N 0.22213W"
+  },
+  {
+    "id": "678",
+    "name": "Isle of Man",
+    "code": "71",
+    "centroid_sref": "54.22064N 4.54999W"
+  },
+  {
+    "id": "728",
+    "name": "Isle of Wight",
+    "code": "10",
+    "centroid_sref": "50.6596N 1.29931W"
+  },
+  {
+    "id": "1111",
+    "name": "Kildare",
+    "code": "H19",
+    "centroid_sref": "53.19108N 6.81737W"
+  },
+  {
+    "id": "1118",
+    "name": "Kilkenny",
+    "code": "H11",
+    "centroid_sref": "52.57451N 7.23244W"
+  },
+  {
+    "id": "649",
+    "name": "Kincardineshire",
+    "code": "91",
+    "centroid_sref": "56.94674N 2.35587W"
+  },
+  {
+    "id": "660",
+    "name": "Kintyre",
+    "code": "101",
+    "centroid_sref": "55.65059N 5.60907W"
+  },
+  {
+    "id": "676",
+    "name": "Kirkudbrightshire",
+    "code": "73",
+    "centroid_sref": "54.99196N 4.07314W"
+  },
+  {
+    "id": "663",
+    "name": "Lanarkshire",
+    "code": "77",
+    "centroid_sref": "55.66645N 3.85408W"
+  },
+  {
+    "id": "1115",
+    "name": "Laois",
+    "code": "H14",
+    "centroid_sref": "52.98373N 7.35488W"
+  },
+  {
+    "id": "690",
+    "name": "Leicestershire (with Rutland)",
+    "code": "55",
+    "centroid_sref": "52.66677N 1.04721W"
+  },
+  {
+    "id": "1097",
+    "name": "Leitrim",
+    "code": "H29",
+    "centroid_sref": "54.14083N 8.02217W"
+  },
+  {
+    "id": "1121",
+    "name": "Limerick",
+    "code": "H8",
+    "centroid_sref": "52.49149N, 8.74104W"
+  },
+  {
+    "id": "1136",
+    "name": "Linlithgow",
+    "code": "84",
+    "centroid_sref": "55.93799N 3.56902W"
+  },
+  {
+    "id": "1130",
+    "name": "Londonderry",
+    "code": "H40",
+    "centroid_sref": "54.92672N 6.83149W"
+  },
+  {
+    "id": "1105",
+    "name": "Longford",
+    "code": "H24",
+    "centroid_sref": "53.71274N 7.72399W"
+  },
+  {
+    "id": "1104",
+    "name": "Louth",
+    "code": "H31",
+    "centroid_sref": "53.91121N 6.41343W"
+  },
+  {
+    "id": "1106",
+    "name": "Meath",
+    "code": "H22",
+    "centroid_sref": "53.63215N 6.73002W"
+  },
+  {
+    "id": "698",
+    "name": "Merionethshire",
+    "code": "48",
+    "centroid_sref": "52.81574N 3.84563W"
+  },
+  {
+    "id": "684",
+    "name": "Mid-west Yorkshire",
+    "code": "64",
+    "centroid_sref": "53.9958N 1.80067W"
+  },
+  {
+    "id": "1123",
+    "name": "Mid Cork",
+    "code": "H4",
+    "centroid_sref": "52.03945N 8.78954W"
+  },
+  {
+    "id": "652",
+    "name": "Mid Ebudes",
+    "code": "103",
+    "centroid_sref": "56.46243N 6.31859W"
+  },
+  {
+    "id": "654",
+    "name": "Mid Perthshire",
+    "code": "88",
+    "centroid_sref": "56.523N 4.05727W"
+  },
+  {
+    "id": "741",
+    "name": "Middlesex",
+    "code": "21",
+    "centroid_sref": "51.549N 0.27271W"
+  },
+  {
+    "id": "667",
+    "name": "Midlothian",
+    "code": "83",
+    "centroid_sref": "55.85085N 3.19121W"
+  },
+  {
+    "id": "1099",
+    "name": "Monaghan",
+    "code": "H32",
+    "centroid_sref": "54.15566N 6.92148W"
+  },
+  {
+    "id": "719",
+    "name": "Monmouthshire",
+    "code": "35",
+    "centroid_sref": "51.69092N 2.94514W"
+  },
+  {
+    "id": "699",
+    "name": "Montgomeryshire",
+    "code": "47",
+    "centroid_sref": "52.61272N, 3.43347W"
+  },
+  {
+    "id": "645",
+    "name": "Moray",
+    "code": "95",
+    "centroid_sref": "57.50682N 3.49342W"
+  },
+  {
+    "id": "682",
+    "name": "North-east Yorkshire",
+    "code": "62",
+    "centroid_sref": "54.33395N 0.94658W"
+  },
+  {
+    "id": "681",
+    "name": "North-west Yorkshire",
+    "code": "65",
+    "centroid_sref": "54.36724N 1.92705W"
+  },
+  {
+    "id": "647",
+    "name": "North Aberdeenshire",
+    "code": "93",
+    "centroid_sref": "57.47797N 2.28048W"
+  },
+  {
+    "id": "723",
+    "name": "North Devon",
+    "code": "4",
+    "centroid_sref": "50.95662N, 4.04102W"
+  },
+  {
+    "id": "642",
+    "name": "North Ebudes",
+    "code": "104",
+    "centroid_sref": "57.29957N 6.28465W"
+  },
+  {
+    "id": "742",
+    "name": "North Essex",
+    "code": "19",
+    "centroid_sref": "51.87918N 0.62662E"
+  },
+  {
+    "id": "734",
+    "name": "North Hampshire",
+    "code": "12",
+    "centroid_sref": "51.2054N 1.17256W"
+  },
+  {
+    "id": "1122",
+    "name": "North Kerry",
+    "code": "H2",
+    "centroid_sref": "52.26043N, 9.51539W"
+  },
+  {
+    "id": "688",
+    "name": "North Lincolnshire",
+    "code": "54",
+    "centroid_sref": "53.36484N 0.19942W"
+  },
+  {
+    "id": "671",
+    "name": "North Northumberland",
+    "code": "68",
+    "centroid_sref": "55.52503N 1.90285W"
+  },
+  {
+    "id": "721",
+    "name": "North Somerset",
+    "code": "6",
+    "centroid_sref": "51.25653N 2.68315W"
+  },
+  {
+    "id": "1116",
+    "name": "North Tipperary",
+    "code": "H10",
+    "centroid_sref": "52.82307N 8.1045W"
+  },
+  {
+    "id": "731",
+    "name": "North Wiltshire",
+    "code": "7",
+    "centroid_sref": "51.49824N 1.93682W"
+  },
+  {
+    "id": "706",
+    "name": "Northamptonshire",
+    "code": "32",
+    "centroid_sref": "52.33357N 0.82147W"
+  },
+  {
+    "id": "689",
+    "name": "Nottinghamshire",
+    "code": "56",
+    "centroid_sref": "53.13132N 1.01122W"
+  },
+  {
+    "id": "1112",
+    "name": "Offaly",
+    "code": "H18",
+    "centroid_sref": "53.20812N 7.59886W"
+  },
+  {
+    "id": "636",
+    "name": "Orkney",
+    "code": "111",
+    "centroid_sref": "59.06504N 2.92039W"
+  },
+  {
+    "id": "641",
+    "name": "Outer Hebrides",
+    "code": "110",
+    "centroid_sref": "57.80359N, 6.95535W"
+  },
+  {
+    "id": "732",
+    "name": "Oxfordshire",
+    "code": "23",
+    "centroid_sref": "51.80925N 1.28816W"
+  },
+  {
+    "id": "668",
+    "name": "Peebleshire",
+    "code": "78",
+    "centroid_sref": "55.61529N 3.29701W"
+  },
+  {
+    "id": "717",
+    "name": "Pembrokeshire",
+    "code": "45",
+    "centroid_sref": "51.83576N, 4.97606W"
+  },
+  {
+    "id": "713",
+    "name": "Radnorshire",
+    "code": "43",
+    "centroid_sref": "52.2712N 3.31073W"
+  },
+  {
+    "id": "659",
+    "name": "Renfrewshire",
+    "code": "76",
+    "centroid_sref": "55.8406N 4.54727W"
+  },
+  {
+    "id": "1103",
+    "name": "Roscommon",
+    "code": "H25",
+    "centroid_sref": "53.71812N 8.23427W"
+  },
+  {
+    "id": "672",
+    "name": "Roxburghshire",
+    "code": "80",
+    "centroid_sref": "55.43022N 2.64373W"
+  },
+  {
+    "id": "669",
+    "name": "Selkirkshire",
+    "code": "79",
+    "centroid_sref": "55.49975N 3.04456W"
+  },
+  {
+    "id": "635",
+    "name": "Shetland",
+    "code": "112",
+    "centroid_sref": "60.38951N, 1.21625W"
+  },
+  {
+    "id": "701",
+    "name": "Shropshire",
+    "code": "40",
+    "centroid_sref": "52.64340N, 2.71483W"
+  },
+  {
+    "id": "1098",
+    "name": "Sligo",
+    "code": "H28",
+    "centroid_sref": "54.15648N, 8.63292W"
+  },
+  {
+    "id": "687",
+    "name": "South-east Yorkshire",
+    "code": "61",
+    "centroid_sref": "53.90869N 0.43305W"
+  },
+  {
+    "id": "686",
+    "name": "South-west Yorkshire",
+    "code": "63",
+    "centroid_sref": "53.61376N 1.51413W"
+  },
+  {
+    "id": "648",
+    "name": "South Aberdeenshire",
+    "code": "92",
+    "centroid_sref": "57.11924N 2.86997W"
+  },
+  {
+    "id": "724",
+    "name": "South Devon",
+    "code": "3",
+    "centroid_sref": "50.56872N 3.63169W"
+  },
+  {
+    "id": "651",
+    "name": "South Ebudes",
+    "code": "102",
+    "centroid_sref": "55.88283N 6.12603W"
+  },
+  {
+    "id": "743",
+    "name": "South Essex",
+    "code": "18",
+    "centroid_sref": "51.60896N 0.56473E"
+  },
+  {
+    "id": "1113",
+    "name": "South Galway",
+    "code": "H15",
+    "centroid_sref": "53.16930N, 8.52747W"
+  },
+  {
+    "id": "729",
+    "name": "South Hampshire",
+    "code": "11",
+    "centroid_sref": "50.88464N 1.41411W"
+  },
+  {
+    "id": "1127",
+    "name": "South Kerry",
+    "code": "H1",
+    "centroid_sref": "51.91223N, 9.84055W"
+  },
+  {
+    "id": "685",
+    "name": "South Lancashire",
+    "code": "59",
+    "centroid_sref": "53.60093N 2.57591W"
+  },
+  {
+    "id": "691",
+    "name": "South Lincolnshire",
+    "code": "53",
+    "centroid_sref": "52.92432N 0.2992W"
+  },
+  {
+    "id": "673",
+    "name": "South Northumberland",
+    "code": "67",
+    "centroid_sref": "55.10077N 2.05655W"
+  },
+  {
+    "id": "722",
+    "name": "South Somerset",
+    "code": "5",
+    "centroid_sref": "51.06898N 3.16732W"
+  },
+  {
+    "id": "1119",
+    "name": "South Tipperary",
+    "code": "H7",
+    "centroid_sref": "52.47791N 7.82049W"
+  },
+  {
+    "id": "730",
+    "name": "South Wiltshire",
+    "code": "8",
+    "centroid_sref": "51.17054N 1.92271W"
+  },
+  {
+    "id": "700",
+    "name": "Staffordshire",
+    "code": "39",
+    "centroid_sref": "52.8254N 2.04365W"
+  },
+  {
+    "id": "658",
+    "name": "Stirlingshire",
+    "code": "86",
+    "centroid_sref": "56.05349N 4.15678W"
+  },
+  {
+    "id": "739",
+    "name": "Surrey",
+    "code": "17",
+    "centroid_sref": "51.26979N 0.37322W"
+  },
+  {
+    "id": "16217",
+    "name": "Sussex",
+    "code": "13+14",
+    "centroid_sref": "50.93716N 0.10614W"
+  },
+  {
+    "id": "1133",
+    "name": "Tyrone",
+    "code": "H36",
+    "centroid_sref": "54.61166N 7.15832W"
+  },
+  {
+    "id": "711",
+    "name": "Warwickshire",
+    "code": "38",
+    "centroid_sref": "52.33421N 1.5861W"
+  },
+  {
+    "id": "1124",
+    "name": "Waterford",
+    "code": "H6",
+    "centroid_sref": "52.17315N, 7.59657W"
+  },
+  {
+    "id": "1126",
+    "name": "West Cork",
+    "code": "H3",
+    "centroid_sref": "51.71246N, 9.23062W"
+  },
+  {
+    "id": "726",
+    "name": "West Cornwall with Scilly",
+    "code": "1",
+    "centroid_sref": "50.20070N, 5.28652W"
+  },
+  {
+    "id": "1096",
+    "name": "West Donegal",
+    "code": "H35",
+    "centroid_sref": "54.92523N, 8.12915W"
+  },
+  {
+    "id": "1110",
+    "name": "West Galway",
+    "code": "H16",
+    "centroid_sref": "53.43891N, 9.58425W"
+  },
+  {
+    "id": "720",
+    "name": "West Gloucestershire",
+    "code": "34",
+    "centroid_sref": "51.68124N 2.4349W"
+  },
+  {
+    "id": "643",
+    "name": "West Inverness-shire",
+    "code": "97",
+    "centroid_sref": "56.86401N 5.364W"
+  },
+  {
+    "id": "738",
+    "name": "West Kent",
+    "code": "16",
+    "centroid_sref": "51.31403N 0.29549E"
+  },
+  {
+    "id": "683",
+    "name": "West Lancashire",
+    "code": "60",
+    "centroid_sref": "53.94381N 2.81081W"
+  },
+  {
+    "id": "1100",
+    "name": "West Mayo",
+    "code": "H27",
+    "centroid_sref": "53.99648N, 9.54387W"
+  },
+  {
+    "id": "702",
+    "name": "West Norfolk",
+    "code": "28",
+    "centroid_sref": "52.72272N 0.63728E"
+  },
+  {
+    "id": "656",
+    "name": "West Perthshire",
+    "code": "87",
+    "centroid_sref": "56.23022N 4.13889W"
+  },
+  {
+    "id": "640",
+    "name": "West Ross & Cromarty",
+    "code": "105",
+    "centroid_sref": "57.65953N 5.45306W"
+  },
+  {
+    "id": "744",
+    "name": "West Suffolk",
+    "code": "26",
+    "centroid_sref": "52.22287N 0.71887E"
+  },
+  {
+    "id": "735",
+    "name": "West Sussex",
+    "code": "13",
+    "centroid_sref": "50.90936N 0.54778W"
+  },
+  {
+    "id": "638",
+    "name": "West Sutherland",
+    "code": "108",
+    "centroid_sref": "58.39562N 4.67425W"
+  },
+  {
+    "id": "1107",
+    "name": "Westmeath",
+    "code": "H23",
+    "centroid_sref": "53.5289N 7.44127W"
+  },
+  {
+    "id": "680",
+    "name": "Westmorland (with Furness)",
+    "code": "69",
+    "centroid_sref": "54.3685N 2.79291W"
+  },
+  {
+    "id": "1120",
+    "name": "Wexford",
+    "code": "H12",
+    "centroid_sref": "52.46108N, 6.57005W"
+  },
+  {
+    "id": "1114",
+    "name": "Wicklow",
+    "code": "H20",
+    "centroid_sref": "52.97897N 6.37139W"
+  },
+  {
+    "id": "677",
+    "name": "Wigtownshire",
+    "code": "74",
+    "centroid_sref": "54.8387N 4.78053W"
+  },
+  {
+    "id": "710",
+    "name": "Worcestershire",
+    "code": "37",
+    "centroid_sref": "52.23985N 2.16344W"
+  },
+  {
+    "id": "16218",
+    "name": "Yorkshire",
+    "code": "61+62+63+63+65",
+    "centroid_sref": "54.05768N 1.22546W"
+  }
+]

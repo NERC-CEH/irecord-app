@@ -2,8 +2,8 @@
  * Settings Locations main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
-import PastLocationsView from '../../common/views/past_locations_view';
 import JST from 'JST';
+import PastLocationsView from './past_locations_view';
 
 export default Marionette.View.extend({
   template: JST['settings/locations/main'],
@@ -18,6 +18,14 @@ export default Marionette.View.extend({
 
   onChildviewLocationEdit(view) {
     this.triggerMethod('location:edit', view.model);
+  },
+
+  onChildviewLocationSelect(view) {
+    const location = view.model.toJSON();
+    delete location.id;
+    delete location.favourite;
+    delete location.date;
+    this.triggerMethod('location:select', location);
   },
 
   onAttach() {

@@ -2,8 +2,9 @@
  * User Login main view.
  *****************************************************************************/
 import Marionette from 'backbone.marionette';
-import { Validate } from 'helpers';
+import Validate from 'helpers/validate';
 import JST from 'JST';
+import CONFIG from 'config';
 
 export default Marionette.View.extend({
   template: JST['user/login/main'],
@@ -14,10 +15,10 @@ export default Marionette.View.extend({
 
   login() {
     const $inputPassword = this.$el.find('#user-password');
-    const $inputEmail = this.$el.find('#user-email');
+    const $inputName = this.$el.find('#user-name');
 
     const data = {
-      email: $inputEmail.val(),
+      name: $inputName.val(),
       password: $inputPassword.val(),
     };
 
@@ -27,6 +28,12 @@ export default Marionette.View.extend({
   onFormDataInvalid(errors) {
     const $view = this.$el;
     Validate.updateViewFormErrors($view, errors, '#user-');
+  },
+
+  serializeData() {
+    return {
+      siteUrl: CONFIG.site_url,
+    };
   },
 });
 

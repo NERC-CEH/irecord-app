@@ -2,32 +2,33 @@
  * Settings Menu controller.
  *****************************************************************************/
 import Backbone from 'backbone';
-import App from 'app';
-import { Log, Analytics } from 'helpers';
-import appModel from '../../common/models/app_model';
-import userModel from '../../common/models/user_model';
-import recordManager from '../../common/record_manager';
+import radio from 'radio';
+import Log from 'helpers/log';
+import Analytics from 'helpers/analytics';
+import appModel from 'app_model';
+import userModel from 'user_model';
+import savedSamples from 'saved_samples';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
 
 const API = {
   show() {
-    Log('Settings:Menu:Controller: showing');
+    Log('Settings:Menu:Controller: showing.');
 
     const mainView = new MainView({
       model: appModel,
     });
     mainView.on('setting:toggled', (setting, on) => {
-      Log('Settings:Menu:Controller: setting toggled');
+      Log('Settings:Menu:Controller: setting toggled.');
 
       appModel.set(setting, on);
       appModel.save();
     });
 
-    mainView.on('records:submit:all', API.sendAllRecords);
-    mainView.on('records:delete:all', API.deleteAllRecords);
+    mainView.on('samples:submit:all', API.sendAllSamples);
+    mainView.on('samples:delete:all', API.deleteAllSamples);
     mainView.on('app:reset', () => {
-      App.regions.getRegion('dialog').show({
+      radio.trigger('app:dialog', {
         title: 'Reset',
         class: 'error',
         body: 'Are you sure you want to reset the application to its initial state? ' +
@@ -36,7 +37,7 @@ const API = {
           {
             title: 'Cancel',
             onClick() {
-              App.regions.getRegion('dialog').hide();
+              radio.trigger('app:dialog:hide');
             },
           },
           {
@@ -45,7 +46,7 @@ const API = {
             onClick() {
               // delete all
               API.resetApp(() => {
-                App.regions.getRegion('dialog').show({
+                radio.trigger('app:dialog', {
                   title: 'Done!',
                   timeout: 1000,
                 });
@@ -56,43 +57,48 @@ const API = {
       });
     });
 
-    App.regions.getRegion('main').show(mainView);
+    radio.trigger('app:main', mainView);
 
     const headerView = new HeaderView({
       model: new Backbone.Model({
         title: 'Settings',
       }),
     });
-    App.regions.getRegion('header').show(headerView);
+    radio.trigger('app:header', headerView);
   },
 
-  deleteAllRecords() {
+  deleteAllSamples() {
     let body = 'Are you sure you want to delete all successfully synchronised local records?';
     body += '</br><i><b>Note:</b> records on the server will not be touched.</i>';
 
-    App.regions.getRegion('dialog').show({
+    radio.trigger('app:dialog', {
       title: 'Delete All',
       body,
       buttons: [
         {
           title: 'Cancel',
           onClick() {
-            App.regions.getRegion('dialog').hide();
+            radio.trigger('app:dialog:hide');
           },
         },
         {
           title: 'Delete',
           class: 'btn-negative',
           onClick() {
-            Log('Settings:Menu:Controller: deleting all records');
+            Log('Settings:Menu:Controller: deleting all samples.');
 
             // delete all
-            recordManager.removeAllSynced(() => {
-              App.regions.getRegion('dialog').show({
-                title: 'Done!',
-                timeout: 1000,
+            savedSamples.removeAllSynced()
+              .then(() => {
+                radio.trigger('app:dialog', {
+                  title: 'Done!',
+                  timeout: 1000,
+                });
+              })
+              .catch((err) => {
+                Log(err, 'e');
+                radio.trigger('app:dialog:error', err);
               });
-            });
             Analytics.trackEvent('Settings', 'delete all');
           },
         },
@@ -100,34 +106,33 @@ const API = {
     });
   },
 
-  sendAllRecords() {
-    App.regions.getRegion('dialog').show({
+  sendAllSamples() {
+    radio.trigger('app:dialog', {
       title: 'Submit All',
       body: 'Are you sure you want to set all valid records for submission?',
       buttons: [
         {
           title: 'Cancel',
           onClick() {
-            App.regions.getRegion('dialog').hide();
+            radio.trigger('app:dialog:hide');
           },
         },
         {
           title: 'OK',
           class: 'btn-positive',
           onClick() {
-            Log('Settings:Menu:Controller: sending all records');
-
-            // delete all
-            recordManager.setAllToSend((err) => {
-              if (err) {
-                App.regions.getRegion('dialog').error(err);
-                return;
-              }
-              App.regions.getRegion('dialog').show({
-                title: 'Done!',
-                timeout: 1000,
+            Log('Settings:Menu:Controller: sending all samples.');
+            savedSamples.setAllToSend()
+              .then(() => {
+                radio.trigger('app:dialog', {
+                  title: 'Done!',
+                  timeout: 1000,
+                });
+              })
+              .catch((err) => {
+                Log(err, 'e');
+                radio.trigger('app:dialog:error', err);
               });
-            });
             Analytics.trackEvent('Settings', 'send all');
           },
         },
@@ -144,7 +149,12 @@ const API = {
     userModel.clear().set(userModel.defaults);
     userModel.save();
 
-    recordManager.clearAll(true, callback);
+    savedSamples.destroy()
+      .then(callback)
+      .catch((err) => {
+        Log(err, 'e');
+        callback && callback(err);
+      });
 
     Analytics.trackEvent('Settings', 'reset app');
   },

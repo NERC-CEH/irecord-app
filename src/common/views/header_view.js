@@ -2,13 +2,17 @@ import Marionette from 'backbone.marionette';
 import JST from 'JST';
 
 export default Marionette.View.extend({
-  id: 'common-header',
   tagName: 'nav',
   template: JST['common/header'],
+
+  className() {
+    return `common-header ${this.options.classes}`;
+  },
 
   regions: {
     leftPanel: '#left-panel',
     rightPanel: '#right-panel',
+    subheader: '#subheader',
   },
 
   events: {
@@ -18,6 +22,10 @@ export default Marionette.View.extend({
   onRender() {
     if (this.options.rightPanel) {
       this.getRegion('rightPanel').show(this.options.rightPanel);
+    }
+
+    if (this.options.subheader) {
+      this.getRegion('subheader').show(this.options.subheader);
     }
   },
 

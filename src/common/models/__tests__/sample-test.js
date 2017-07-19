@@ -1,16 +1,12 @@
-import $ from 'jquery';
-import Morel from 'morel';
-import Sample from '../sample';
-import Occurrence from '../occurrence';
-import userModel from '../user_model';
-import { DateHelp } from 'helpers';
-import CONFIG from 'config'; // Replaced with alias
-import { recordManager, Manager as RecordManager } from '../../record_manager';
+import DateHelp from 'helpers/date';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import userModel from 'user_model';
+import appModel from 'app_model';
+import { savedSamples, Collection } from '../../saved_samples';
+import store from '../../store';
 
-const morelConfiguration = $.extend(CONFIG.morel.manager, {
-  Storage: Morel.DatabaseStorage,
-  Sample,
-});
+/* eslint-disable no-unused-expressions */
 
 function getRandomSample() {
   const occurrence = new Occurrence({
@@ -23,11 +19,12 @@ function getRandomSample() {
       name: 'automatic test' },
   }, {
     occurrences: [occurrence],
-    manager: recordManager,
-    onSend: () => {}, // overwrite manager's one checking for user login
+    Collection: savedSamples,
+    onSend: () => {}, // overwrite Collection's one checking for user login
   });
 
   sample.metadata.saved = true;
+  sample.metadata.survey = 'general';
 
   return sample;
 }
@@ -40,33 +37,47 @@ describe('Sample', () => {
     expect(DateHelp.print(date)).to.be.equal(DateHelp.print(new Date()));
   });
 
+  it('should set training mode', () => {
+    appModel.set('useTraining', false);
+
+    let sample = getRandomSample();
+    expect(sample.metadata.training).to.be.equal(false);
+
+    appModel.set('useTraining', true);
+
+    sample = getRandomSample();
+    expect(sample.metadata.training).to.be.equal(true);
+  });
+
+
   describe('validation', () => {
     it('should return sample send false invalid if not saved', () => {
       const sample = new Sample();
+      sample.metadata.survey = 'general';
       expect(sample.validate).to.be.a('function');
       sample.clear();
 
-      const invalids = sample.validate();
-      expect(invalids.sample.send).to.be.false;
+      const invalids = sample.validate(null, { remote: true });
+      expect(invalids.attributes.send).to.be.false;
     });
 
-    it('should return sample and occurrence objects with invalids', () => {
+    it('should return attributes and occurrence objects with invalids', () => {
       const sample = new Sample();
-      expect(sample.validate).to.be.a('function');
+      sample.metadata.survey = 'general';
       sample.metadata.saved = true;
       sample.clear();
 
-      let invalids = sample.validate({});
+      let invalids = sample.validate({}, { remote: true });
       expect(invalids).to.be.an('object')
-        .and.have.property('sample')
+        .and.have.property('attributes')
         .and.have.property('occurrences');
 
       // sample
-      expect(invalids.sample).to.have.property('date');
-      expect(invalids.sample).to.have.property('location');
-      expect(invalids.sample).to.have.property('location name');
-      expect(invalids.sample).to.have.property('location_type');
-      expect(invalids.sample).to.have.property('occurrences');
+      expect(invalids.attributes).to.have.property('date');
+      expect(invalids.attributes).to.have.property('location');
+      expect(invalids.attributes).to.have.property('location name');
+      expect(invalids.attributes).to.have.property('location_type');
+      expect(invalids.attributes).to.have.property('occurrences');
 
       // occurrence
       expect(invalids.occurrences)
@@ -75,7 +86,7 @@ describe('Sample', () => {
 
       const occurrence = new Occurrence();
       sample.addOccurrence(occurrence);
-      invalids = sample.validate();
+      invalids = sample.validate(null, { remote: true });
       expect(invalids.occurrences).to.not.be.empty;
       expect(invalids.occurrences).to.have.property(occurrence.cid);
     });
@@ -96,6 +107,8 @@ describe('Sample', () => {
 
     it('should not send if invalid, but set validationError', () => {
       const sample = new Sample();
+      sample.metadata.survey = 'general';
+
       const valid = sample.setToSend();
       expect(valid).to.be.false;
 
@@ -135,11 +148,13 @@ describe('Sample', () => {
         userModel.save();
 
         // get the same sample - fresh
-        const newManager = new RecordManager(morelConfiguration);
-        newManager.get(sample, (err, newSample) => {
-          expect(newSample.get('group')).to.be.undefined;
-          done();
-        });
+        const newCollection = new Collection([], { store, model: Sample });
+        newCollection.fetch()
+          .then(() => {
+            const newSample = newCollection.get(sample);
+            expect(newSample.get('group')).to.be.undefined;
+            done();
+          });
       });
     });
 

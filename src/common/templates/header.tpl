@@ -8,3 +8,7 @@
 <%  if(obj.subtitle) { %>
   <h3 class="subtitle"><%- obj.subtitle %></h3>
 <% } %>
+
+<%  if(obj.subheader) { %>
+<div id="subheader"><%- obj.subheader %></div>
+<% } %>

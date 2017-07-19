@@ -1,24 +1,30 @@
 /** ****************************************************************************
  * App object.
  *****************************************************************************/
+// polyfills
+import 'es6-promise/auto';
+
 import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import FastClick from 'fastclick';
-import { Log, Update, Analytics, Device } from 'helpers';
+import radio from 'radio';
+import Log from 'helpers/log';
+import Update from 'helpers/update';
+import Device from 'helpers/device';
+import Analytics from 'helpers/analytics';
+import appModel from 'app_model';
 import CommonController from './common/controller';
 import DialogRegion from './common/views/dialog_region';
 import HideableRegion from './common/views/hideable_region';
 import './common/router_extension';
-
-// init Analytics
-Analytics.init();
+// import '../test/manual-testing';
 
 const App = new Marionette.Application();
 
 App.navigate = (route, options = {}) => {
-  Log(`App: navigating to ${route}`);
-  const defaultOptions = { trigger: true };
+  Log(`App: navigating to ${route}.`);
+  const defaultOptions = { trigger: false };
   Backbone.history.navigate(route, $.extend(defaultOptions, options));
 };
 
@@ -29,7 +35,7 @@ App.restart = () => {
 App.getCurrentRoute = () => Backbone.history.fragment;
 
 App.on('before:start', () => {
-  Log('App: initializing main regions');
+  Log('App: initializing main regions.');
   const RegionContainer = Marionette.View.extend({
     el: '#app',
 
@@ -48,7 +54,7 @@ App.on('start', () => {
   // update app first
   Update.run(() => {
     // release the beast
-    Log('App: starting');
+    Log('App: starting.');
 
     FastClick.attach(document.body);
 
@@ -56,19 +62,15 @@ App.on('start', () => {
       Backbone.history.start();
 
       if (App.getCurrentRoute() === '') {
-        App.trigger('records:list');
+        if (appModel.get('showWelcome')) {
+          radio.trigger('info:welcome');
+        } else {
+          radio.trigger('samples:list');
+        }
       }
 
-      App.on('404:show', () => {
-        CommonController.show({
-          App,
-          route: 'common/404',
-          title: 404,
-        });
-      });
-
       if (window.cordova) {
-        Log('App: cordova setup');
+        Log('App: cordova setup.');
 
         // Although StatusB  ar in the global scope,
         // it is not available until after the deviceready event.
@@ -82,9 +84,6 @@ App.on('start', () => {
           if (Device.isIOS()) {
             $('body').addClass('ios');
           }
-
-          // development loader
-          $('#loader').remove();
 
           // hide loader
           if (navigator && navigator.splashscreen) {
@@ -100,14 +99,61 @@ App.on('start', () => {
         });
       }
 
-      /**
-       import recordManager from './common/record_manager';
-       $(document).ready(() => {
-         // For screenshots capture only
-          window.testing.screenshotsPopulate(recordManager);
-        });
-       */
+       // // For screenshots capture only
+       // import savedSamples from 'saved_samples';
+       // $(document).ready(() => {
+       //    window.testing.screenshotsPopulate(savedSamples);
+       //  });
+       //
     }
+  });
+});
+
+// events
+radio.on('app:restart', App.restart);
+
+radio.on('app:dialog', (options) => {
+  App.regions.getRegion('dialog').show(options);
+});
+radio.on('app:dialog:hide', (options) => {
+  App.regions.getRegion('dialog').hide(options);
+});
+radio.on('app:dialog:error', (options) => {
+  App.regions.getRegion('dialog').error(options);
+});
+
+radio.on('app:main', (view) => {
+  App.regions.getRegion('main').show(view);
+});
+radio.on('app:header', (view) => {
+  App.regions.getRegion('header').show(view);
+});
+radio.on('app:footer', (view) => {
+  App.regions.getRegion('footer').show(view);
+});
+radio.on('app:main:hide', (options) => {
+  App.regions.getRegion('main').hide(options).empty();
+});
+radio.on('app:header:hide', (options) => {
+  App.regions.getRegion('header').hide(options).empty();
+});
+radio.on('app:footer:hide', (options) => {
+  App.regions.getRegion('footer').hide(options).empty();
+});
+
+radio.on('app:loader', () => {
+  App.regions.getRegion('dialog').showLoader();
+});
+radio.on('app:loader:hide', () => {
+  App.regions.getRegion('dialog').hideLoader();
+});
+
+
+radio.on('app:404:show', () => {
+  CommonController.show({
+    App,
+    route: 'common/404',
+    title: 404,
   });
 });
 

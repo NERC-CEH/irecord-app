@@ -4,290 +4,342 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
-import Morel from 'morel';
-import { Log, Validate, StringHelp, LocHelp } from 'helpers';
+import Indicia from 'indicia';
+import Log from 'helpers/log';
+import StringHelp from 'helpers/string';
+import LocHelp from 'helpers/location';
+import GridRefUtils from 'BIGU';
 import App from 'app';
-
-import recordManager from '../../record_manager';
-import appModel from '../../models/app_model';
-import TabsLayout from '../../views/tabs_layout';
-import HeaderView from '../../views/header_view';
-import LockView from '../../views/attr_lock_view';
-import PastLocationsController from '../../../settings/locations/controller';
-
-import GpsView from './gps_view';
-import MapView from './map_view';
-import GridRefView from './grid_ref_view';
-import PastView from './past_view';
+import radio from 'radio';
+import savedSamples from 'saved_samples';
+import appModel from 'app_model';
+import MainView from './main_view';
+// import PastLocationsController from '../../../settings/locations/controller';
 import './styles.scss';
 
+const LATLONG_REGEX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g; // eslint-disable-line
+
+// overwrite how the location is set on the sample
+let locationSetFunc = null;
+
 const API = {
-  show(recordID) {
-    recordManager.get(recordID, (err, recordModel) => {
-      // Not found
-      if (!recordModel) {
-        App.trigger('404:show', { replace: true });
-        return;
-      }
-
-      // can't edit a saved one - to be removed when record update
-      // is possible on the server
-      if (recordModel.getSyncStatus() === Morel.SYNCED) {
-        App.trigger('records:show', recordID, { replace: true });
-        return;
-      }
-
-      // MAIN
-      const recordLocation = recordModel.get('location') || {};
-      const active = {};
-      if (!recordLocation.source) {
-        active.gps = true;
-      } else {
-        active[recordLocation.source] = true;
-      }
-      const mainView = new TabsLayout({
-        tabs: [
-          {
-            active: active.gps,
-            id: 'gps',
-            title: '<span class="icon icon-location"></span>',
-            ContentView: GpsView,
-          },
-          {
-            active: active.map,
-            id: 'map',
-            title: '<span class="icon icon-map"></span>',
-            ContentView: MapView,
-          },
-          {
-            active: active.gridref,
-            id: 'grid-ref',
-            title: 'GR',
-            ContentView: GridRefView,
-          },
-          {
-            id: 'past',
-            title: '<span class="icon icon-clock"></span>',
-            ContentView: PastView,
-          },
-        ],
-        model: new Backbone.Model({ recordModel, appModel }),
-        vent: App,
+  show(sampleID, subSampleID, options = {}) {
+    // wait till savedSamples is fully initialized
+    if (savedSamples.fetching) {
+      const that = this;
+      savedSamples.once('fetching:done', () => {
+        API.show.apply(that, [sampleID]);
       });
+      return;
+    }
 
-      function onLocationSelect(loc, createNew) {
-        if (typeof loc !== 'object') {
-          // jQuery event object bug fix
-          Log('Location:Controller:onLocationSelect: loc is not an object', 'e');
-          return;
-        }
+    let sample = savedSamples.get(sampleID);
 
-        let location = loc;
-        // we don't need the GPS running and overwriting the selected location
-        recordModel.stopGPS();
+    // Not found
+    if (!sample) {
+      radio.trigger('app:404:show', { replace: true });
+      return;
+    }
 
-        if (!createNew) {
-          // extend old location to preserve its previous attributes like name or id
-          let oldLocation = recordModel.get('location');
-          if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
-          location = $.extend(oldLocation, location);
-        }
+    // can't edit a saved one - to be removed when sample update
+    // is possible on the server
+    if (sample.getSyncStatus() === Indicia.SYNCED) {
+      radio.trigger('samples:show', sampleID, { replace: true });
+      return;
+    }
 
-        recordModel.set('location', location);
-        recordModel.trigger('change:location');
-      }
+    if (subSampleID) {
+      sample = sample.samples.get(subSampleID);
+    }
 
-      function onGPSClick() {
-        // turn off if running
-        if (recordModel.isGPSRunning()) {
-          recordModel.stopGPS();
-        } else {
-          recordModel.startGPS();
-        }
-      }
+    // update the location setting function
+    locationSetFunc = options.setLocation;
 
-      function onLocationNameChange(name) {
-        if (!name || typeof name !== 'string') {
-          return;
-        }
-
-        const location = recordModel.get('location') || {};
-        location.name = StringHelp.escape(name);
-        recordModel.set('location', location);
-        recordModel.trigger('change:location');
-      }
-
-      const currentVal = recordModel.get('location') || {};
-      const locationIsLocked = appModel.isAttrLocked('location', currentVal);
-
-      function onPageExit() {
-        recordModel.save(null, {
-          success: () => {
-            const attr = 'location';
-            let location = recordModel.get('location') || {};
-            const lockedValue = appModel.getAttrLock('location');
-
-            if ((location.latitude && location.longitude) || location.name) {
-              // we can lock loaction and name on their own
-              // don't lock GPS though, because it varies more than a map or gridref
-
-              // save to past locations
-              const locationID = appModel.setLocation(recordModel.get('location'));
-              location.id = locationID;
-              recordModel.set('location', location);
-
-              // update locked value if attr is locked
-              if (lockedValue) {
-                // check if previously the value was locked and we are updating
-                if (locationIsLocked || lockedValue === true) {
-                  Log('Updating lock', 'd');
-
-                  if (location.source === 'gps') {
-                    // on GPS don't lock other than name
-                    location = {
-                      name: location.name,
-                    };
-                  }
-                  appModel.setAttrLock(attr, location);
-                }
-              }
-            } else if (lockedValue === true) {
-              // reset if no location or location name selected but locked is clicked
-              appModel.setAttrLock(attr, null);
-            }
-
-            window.history.back();
-          },
-          error: (error) => {
-            Log(error, 'e');
-            App.regions.getRegion('dialog').error(error);
-          },
-        });
-      }
-
-      mainView.on('childview:location:select:past', (location) => {
-        onLocationSelect(location, true);
-        onPageExit();
-      });
-      mainView.on('childview:location:delete', (model) => {
-        PastLocationsController.deleteLocation(model);
-      });
-      mainView.on('childview:location:edit', (model) => {
-        PastLocationsController.editLocation(model);
-      });
-      mainView.on('childview:location:select:map', onLocationSelect);
-      mainView.on('childview:location:select:gridref', (data) => {
-        /**
-         * Validates the new location
-         * @param attrs
-         * @returns {{}}
-         */
-        function validate(attrs) {
-          const errors = {};
-
-          if (!attrs.name) {
-            errors.name = "can't be blank";
-          }
-
-          if (!attrs.gridref) {
-            errors.gridref = "can't be blank";
-          } else {
-            const gridref = attrs.gridref.replace(/\s/g, '');
-            if (!Validate.gridRef(gridref)) {
-              errors.gridref = 'invalid';
-            } else if (!LocHelp.grid2coord(gridref)) {
-              errors.gridref = 'invalid';
-            }
-          }
-
-          if (!_.isEmpty(errors)) {
-            return errors;
-          }
-
-          return null;
-        }
-
-        const validationError = validate(data);
-        if (!validationError) {
-          App.trigger('gridref:form:data:invalid', {}); // update form
-          const latLon = LocHelp.grid2coord(data.gridref);
-          const location = {
-            source: 'gridref',
-            name: data.name,
-            gridref: data.gridref,
-            latitude: parseFloat(latLon.lat.toFixed(8)),
-            longitude: parseFloat(latLon.lon.toFixed(8)),
-          };
-
-          // -2 because of gridref letters, 2 because this is min precision
-          const accuracy = (data.gridref.replace(/\s/g, '').length - 2) || 2;
-          location.accuracy = accuracy;
-
-          onLocationSelect(location);
-          onPageExit();
-        } else {
-          App.trigger('gridref:form:data:invalid', validationError);
-        }
-      });
-      mainView.on('childview:gps:click', onGPSClick);
-      mainView.on('childview:location:name:change', onLocationNameChange);
-
-      App.regions.getRegion('main').show(mainView);
-
-      // HEADER
-      const lockView = new LockView({
-        model: new Backbone.Model({ appModel, recordModel }),
-        attr: 'location',
-        onLockClick() {
-          // invert the lock of the attribute
-          // real value will be put on exit
-          appModel.setAttrLock('location', !appModel.getAttrLock('location'));
-        },
-      });
-
-      // header view
-      const LocationHeader = HeaderView.extend({
-        id: 'location-header',
-
-        /*
-         From Marionette docs:
-         it is suggested that you avoid re-rendering the entire View unless
-         absolutely necessary. Instead, if you are binding the View's template
-         to a model and need to update portions of the View, you should listen
-         to the model's "change" events and only update the necessary DOM elements.
-         */
-        modelEvents: {
-          'change:location': 'updateTitle',
-        },
-
-        updateTitle() {
-          const title = this.model.printLocation();
-          const $title = this.$el.find('h1');
-
-          $title.html(title || 'Location');
-        },
-
-        serializeData() {
-          return {
-            title: this.model.printLocation() || 'Location',
-          };
-        },
-      });
-
-      const headerView = new LocationHeader({
-        onExit: onPageExit,
-        rightPanel: lockView,
-        model: recordModel,
-      });
-
-      App.regions.getRegion('header').show(headerView);
-
-      // if exit on selection click
-      mainView.on('save', onPageExit);
+    // MAIN
+    const mainView = new MainView({
+      model: new Backbone.Model({ sample, appModel }),
+      vent: App,
+      hideName: options.hideName,
+      hideLocks: options.hideLocks,
+      hidePast: options.hidePast,
     });
+    API.attachMainViewEvents(mainView, sample);
+
+    radio.trigger('app:main', mainView);
+
+    // HEADER
+    radio.trigger('app:header:hide');
 
     // FOOTER
-    App.regions.getRegion('footer').hide().empty();
+    radio.trigger('app:footer:hide');
+  },
+
+  /**
+   * Adds mainView listeners.
+   * @param mainView
+   * @param sample
+   */
+  attachMainViewEvents(mainView, sample) {
+    // past locations
+    mainView.on('past:click', () => API.onPastLocationsClick(sample));
+
+    // map
+    mainView.on('location:select:map',
+      (loc, createNew) => API.setLocation(sample, loc, createNew)
+    );
+
+    // gridref
+    mainView.on('location:gridref:change',
+      data => API.onManualGridrefChange(sample, data)
+    );
+
+    // gps
+    mainView.on('gps:click', () => API.onGPSClick(sample));
+
+    // location name
+    mainView.on('location:name:change',
+      locationName => API.updateLocationName(sample, locationName)
+    );
+
+    mainView.on('lock:click:location', API.onLocationLockClick);
+    mainView.on('lock:click:name', API.onNameLockClick);
+
+    const location = sample.get('location') || {};
+    const locationIsLocked = appModel.isAttrLocked('location', location);
+    const nameIsLocked = appModel.isAttrLocked('locationName', location.name);
+    mainView.on('navigateBack', () => {
+      API.exit(sample, locationIsLocked, nameIsLocked);
+    });
+  },
+
+  /**
+   * Sets new location to sample.
+   * @param sample
+   * @param loc
+   * @param createNew
+   */
+  setLocation(sample, loc, reset) {
+    if (typeof loc !== 'object') {
+      // jQuery event object bug fix
+      // todo clean up if not needed anymore
+      Log('Location:Controller:setLocation: loc is not an object.', 'e');
+      return Promise.reject(new Error('Invalid location'));
+    }
+
+    // check if we need custom location setting functionality
+    if (locationSetFunc) {
+      return locationSetFunc(sample, loc, reset);
+    }
+
+    let location = loc;
+    // we don't need the GPS running and overwriting the selected location
+    if (sample.isGPSRunning()) {
+      sample.stopGPS();
+    }
+
+    if (!reset) {
+      // extend old location to preserve its previous attributes like name or id
+      let oldLocation = sample.get('location');
+      if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
+      location = $.extend(oldLocation, location);
+    }
+
+    // save to past locations
+    const locationID = appModel.setLocation(location);
+    location.id = locationID;
+
+    sample.set('location', location);
+    sample.trigger('change:location');
+
+    return sample.save()
+      .catch((error) => {
+        Log(error, 'e');
+        radio.trigger('app:dialog:error', error);
+      });
+  },
+
+  exit(sample, locationWasLocked, nameWasLocked) {
+    Log('Location:Controller: exiting.');
+
+    sample.save()
+      .then(() => {
+        // save to past locations and update location ID on record
+        const location = sample.get('location') || {};
+        if ((location.latitude)) {
+          const locationID = appModel.setLocation(location);
+          location.id = locationID;
+          sample.set('location', location);
+        }
+
+        API.updateLocks(location, locationWasLocked, nameWasLocked);
+
+        window.history.back();
+      })
+      .catch((error) => {
+        Log(error, 'e');
+        radio.trigger('app:dialog:error', error);
+      });
+  },
+
+  /**
+   * Updates the locks.
+   * @param sample
+   */
+  updateLocks(location = {}, locationWasLocked, nameWasLocked) {
+    Log('Location:Controller: updating locks.');
+
+    const currentLock = appModel.getAttrLock('location');
+    const currentLockedName = appModel.getAttrLock('locationName');
+
+    // location
+    if (location.source !== 'gps' && location.latitude) {
+      const clonedLocation = _.cloneDeep(location);
+
+      // remove location name as it is locked separately
+      delete clonedLocation.name;
+
+      // we can lock location and name on their own
+      // don't lock GPS though, because it varies more than a map or gridref
+      if (currentLock &&
+        (currentLock === true || locationWasLocked)) {
+        // update locked value if attr is locked
+        // check if previously the value was locked and we are updating
+        Log('Updating lock.');
+        appModel.setAttrLock('location', clonedLocation);
+      }
+    } else if (currentLock === true) {
+      // reset if no location or location name selected but locked is clicked
+      appModel.setAttrLock('location', null);
+    }
+
+    // name
+    if (currentLockedName &&
+      (currentLockedName === true || nameWasLocked)) {
+      appModel.setAttrLock('locationName', location.name);
+    }
+  },
+
+  onGPSClick(sample) {
+    // turn off if running
+    if (sample.isGPSRunning()) {
+      sample.stopGPS();
+    } else {
+      sample.startGPS();
+    }
+  },
+
+  /**
+   * Update location name that was typed in.
+   * @param sample
+   * @param locationName
+   */
+  updateLocationName(sample, locationName) {
+    if (!locationName || typeof locationName !== 'string') {
+      return;
+    }
+
+    const escapedName = StringHelp.escape(locationName);
+    const location = sample.get('location') || {};
+    location.name = escapedName;
+
+
+    // check if we need custom location setting functionality
+    if (locationSetFunc) {
+      locationSetFunc(sample, location);
+      return;
+    }
+
+    sample.set('location', location);
+    sample.save();
+  },
+
+  /**
+   * Updates sample location with new gridref that was typed in.
+   * @param sample
+   * @param gridref
+   */
+  onManualGridrefChange(sample, gridref) {
+    Log('Location:Controller: executing onManualGridrefChange.');
+    const normalizedGridref = gridref.replace(/\s/g, '').toUpperCase();
+
+    if (gridref !== '') {
+      const location = {};
+      // check if it is in GB land and not in the sea
+      if (LocHelp.isValidGridRef(normalizedGridref)) {
+        // GB Grid Reference
+        const parsedGridRef = GridRefUtils.GridRefParser.factory(normalizedGridref);
+
+        location.source = 'gridref';
+        location.gridref = parsedGridRef.preciseGridRef;
+        location.accuracy = parsedGridRef.length / 2; // radius rather than square dimension
+
+        const latLng = parsedGridRef.osRef.to_latLng();
+
+        location.latitude = latLng.lat;
+        location.longitude = latLng.lng;
+
+        API.setLocation(sample, location);
+      } else if (gridref.match(LATLONG_REGEX)) {
+        // Lat Long
+        location.source = 'gridref';
+        location.accuracy = 1;
+        const latitude = parseFloat(gridref.split(',')[0]);
+        location.latitude = parseFloat(latitude);
+        const longitude = parseFloat(gridref.split(',')[1]);
+        location.longitude = parseFloat(longitude);
+
+        API.setLocation(sample, location);
+      } else {
+        // invalid
+        App.trigger('gridref:form:data:invalid', { gridref: 'invalid' });
+      }
+    } else {
+      const location = sample.get('location') || {};
+      delete location.source;
+      location.gridref = '';
+      location.latitude = null;
+      location.longitude = null;
+      location.accuracy = null;
+
+      API.setLocation(sample, location);
+    }
+  },
+
+  /**
+   * Navigates to past locations page.
+   * @param sample
+   */
+  onPastLocationsClick(sample) {
+    radio.trigger('settings:locations', {
+      onSelect(location) {
+        if (sample.isGPSRunning()) {
+          sample.stopGPS();
+        }
+
+        // // check if we need custom location setting functionality
+        // if (locationSetFunc) {
+        //   locationSetFunc(sample, location).then(() => window.history.back());
+        //   return;
+        // }
+
+        sample.set('location', location);
+        window.history.back();
+      },
+    });
+  },
+
+  onLocationLockClick() {
+    Log('Location:Controller: executing onLocationLockClick.');
+    // invert the lock of the attribute
+    // real value will be put on exit
+    appModel.setAttrLock('location', !appModel.getAttrLock('location'));
+  },
+
+  onNameLockClick() {
+    Log('Location:Controller: executing onNameLockClick.');
+    // invert the lock of the attribute
+    // real value will be put on exit
+    appModel.setAttrLock('locationName', !appModel.getAttrLock('locationName'));
   },
 };
 

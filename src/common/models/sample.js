@@ -1,84 +1,80 @@
 /** ****************************************************************************
- * Morel Sample.
+ * Indicia Sample.
  *****************************************************************************/
-import $ from 'jquery';
 import _ from 'lodash';
-import Morel from 'morel';
+import Indicia from 'indicia';
+import BIGU from 'BIGU';
 import CONFIG from 'config';
-import recordManager from '../record_manager';
-import { Log } from 'helpers';
-import userModel from './user_model';
-import Occurrence from './occurrence';
+import userModel from 'user_model';
+import appModel from 'app_model';
+import Occurrence from 'occurrence';
+import Log from 'helpers/log';
+import Device from 'helpers/device';
+import store from '../store';
 import GeolocExtension from './sample_geoloc_ext';
 
-let Sample = Morel.Sample.extend({
-  constructor(...args) {
-    this.manager = recordManager;
-    Morel.Sample.prototype.constructor.apply(this, args);
-  },
+let Sample = Indicia.Sample.extend({ // eslint-disable-line
+  api_key: CONFIG.indicia.api_key,
+  host_url: CONFIG.indicia.host,
+  user: userModel.getUser.bind(userModel),
+  password: userModel.getPassword.bind(userModel),
 
-  initialize() {
-    this.set('form', CONFIG.morel.manager.input_form);
-
-    this.checkExpiredGroup(); // activities
-    this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
-  },
+  store, // offline store
 
   Occurrence,
 
-  validate(attributes) {
-    const attrs = _.extend({}, this.attributes, attributes);
+  metadata() {
+    return {
+      training: appModel.get('useTraining'),
+    };
+  },
 
-    const sample = {};
-    const occurrences = {};
+  // warehouse attribute keys
+  keys() {
+    if (this.metadata.survey === 'plant') {
+      return _.extend(
+        {},
+        CONFIG.indicia.surveys.general.sample, // general keys
+        CONFIG.indicia.surveys.plant.sample // plant specific keys
+      );
+    }
+    return CONFIG.indicia.surveys.general.sample;
+  },
 
-    // todo: remove this bit once sample DB update is possible
-    // check if saved
-    if (!this.metadata.saved) {
-      sample.send = false;
+  /**
+   * Need a function because Device might not be ready on module load.
+   * @returns {{device: *, device_version: *}}
+   */
+  defaults() {
+    return {
+      // attach device information
+      device: Device.getPlatform(),
+      device_version: Device.getVersion(),
+      location: {},
+    };
+  },
+
+  initialize() {
+    this.checkExpiredGroup(); // activities
+    this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
+    this._setGPSlocationSetter();
+  },
+
+
+  validateRemote() {
+    const survey = CONFIG.indicia.surveys[this.metadata.survey];
+    if (!survey || !survey.verify) {
+      Log('Sample:model: no such survey in remote verify.', 'e');
+      throw new Error('No sample survey to verify.');
     }
 
-    // location
-    const location = attrs.location || {};
-    if (!location.latitude || !location.longitude) {
-      sample.location = 'missing';
-    }
-    // location name
-    if (!location.name) {
-      sample['location name'] = 'missing';
-    }
+    const verify = survey.verify.bind(this);
+    const [attributes, samples, occurrences] = verify(this.attributes);
 
-    // date
-    if (!attrs.date) {
-      sample.date = 'missing';
-    } else {
-      const date = new Date(attrs.date);
-      if (date === 'Invalid Date' || date > new Date()) {
-        sample.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
-      }
-    }
-
-    // location type
-    if (!attrs.location_type) {
-      sample.location_type = 'can\'t be blank';
-    }
-
-    // occurrences
-    if (this.occurrences.length === 0) {
-      sample.occurrences = 'no species selected';
-    } else {
-      this.occurrences.each((occurrence) => {
-        const errors = occurrence.validate();
-        if (errors) {
-          const occurrenceID = occurrence.id || occurrence.cid;
-          occurrences[occurrenceID] = errors;
-        }
-      });
-    }
-
-    if (!_.isEmpty(sample) || !_.isEmpty(occurrences)) {
+    if (!_.isEmpty(attributes) || !_.isEmpty(samples) || !_.isEmpty(occurrences)) {
       const errors = {
-        sample,
+        attributes,
+        samples,
         occurrences,
       };
       return errors;
@@ -88,29 +84,92 @@ let Sample = Morel.Sample.extend({
   },
 
   /**
-   * Set the record for submission and send it.
+   * Changes the plain survey key to survey specific metadata
    */
-  setToSend(callback) {
+  onSend(submission, media) {
+    const survey = CONFIG.indicia.surveys[this.metadata.survey];
+    submission.survey_id = survey.survey_id; // eslint-disable-line
+    submission.input_form = survey.input_form; // eslint-disable-line
+
+    // add the survey_id to subsamples too
+    if (this.metadata.survey === 'plant') {
+      submission.samples.forEach((subSample) => {
+        subSample.survey_id = survey.survey_id; // eslint-disable-line
+        subSample.input_form = survey.input_form; // eslint-disable-line
+      });
+    }
+
+    return Promise.resolve([submission, media]);
+  },
+
+  /**
+   * Set the sample for submission and send it.
+   */
+  setToSend() {
+    // don't change it's status if already saved
+    if (this.metadata.saved) {
+      return Promise.resolve(this);
+    }
+
     this.metadata.saved = true;
 
-    if (!this.isValid()) {
+    if (!this.isValid({ remote: true })) {
       // since the sample was invalid and so was not saved
       // we need to revert it's status
       this.metadata.saved = false;
       return false;
     }
 
-    // save record
-    const promise = this.save(null, {
-      success: () => {
-        callback && callback();
-      },
-      error: (err) => {
-        callback && callback(err);
-      },
-    });
+    Log('SampleModel: was set to send.');
 
-    return promise;
+    // save sample
+    return this.save();
+  },
+
+  _setGPSlocationSetter() {
+    if (this.metadata.survey !== 'plant') {
+      return;
+    }
+
+    // modify GPS service
+    this.setGPSLocation = (location) => {
+      // child samples
+      if (this.parent) {
+        this.set('location', location);
+        return this.save();
+      }
+
+      const gridSquareUnit = this.metadata.gridSquareUnit;
+      const gridCoords = BIGU.latlng_to_grid_coords(
+        location.latitude,
+        location.longitude
+      );
+
+      if (!gridCoords) {
+        return null;
+      }
+
+      location.source = 'gridref'; // eslint-disable-line
+      if (gridSquareUnit === 'monad') {
+        // monad
+        location.accuracy = 500; // eslint-disable-line
+
+        gridCoords.x += (-gridCoords.x % 1000) + 500;
+        gridCoords.y += (-gridCoords.y % 1000) + 500;
+        location.gridref = gridCoords.to_gridref(1000); // eslint-disable-line
+      } else {
+        // tetrad
+        location.accuracy = 1000; // eslint-disable-line
+
+        gridCoords.x += (-gridCoords.x % 2000) + 1000;
+        gridCoords.y += (-gridCoords.y % 2000) + 1000;
+        location.gridref = gridCoords.to_gridref(2000); // eslint-disable-line
+        location.accuracy = 1000; // eslint-disable-line
+      }
+
+      this.set('location', location);
+      return this.save();
+    };
   },
 
   checkExpiredGroup() {
@@ -121,12 +180,12 @@ let Sample = Morel.Sample.extend({
         const newActivity = userModel.getActivity(activity.id);
         if (!newActivity) {
           // the old activity is expired and removed
-          Log('Sample:Group: removing exipired activity');
+          Log('Sample:Group: removing exipired activity.');
           this.unset('group');
           this.save();
         } else {
           // old activity has been updated
-          Log('Sample:Group: updating exipired activity');
+          Log('Sample:Group: updating exipired activity.');
           this.set('group', newActivity);
           this.save();
         }
@@ -136,17 +195,20 @@ let Sample = Morel.Sample.extend({
 
   isLocalOnly() {
     const status = this.getSyncStatus();
-    if (this.metadata.saved && (
-      status === Morel.LOCAL ||
-      status === Morel.SYNCHRONISING)) {
-      return true;
+    return this.metadata.saved &&
+      (status === Indicia.LOCAL || status === Indicia.SYNCHRONISING);
+  },
+
+  timeout() {
+    if (!Device.connectionWifi()) {
+      return 180000; // 3 min
     }
-    return false;
+    return 60000; // 1 min
   },
 });
+
 
 // add geolocation functionality
 Sample = Sample.extend(GeolocExtension);
 
-$.extend(true, Morel.Sample.keys, CONFIG.morel.sample);
 export { Sample as default };

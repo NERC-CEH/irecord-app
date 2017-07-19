@@ -1,10 +1,20 @@
-import $ from 'jquery';
-import Morel from 'morel';
-import ImageModel from './image';
+import _ from 'lodash';
+import Indicia from 'indicia';
 import CONFIG from 'config';
+import ImageModel from './image';
 
-$.extend(true, Morel.Occurrence.keys, CONFIG.morel.occurrence);
+export default Indicia.Occurrence.extend({
+  Media: ImageModel,
 
-export default Morel.Occurrence.extend({
-  Image: ImageModel,
+  // warehouse attribute keys
+  keys() {
+    if (this.parent.metadata.survey === 'plant') {
+      return _.extend(
+        {},
+        CONFIG.indicia.surveys.general.occurrence, // general keys
+        CONFIG.indicia.surveys.plant.occurrence // plant specific keys
+      );
+    }
+    return CONFIG.indicia.surveys.general.occurrence;
+  },
 });

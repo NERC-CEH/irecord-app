@@ -5,7 +5,7 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
-import App from 'app';
+import radio from 'radio';
 import JST from 'JST';
 import '../styles/dialog.scss';
 
@@ -16,7 +16,7 @@ const errorsTable = {
     buttons: [{
       title: 'Restart',
       onClick: function onClick() {
-        App.restart();
+        radio.trigger('app:restart');
       },
     }],
   },
@@ -168,10 +168,12 @@ export default Marionette.Region.extend({
     Marionette.Region.prototype.show.call(this, view);
   },
 
-  hide() {
-    if (!this.hideAllowed) {
+  hide(permission) {
+    if (!permission && !this.hideAllowed) {
       return;
     }
+
+    this.hideAllowed = true;
 
     // turn off timeout
     if (this.timeout) {

@@ -1,131 +1,240 @@
 /** ****************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
-import { LatLonEllipsoidal as LatLon, OsGridRef } from 'geodesy';
+import BIGU from 'BIGU';
+import Log from './log';
 
 const helpers = {
-  coord2grid(location) {
-    const locationGranularity = helpers._getGRgranularity(location);
-
-    const p = new LatLon(location.latitude, location.longitude, LatLon.datum.WGS84);
-    const grid = OsGridRef.latLonToOsGrid(p);
-
-    return grid.toString(locationGranularity).replace(/\s/g, '');
+  // grid ref character length
+  gridref_accuracy: {
+    tetrad: {
+      label: 'Tetrad (2km square)',
+      length: 5,
+    },
+    monad: {
+      label: 'Monad (1km square)',
+      length: 6,
+    },
+    // '100m': 8, // 100m
   },
 
-  parseGrid(gridrefString) {
-    function normalizeGridRef(incorrectGridref) {
-      // normalise to 1m grid, rounding up to centre of grid square:
-      let e = incorrectGridref.easting;
-      let n = incorrectGridref.northing;
+  /**
+   *
+   * @param {type} location
+   * @returns {string}
+   */
+  locationToGrid(location) {
+    const gridCoords = BIGU.latlng_to_grid_coords(
+      location.latitude,
+      location.longitude
+    );
 
-      switch (incorrectGridref.easting.toString().length) {
-        case 1: e += '50000'; n += '50000'; break;
-        case 2: e += '5000'; n += '5000'; break;
-        case 3: e += '500'; n += '500'; break;
-        case 4: e += '50'; n += '50'; break;
-        case 5: e += '5'; n += '5'; break;
-        case 6: break; // 10-digit refs are already 1m
-        default: return new OsGridRef(NaN, NaN);
-      }
-      return new OsGridRef(e, n);
+    if (!gridCoords) {
+      return null;
     }
 
-    let gridref = OsGridRef.parse(gridrefString);
-    gridref = normalizeGridRef(gridref);
+    const normAcc = BIGU.GridRefParser.get_normalized_precision(
+      location.accuracy * 2 // accuracy is radius
+    );
 
-    return gridref;
+    // Disabled because users 'want' higher precision rather correctness
+    // if (location.source === 'gps') {
+    //   return helpers.normalizeGridRefAcc(gridCoords, location, normAcc);
+    // }
+
+    return gridCoords.to_gridref(normAcc);
   },
 
-  grid2coord(gridrefString) {
-    const gridref = helpers.parseGrid(gridrefString);
-    if (!isNaN(gridref.easting) && !isNaN(gridref.northing)) {
-      return OsGridRef.osGridToLatLon(gridref, LatLon.datum.WGS84);
+  // /**
+  //  * Returns a normalized grid square that takes into account the accuracy
+  //  * of the location.
+  //  +
+  //  |        OK                Not OK
+  //  |
+  //  |   +------------+    +------------+
+  //  |   |            |    |            |
+  //  |   |   +------+ |    |            |
+  //  |   |   |      | |    |            |
+  //  |   |   |  XX  | |    |       +------+
+  //  |   |   |      | |    |       |    | |
+  //  |   |   +------+ |    |       |  XX| |
+  //  |   +------------+    +------------+ |
+  //  |                             +------+
+  //  * @param gridCoords
+  //  * @param location
+  //  * @param normAcc
+  //  * @returns {*}
+  //  */
+  // normalizeGridRefAcc(gridCoords, location, normAcc) {
+  //   // NOTE: is buggy! returns null with GPS.update({gridRef:'TQ12B', accuracy:20, xCorrect:1})
+  //
+  //   // the location verges on the 10K square border and the accuracy
+  //   // is poor enough then don't return any valid gridref
+  //   if (normAcc >= 10000) {
+  //     return null;
+  //   }
+  //
+  //   if (helpers._doesExceedGridRef(gridCoords, location, normAcc)) {
+  //     return helpers.normalizeGridRefAcc(gridCoords, location, normAcc * 10);
+  //   }
+  //
+  //   return gridCoords.to_gridref(normAcc);
+  // },
+
+  /**
+   * Checks if the location fits in the calculated grid reference square.
+   * @private
+   */
+  _doesExceedGridRef(gridCoords, location, normAcc) {
+    const accuracy = location.accuracy;
+
+    const x = gridCoords.x;
+    const y = gridCoords.y;
+
+    if (((x % normAcc) - accuracy) < 0) {
+      return true;
+    }
+
+    if (((x % normAcc) + accuracy) > normAcc) {
+      return true;
+    }
+
+    if (((y % normAcc) - accuracy) < 0) {
+      return true;
+    }
+
+    if (((y % normAcc) + accuracy) > normAcc) {
+      return true;
+    }
+
+    return false;
+  },
+
+  /**
+   *
+   * @param {object} location
+   * @returns {Array} latlng pairs (SW, SE, NE, NW)
+   */
+  getSquareBounds(location) {
+    if (location.latitude) {
+      const gridRefString = helpers.locationToGrid(location);
+      const parsedRef = BIGU.GridRefParser.factory(gridRefString);
+
+      if (parsedRef) {
+        const nationalGridRefSW = parsedRef.osRef;
+        const a = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y);  // eslint-disable-line
+        const b = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
+        const c = new parsedRef.NationalRef(nationalGridRefSW.x, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
+        return [
+          nationalGridRefSW.to_latLng(),
+          a.to_latLng(),
+          b.to_latLng(),
+          c.to_latLng(),
+        ];
+      }
+
+      return null;
     }
 
     return null;
   },
 
   /**
-   * 1 gridref digits. (10000m)  -> < 4 map zoom lvl
-   * 2 gridref digits. (1000m)   -> 7
-   * 3 gridref digits. (100m)    -> 10
-   * 4 gridref digits. (10m)     -> 12
-   * 5 gridref digits. (1m)      ->
+   *
+   * @param {string} gridrefString
+   * @returns {BIGU.OSRef|null} SW corner of grid square
    */
-  mapZoom2meters(accuracy) {
-    let updated = accuracy;
-    if (updated <= 4) {
-      updated = 0;
-    } else if (updated <= 7) {
-      updated = 1;
-    } else if (updated <= 10) {
-      updated = 2;
-    } else if (updated <= 12) {
-      updated = 3;
-    } else {
-      updated = 4;
+  parseGrid(gridrefString) {
+    let gridRef;
+    const parser = BIGU.GridRefParser.factory(gridrefString);
+
+    if (parser) {
+      // center gridref
+      parser.osRef.x += parser.length / 2;
+      parser.osRef.y += parser.length / 2;
+
+      gridRef = parser.osRef;
     }
 
-    updated = 5000 / Math.pow(10, updated); // meters
-    return updated < 1 ? 1 : updated;
+    return gridRef;
   },
 
   /**
-   * 1 gridref digits. (10000m)
-   * 2 gridref digits. (1000m)
-   * 3 gridref digits. (100m)
-   * 4 gridref digits. (10m)
-   * 5 gridref digits. (1m)
+   *
+   * @param {string} gridrefString
+   * @returns {unresolved}
    */
-  _getGRgranularity(location) {
-    let locationGranularity;
-    let accuracy = location.accuracy;
+  gridrefStringToLatLng(gridrefString) {
+    try {
+      const parsedRef = BIGU.GridRefParser.factory(gridrefString);
+      if (parsedRef) {
+        return parsedRef.osRef.to_latLng();
+      }
 
-    // don't need to recalculate if exists
-    if (location.source === 'gridref') {
-      return accuracy;
+      return null;
+    } catch (e) {
+      Log(e.message);
     }
 
-    // normalize to meters
-    if (location.source === 'map') {
-      accuracy = helpers.mapZoom2meters(accuracy);
-    }
-
-    // calculate granularity
-    const digits = Math.log(accuracy) / Math.LN10;
-    locationGranularity = 10 - (digits * 2); // MAX GR ACC -
-    locationGranularity = Number((locationGranularity).toFixed(0)); // round the float
-
-    // normalize granularity
-    // cannot be odd
-    if (locationGranularity % 2 !== 0) {
-      // should not be less than 2
-      locationGranularity =
-        locationGranularity === 1 ? locationGranularity + 1 : locationGranularity - 1;
-    }
-
-    if (locationGranularity > 10) {
-      // no more than 10 digits
-      locationGranularity = 10;
-    } else if (locationGranularity < 2) {
-      // no less than 2
-      locationGranularity = 2;
-    }
-    return locationGranularity;
+    return null;
   },
 
-  isInUK(location) {
-    if (!location.latitude || !location.longitude) return null;
+  /**
+   * Checks if the grid reference is valid and in GB land
+   * @param gridrefString
+   */
+  isValidGridRef(gridrefString) {
+    try {
+      const parsedRef = BIGU.GridRefParser.factory(gridrefString);
+      if (parsedRef && BIGU.MappingUtils.is_gb_hectad(parsedRef.hectad)) {
+        return true;
+      }
 
-    let gridref = location.gridref;
-    if (!gridref) {
-      gridref = helpers.coord2grid(location);
+      return false;
+    } catch (e) {
+      Log(e.message);
     }
 
-    if (gridref) return true;
-
     return false;
+  },
+
+  /**
+   *
+   * @param {type} location
+   * @returns {Boolean}
+   */
+  isInGB(location) {
+    if (location.latitude) {
+      const nationaGridCoords = BIGU.latlng_to_grid_coords(location.latitude, location.longitude);
+      if (!nationaGridCoords) {
+        return false;
+      }
+      return nationaGridCoords.country === 'GB';
+    }
+    return false;
+  },
+
+
+  /**
+   * Checks if location gridref size matches the provided one.
+   * @param location
+   * @param gridRefSize
+   * @returns {boolean}
+   */
+  checkGridType(location, gridRefSize) {
+    if (!gridRefSize) {
+      return false;
+    }
+
+    const gridref = location.gridref || '';
+    let length = helpers.gridref_accuracy[gridRefSize].length;
+
+    if (/^.\d/.test(gridref)) {
+      // Irish is 1 char less than others
+      length -= 1;
+    }
+
+    return gridref.length === length;
   },
 };
 

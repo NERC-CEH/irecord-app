@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const ENV = process.env.NODE_ENV || process.env.ENV || 'testing';
 
@@ -13,6 +14,7 @@ webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
     ENV: JSON.stringify(ENV),
   },
 }));
+webpackConfigDev.resolve.root.push(path.resolve('./test/'));
 
 module.exports = (config) => {
   config.set({
@@ -20,7 +22,7 @@ module.exports = (config) => {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'Safari'],
+    browsers: ['Chrome'],
 
     frameworks: ['mocha', 'chai', 'sinon'],
 
@@ -30,6 +32,7 @@ module.exports = (config) => {
     ],
 
     preprocessors: {
+      'mocks.js': ['webpack'],
       'loader.js': ['webpack'],
     },
 

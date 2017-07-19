@@ -1,13 +1,13 @@
-module.exports = grunt => {
+module.exports = (grunt) => {
   return {
     default: [
       'init',
-      'run',
+      'jst',
       'webpack:main',
     ],
 
     init: [
-      'exec:data_init',
+      'exec:data',
       'copy',
       'vendor',
     ],
@@ -20,26 +20,22 @@ module.exports = grunt => {
       'replace:photoswipe',
     ],
 
-    run: [
-      'jst',
-    ],
-
     // Development run
     update: [
-      'run',
+      'jst',
       'webpack:main',
     ],
 
     // Development update
     dev: [
       'init',
-      'run',
+      'jst',
       'webpack:dev',
     ],
 
     // Development run
     'dev:update': [
-      'run',
+      'jst',
       'webpack:dev',
     ],
 
@@ -63,6 +59,7 @@ module.exports = grunt => {
       'exec:cordova_copy_dist',
       // 'cordova:_prepAndroid', // !!!!! use this to switch between android and ios
       'replace:cordova_config',
+      'replace:cordova_build',
       'exec:cordova_add_platforms',
     ],
 
@@ -75,24 +72,32 @@ module.exports = grunt => {
       'exec:cordova_clean_www',
       'exec:cordova_copy_dist',
       'replace:cordova_config',
+      'replace:cordova_build',
       'exec:cordova_rebuild',
+    ],
+
+    /**
+     * Runs the app to a connected Android device/emulator
+     */
+    'cordova:android:run': [
+      'exec:cordova_run_android',
     ],
 
     'cordova:android': [
       'prompt:keystore',
-      'cordova:android:new',
-      'cordova:android:old',
-    ],
-    'cordova:android:new': [
+      // new
       'cordova:_prepAndroid',
       'replace:cordova_config',
+      'replace:cordova_build',
       'exec:cordova_android_build',
-    ],
-    'cordova:android:old': [
+
+      // old
       'cordova:_prepAndroidOld',
       'replace:cordova_config',
+      'replace:cordova_build',
       'exec:cordova_android_build_old',
     ],
+
 
     /**
      * Sets up the right SDK version and package ID for the config generator
