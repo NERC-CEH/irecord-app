@@ -36,7 +36,7 @@ import LocHelp from 'helpers/location';
 import Log from 'helpers/log';
 import 'os-leaflet';
 import 'leaflet.gridref';
-import BIGU from 'BIGU';
+import bigu from 'bigu';
 import LeafletButton from './leaflet_button_ext';
 import mapMarker from './marker';
 import gpsFunctions from './gps';
@@ -114,8 +114,8 @@ const API = {
       minZoom: MIN_WGS84_ZOOM,
     });
 
-    const start = new BIGU.OSRef(0, 0).to_latLng();
-    const end = new BIGU.OSRef(7 * GRID_STEP, 13 * GRID_STEP).to_latLng();
+    const start = new bigu.OSRef(0, 0).to_latLng();
+    const end = new bigu.OSRef(7 * GRID_STEP, 13 * GRID_STEP).to_latLng();
     const bounds = L.latLngBounds([start.lat, start.lng], [end.lat, end.lng]);
 
     layers.OS = L.tileLayer.OSOpenSpace(CONFIG.map.os_api_key); // eslint-disable-line

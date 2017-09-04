@@ -3,7 +3,7 @@
  *****************************************************************************/
 import _ from 'lodash';
 import Indicia from 'indicia';
-import BIGU from 'BIGU';
+import bigu from 'bigu';
 import CONFIG from 'config';
 import userModel from 'user_model';
 import appModel from 'app_model';
@@ -140,7 +140,7 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
       }
 
       const gridSquareUnit = this.metadata.gridSquareUnit;
-      const gridCoords = BIGU.latlng_to_grid_coords(
+      const gridCoords = bigu.latlng_to_grid_coords(
         location.latitude,
         location.longitude
       );

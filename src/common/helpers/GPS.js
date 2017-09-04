@@ -4,7 +4,7 @@ import Log from './log';
 // /* ---------------------------------------------- */
 // uncomment to enable GPS mock
 // import GPS from 'mock-geolocation';
-// import BIGU from 'BIGU';
+// import bigu from 'bigu';
 //
 // GPS.use();
 // window.GPS = GPS;
@@ -19,7 +19,7 @@ import Log from './log';
 //   let location = options;
 //   if (options.gridRef) {
 //     // Grid References
-//     const parsedRef = BIGU.GridRefParser.factory(options.gridRef);
+//     const parsedRef = bigu.GridRefParser.factory(options.gridRef);
 //
 //     // center
 //     parsedRef.osRef.x += parsedRef.length / 2;
