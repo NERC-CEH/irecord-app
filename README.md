@@ -85,7 +85,7 @@ This will create a `dist` folder with the app code and its dependencies.
 launch of a web server.
 
 ```bash
-node config/server.js
+npm start
 ```
 
 - Open the app on a browser [http://localhost:8000](http://localhost:8000)

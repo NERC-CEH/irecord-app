@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Some location transformation logic.
  *****************************************************************************/
-import BIGU from 'BIGU';
+import bigu from 'bigu';
 import Log from './log';
 
 const helpers = {
@@ -24,7 +24,7 @@ const helpers = {
    * @returns {string}
    */
   locationToGrid(location) {
-    const gridCoords = BIGU.latlng_to_grid_coords(
+    const gridCoords = bigu.latlng_to_grid_coords(
       location.latitude,
       location.longitude
     );
@@ -33,7 +33,7 @@ const helpers = {
       return null;
     }
 
-    const normAcc = BIGU.GridRefParser.get_normalized_precision(
+    const normAcc = bigu.GridRefParser.get_normalized_precision(
       location.accuracy * 2 // accuracy is radius
     );
 
@@ -118,7 +118,7 @@ const helpers = {
   getSquareBounds(location) {
     if (location.latitude) {
       const gridRefString = helpers.locationToGrid(location);
-      const parsedRef = BIGU.GridRefParser.factory(gridRefString);
+      const parsedRef = bigu.GridRefParser.factory(gridRefString);
 
       if (parsedRef) {
         const nationalGridRefSW = parsedRef.osRef;
@@ -142,11 +142,11 @@ const helpers = {
   /**
    *
    * @param {string} gridrefString
-   * @returns {BIGU.OSRef|null} SW corner of grid square
+   * @returns {bigu.OSRef|null} SW corner of grid square
    */
   parseGrid(gridrefString) {
     let gridRef;
-    const parser = BIGU.GridRefParser.factory(gridrefString);
+    const parser = bigu.GridRefParser.factory(gridrefString);
 
     if (parser) {
       // center gridref
@@ -166,7 +166,7 @@ const helpers = {
    */
   gridrefStringToLatLng(gridrefString) {
     try {
-      const parsedRef = BIGU.GridRefParser.factory(gridrefString);
+      const parsedRef = bigu.GridRefParser.factory(gridrefString);
       if (parsedRef) {
         return parsedRef.osRef.to_latLng();
       }
@@ -185,8 +185,8 @@ const helpers = {
    */
   isValidGridRef(gridrefString) {
     try {
-      const parsedRef = BIGU.GridRefParser.factory(gridrefString);
-      if (parsedRef && BIGU.MappingUtils.is_gb_hectad(parsedRef.hectad)) {
+      const parsedRef = bigu.GridRefParser.factory(gridrefString);
+      if (parsedRef && bigu.MappingUtils.is_gb_hectad(parsedRef.hectad)) {
         return true;
       }
 
@@ -205,7 +205,7 @@ const helpers = {
    */
   isInGB(location) {
     if (location.latitude) {
-      const nationaGridCoords = BIGU.latlng_to_grid_coords(location.latitude, location.longitude);
+      const nationaGridCoords = bigu.latlng_to_grid_coords(location.latitude, location.longitude);
       if (!nationaGridCoords) {
         return false;
       }

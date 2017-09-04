@@ -2,7 +2,7 @@
  * Surveys Sample Edit controller.
  *****************************************************************************/
 import Backbone from 'backbone';
-import BIGU from 'BIGU';
+import bigu from 'bigu';
 import _ from 'lodash';
 import $ from 'jquery';
 import Device from 'helpers/device';
@@ -324,7 +324,7 @@ const API = {
    * @returns {boolean}
    */
   validateLocation(sample, location) {
-    const gridCoords = BIGU.latlng_to_grid_coords(
+    const gridCoords = bigu.latlng_to_grid_coords(
       location.latitude,
       location.longitude
     );
@@ -334,7 +334,7 @@ const API = {
     }
 
     const parentGridref = sample.parent.get('location').gridref;
-    const parentParsedRef = BIGU.GridRefParser.factory(parentGridref);
+    const parentParsedRef = bigu.GridRefParser.factory(parentGridref);
 
     if (location.gridref.length < parentGridref.length) {
       return false;
