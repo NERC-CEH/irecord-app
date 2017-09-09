@@ -57,7 +57,7 @@ git clone git://github.com/NERC-CEH/irecord-app.git
 cd irecord-app
 ```
 ```bash
-npm install --ignore-scripts
+npm install
 ```
 
 ### Web app
@@ -67,13 +67,13 @@ If you are building for the web platform only:
 `Production`
 
 ```bash
-grunt
+npm run build
 ```
 
 `Development`
 
 ```bash
-grunt dev
+npm run build:dev
 ```
 
 This will create a `dist` folder with the app code and its dependencies.
@@ -96,7 +96,7 @@ npm start
 - Initialize the project:
 
 ```bash
-grunt cordova
+npm run build:cordova
 ```
 
 - This will create a `dist/cordova` folder with the cordova project
@@ -105,13 +105,13 @@ grunt cordova
  but have made some source code changes (ie. only replaces the www folder contents)
 
 ```bash
-grunt cordova:update
+npm run build:cordova:update
 ```
 
 - **Android build**:
 
 ```bash
-grunt cordova:android
+npm run build:cordova:android
 ```
 
 - **iOS build** open `dist/cordova/platforms/ios/iRecord App.xcodeproj` in XCode
@@ -119,7 +119,7 @@ grunt cordova:android
 
 ### Shortcuts
 
-For more shortcuts please dig in the `config/build/aliases.js` file that is used by grunt runner.
+For more shortcuts please see the `package.json` and dig in the `config/build/aliases.js` file that is used by grunt runner.
 
 ## Authors
 

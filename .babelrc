@@ -1,3 +1,19 @@
 {
-  "presets": ["es2015"]
+  "presets": [
+    "es2015"
+  ],
+  plugins: [
+    [
+      'istanbul',
+      {
+        exclude: [
+          'src/**/*tests*',
+          'src/**/*_view*',
+          'src/app.js',
+          'dist',
+          'test'
+        ]
+      }
+    ]
+  ]
 }
