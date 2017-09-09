@@ -14,15 +14,17 @@ webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
     ENV: JSON.stringify(ENV),
   },
 }));
-webpackConfigDev.resolve.root.push(path.resolve('./test/'));
+webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
 module.exports = (config) => {
   config.set({
-    // basePath: './',
+    browsers: ['ChromeCustom'],
 
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeCustom: {
+        base: 'ChromiumHeadless',
+      },
+    },
 
     frameworks: ['mocha', 'chai', 'sinon'],
 
@@ -56,6 +58,17 @@ module.exports = (config) => {
         children: false,
       },
     },
+
+    coverageReporter: {
+      dir: '../coverage',
+      reporters: [
+        {
+          type: 'html',
+          subdir: 'html',
+        },
+      ],
+    },
+
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
@@ -72,6 +85,6 @@ module.exports = (config) => {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
   });
 };

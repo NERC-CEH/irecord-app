@@ -21,7 +21,7 @@ webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
     ENV: JSON.stringify(ENV),
   },
 }));
-webpackConfigDev.resolve.root.push(path.resolve('./test/'));
+webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
 const sauceBrowsers = _.reduce([
   ['firefox', '45'],

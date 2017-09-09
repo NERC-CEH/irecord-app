@@ -8,7 +8,6 @@ import API from '../controller';
 
 const PLANT_SURVEY_ID = CONFIG.indicia.surveys.plant.survey_id;
 const PLANT_SURVEY_INPUT_FORM = CONFIG.indicia.surveys.plant.input_form;
-
 describe('Surveys List Controller', () => {
   let server;
   let userLogin;
@@ -48,7 +47,7 @@ describe('Surveys List Controller', () => {
   });
 
   it('should have configs', () => {
-    expect(PLANT_SURVEY_ID).to.not.be.empty;
+    expect(PLANT_SURVEY_ID).to.be.a('number');
     expect(PLANT_SURVEY_INPUT_FORM).to.not.be.empty;
   });
 
