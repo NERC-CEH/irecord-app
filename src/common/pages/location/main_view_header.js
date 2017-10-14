@@ -6,7 +6,7 @@ import LocHelp from 'helpers/location';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import Log from 'helpers/log';
-import typeaheadSearchFn from 'common/typeahead_search';
+import typeaheadSearchFn from 'helpers/typeahead_search';
 import 'typeahead';
 
 const HeaderView = Marionette.View.extend({
