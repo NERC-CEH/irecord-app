@@ -4,6 +4,7 @@
  * Uses Google analytics to track the page navigation and Sentry to server log
  * client side errors.
  */
+import _ from 'lodash';
 import Backbone from 'backbone';
 import Raven from 'raven-js';
 import CONFIG from 'config';
@@ -21,8 +22,9 @@ const API = {
     // Turn on the error logging
     if (CONFIG.sentry.key) {
       Log('Analytics: turning on server error logging.');
-      Raven
-        .config(`https://${CONFIG.sentry.key}@sentry.io/${CONFIG.sentry.project}`, {
+      Raven.config(
+        `https://${CONFIG.sentry.key}@sentry.io/${CONFIG.sentry.project}`,
+        {
           environment: CONFIG.environment,
           release: CONFIG.version,
           ignoreErrors: [
@@ -30,14 +32,30 @@ const API = {
             'Incorrect password or email', // no need to log that
             'Backbone.history', // on refresh fires this error, todo: fix it
           ],
-        })
-        .install();
+          breadcrumbCallback(crumb) {
+            // clean UUIDs
+            if (crumb.category === 'navigation') {
+              const cleanCrumb = _.cloneDeep(crumb);
+              cleanCrumb.data = {
+                to: API._removeUUID(crumb.data.to),
+                from: API._removeUUID(crumb.data.from),
+              };
+              return cleanCrumb;
+            }
+
+            return crumb;
+          },
+        }
+      ).install();
     } else {
-      Log('Analytics: server error logging is turned off. Please provide Sentry key.', 'w');
+      Log(
+        'Analytics: server error logging is turned off. Please provide Sentry key.',
+        'w'
+      );
     }
 
     // capture unhandled promises
-    window.onunhandledrejection = (e) => {
+    window.onunhandledrejection = e => {
       Raven.captureException(e.reason, {
         extra: { unhandledPromise: true },
       });
@@ -58,7 +76,12 @@ const API = {
         this.initialized = true;
       });
     } else {
-      Log(`Analytics: Google Analytics is turned off. ${window.cordova ? 'Please provide the GA tracking ID.' : ''}`, 'w');
+      Log(
+        `Analytics: Google Analytics is turned off. ${window.cordova
+          ? 'Please provide the GA tracking ID.'
+          : ''}`,
+        'w'
+      );
     }
   },
 
@@ -109,4 +132,3 @@ const API = {
 API.init();
 
 export { API as default };
-
