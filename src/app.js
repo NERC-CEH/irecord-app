@@ -77,9 +77,6 @@ App.on('start', () => {
         document.addEventListener('deviceready', () => {
           Log('Showing the app.');
 
-          window.StatusBar.overlaysWebView(true);
-          window.StatusBar.backgroundColorByName('black');
-
           // iOS make space for statusbar
           if (Device.isIOS()) {
             $('body').addClass('ios');

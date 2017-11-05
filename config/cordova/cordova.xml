@@ -35,9 +35,7 @@
 
     <preference name="android-minSdkVersion" value="{MIN_SDK}" />
     <preference name="orientation" value="portrait" />
-
     <preference name="iosPersistentFileLocation" value="Library" />
-
     <preference name="webviewbounce" value="false"/>
     <preference name="UIWebViewBounce" value="false"/>
     <preference name="DisallowOverscroll" value="true"/>
@@ -48,7 +46,11 @@
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="FadeSplashScreen" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false"/>
-
+    <preference name="StatusBarBackgroundColor" value="#4E5A0C" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <feature name="StatusBar">
+        <param name="ios-package" value="CDVStatusBar" onload="true" />
+    </feature>
     <plugin name="cordova-plugin-camera" source="npm" >
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Please" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Please" />
@@ -62,6 +64,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+
     <platform name="ios">
         <!-- iOS 8.0+ -->
         <!-- iPhone 6 Plus  -->
