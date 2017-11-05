@@ -16,8 +16,8 @@
     <plugin name="cordova-plugin-datepicker" spec="~0.9.3" />
     <plugin name="cordova-plugin-keyboard" spec="~1.1.5" />
     <plugin name="cordova-plugin-geolocation" spec="~2.1.0" />
-    <plugin name="cordova-plugin-statusbar" spec="~2.1.3" />
-    <plugin name="cordova-plugin-console" spec="~1.0.6" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.2.3" />
+    <plugin name="cordova-plugin-console" spec="~1.1.0" />
     <plugin name="cordova-plugin-device" spec="~1.1.5" />
     <plugin name="cordova-plugin-whitelist" spec="~1.3.2" />
     <plugin name="cordova-plugin-splashscreen" spec="~3.2.2" />
@@ -25,6 +25,7 @@
     <plugin name="cordova-plugin-network-information" spec="~1.2.1" />
     <plugin name="cordova-plugin-google-analytics" spec="~0.8.1" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
+    <plugin name="cordova-plugin-camera" spec="~2.4.1" />
 
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -47,6 +48,12 @@
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="FadeSplashScreen" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false"/>
+
+    <plugin name="cordova-plugin-camera" source="npm" >
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Please" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Please" />
+        <variable name="NSPHOTOLIBRARYUSAGEDESCRIPTIONENTRY" value="Please" />
+    </plugin>
 
     <platform name="android">
         <allow-intent href="market:*" />
@@ -82,6 +89,7 @@
         <!-- iPad Spotlight and Settings Icon -->
         <icon src="../../config/cordova/images/ios/icon/icon-50.png" width="50" height="50" />
         <icon src="../../config/cordova/images/ios/icon/icon-50@2x.png" width="100" height="100" />
+        <icon src="../../config/cordova/images/ios/icon/icon-1024.png" height="1024" width="1024" />
 
         <!-- images are determined by width and height. The following are supported -->
         <splash src="../../config/cordova/images/ios/splash/Default~iphone.png" width="320" height="480"/>

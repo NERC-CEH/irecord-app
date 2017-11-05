@@ -29,9 +29,7 @@ module.exports = function (grunt) {
       stdout: true,
     },
     cordova_add_platforms: {
-      command: 'cd dist/cordova && ' +
-      'cordova platforms add ios android && ' +
-      'cordova plugin add cordova-plugin-camera --variable CAMERA_USAGE_DESCRIPTION="please" --variable PHOTOLIBRARY_USAGE_DESCRIPTION="please"',
+      command: 'cd dist/cordova && cordova platforms add ios android',
       stdout: true,
     },
     /**
