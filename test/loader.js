@@ -3,6 +3,7 @@ require('core-js/es5');
 // other shims
 require('indexeddbshim');
 require('es6-promise/auto');
+require('helpers/object-assign');
 
 // Replace ./src/js with the directory of your application code and
 // make sure the file name regexp matches your test files.

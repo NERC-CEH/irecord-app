@@ -5,6 +5,7 @@
 // shims
 import 'es6-promise/auto';
 import 'indexeddbshim';
+import 'helpers/object-assign';
 
 import 'jquery';
 import 'lodash';
