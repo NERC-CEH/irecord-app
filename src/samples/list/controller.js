@@ -6,6 +6,7 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
 import ImageHelp from 'helpers/image';
+import showErrMsg from 'helpers/show_err_msg';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
 import Factory from 'model_factory';
@@ -134,21 +135,21 @@ const API = {
         {
           title: 'Camera',
           onClick() {
-            ImageHelp.getImage((entry) => {
-              API.createNewSampleWithPhoto('general', entry.nativeURL);
-            });
+            ImageHelp.getImage().then((entry) => {
+             entry && API.createNewSampleWithPhoto('general', entry.nativeURL);
+            }).catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
         {
           title: 'Gallery',
           onClick() {
-            ImageHelp.getImage((entry) => {
-              API.createNewSampleWithPhoto('general', entry.nativeURL, () => {});
-            }, {
+            ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
-            });
+            }).then((entry) => {
+              entry && API.createNewSampleWithPhoto('general', entry.nativeURL, () => {});
+            }).catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },

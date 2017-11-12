@@ -9,6 +9,7 @@ import Device from 'helpers/device';
 import ImageHelp from 'helpers/image';
 import Analytics from 'helpers/analytics';
 import Log from 'helpers/log';
+import showErrMsg from 'helpers/show_err_msg';
 import App from 'app';
 import radio from 'radio';
 import appModel from 'app_model';
@@ -236,29 +237,29 @@ const API = {
         {
           title: 'Camera',
           onClick() {
-            ImageHelp.getImage((entry) => {
-              API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
+            ImageHelp.getImage().then((entry) => {
+              entry && API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
                 if (occErr) {
                   radio.trigger('app:dialog:error', occErr);
                 }
               });
-            });
+            }).catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
         {
           title: 'Gallery',
           onClick() {
-            ImageHelp.getImage((entry) => {
-              API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
-                if (occErr) {
-                  radio.trigger('app:dialog:error', occErr);
-                }
-              });
-            }, {
+            ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
-            });
+            }).then((entry) => {
+              entry && API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
+                if (occErr) {
+                  showErrMsg(occErr);
+                }
+              });
+            }).catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
