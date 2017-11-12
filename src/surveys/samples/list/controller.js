@@ -9,6 +9,7 @@ import Log from 'helpers/log';
 import Occurrence from 'occurrence';
 import Factory from 'model_factory';
 import ImageHelp from 'helpers/image';
+import showErrMsg from 'helpers/show_err_msg';
 import CONFIG from 'config';
 import MainView from './main_view';
 import HeaderView from './header_view';
@@ -113,21 +114,21 @@ const API = {
         {
           title: 'Camera',
           onClick() {
-            ImageHelp.getImage((entry) => {
-              API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
-            });
+            ImageHelp.getImage().then((entry) => {
+              entry && API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
+            }).catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
         {
           title: 'Gallery',
           onClick() {
-            ImageHelp.getImage((entry) => {
-              API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
-            }, {
+            ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
-            });
+            }).then((entry) => {
+              entry && API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
+            }).catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },

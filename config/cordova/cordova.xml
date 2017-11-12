@@ -25,7 +25,20 @@
     <plugin name="cordova-plugin-network-information" spec="~1.2.1" />
     <plugin name="cordova-plugin-google-analytics" spec="~0.8.1" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
-    <plugin name="cordova-plugin-camera" spec="~2.4.1" />
+    <plugin name="cordova-plugin-camera" spec="~3.0.0" />
+    <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Please</string>
+    </edit-config>
+    <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Please</string>
+    </edit-config>
+    <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Please</string>
+    </edit-config>
+    <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Please</string>
+    </edit-config>
+    <plugin name="cordova-plugin-save-image" spec="~0.2.6" />
 
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -51,11 +64,7 @@
     <feature name="StatusBar">
         <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
-    <plugin name="cordova-plugin-camera" source="npm" >
-        <variable name="CAMERA_USAGE_DESCRIPTION" value="Please" />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Please" />
-        <variable name="NSPHOTOLIBRARYUSAGEDESCRIPTIONENTRY" value="Please" />
-    </plugin>
+
 
     <platform name="android">
         <allow-intent href="market:*" />

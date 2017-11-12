@@ -7,7 +7,7 @@ const path = require('path');
 const _ = require('lodash');
 
 const webpack = require('webpack');
-const ENV = process.env.NODE_ENV || process.env.ENV || 'testing';
+const ENV = process.env.NODE_ENV = 'test';
 
 // get development webpack config
 const webpackConfigDev = require('../config/webpack.dev');
