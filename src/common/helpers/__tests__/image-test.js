@@ -1,4 +1,5 @@
 import ImageHelp from '../image';
+import Device from '../device';
 
 describe('Helpers Image', () => {
   beforeEach(() => {
@@ -20,6 +21,8 @@ describe('Helpers Image', () => {
     window.resolveLocalFileSystemURL = (dir, callback) => {
       callback({ copyTo: (fileSystem, name, callback, fail) => callback() });
     };
+
+    sinon.stub(Device, 'isAndroid').returns(false);
   });
 
   afterEach(() => {
@@ -27,6 +30,7 @@ describe('Helpers Image', () => {
     delete window.Camera;
     delete window.navigator.camera;
     delete window.resolveLocalFileSystemURL;
+    Device.isAndroid.restore();
   });
 
   describe('getImage', () => {
