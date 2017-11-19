@@ -10,6 +10,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 script:
   - npm test
+  - npm run test:eslint
   - npm run test:sauce
 notifications:
   email: true

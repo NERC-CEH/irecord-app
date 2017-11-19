@@ -13,7 +13,6 @@ export default Marionette.View.extend({
     'click input[type="radio"]': 'save',
   },
 
-
   initialize() {
     const config = this.options.config || {};
 
@@ -34,13 +33,12 @@ export default Marionette.View.extend({
 
   getValues() {
     let values;
-    const that = this;
     const $inputs = this.$el.find('input');
     $inputs.each((int, elem) => {
       if ($(elem).prop('checked')) {
         const newVal = $(elem).val();
         // don't set default
-        if (newVal !== that.options.config.default) {
+        if (newVal !== this.options.config.default) {
           values = newVal;
         }
       }

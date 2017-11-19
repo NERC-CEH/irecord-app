@@ -51,11 +51,11 @@ const Slider = Marionette.SlidingView.extend({
    * @returns {*}
    */
   getUpperBound(lowerBound, scrollTop) {
-    scrollTop || (scrollTop  = viewport.scrollTop); // eslint-disable-line
+    scrollTop || (scrollTop = viewport.scrollTop); // eslint-disable-line
 
     const scrolledNo = Math.floor(scrollTop / cellHeight);
 
-    return lowerBound + (viewContainsNo * 2) + scrolledNo;
+    return lowerBound + viewContainsNo * 2 + scrolledNo;
   },
 
   pruneCollection(lowerBound, upperBound) {

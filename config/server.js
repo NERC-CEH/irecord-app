@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.static('dist/main'));
 
-const server = app.listen(PORT, function () {
+const server = app.listen(PORT, function() {
   const host = server.address().address;
   const port = server.address().port;
 

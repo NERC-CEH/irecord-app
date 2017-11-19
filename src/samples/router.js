@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample router.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
@@ -56,11 +56,13 @@ const Router = Marionette.AppRouter.extend({
     'samples/:id/edit/activity(/)': ActivitiesController.show,
     'samples/:id/edit/taxon(/)': TaxonController.show,
     'samples/:id/edit/:attr(/)': EditAttrController.show,
-    'samples/*path': () => { radio.trigger('app:404:show'); },
+    'samples/*path': () => {
+      radio.trigger('app:404:show');
+    },
   },
 });
 
-radio.on('samples:list', (options) => {
+radio.on('samples:list', options => {
   App.navigate('samples', options);
   ListController.show();
 });

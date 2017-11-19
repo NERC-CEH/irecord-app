@@ -5,7 +5,6 @@ const API = {
   addGPS() {
     Log('Location:MainView:Map: adding gps button.');
 
-    const that = this;
     const location = this._getCurrentLocation();
 
     const button = new LeafletButton({
@@ -14,10 +13,10 @@ const API = {
       title: 'seek gps fix',
       body: `<span class="icon icon-location"
                 data-source="${location.source}"></span>`,
-      onClick() {
-        that.trigger('gps:click');
+      onClick: () => {
+        this.trigger('gps:click');
       },
-      maxWidth: 30,  // number
+      maxWidth: 30, // number
     });
 
     this.map.addControl(button);
@@ -60,7 +59,6 @@ const API = {
     const $gpsButton = this.$el.find('.gps-btn');
     // change state
     $gpsButton.attr('data-gps-progress', state);
-
 
     // change icon
     const $gpsButtonSpan = $gpsButton.find('span');

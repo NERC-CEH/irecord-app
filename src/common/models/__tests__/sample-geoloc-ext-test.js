@@ -28,7 +28,7 @@ describe('Sample Geolocation Extension', () => {
         latitude: 'x',
       })
         .then(locationWasSet => {
-          expect(locationWasSet).to.be.true;
+          expect(locationWasSet).to.equal(true);
           done();
         })
         .catch(done);
@@ -46,7 +46,7 @@ describe('Sample Geolocation Extension', () => {
         latitude: 'x',
       })
         .then(locationWasSet => {
-          expect(locationWasSet).to.be.false;
+          expect(locationWasSet).to.equal(false);
           done();
         })
         .catch(done);
@@ -65,7 +65,7 @@ describe('Sample Geolocation Extension', () => {
       latitude: 'x',
     })
       .then(locationWasSet => {
-        expect(locationWasSet).to.be.true;
+        expect(locationWasSet).to.equal(true);
         done();
       })
       .catch(done);

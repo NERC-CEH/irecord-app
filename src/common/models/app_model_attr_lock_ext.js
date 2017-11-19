@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * App Model attribute lock functions.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
@@ -42,8 +42,12 @@ export default {
 
   isAttrLocked(attr, value = {}, survey = 'general') {
     let lockedVal = this.getAttrLock(attr, survey);
-    if (!lockedVal) return false; // has not been locked
-    if (lockedVal === true) return true; // has been locked
+    if (!lockedVal) {
+      return false;
+    } // has not been locked
+    if (lockedVal === true) {
+      return true;
+    } // has been locked
     switch (attr) {
       case 'activity':
         return lockedVal.id === value.id;
@@ -53,8 +57,10 @@ export default {
         }
 
         // map or gridref
-        return lockedVal.latitude === value.latitude &&
-          lockedVal.longitude === value.longitude;
+        return (
+          lockedVal.latitude === value.latitude &&
+          lockedVal.longitude === value.longitude
+        );
       case 'locationName':
         if (!lockedVal) {
           return false;
@@ -62,7 +68,10 @@ export default {
 
         return lockedVal.name === value.name;
       case 'date':
-        if (isNaN(Date.parse(value)) || isNaN(Date.parse(lockedVal))) {
+        if (
+          Number.isNaN(Date.parse(value)) ||
+          Number.isNaN(Date.parse(lockedVal))
+        ) {
           return false;
         }
 
@@ -150,7 +159,6 @@ export default {
   },
 
   checkExpiredAttrLocks() {
-    const that = this;
     const activity = this.getAttrLock('activity');
     if (activity) {
       if (userModel.hasActivityExpired(activity)) {
@@ -160,7 +168,7 @@ export default {
     }
     userModel.on('logout', () => {
       Log('AppModel:AttrLocks: activity has expired.');
-      that.unsetAttrLock('activity'); // remove locked activity
+      this.unsetAttrLock('activity'); // remove locked activity
     });
   },
 };

@@ -3,7 +3,7 @@
 describe('Sample atlas', () => {
   // todo
   it('should only allow subsample location edit if exists (survey)', () => {
-   // expect(true).to.be.false;
+    // expect(true).to.be.false;
   });
 
   it('should auto set location of subsamples if none yet set', () => {
@@ -21,4 +21,3 @@ describe('Sample atlas', () => {
     // expect(true).to.be.false;
   });
 });
-

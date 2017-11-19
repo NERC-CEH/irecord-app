@@ -19,10 +19,10 @@ ul.table-view {
       height: 0;
       padding: 0;
     }
-    -webkit-transition:height 200ms ease-in-out;
-    -moz-transition:height 200ms ease-in-out;
-    -o-transition:height 200ms ease-in-out;
-    transition:height 200ms ease-in-out;
+    -webkit-transition: height 200ms ease-in-out;
+    -moz-transition: height 200ms ease-in-out;
+    -o-transition: height 200ms ease-in-out;
+    transition: height 200ms ease-in-out;
 
     &.empty {
       height: initial !important;
@@ -52,7 +52,7 @@ ul.table-view {
       margin: -9px 8px 0 -14px;
       height: 60px;
       width: 60px;
-      background-color: #E5EACD;
+      background-color: #e5eacd;
 
       img {
         height: 100%;
@@ -105,7 +105,7 @@ ul.table-view {
 
         color: $color-gray-dark;
 
-        .icon{
+        .icon {
           cursor: initial;
           &:before {
             font-size: 17px;

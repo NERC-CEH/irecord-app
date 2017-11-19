@@ -17,7 +17,9 @@ const API = {
     Log('Analytics: initializing.');
 
     // initialize only once
-    if (this.initialized) return;
+    if (this.initialized) {
+      return;
+    }
 
     // Turn on the error logging
     if (CONFIG.sentry.key) {
@@ -77,9 +79,9 @@ const API = {
       });
     } else {
       Log(
-        `Analytics: Google Analytics is turned off. ${window.cordova
-          ? 'Please provide the GA tracking ID.'
-          : ''}`,
+        `Analytics: Google Analytics is turned off. ${
+          window.cordova ? 'Please provide the GA tracking ID.' : ''
+        }`,
         'w'
       );
     }
@@ -90,7 +92,9 @@ const API = {
    * @param view
    */
   trackView(view) {
-    if (!this.initialized) return;
+    if (!this.initialized) {
+      return;
+    }
 
     // submit the passed view
     if (view) {
@@ -104,7 +108,9 @@ const API = {
   },
 
   trackEvent(category, event) {
-    if (!this.initialized) return;
+    if (!this.initialized) {
+      return;
+    }
 
     window.analytics.trackEvent(category, event);
   },
@@ -113,7 +119,9 @@ const API = {
     let url = Backbone.history.getFragment();
 
     // Add a slash if neccesary
-    if (!/^\//.test(url)) url = `/${url}`;
+    if (!/^\//.test(url)) {
+      url = `/${url}`;
+    }
 
     url = this._removeUUID(url);
     return url;

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Indicia Sample.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Indicia from 'indicia';
 import bigu from 'bigu';
@@ -13,7 +13,8 @@ import Device from 'helpers/device';
 import store from '../store';
 import GeolocExtension from './sample_geoloc_ext';
 
-let Sample = Indicia.Sample.extend({ // eslint-disable-line
+let Sample = Indicia.Sample.extend({
+  // eslint-disable-line
   api_key: CONFIG.indicia.api_key,
   host_url: CONFIG.indicia.host,
   user: userModel.getUser.bind(userModel),
@@ -60,7 +61,6 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
     this._setGPSlocationSetter();
   },
 
-
   validateRemote() {
     const survey = CONFIG.indicia.surveys[this.metadata.survey];
     if (!survey || !survey.verify) {
@@ -71,7 +71,11 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
     const verify = survey.verify.bind(this);
     const [attributes, samples, occurrences] = verify(this.attributes);
 
-    if (!_.isEmpty(attributes) || !_.isEmpty(samples) || !_.isEmpty(occurrences)) {
+    if (
+      !_.isEmpty(attributes) ||
+      !_.isEmpty(samples) ||
+      !_.isEmpty(occurrences)
+    ) {
       const errors = {
         attributes,
         samples,
@@ -93,7 +97,7 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
 
     // add the survey_id to subsamples too
     if (this.metadata.survey === 'plant') {
-      submission.samples.forEach((subSample) => {
+      submission.samples.forEach(subSample => {
         subSample.survey_id = survey.survey_id; // eslint-disable-line
         subSample.input_form = survey.input_form; // eslint-disable-line
       });
@@ -132,7 +136,7 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
     }
 
     // modify GPS service
-    this.setGPSLocation = (location) => {
+    this.setGPSLocation = location => {
       // child samples
       if (this.parent) {
         this.set('location', location);
@@ -154,15 +158,15 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
         // monad
         location.accuracy = 500; // eslint-disable-line
 
-        gridCoords.x += (-gridCoords.x % 1000) + 500;
-        gridCoords.y += (-gridCoords.y % 1000) + 500;
+        gridCoords.x += -gridCoords.x % 1000 + 500;
+        gridCoords.y += -gridCoords.y % 1000 + 500;
         location.gridref = gridCoords.to_gridref(1000); // eslint-disable-line
       } else {
         // tetrad
         location.accuracy = 1000; // eslint-disable-line
 
-        gridCoords.x += (-gridCoords.x % 2000) + 1000;
-        gridCoords.y += (-gridCoords.y % 2000) + 1000;
+        gridCoords.x += -gridCoords.x % 2000 + 1000;
+        gridCoords.y += -gridCoords.y % 2000 + 1000;
         location.gridref = gridCoords.to_gridref(2000); // eslint-disable-line
         location.accuracy = 1000; // eslint-disable-line
       }
@@ -195,8 +199,10 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
 
   isLocalOnly() {
     const status = this.getSyncStatus();
-    return this.metadata.saved &&
-      (status === Indicia.LOCAL || status === Indicia.SYNCHRONISING);
+    return (
+      this.metadata.saved &&
+      (status === Indicia.LOCAL || status === Indicia.SYNCHRONISING)
+    );
   },
 
   timeout() {
@@ -206,7 +212,6 @@ let Sample = Indicia.Sample.extend({ // eslint-disable-line
     return 60000; // 1 min
   },
 });
-
 
 // add geolocation functionality
 Sample = Sample.extend(GeolocExtension);

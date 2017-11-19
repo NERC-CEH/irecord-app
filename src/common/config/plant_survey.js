@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Plant survey configuration file.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Indicia from 'indicia';
 
@@ -23,7 +23,8 @@ const config = {
     },
     recorders: {
       id: 1018,
-      label: 'If anyone helped with the identification please enter their name here.',
+      label:
+        'If anyone helped with the identification please enter their name here.',
       values(val, submission) {
         const attributes = {};
         const recorderCount = config.sample.recorder_count;
@@ -109,7 +110,8 @@ const config = {
     },
 
     comment: {
-      label: 'Please include any additional notes about the grid square\'s environment or your survey methodology. Do not include details about indivual occurences here.',
+      label:
+        "Please include any additional notes about the grid square's environment or your survey methodology. Do not include details about indivual occurences here.",
     },
   },
 
@@ -163,7 +165,10 @@ const config = {
 
     // todo: remove this bit once sample DB update is possible
     // check if saved or already send
-    if (!isChildSample && (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)) {
+    if (
+      !isChildSample &&
+      (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)
+    ) {
       attributes.send = false;
     }
 
@@ -181,7 +186,7 @@ const config = {
 
       // recorder names
       if (!attrs.recorders || !attrs.recorders.length) {
-        attributes.recorder_names = 'can\'t be blank';
+        attributes.recorder_names = "can't be blank";
       }
     }
 
@@ -191,17 +196,18 @@ const config = {
     } else {
       const date = new Date(attrs.date);
       if (date === 'Invalid Date' || date > new Date()) {
-        attributes.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
+        attributes.date =
+          new Date(date) > new Date() ? 'future date' : 'invalid';
       }
     }
 
     // location type
     if (!attrs.location_type) {
-      attributes.location_type = 'can\'t be blank';
+      attributes.location_type = "can't be blank";
     }
 
     // subsamples
-    this.samples.each((subSample) => {
+    this.samples.each(subSample => {
       const errors = subSample.validate(null, { remote: true });
       if (errors) {
         const sampleID = subSample.cid;
@@ -210,14 +216,13 @@ const config = {
     });
 
     // occurrences
-    this.occurrences.each((occurrence) => {
+    this.occurrences.each(occurrence => {
       const errors = occurrence.validate(null, { remote: true });
       if (errors) {
         const occurrenceID = occurrence.cid;
         occurrences[occurrenceID] = errors;
       }
     });
-
 
     return [attributes, samples, occurrences];
   },

@@ -13,7 +13,8 @@ function transform2JSON(data, outputFileName, callback) {
   jsonTranslator(data, (err, jsonData) => {
     // write it to file
     console.log(`Writing ./${outputFileName}.data.json`);
-    fs.writeFile(`./${outputFileName}.data.json`,
+    fs.writeFile(
+      `./${outputFileName}.data.json`,
       JSON.stringify(jsonData),
       null,
       writeErr => callback(writeErr, jsonData)
@@ -38,7 +39,6 @@ function makeCommonNameMap(data, outputFileName, callback) {
   );
 }
 
-
 // read the CSV file
 fs.readFile('./species.csv', 'utf8', (err, data) => {
   if (err) {
@@ -54,7 +54,7 @@ fs.readFile('./species.csv', 'utf8', (err, data) => {
     }
 
     // make the name map
-    makeCommonNameMap(jsonData, 'species_names', (mapErr) => {
+    makeCommonNameMap(jsonData, 'species_names', mapErr => {
       if (mapErr) {
         console.log(mapErr);
         return;
@@ -64,4 +64,3 @@ fs.readFile('./species.csv', 'utf8', (err, data) => {
     });
   });
 });
-

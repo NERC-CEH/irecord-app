@@ -1,2 +1,1 @@
-
-<ul class="table-view" id="user-locations"></ul>
+<ul class="table-view" id="user-locations" />;

@@ -1,4 +1,4 @@
-@import "../../styles/_variables.scss";
+@import '../../styles/_variables.scss';
 
 #filter-btn {
   width: 50%;
@@ -44,7 +44,7 @@
 
     //left line
     &:after {
-      content: "";
+      content: '';
       background: $color-gray;
       position: absolute;
       bottom: 9px;

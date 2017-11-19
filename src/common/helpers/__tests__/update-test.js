@@ -7,16 +7,16 @@ import Update from '../update';
 Update.updatesSeq = ['3.0.0', '3.1.2', '3.2.0', '4.0.0'];
 
 Update.updates = {
-  '3.0.0': function (callback) {
+  '3.0.0': function(callback) {
     callback();
   },
-  '3.1.2': function (callback) {
+  '3.1.2': function(callback) {
     callback();
   },
-  '3.2.0': function (callback) {
+  '3.2.0': function(callback) {
     callback();
   },
-  '4.0.0': function (callback) {
+  '4.0.0': function(callback) {
     callback();
   },
 };
@@ -79,7 +79,7 @@ describe('Update', () => {
   //   }, true);
   // });
 
-  it('should not call any update if no update with new version', (done) => {
+  it('should not call any update if no update with new version', done => {
     appModel.set('appVersion', '4.0.0');
     CONFIG.version = '4.1.0';
     Update.run(() => {

@@ -4,27 +4,32 @@ const BUILD = 'dist/_build/';
 
 const pkg = require('../../package.json');
 
-module.exports = (grunt) => {
+module.exports = grunt => {
   return {
     // Fix double define problem
     latlon: {
-      src: ['node_modules/geodesy/latlon-ellipsoidal.js',
-        'node_modules/geodesy/latlon-spherical.js'],
+      src: [
+        'node_modules/geodesy/latlon-ellipsoidal.js',
+        'node_modules/geodesy/latlon-spherical.js',
+      ],
       overwrite: true,
       replacements: [
         {
-          from: 'if (typeof module != \'undefined\' && module.exports) ' +
-          'module.exports.Vector3d = Vector3d;',
+          from:
+            "if (typeof module != 'undefined' && module.exports) " +
+            'module.exports.Vector3d = Vector3d;',
           to: '',
         },
         {
-          from: 'if (typeof define == \'function\' && define.amd) ' +
-          'define([], function() { return Vector3d; });',
+          from:
+            "if (typeof define == 'function' && define.amd) " +
+            'define([], function() { return Vector3d; });',
           to: '',
         },
         {
-          from: 'if (typeof define == \'function\' && define.amd) ' +
-          'define([\'Dms\'], function() { return LatLon; });',
+          from:
+            "if (typeof define == 'function' && define.amd) " +
+            "define(['Dms'], function() { return LatLon; });",
           to: '',
         },
       ],
@@ -34,10 +39,12 @@ module.exports = (grunt) => {
     ratchet: {
       src: ['node_modules/ratchet/dist/js/ratchet.js'],
       overwrite: true,
-      replacements: [{
-        from: 'getModal(event)',
-        to: 'null',
-      }],
+      replacements: [
+        {
+          from: 'getModal(event)',
+          to: 'null',
+        },
+      ],
     },
 
     // need to remove Ratchet's default fonts to work with fontello ones
@@ -52,7 +59,8 @@ module.exports = (grunt) => {
         {
           from: /src: url\(\"\.\.\/fonts.*;/g,
           to: '',
-        }],
+        },
+      ],
     },
 
     // need to remove Ratchet's default fonts to work with fontello ones
@@ -63,7 +71,8 @@ module.exports = (grunt) => {
         {
           from: 'url(default-skin.',
           to: 'url(images/default-skin.',
-        }],
+        },
+      ],
     },
 
     // moving the stylesheet to root makes the path different
@@ -73,15 +82,14 @@ module.exports = (grunt) => {
       replacements: [
         {
           from: /\.\.\/font\//g,
-          to: '\.\/font\/',
-        }],
+          to: './font/',
+        },
+      ],
     },
 
     // Cordova config changes
     cordova_config: {
-      src: [
-        'config/cordova/cordova.xml',
-      ],
+      src: ['config/cordova/cordova.xml'],
       dest: 'dist/cordova/config.xml',
       replacements: [
         {
@@ -125,9 +133,7 @@ module.exports = (grunt) => {
       ],
     },
     cordova_build: {
-      src: [
-        'config/cordova/build.json',
-      ],
+      src: ['config/cordova/build.json'],
       dest: 'dist/cordova/build.json',
       replacements: [
         {

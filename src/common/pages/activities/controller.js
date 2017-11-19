@@ -1,6 +1,6 @@
 /** *****************************************************************************
  * Activities List controller.
- ******************************************************************************/
+ ***************************************************************************** */
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
@@ -37,15 +37,18 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
   initialize() {
     Log('Activities:Controller: initializing collection.');
-    const that = this;
 
     this.updateActivitiesCollection();
 
     this.listenTo(userModel, 'sync:activities:start', () => {
       Log('Activities:Controller: reseting collection for sync.');
-      that.reset();
+      this.reset();
     });
-    this.listenTo(userModel, 'sync:activities:end', this.updateActivitiesCollection);
+    this.listenTo(
+      userModel,
+      'sync:activities:end',
+      this.updateActivitiesCollection
+    );
   },
 
   updateActivitiesCollection() {
@@ -57,7 +60,6 @@ const ActivitiesCollection = Backbone.Collection.extend({
       return;
     }
 
-    const that = this;
     const lockedActivity = appModel.getAttrLock('activity');
     let sampleActivity;
 
@@ -85,7 +87,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
       activ.checked = selectedActivity.id === activ.id; // eslint-disable-line
       foundOneToCheck = foundOneToCheck || activ.checked;
 
-      that.add(new ActivityModel(activ));
+      this.add(new ActivityModel(activ));
     });
   },
 });
@@ -130,9 +132,8 @@ const API = {
     if (sampleID) {
       // wait till savedSamples is fully initialized
       if (savedSamples.fetching) {
-        const that = this;
         savedSamples.once('fetching:done', () => {
-          API.show.apply(that, [sampleID]);
+          API.show.apply(this, [sampleID]);
         });
         return;
       }
@@ -176,11 +177,10 @@ const API = {
   },
 
   refreshActivities() {
-    userModel.syncActivities(true)
-      .catch((err) => {
-        Log(err, 'e');
-        radio.trigger('app:dialog:error', err);
-      });
+    userModel.syncActivities(true).catch(err => {
+      Log(err, 'e');
+      radio.trigger('app:dialog:error', err);
+    });
     Analytics.trackEvent('Activities', 'refresh');
   },
 
@@ -188,9 +188,10 @@ const API = {
     const activityID = activity.id;
     if (sample) {
       sample.set('group', userModel.getActivity(activityID));
-      sample.save()
+      sample
+        .save()
         .then(() => window.history.back()) // return to previous page after save
-        .catch((err) => {
+        .catch(err => {
           Log(err, 'e');
           radio.trigger('app:dialog:error', err);
         });
@@ -207,13 +208,16 @@ const API = {
   userLoginMessage() {
     radio.trigger('app:dialog', {
       title: 'Information',
-      body: 'Please log in to the app before selecting an alternative ' +
-      'activity for your records.',
-      buttons: [{
-        id: 'ok',
-        title: 'OK',
-        onClick: App.regions.getRegion('dialog').hide,
-      }],
+      body:
+        'Please log in to the app before selecting an alternative ' +
+        'activity for your records.',
+      buttons: [
+        {
+          id: 'ok',
+          title: 'OK',
+          onClick: App.regions.getRegion('dialog').hide,
+        },
+      ],
     });
   },
 };

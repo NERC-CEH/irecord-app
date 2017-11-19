@@ -15,11 +15,11 @@ describe('Helpers Image', () => {
     window.cordova = { file: {} };
 
     window.navigator.camera = {
-      getPicture: (onSuccess, onError) => onSuccess(''),
+      getPicture: onSuccess => onSuccess(''),
     };
 
     window.resolveLocalFileSystemURL = (dir, callback) => {
-      callback({ copyTo: (fileSystem, name, callback, fail) => callback() });
+      callback({ copyTo: (fileSystem, name, done) => done() });
     };
 
     sinon.stub(Device, 'isAndroid').returns(false);

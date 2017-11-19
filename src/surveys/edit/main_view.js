@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys Edit main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import StringHelp from 'helpers/string';
@@ -35,7 +35,11 @@ export default Marionette.View.extend({
 
   initialize() {
     const sample = this.model.get('sample');
-    this.listenTo(sample, 'request:remote sync:remote error:remote geolocation', this.render);
+    this.listenTo(
+      sample,
+      'request:remote sync:remote error:remote geolocation',
+      this.render
+    );
   },
 
   serializeData() {
@@ -48,7 +52,7 @@ export default Marionette.View.extend({
 
     // calculate unique taxa
     const uniqueTaxa = {};
-    sample.samples.each((childSample) => {
+    sample.samples.each(childSample => {
       const occ = childSample.getOccurrence();
       if (occ) {
         const taxon = occ.get('taxon') || {};

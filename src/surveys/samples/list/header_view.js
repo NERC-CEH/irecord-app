@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample List header view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 
@@ -27,14 +27,12 @@ export default Marionette.View.extend({
   },
 
   onAttach() {
-    const that = this;
-
     // create camera/gallery selection
     if (window.cordova) {
       this.$el.find('.img-picker input').remove();
 
       this.$el.find('.img-picker').on('click', () => {
-        that.trigger('photo:selection');
+        this.trigger('photo:selection');
       });
     }
   },
@@ -45,4 +43,3 @@ export default Marionette.View.extend({
     };
   },
 });
-

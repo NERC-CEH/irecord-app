@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys Sample Edit main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import $ from 'jquery';
 import Indicia from 'indicia';
@@ -26,7 +26,11 @@ export default Marionette.View.extend({
 
   initialize() {
     const sample = this.model.get('sample');
-    this.listenTo(sample, 'request:remote error:remote geolocation', this.render);
+    this.listenTo(
+      sample,
+      'request:remote error:remote geolocation',
+      this.render
+    );
   },
 
   onSettingToggled(e) {
@@ -58,7 +62,10 @@ export default Marionette.View.extend({
 
     let numberLock = appModel.isAttrLocked('number', occ.get('number'));
     if (!numberLock) {
-      numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
+      numberLock = appModel.isAttrLocked(
+        'number-ranges',
+        occ.get('number-ranges')
+      );
     }
 
     const attrLocks = {
@@ -76,7 +83,8 @@ export default Marionette.View.extend({
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
     if (!number) {
-      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+      number =
+        occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
     // show activity title.
@@ -98,7 +106,8 @@ export default Marionette.View.extend({
       abundance: occ.get('abundance') && StringHelp.limit(occ.get('abundance')),
       status: occ.get('status') && StringHelp.limit(occ.get('status')),
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
-      identifiers: occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
+      identifiers:
+        occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
       group_title: group ? group.title : null,
       group,

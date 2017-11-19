@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * User Reset controller.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Backbone from 'backbone';
 import App from 'app';
@@ -28,7 +28,7 @@ const API = {
     });
     radio.trigger('app:header', headerView);
 
-    mainView.on('form:submit', (data) => {
+    mainView.on('form:submit', data => {
       if (!Device.isOnline()) {
         radio.trigger('app:dialog', {
           title: 'Sorry',
@@ -46,11 +46,12 @@ const API = {
           .then(() => {
             radio.trigger('app:dialog', {
               title: 'Success',
-              body: 'Further instructions have been sent to your e-mail address.',
+              body:
+                'Further instructions have been sent to your e-mail address.',
             });
             window.history.back();
           })
-          .catch((err) => {
+          .catch(err => {
             Log(err, 'e');
             radio.trigger('app:dialog:error', err);
           });

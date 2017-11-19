@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Settings Survey main view.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import LocHelp from 'helpers/location';
@@ -52,4 +52,3 @@ export default Marionette.View.extend({
     return templateData;
   },
 });
-

@@ -1,13 +1,15 @@
 /** ****************************************************************************
  * Surveys List main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import radio from 'radio';
 import JST from 'JST';
 import DateHelp from 'helpers/date';
 import Gallery from '../../common/gallery';
-import _MainView, { SampleView as _SampleView } from '../../samples/list/main_view';
+import _MainView, {
+  SampleView as _SampleView,
+} from '../../samples/list/main_view';
 import SlidingView from '../../common/views/sliding_view';
 import './styles.scss';
 
@@ -28,7 +30,7 @@ const SampleView = Marionette.View.extend({
 
     const items = [];
 
-    this.model.media.each((image) => {
+    this.model.media.each(image => {
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
@@ -62,7 +64,7 @@ const SampleView = Marionette.View.extend({
 
     // calculate unique taxa
     const uniqueTaxa = {};
-    sample.samples.each((childSample) => {
+    sample.samples.each(childSample => {
       const occ = childSample.getOccurrence();
       if (occ) {
         const taxon = occ.get('taxon') || {};
@@ -102,7 +104,6 @@ const NoSamplesView = Marionette.View.extend({
   },
 });
 
-
 const SmartCollectionView = SlidingView.extend({
   childView: SampleView,
   emptyView: NoSamplesView,
@@ -112,7 +113,6 @@ const SmartCollectionView = SlidingView.extend({
     radio.trigger('surveys:list:show');
   },
 });
-
 
 const MainView = _MainView.extend({
   template: JST['surveys/list/main'],
@@ -142,11 +142,14 @@ const MainView = _MainView.extend({
   },
 
   onRender() {
-    this.showChildView('body', new SmartCollectionView({
-      referenceCollection: this.collection,
-      appModel: this.options.appModel,
-      scroll: this.options.scroll,
-    }));
+    this.showChildView(
+      'body',
+      new SmartCollectionView({
+        referenceCollection: this.collection,
+        appModel: this.options.appModel,
+        scroll: this.options.scroll,
+      })
+    );
   },
 
   serializeData() {

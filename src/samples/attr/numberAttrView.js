@@ -37,7 +37,6 @@ export default Marionette.View.extend({
     const sliderRegion = this.getRegion('slider');
     sliderRegion.show(sliderView);
 
-
     // ranges selection
     // don't show any selected default range if the slider value exists
     const defaultRange = this.options.defaultNumber ? -1 : this.options.default;
@@ -46,7 +45,7 @@ export default Marionette.View.extend({
       default: defaultRange,
     });
     // on save
-    selectionView.on('save', (e) => {
+    selectionView.on('save', e => {
       sliderView.resetValue(); // so that getValues wouldn't pick it up
       this.trigger('save', e);
     });

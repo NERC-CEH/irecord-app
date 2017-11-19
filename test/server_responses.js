@@ -68,10 +68,10 @@ const responses = {
   },
 };
 
-export default function (functionName, data) {
+export default function(functionName, data) {
   const func = responses[functionName];
   if (!func) {
-    throw 'No such return function';
+    throw new Error('No such return function');
   }
   const [code, resp] = func(data);
   return [code, { 'Content-Type': 'application/json' }, JSON.stringify(resp)];

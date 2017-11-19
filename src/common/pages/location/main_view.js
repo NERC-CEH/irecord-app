@@ -1,12 +1,12 @@
 /** ****************************************************************************
  * Location main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import Log from 'helpers/log';
 import CONFIG from 'config';
-import 'typeahead';
+import 'typeahead'; // eslint-disable-line
 import HeaderView from './main_view_header';
 import mapFunctions from './map/main';
 import './styles.scss';
@@ -29,13 +29,17 @@ const LocationView = Marionette.View.extend({
   },
 
   childViewEvents: {
-    'gridref:change': function (val) {
+    // eslint-disable-next-line
+    'gridref:change': function(val) {
       this.triggerMethod('location:gridref:change', val);
     },
-    'name:change': function (val) {
+
+    // eslint-disable-next-line
+    'name:change': function(val) {
       this.triggerMethod('location:name:change', val);
     },
-    'input:blur': function () {
+    // eslint-disable-next-line
+    'input:blur': function() {
       this._refreshMapHeight();
     },
   },

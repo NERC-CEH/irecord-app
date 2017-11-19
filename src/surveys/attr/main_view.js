@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys List main view.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
@@ -55,7 +55,7 @@ export default Marionette.View.extend({
 
       case 'vice-county':
         const codes = [];
-        const names = viceCounties.map((a) => {
+        const names = viceCounties.map(a => {
           codes.push(a.code);
           return a.name;
         });

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * App update functionality.
- *****************************************************************************/
+ **************************************************************************** */
 
 import radio from 'radio';
 import CONFIG from 'config';
@@ -45,18 +45,21 @@ function versionCompare(left, right) {
   const len = Math.max(a.length, b.length);
 
   for (let i = 0; i < len; i++) {
-    if ((a[i] && !b[i] && parseInt(a[i], 10) > 0) ||
-      (parseInt(a[i], 10) > parseInt(b[i], 10))) {
+    if (
+      (a[i] && !b[i] && parseInt(a[i], 10) > 0) ||
+      parseInt(a[i], 10) > parseInt(b[i], 10)
+    ) {
       return 1;
-    } else if ((b[i] && !a[i] && parseInt(b[i], 10) > 0) ||
-      (parseInt(a[i], 10) < parseInt(b[i], 10))) {
+    } else if (
+      (b[i] && !a[i] && parseInt(b[i], 10) > 0) ||
+      parseInt(a[i], 10) < parseInt(b[i], 10)
+    ) {
       return -1;
     }
   }
 
   return 0;
 }
-
 
 /**
  * part of 1.2.2 update
@@ -77,7 +80,6 @@ class DatabaseStorage {
    * Brings back all saved data from the database.
    */
   getAll(callback) {
-    const that = this;
     this.open((err, store) => {
       if (err) {
         callback(err);
@@ -85,11 +87,11 @@ class DatabaseStorage {
       }
       try {
         // Get everything in the store
-        const keyRange = that.IDBKeyRange.lowerBound(0);
+        const keyRange = this.IDBKeyRange.lowerBound(0);
         const req = store.openCursor(keyRange);
         const data = {};
 
-        req.onsuccess = (e) => {
+        req.onsuccess = e => {
           try {
             const result = e.target.result;
 
@@ -102,18 +104,20 @@ class DatabaseStorage {
             } else {
               callback(null, data);
             }
-          } catch (err) {  // eslint-disable-line
+            // eslint-disable-next-line
+          } catch (err) {
             callback && callback(err);
           }
         };
 
-        req.onerror = (e) => {
+        req.onerror = e => {
           console.error('Database error.');
           console.error(e.target.error);
           const error = new Error(e.target.error);
           callback(error);
         };
-      } catch (err) {  // eslint-disable-line
+        // eslint-disable-next-line
+      } catch (err) {
         callback && callback(err);
       }
     });
@@ -126,7 +130,6 @@ class DatabaseStorage {
    * @param callback
    */
   open(callback) {
-    const that = this;
     let req = null;
 
     try {
@@ -137,12 +140,12 @@ class DatabaseStorage {
        *
        * @param e
        */
-      req.onsuccess = (e) => {
+      req.onsuccess = e => {
         try {
           const db = e.target.result;
-          const transaction = db.transaction([that.STORE_NAME], 'readwrite');
+          const transaction = db.transaction([this.STORE_NAME], 'readwrite');
           if (transaction) {
-            const store = transaction.objectStore(that.STORE_NAME);
+            const store = transaction.objectStore(this.STORE_NAME);
             if (store) {
               callback(null, store);
             } else {
@@ -160,10 +163,10 @@ class DatabaseStorage {
        *
        * @param e
        */
-      req.onupgradeneeded = (e) => {
+      req.onupgradeneeded = e => {
         try {
           const db = e.target.result;
-          db.createObjectStore(that.STORE_NAME);
+          db.createObjectStore(this.STORE_NAME);
         } catch (err) {
           callback && callback(err);
         }
@@ -174,7 +177,7 @@ class DatabaseStorage {
        *
        * @param e
        */
-      req.onerror = (e) => {
+      req.onerror = e => {
         console.error('Database error.');
         console.error(e.target.error);
         const error = new Error(e.target.error);
@@ -186,7 +189,7 @@ class DatabaseStorage {
        *
        * @param e
        */
-      req.onblocked = (e) => {
+      req.onblocked = e => {
         console.error('Database error.');
         console.error(e.target.error);
         const error = new Error(e.target.error);
@@ -216,11 +219,15 @@ const API = {
       API._updateAppVersion(currentVersion, newVersion);
 
       // first install
-      if (!currentVersion) callback();
+      if (!currentVersion) {
+        callback();
+      }
 
       // find first update
       const firstUpdate = API._findFirst(API.updatesSeq, currentVersion);
-      if (firstUpdate < 0) return callback(); // no update for this version
+      if (firstUpdate < 0) {
+        return callback();
+      } // no update for this version
 
       // hide loader
       if (navigator && navigator.splashscreen) {
@@ -237,16 +244,18 @@ const API = {
       const startTime = Date.now();
 
       // apply all updates
-      return API._applyUpdates(firstUpdate, (error) => {
+      return API._applyUpdates(firstUpdate, error => {
         if (error) {
           if (!silent) {
-            radio.trigger('app:dialog:error',
-              'Sorry, an error has occurred while updating the app');
+            radio.trigger(
+              'app:dialog:error',
+              'Sorry, an error has occurred while updating the app'
+            );
           }
           return null;
         }
 
-        const timeDiff = (Date.now() - startTime);
+        const timeDiff = Date.now() - startTime;
         if (timeDiff < MIN_UPDATE_TIME) {
           setTimeout(() => {
             if (!silent) {
@@ -282,7 +291,7 @@ const API = {
     /**
      *  Migrate to new indicia database.
      */
-    '2.0.0': (callback) => {
+    '2.0.0': callback => {
       Log('Update: version 2.0.0', 'i');
 
       function finishUpdate() {
@@ -292,7 +301,6 @@ const API = {
 
         userModel.clear().set(userModel.defaults);
         userModel.save();
-
 
         Log('Update: finished.', 'i');
         callback(); // fully restart afterwards
@@ -307,7 +315,6 @@ const API = {
         const samplesCount = Object.keys(samples).length;
         Log(`Update: copying ${samplesCount} samples to SQLite.`, 'i');
 
-
         // samples
         function updateSampleStructure(sample) {
           const newSample = sample;
@@ -321,9 +328,13 @@ const API = {
           return newSample;
         }
 
-        for (const sample in samples) {  // eslint-disable-line
-          const updatedSample = updateSampleStructure(samples[sample]);
-          savedSamples.add(updatedSample);
+        // eslint-disable-next-line
+        for (const sample in samples) {
+          // eslint-disable-next-line
+          if (samples.hasOwnProperty(sample)) {
+            const updatedSample = updateSampleStructure(samples[sample]);
+            savedSamples.add(updatedSample);
+          }
         }
 
         return savedSamples.save().then(() => {
@@ -341,7 +352,9 @@ const API = {
 
           // recover lost records too
           const evenOlderDB = new DatabaseStorage({ appname: 'ir' });
-          evenOlderDB.getAll((err, samples = []) => {  // eslint-disable-line
+          // eslint-disable-next-line
+          evenOlderDB.getAll((err, samples = []) => {
+            // eslint-disable-line
             moveRecords(err, samples).then(() => {
               // clean up old db
               Log('Update: clearing ir db.', 'i');
@@ -363,7 +376,9 @@ const API = {
    * @private
    */
   _findFirst(updatesSeq = API.updatesSeq, currentVersion) {
-    if (!updatesSeq.length) return -1;
+    if (!updatesSeq.length) {
+      return -1;
+    }
 
     let firstVersion = -1;
     API.updatesSeq.some((version, index) => {
@@ -403,7 +418,7 @@ const API = {
       }
 
       // check if last update
-      if ((API.updatesSeq.length - 1) <= updateIndex) {
+      if (API.updatesSeq.length - 1 <= updateIndex) {
         if (!fullRestartRequired) {
           return callback();
         }

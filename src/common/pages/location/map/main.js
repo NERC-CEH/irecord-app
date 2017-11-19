@@ -24,7 +24,7 @@
  |             + 5                 1        10000m
  +
  *
- *****************************************************************************/
+ **************************************************************************** */
 
 import $ from 'jquery';
 import 'leaflet/dist/leaflet.css';
@@ -68,7 +68,9 @@ const API = {
 
     // default layer
     this.currentLayer = this._getCurrentLayer();
-    if (this.currentLayer === 'OS') this.map.options.crs = OS_CRS;
+    if (this.currentLayer === 'OS') {
+      this.map.options.crs = OS_CRS;
+    }
 
     // position view
     this._repositionMap();
@@ -98,21 +100,29 @@ const API = {
 
   getLayers() {
     const layers = {};
-    layers.Satellite = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      id: CONFIG.map.mapbox_satellite_id,
-      accessToken: CONFIG.map.mapbox_api_key,
-      tileSize: 256, // specify as, OS layer overwites this with 200 otherwise,
-      minZoom: MIN_WGS84_ZOOM,
-    });
+    layers.Satellite = L.tileLayer(
+      'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+      {
+        attribution:
+          'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        id: CONFIG.map.mapbox_satellite_id,
+        accessToken: CONFIG.map.mapbox_api_key,
+        tileSize: 256, // specify as, OS layer overwites this with 200 otherwise,
+        minZoom: MIN_WGS84_ZOOM,
+      }
+    );
 
-    layers.OSM = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      id: CONFIG.map.mapbox_osm_id,
-      accessToken: CONFIG.map.mapbox_api_key,
-      tileSize: 256, // specify as, OS layer overwites this with 200 otherwise
-      minZoom: MIN_WGS84_ZOOM,
-    });
+    layers.OSM = L.tileLayer(
+      'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+      {
+        attribution:
+          'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        id: CONFIG.map.mapbox_osm_id,
+        accessToken: CONFIG.map.mapbox_api_key,
+        tileSize: 256, // specify as, OS layer overwites this with 200 otherwise
+        minZoom: MIN_WGS84_ZOOM,
+      }
+    );
 
     const start = new bigu.OSRef(0, 0).to_latLng();
     const end = new bigu.OSRef(7 * GRID_STEP, 13 * GRID_STEP).to_latLng();
@@ -122,7 +132,7 @@ const API = {
 
     layers.OS.options.bounds = bounds;
 
-    layers.OS.on('tileerror', (tile) => {
+    layers.OS.on('tileerror', tile => {
       let index = 0;
       const result = tile.tile.src.match(/missingTileString=(\d+)/i);
       if (result) {
@@ -132,7 +142,10 @@ const API = {
         // don't do it more than few times
         if (index < 4) {
           // eslint-disable-next-line
-          tile.tile.src = tile.tile.src.replace(/missingTileString=(\d+)/i, '&missingTileString=' + index);
+          tile.tile.src = tile.tile.src.replace(
+            /missingTileString=(\d+)/i,
+            `&missingTileString=${index}`
+          );
         }
       } else if (index === 0) {
         // eslint-disable-next-line
@@ -146,11 +159,14 @@ const API = {
   addControls() {
     Log('Location:MainView:Map: adding layer controls.');
 
-    this.controls = L.control.layers({
-      'Ordnance Survey': this.layers.OS,
-      'Open Street Map': this.layers.OSM,
-      Satellite: this.layers.Satellite,
-    }, {});
+    this.controls = L.control.layers(
+      {
+        'Ordnance Survey': this.layers.OS,
+        'Open Street Map': this.layers.OSM,
+        Satellite: this.layers.Satellite,
+      },
+      {}
+    );
     this.map.addControl(this.controls);
   },
 
@@ -161,18 +177,16 @@ const API = {
 
     Log('Location:MainView:Map: adding past locations button.');
 
-    const that = this;
     const button = new LeafletButton({
       position: 'topright',
       className: 'past-btn',
       title: 'navigate to past locations',
       body: '<span class="icon icon-history"></span>',
-      onClick() {
-        that.trigger('past:click');
+      onClick: () => {
+        this.trigger('past:click');
       },
-      maxWidth: 30,  // number
+      maxWidth: 30, // number
     });
-
 
     this.map.addControl(button);
     const sample = this.model.get('sample');
@@ -189,8 +203,11 @@ const API = {
     const appModel = this.model.get('appModel');
     const useGridRef = appModel.get('useGridRef');
     const useGridMap = appModel.get('useGridMap');
-    if (!useGridRef || !useGridMap) return;
+    if (!useGridRef || !useGridMap) {
+      return;
+    }
 
+    // eslint-disable-next-line
     const that = this;
 
     function getColor() {
@@ -325,7 +342,6 @@ const API = {
     let zoom = this.getMapZoom();
     this.map.options.crs = L.CRS.EPSG3857;
 
-
     // a change from WGS84 -> OS
     if (nextLayer === 'Ordnance Survey') {
       zoom = API._deNormalizeOSzoom(zoom);
@@ -416,7 +432,7 @@ const API = {
       scale = 3;
     }
 
-    scale = 5000 / Math.pow(10, scale); // meters
+    scale = 5000 / 10 ** scale; // meters
     return scale < 1 ? 1 : scale;
   },
 };

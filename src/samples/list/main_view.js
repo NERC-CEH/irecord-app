@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample List main view.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
@@ -28,7 +28,7 @@ const SampleView = Marionette.View.extend({
 
   events: {
     // need to pass the attribute therefore 'triggers' method does not suit
-    'click .js-attr': (e) => {
+    'click .js-attr': e => {
       e.preventDefault();
       this.trigger('sample:edit:attr', $(e.target).data('attr'));
     },
@@ -45,7 +45,7 @@ const SampleView = Marionette.View.extend({
 
     const items = [];
 
-    this.model.getOccurrence().media.each((image) => {
+    this.model.getOccurrence().media.each(image => {
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
@@ -61,7 +61,9 @@ const SampleView = Marionette.View.extend({
   onRender() {
     // add mobile swipe events
     // early return
-    if (!Device.isMobile()) return;
+    if (!Device.isMobile()) {
+      return;
+    }
 
     this.$sample = this.$el.find('a');
     this.docked = false;
@@ -72,18 +74,19 @@ const SampleView = Marionette.View.extend({
       toolsWidth: 100,
     };
 
-    const hammertime = new Hammer(this.el, { direction: Hammer.DIRECTION_HORIZONTAL });
-    const that = this;
+    const hammertime = new Hammer(this.el, {
+      direction: Hammer.DIRECTION_HORIZONTAL,
+    });
 
     // on tap bring back
     this.$sample.on('tap click', $.proxy(this._swipeHome, this));
 
-    hammertime.on('pan', (e) => {
+    hammertime.on('pan', e => {
       e.preventDefault();
-      that._swipe(e, options);
+      this._swipe(e, options);
     });
-    hammertime.on('panend', (e) => {
-      that._swipeEnd(e, options);
+    hammertime.on('panend', e => {
+      this._swipeEnd(e, options);
     });
   },
 
@@ -91,10 +94,9 @@ const SampleView = Marionette.View.extend({
     Log('Samples:MainView: removing a sample.');
     // removing the last element leaves emptyView + fading out entry for a moment
     if (this.model.collection && this.model.collection.length >= 1) {
-      const that = this;
       this.$el.addClass('shrink');
       setTimeout(() => {
-        Marionette.View.prototype.remove.call(that);
+        Marionette.View.prototype.remove.call(this);
       }, 300);
     } else {
       Marionette.View.prototype.remove.call(this);
@@ -123,7 +125,8 @@ const SampleView = Marionette.View.extend({
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
     if (!number) {
-      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+      number =
+        occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
     const group = sample.get('group');
@@ -149,7 +152,9 @@ const SampleView = Marionette.View.extend({
 
   _swipe(e, options) {
     // only swipe if no scroll up
-    if (Math.abs(e.deltaY) > 10) return;
+    if (Math.abs(e.deltaY) > 10) {
+      return;
+    }
 
     if (this.docked) {
       this.position = -options.toolsWidth + e.deltaX;
@@ -158,16 +163,20 @@ const SampleView = Marionette.View.extend({
     }
 
     // protection of swipeing right too much
-    if (this.position > 0) this.position = 0;
+    if (this.position > 0) {
+      this.position = 0;
+    }
 
     this.$sample.css('transform', `translateX(${this.position}px)`);
   },
 
   _swipeEnd(e, options) {
     // only swipe if no scroll up and is not in the middle
-    if (Math.abs(e.deltaY) > 10 && !this.position) return;
+    if (Math.abs(e.deltaY) > 10 && !this.position) {
+      return;
+    }
 
-    if ((-options.toolsWidth + e.deltaX) > -options.toolsWidth) {
+    if (-options.toolsWidth + e.deltaX > -options.toolsWidth) {
       // bring back
       this.position = 0;
       this.docked = false;
@@ -190,7 +199,6 @@ const SampleView = Marionette.View.extend({
   },
 });
 
-
 const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
@@ -201,7 +209,6 @@ const NoSamplesView = Marionette.View.extend({
   },
 });
 
-
 const SmartCollectionView = SlidingView.extend({
   childView: SampleView,
   emptyView: NoSamplesView,
@@ -211,7 +218,6 @@ const SmartCollectionView = SlidingView.extend({
     radio.trigger('species:list:show');
   },
 });
-
 
 const MainView = Marionette.View.extend({
   id: 'samples-list-container',
@@ -249,11 +255,13 @@ const MainView = Marionette.View.extend({
   onRender() {
     const mainRegion = this.getRegion('body');
 
-    mainRegion.show(new SmartCollectionView({
-      referenceCollection: this.collection,
-      appModel: this.options.appModel,
-      scroll: this.options.scroll,
-    }));
+    mainRegion.show(
+      new SmartCollectionView({
+        referenceCollection: this.collection,
+        appModel: this.options.appModel,
+        scroll: this.options.scroll,
+      })
+    );
   },
 });
 

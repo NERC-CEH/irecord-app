@@ -11,7 +11,7 @@
  *  4: debug
  *
  * Levels values defined in core app module.
- *****************************************************************************/
+ **************************************************************************** */
 import Raven from 'raven-js';
 import CONFIG from 'config';
 
@@ -29,7 +29,8 @@ const DEBUG = 'd';
  */
 function error(err = {}) {
   if (typeof err === 'string' || err instanceof String) {
-    err = { // eslint-disable-line
+    err = {
+      // eslint-disable-line
       message: err,
     };
   }

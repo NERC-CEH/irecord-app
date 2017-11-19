@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Scientific name search.
- *****************************************************************************/
+ **************************************************************************** */
 import helpers from './searchHelpers';
 
 const WAREHOUSE_INDEX = 0;
@@ -16,8 +16,14 @@ const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
  * @param searchPhrase
  * @returns {Array}
  */
-function searchSciNames(species, searchPhrase, results = [],
-                        maxResults, hybridRun, informalGroups = []) {
+function searchSciNames(
+  species,
+  searchPhrase,
+  results = [],
+  maxResults,
+  hybridRun,
+  informalGroups = []
+) {
   const searchWords = searchPhrase.split(' ');
 
   // prepare first word regex
@@ -29,12 +35,22 @@ function searchSciNames(species, searchPhrase, results = [],
   let otherWords = searchWords.splice(1).join(' ');
   let otherWordsRegex;
   if (otherWords) {
-    otherWordsRegex = new RegExp(`^${helpers.getOtherWordsRegexString(otherWords)}`, 'i');
+    otherWordsRegex = new RegExp(
+      `^${helpers.getOtherWordsRegexString(otherWords)}`,
+      'i'
+    );
   }
 
   // check if hybrid eg. X Cupressocyparis
   if (!hybridRun && searchPhrase.match(/X\s.*/i)) {
-    searchSciNames(species, searchPhrase, results, maxResults, true, informalGroups);
+    searchSciNames(
+      species,
+      searchPhrase,
+      results,
+      maxResults,
+      true,
+      informalGroups
+    );
   } else if (hybridRun) {
     // run with different first word
     firstWord = helpers.normalizeFirstWord(searchPhrase);
@@ -45,21 +61,30 @@ function searchSciNames(species, searchPhrase, results = [],
   }
 
   // find first match in array
-  let speciesArrayIndex = helpers.findFirstMatching(species, species, firstWord);
+  let speciesArrayIndex = helpers.findFirstMatching(
+    species,
+    species,
+    firstWord
+  );
 
   // go through all
   const speciesArrayLength = species.length;
-  while (speciesArrayIndex !== null && speciesArrayIndex >= 0 &&
-  speciesArrayIndex < speciesArrayLength &&
-  results.length < maxResults) {
+  while (
+    speciesArrayIndex !== null &&
+    speciesArrayIndex >= 0 &&
+    speciesArrayIndex < speciesArrayLength &&
+    results.length < maxResults
+  ) {
     const speciesEntry = species[speciesArrayIndex];
 
     // check if species is in informal groups to search
-    if (informalGroups.length &&
-      informalGroups.indexOf(speciesEntry[GROUP_INDEX]) < 0) {
+    if (
+      informalGroups.length &&
+      informalGroups.indexOf(speciesEntry[GROUP_INDEX]) < 0
+    ) {
       // skip this taxa because not in the searched informal groups
       speciesArrayIndex++;
-      continue;  // eslint-disable-line
+      continue; // eslint-disable-line
     }
 
     // check if matches
@@ -92,7 +117,8 @@ function searchSciNames(species, searchPhrase, results = [],
         for (
           let speciesIndex = 0, length = speciesArray.length;
           speciesIndex < length && results.length < maxResults;
-          speciesIndex++) {
+          speciesIndex++
+        ) {
           const speciesInArray = speciesArray[speciesIndex];
           if (otherWordsRegex) {
             // if search through species
@@ -105,7 +131,9 @@ function searchSciNames(species, searchPhrase, results = [],
                 found_in_name: 'scientific_name',
                 warehouse_id: speciesInArray[WAREHOUSE_INDEX],
                 group: speciesEntry[GROUP_INDEX],
-                scientific_name: `${speciesEntry[SCI_NAME_INDEX]} ${speciesInArray[SPECIES_SCI_NAME_INDEX]}`,
+                scientific_name: `${speciesEntry[SCI_NAME_INDEX]} ${
+                  speciesInArray[SPECIES_SCI_NAME_INDEX]
+                }`,
                 common_name: speciesInArray[SPECIES_COMMON_INDEX],
                 synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
               };
@@ -119,8 +147,9 @@ function searchSciNames(species, searchPhrase, results = [],
               found_in_name: 'scientific_name',
               warehouse_id: speciesInArray[WAREHOUSE_INDEX],
               group: speciesEntry[GROUP_INDEX],
-              scientific_name:
-                `${speciesEntry[SCI_NAME_INDEX]} ${speciesInArray[SPECIES_SCI_NAME_INDEX]}`,
+              scientific_name: `${speciesEntry[SCI_NAME_INDEX]} ${
+                speciesInArray[SPECIES_SCI_NAME_INDEX]
+              }`,
               common_name: speciesInArray[SPECIES_COMMON_INDEX],
               synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
             };

@@ -37,4 +37,3 @@ export default Marionette.View.extend({
     }
   },
 });
-

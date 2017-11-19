@@ -29,7 +29,10 @@ module.exports = (taxon, common) => {
     // # s. lat.
     // # s.l.
     // # sens.lat.
-    cleaned = cleaned.replace(/sensu lato|Sensu lato|sensu\.lato\.|s\. lat\.|sens\. lat\.|s\.lat\.|s\. lat\.|sens\.lat\./g, 's.l.');
+    cleaned = cleaned.replace(
+      /sensu lato|Sensu lato|sensu\.lato\.|s\. lat\.|sens\. lat\.|s\.lat\.|s\. lat\.|sens\.lat\./g,
+      's.l.'
+    );
 
     // #sensu stricto -> s.s.
     // # sensu stricto
@@ -39,7 +42,10 @@ module.exports = (taxon, common) => {
     // # s. str.
     // # s.s.
     // # sens. str.
-    cleaned = cleaned.replace(/sensu stricto|sens\.strict\.|sens\.str\.|s\.str\.|s\. str\.|sens\. str\./g, 's.s.');
+    cleaned = cleaned.replace(
+      /sensu stricto|sens\.strict\.|sens\.str\.|s\.str\.|s\. str\.|sens\. str\./g,
+      's.s.'
+    );
 
     // #sensu -> s.
     cleaned = cleaned.replace(/ sensu\.? /g, ' s. ');

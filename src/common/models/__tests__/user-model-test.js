@@ -70,7 +70,7 @@ describe('User Model', () => {
       expect(userModel.get('activities')).to.be.an('array');
     });
 
-    it('should sync activities from server', (done) => {
+    it('should sync activities from server', done => {
       const userModel = new UserModel();
 
       const activity = getRandActivity();
@@ -101,7 +101,7 @@ describe('User Model', () => {
       userModel.fetchActivities.restore();
     });
 
-    it('should force fetch', (done) => {
+    it('should force fetch', done => {
       let userModel = new UserModel();
       const activity = getRandActivity();
       server.respondWith([
@@ -138,7 +138,7 @@ describe('User Model', () => {
       expect(userModel.synchronizingActivities).to.be.instanceOf(Promise);
     });
 
-    it('should fire event on sync start and end', (done) => {
+    it('should fire event on sync start and end', done => {
       const userModel = new UserModel();
 
       userModel.on('sync:activities:end', () => {
@@ -204,7 +204,7 @@ describe('User Model', () => {
       expect(activities.length).to.be.equal(1);
     });
 
-    it('should auto fetch new activities every day', (done) => {
+    it('should auto fetch new activities every day', done => {
       const clock = sinon.useFakeTimers();
 
       let userModel = new UserModel();
@@ -246,11 +246,13 @@ describe('User Model', () => {
           200,
           { 'Content-Type': 'application/json' },
           JSON.stringify({
-            data: [{
-              id: 1,
-              group_from_date: '2016-05-03',
-              group_to_date: '2016-05-25',
-            }],
+            data: [
+              {
+                id: 1,
+                group_from_date: '2016-05-03',
+                group_to_date: '2016-05-25',
+              },
+            ],
           }),
         ]);
         userModel.synchronizingActivities.then(() => {
@@ -271,12 +273,13 @@ describe('User Model', () => {
 
       it('should complain on unfamiliar server serponse', () => {
         const userModel = new UserModel();
-        userModel.fetchActivities((err) => {
+        userModel.fetchActivities(err => {
           expect(err).to.be.an('object');
         });
 
         server.respondWith([
-          200, { 'Content-Type': 'application/json' },
+          200,
+          { 'Content-Type': 'application/json' },
           JSON.stringify([{ id: 1 }]),
         ]);
       });

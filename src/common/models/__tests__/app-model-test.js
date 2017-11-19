@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { AppModel } from 'app_model';
-import { getRandomSample } from 'test-helpers';
+import { getRandomSample } from 'test-helpers';  // eslint-disable-line
 
 /* eslint-disable no-unused-expressions */
 

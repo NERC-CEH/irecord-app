@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Attribute controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
@@ -16,9 +16,8 @@ const API = {
   show(sampleID, attr) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID, attr]);
+        API.show.apply(this, [sampleID, attr]);
       });
       return;
     }
@@ -86,8 +85,10 @@ const API = {
       if (appModel.getAttrLock(attr)) {
         appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
       } else {
-        appModel.setAttrLock('number-ranges',
-          !appModel.getAttrLock('number-ranges'));
+        appModel.setAttrLock(
+          'number-ranges',
+          !appModel.getAttrLock('number-ranges')
+        );
       }
     } else {
       appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
@@ -152,13 +153,14 @@ const API = {
     }
 
     // save it
-    sample.save()
+    sample
+      .save()
       .then(() => {
         // update locked value if attr is locked
         API.updateLock(attr, newVal, currentVal);
         callback();
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
@@ -169,8 +171,10 @@ const API = {
 
     switch (attr) {
       case 'date':
-        if (!lockedValue ||
-          (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date()))) {
+        if (
+          !lockedValue ||
+          (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date()))
+        ) {
           // don't lock current day
           appModel.setAttrLock(attr, null);
         } else {
@@ -181,12 +185,15 @@ const API = {
         if (!lockedValue) {
           lockedValue = appModel.getAttrLock('number');
         }
+      // falls through
       case 'number':
         if (!lockedValue) {
           lockedValue = appModel.getAttrLock('number-ranges');
         }
 
-        if (!lockedValue) return; // nothing was locked
+        if (!lockedValue) {
+          return;
+        } // nothing was locked
 
         if (attr === 'number-ranges') {
           appModel.setAttrLock(attr, newVal);
@@ -197,7 +204,10 @@ const API = {
         }
         break;
       default:
-        if (lockedValue && (lockedValue === true || lockedValue === currentVal)) {
+        if (
+          lockedValue &&
+          (lockedValue === true || lockedValue === currentVal)
+        ) {
           appModel.setAttrLock(attr, newVal);
         }
     }

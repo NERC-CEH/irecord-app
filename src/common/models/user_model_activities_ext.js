@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * App Model activities functions.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import _ from 'lodash';
 import Indicia from 'indicia';
@@ -11,7 +11,6 @@ export default {
   syncActivities(force) {
     Log('UserModel:Activities: synchronising.');
 
-    const that = this;
     if (this.synchronizingActivities) {
       return this.synchronizingActivities;
     }
@@ -22,12 +21,12 @@ export default {
 
       this.synchronizingActivities = this.fetchActivities()
         .then(() => {
-          delete that.synchronizingActivities;
-          that.trigger('sync:activities:end');
+          delete this.synchronizingActivities;
+          this.trigger('sync:activities:end');
         })
-        .catch((err) => {
-          delete that.synchronizingActivities;
-          that.trigger('sync:activities:end');
+        .catch(err => {
+          delete this.synchronizingActivities;
+          this.trigger('sync:activities:end');
           return Promise.reject(err);
         });
 
@@ -60,7 +59,7 @@ export default {
   getActivity(id) {
     const activities = this.get('activities');
     let foundedActivity;
-    activities.forEach((activity) => {
+    activities.forEach(activity => {
       if (id === activity.id) {
         foundedActivity = activity;
       }
@@ -78,7 +77,12 @@ export default {
 
     // check if old one was updated
     const savedActivity = this.getActivity(activity.id);
-    if (!_.isEqual(_.omit(savedActivity, ['synced_on']), _.omit(activity, ['synced_on']))) {
+    if (
+      !_.isEqual(
+        _.omit(savedActivity, ['synced_on']),
+        _.omit(activity, ['synced_on'])
+      )
+    ) {
       return true;
     }
 
@@ -104,8 +108,6 @@ export default {
   fetchActivities() {
     Log('UserModel:Activities: fetching.');
 
-    const that = this;
-
     const report = new Indicia.Report({
       report: '/library/groups/groups_for_app.xml',
 
@@ -118,50 +120,49 @@ export default {
       },
     });
 
-    const promise = report.run()
-      .then((receivedData) => {
-        const data = receivedData.data;
-        if (!data || !(data instanceof Array)) {
-          const err = new Error('Error while retrieving activities response.');
-          return Promise.reject(err);
+    const promise = report.run().then(receivedData => {
+      const data = receivedData.data;
+      if (!data || !(data instanceof Array)) {
+        const err = new Error('Error while retrieving activities response.');
+        return Promise.reject(err);
+      }
+
+      const activities = [];
+      const defaultActivity = {
+        synced_on: new Date().toString(),
+        id: null,
+        title: '',
+        description: '',
+        group_type: '',
+        group_from_date: '',
+        group_to_date: '',
+      };
+
+      data.forEach(activity => {
+        const fullActivity = $.extend({}, defaultActivity, activity);
+        fullActivity.id = parseInt(fullActivity.id, 10);
+
+        // from
+        let date;
+        if (fullActivity.group_from_date) {
+          date = new Date(fullActivity.group_from_date);
+          fullActivity.group_from_date = date.toString();
         }
 
-        const activities = [];
-        const defaultActivity = {
-          synced_on: new Date().toString(),
-          id: null,
-          title: '',
-          description: '',
-          group_type: '',
-          group_from_date: '',
-          group_to_date: '',
-        };
-
-        data.forEach((activity) => {
-          const fullActivity = $.extend({}, defaultActivity, activity);
-          fullActivity.id = parseInt(fullActivity.id, 10);
-
-          // from
-          let date;
-          if (fullActivity.group_from_date) {
-            date = new Date(fullActivity.group_from_date);
-            fullActivity.group_from_date = date.toString();
-          }
-
-          // to
-          if (fullActivity.group_to_date) {
-            date = new Date(fullActivity.group_to_date);
-            date.setDate(date.getDate() + 1); // include the last day
-            fullActivity.group_to_date = date.toString();
-          }
-          activities.push(fullActivity);
-        });
-
-        that.set('activities', activities);
-        that.save();
-
-        return null;
+        // to
+        if (fullActivity.group_to_date) {
+          date = new Date(fullActivity.group_to_date);
+          date.setDate(date.getDate() + 1); // include the last day
+          fullActivity.group_to_date = date.toString();
+        }
+        activities.push(fullActivity);
       });
+
+      this.set('activities', activities);
+      this.save();
+
+      return null;
+    });
 
     return promise;
   },
@@ -174,7 +175,9 @@ export default {
   _lastSyncExpired() {
     const activities = this.get('activities');
 
-    if (!activities.length) return true;
+    if (!activities.length) {
+      return true;
+    }
 
     const lastSync = new Date(activities[0].synced_on);
 

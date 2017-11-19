@@ -1,7 +1,8 @@
 import savedSamples from 'saved_samples';
 import API from '../controller';
 
-describe('List Controller', function () { // eslint-disable-line
+  // eslint-disable-next-line
+describe('List Controller', function() {
   // it can take time to add/remove samples
   this.timeout(10000);
 
@@ -26,25 +27,27 @@ describe('List Controller', function () { // eslint-disable-line
   });
 
   describe('photo picker', () => {
-    before((done) => {
+    before(done => {
       // clean up in case of trash
-      savedSamples.fetch()
+      savedSamples
+        .fetch()
         .then(() => savedSamples.destroy())
         .then(() => done());
     });
 
-    afterEach((done) => {
+    afterEach(done => {
       // clean up in case of trash
-      savedSamples.fetch()
+      savedSamples
+        .fetch()
         .then(() => savedSamples.destroy())
         .then(() => done());
     });
 
-    it('should create a new sample with a photo', (done) => {
+    it('should create a new sample with a photo', done => {
       done();
     });
 
-    it('should throw error if no image is provided', (done) => {
+    it('should throw error if no image is provided', done => {
       // Controller.createNewSample(null, (err) => {
       //  expect(err).to.not.be.null;
       //  done();

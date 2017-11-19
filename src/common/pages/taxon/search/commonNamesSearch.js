@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Common name search.
- *****************************************************************************/
+ **************************************************************************** */
 import helpers from './searchHelpers';
 
 const WAREHOUSE_INDEX = 0;
@@ -19,8 +19,13 @@ const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
  * @param searchPhrase
  * @returns {Array}
  */
-export default function (species, commonNamePointersArray, searchPhrase,
-                         maxResults, informalGroups) {
+export default function(
+  species,
+  commonNamePointersArray,
+  searchPhrase,
+  maxResults,
+  informalGroups
+) {
   const searchWords = searchPhrase.split(' ');
   const results = [];
 
@@ -38,11 +43,10 @@ export default function (species, commonNamePointersArray, searchPhrase,
     otherWordsRegex = new RegExp(otherWordsRegexStr, 'i');
   }
 
-
-  function informalGroupMatch(informalGroups, group) {  // eslint-disable-line
+  // eslint-disable-next-line
+  function informalGroupMatch(informalGroups, group) {
     // check if species is in informal groups to search
-    if (informalGroups.length &&
-      informalGroups.indexOf(group) < 0) {
+    if (informalGroups.length && informalGroups.indexOf(group) < 0) {
       // skip this taxa because not in the searched informal groups
       return false;
     }
@@ -50,9 +54,11 @@ export default function (species, commonNamePointersArray, searchPhrase,
   }
 
   // for each word index
-  for (let wordCount = 0;
-       wordCount < commonNamePointersArray.length && results.length < maxResults;
-       wordCount++) {
+  for (
+    let wordCount = 0;
+    wordCount < commonNamePointersArray.length && results.length < maxResults;
+    wordCount++
+  ) {
     const commonNamePointers = commonNamePointersArray[wordCount];
     const pointerArrayLength = commonNamePointers.length;
 
@@ -65,9 +71,12 @@ export default function (species, commonNamePointersArray, searchPhrase,
     );
 
     // go through all common name pointers
-    while (pointersArrayIndex !== null && pointersArrayIndex >= 0 &&
-    pointersArrayIndex < pointerArrayLength &&
-    results.length < maxResults) {
+    while (
+      pointersArrayIndex !== null &&
+      pointersArrayIndex >= 0 &&
+      pointersArrayIndex < pointerArrayLength &&
+      results.length < maxResults
+    ) {
       const p = commonNamePointers[pointersArrayIndex];
       if (helpers.isGenusPointer(p)) {
         const genus = species[p[0]];
@@ -78,12 +87,18 @@ export default function (species, commonNamePointersArray, searchPhrase,
         }
 
         let name = genus[p[1]];
-        name = name.split(/\s+/).slice(wordCount).join(' ');
+        name = name
+          .split(/\s+/)
+          .slice(wordCount)
+          .join(' ');
         // stop looking further if first name does not match
-        if (!firstWordRegex.test(name)) break;
+        if (!firstWordRegex.test(name)) {
+          break;
+        }
 
         if (!otherWordsRegex || otherWordsRegex.test(name)) {
-          const foundInName = p[1] === GENUS_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
+          const foundInName =
+            p[1] === GENUS_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
 
           // check if matches full phrase
           const fullRes = {
@@ -107,12 +122,18 @@ export default function (species, commonNamePointersArray, searchPhrase,
         }
 
         // carry on while it matches the first name
-        const foundInName = p[3] === SPECIES_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
+        const foundInName =
+          p[3] === SPECIES_COMMON_SYN_INDEX ? 'synonym' : 'common_name';
         let name = speciesEntry[p[3]];
-        name = name.split(/\s+/).slice(wordCount).join(' ');
+        name = name
+          .split(/\s+/)
+          .slice(wordCount)
+          .join(' ');
 
         // stop looking further if first name does not match
-        if (!firstWordRegex.test(name)) break;
+        if (!firstWordRegex.test(name)) {
+          break;
+        }
 
         if (!otherWordsRegex || otherWordsRegex.test(name)) {
           const fullRes = {
@@ -121,7 +142,9 @@ export default function (species, commonNamePointersArray, searchPhrase,
             found_in_name: foundInName,
             warehouse_id: speciesEntry[WAREHOUSE_INDEX],
             group: genus[GROUP_INDEX],
-            scientific_name: `${genus[SCI_NAME_INDEX]} ${speciesEntry[SPECIES_SCI_NAME_INDEX]}`,
+            scientific_name: `${genus[SCI_NAME_INDEX]} ${
+              speciesEntry[SPECIES_SCI_NAME_INDEX]
+            }`,
             common_name: speciesEntry[SPECIES_COMMON_INDEX],
             synonym: speciesEntry[SPECIES_COMMON_SYN_INDEX],
           };

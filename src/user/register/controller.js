@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * User Register controller.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
@@ -29,7 +29,7 @@ const API = {
     radio.trigger('app:header', headerView);
 
     // Start registration
-    mainView.on('form:submit', (data) => {
+    mainView.on('form:submit', data => {
       if (!Device.isOnline()) {
         radio.trigger('app:dialog', {
           title: 'Sorry',
@@ -47,8 +47,9 @@ const API = {
           .then(() => {
             radio.trigger('app:dialog', {
               title: 'Welcome aboard!',
-              body: 'Before submitting any records please check your email and ' +
-              'click on the verification link.',
+              body:
+                'Before submitting any records please check your email and ' +
+                'click on the verification link.',
               buttons: [
                 {
                   title: 'OK, got it',
@@ -64,7 +65,7 @@ const API = {
               },
             });
           })
-          .catch((err) => {
+          .catch(err => {
             Log(err, 'e');
             radio.trigger('app:dialog:error', err);
           });
@@ -102,13 +103,22 @@ const API = {
         timeout: CONFIG.users.timeout,
         success(receivedData) {
           const data = receivedData.data || {};
-          if (!data.id || !data.email || !data.name ||
-            !data.firstname || !data.secondname) {
-            const err = new Error('Error while retrieving registration response.');
+          if (
+            !data.id ||
+            !data.email ||
+            !data.name ||
+            !data.firstname ||
+            !data.secondname
+          ) {
+            const err = new Error(
+              'Error while retrieving registration response.'
+            );
             reject(err);
             return;
           }
-          const fullData = _.extend(receivedData.data, { password: details.password });
+          const fullData = _.extend(receivedData.data, {
+            password: details.password,
+          });
           userModel.logIn(fullData);
           fulfill(fullData);
         },

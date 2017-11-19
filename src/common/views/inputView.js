@@ -26,7 +26,10 @@ export default Marionette.View.extend({
 
     if (this.type === 'date') {
       this.model.set('max', DateHelp.toDateInputValue(this.model.get('max')));
-      this.model.set('value', DateHelp.toDateInputValue(this.model.get('value')));
+      this.model.set(
+        'value',
+        DateHelp.toDateInputValue(this.model.get('value'))
+      );
     }
   },
 
@@ -75,7 +78,7 @@ export default Marionette.View.extend({
           allowFutureDates: false,
         };
 
-        window.datePicker.show(options, (date) => {
+        window.datePicker.show(options, date => {
           $input.val(DateHelp.toDateInputValue(new Date(date)));
         });
         return;
@@ -93,7 +96,6 @@ export default Marionette.View.extend({
   },
 
   addtypeaheadSuggestions() {
-    const that = this;
     const lookup = this.options.typeahead;
     const $typeahead = this.$el.find('input');
     $typeahead.typeahead(
@@ -106,10 +108,11 @@ export default Marionette.View.extend({
         limit: 3,
         name: 'names',
         source: typeaheadSearchFn(lookup, 3),
-      });
+      }
+    );
 
     $typeahead.bind('typeahead:select', () => {
-      that.trigger('save');
+      this.trigger('save');
     });
   },
 });

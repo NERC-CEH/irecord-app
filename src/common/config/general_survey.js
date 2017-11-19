@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * General survey configuration file.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
@@ -20,7 +20,8 @@ const config = {
         attributes[keys.location_source.id] = location.source;
         attributes[keys.location_gridref.id] = location.gridref;
         attributes[keys.location_altitude.id] = location.altitude;
-        attributes[keys.location_altitude_accuracy.id] = location.altitudeAccuracy;
+        attributes[keys.location_altitude_accuracy.id] =
+          location.altitudeAccuracy;
         attributes[keys.location_accuracy.id] = accuracy;
 
         // add other location related attributes
@@ -99,7 +100,8 @@ const config = {
     },
     identifiers: {
       id: 18,
-      label: 'If anyone helped with the identification please enter their name here.',
+      label:
+        'If anyone helped with the identification please enter their name here.',
     },
   },
 
@@ -129,20 +131,21 @@ const config = {
     } else {
       const date = new Date(attrs.date);
       if (date === 'Invalid Date' || date > new Date()) {
-        attributes.date = (new Date(date) > new Date()) ? 'future date' : 'invalid';
+        attributes.date =
+          new Date(date) > new Date() ? 'future date' : 'invalid';
       }
     }
 
     // location type
     if (!attrs.location_type) {
-      attributes.location_type = 'can\'t be blank';
+      attributes.location_type = "can't be blank";
     }
 
     // occurrences
     if (this.occurrences.length === 0) {
       attributes.occurrences = 'no species selected';
     } else {
-      this.occurrences.each((occurrence) => {
+      this.occurrences.each(occurrence => {
         const errors = occurrence.validate(null, { remote: true });
         if (errors) {
           const occurrenceID = occurrence.cid;

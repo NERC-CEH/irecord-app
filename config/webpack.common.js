@@ -10,7 +10,6 @@ const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const srcPath = path.resolve(__dirname, '../src');
 
-
 const extractSass = new ExtractTextPlugin({
   filename: '[name].[contenthash].css',
   disable: process.env.NODE_ENV === 'development',
@@ -65,7 +64,10 @@ module.exports = {
         test: /(\.png)|(\.svg)|(\.jpg)/,
         loader: 'file-loader?name=images/[name].[ext]',
       },
-      { test: /(\.woff)|(\.ttf)/, loader: 'file-loader?name=font/[name].[ext]' },
+      {
+        test: /(\.woff)|(\.ttf)/,
+        loader: 'file-loader?name=font/[name].[ext]',
+      },
       {
         test: /\.s?css$/,
         use: extractSass.extract({

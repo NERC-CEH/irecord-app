@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * User model describing the user model on backend. Persistent.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
@@ -11,7 +11,8 @@ import Analytics from 'helpers/analytics';
 import activitiesExtension from './user_model_activities_ext';
 import statisticsExtension from './user_model_statistics_ext';
 
-let UserModel = Backbone.Model.extend({  // eslint-disable-line
+let UserModel = Backbone.Model.extend({
+  // eslint-disable-line
   id: 'user',
 
   defaults: {

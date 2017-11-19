@@ -1,4 +1,4 @@
-@import "../../common/styles/_variables.scss";
+@import '../../common/styles/_variables.scss';
 
 $height: 100vh;
 $width: 500vw;
@@ -53,14 +53,13 @@ $width: 500vw;
     transform: translate(0, 0);
   }
 
-
   #exit-button {
     font-size: medium;
     color: rgb(51, 38, 38);
-    background-color: rgba(245,245,245,.86);
-    border-color: #E8E8E8;
+    background-color: rgba(245, 245, 245, 0.86);
+    border-color: #e8e8e8;
     max-width: 500px;
-    width:100%;
+    width: 100%;
     height: 56px;
     display: block;
     margin: 0 auto;
@@ -98,31 +97,31 @@ $width: 500vw;
   }
 
   .first {
-    background: url("images/welcome_1.jpg") no-repeat;
+    background: url('images/welcome_1.jpg') no-repeat;
     background-position: left;
     background-size: cover;
   }
 
   .second {
-    background: url("images/welcome_2.jpg") no-repeat;
+    background: url('images/welcome_2.jpg') no-repeat;
     background-position: left;
     background-size: cover;
   }
 
   .third {
-    background: url("images/welcome_3.jpg") no-repeat;
+    background: url('images/welcome_3.jpg') no-repeat;
     background-position: left;
     background-size: cover;
   }
 
   .fourth {
-    background: url("images/welcome_4.jpg") no-repeat;
+    background: url('images/welcome_4.jpg') no-repeat;
     background-position: left;
     background-size: cover;
   }
 
   .fifth {
-    background: url("images/welcome_5.jpg") no-repeat;
+    background: url('images/welcome_5.jpg') no-repeat;
     background-position: left;
     background-size: cover;
   }
@@ -143,7 +142,7 @@ $width: 500vw;
   .message h2 {
     padding: 10px;
     color: whitesmoke;
-    background-color: rgba(123,117,55,0.9);
+    background-color: rgba(123, 117, 55, 0.9);
   }
 
   .message p {

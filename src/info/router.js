@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Info router.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
@@ -44,24 +44,32 @@ const Router = Marionette.AppRouter.extend({
     },
     'info/privacy(/)': () => {
       CommonController.show({
-        title: 'Privacy Policy', App, route: 'info/privacy/main',
+        title: 'Privacy Policy',
+        App,
+        route: 'info/privacy/main',
       });
     },
     'info/brc-approved(/)': () => {
       CommonController.show({
-        title: 'BRC Approved', App, route: 'info/brc_approved/main',
+        title: 'BRC Approved',
+        App,
+        route: 'info/brc_approved/main',
       });
     },
     'info/credits(/)': () => {
       CommonController.show({
-        title: 'Credits', App, route: 'info/credits/main',
+        title: 'Credits',
+        App,
+        route: 'info/credits/main',
       });
     },
-    'info/*path': () => { radio.trigger('app:404:show'); },
+    'info/*path': () => {
+      radio.trigger('app:404:show');
+    },
   },
 });
 
-radio.on('info:welcome', (options) => {
+radio.on('info:welcome', options => {
   App.navigate('info/welcome', options);
   WelcomeController.show();
 });

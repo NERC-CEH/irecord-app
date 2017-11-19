@@ -23,20 +23,25 @@ const Factory = {
     // add currently logged in user as one of the recorders
     const recorders = [];
     if (userModel.hasLogIn()) {
-      recorders.push(`${userModel.get('firstname')} ${userModel.get('secondname')}`);
+      recorders.push(
+        `${userModel.get('firstname')} ${userModel.get('secondname')}`
+      );
     }
 
-    const sample = new Sample({
-      location_type: 'british',
-      sample_method_id: 7305,
-      recorders,
-    }, {
-      metadata: {
-        survey: 'plant',
-        complex_survey: true,
-        gridSquareUnit: appModel.get('gridSquareUnit'),
+    const sample = new Sample(
+      {
+        location_type: 'british',
+        sample_method_id: 7305,
+        recorders,
       },
-    });
+      {
+        metadata: {
+          survey: 'plant',
+          complex_survey: true,
+          gridSquareUnit: appModel.get('gridSquareUnit'),
+        },
+      }
+    );
 
     // occurrence with image - pic select-first only
     if (image) {
@@ -82,8 +87,9 @@ const Factory = {
    * Empty taxon.
    */
   createSampleWithPhoto(survey, photo) {
-    return ImageHelp.getImageModel(ImageModel, photo)
-      .then(image => Factory.createSample(survey, image));
+    return ImageHelp.getImageModel(ImageModel, photo).then(image =>
+      Factory.createSample(survey, image)
+    );
   },
 };
 

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Edit controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Indicia from 'indicia';
@@ -23,9 +23,8 @@ const API = {
   show(sampleID) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID]);
+        API.show.apply(this, [sampleID]);
       });
       return;
     }
@@ -76,12 +75,12 @@ const API = {
       model: sample,
     });
 
-    footerView.on('photo:upload', (e) => {
+    footerView.on('photo:upload', e => {
       const photo = e.target.files[0];
       API.photoUpload(sample, photo);
     });
 
-    footerView.on('childview:photo:delete', (model) => {
+    footerView.on('childview:photo:delete', model => {
       API.photoDelete(model);
     });
 
@@ -121,23 +120,25 @@ const API = {
         }
 
         // sync
-        sample.save(null, { remote: true })
-          .catch((err = {}) => {
-            Log(err, 'e');
+        sample.save(null, { remote: true }).catch((err = {}) => {
+          Log(err, 'e');
 
-            const visibleDialog = App.regions.getRegion('dialog').$el.is(':visible');
-            // we don't want to close any other dialog
-            if (err.message && !visibleDialog) {
-              radio.trigger('app:dialog:error',
-                `Sorry, we have encountered a problem while sending the record.
+          const visibleDialog = App.regions
+            .getRegion('dialog')
+            .$el.is(':visible');
+          // we don't want to close any other dialog
+          if (err.message && !visibleDialog) {
+            radio.trigger(
+              'app:dialog:error',
+              `Sorry, we have encountered a problem while sending the record.
                 
                  <p><i>${err.message}</i></p>`
-              );
-            }
-          });
+            );
+          }
+        });
         radio.trigger('sample:saved');
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
@@ -171,7 +172,7 @@ const API = {
 
     const occurrence = sample.getOccurrence();
     // todo: show loader
-    API.addPhoto(occurrence, photo).catch((err) => {
+    API.addPhoto(occurrence, photo).catch(err => {
       Log(err, 'e');
       radio.trigger('app:dialog:error', err);
     });
@@ -180,8 +181,9 @@ const API = {
   photoDelete(photo) {
     radio.trigger('app:dialog', {
       title: 'Delete',
-      body: 'Are you sure you want to remove this photo from the sample?' +
-      '</br><i><b>Note:</b> it will remain in the gallery.</i>',
+      body:
+        'Are you sure you want to remove this photo from the sample?' +
+        '</br><i><b>Note:</b> it will remain in the gallery.</i>',
       buttons: [
         {
           title: 'Cancel',
@@ -219,13 +221,16 @@ const API = {
         {
           title: 'Camera',
           onClick() {
-            ImageHelp.getImage().then((entry) => {
-              entry && API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
-                if (occErr) {
-                  showErrMsg(occErr);
-                }
-              });
-            }).catch(showErrMsg);
+            ImageHelp.getImage()
+              .then(entry => {
+                entry &&
+                  API.addPhoto(occurrence, entry.nativeURL, occErr => {
+                    if (occErr) {
+                      showErrMsg(occErr);
+                    }
+                  });
+              })
+              .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
@@ -235,13 +240,16 @@ const API = {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
-            }).then((entry) => {
-              entry && API.addPhoto(occurrence, entry.nativeURL, (occErr) => {
-                if (occErr) {
-                  showErrMsg(occErr);
-                }
-              });
-            }).catch(showErrMsg);
+            })
+              .then(entry => {
+                entry &&
+                  API.addPhoto(occurrence, entry.nativeURL, occErr => {
+                    if (occErr) {
+                      showErrMsg(occErr);
+                    }
+                  });
+              })
+              .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
@@ -253,11 +261,10 @@ const API = {
    * Adds a new image to occurrence.
    */
   addPhoto(occurrence, photo) {
-    return ImageHelp.getImageModel(ImageModel, photo)
-      .then((image) => {
-        occurrence.addMedia(image);
-        return occurrence.save();
-      });
+    return ImageHelp.getImageModel(ImageModel, photo).then(image => {
+      occurrence.addMedia(image);
+      return occurrence.save();
+    });
   },
 
   updateTaxon(sample, taxon) {

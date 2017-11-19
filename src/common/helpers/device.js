@@ -6,7 +6,7 @@
  *
  * Note: Chrome has to have and ID of both Chrome and Safari therefore
  * Safari has to have an ID of only Safari and not Chrome
- *****************************************************************************/
+ **************************************************************************** */
 import Log from './log';
 
 const ua = navigator.userAgent.toLowerCase();
@@ -45,7 +45,7 @@ function detect(browserName) {
     }
     return false;
   }
-  return (is(browser));
+  return is(browser);
 }
 
 function isIOS() {
@@ -68,8 +68,10 @@ function getIOSVersion() {
 function isHomeMode() {
   try {
     const iOS = window.navigator.standalone;
-    const IE = (window.external && window.external.msIsSiteMode &&
-    window.external.msIsSiteMode());
+    const IE =
+      window.external &&
+      window.external.msIsSiteMode &&
+      window.external.msIsSiteMode();
 
     return iOS || IE;
   } catch (err) {
@@ -136,4 +138,3 @@ export default {
   getVersion,
   getPlatform,
 };
-

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Edit main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
 import JST from 'JST';
@@ -59,7 +59,10 @@ export default Marionette.View.extend({
 
     let numberLock = appModel.isAttrLocked('number', occ.get('number'));
     if (!numberLock) {
-      numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
+      numberLock = appModel.isAttrLocked(
+        'number-ranges',
+        occ.get('number-ranges')
+      );
     }
     const attrLocks = {
       date: appModel.isAttrLocked('date', sample.get('date')),
@@ -74,7 +77,8 @@ export default Marionette.View.extend({
 
     let number = occ.get('number') && StringHelp.limit(occ.get('number'));
     if (!number) {
-      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+      number =
+        occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
     }
 
     // show activity title.
@@ -91,7 +95,8 @@ export default Marionette.View.extend({
       date: DateHelp.print(sample.get('date'), true),
       number,
       stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
-      identifiers: occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
+      identifiers:
+        occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
       comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
       group_title: group ? group.title : null,
       group,

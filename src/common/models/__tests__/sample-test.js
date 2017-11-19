@@ -12,16 +12,20 @@ function getRandomSample() {
   const occurrence = new Occurrence({
     taxon: { warehouse_id: 166205 },
   });
-  const sample = new Sample({
-    location: {
-      latitude: 12.12,
-      longitude: -0.23,
-      name: 'automatic test' },
-  }, {
-    occurrences: [occurrence],
-    Collection: savedSamples,
-    onSend: () => {}, // overwrite Collection's one checking for user login
-  });
+  const sample = new Sample(
+    {
+      location: {
+        latitude: 12.12,
+        longitude: -0.23,
+        name: 'automatic test',
+      },
+    },
+    {
+      occurrences: [occurrence],
+      Collection: savedSamples,
+      onSend: () => {}, // overwrite Collection's one checking for user login
+    }
+  );
 
   sample.metadata.saved = true;
   sample.metadata.survey = 'general';
@@ -49,7 +53,6 @@ describe('Sample', () => {
     expect(sample.metadata.training).to.be.equal(true);
   });
 
-
   describe('validation', () => {
     it('should return sample send false invalid if not saved', () => {
       const sample = new Sample();
@@ -68,7 +71,8 @@ describe('Sample', () => {
       sample.clear();
 
       let invalids = sample.validate({}, { remote: true });
-      expect(invalids).to.be.an('object')
+      expect(invalids)
+        .to.be.an('object')
         .and.have.property('attributes')
         .and.have.property('occurrences');
 
@@ -80,9 +84,7 @@ describe('Sample', () => {
       expect(invalids.attributes).to.have.property('occurrences');
 
       // occurrence
-      expect(invalids.occurrences)
-        .to.be.an('object')
-        .and.to.be.empty;
+      expect(invalids.occurrences).to.be.an('object').and.to.be.empty;
 
       const occurrence = new Occurrence();
       sample.addOccurrence(occurrence);
@@ -134,7 +136,7 @@ describe('Sample', () => {
       expect(sample.checkExpiredGroup).to.be.a('function');
     });
 
-    it('should remove expired activities on init', (done) => {
+    it('should remove expired activities on init', done => {
       const sample = getRandomSample();
       const activity = getRandActivity();
       userModel.set('activities', [activity]);
@@ -149,12 +151,11 @@ describe('Sample', () => {
 
         // get the same sample - fresh
         const newCollection = new Collection([], { store, model: Sample });
-        newCollection.fetch()
-          .then(() => {
-            const newSample = newCollection.get(sample);
-            expect(newSample.get('group')).to.be.undefined;
-            done();
-          });
+        newCollection.fetch().then(() => {
+          const newSample = newCollection.get(sample);
+          expect(newSample.get('group')).to.be.undefined;
+          done();
+        });
       });
     });
 

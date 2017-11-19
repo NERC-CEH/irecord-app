@@ -1,16 +1,8 @@
-module.exports = (grunt) => {
+module.exports = grunt => {
   return {
-    default: [
-      'init',
-      'jst',
-      'webpack:main',
-    ],
+    default: ['init', 'jst', 'webpack:main'],
 
-    init: [
-      'exec:data',
-      'copy',
-      'vendor',
-    ],
+    init: ['exec:data', 'copy', 'vendor'],
 
     vendor: [
       'replace:latlon',
@@ -21,23 +13,13 @@ module.exports = (grunt) => {
     ],
 
     // Development run
-    update: [
-      'jst',
-      'webpack:main',
-    ],
+    update: ['jst', 'webpack:main'],
 
     // Development update
-    dev: [
-      'init',
-      'jst',
-      'webpack:dev',
-    ],
+    dev: ['init', 'jst', 'webpack:dev'],
 
     // Development run
-    'dev:update': [
-      'jst',
-      'webpack:dev',
-    ],
+    'dev:update': ['jst', 'webpack:dev'],
 
     // Cordova set up
     cordova: [
@@ -56,7 +38,6 @@ module.exports = (grunt) => {
       'exec:cordova_add_platforms',
     ],
 
-
     /**
      * Updates cordova project - use after tinkering with src or congig
      */
@@ -72,9 +53,7 @@ module.exports = (grunt) => {
     /**
      * Runs the app to a connected Android device/emulator
      */
-    'cordova:android:run': [
-      'exec:cordova_run_android',
-    ],
+    'cordova:android:run': ['exec:cordova_run_android'],
 
     'cordova:android': [
       'prompt:keystore',
@@ -90,7 +69,6 @@ module.exports = (grunt) => {
       'replace:cordova_build',
       'exec:cordova_android_build_old',
     ],
-
 
     /**
      * Sets up the right SDK version and package ID for the config generator

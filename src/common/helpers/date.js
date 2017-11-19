@@ -12,13 +12,15 @@ export default {
 
   print(date, pretty) {
     const local = new Date(date);
-    const sampleDate = `${local.getDate()}/${(local.getMonth() + 1)}/${local.getFullYear()}`;
+    const sampleDate = `${local.getDate()}/${local.getMonth() +
+      1}/${local.getFullYear()}`;
 
     const today = new Date();
-    const todayDateOnly = `${today.getDate()}/${(today.getMonth() + 1)}/${today.getFullYear()}`;
-    const isToday = (todayDateOnly === sampleDate);
+    const todayDateOnly = `${today.getDate()}/${today.getMonth() +
+      1}/${today.getFullYear()}`;
+    const isToday = todayDateOnly === sampleDate;
 
-    return (pretty && isToday ? 'Today' : sampleDate);
+    return pretty && isToday ? 'Today' : sampleDate;
   },
 
   /**

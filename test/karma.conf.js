@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const ENV = process.env.NODE_ENV = 'test';
+
+process.env.NODE_ENV = 'test';
+const ENV = process.env.NODE_ENV;
 
 // get development webpack config
 const webpackConfigDev = require('../config/webpack.dev');
@@ -9,14 +11,18 @@ delete webpackConfigDev.context;
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
 webpackConfigDev.plugins.splice(1, 2); // temp remove of clashing plugins
-webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
-  'process.env': {
-    ENV: JSON.stringify(ENV),
-  },
-}));
+webpackConfigDev.plugins.splice(
+  0,
+  0,
+  new webpack.DefinePlugin({
+    'process.env': {
+      ENV: JSON.stringify(ENV),
+    },
+  })
+);
 webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
-module.exports = (config) => {
+module.exports = config => {
   config.set({
     browsers: ['ChromeCustom'],
 

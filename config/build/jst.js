@@ -7,8 +7,7 @@ module.exports = {
     options: {
       amd: true,
       namespace: 'JST',
-      templateSettings:
-      {
+      templateSettings: {
         variable: 'obj',
       },
       prettify: true,
@@ -30,7 +29,8 @@ module.exports = {
         // cut out templates dir
         const dirIndex = path.indexOf(templatesDir);
         if (dirIndex) {
-          path = path.substr(0, dirIndex) +
+          path =
+            path.substr(0, dirIndex) +
             path.substr(dirIndex + templatesDir.length);
         }
 

@@ -1,16 +1,16 @@
 /** ****************************************************************************
  * Main app configuration file.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 
 import generalSurvey from './general_survey';
 import plantSurvey from './plant_survey';
 
-const HOST = process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
+const HOST =
+  process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
 
 const CONFIG = {
   // variables replaced on build
-  /* global APP_VERSION, APP_BUILD, APP_NAME, APP_INDICIA_API_KEY */
   version: process.env.APP_VERSION,
   build: process.env.APP_BUILD,
   name: process.env.APP_NAME,
@@ -43,7 +43,10 @@ const CONFIG = {
   },
 
   reports: {
-    url: `${HOST + Indicia.API_BASE + Indicia.API_VER + Indicia.API_REPORTS_PATH}`,
+    url: `${HOST +
+      Indicia.API_BASE +
+      Indicia.API_VER +
+      Indicia.API_REPORTS_PATH}`,
     timeout: 80000,
   },
 

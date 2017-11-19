@@ -1,4 +1,4 @@
-@import "./_variables.scss";
+@import './_variables.scss';
 
 #dialog {
   display: none;
@@ -11,7 +11,7 @@
   max-width: $app-max-width;
   margin: 0 auto;
 
-  background-color: rgba(0,0,0,.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 #dialog .content {
@@ -38,11 +38,10 @@
   animation-fill-mode: both;
 }
 
-#dialog .error .dialog-header{
+#dialog .error .dialog-header {
   margin: 0 -13px;
   background-color: $color-orange;
   color: $color-white;
-;
 }
 
 //limit width for wide screens
@@ -58,7 +57,7 @@
   top: 35%;
   left: 50%;
   margin-left: -60px;
-  color: $color-white ;
+  color: $color-white;
 
   &:before {
     font-size: 80px;
@@ -77,7 +76,7 @@
   font-size: $header-font-size;
 
   font-weight: 500;
-  font-family: "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+  font-family: 'Helvetica Neue', 'Roboto', 'Segoe UI', sans-serif;
   line-height: 1.2;
 }
 
@@ -117,4 +116,3 @@
     margin-right: 10px;
   }
 }
-

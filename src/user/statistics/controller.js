@@ -1,6 +1,6 @@
 /** *****************************************************************************
  * Statistics List controller.
- ******************************************************************************/
+ ***************************************************************************** */
 
 import Backbone from 'backbone';
 import Log from 'helpers/log';
@@ -44,11 +44,10 @@ const API = {
   },
 
   refresh() {
-    userModel.syncStats(true)
-      .catch((err) => {
-        Log(err, 'e');
-        radio.trigger('app:dialog:error', err);
-      });
+    userModel.syncStats(true).catch(err => {
+      Log(err, 'e');
+      radio.trigger('app:dialog:error', err);
+    });
     Analytics.trackEvent('Statistics', 'refresh');
   },
 };

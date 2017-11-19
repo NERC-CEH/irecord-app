@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Edit header view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
 import JST from 'JST';
@@ -32,4 +32,3 @@ export default Marionette.View.extend({
     };
   },
 });
-

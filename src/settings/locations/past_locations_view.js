@@ -41,7 +41,9 @@ const PastLocationView = Marionette.View.extend({
 
   onRender() {
     // early return
-    if (!Device.isMobile()) return;
+    if (!Device.isMobile()) {
+      return;
+    }
 
     this.$record = this.$el.find('.location');
     this.docked = false;
@@ -52,28 +54,28 @@ const PastLocationView = Marionette.View.extend({
       toolsWidth: 100,
     };
 
-    const hammertime = new Hammer(this.el, { direction: Hammer.DIRECTION_HORIZONTAL });
-    const that = this;
+    const hammertime = new Hammer(this.el, {
+      direction: Hammer.DIRECTION_HORIZONTAL,
+    });
 
     // on tap bring back
     this.$record.on('tap click', $.proxy(this._swipeHome, this));
 
-    hammertime.on('pan', (e) => {
+    hammertime.on('pan', e => {
       e.preventDefault();
-      that._swipe(e, options);
+      this._swipe(e, options);
     });
-    hammertime.on('panend', (e) => {
-      that._swipeEnd(e, options);
+    hammertime.on('panend', e => {
+      this._swipeEnd(e, options);
     });
   },
 
   remove() {
     // removing the last element leaves emptyView + fading out entry for a moment
     if (this.model.collection.length >= 1) {
-      const that = this;
       this.$el.addClass('shrink');
       setTimeout(() => {
-        Marionette.View.prototype.remove.call(that);
+        Marionette.View.prototype.remove.call(this);
       }, 300);
     } else {
       Marionette.View.prototype.remove.call(this);
@@ -82,7 +84,9 @@ const PastLocationView = Marionette.View.extend({
 
   _swipe(e, options) {
     // only swipe if no scroll up
-    if (Math.abs(e.deltaY) > 10) return;
+    if (Math.abs(e.deltaY) > 10) {
+      return;
+    }
 
     if (this.docked) {
       this.position = -options.toolsWidth + e.deltaX;
@@ -91,17 +95,21 @@ const PastLocationView = Marionette.View.extend({
     }
 
     // protection of swipeing right too much
-    if (this.position > 0) this.position = 0;
+    if (this.position > 0) {
+      this.position = 0;
+    }
 
     this.$record.css('transform', `translateX(${this.position}px)`);
   },
 
   _swipeEnd(e, options) {
     // only swipe if no scroll up and is not in the middle
-    if (Math.abs(e.deltaY) > 10 && !this.position) return;
+    if (Math.abs(e.deltaY) > 10 && !this.position) {
+      return;
+    }
 
     // if (e.deltaX > options.threshold) {
-    if ((-options.toolsWidth + e.deltaX) > -options.toolsWidth) {
+    if (-options.toolsWidth + e.deltaX > -options.toolsWidth) {
       // bring back
       this.position = 0;
       this.docked = false;
@@ -133,7 +141,6 @@ export default Marionette.CompositeView.extend({
   emptyView: EmptyListView,
 
   initialize() {
-    const that = this;
     const appModel = this.model;
     const previousLocations = appModel.get('locations');
     this.collection = new Backbone.Collection(previousLocations, {
@@ -156,8 +163,8 @@ export default Marionette.CompositeView.extend({
 
     this.listenTo(appModel, 'change:locations', () => {
       const prevLoc = appModel.get('locations');
-      that.collection = new Backbone.Collection(prevLoc);
-      that.render();
+      this.collection = new Backbone.Collection(prevLoc);
+      this.render();
     });
 
     this.childViewOptions = {

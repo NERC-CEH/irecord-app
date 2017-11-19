@@ -5,7 +5,7 @@ export default {
     return value ? value.substring(0, charNum) + ellipsis : '';
   },
 
-// http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+  // http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
   escape(string) {
     const div = document.createElement('div');
     div.appendChild(document.createTextNode(string.toString()));

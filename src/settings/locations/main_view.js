@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Settings Locations main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import PastLocationsView from './past_locations_view';

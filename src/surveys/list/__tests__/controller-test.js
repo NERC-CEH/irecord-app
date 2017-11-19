@@ -12,36 +12,40 @@ describe('Surveys List Controller', () => {
   let server;
   let userLogin;
 
-  before((done) => {
+  before(done => {
     server = sinon.fakeServer.create();
     server.respondImmediately = true;
     userLogin = sinon.stub(userModel, 'hasLogIn').returns(true);
 
     // clean up in case of trash
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
       .then(() => done());
   });
 
-  beforeEach((done) => {
+  beforeEach(done => {
     // clean up in case of trash
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
       .then(() => done());
   });
 
-  after((done) => {
+  after(done => {
     userLogin.reset();
 
     // clean up afterwards
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
       .then(() => done());
   });
 
-  afterEach((done) => {
+  afterEach(done => {
     // clean up afterwards
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
       .then(() => done());
   });
@@ -55,22 +59,21 @@ describe('Surveys List Controller', () => {
     expect(API.show).to.be.a('function');
   });
 
-  it('should add new survey', (done) => {
+  it('should add new survey', done => {
     expect(API.addSurveySample).to.be.a('function');
 
     API.addSurveySample()
-      .then((sample) => {
+      .then(sample => {
         expect(sample).to.be.instanceOf(Sample);
 
         expect(savedSamples.length).to.be.equal(1);
         const savedSurveySample = savedSamples.at(0);
-        expect(savedSurveySample).to.be.an('object')
+        expect(savedSurveySample)
+          .to.be.an('object')
           .and.to.be.instanceOf(Sample);
 
-        expect(savedSurveySample.metadata.survey)
-          .to.be.equal('plant');
-        expect(savedSurveySample.metadata.complex_survey)
-          .to.be.equal(true);
+        expect(savedSurveySample.metadata.survey).to.be.equal('plant');
+        expect(savedSurveySample.metadata.complex_survey).to.be.equal(true);
 
         done();
       })
