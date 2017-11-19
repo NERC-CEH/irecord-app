@@ -269,9 +269,10 @@ const API = {
 
   updateTaxon(sample, taxon) {
     // edit existing one
-    sample.getOccurrence().set('taxon', taxon);
-    // return to previous - edit page
-    return sample.save().then(() => window.history.back());
+    return sample
+      .setTaxon(taxon)
+      .then(sample.save)
+      .then(() => window.history.back());
   },
 };
 

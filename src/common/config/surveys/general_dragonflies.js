@@ -1,3 +1,9 @@
+export default {
+  id: 'dragonflies',
+  taxonGroups: [107],
+  editForm: ['adCount', 'site', 'siteOther', 'comment'],
+};
+
 const numRanges = {
   1: 665,
   '2-5': 666,
@@ -7,8 +13,8 @@ const numRanges = {
   '500+': 670,
   Present: 671,
 };
-// eslint-disable-next-line
-const dragonflies = {
+
+export const attributes = {
   sample: {
     site: {
       id: 59,
@@ -35,37 +41,37 @@ const dragonflies = {
     },
   },
   occurrence: {
-    Ad: {
+    adCount: {
       id: 34,
       label: 'Ad.',
       default: '',
       values: numRanges,
     },
-    Co: {
+    coCount: {
       id: 35,
       label: 'Co.',
       default: '',
       values: numRanges,
     },
-    Ov: {
+    ovCount: {
       id: 36,
       label: 'Ov.',
       default: '',
       values: numRanges,
     },
-    La: {
+    laCount: {
       id: 37,
       label: 'La.',
       default: '',
       values: numRanges,
     },
-    Ex: {
+    exCount: {
       id: 38,
       label: 'Ex.',
       default: '',
       values: numRanges,
     },
-    Em: {
+    emCount: {
       id: 39,
       label: 'Em.',
       default: '',

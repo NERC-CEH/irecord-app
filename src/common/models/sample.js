@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Indicia from 'indicia';
 import bigu from 'bigu';
 import CONFIG from 'config';
+import { getFormId } from 'common/config/surveys/general';
 import userModel from 'user_model';
 import appModel from 'app_model';
 import Occurrence from 'occurrence';
@@ -210,6 +211,25 @@ let Sample = Indicia.Sample.extend({
       return 180000; // 3 min
     }
     return 60000; // 1 min
+  },
+
+  setTaxon(taxon = {}) {
+    return new Promise((resolve, reject) => {
+      if (this.metadata.survey !== 'general') {
+        return reject(
+          new Error('Only general survey samples can use setTaxon method')
+        );
+      }
+
+      const occ = this.getOccurrence();
+      if (!occ) {
+        return reject(new Error('No occurrence present to set taxon'));
+      }
+
+      occ.set('taxon', taxon);
+      this.metadata.form_id = getFormId(taxon.group);
+      return resolve(this);
+    });
   },
 });
 

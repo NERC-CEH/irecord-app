@@ -4,6 +4,7 @@
 import $ from 'jquery';
 import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
+import dragonfliesForm from './general_dragonflies';
 
 const config = {
   survey_id: 374,
@@ -159,3 +160,15 @@ const config = {
 };
 
 export default config;
+
+export const forms = { [dragonfliesForm.id]: dragonfliesForm };
+
+export function getFormId(taxonGroup) {
+  let matchedFormId = null;
+  Object.keys(forms).forEach(formId => {
+    if (forms[formId].taxonGroups.includes(taxonGroup)) {
+      matchedFormId = formId;
+    }
+  });
+  return matchedFormId;
+}

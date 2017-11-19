@@ -211,16 +211,17 @@ const API = {
    * @returns {*}
    */
   setTaxon(sample, taxon, editButtonClicked) {
-    sample.getOccurrence().set('taxon', taxon);
-    // return to previous - edit page
-    return sample.save().then(() => {
-      if (editButtonClicked) {
-        radio.trigger('samples:edit', sample.cid, { replace: true });
-      } else {
-        // return back to list page
-        window.history.back();
-      }
-    });
+    return sample
+      .setTaxon(taxon)
+      .then(sample.save)
+      .then(() => {
+        if (editButtonClicked) {
+          radio.trigger('samples:edit', sample.cid, { replace: true });
+        } else {
+          // return back to list page
+          window.history.back();
+        }
+      });
   },
 };
 

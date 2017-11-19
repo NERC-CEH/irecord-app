@@ -1,7 +1,8 @@
 import savedSamples from 'saved_samples';
+import Sample from 'sample';
 import API from '../controller';
 
-  // eslint-disable-next-line
+// eslint-disable-next-line
 describe('List Controller', function() {
   // it can take time to add/remove samples
   this.timeout(10000);
@@ -53,6 +54,26 @@ describe('List Controller', function() {
       //  done();
       // });
       done();
+    });
+  });
+
+  describe('setTaxon', () => {
+    let sampleSetTaxonSpy;
+    before(() => {
+      sampleSetTaxonSpy = sinon.spy(Sample.prototype, 'setTaxon');
+    });
+
+    after(() => {
+      sampleSetTaxonSpy.restore();
+    });
+
+    it('should exist', () => {
+      expect(API.setTaxon).to.be.a('function');
+    });
+    it('should call sample.setTaxon', () => {
+      const sample = new Sample();
+      API.setTaxon(sample, {});
+      expect(sampleSetTaxonSpy.called).to.be.equal(true);
     });
   });
 });

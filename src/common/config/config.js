@@ -3,8 +3,8 @@
  **************************************************************************** */
 import Indicia from 'indicia';
 
-import generalSurvey from './general_survey';
-import plantSurvey from './plant_survey';
+import generalSurvey from './surveys/general';
+import plantSurvey from './surveys/plant';
 
 const HOST =
   process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';

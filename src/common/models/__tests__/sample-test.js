@@ -3,6 +3,7 @@ import Sample from 'sample';
 import Occurrence from 'occurrence';
 import userModel from 'user_model';
 import appModel from 'app_model';
+import * as generalConfig from 'common/config/surveys/general';
 import { savedSamples, Collection } from '../../saved_samples';
 import store from '../../store';
 
@@ -116,6 +117,62 @@ describe('Sample', () => {
 
       expect(sample.validationError).to.be.an('object');
       expect(sample.metadata.saved).to.be.false;
+    });
+  });
+
+  describe('setTaxon', () => {
+    let getFormIdStub;
+
+    before(() => {
+      getFormIdStub = sinon.stub(generalConfig, 'getFormId');
+    });
+
+    after(() => {
+      getFormIdStub.restore();
+    });
+
+    it('should exist', () => {
+      const sample = getRandomSample();
+      expect(sample.setTaxon).to.be.a('function');
+    });
+
+    it('should return a promise', () => {
+      const sample = getRandomSample();
+      sample.setTaxon({ warehouse_id: 1 });
+      expect(sample.setTaxon({ warehouse_id: 1 })).to.be.instanceOf(Promise);
+    });
+
+    it('should set taxon to the first occurrence', () => {
+      const sample = getRandomSample();
+      sample.setTaxon({ warehouse_id: 1 });
+      expect(sample.getOccurrence().get('taxon').warehouse_id).to.be.equal(1);
+    });
+
+    it('should throw if no occurrence exists', () => {
+      const sample = new Sample(null, {
+        metadata: { survey: 'general' },
+      });
+      sample.setTaxon({ warehouse_id: 1 }).catch(err => {
+        expect(err.message).to.equal('No occurrence present to set taxon');
+      });
+    });
+
+    it('should return rejected Promise if sample survey is not general', () => {
+      const sample = getRandomSample();
+      sample.metadata.survey = 'plant';
+      sample.setTaxon({ warehouse_id: 1 }).catch(err => {
+        expect(err.message).to.equal(
+          'Only general survey samples can use setTaxon method'
+        );
+      });
+    });
+
+    it('should set metadata.form_id from getFormId', () => {
+      getFormIdStub.returns(1);
+      const sample = getRandomSample();
+      sample.setTaxon({ warehouse_id: 1 });
+      expect(getFormIdStub.called).to.be.equal(true);
+      expect(sample.metadata.form_id).to.equal(1);
     });
   });
 

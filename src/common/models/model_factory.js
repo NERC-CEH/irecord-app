@@ -55,7 +55,7 @@ const Factory = {
 
   _getGeneralSample(image, taxon) {
     // general survey
-    const occurrence = new Occurrence({ taxon });
+    const occurrence = new Occurrence();
     if (image) {
       occurrence.addMedia(image);
     }
@@ -76,6 +76,10 @@ const Factory = {
     if (!locks.general || !locks.general.location) {
       // no previous location
       sample.startGPS();
+    }
+
+    if (taxon) {
+      sample.setTaxon(taxon);
     }
 
     return Promise.resolve(sample);
