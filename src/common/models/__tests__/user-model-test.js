@@ -80,11 +80,14 @@ describe('User Model', () => {
         JSON.stringify({ data: [activity] }),
       ]);
 
-      userModel.fetchActivities().then(() => {
-        const activities = userModel.get('activities');
-        expect(activities.length).to.be.equal(1);
-        done();
-      });
+      userModel
+        .fetchActivities()
+        .then(() => {
+          const activities = userModel.get('activities');
+          expect(activities.length).to.be.equal(1);
+          done();
+        })
+        .catch(done);
 
       server.respond();
     });
@@ -115,19 +118,25 @@ describe('User Model', () => {
         sinon.spy(UserModel.prototype, 'fetchActivities');
         userModel = new UserModel();
         // already fetched sync
-        userModel.syncActivities().then(() => {
-          expect(userModel.fetchActivities.called).to.be.false;
+        userModel
+          .syncActivities()
+          .then(() => {
+            expect(userModel.fetchActivities.called).to.be.false;
 
-          // force fetch
-          userModel.syncActivities(true).then(() => {
-            expect(userModel.fetchActivities.called).to.be.true;
+            // force fetch
+            userModel
+              .syncActivities(true)
+              .then(() => {
+                expect(userModel.fetchActivities.called).to.be.true;
 
-            userModel.fetchActivities.restore();
-            done();
-          });
+                userModel.fetchActivities.restore();
+                done();
+              })
+              .catch(done);
 
-          server.respond();
-        });
+            server.respond();
+          })
+          .catch(done);
       });
 
       server.respond();
@@ -143,7 +152,7 @@ describe('User Model', () => {
 
       userModel.on('sync:activities:end', () => {
         userModel.on('sync:activities:start', done);
-        userModel.syncActivities(true);
+        userModel.syncActivities(true).catch(done);
       });
 
       const activity = getRandActivity();
