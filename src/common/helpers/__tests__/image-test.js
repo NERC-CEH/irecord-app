@@ -33,7 +33,7 @@ describe('Helpers Image', () => {
     it('should return a promise', done => {
       const promise = ImageHelp.getImage();
       expect(promise).to.be.instanceOf(Promise);
-      promise.then(done);
+      promise.then(done).catch(done);
     });
   });
 });
