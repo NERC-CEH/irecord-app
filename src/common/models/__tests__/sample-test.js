@@ -121,16 +121,6 @@ describe('Sample', () => {
   });
 
   describe('setTaxon', () => {
-    let getFormIdStub;
-
-    before(() => {
-      getFormIdStub = sinon.stub(generalConfig, 'getFormId');
-    });
-
-    after(() => {
-      getFormIdStub.restore();
-    });
-
     it('should exist', () => {
       const sample = getRandomSample();
       expect(sample.setTaxon).to.be.a('function');
@@ -166,13 +156,67 @@ describe('Sample', () => {
         );
       });
     });
+  });
 
-    it('should set metadata.form_id from getFormId', () => {
-      getFormIdStub.returns(1);
+  describe('getForm', () => {
+    let getFormStub;
+
+    before(() => {
+      getFormStub = sinon.stub(generalConfig, 'getForm');
+    });
+
+    after(() => {
+      getFormStub.restore();
+    });
+
+    it('should exist', () => {
       const sample = getRandomSample();
-      sample.setTaxon({ warehouse_id: 1 });
-      expect(getFormIdStub.called).to.be.equal(true);
-      expect(sample.metadata.form_id).to.equal(1);
+      expect(sample.getForm).to.be.a('function');
+    });
+
+    it('should return a form array', () => {
+      const sample = getRandomSample();
+      sample.setTaxon({ warehouse_id: 1, group: 1 });
+      const editForm = [1, 2, 3];
+      getFormStub.returns(editForm);
+      expect(sample.getForm()).to.be.eql(editForm);
+      expect(getFormStub.called).to.be.equal(true);
+    });
+
+    it('should throw if no occurrence exists', done => {
+      const sample = new Sample(null, {
+        metadata: { survey: 'general' },
+      });
+      try {
+        sample.getForm();
+      } catch (err) {
+        expect(err.message).to.equal('No occurrence present to get form');
+        done();
+      }
+    });
+
+    it('should throw if no occurrence taxon group exists', () => {
+      const sample = getRandomSample();
+      try {
+        sample.getForm();
+      } catch (err) {
+        expect(err.message).to.equal(
+          'No occurrence taxon group is present to get form'
+        );
+      }
+    });
+
+    it('should throw if sample survey is not general', done => {
+      const sample = getRandomSample();
+      sample.metadata.survey = 'plant';
+      try {
+        sample.getForm();
+      } catch (err) {
+        expect(err.message).to.equal(
+          'Only general survey samples can use getForm method'
+        );
+        done();
+      }
     });
   });
 

@@ -1,4 +1,4 @@
-import { getFormId, forms } from '../general';
+import { getForm, forms } from '../general';
 import dragonflies from '../general_dragonflies';
 
 describe('Config', () => {
@@ -20,13 +20,14 @@ describe('Config', () => {
   });
 
   describe('general', () => {
-    describe('getFormId', () => {
-      it('should return a formId of a matching taxon group form', () => {
+    describe('getForm', () => {
+      it('should return a form array of a matching taxon group form', () => {
         const formId = 'x';
         const taxonGroups = [1];
+        const editForm = [];
 
-        forms[formId] = { id: formId, taxonGroups };
-        expect(getFormId(taxonGroups[0])).to.be.equal(formId);
+        forms[formId] = { id: formId, taxonGroups, editForm };
+        expect(getForm(taxonGroups[0])).to.be.eql(editForm);
       });
     });
   });

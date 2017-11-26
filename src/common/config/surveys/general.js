@@ -163,12 +163,12 @@ export default config;
 
 export const forms = { [dragonfliesForm.id]: dragonfliesForm };
 
-export function getFormId(taxonGroup) {
-  let matchedFormId = null;
-  Object.keys(forms).forEach(formId => {
-    if (forms[formId].taxonGroups.includes(taxonGroup)) {
-      matchedFormId = formId;
+export function getForm(taxonGroup) {
+  let matchedForm = null;
+  Object.values(forms).forEach(form => {
+    if (form.taxonGroups.includes(taxonGroup)) {
+      matchedForm = form.editForm;
     }
   });
-  return matchedFormId;
+  return matchedForm;
 }

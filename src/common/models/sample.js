@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Indicia from 'indicia';
 import bigu from 'bigu';
 import CONFIG from 'config';
-import { getFormId } from 'common/config/surveys/general';
+import { getForm } from 'common/config/surveys/general';
 import userModel from 'user_model';
 import appModel from 'app_model';
 import Occurrence from 'occurrence';
@@ -227,9 +227,26 @@ let Sample = Indicia.Sample.extend({
       }
 
       occ.set('taxon', taxon);
-      this.metadata.form_id = getFormId(taxon.group);
       return resolve(this);
     });
+  },
+
+  getForm() {
+    if (this.metadata.survey !== 'general') {
+      throw new Error('Only general survey samples can use getForm method');
+    }
+
+    const occ = this.getOccurrence();
+    if (!occ) {
+      throw new Error('No occurrence present to get form');
+    }
+
+    const taxon = occ.get('taxon');
+    if (!taxon || !taxon.group) {
+      throw new Error('No occurrence taxon group is present to get form');
+    }
+
+    return getForm(taxon.group);
   },
 });
 
