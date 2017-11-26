@@ -6,11 +6,22 @@ import Indicia from 'indicia';
 import JST from 'JST';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
-
+import AttrsView from './attrs_view';
 import './styles.scss';
 
 export default Marionette.View.extend({
   template: JST['samples/edit/main'],
+
+  regions: {
+    attrs: {
+      el: '#attrs',
+      replaceElement: true,
+    },
+  },
+
+  onRender() {
+    this.showChildView('attrs', new AttrsView({ model: this.model }));
+  },
 
   triggers: {
     'click a#species-button': 'taxon:update',
@@ -24,7 +35,7 @@ export default Marionette.View.extend({
     const sample = this.model.get('sample');
     let amount = 0;
 
-    let classes = 'slim ';
+    let classes = 'attr-edit slim ';
 
     if (sample.get('group')) {
       amount++;
