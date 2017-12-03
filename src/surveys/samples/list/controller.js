@@ -64,7 +64,7 @@ const API = {
             API.createNewSample(surveySample, taxon, editButtonClicked);
           },
           showEditButton: true,
-          informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
+          informalGroups: CONFIG.indicia.surveys.plant.taxonGroups,
         }
       );
     });
@@ -94,7 +94,7 @@ const API = {
             API.createNewSample(surveySample, taxon, editButtonClicked);
           },
           showEditButton: true,
-          informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
+          informalGroups: CONFIG.indicia.surveys.plant.taxonGroups,
         }
       );
     });

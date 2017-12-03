@@ -7,17 +7,17 @@ import Analytics from 'helpers/analytics';
 import userModel from 'user_model';
 
 export default {
-  _getRawLocks(survey) {
+  _getRawLocks(surveyName = 'general') {
     const locks = this.get('attrLocks');
-    locks[survey] || (locks[survey] = {});
+    locks[surveyName] || (locks[surveyName] = {});
 
     return locks;
   },
-  setAttrLock(attr, value, survey = 'general') {
+  setAttrLock(attr, value, surveyName = 'general') {
     const val = _.cloneDeep(value);
-    const locks = this._getRawLocks(survey);
+    const locks = this._getRawLocks(surveyName);
 
-    locks[survey][attr] = val;
+    locks[surveyName][attr] = val;
     this.set(locks);
     this.save();
     this.trigger('change:attrLocks');
@@ -27,21 +27,21 @@ export default {
     }
   },
 
-  unsetAttrLock(attr, survey = 'general') {
-    const locks = this._getRawLocks(survey);
-    delete locks[survey][attr];
+  unsetAttrLock(attr, surveyName = 'general') {
+    const locks = this._getRawLocks(surveyName);
+    delete locks[surveyName][attr];
     this.set(locks);
     this.save();
     this.trigger('change:attrLocks');
   },
 
-  getAttrLock(attr, survey = 'general') {
-    const locks = this._getRawLocks(survey);
-    return locks[survey][attr];
+  getAttrLock(attr, surveyName = 'general') {
+    const locks = this._getRawLocks(surveyName);
+    return locks[surveyName][attr];
   },
 
-  isAttrLocked(attr, value = {}, survey = 'general') {
-    let lockedVal = this.getAttrLock(attr, survey);
+  isAttrLocked(attr, value = {}, surveyName = 'general') {
+    let lockedVal = this.getAttrLock(attr, surveyName);
     if (!lockedVal) {
       return false;
     } // has not been locked
@@ -86,8 +86,8 @@ export default {
   appendAttrLocks(sample) {
     Log('AppModel:AttrLocks: appending.');
 
-    const survey = sample.metadata.survey;
-    const locks = this.get('attrLocks')[survey];
+    const isComplexSurvey = sample.metadata.complex_survey;
+    const locks = this.get('attrLocks').general;
 
     _.each(locks, (value, key) => {
       // false or undefined
@@ -139,7 +139,7 @@ export default {
           break;
         case 'identifiers':
           model = sample;
-          if (survey === 'general') {
+          if (!isComplexSurvey) {
             occurrence = sample.getOccurrence();
             model = occurrence;
           }
@@ -147,7 +147,7 @@ export default {
           break;
         case 'comment':
           model = sample;
-          if (survey === 'general') {
+          if (!isComplexSurvey) {
             occurrence = sample.getOccurrence();
             model = occurrence;
           }

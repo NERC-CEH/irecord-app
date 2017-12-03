@@ -8,13 +8,14 @@ export default Indicia.Occurrence.extend({
 
   // warehouse attribute keys
   keys() {
-    if (this.parent.metadata.survey === 'plant') {
+    if (this.parent.metadata.complex_survey) {
+      // todo refactor this
       return _.extend(
         {},
         CONFIG.indicia.surveys.general.occurrence, // general keys
         CONFIG.indicia.surveys.plant.occurrence // plant specific keys
       );
     }
-    return CONFIG.indicia.surveys.general.occurrence;
+    return this.parent.getSurvey().attrs.occ;
   },
 });

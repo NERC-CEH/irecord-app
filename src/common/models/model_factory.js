@@ -36,7 +36,6 @@ const Factory = {
       },
       {
         metadata: {
-          survey: 'plant',
           complex_survey: true,
           gridSquareUnit: appModel.get('gridSquareUnit'),
         },
@@ -60,11 +59,7 @@ const Factory = {
       occurrence.addMedia(image);
     }
 
-    const sample = new Sample(null, {
-      metadata: {
-        survey: 'general',
-      },
-    });
+    const sample = new Sample();
     sample.addOccurrence(occurrence);
 
     // append locked attributes

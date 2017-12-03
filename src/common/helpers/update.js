@@ -323,8 +323,6 @@ const API = {
             delete newSample.occurrences[0].images;
           }
 
-          newSample.metadata.survey = 'general';
-
           return newSample;
         }
 

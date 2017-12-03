@@ -2,18 +2,19 @@ import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import RadioInputView from 'common/views/radioInputView';
 import RangeInputView from 'common/views/rangeInputView';
-import CONFIG from 'config';
 
 export default Marionette.View.extend({
-  template: _.template(`
+  template() {
+    return _.template(`
     <div class="info-message">
       <p>
-        ${CONFIG.indicia.surveys.general.occurrence.number.label}
+        How many individuals of this type?
       </p>
     </div>
     <div id="slider"></div>
     <div id="selection"></div>
-  `),
+  `);
+  },
 
   regions: {
     slider: {

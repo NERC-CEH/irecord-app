@@ -19,7 +19,7 @@ export default Marionette.View.extend({
   serializeData() {
     const appModel = this.model.get('appModel');
     const sample = this.model.get('sample');
-    const survey = sample.metadata.survey;
+    const survey = sample.getSurvey();
     let attr = this.options.attr;
 
     let value;
@@ -39,7 +39,7 @@ export default Marionette.View.extend({
         }
         break;
       default:
-        if (survey === 'general') {
+        if (!sample.metadata.complex_survey) {
           // occurrence
           occ = sample.getOccurrence();
           value = occ.get(this.options.attr);
@@ -50,7 +50,7 @@ export default Marionette.View.extend({
 
     let locked = false;
     // check if the same value has been locked
-    locked = appModel.isAttrLocked(attr, value, survey);
+    locked = appModel.isAttrLocked(attr, value, survey.name);
 
     return {
       locked,

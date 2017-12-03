@@ -76,7 +76,7 @@ const API = {
         onSuccess(taxon) {
           API.updateTaxon(sample, taxon);
         },
-        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
+        informalGroups: sample.getSurvey().taxonGroups,
       });
     });
 

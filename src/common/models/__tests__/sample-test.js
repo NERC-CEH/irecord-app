@@ -3,7 +3,7 @@ import Sample from 'sample';
 import Occurrence from 'occurrence';
 import userModel from 'user_model';
 import appModel from 'app_model';
-import * as generalConfig from 'common/config/surveys/general';
+import Survey from 'common/config/surveys/Survey';
 import { savedSamples, Collection } from '../../saved_samples';
 import store from '../../store';
 
@@ -11,7 +11,7 @@ import store from '../../store';
 
 function getRandomSample() {
   const occurrence = new Occurrence({
-    taxon: { warehouse_id: 166205 },
+    taxon: { warehouse_id: 166205, group: 1 },
   });
   const sample = new Sample(
     {
@@ -29,7 +29,6 @@ function getRandomSample() {
   );
 
   sample.metadata.saved = true;
-  sample.metadata.survey = 'general';
 
   return sample;
 }
@@ -54,10 +53,17 @@ describe('Sample', () => {
     expect(sample.metadata.training).to.be.equal(true);
   });
 
+  describe('getKeys', () => {
+    it.skip('should call getSurvey and return its sample attrs', () => {
+      expect(false).to.be.equal(true);
+    });
+  });
+
   describe('validation', () => {
     it('should return sample send false invalid if not saved', () => {
-      const sample = new Sample();
-      sample.metadata.survey = 'general';
+      const sample = getRandomSample();
+      delete sample.metadata.saved;
+      sample.setTaxon({ warehouse_id: 1, group: 1 });
       expect(sample.validate).to.be.a('function');
       sample.clear();
 
@@ -66,23 +72,22 @@ describe('Sample', () => {
     });
 
     it('should return attributes and occurrence objects with invalids', () => {
-      const sample = new Sample();
-      sample.metadata.survey = 'general';
+      const sample = getRandomSample();
       sample.metadata.saved = true;
       sample.clear();
 
       let invalids = sample.validate({}, { remote: true });
       expect(invalids)
         .to.be.an('object')
-        .and.have.property('attributes')
-        .and.have.property('occurrences');
+        .and.have.all.keys('attributes', 'occurrences', 'samples');
 
       // sample
-      expect(invalids.attributes).to.have.property('date');
-      expect(invalids.attributes).to.have.property('location');
-      expect(invalids.attributes).to.have.property('location name');
-      expect(invalids.attributes).to.have.property('location_type');
-      expect(invalids.attributes).to.have.property('occurrences');
+      expect(invalids.attributes).to.have.all.keys(
+        'date',
+        'location',
+        'location',
+        'location_type'
+      );
 
       // occurrence
       expect(invalids.occurrences).to.be.an('object').and.to.be.empty;
@@ -109,9 +114,9 @@ describe('Sample', () => {
     });
 
     it('should not send if invalid, but set validationError', () => {
-      const sample = new Sample();
-      sample.metadata.survey = 'general';
-
+      const sample = getRandomSample();
+      delete sample.attributes.location;
+      delete sample.metadata.saved;
       const valid = sample.setToSend();
       expect(valid).to.be.false;
 
@@ -139,17 +144,15 @@ describe('Sample', () => {
     });
 
     it('should throw if no occurrence exists', () => {
-      const sample = new Sample(null, {
-        metadata: { survey: 'general' },
-      });
+      const sample = new Sample();
       sample.setTaxon({ warehouse_id: 1 }).catch(err => {
         expect(err.message).to.equal('No occurrence present to set taxon');
       });
     });
 
-    it('should return rejected Promise if sample survey is not general', () => {
+    it('should return rejected Promise if sample survey is complex', () => {
       const sample = getRandomSample();
-      sample.metadata.survey = 'plant';
+      sample.metadata.complex_survey = true;
       sample.setTaxon({ warehouse_id: 1 }).catch(err => {
         expect(err.message).to.equal(
           'Only general survey samples can use setTaxon method'
@@ -158,37 +161,36 @@ describe('Sample', () => {
     });
   });
 
-  describe('getForm', () => {
-    let getFormStub;
+  describe('getSurvey', () => {
+    let surveyFacotryStub;
 
     before(() => {
-      getFormStub = sinon.stub(generalConfig, 'getForm');
+      surveyFacotryStub = sinon.stub(Survey, 'factory');
     });
 
     after(() => {
-      getFormStub.restore();
+      surveyFacotryStub.restore();
     });
 
     it('should exist', () => {
       const sample = getRandomSample();
-      expect(sample.getForm).to.be.a('function');
+      expect(sample.getSurvey).to.be.a('function');
     });
 
-    it('should return a form array', () => {
+    it('should return survey factory result', () => {
+      surveyFacotryStub.returns(1);
+
       const sample = getRandomSample();
       sample.setTaxon({ warehouse_id: 1, group: 1 });
-      const editForm = [1, 2, 3];
-      getFormStub.returns(editForm);
-      expect(sample.getForm()).to.be.eql(editForm);
-      expect(getFormStub.called).to.be.equal(true);
+      const survey = sample.getSurvey();
+      expect(surveyFacotryStub.called).to.be.equal(true);
+      expect(survey).to.equal(1);
     });
 
     it('should throw if no occurrence exists', done => {
-      const sample = new Sample(null, {
-        metadata: { survey: 'general' },
-      });
+      const sample = new Sample();
       try {
-        sample.getForm();
+        sample.getSurvey();
       } catch (err) {
         expect(err.message).to.equal('No occurrence present to get form');
         done();
@@ -198,7 +200,7 @@ describe('Sample', () => {
     it('should throw if no occurrence taxon group exists', () => {
       const sample = getRandomSample();
       try {
-        sample.getForm();
+        sample.getSurvey();
       } catch (err) {
         expect(err.message).to.equal(
           'No occurrence taxon group is present to get form'
@@ -206,17 +208,11 @@ describe('Sample', () => {
       }
     });
 
-    it('should throw if sample survey is not general', done => {
+    it('should return complex survey', () => {
+      surveyFacotryStub.withArgs(null, true).returns('complex');
       const sample = getRandomSample();
-      sample.metadata.survey = 'plant';
-      try {
-        sample.getForm();
-      } catch (err) {
-        expect(err.message).to.equal(
-          'Only general survey samples can use getForm method'
-        );
-        done();
-      }
+      sample.metadata.complex_survey = true;
+      expect(sample.getSurvey()).to.be.equal('complex');
     });
   });
 

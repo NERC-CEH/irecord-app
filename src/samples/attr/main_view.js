@@ -38,7 +38,7 @@ export default Marionette.View.extend({
     const sample = this.model;
     const occ = sample.getOccurrence();
 
-    const surveyConfig = CONFIG.indicia.surveys.general;
+    const surveyAttrs = sample.getSurvey().attrs;
 
     let attrView;
     switch (this.options.attr) {
@@ -51,7 +51,7 @@ export default Marionette.View.extend({
         break;
       case 'number':
         attrView = new NumberAttrView({
-          config: surveyConfig.occurrence['number-ranges'],
+          config: surveyAttrs.occ['number-ranges'],
           defaultNumber: occ.get('number'),
           default: occ.get('number-ranges'),
         });
@@ -59,21 +59,21 @@ export default Marionette.View.extend({
 
       case 'stage':
         attrView = new RadioInputView({
-          config: surveyConfig.occurrence.stage,
+          config: surveyAttrs.occ.stage,
           default: occ.get('stage'),
         });
         break;
 
       case 'comment':
         attrView = new TextareaView({
-          config: surveyConfig.sample.comment,
+          config: surveyAttrs.smp.comment,
           default: occ.get('comment'),
         });
         break;
 
       case 'identifiers':
         attrView = new InputView({
-          config: surveyConfig.occurrence.identifiers,
+          config: surveyAttrs.occ.identifiers,
           default: occ.get('identifiers'),
         });
         break;

@@ -5,11 +5,11 @@ import _ from 'lodash';
 import Indicia from 'indicia';
 import bigu from 'bigu';
 import CONFIG from 'config';
-import { getForm } from 'common/config/surveys/general';
 import userModel from 'user_model';
 import appModel from 'app_model';
 import Occurrence from 'occurrence';
 import Log from 'helpers/log';
+import Survey from 'common/config/surveys/Survey';
 import Device from 'helpers/device';
 import store from '../store';
 import GeolocExtension from './sample_geoloc_ext';
@@ -33,14 +33,7 @@ let Sample = Indicia.Sample.extend({
 
   // warehouse attribute keys
   keys() {
-    if (this.metadata.survey === 'plant') {
-      return _.extend(
-        {},
-        CONFIG.indicia.surveys.general.sample, // general keys
-        CONFIG.indicia.surveys.plant.sample // plant specific keys
-      );
-    }
-    return CONFIG.indicia.surveys.general.sample;
+    return this.getSurvey().attrs.smp;
   },
 
   /**
@@ -63,7 +56,7 @@ let Sample = Indicia.Sample.extend({
   },
 
   validateRemote() {
-    const survey = CONFIG.indicia.surveys[this.metadata.survey];
+    const survey = this.getSurvey();
     if (!survey || !survey.verify) {
       Log('Sample:model: no such survey in remote verify.', 'e');
       throw new Error('No sample survey to verify.');
@@ -77,12 +70,11 @@ let Sample = Indicia.Sample.extend({
       !_.isEmpty(samples) ||
       !_.isEmpty(occurrences)
     ) {
-      const errors = {
+      return {
         attributes,
         samples,
         occurrences,
       };
-      return errors;
     }
 
     return null;
@@ -97,7 +89,7 @@ let Sample = Indicia.Sample.extend({
     submission.input_form = survey.input_form; // eslint-disable-line
 
     // add the survey_id to subsamples too
-    if (this.metadata.survey === 'plant') {
+    if (this.metadata.complex_survey) {
       submission.samples.forEach(subSample => {
         subSample.survey_id = survey.survey_id; // eslint-disable-line
         subSample.input_form = survey.input_form; // eslint-disable-line
@@ -132,7 +124,7 @@ let Sample = Indicia.Sample.extend({
   },
 
   _setGPSlocationSetter() {
-    if (this.metadata.survey !== 'plant') {
+    if (!this.metadata.complex_survey) {
       return;
     }
 
@@ -215,7 +207,7 @@ let Sample = Indicia.Sample.extend({
 
   setTaxon(taxon = {}) {
     return new Promise((resolve, reject) => {
-      if (this.metadata.survey !== 'general') {
+      if (this.metadata.complex_survey) {
         return reject(
           new Error('Only general survey samples can use setTaxon method')
         );
@@ -231,9 +223,9 @@ let Sample = Indicia.Sample.extend({
     });
   },
 
-  getForm() {
-    if (this.metadata.survey !== 'general') {
-      throw new Error('Only general survey samples can use getForm method');
+  getSurvey() {
+    if (this.metadata.complex_survey) {
+      return Survey.factory(null, true);
     }
 
     const occ = this.getOccurrence();
@@ -246,7 +238,7 @@ let Sample = Indicia.Sample.extend({
       throw new Error('No occurrence taxon group is present to get form');
     }
 
-    return getForm(taxon.group);
+    return Survey.factory(taxon.group);
   },
 });
 

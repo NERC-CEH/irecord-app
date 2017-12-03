@@ -3,9 +3,6 @@
  **************************************************************************** */
 import Indicia from 'indicia';
 
-import generalSurvey from './surveys/general';
-import plantSurvey from './surveys/plant';
-
 const HOST =
   process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
 
@@ -63,11 +60,6 @@ const CONFIG = {
     host: HOST,
     api_key: process.env.APP_INDICIA_API_KEY,
     website_id: 23,
-
-    surveys: {
-      general: generalSurvey,
-      plant: plantSurvey,
-    },
   },
 };
 
