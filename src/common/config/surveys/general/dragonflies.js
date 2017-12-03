@@ -11,7 +11,17 @@ const numRanges = {
 export default {
   name: 'dragonflies',
   taxonGroups: [107],
-  editForm: ['adCount', 'site', 'siteOther', 'comment'],
+  editForm: [
+    'occ:adCount',
+    'occ:coCount',
+    'occ:ovCount',
+    'occ:laCount',
+    'occ:exCount',
+    'occ:emCount',
+    'smp:site',
+    'smp:siteOther',
+    'smp:comment',
+  ],
 
   attrs: {
     smp: {
@@ -45,6 +55,8 @@ export default {
         type: 'radio',
         id: 34,
         label: 'Ad.',
+        icon: 'number',
+
         default: '',
         values: numRanges,
       },
@@ -52,6 +64,8 @@ export default {
         type: 'radio',
         id: 35,
         label: 'Co.',
+        icon: 'number',
+
         default: '',
         values: numRanges,
       },
@@ -59,6 +73,8 @@ export default {
         type: 'radio',
         id: 36,
         label: 'Ov.',
+        icon: 'number',
+
         default: '',
         values: numRanges,
       },
@@ -66,6 +82,8 @@ export default {
         type: 'radio',
         id: 37,
         label: 'La.',
+        icon: 'number',
+
         default: '',
         values: numRanges,
       },
@@ -73,6 +91,8 @@ export default {
         type: 'radio',
         id: 38,
         label: 'Ex.',
+        icon: 'number',
+
         default: '',
         values: numRanges,
       },
@@ -80,6 +100,7 @@ export default {
         type: 'radio',
         id: 39,
         label: 'Em.',
+        icon: 'number',
         default: '',
         values: numRanges,
       },

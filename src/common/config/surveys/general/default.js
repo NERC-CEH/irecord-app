@@ -65,7 +65,8 @@ const survey = {
       },
 
       comment: {
-        label: 'Please add any extra info about this record.',
+        info: 'Please add any extra info about this record.',
+        icon: 'comment',
       },
     },
     occ: {
@@ -80,7 +81,7 @@ const survey = {
       },
       number: {
         id: 16,
-        label: 'How many individuals of this type?',
+        info: 'How many individuals of this type?',
       },
       'number-ranges': {
         id: 523,
@@ -96,7 +97,7 @@ const survey = {
       },
       stage: {
         id: 106,
-        label: 'Please pick the life stage.',
+        info: 'Please pick the life stage.',
         default: 'Not Recorded',
         values: {
           Adult: 1950,
@@ -106,7 +107,7 @@ const survey = {
       },
       identifiers: {
         id: 18,
-        label:
+        info:
           'If anyone helped with the identification please enter their name here.',
       },
     },

@@ -1,10 +1,42 @@
+import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import Indicia from 'indicia';
 import StringHelp from 'helpers/string';
 
+function template(sample) {
+  const survey = sample.getSurvey();
+  if (survey.name === 'default') {
+    return JST['samples/edit/general_attrs'];
+  }
+
+  let tpl = '';
+  survey.editForm.forEach(element => {
+    const elParts = element.split(':');
+    const elAttrType = elParts[0];
+    const elName = elParts[1];
+    const el = survey.attrs[elAttrType][elName];
+    const label =
+      el.label || elName.slice(0, 1).toUpperCase() + elName.slice(1);
+    const icon = el.icon || 'dot';
+    tpl += `<li class="table-view-cell">
+        <a href="#samples/${sample.cid}/edit/${elName}" id="${elName}-button"
+           class="<%- obj.locks['${element}'] ? 'lock' : 'navigate-right' %>">
+          <span class="media-object pull-left icon icon-${icon}"></span>
+          <span class="media-object pull-right descript"><%- obj-${elName}%></span>
+          ${label}
+        </a>
+      </li>`;
+  });
+  return _.template(tpl);
+}
+
 export default Marionette.View.extend({
-  template: JST['samples/edit/general_attrs'],
+  constructor(...args) {
+    Marionette.View.prototype.constructor.apply(this, args);
+    this.template = template(this.model.get('sample'));
+  },
+
   tagName: 'ul',
   id: 'attrs',
   className: 'table-view inputs no-top',
