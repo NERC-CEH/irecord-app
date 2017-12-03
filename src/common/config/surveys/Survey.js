@@ -29,7 +29,7 @@ export default class Survey {
       }
     });
 
-    const mergedGeneralSurvey = _.merge(generalSurveys.default, matchedSurvey);
+    const mergedGeneralSurvey = _.merge({}, generalSurveys.default, matchedSurvey);
     return new Survey(mergedGeneralSurvey);
   }
 }
