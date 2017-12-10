@@ -57,8 +57,10 @@
       </div>
 
       <div class="attributes">
-        <div class="number"><%= obj.number %></div>
-        <div class="stage"><%= obj.stage %></div>
+        <% if (obj.isDefaultSurvey) { %>
+          <div class="number"><%= obj.number %></div>
+          <div class="stage"><%= obj.stage %></div>
+        <% } %>
         <div class="comment"><%= obj.comment %></div>
       </div>
     </div>

@@ -142,6 +142,7 @@ const SampleView = Marionette.View.extend({
       date,
       taxon,
       number,
+      isDefaultSurvey: sample.getSurvey().name === 'default',
       stage: StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
       group,
