@@ -213,7 +213,7 @@ const API = {
   setTaxon(sample, taxon, editButtonClicked) {
     return sample
       .setTaxon(taxon)
-      .then(sample.save)
+      .then(() => sample.save())
       .then(() => {
         if (editButtonClicked) {
           radio.trigger('samples:edit', sample.cid, { replace: true });

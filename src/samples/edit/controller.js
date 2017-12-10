@@ -271,7 +271,7 @@ const API = {
     // edit existing one
     return sample
       .setTaxon(taxon)
-      .then(sample.save)
+      .then(() => sample.save())
       .then(() => window.history.back());
   },
 };
