@@ -23,7 +23,7 @@ function template(sample) {
         <a href="#samples/${sample.cid}/edit/${elName}" id="${elName}-button"
            class="<%- obj.locks['${element}'] ? 'lock' : 'navigate-right' %>">
           <span class="media-object pull-left icon icon-${icon}"></span>
-          <span class="media-object pull-right descript"><%- obj-${elName}%></span>
+          <span class="media-object pull-right descript"><%- obj.${elName}%></span>
           ${label}
         </a>
       </li>`;
