@@ -25,7 +25,7 @@ export default Marionette.View.extend({
 
     this.model = new Backbone.Model({
       value: this.options.default || config.default,
-      message: this.options.label || config.label,
+      message: this.options.info || config.info,
       selection,
       selected: this.options.default || config.default,
     });

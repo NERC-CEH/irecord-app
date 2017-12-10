@@ -1,1 +1,1 @@
-<ul id="list" class="table-view no-top" />;
+<ul id="list" class="table-view no-top" />

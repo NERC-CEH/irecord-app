@@ -123,10 +123,9 @@ const SampleView = Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
+    let number = StringHelp.limit(occ.get('number'));
     if (!number) {
-      number =
-        occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+      number = StringHelp.limit(occ.get('number-ranges'));
     }
 
     const group = sample.get('group');
@@ -143,7 +142,7 @@ const SampleView = Marionette.View.extend({
       date,
       taxon,
       number,
-      stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
+      stage: StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
       group,
       img: img ? `<img src="${img}"/>` : '',

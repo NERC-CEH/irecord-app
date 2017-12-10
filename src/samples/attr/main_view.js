@@ -4,7 +4,6 @@
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import Log from 'helpers/log';
-import CONFIG from 'config';
 import InputView from 'common/views/inputView';
 import RadioInputView from 'common/views/radioInputView';
 import TextareaView from 'common/views/textareaInputView';
@@ -40,56 +39,62 @@ export default Marionette.View.extend({
 
     const surveyAttrs = sample.getSurvey().attrs;
 
+    const attrParts = this.options.attr.split(':');
+    const attrType = attrParts[0];
+    const attrName = attrParts[1];
+    const attrConfig = surveyAttrs[attrType][attrName];
+
+    const currentVal =
+      attrType === 'smp' ? sample.get(attrName) : occ.get(attrName);
+
     let attrView;
     switch (this.options.attr) {
-      case 'date':
-        attrView = new InputView({
-          default: sample.get('date'),
-          type: 'date',
-          max: new Date(),
-        });
-        break;
-      case 'number':
+      case 'occ:number':
         attrView = new NumberAttrView({
           config: surveyAttrs.occ['number-ranges'],
-          defaultNumber: occ.get('number'),
+          defaultNumber: currentVal,
           default: occ.get('number-ranges'),
         });
         break;
 
-      case 'stage':
+      default:
+        attrView = this.attrViewFactory(attrConfig, currentVal);
+        if (!attrView) {
+          Log('Samples:AttrView: no such attribute to show!', 'e');
+        }
+    }
+
+    return attrView;
+  },
+
+  attrViewFactory(attrConfig, currentVal) {
+    let attrView;
+    switch (attrConfig.type) {
+      case 'date':
+      case 'input':
+        attrView = new InputView({
+          config: attrConfig,
+          default: currentVal,
+        });
+        break;
+
+      case 'radio':
         attrView = new RadioInputView({
-          config: surveyAttrs.occ.stage,
-          default: occ.get('stage'),
+          config: attrConfig,
+          default: currentVal,
         });
         break;
 
-      case 'comment':
+      case 'text':
         attrView = new TextareaView({
-          config: surveyAttrs.smp.comment,
-          default: occ.get('comment'),
-        });
-        break;
-
-      case 'identifiers':
-        attrView = new InputView({
-          config: surveyAttrs.occ.identifiers,
-          default: occ.get('identifiers'),
-        });
-        break;
-
-      case 'activity':
-        attrView = new InputView({
-          default: sample.get('date'),
-          type: 'date',
-          max: new Date(),
+          config: attrConfig,
+          default: currentVal,
         });
         break;
 
       default:
-        Log('Samples:AttrView: no such attribute to show!', 'e');
+        Log('Samples:AttrView: no such attribute type was found!', 'e');
     }
-
     return attrView;
   },
 
@@ -100,14 +105,15 @@ export default Marionette.View.extend({
   getValues() {
     const values = {};
 
-    if (this.options.attr === 'number') {
-      const [value, range] = this.attrView.getValues();
-      values[this.options.attr] = value;
-      values['number-ranges'] = range;
-      return values;
+    switch (this.options.attr) {
+      case 'number':
+        const [value, range] = this.attrView.getValues();
+        values[this.options.attr] = value;
+        values['number-ranges'] = range;
+        break;
+      default:
+        values[this.options.attr] = this.attrView.getValues();
     }
-
-    values[this.options.attr] = this.attrView.getValues();
 
     return values;
   },

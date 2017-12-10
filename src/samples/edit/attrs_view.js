@@ -1,33 +1,46 @@
 import _ from 'lodash';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import Indicia from 'indicia';
 import StringHelp from 'helpers/string';
 
 function template(sample) {
   const survey = sample.getSurvey();
-  if (survey.name === 'default') {
-    return JST['samples/edit/general_attrs'];
-  }
 
+  // generate template
   let tpl = '';
   survey.editForm.forEach(element => {
-    const elParts = element.split(':');
-    const elAttrType = elParts[0];
-    const elName = elParts[1];
-    const el = survey.attrs[elAttrType][elName];
+    const attrParts = element.split(':');
+    const attrType = attrParts[0];
+    const attrName = attrParts[1];
+    const attr = survey.attrs[attrType][attrName];
     const label =
-      el.label || elName.slice(0, 1).toUpperCase() + elName.slice(1);
-    const icon = el.icon || 'dot';
+      attr.label || attrName.slice(0, 1).toUpperCase() + attrName.slice(1);
+    const icon = attr.icon || 'dot';
     tpl += `<li class="table-view-cell">
-        <a href="#samples/${sample.cid}/edit/${elName}" id="${elName}-button"
+        <a href="#samples/${sample.cid}/edit/${element}" id="${element}-button"
            class="<%- obj.locks['${element}'] ? 'lock' : 'navigate-right' %>">
           <span class="media-object pull-left icon icon-${icon}"></span>
-          <span class="media-object pull-right descript"><%- obj.${elName}%></span>
+          <span class="media-object pull-right descript"><%- obj['${element}']%></span>
           ${label}
         </a>
       </li>`;
   });
+
+  // add groups support
+  if (survey.name === 'default') {
+    tpl += `
+      <% if (obj.group_title) { %>
+      <li class="table-view-cell">
+        <a href="#samples/<%- obj.id %>/edit/smp:activity" id="activity-button"
+           class="<%- obj.locks['activity'] ? 'lock' : 'navigate-right' %>">
+          <span class="media-object pull-left icon icon-users"></span>
+          <span class="media-object pull-right descript"><%- obj['smp:group_title'] %></span>
+          Activity
+        </a>
+      </li>
+      <% } %>`;
+  }
+
   return _.template(tpl);
 }
 
@@ -46,42 +59,59 @@ export default Marionette.View.extend({
     const occ = sample.getOccurrence();
     const appModel = this.model.get('appModel');
 
-    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
+    let numberLock = appModel.isAttrLocked('occ:number', occ.get('number'));
     if (!numberLock) {
       numberLock = appModel.isAttrLocked(
-        'number-ranges',
+        'occ:number-ranges',
         occ.get('number-ranges')
       );
     }
     const attrLocks = {
       number: numberLock,
-      stage: appModel.isAttrLocked('stage', occ.get('stage')),
-      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
-      comment: appModel.isAttrLocked('comment', occ.get('comment')),
-      activity: appModel.isAttrLocked('activity', sample.get('group')),
+      stage: appModel.isAttrLocked('occ:stage', occ.get('stage')),
+      identifiers: appModel.isAttrLocked(
+        'occ:identifiers',
+        occ.get('identifiers')
+      ),
+      comment: appModel.isAttrLocked('smp:comment', sample.get('comment')),
+      activity: appModel.isAttrLocked('smp:activity', sample.get('group')),
     };
-
-    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
-    if (!number) {
-      number =
-        occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
-    }
 
     // show activity title.
     const group = sample.get('group');
 
-    return {
+    const serialized = {
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
-      number,
-      stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
-      identifiers:
-        occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
-      comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
       group_title: group ? group.title : null,
       group,
       locks: attrLocks,
     };
+
+    const survey = sample.getSurvey();
+    survey.editForm.forEach(element => {
+      const attrParts = element.split(':');
+      const attrType = attrParts[0];
+      const attrName = attrParts[1];
+
+      const model = attrType === 'smp' ? sample : occ;
+
+      let currentVal;
+      switch (element) {
+        case 'occ:number':
+          currentVal = StringHelp.limit(occ.get('number'));
+          if (!currentVal) {
+            currentVal = StringHelp.limit(occ.get('number-ranges'));
+          }
+          break;
+        default:
+          currentVal = StringHelp.limit(model.get(attrName));
+      }
+
+      serialized[element] = currentVal;
+    });
+
+    return serialized;
   },
 });

@@ -19,7 +19,7 @@ export default {
     'occ:exCount',
     'occ:emCount',
     'smp:site',
-    'smp:siteOther',
+    // 'smp:siteOther',
     'smp:comment',
   ],
 
@@ -28,7 +28,7 @@ export default {
       site: {
         type: 'radio',
         id: 59,
-        label: 'Site type.',
+        label: 'Site type',
         default: '',
         values: {
           Lake: 672,
@@ -41,7 +41,7 @@ export default {
           Stream: 679,
           Ditch: 680,
           Canal: 681,
-          'Other (please specify)': 682,
+          'Other (please specify in comments)': 682,
         },
       },
       siteOther: {
@@ -56,7 +56,7 @@ export default {
         id: 34,
         label: 'Ad.',
         icon: 'number',
-
+        info: 'How many individuals of this type?',
         default: '',
         values: numRanges,
       },
@@ -65,7 +65,7 @@ export default {
         id: 35,
         label: 'Co.',
         icon: 'number',
-
+        info: 'How many individuals of this type?',
         default: '',
         values: numRanges,
       },
@@ -74,7 +74,7 @@ export default {
         id: 36,
         label: 'Ov.',
         icon: 'number',
-
+        info: 'How many individuals of this type?',
         default: '',
         values: numRanges,
       },
@@ -83,7 +83,7 @@ export default {
         id: 37,
         label: 'La.',
         icon: 'number',
-
+        info: 'How many individuals of this type?',
         default: '',
         values: numRanges,
       },
@@ -92,7 +92,7 @@ export default {
         id: 38,
         label: 'Ex.',
         icon: 'number',
-
+        info: 'How many individuals of this type?',
         default: '',
         values: numRanges,
       },
@@ -101,6 +101,7 @@ export default {
         id: 39,
         label: 'Em.',
         icon: 'number',
+        info: 'How many individuals of this type?',
         default: '',
         values: numRanges,
       },

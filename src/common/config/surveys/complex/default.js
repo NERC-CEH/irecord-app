@@ -26,7 +26,7 @@ const survey = {
       },
       recorders: {
         id: 1018,
-        label:
+        info:
           'If anyone helped with the identification please enter their name here.',
         values(val, submission) {
           const attributes = {};
@@ -113,7 +113,7 @@ const survey = {
       },
 
       comment: {
-        label:
+        info:
           "Please include any additional notes about the grid square's environment or your survey methodology. Do not include details about indivual occurences here.",
       },
     },
@@ -123,7 +123,7 @@ const survey = {
       },
       status: {
         id: 507,
-        label: 'Please pick the status.',
+        info: 'Please pick the status.',
         default: 'Not Recorded',
         values: {
           Native: 5709,
@@ -138,7 +138,7 @@ const survey = {
       },
       stage: {
         id: 466,
-        label: 'Please pick the life stage.',
+        info: 'Please pick the life stage.',
         default: 'Not Recorded',
         values: {
           Flowering: 5331,
@@ -154,7 +154,7 @@ const survey = {
       },
 
       comment: {
-        label: 'Please add any extra info about this record.',
+        info: 'Please add any extra info about this record.',
       },
     },
   },

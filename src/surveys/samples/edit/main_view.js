@@ -81,10 +81,9 @@ export default Marionette.View.extend({
       activity: appModel.isAttrLocked('activity', sample.get('group')),
     };
 
-    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
+    let number = StringHelp.limit(occ.get('number'));
     if (!number) {
-      number =
-        occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+      number = StringHelp.limit(occ.get('number-ranges'));
     }
 
     // show activity title.
@@ -103,12 +102,11 @@ export default Marionette.View.extend({
       locationEditAllowed: this.options.locationEditAllowed,
       date: DateHelp.print(sample.get('date'), true),
       number,
-      abundance: occ.get('abundance') && StringHelp.limit(occ.get('abundance')),
-      status: occ.get('status') && StringHelp.limit(occ.get('status')),
-      stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
-      identifiers:
-        occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
-      comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
+      abundance: StringHelp.limit(occ.get('abundance')),
+      status: StringHelp.limit(occ.get('status')),
+      stage: StringHelp.limit(occ.get('stage')),
+      identifiers: StringHelp.limit(occ.get('identifiers')),
+      comment: StringHelp.limit(occ.get('comment')),
       group_title: group ? group.title : null,
       group,
       locks: attrLocks,

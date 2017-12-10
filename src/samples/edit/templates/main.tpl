@@ -32,7 +32,7 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/date" id="date-button"
+    <a href="#samples/<%- obj.id %>/edit/smp:date" id="date-button"
        class="<%- obj.locks['date'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-calendar"></span>
       <span class="media-object pull-right descript"><%- obj.date %></span>

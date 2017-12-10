@@ -72,7 +72,7 @@ export default Marionette.View.extend({
       date: DateHelp.print(sample.get('date'), true),
       species: Object.keys(uniqueTaxa).length,
       recorders: (sample.get('recorders') || []).length,
-      comment: sample.get('comment') && StringHelp.limit(sample.get('comment')),
+      comment: StringHelp.limit(sample.get('comment')),
       locks: {},
     };
   },

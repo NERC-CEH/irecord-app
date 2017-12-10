@@ -18,14 +18,17 @@ export default Marionette.View.extend({
     this.model = new Backbone.Model({
       type: this.options.type || config.type || 'text',
       max: this.options.max || config.max,
-      message: this.options.label || config.label,
+      message: this.options.info || config.info,
       value: this.options.default || config.default,
     });
 
     this.type = this.model.get('type');
 
     if (this.type === 'date') {
-      this.model.set('max', DateHelp.toDateInputValue(this.model.get('max')));
+      let max = this.model.get('max');
+      max = typeof max === 'function' ? max() : max;
+
+      this.model.set('max', DateHelp.toDateInputValue(max));
       this.model.set(
         'value',
         DateHelp.toDateInputValue(this.model.get('value'))

@@ -42,7 +42,7 @@ export default Marionette.View.extend({
     const config = this.options.config || {};
 
     this.model = new Backbone.Model({
-      message: this.options.label || config.label,
+      message: this.options.info || config.info,
       value: this.options.default || config.default,
     });
 

@@ -53,6 +53,13 @@ const API = {
       onLockClick: API.onLockClick,
     });
 
+    const surveyAttrs = sample.getSurvey().attrs;
+
+    const attrParts = attr.split(':');
+    const attrType = attrParts[0];
+    const attrName = attrParts[1];
+    const attrConfig = surveyAttrs[attrType][attrName];
+
     const headerView = new HeaderView({
       onExit() {
         API.onExit(mainView, sample, attr, () => {
@@ -60,7 +67,7 @@ const API = {
         });
       },
       rightPanel: lockView,
-      model: new Backbone.Model({ title: attr }),
+      model: new Backbone.Model({ title: attrConfig.label || attrName }),
     });
 
     radio.trigger('app:header', headerView);
@@ -103,8 +110,6 @@ const API = {
 
   /**
    * Update sample with new values
-   * @param values
-   * @param sample
    */
   save(attr, values, sample, callback) {
     Log('Samples:Attr:Controller: saving.');
@@ -114,42 +119,48 @@ const API = {
     const occ = sample.getOccurrence();
 
     switch (attr) {
-      case 'date':
-        currentVal = sample.get('date');
-
-        // validate before setting up
-        if (values.date && values.date.toString() !== 'Invalid Date') {
-          newVal = values.date;
-          sample.set('date', newVal);
-        }
-        break;
-      case 'number':
+      case 'occ:number':
         currentVal = occ.get('number');
 
         // todo: validate before setting up
-        if (values.number) {
+        if (values[attr][0]) {
           // specific number
-          newVal = values.number;
+          newVal = values[attr][0];
           occ.set('number', newVal);
           occ.unset('number-ranges');
         } else {
           // number ranges
-          attr = 'number-ranges'; // eslint-disable-line
-          newVal = values[attr];
+          newVal = values[attr][1];
           occ.set('number-ranges', newVal);
           occ.unset('number');
+          attr = 'number-ranges'; // eslint-disable-line
         }
         break;
-      case 'stage':
-      case 'identifiers':
-      case 'comment':
-        currentVal = occ.get(attr);
+      default:
+        const surveyAttrs = sample.getSurvey().attrs;
+
+        const attrParts = attr.split(':');
+        const attrType = attrParts[0];
+        const attrName = attrParts[1];
+        const attrConfig = surveyAttrs[attrType][attrName];
+
+        const model = attrType === 'smp' ? sample : occ;
+
+        currentVal = model.get(attrName);
         newVal = values[attr];
 
-        // todo:validate before setting up
-        occ.set(attr, values[attr]);
-        break;
-      default:
+        // validate before setting up
+        if (attrConfig.isValid && !attrConfig.isValid(newVal)) {
+          radio.trigger('app:dialog', {
+            title: 'Sorry',
+            body: 'Invalid date selected',
+            timeout: 2000,
+          });
+          return;
+        }
+
+        model.set(attrName, values[attr]);
+      // Log('Samples:Attr:Controller: no such attribute to save!', 'e');
     }
 
     // save it

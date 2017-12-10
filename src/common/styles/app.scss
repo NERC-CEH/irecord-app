@@ -181,6 +181,10 @@ header {
       max-width: 55px;
     }
   }
+
+  .capitalize {
+    text-transform: capitalize;
+  }
 }
 
 header .title {

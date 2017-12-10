@@ -1,5 +1,8 @@
 export default {
   limit(string, charNum = 20) {
+    if (!string) {
+      return '';
+    }
     const value = string.toString();
     const ellipsis = value && value.length > charNum ? '...' : '';
     return value ? value.substring(0, charNum) + ellipsis : '';

@@ -12,7 +12,7 @@ const survey = {
 
   taxonGroups: [], // all
 
-  editForm: ['number', 'stage', 'comment', 'identifiers'],
+  editForm: ['occ:number', 'occ:stage', 'smp:comment', 'occ:identifiers'],
 
   attrs: {
     smp: {
@@ -56,17 +56,22 @@ const survey = {
         values(date) {
           return DateHelp.print(date);
         },
+        isValid: val => val && val.toString() !== 'Invalid Date',
+        type: 'date',
+        max: () => new Date(),
       },
 
       group: {
         values(group) {
           return group.id;
         },
+        type: 'input',
       },
 
       comment: {
         info: 'Please add any extra info about this record.',
         icon: 'comment',
+        type: 'text',
       },
     },
     occ: {
@@ -82,6 +87,7 @@ const survey = {
       number: {
         id: 16,
         info: 'How many individuals of this type?',
+        icon: 'number',
       },
       'number-ranges': {
         id: 523,
@@ -104,11 +110,15 @@ const survey = {
           'Pre-adult': 1951,
           Other: 1952,
         },
+        icon: 'stage',
+        type: 'radio',
       },
       identifiers: {
         id: 18,
         info:
           'If anyone helped with the identification please enter their name here.',
+        icon: 'user-plus',
+        type: 'input',
       },
     },
   },
