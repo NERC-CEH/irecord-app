@@ -7,7 +7,6 @@ import Log from 'helpers/log';
 import RadioInputView from 'common/views/radioInputView';
 import InputView from 'common/views/inputView';
 import TextareaView from 'common/views/textareaInputView';
-import CONFIG from 'config';
 
 export default Marionette.View.extend({
   template: _.template('<div id="attribute"></div>'),

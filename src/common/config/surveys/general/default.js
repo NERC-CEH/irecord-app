@@ -21,7 +21,7 @@ const survey = {
           // convert accuracy for map and gridref sources
           const accuracy = location.accuracy;
           const attributes = {};
-          const keys = config.sample;
+          const keys = survey.attrs.smp;
           attributes.location_name = location.name; // this is a native indicia attr
           attributes[keys.location_source.id] = location.source;
           attributes[keys.location_gridref.id] = location.gridref;

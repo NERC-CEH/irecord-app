@@ -14,7 +14,6 @@ import App from 'app';
 import radio from 'radio';
 import appModel from 'app_model';
 import userModel from 'user_model';
-import CONFIG from 'config';
 import savedSamples from 'saved_samples';
 import SurveysEditController from '../../edit/controller';
 import ImageModel from '../../../common/models/image';

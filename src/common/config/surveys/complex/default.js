@@ -30,7 +30,7 @@ const survey = {
           'If anyone helped with the identification please enter their name here.',
         values(val, submission) {
           const attributes = {};
-          const recorderCount = config.sample.recorder_count;
+          const recorderCount = survey.attrs.smp.recorder_count;
 
           // add recorder count
           switch (true) {
