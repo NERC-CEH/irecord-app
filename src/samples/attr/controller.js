@@ -47,11 +47,14 @@ const API = {
     radio.trigger('app:main', mainView);
 
     // HEADER
-    const lockView = new LockView({
-      model: new Backbone.Model({ appModel, sample }),
-      attr,
-      onLockClick: API.onLockClick,
-    });
+    const lockView =
+      sample.getSurvey().name === 'default'
+        ? new LockView({
+            model: new Backbone.Model({ appModel, sample }),
+            attr,
+            onLockClick: API.onLockClick,
+          })
+        : null;
 
     const surveyAttrs = sample.getSurvey().attrs;
 
