@@ -6,9 +6,9 @@ import Indicia from 'indicia';
 
 const survey = {
   name: 'default',
-  survey_id: 325,
+  id: 325,
   complex: true,
-  input_form: 'enter-vascular-plants',
+  webForm: 'enter-vascular-plants',
 
   taxonGroups: [89, 78, 87, 99, 81, 148],
 

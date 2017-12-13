@@ -49,8 +49,8 @@ describe('Surveys List Controller', () => {
   });
 
   it('should have configs', () => {
-    expect(complexSurveyConfig.default.survey_id).to.be.a('number');
-    expect(complexSurveyConfig.default.input_form).to.not.be.empty;
+    expect(complexSurveyConfig.default.id).to.be.a('number');
+    expect(complexSurveyConfig.default.webForm).to.not.be.empty;
   });
 
   it('should have a show method', () => {

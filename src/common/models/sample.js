@@ -84,15 +84,15 @@ let Sample = Indicia.Sample.extend({
    * Changes the plain survey key to survey specific metadata
    */
   onSend(submission, media) {
-    const survey = CONFIG.indicia.surveys[this.metadata.survey];
-    submission.survey_id = survey.survey_id; // eslint-disable-line
-    submission.input_form = survey.input_form; // eslint-disable-line
+    const surveyConfig = this.getSurvey();
+    submission.survey_id = surveyConfig.id; // eslint-disable-line
+    submission.input_form = surveyConfig.webForm; // eslint-disable-line
 
     // add the survey_id to subsamples too
     if (this.metadata.complex_survey) {
       submission.samples.forEach(subSample => {
-        subSample.survey_id = survey.survey_id; // eslint-disable-line
-        subSample.input_form = survey.input_form; // eslint-disable-line
+        subSample.survey_id = surveyConfig.id; // eslint-disable-line
+        subSample.input_form = surveyConfig.webForm; // eslint-disable-line
       });
     }
 

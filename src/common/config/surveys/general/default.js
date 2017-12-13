@@ -7,8 +7,8 @@ import DateHelp from 'helpers/date';
 
 const survey = {
   name: 'default',
-  survey_id: 374,
-  input_form: 'enter-app-record',
+  id: 374,
+  webForm: 'enter-app-record',
 
   taxonGroups: [], // all
 

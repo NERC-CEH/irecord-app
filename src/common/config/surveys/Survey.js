@@ -10,6 +10,7 @@ export default class Survey {
     this.attrs = config.attrs;
     this.taxonGroups = config.taxonGroups;
     this.editForm = config.editForm;
+    this.webForm = config.webForm;
     this.verify = config.verify;
   }
 
