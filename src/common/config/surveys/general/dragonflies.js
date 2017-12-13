@@ -29,6 +29,7 @@ export default {
         type: 'radio',
         id: 59,
         label: 'Site type',
+        icon: 'land',
         default: '',
         values: {
           Lake: 672,
