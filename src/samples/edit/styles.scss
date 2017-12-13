@@ -10,7 +10,7 @@
 #sample-save-btn {
   min-width: 70% !important;
   max-width: 100px;
-  margin-right: 0px;
+  margin-right: 0;
   color: $header-color;
   float: right;
   border: none;
@@ -29,15 +29,16 @@
 
   .core.inputs {
     margin-bottom: 0;
-    background-color: $color-gray-light;
-    margin: 0 -$main-content-margin;
+    background-color: $color-gray-light-super;
+    margin-left: -$main-content-margin;
+    margin-right: -$main-content-margin;
     padding: 0 $main-content-margin;
-    box-shadow: -1px -2px 9px;
+    box-shadow: -1px 1px 6px 0px #b5b5b5;
   }
 
   .core.inputs + .table-view.inputs {
     background-color: transparent;
-    margin-top: 7px;
+    margin-top: 2px;
   }
 }
 
@@ -187,6 +188,7 @@ $footer-height: 80px;
 
 footer #edit-footer {
   margin: 0 -5px;
-  background-color: $color-white;
+  background-color: $color-gray-light-super;
   border-top: 1px solid $color-gray;
+  box-shadow: 0px -1px 6px 0px #b5b5b5;
 }
