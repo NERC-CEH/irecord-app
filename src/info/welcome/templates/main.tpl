@@ -58,4 +58,4 @@
   <button id="exit" class="btn btn-block">
     Get Started
   </button>
-</div>;
+</div>
