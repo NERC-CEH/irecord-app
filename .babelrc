@@ -3,6 +3,7 @@
     "es2015"
   ],
 
+  "plugins": [ "transform-exponentiation-operator"],
   "env": {
     "test": {
       "plugins": [
