@@ -12,15 +12,15 @@ export default {
   name: 'dragonflies',
   taxonGroups: [107],
   editForm: [
+    'smp:comment',
+    'smp:site',
     'occ:adCount',
     'occ:coCount',
     'occ:ovCount',
     'occ:laCount',
     'occ:exCount',
     'occ:emCount',
-    'smp:site',
     // 'smp:siteOther',
-    'smp:comment',
   ],
 
   attrs: {
@@ -55,7 +55,7 @@ export default {
       adCount: {
         type: 'radio',
         id: 34,
-        label: 'Ad.',
+        label: 'Adults',
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
@@ -64,7 +64,7 @@ export default {
       coCount: {
         type: 'radio',
         id: 35,
-        label: 'Co.',
+        label: 'Cop. pairs',
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
@@ -73,7 +73,7 @@ export default {
       ovCount: {
         type: 'radio',
         id: 36,
-        label: 'Ov.',
+        label: 'Ovip. females',
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
@@ -82,7 +82,7 @@ export default {
       laCount: {
         type: 'radio',
         id: 37,
-        label: 'La.',
+        label: 'Larvae',
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
@@ -91,7 +91,7 @@ export default {
       exCount: {
         type: 'radio',
         id: 38,
-        label: 'Ex.',
+        label: 'Exuviae',
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
@@ -100,7 +100,7 @@ export default {
       emCount: {
         type: 'radio',
         id: 39,
-        label: 'Em.',
+        label: 'Emergents',
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',

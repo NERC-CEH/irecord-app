@@ -12,7 +12,7 @@ const survey = {
 
   taxonGroups: [], // all
 
-  editForm: ['occ:number', 'occ:stage', 'smp:comment', 'occ:identifiers'],
+  editForm: ['smp:comment', 'occ:number', 'occ:stage', 'occ:identifiers'],
 
   attrs: {
     smp: {
@@ -87,6 +87,7 @@ const survey = {
       number: {
         id: 16,
         info: 'How many individuals of this type?',
+        label: 'Abundance',
         icon: 'number',
       },
       'number-ranges': {
