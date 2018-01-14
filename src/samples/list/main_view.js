@@ -131,6 +131,10 @@ const SampleView = Marionette.View.extend({
 
     const group = sample.get('group');
 
+    const isDefaultSurvey =
+      sample.getOccurrence().get('taxon') && // photo-first sample check
+      sample.getSurvey().name === 'default';
+
     return {
       id: sample.cid,
       saved: sample.metadata.saved,
@@ -143,14 +147,18 @@ const SampleView = Marionette.View.extend({
       date,
       taxon,
       number,
-      isDefaultSurvey: sample.getSurvey().name === 'default',
+      isDefaultSurvey,
       stage: StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
-      locationLocked: appModel.isAttrLocked(sample, 'locationName'),
-      dateLocked: appModel.isAttrLocked(sample, 'date'),
-      commentLocked: appModel.isAttrLocked(occ, 'comment'),
-      numberLocked: appModel.isAttrLocked(occ, 'number'),
-      stageLocked: appModel.isAttrLocked(occ, 'stage'),
+      locationLocked: appModel.isAttrLocked(
+        sample,
+        'locationName',
+        !isDefaultSurvey
+      ),
+      dateLocked: appModel.isAttrLocked(sample, 'date', !isDefaultSurvey),
+      commentLocked: appModel.isAttrLocked(occ, 'comment', !isDefaultSurvey),
+      numberLocked: appModel.isAttrLocked(occ, 'number', !isDefaultSurvey),
+      stageLocked: appModel.isAttrLocked(occ, 'stage', !isDefaultSurvey),
       group,
       img: img ? `<img src="${img}"/>` : '',
     };

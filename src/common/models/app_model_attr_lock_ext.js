@@ -85,11 +85,12 @@ export default {
    * @param attr no modelType required only attrName
    * @returns {boolean}
    */
-  isAttrLocked(model, attr) {
+  isAttrLocked(model, attr, noSurveyExists) {
     const fullAttrName =
       model instanceof Sample ? `smp:${attr}` : `occ:${attr}`;
     const isCoreAttr = coreAttributes.includes(fullAttrName);
-    const surveyConfig = isCoreAttr ? null : model.getSurvey();
+    const surveyConfig =
+      isCoreAttr || noSurveyExists ? null : model.getSurvey();
 
     let value;
     let lockedVal = this.getAttrLock(fullAttrName, surveyConfig);
