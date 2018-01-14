@@ -45,6 +45,9 @@
 .icon-fire:before { content: '\e82c'; } /* '' */
 .icon-land:before { content: '\e82d'; } /* '' */
 .icon-stage:before { content: '\e82e'; } /* '' */
+.icon-fruit:before { content: '\e830'; } /* '' */
+.icon-gender:before { content: '\e831'; } /* '' */
+.icon-magnify:before { content: '\e832'; } /* '' */
 .icon-link-ext:before { content: '\f08e'; } /* '' */
 .icon-history:before { content: '\f1da'; } /* '' */
 .icon-low-vision:before { content: '\f2a8'; } /* '' */

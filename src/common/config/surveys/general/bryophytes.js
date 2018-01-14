@@ -38,6 +38,7 @@ export default {
       microscopicallyChecked: {
         type: 'toggle',
         id: 470,
+        icon: 'magnify',
         label: 'Microscopically Checked',
         default: false,
       },
@@ -45,18 +46,21 @@ export default {
         type: 'toggle',
         id: 471,
         label: 'Fruit',
+        icon: 'fruit',
         default: false,
       },
       male: {
         type: 'toggle',
         id: 475,
         label: 'Male',
+        icon: 'gender',
         default: false,
       },
       female: {
         type: 'toggle',
         id: 476,
         label: 'Female',
+        icon: 'gender',
         default: false,
       },
       bulbils: {
@@ -77,7 +81,6 @@ export default {
         label: 'Tubers',
         default: false,
       },
-
     },
   },
 };
