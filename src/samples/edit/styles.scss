@@ -26,10 +26,13 @@
 
 .attr-edit.slim {
   margin-bottom: 80px; // to account the floating photo picker for scrolling
+  height: calc(100% - 80px);
+  background-color: $color-gray-light;
+  margin: 0 -2%;
+  padding: 0 2%;
 
   .core.inputs {
     margin-bottom: 0;
-    background-color: $color-gray-light-super;
     margin-left: -$main-content-margin;
     margin-right: -$main-content-margin;
     padding: 0 $main-content-margin;
@@ -39,6 +42,13 @@
   .core.inputs + .table-view.inputs {
     background-color: transparent;
     margin-top: 2px;
+    height: calc(100vh - 80px - 220px - 44px);
+    overflow: scroll;
+    border-bottom: none;
+
+    .table-view-cell:last-child {
+      border-bottom: 1px solid $color-gray;
+    }
   }
 }
 
@@ -188,7 +198,7 @@ $footer-height: 80px;
 
 footer #edit-footer {
   margin: 0 -5px;
-  background-color: $color-gray-light-super;
+  background-color: $color-white;
   border-top: 1px solid $color-gray;
   box-shadow: 0px -1px 6px 0px #b5b5b5;
 }
