@@ -192,7 +192,7 @@ describe('Sample', () => {
       try {
         sample.getSurvey();
       } catch (err) {
-        expect(err.message).to.equal('No occurrence present to get form');
+        expect(err.message).to.equal('No occurrence present to get survey');
         done();
       }
     });
@@ -203,7 +203,7 @@ describe('Sample', () => {
         sample.getSurvey();
       } catch (err) {
         expect(err.message).to.equal(
-          'No occurrence taxon group is present to get form'
+          'No occurrence taxon group is present to get survey'
         );
       }
     });

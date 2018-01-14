@@ -85,27 +85,12 @@ const API = {
   },
 
   onLockClick(view) {
-    Log('Surveys:Attr:Controller: lock clicked.');
     const attr = view.options.attr;
+    const fullAttrName = `occ:${attr}`;
+    Log('Surveys:Attr:Controller: lock clicked.');
     // invert the lock of the attribute
     // real value will be put on exit
-    if (attr === 'number') {
-      if (appModel.getAttrLock(attr, 'plant')) {
-        appModel.setAttrLock(
-          attr,
-          !appModel.getAttrLock(attr, 'plant'),
-          'plant'
-        );
-      } else {
-        appModel.setAttrLock(
-          'number-ranges',
-          !appModel.getAttrLock('number-ranges'),
-          'plant'
-        );
-      }
-    } else {
-      appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'plant'), 'plant');
-    }
+      appModel.setAttrLock(fullAttrName, !appModel.getAttrLock(fullAttrName));
   },
 
   onExit(mainView, sample, attr, callback) {

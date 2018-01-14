@@ -15,7 +15,7 @@ const AppModel = Backbone.Model.extend({
     showWelcome: true,
 
     locations: [],
-    attrLocks: {},
+    attrLocks: { general: {}, complex: {} },
     autosync: true,
     useGridRef: true,
     useGridMap: true,

@@ -10,7 +10,6 @@ import Occurrence from 'occurrence';
 import Factory from 'model_factory';
 import ImageHelp from 'helpers/image';
 import showErrMsg from 'helpers/show_err_msg';
-import CONFIG from 'config';
 import MainView from './main_view';
 import HeaderView from './header_view';
 import SurveysEditController from '../../edit/controller';

@@ -104,6 +104,7 @@ const SampleView = Marionette.View.extend({
   },
 
   serializeData() {
+    const appModel = this.options.appModel;
     const sample = this.model;
     const occ = sample.getOccurrence();
     const date = DateHelp.print(sample.get('date'), true);
@@ -145,6 +146,11 @@ const SampleView = Marionette.View.extend({
       isDefaultSurvey: sample.getSurvey().name === 'default',
       stage: StringHelp.limit(occ.get('stage')),
       comment: occ.get('comment'),
+      locationLocked: appModel.isAttrLocked(sample, 'locationName'),
+      dateLocked: appModel.isAttrLocked(sample, 'date'),
+      commentLocked: appModel.isAttrLocked(occ, 'comment'),
+      numberLocked: appModel.isAttrLocked(occ, 'number'),
+      stageLocked: appModel.isAttrLocked(occ, 'stage'),
       group,
       img: img ? `<img src="${img}"/>` : '',
     };
@@ -231,7 +237,7 @@ const MainView = Marionette.View.extend({
     let classes = '';
     let amount = 0;
 
-    const activity = this.options.appModel.getAttrLock('activity') || {};
+    const activity = this.options.appModel.getAttrLock('smp:activity') || {};
     if (activity.title) {
       amount++;
     }

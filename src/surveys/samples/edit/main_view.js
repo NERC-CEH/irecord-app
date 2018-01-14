@@ -60,25 +60,17 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
-    if (!numberLock) {
-      numberLock = appModel.isAttrLocked(
-        'number-ranges',
-        occ.get('number-ranges')
-      );
-    }
-
     const attrLocks = {
-      date: appModel.isAttrLocked('date', sample.get('date')),
-      location: appModel.isAttrLocked('location', sample.get('location')),
-      number: numberLock,
+      date: appModel.isAttrLocked(sample, 'date'),
+      location: appModel.isAttrLocked(sample, 'location'),
+      number: appModel.isAttrLocked(occ, 'number'),
       sensitive: occ.metadata.sensitivity_precision,
-      abundance: appModel.isAttrLocked('abundance', occ.get('abundance')),
-      stage: appModel.isAttrLocked('stage', occ.get('stage')),
-      status: appModel.isAttrLocked('status', occ.get('status')),
-      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
-      comment: appModel.isAttrLocked('comment', occ.get('comment')),
-      activity: appModel.isAttrLocked('activity', sample.get('group')),
+      abundance: appModel.isAttrLocked(occ, 'abundance'),
+      stage: appModel.isAttrLocked(occ, 'stage'),
+      status: appModel.isAttrLocked(occ, 'status'),
+      identifiers: appModel.isAttrLocked(occ, 'identifiers'),
+      comment: appModel.isAttrLocked(occ, 'comment'),
+      activity: appModel.isAttrLocked(sample, 'activity'),
     };
 
     let number = StringHelp.limit(occ.get('number'));

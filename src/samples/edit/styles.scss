@@ -109,17 +109,23 @@
   margin-right: 7px;
 }
 
-.lock:after {
-  position: absolute;
-  right: 15px;
-  top: auto;
-  bottom: 12px;
+.lock {
+  &.descript, // location
+  .descript {
+    color: $color-blue;
+  }
 
-  color: $color-gray-dark;
-  font-family: icons;
-  content: '\e80c';
+  &:after {
+    position: absolute;
+    right: 15px;
+    top: auto;
+    bottom: 12px;
+
+    color: $color-blue;
+    font-family: icons;
+    content: '\e80c';
+  }
 }
-
 // location below location name
 .location.lock:after {
   top: 10px;

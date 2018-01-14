@@ -34,7 +34,7 @@
 
       <div class="core">
         <% if (obj.date) { %>
-        <span class="date"><%= obj.date %></span>
+        <span class="date <%= obj.dateLocked && 'locked' %>"><%= obj.date %></span>
         <% } else { %>
         <span class="date error">Date</span>
         <% } %>
@@ -43,7 +43,7 @@
 
         <% if (obj.location) { %>
           <% if (obj.locationName) { %>
-          <span class="location"><%= obj.locationName %></span>
+          <span class="location <%= obj.locationLocked && 'locked' %>"><%= obj.locationName %></span>
           <%  } else { %>
             <span class="location error">No location name</span>
           <% } %>
@@ -58,10 +58,10 @@
 
       <div class="attributes">
         <% if (obj.isDefaultSurvey) { %>
-          <div class="number"><%= obj.number %></div>
-          <div class="stage"><%= obj.stage %></div>
+          <div class="number <%= obj.numberLocked && 'locked' %>"><%= obj.number %></div>
+          <div class="stage <%= obj.stageLocked && 'locked' %>"><%= obj.stage %></div>
         <% } %>
-        <div class="comment"><%= obj.comment %></div>
+        <div class="comment <%= obj.commentLocked && 'locked' %>"><%= obj.comment %></div>
       </div>
     </div>
   </a>

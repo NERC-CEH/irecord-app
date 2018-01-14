@@ -281,6 +281,11 @@
 
             color: $color-gray-dark;
           }
+
+          span.locked,
+          div.locked {
+            color: $color-blue;
+          }
         }
       }
     }

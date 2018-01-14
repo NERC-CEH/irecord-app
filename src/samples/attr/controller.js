@@ -8,7 +8,9 @@ import DateHelp from 'helpers/date';
 import radio from 'radio';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
+import { coreAttributes } from 'common/config/surveys/general';
 import MainView from './main_view';
+
 import HeaderView from '../../common/views/header_view';
 import LockView from '../../common/views/attr_lock_view';
 
@@ -47,16 +49,16 @@ const API = {
     radio.trigger('app:main', mainView);
 
     // HEADER
-    const lockView =
-      sample.getSurvey().name === 'default'
-        ? new LockView({
-            model: new Backbone.Model({ appModel, sample }),
-            attr,
-            onLockClick: API.onLockClick,
-          })
-        : null;
+    const surveyConfig = sample.getSurvey();
+    const isCoreAttr = coreAttributes.includes(attr);
+    const lockView = new LockView({
+      model: new Backbone.Model({ appModel, sample }),
+      attr,
+      onLockClick: view => API.onLockClick(view, !isCoreAttr && surveyConfig),
+      surveyConfig: !isCoreAttr && surveyConfig,
+    });
 
-    const surveyAttrs = sample.getSurvey().attrs;
+    const surveyAttrs = surveyConfig.attrs;
 
     const attrParts = attr.split(':');
     const attrType = attrParts[0];
@@ -86,23 +88,16 @@ const API = {
     radio.trigger('app:footer:hide');
   },
 
-  onLockClick(view) {
+  onLockClick(view, surveyConfig) {
     Log('Samples:Attr:Controller: lock clicked.');
     const attr = view.options.attr;
     // invert the lock of the attribute
     // real value will be put on exit
-    if (attr === 'number') {
-      if (appModel.getAttrLock(attr)) {
-        appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
-      } else {
-        appModel.setAttrLock(
-          'number-ranges',
-          !appModel.getAttrLock('number-ranges')
-        );
-      }
-    } else {
-      appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
-    }
+    appModel.setAttrLock(
+      attr,
+      !appModel.getAttrLock(attr, surveyConfig),
+      surveyConfig
+    );
   },
 
   onExit(mainView, sample, attr, callback) {
@@ -123,7 +118,7 @@ const API = {
 
     switch (attr) {
       case 'occ:number':
-        currentVal = occ.get('number');
+        currentVal = occ.get('number') || occ.get('number-ranges');
 
         // todo: validate before setting up
         if (values[attr][0]) {
@@ -136,7 +131,6 @@ const API = {
           newVal = values[attr][1];
           occ.set('number-ranges', newVal);
           occ.unset('number');
-          attr = 'number-ranges'; // eslint-disable-line
         }
         break;
       default:
@@ -171,7 +165,7 @@ const API = {
       .save()
       .then(() => {
         // update locked value if attr is locked
-        API.updateLock(attr, newVal, currentVal);
+        API.updateLock(attr, newVal, currentVal, sample.getSurvey());
         callback();
       })
       .catch(err => {
@@ -180,41 +174,22 @@ const API = {
       });
   },
 
-  updateLock(attr, newVal, currentVal) {
-    let lockedValue = appModel.getAttrLock(attr);
+  updateLock(attr, newVal, currentVal, surveyConfig) {
+    if (coreAttributes.includes(attr)) {
+      surveyConfig = null;
+    }
+    const lockedValue = appModel.getAttrLock(attr, surveyConfig);
 
     switch (attr) {
-      case 'date':
+      case 'smp:date':
         if (
           !lockedValue ||
           (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date()))
         ) {
           // don't lock current day
-          appModel.setAttrLock(attr, null);
+          appModel.unsetAttrLock(attr);
         } else {
           appModel.setAttrLock(attr, newVal);
-        }
-        break;
-      case 'number-ranges':
-        if (!lockedValue) {
-          lockedValue = appModel.getAttrLock('number');
-        }
-      // falls through
-      case 'number':
-        if (!lockedValue) {
-          lockedValue = appModel.getAttrLock('number-ranges');
-        }
-
-        if (!lockedValue) {
-          return;
-        } // nothing was locked
-
-        if (attr === 'number-ranges') {
-          appModel.setAttrLock(attr, newVal);
-          appModel.setAttrLock('number', null);
-        } else {
-          appModel.setAttrLock(attr, newVal);
-          appModel.setAttrLock('number-ranges', null);
         }
         break;
       default:
@@ -222,7 +197,7 @@ const API = {
           lockedValue &&
           (lockedValue === true || lockedValue === currentVal)
         ) {
-          appModel.setAttrLock(attr, newVal);
+          appModel.setAttrLock(attr, newVal, surveyConfig);
         }
     }
   },

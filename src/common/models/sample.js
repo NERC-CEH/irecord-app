@@ -15,7 +15,6 @@ import store from '../store';
 import GeolocExtension from './sample_geoloc_ext';
 
 let Sample = Indicia.Sample.extend({
-  // eslint-disable-line
   api_key: CONFIG.indicia.api_key,
   host_url: CONFIG.indicia.host,
   user: userModel.getUser.bind(userModel),
@@ -230,12 +229,12 @@ let Sample = Indicia.Sample.extend({
 
     const occ = this.getOccurrence();
     if (!occ) {
-      throw new Error('No occurrence present to get form');
+      throw new Error('No occurrence present to get survey');
     }
 
     const taxon = occ.get('taxon');
     if (!taxon || !taxon.group) {
-      throw new Error('No occurrence taxon group is present to get form');
+      throw new Error('No occurrence taxon group is present to get survey');
     }
 
     return Survey.factory(taxon.group);

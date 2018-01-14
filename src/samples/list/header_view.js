@@ -34,7 +34,7 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
-    const group = this.model.getAttrLock('activity');
+    const group = this.model.getAttrLock('smp:activity');
 
     return {
       training: this.model.get('useTraining'),

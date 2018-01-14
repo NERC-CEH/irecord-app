@@ -12,7 +12,7 @@ const survey = {
 
   taxonGroups: [], // all
 
-  editForm: ['smp:comment', 'occ:number', 'occ:stage', 'occ:identifiers'],
+  editForm: ['occ:number', 'occ:stage', 'occ:identifiers'],
 
   attrs: {
     smp: {
@@ -67,12 +67,6 @@ const survey = {
         },
         type: 'input',
       },
-
-      comment: {
-        info: 'Please add any extra info about this record.',
-        icon: 'comment',
-        type: 'text',
-      },
     },
     occ: {
       training: {
@@ -120,6 +114,11 @@ const survey = {
           'If anyone helped with the identification please enter their name here.',
         icon: 'user-plus',
         type: 'input',
+      },
+      comment: {
+        info: 'Please add any extra info about this record.',
+        icon: 'comment',
+        type: 'text',
       },
     },
   },

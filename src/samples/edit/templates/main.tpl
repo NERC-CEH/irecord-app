@@ -9,11 +9,11 @@
   </li>
   <li class="table-view-cell">
     <a href="#samples/<%- obj.id %>/edit/location" id="location-button"
-       class="<%- obj.locks['location'] || obj.locks['locationName'] ? '' : 'navigate-right' %>">
+       class="<%- obj.locks['smp:location'] || obj.locks['smp:locationName'] ? '' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-location"></span>
 
-      <% if (obj.location) { %>
-      <span class="location media-object pull-right descript <%- obj.locks['location'] ? 'lock' : '' %>"><%- obj.location %></span>
+      <% if (obj['smp:location']) { %>
+      <span class="location media-object pull-right descript <%- obj.locks['smp:location'] ? 'lock' : '' %>"><%- obj['smp:location'] %></span>
       <% } else { %>
       <% if (obj.isLocating) { %>
       <span class="media-object pull-right descript warn">Locating...</span>
@@ -22,8 +22,8 @@
       <% } %>
       <% } %>
 
-      <% if (obj.locationName) { %>
-      <span class="media-object pull-right descript <%- obj.locks['locationName'] ? 'lock' : '' %>""><%= obj.locationName %></span>
+      <% if (obj['smp:locationName']) { %>
+      <span class="media-object pull-right descript <%- obj.locks['smp:locationName'] ? 'lock' : '' %>"><%= obj['smp:locationName'] %></span>
       <% } else { %>
       <span class="media-object pull-right descript error">Name missing</span>
       <% } %>
@@ -33,10 +33,18 @@
   </li>
   <li class="table-view-cell">
     <a href="#samples/<%- obj.id %>/edit/smp:date" id="date-button"
-       class="<%- obj.locks['date'] ? 'lock' : 'navigate-right' %>">
+       class="<%- obj.locks['smp:date'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-calendar"></span>
-      <span class="media-object pull-right descript"><%- obj.date %></span>
+      <span class="media-object pull-right descript"><%- obj['smp:date'] %></span>
       Date
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a href="#samples/<%- obj.id %>/edit/occ:comment" id="comment-button"
+       class="<%- obj.locks['occ:comment'] ? 'lock' : 'navigate-right' %>">
+      <span class="media-object pull-left icon icon-comment"></span>
+      <span class="media-object pull-right descript"><%- obj['occ:comment'] %></span>
+      Comment
     </a>
   </li>
 </ul>

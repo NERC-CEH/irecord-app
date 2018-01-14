@@ -103,9 +103,8 @@ const API = {
     mainView.on('lock:click:location', API.onLocationLockClick);
     mainView.on('lock:click:name', API.onNameLockClick);
 
-    const location = sample.get('location') || {};
-    const locationIsLocked = appModel.isAttrLocked('location', location);
-    const nameIsLocked = appModel.isAttrLocked('locationName', location.name);
+    const locationIsLocked = appModel.isAttrLocked(sample, 'location');
+    const nameIsLocked = appModel.isAttrLocked(sample, 'locationName');
     mainView.on('navigateBack', () => {
       API.exit(sample, locationIsLocked, nameIsLocked);
     });
@@ -189,8 +188,8 @@ const API = {
   updateLocks(location = {}, locationWasLocked, nameWasLocked) {
     Log('Location:Controller: updating locks.');
 
-    const currentLock = appModel.getAttrLock('location');
-    const currentLockedName = appModel.getAttrLock('locationName');
+    const currentLock = appModel.getAttrLock('smp:location');
+    const currentLockedName = appModel.getAttrLock('smp:locationName');
 
     // location
     if (location.source !== 'gps' && location.latitude) {
@@ -205,16 +204,16 @@ const API = {
         // update locked value if attr is locked
         // check if previously the value was locked and we are updating
         Log('Updating lock.');
-        appModel.setAttrLock('location', clonedLocation);
+        appModel.setAttrLock('smp:location', clonedLocation);
       }
     } else if (currentLock === true) {
       // reset if no location or location name selected but locked is clicked
-      appModel.setAttrLock('location', null);
+      appModel.unsetAttrLock('smp:location');
     }
 
     // name
     if (currentLockedName && (currentLockedName === true || nameWasLocked)) {
-      appModel.setAttrLock('locationName', location.name);
+      appModel.setAttrLock('smp:locationName', location.name);
     }
   },
 
@@ -332,14 +331,14 @@ const API = {
     Log('Location:Controller: executing onLocationLockClick.');
     // invert the lock of the attribute
     // real value will be put on exit
-    appModel.setAttrLock('location', !appModel.getAttrLock('location'));
+    appModel.setAttrLock('smp:location', !appModel.getAttrLock('smp:location'));
   },
 
   onNameLockClick() {
     Log('Location:Controller: executing onNameLockClick.');
     // invert the lock of the attribute
     // real value will be put on exit
-    appModel.setAttrLock('locationName', !appModel.getAttrLock('locationName'));
+    appModel.setAttrLock('smp:locationName', !appModel.getAttrLock('smp:locationName'));
   },
 };
 

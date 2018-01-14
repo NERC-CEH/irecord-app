@@ -23,7 +23,7 @@ export default class Survey {
       return new Survey(generalSurveys.default);
     }
 
-    let matchedSurvey;
+    let matchedSurvey = {};
     Object.values(generalSurveys).forEach(survey => {
       if (survey.taxonGroups.includes(taxonGroup)) {
         matchedSurvey = survey;

@@ -27,10 +27,7 @@ const HeaderView = Marionette.View.extend({
     this.listenTo(sample, 'change:location', this.onLocationChange);
 
     const appModel = this.model.get('appModel');
-    this.locationInitiallyLocked = appModel.isAttrLocked(
-      'location',
-      this._getCurrentLocation()
-    );
+    this.locationInitiallyLocked = appModel.isAttrLocked(sample, 'location');
     this.listenTo(appModel, 'change:attrLocks', this.updateLocks);
   },
 
@@ -195,7 +192,7 @@ const HeaderView = Marionette.View.extend({
 
     // location name lock
     const $nameLockBtn = this.$el.find('#name-lock-btn');
-    const nameLocked = appModel.isAttrLocked('locationName', location.name);
+    const nameLocked = appModel.isAttrLocked(sample, 'locationName');
     if (nameLocked) {
       $nameLockBtn.addClass('icon-lock-closed');
       $nameLockBtn.removeClass('icon-lock-open');
@@ -224,7 +221,8 @@ const HeaderView = Marionette.View.extend({
     const disableLocationLock = location.source === 'gps';
 
     const locationLocked = this.isLocationLocked(disableLocationLock);
-    const nameLocked = appModel.isAttrLocked('locationName', location.name);
+    const sample = this.model.get('sample');
+    const nameLocked = appModel.isAttrLocked(sample, 'locationName');
 
     return {
       hideName: this.options.hideName,
@@ -240,7 +238,7 @@ const HeaderView = Marionette.View.extend({
   isLocationLocked(disableLocationLock = false) {
     const appModel = this.model.get('appModel');
 
-    const currentLock = appModel.getAttrLock('location');
+    const currentLock = appModel.getAttrLock('smp:location');
     return (
       !disableLocationLock &&
       currentLock &&

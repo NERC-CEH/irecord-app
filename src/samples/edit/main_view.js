@@ -6,6 +6,7 @@ import Indicia from 'indicia';
 import JST from 'JST';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
+import { coreAttributes } from 'common/config/surveys/general';
 import AttrsView from './attrs_view';
 import './styles.scss';
 
@@ -68,10 +69,11 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    const attrLocks = {
-      location: appModel.isAttrLocked('location', location),
-      locationName: appModel.isAttrLocked('locationName', location.name),
-    };
+    const attrLocks = {};
+    coreAttributes.forEach(attr => {
+      const model = attr.split(':')[0] === 'smp' ? sample : occ;
+      attrLocks[attr] = appModel.isAttrLocked(model, attr.split(':')[1]);
+    });
 
     return {
       id: sample.cid,
@@ -79,9 +81,10 @@ export default Marionette.View.extend({
       commonName: StringHelp.limit(commonName),
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
-      location: StringHelp.limit(locationPrint),
-      locationName: StringHelp.limit(location.name),
-      date: DateHelp.print(sample.get('date'), true),
+      'smp:location': StringHelp.limit(locationPrint),
+      'smp:locationName': StringHelp.limit(location.name),
+      'smp:date': DateHelp.print(sample.get('date'), true),
+      'occ:comment': StringHelp.limit(occ.get('comment')),
       locks: attrLocks,
     };
   },

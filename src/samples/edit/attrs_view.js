@@ -59,23 +59,16 @@ export default Marionette.View.extend({
     const occ = sample.getOccurrence();
     const appModel = this.model.get('appModel');
 
-    let numberLock = appModel.isAttrLocked('occ:number', occ.get('number'));
-    if (!numberLock) {
-      numberLock = appModel.isAttrLocked(
-        'occ:number-ranges',
-        occ.get('number-ranges')
-      );
-    }
+    // get attr locks
     const attrLocks = {
-      number: numberLock,
-      stage: appModel.isAttrLocked('occ:stage', occ.get('stage')),
-      identifiers: appModel.isAttrLocked(
-        'occ:identifiers',
-        occ.get('identifiers')
-      ),
-      comment: appModel.isAttrLocked('smp:comment', sample.get('comment')),
-      activity: appModel.isAttrLocked('smp:activity', sample.get('group')),
+      number: appModel.isAttrLocked(occ, 'number'),
     };
+    const survey = sample.getSurvey();
+    survey.editForm.forEach(attr => {
+      const splitAttrName = attr.split(':');
+      const model = splitAttrName[0] === 'smp' ? sample : occ;
+      attrLocks[attr] = appModel.isAttrLocked(model, splitAttrName[1]);
+    });
 
     // show activity title.
     const group = sample.get('group');
@@ -89,7 +82,6 @@ export default Marionette.View.extend({
       locks: attrLocks,
     };
 
-    const survey = sample.getSurvey();
     survey.editForm.forEach(element => {
       const attrParts = element.split(':');
       const attrType = attrParts[0];

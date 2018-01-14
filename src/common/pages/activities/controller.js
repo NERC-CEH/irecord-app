@@ -196,7 +196,7 @@ const API = {
           radio.trigger('app:dialog:error', err);
         });
     } else {
-      appModel.setAttrLock('activity', userModel.getActivity(activityID));
+      appModel.setAttrLock('smp:activity', userModel.getActivity(activityID));
       // return to previous page after save
       window.history.back();
     }
