@@ -1,5 +1,6 @@
 import defaultSurvey from './default';
 import dragonfliesSurvey from './dragonflies';
+import bryophytesSurvey from './bryophytes';
 
 export const coreAttributes = [
   'smp:location',
@@ -10,5 +11,6 @@ export const coreAttributes = [
 
 export default {
   [defaultSurvey.name]: defaultSurvey,
-  [dragonfliesSurvey.id]: dragonfliesSurvey,
+  [dragonfliesSurvey.name]: dragonfliesSurvey,
+  [bryophytesSurvey.name]: bryophytesSurvey,
 };

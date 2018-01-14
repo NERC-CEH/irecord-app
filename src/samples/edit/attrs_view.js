@@ -16,6 +16,21 @@ function template(sample) {
     const label =
       attr.label || attrName.slice(0, 1).toUpperCase() + attrName.slice(1);
     const icon = attr.icon || 'dot';
+
+    if (attr.type === 'toggle') {
+      tpl += `<li class="table-view-cell">
+          <a>
+            ${label}
+            <span class="media-object pull-left icon icon-${icon} toggle-icon"></span>
+            <div id="sensitive-btn" data-setting="sensitive"
+                 class="toggle no-yes <%- obj.sensitive ? 'active' : '' %>">
+              <div class="toggle-handle"></div>
+            </div>
+          </a>
+        </li>`;
+      return;
+    }
+
     tpl += `<li class="table-view-cell">
         <a href="#samples/${sample.cid}/edit/${element}" id="${element}-button"
            class="<%- obj.locks['${element}'] ? 'lock' : 'navigate-right' %>">
