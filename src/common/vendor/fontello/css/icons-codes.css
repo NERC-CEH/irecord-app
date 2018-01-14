@@ -19,7 +19,6 @@
 .icon-calendar:before { content: '\e811'; } /* '' */
 .icon-location:before { content: '\e812'; } /* '' */
 .icon-lock-open:before { content: '\e813'; } /* '' */
-.icon-stage:before { content: '\e814'; } /* '' */
 .icon-help:before { content: '\e815'; } /* '' */
 .icon-thumbs-up:before { content: '\e816'; } /* '' */
 .icon-send:before { content: '\e817'; } /* '' */
@@ -45,6 +44,7 @@
 .icon-surveys:before { content: '\e82b'; } /* '' */
 .icon-fire:before { content: '\e82c'; } /* '' */
 .icon-land:before { content: '\e82d'; } /* '' */
+.icon-stage:before { content: '\e82e'; } /* '' */
 .icon-link-ext:before { content: '\f08e'; } /* '' */
 .icon-history:before { content: '\f1da'; } /* '' */
 .icon-low-vision:before { content: '\f2a8'; } /* '' */
