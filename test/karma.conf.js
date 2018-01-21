@@ -1,3 +1,5 @@
+require('dotenv').config({ silent: true }); // get local environment variables from .env
+
 const path = require('path');
 const webpack = require('webpack');
 

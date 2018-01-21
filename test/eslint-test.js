@@ -1,3 +1,5 @@
+require('dotenv').config({ silent: true }); // get local environment variables from .env
+
 /**
  * Eslint-tests all source and test files.
  */

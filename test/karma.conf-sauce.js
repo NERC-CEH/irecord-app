@@ -1,6 +1,7 @@
 /**
  * Config copied with mods from backbone karma sauce config
  */
+require('dotenv').config({ silent: true }); // get local environment variables from .env
 
 const path = require('path');
 const _ = require('lodash');
