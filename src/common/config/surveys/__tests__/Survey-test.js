@@ -44,8 +44,8 @@ describe('Survey', () => {
         });
       });
     }
-    Object.values(generalSurveys).forEach(survey => {
-      surveySpecTests(survey);
+    Object.keys(generalSurveys).forEach(surveyKey => {
+      surveySpecTests(generalSurveys[surveyKey]);
     });
   });
 
