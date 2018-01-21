@@ -1,7 +1,9 @@
+import $ from 'jquery';
 import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
 import StringHelp from 'helpers/string';
+import Device from 'helpers/device';
 
 function template(sample) {
   const survey = sample.getSurvey();
@@ -22,8 +24,8 @@ function template(sample) {
           <a>
             ${label}
             <span class="media-object pull-left icon icon-${icon} toggle-icon"></span>
-            <div id="sensitive-btn" data-setting="sensitive"
-                 class="toggle no-yes <%- obj.sensitive ? 'active' : '' %>">
+            <div id="${attrName}-toggle" data-setting="${element}"
+                 class="toggle no-yes <%- obj["${element}"] ? 'active' : '' %>">
               <div class="toggle-handle"></div>
             </div>
           </a>
@@ -63,6 +65,25 @@ export default Marionette.View.extend({
   constructor(...args) {
     Marionette.View.prototype.constructor.apply(this, args);
     this.template = template(this.model.get('sample'));
+  },
+
+  events: {
+    'toggle .toggle': 'onSettingToggled',
+    'click .toggle': 'onSettingToggled',
+  },
+
+  onSettingToggled(e) {
+    const setting = $(e.currentTarget).data('setting');
+    let active = $(e.currentTarget).hasClass('active');
+
+    if (e.type !== 'toggle' && !Device.isMobile()) {
+      // Device.isMobile() android generates both swipe and click
+
+      active = !active; // invert because it takes time to get the class
+      $(e.currentTarget).toggleClass('active', active);
+    }
+
+    this.trigger('attr:update', setting, active);
   },
 
   tagName: 'ul',
@@ -121,4 +142,12 @@ export default Marionette.View.extend({
 
     return serialized;
   },
+
+  /**
+   * Returns the attribute value extracted from the view.
+   * @returns {{}}
+   */
+  getValues() {
+
+  }
 });

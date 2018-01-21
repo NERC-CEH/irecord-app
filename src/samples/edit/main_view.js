@@ -21,7 +21,11 @@ export default Marionette.View.extend({
   },
 
   onRender() {
-    this.showChildView('attrs', new AttrsView({ model: this.model }));
+    const attrView = new AttrsView({ model: this.model });
+    attrView.on('attr:update', (attr, value) =>
+      this.trigger('attr:update', attr, value)
+    );
+    this.showChildView('attrs', attrView);
   },
 
   triggers: {

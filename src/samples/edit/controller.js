@@ -57,6 +57,7 @@ const API = {
         },
       });
     });
+    mainView.on('attr:update', (attr, value) => API.updateAttr(sample, attr, value));
     radio.trigger('app:main', mainView);
 
     // HEADER
@@ -65,7 +66,7 @@ const API = {
     });
 
     headerView.on('save', () => {
-      API.save(sample);
+      API.send(sample);
     });
 
     radio.trigger('app:header', headerView);
@@ -92,8 +93,8 @@ const API = {
     radio.trigger('app:footer', footerView);
   },
 
-  save(sample) {
-    Log('Samples:Edit:Controller: save clicked.');
+  send(sample) {
+    Log('Samples:Edit:Controller: send clicked.');
 
     const promise = sample.setToSend();
 
@@ -254,6 +255,29 @@ const API = {
           },
         },
       ],
+    });
+  },
+
+  /**
+   * Update sample with new values
+   */
+  updateAttr(sample, attr, value) {
+    Log('Samples:Edit:Controller: saving.');
+
+    const occ = sample.getOccurrence();
+
+    const attrParts = attr.split(':');
+    const attrType = attrParts[0];
+    const attrName = attrParts[1];
+
+    const model = attrType === 'smp' ? sample : occ;
+
+    model.set(attrName, value);
+
+    // save it
+    return sample.save().catch(err => {
+      Log(err, 'e');
+      radio.trigger('app:dialog:error', err);
     });
   },
 
