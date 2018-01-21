@@ -10,6 +10,7 @@ import appModel from 'app_model';
 import Occurrence from 'occurrence';
 import Log from 'helpers/log';
 import Survey from 'common/config/surveys/Survey';
+import { coreAttributes } from 'common/config/surveys/general';
 import Device from 'helpers/device';
 import store from '../store';
 import GeolocExtension from './sample_geoloc_ext';
@@ -41,9 +42,6 @@ let Sample = Indicia.Sample.extend({
    */
   defaults() {
     return {
-      // attach device information
-      device: Device.getPlatform(),
-      device_version: Device.getVersion(),
       location: {},
     };
   },
@@ -84,8 +82,12 @@ let Sample = Indicia.Sample.extend({
    */
   onSend(submission, media) {
     const surveyConfig = this.getSurvey();
-    submission.survey_id = surveyConfig.id; // eslint-disable-line
-    submission.input_form = surveyConfig.webForm; // eslint-disable-line
+    const newAttrs = {
+      survey_id: surveyConfig.id,
+      input_form: surveyConfig.webForm,
+      device: Device.getPlatform(),
+      device_version: Device.getVersion(),
+    };
 
     // add the survey_id to subsamples too
     if (this.metadata.complex_survey) {
@@ -93,9 +95,12 @@ let Sample = Indicia.Sample.extend({
         subSample.survey_id = surveyConfig.id; // eslint-disable-line
         subSample.input_form = surveyConfig.webForm; // eslint-disable-line
       });
+    } else {
+      newAttrs.location_type = 'latlon';
     }
 
-    return Promise.resolve([submission, media]);
+    const updatedSubmission = Object.assign({}, submission, newAttrs);
+    return Promise.resolve([updatedSubmission, media]);
   },
 
   /**
@@ -206,6 +211,10 @@ let Sample = Indicia.Sample.extend({
 
   setTaxon(taxon = {}) {
     return new Promise((resolve, reject) => {
+      if (!taxon.group) {
+        return reject(new Error('New taxon must have a group'));
+      }
+
       if (this.metadata.complex_survey) {
         return reject(
           new Error('Only general survey samples can use setTaxon method')
@@ -215,6 +224,24 @@ let Sample = Indicia.Sample.extend({
       const occ = this.getOccurrence();
       if (!occ) {
         return reject(new Error('No occurrence present to set taxon'));
+      }
+
+      if (occ.get('taxon')) {
+        const survey = this.getSurvey();
+        const newSurvey = Survey.factory(taxon.group);
+        if (survey.name !== newSurvey.name) {
+          // remove non-core attributes for survey switch
+          Object.keys(this.attributes).forEach(key => {
+            if (!coreAttributes.includes(`smp:${key}`)) {
+              this.unset(key);
+            }
+          });
+          Object.keys(occ.attributes).forEach(key => {
+            if (!coreAttributes.includes(`occ:${key}`)) {
+              occ.unset(key);
+            }
+          });
+        }
       }
 
       occ.set('taxon', taxon);

@@ -1,4 +1,5 @@
 import Sample from 'sample';
+import Occurrence from 'occurrence';
 import API from '../controller';
 
 describe('Edit Controller', () => {
@@ -37,7 +38,8 @@ describe('Edit Controller', () => {
     });
     it('should call sample.setTaxon', () => {
       const sample = new Sample();
-      API.updateTaxon(sample, {});
+      sample.addOccurrence(new Occurrence());
+      API.updateTaxon(sample, { group: 1 });
       expect(sampleSetTaxonSpy.called).to.be.equal(true);
     });
   });

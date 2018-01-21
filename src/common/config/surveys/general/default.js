@@ -153,11 +153,6 @@ const survey = {
       }
     }
 
-    // location type
-    if (!attrs.location_type) {
-      attributes.location_type = "can't be blank";
-    }
-
     // occurrences
     if (this.occurrences.length === 0) {
       attributes.occurrences = 'no species selected';

@@ -51,12 +51,10 @@ const API = {
       model: new Backbone.Model({ sample, appModel }),
     });
     mainView.on('taxon:update', () => {
-      const taxonGroups = sample.getSurvey().taxonGroups;
       radio.trigger('samples:edit:attr', sampleID, 'taxon', {
         onSuccess(taxon) {
           API.updateTaxon(sample, taxon);
         },
-        informalGroups: taxonGroups.length ? taxonGroups : null,
       });
     });
     radio.trigger('app:main', mainView);

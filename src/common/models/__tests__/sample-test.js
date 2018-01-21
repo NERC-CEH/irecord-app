@@ -4,14 +4,18 @@ import Occurrence from 'occurrence';
 import userModel from 'user_model';
 import appModel from 'app_model';
 import Survey from 'common/config/surveys/Survey';
+import { coreAttributes } from 'common/config/surveys/general';
+import bryophytesSyrvey from 'common/config/surveys/general/bryophytes';
+import dragonfliesSyrvey from 'common/config/surveys/general/dragonflies';
 import { savedSamples, Collection } from '../../saved_samples';
 import store from '../../store';
 
 /* eslint-disable no-unused-expressions */
+const validTaxon = { warehouse_id: 1, group: 1 };
 
-function getRandomSample() {
+function getRandomSample(taxon) {
   const occurrence = new Occurrence({
-    taxon: { warehouse_id: 166205, group: 1 },
+    taxon: taxon || validTaxon,
   });
   const sample = new Sample(
     {
@@ -63,7 +67,7 @@ describe('Sample', () => {
     it('should return sample send false invalid if not saved', () => {
       const sample = getRandomSample();
       delete sample.metadata.saved;
-      sample.setTaxon({ warehouse_id: 1, group: 1 });
+      sample.setTaxon(validTaxon);
       expect(sample.validate).to.be.a('function');
       sample.clear();
 
@@ -85,8 +89,7 @@ describe('Sample', () => {
       expect(invalids.attributes).to.have.all.keys(
         'date',
         'location',
-        'location',
-        'location_type'
+        'location name'
       );
 
       // occurrence
@@ -133,31 +136,104 @@ describe('Sample', () => {
 
     it('should return a promise', () => {
       const sample = getRandomSample();
-      sample.setTaxon({ warehouse_id: 1 });
-      expect(sample.setTaxon({ warehouse_id: 1 })).to.be.instanceOf(Promise);
+      expect(sample.setTaxon(validTaxon)).to.be.instanceOf(Promise);
     });
 
-    it('should set taxon to the first occurrence', () => {
+    it('should set taxon to the first occurrence', done => {
       const sample = getRandomSample();
-      sample.setTaxon({ warehouse_id: 1 });
-      expect(sample.getOccurrence().get('taxon').warehouse_id).to.be.equal(1);
+      sample
+        .setTaxon(validTaxon)
+        .then(() => {
+          expect(sample.getOccurrence().get('taxon').warehouse_id).to.be.equal(
+            1
+          );
+          done();
+        })
+        .catch(done);
     });
 
-    it('should throw if no occurrence exists', () => {
+    it('should throw if no occurrence exists', done => {
       const sample = new Sample();
-      sample.setTaxon({ warehouse_id: 1 }).catch(err => {
+      sample.setTaxon(validTaxon).catch(err => {
         expect(err.message).to.equal('No occurrence present to set taxon');
+        done();
       });
     });
 
-    it('should return rejected Promise if sample survey is complex', () => {
+    it('should throw if no taxon group exists', done => {
+      const sample = new Sample();
+      sample.setTaxon({ warehouse_id: 1 }).catch(err => {
+        expect(err.message).to.equal('New taxon must have a group');
+        done();
+      });
+    });
+
+    it('should return rejected Promise if sample survey is complex', done => {
       const sample = getRandomSample();
       sample.metadata.complex_survey = true;
-      sample.setTaxon({ warehouse_id: 1 }).catch(err => {
+      sample.setTaxon(validTaxon).catch(err => {
         expect(err.message).to.equal(
           'Only general survey samples can use setTaxon method'
         );
+        done();
       });
+    });
+
+    it('should remove all non core attributes on survey change', done => {
+      const dragonfly = { group: dragonfliesSyrvey.taxonGroups[0] };
+      const sample = getRandomSample(dragonfly);
+
+      // custom attributes
+      sample.set('non_core_attr', 1);
+      sample.getOccurrence().set('non_core_attr', 1);
+
+      const bryophyte = { group: bryophytesSyrvey.taxonGroups[0] };
+      sample
+        .setTaxon(bryophyte)
+        .then(() => {
+          expect(sample.get('non_core_attr')).to.be.an.undefined;
+          expect(sample.getOccurrence().get('non_core_attr')).to.be.an
+            .undefined;
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should retain all core attributes on survey change', done => {
+      const dragonfly = { group: dragonfliesSyrvey.taxonGroups[0] };
+      const sample = getRandomSample(dragonfly);
+
+      // set all core attributes
+      const sampleKeys = coreAttributes
+        .filter(key => key.includes('smp:'))
+        .map(key => key.replace('smp:', ''));
+      const sampleKeyValues = {};
+      sampleKeys.forEach(key => {
+        sampleKeyValues[key] = Math.random();
+        sample.set(key, sampleKeyValues[key]);
+      });
+      const occKeys = coreAttributes
+        .filter(key => key.includes('occ:'))
+        .map(key => key.replace('occ:', ''));
+      const occKeyValues = {};
+      occKeys.forEach(key => {
+        occKeyValues[key] = Math.random();
+        sample.getOccurrence().set(key, occKeyValues[key]);
+      });
+
+      const bryophyte = { group: bryophytesSyrvey.taxonGroups[0] };
+      sample
+        .setTaxon(bryophyte)
+        .then(() => {
+          sampleKeys.forEach(key => {
+            expect(sample.get(key)).to.eql(sampleKeyValues[key]);
+          });
+          occKeys.forEach(key => {
+            expect(sample.getOccurrence().get(key)).to.eql(occKeyValues[key]);
+          });
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -181,7 +257,7 @@ describe('Sample', () => {
       surveyFacotryStub.returns(1);
 
       const sample = getRandomSample();
-      sample.setTaxon({ warehouse_id: 1, group: 1 });
+      sample.setTaxon(validTaxon);
       const survey = sample.getSurvey();
       expect(surveyFacotryStub.called).to.be.equal(true);
       expect(survey).to.equal(1);

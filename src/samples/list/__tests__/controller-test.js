@@ -1,5 +1,6 @@
 import savedSamples from 'saved_samples';
 import Sample from 'sample';
+import Occurrence from 'occurrence';
 import API from '../controller';
 
 // eslint-disable-next-line
@@ -44,11 +45,11 @@ describe('List Controller', function() {
         .then(() => done());
     });
 
-    it('should create a new sample with a photo', done => {
+    it.skip('should create a new sample with a photo', done => {
       done();
     });
 
-    it('should throw error if no image is provided', done => {
+    it.skip('should throw error if no image is provided', done => {
       // Controller.createNewSample(null, (err) => {
       //  expect(err).to.not.be.null;
       //  done();
@@ -72,7 +73,8 @@ describe('List Controller', function() {
     });
     it('should call sample.setTaxon', () => {
       const sample = new Sample();
-      API.setTaxon(sample, {});
+      sample.addOccurrence(new Occurrence());
+      API.setTaxon(sample, { group: 1 });
       expect(sampleSetTaxonSpy.called).to.be.equal(true);
     });
   });
