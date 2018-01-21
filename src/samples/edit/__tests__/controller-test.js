@@ -24,13 +24,15 @@ describe('Edit Controller', () => {
   });
 
   describe('updateTaxon', () => {
-    let sampleSetTaxonSpy;
+    let sampleSetTaxonStub;
     before(() => {
-      sampleSetTaxonSpy = sinon.spy(Sample.prototype, 'setTaxon');
+      sampleSetTaxonStub = sinon
+        .stub(Sample.prototype, 'setTaxon')
+        .returns(Promise.reject());
     });
 
     after(() => {
-      sampleSetTaxonSpy.restore();
+      sampleSetTaxonStub.restore();
     });
 
     it('should exist', () => {
@@ -39,8 +41,9 @@ describe('Edit Controller', () => {
     it('should call sample.setTaxon', () => {
       const sample = new Sample();
       sample.addOccurrence(new Occurrence());
+
       API.updateTaxon(sample, { group: 1 });
-      expect(sampleSetTaxonSpy.called).to.be.equal(true);
+      expect(sampleSetTaxonStub.called).to.be.equal(true);
     });
   });
 });

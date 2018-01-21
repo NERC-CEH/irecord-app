@@ -59,13 +59,15 @@ describe('List Controller', function() {
   });
 
   describe('setTaxon', () => {
-    let sampleSetTaxonSpy;
+    let sampleSetTaxonStub;
     before(() => {
-      sampleSetTaxonSpy = sinon.spy(Sample.prototype, 'setTaxon');
+      sampleSetTaxonStub = sinon
+        .stub(Sample.prototype, 'setTaxon')
+        .returns(Promise.reject());
     });
 
     after(() => {
-      sampleSetTaxonSpy.restore();
+      sampleSetTaxonStub.restore();
     });
 
     it('should exist', () => {
@@ -75,7 +77,7 @@ describe('List Controller', function() {
       const sample = new Sample();
       sample.addOccurrence(new Occurrence());
       API.setTaxon(sample, { group: 1 });
-      expect(sampleSetTaxonSpy.called).to.be.equal(true);
+      expect(sampleSetTaxonStub.called).to.be.equal(true);
     });
   });
 });

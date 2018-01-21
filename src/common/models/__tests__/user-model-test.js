@@ -4,10 +4,20 @@ import { UserModel } from '../user_model';
 /* eslint-disable no-unused-expressions */
 
 describe('User Model', () => {
-  before(() => {
+  let server;
+  beforeEach(() => {
+    server = sinon.fakeServer.create();
+
     const userModel = new UserModel();
     userModel.clear();
     userModel.save();
+  });
+
+  afterEach(() => {
+    const userModel = new UserModel();
+    userModel.clear();
+    userModel.save();
+    server.restore();
   });
 
   it('has default values', () => {
@@ -21,12 +31,9 @@ describe('User Model', () => {
   });
 
   describe('Activities support', () => {
-    let server;
-
     beforeEach(() => {
-      server = sinon.fakeServer.create();
-
       const userModel = new UserModel();
+
       userModel.logIn({
         secret: '123',
         email: '123@123.com',
@@ -36,14 +43,6 @@ describe('User Model', () => {
       });
       userModel.save();
     });
-
-    afterEach(() => {
-      const userModel = new UserModel();
-      userModel.clear();
-      userModel.save();
-      server.restore();
-    });
-
     function getRandActivity() {
       const id = parseInt((Math.random() * 100).toFixed(0), 10);
       const activity = {

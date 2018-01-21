@@ -5,6 +5,7 @@ describe('Sample Geolocation Extension', () => {
     it('should save sample location', done => {
       const mockSample = {
         get: () => {},
+        save: () => Promise.resolve(),
         set: (key, location) => {
           expect(location.latitude).to.equal('x');
           done();
@@ -14,7 +15,12 @@ describe('Sample Geolocation Extension', () => {
     });
 
     it('should return promise', () => {
-      expect(updateSampleLocation()).to.be.instanceOf(Promise);
+      const mockSample = {
+        get: () => {},
+        save: () => Promise.resolve(),
+        set: () => {},
+      };
+      expect(updateSampleLocation(mockSample)).to.be.instanceOf(Promise);
     });
 
     it('should promise return true if location was saved', done => {
