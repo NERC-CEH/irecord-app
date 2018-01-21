@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
   require('load-grunt-config')(grunt, {
     // path to task.js files, defaults to grunt dir
-    configPath: path.join(process.cwd(), 'config/build'),
+    configPath: path.join(process.cwd(), 'other/build'),
     // auto grunt.initConfig
     init: true,
   });

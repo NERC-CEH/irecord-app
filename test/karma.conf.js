@@ -5,7 +5,7 @@ process.env.NODE_ENV = 'test';
 const ENV = process.env.NODE_ENV;
 
 // get development webpack config
-const webpackConfigDev = require('../config/webpack.dev');
+const webpackConfigDev = require('../other/webpack.dev');
 // clean it up a bit
 delete webpackConfigDev.context;
 delete webpackConfigDev.entry; // the entry is the loader
