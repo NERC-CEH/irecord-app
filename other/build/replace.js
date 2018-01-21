@@ -1,11 +1,10 @@
-'use strict';
+
 
 const BUILD = 'dist/_build/';
 
 const pkg = require('../../package.json');
 
-module.exports = grunt => {
-  return {
+module.exports = grunt => ({
     // Fix double define problem
     latlon: {
       src: [
@@ -94,9 +93,7 @@ module.exports = grunt => {
       replacements: [
         {
           from: /\{ID\}/g, // string replacement
-          to: () => {
-            return grunt.option('android') ? 'uk.ac.ceh.irecord' : pkg.id;
-          },
+          to: () => grunt.option('android') ? 'uk.ac.ceh.irecord' : pkg.id,
         },
         {
           from: /\{APP_VER\}/g, // string replacement
@@ -113,12 +110,6 @@ module.exports = grunt => {
         {
           from: /\{BUNDLE_VER\}/g,
           to: () => pkg.build,
-        },
-        {
-          from: /\{MIN_SDK\}/g,
-          to() {
-            return grunt.option('oldversion') ? 16 : 19;
-          },
         },
         {
           from: /\{ANDROID_BUNDLE_VER\}/g,
@@ -142,5 +133,4 @@ module.exports = grunt => {
         },
       ],
     },
-  };
-};
+  });
