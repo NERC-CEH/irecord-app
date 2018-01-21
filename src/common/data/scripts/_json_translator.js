@@ -188,7 +188,7 @@ function optimise(output) {
     if (taxaNameSplitted.length === 1) {
       // genus
       if (isGenusDuplicate(taxa)) {
-        console.log(`Duplicate genus found: ${taxa.toString()}`);
+        console.warn(`Duplicate genus found: ${taxa.toString()}`);
         return;
       }
       addGenus(taxa);
