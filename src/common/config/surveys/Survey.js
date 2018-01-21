@@ -24,7 +24,8 @@ export default class Survey {
     }
 
     let matchedSurvey = {};
-    Object.values(generalSurveys).forEach(survey => {
+    Object.keys(generalSurveys).forEach(surveyKey => {
+      const survey = generalSurveys[surveyKey];
       if (survey.taxonGroups.includes(taxonGroup)) {
         matchedSurvey = survey;
       }
