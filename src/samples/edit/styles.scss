@@ -43,7 +43,7 @@
     background-color: transparent;
     margin-top: 2px;
     height: calc(100vh - 80px - 220px - 44px - 36px);
-    overflow: scroll;
+    overflow: auto;
     border-bottom: none;
 
     .table-view-cell:last-child {
