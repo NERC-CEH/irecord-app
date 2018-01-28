@@ -44,6 +44,13 @@ const API = {
               };
               return cleanCrumb;
             }
+            if (crumb.category === 'xhr') {
+              const cleanCrumb = _.cloneDeep(crumb);
+              cleanCrumb.data = {
+                url: API._removeUserId(crumb.data.url),
+              };
+              return cleanCrumb;
+            }
 
             return crumb;
           },
@@ -79,9 +86,9 @@ const API = {
       });
     } else {
       Log(
-        `Analytics: Google Analytics is turned off. ${
-          window.cordova ? 'Please provide the GA tracking ID.' : ''
-        }`,
+        `Analytics: Google Analytics is turned off. ${window.cordova
+          ? 'Please provide the GA tracking ID.'
+          : ''}`,
         'w'
       );
     }
@@ -130,9 +137,13 @@ const API = {
   _removeUUID(string) {
     // remove specific UUIDs
     return string.replace(
-      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
+      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
       'UUID'
     );
+  },
+
+  _removeUserId(URL) {
+    return URL.replace(/\/users\/.*/g, '/users/USERID');
   },
 };
 
