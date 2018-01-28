@@ -70,12 +70,12 @@ const API = {
 
   deleteAllSamples() {
     let body =
-      'Are you sure you want to delete all successfully synchronised local records?';
+      'Are you sure you want to remove all successfully synchronised local records?';
     body +=
       '</br><i><b>Note:</b> records on the server will not be touched.</i>';
 
     radio.trigger('app:dialog', {
-      title: 'Delete All',
+      title: 'Remove All',
       body,
       buttons: [
         {
@@ -85,7 +85,7 @@ const API = {
           },
         },
         {
-          title: 'Delete',
+          title: 'Remove',
           class: 'btn-negative',
           onClick() {
             Log('Settings:Menu:Controller: deleting all samples.');

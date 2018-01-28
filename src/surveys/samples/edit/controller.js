@@ -197,7 +197,7 @@ const API = {
 
   photoDelete(photo) {
     radio.trigger('app:dialog', {
-      title: 'Delete',
+      title: 'Remove',
       body:
         'Are you sure you want to remove this photo from the sample?' +
         '</br><i><b>Note:</b> it will remain in the gallery.</i>',
@@ -209,7 +209,7 @@ const API = {
           },
         },
         {
-          title: 'Delete',
+          title: 'Remove',
           class: 'btn-negative',
           onClick() {
             // show loader

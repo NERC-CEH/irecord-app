@@ -106,11 +106,11 @@
       the delete <span class="icon icon-delete"></span> button.
       <img src="images/swipe_record.png">
       <br><br>
-      You can also delete all the locally saved records that have been
+      You can also remove all the locally saved records that have been
       successfully synchronised
       with the database. This will leave the records on the database untouched.
       To do that go to settings page
-      <span class="icon icon-settings"></span> and click Delete All Saved
+      <span class="icon icon-settings"></span> and click Remove All Saved
       <span class="icon icon-delete"></span> button.
     </p>
   </li>
