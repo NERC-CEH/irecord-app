@@ -10,6 +10,39 @@ import Raven from 'raven-js';
 import CONFIG from 'config';
 import Log from './log';
 
+function removeUUID(string) {
+  // remove specific UUIDs
+  return string.replace(
+    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
+    'UUID'
+  );
+}
+
+export function removeUserId(URL) {
+  return URL.replace(/\/users\/.*/g, '/users/USERID');
+}
+
+export function breadcrumbCallback(crumb) {
+  // clean UUIDs
+  if (crumb.category === 'navigation') {
+    const cleanCrumb = _.cloneDeep(crumb);
+    cleanCrumb.data = {
+      to: removeUUID(crumb.data.to),
+      from: removeUUID(crumb.data.from),
+    };
+    return cleanCrumb;
+  }
+  if (crumb.category === 'xhr') {
+    const cleanCrumb = _.cloneDeep(crumb);
+    cleanCrumb.data = {
+      url: removeUserId(crumb.data.url),
+    };
+    return cleanCrumb;
+  }
+
+  return crumb;
+}
+
 const API = {
   initialized: false,
 
@@ -34,26 +67,7 @@ const API = {
             'Incorrect password or email', // no need to log that
             'Backbone.history', // on refresh fires this error, todo: fix it
           ],
-          breadcrumbCallback(crumb) {
-            // clean UUIDs
-            if (crumb.category === 'navigation') {
-              const cleanCrumb = _.cloneDeep(crumb);
-              cleanCrumb.data = {
-                to: API._removeUUID(crumb.data.to),
-                from: API._removeUUID(crumb.data.from),
-              };
-              return cleanCrumb;
-            }
-            if (crumb.category === 'xhr') {
-              const cleanCrumb = _.cloneDeep(crumb);
-              cleanCrumb.data = {
-                url: API._removeUserId(crumb.data.url),
-              };
-              return cleanCrumb;
-            }
-
-            return crumb;
-          },
+          breadcrumbCallback,
         }
       ).install();
     } else {
@@ -86,9 +100,9 @@ const API = {
       });
     } else {
       Log(
-        `Analytics: Google Analytics is turned off. ${window.cordova
-          ? 'Please provide the GA tracking ID.'
-          : ''}`,
+        `Analytics: Google Analytics is turned off. ${
+          window.cordova ? 'Please provide the GA tracking ID.' : ''
+        }`,
         'w'
       );
     }
@@ -132,18 +146,6 @@ const API = {
 
     url = this._removeUUID(url);
     return url;
-  },
-
-  _removeUUID(string) {
-    // remove specific UUIDs
-    return string.replace(
-      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
-      'UUID'
-    );
-  },
-
-  _removeUserId(URL) {
-    return URL.replace(/\/users\/.*/g, '/users/USERID');
   },
 };
 
