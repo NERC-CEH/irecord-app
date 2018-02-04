@@ -113,7 +113,7 @@ const survey = {
         info:
           'If anyone helped with the identification please enter their name here.',
         icon: 'user-plus',
-        type: 'input',
+        type: 'text',
       },
       comment: {
         info: 'Please add any extra info about this record.',

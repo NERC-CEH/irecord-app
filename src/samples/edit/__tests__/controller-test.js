@@ -38,12 +38,16 @@ describe('Edit Controller', () => {
     it('should exist', () => {
       expect(API.updateTaxon).to.be.a('function');
     });
-    it('should call sample.setTaxon', () => {
+    it('should call sample.setTaxon', done => {
       const sample = new Sample();
       sample.addOccurrence(new Occurrence());
 
-      API.updateTaxon(sample, { group: 1 });
-      expect(sampleSetTaxonStub.called).to.be.equal(true);
+      API.updateTaxon(sample, { group: 1 })
+        .then(() => {
+          expect(sampleSetTaxonStub.called).to.be.equal(true);
+          done();
+        })
+        .catch(done);
     });
   });
 });

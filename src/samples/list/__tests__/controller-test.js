@@ -24,10 +24,6 @@ describe('List Controller', function() {
     expect(API.photoSelect).to.be.a('function');
   });
 
-  it('should have a sampleDelete method', () => {
-    expect(API.sampleDelete).to.be.a('function');
-  });
-
   describe('photo picker', () => {
     before(done => {
       // clean up in case of trash
@@ -73,11 +69,15 @@ describe('List Controller', function() {
     it('should exist', () => {
       expect(API.setTaxon).to.be.a('function');
     });
-    it('should call sample.setTaxon', () => {
+    it('should call sample.setTaxon', done => {
       const sample = new Sample();
       sample.addOccurrence(new Occurrence());
-      API.setTaxon(sample, { group: 1 });
-      expect(sampleSetTaxonStub.called).to.be.equal(true);
+      API.setTaxon(sample, { group: 1 })
+        .then(() => {
+          expect(sampleSetTaxonStub.called).to.be.equal(true);
+          done();
+        })
+        .catch(done);
     });
   });
 });
