@@ -24,7 +24,7 @@ const CONFIG = {
   site_url: HOST,
 
   // use prod logging if testing otherwise full log
-  log: process.env.ENV !== 'testing',
+  log: process.env.ENV !== 'test',
 
   // google analytics
   ga: {

@@ -39,13 +39,6 @@ module.exports = (grunt) => {
       'webpack:dev',
     ],
 
-    test: [
-      'karma:local',
-    ],
-    'test:sauce': [
-      'karma:sauce',
-    ],
-
     // Cordova set up
     cordova: [
       // prepare www source

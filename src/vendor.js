@@ -5,6 +5,7 @@
 // shims
 import 'es6-promise/auto';
 import 'indexeddbshim';
+import 'helpers/object-assign';
 
 import 'jquery';
 import 'lodash';
@@ -21,4 +22,4 @@ import 'backbone.collectionsubset';
 import 'indicia';
 import 'photoswipe-lib';
 import 'photoswipe-ui-default';
-import 'BIGU';
+import 'bigu';

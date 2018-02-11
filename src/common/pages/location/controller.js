@@ -8,7 +8,7 @@ import Indicia from 'indicia';
 import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import LocHelp from 'helpers/location';
-import GridRefUtils from 'BIGU';
+import GridRefUtils from 'bigu';
 import App from 'app';
 import radio from 'radio';
 import savedSamples from 'saved_samples';

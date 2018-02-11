@@ -1,4 +1,4 @@
-@import "../../styles/_variables.scss";
+@import '../../styles/_variables.scss';
 
 #map-location-name {
   position: absolute;
@@ -54,13 +54,13 @@
       margin: 10px 5px;
     }
   }
-
 }
 
 .leaflet-container {
   background-color: white;
 
-  .leaflet-bottom, .leaflet-top {
+  .leaflet-bottom,
+  .leaflet-top {
     z-index: 100;
   }
 }
@@ -70,8 +70,8 @@
 }
 
 .map-marker {
-  margin-left: -24px!important;
-  margin-top: -24px!important;
+  margin-left: -24px !important;
+  margin-top: -24px !important;
   text-shadow: 0px 0px 1px black, 0px 0px 4px black;
   color: $color-red;
   &:before {
@@ -103,19 +103,22 @@ input#grid-ref {
 input#grid-ref {
   text-transform: uppercase;
 }
-input#grid-ref::-webkit-input-placeholder { /* WebKit browsers */
+input#grid-ref::-webkit-input-placeholder {
+  /* WebKit browsers */
   text-transform: none;
 }
-input#grid-ref:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+input#grid-ref:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
   text-transform: none;
 }
-input#grid-ref::-moz-placeholder { /* Mozilla Firefox 19+ */
+input#grid-ref::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
   text-transform: none;
 }
-input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
+input#grid-ref:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
   text-transform: none;
 }
-
 
 #user-locations .table-view-cell {
   @include empty-list();
@@ -166,7 +169,6 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
       padding-top: 30px;
     }
   }
-
 }
 
 @media only screen and (max-width: 400px) {
@@ -182,24 +184,23 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
 
 // OS Map empty tiles fix
 .leaflet-tile-container {
-  img[src="#{$OS_MAP_URL}&BBOX=0,-500000,0,0&WIDTH=200&HEIGHT=200&LAYERS=2500"],
-  img[src="#{$OS_MAP_URL}&BBOX=500000,-500000,0,0&WIDTH=200&HEIGHT=200&LAYERS=2500"],
-  img[src="#{$OS_MAP_URL}&BBOX=200000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000"],
-  img[src="#{$OS_MAP_URL}&BBOX=400000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000"],
-  img[src="#{$OS_MAP_URL}&BBOX=0,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000"],
-  img[src="#{$OS_MAP_URL}&BBOX=600000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000"],
-  img[src="#{$OS_MAP_URL}&BBOX=800000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000"],
-  img[src="#{$OS_MAP_URL}&BBOX=600000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=500000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=400000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=700000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=800000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=300000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=200000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=100000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"],
-  img[src="#{$OS_MAP_URL}&BBOX=0,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500"] {
+  img[src='#{$OS_MAP_URL}&BBOX=0,-500000,0,0&WIDTH=200&HEIGHT=200&LAYERS=2500'],
+  img[src='#{$OS_MAP_URL}&BBOX=500000,-500000,0,0&WIDTH=200&HEIGHT=200&LAYERS=2500'],
+  img[src='#{$OS_MAP_URL}&BBOX=200000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000'],
+  img[src='#{$OS_MAP_URL}&BBOX=400000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000'],
+  img[src='#{$OS_MAP_URL}&BBOX=0,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000'],
+  img[src='#{$OS_MAP_URL}&BBOX=600000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000'],
+  img[src='#{$OS_MAP_URL}&BBOX=800000,-200000,0,0&WIDTH=200&HEIGHT=200&LAYERS=1000'],
+  img[src='#{$OS_MAP_URL}&BBOX=600000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=500000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=400000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=700000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=800000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=300000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=200000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=100000,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'],
+  img[src='#{$OS_MAP_URL}&BBOX=0,-100000,0,0&WIDTH=200&HEIGHT=200&LAYERS=500'] {
     display: none;
-
   }
 }
 
@@ -214,11 +215,27 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
     padding: 0 2%;
 
     .input-group {
-      background: rgba(256,256,256,0.9);
+      background: rgba(256, 256, 256, 0.9);
       margin-left: -2%;
       margin-right: -2%;
+
+      button.lock-btn {
+        height: 100%;
+        width: 40px;
+        position: absolute;
+        margin-top: 0;
+        margin-bottom: 0;
+        outline-style: none;
+        border-left: 1px solid #ddd;
+        padding-right: 1.4em;
+        padding-left: 0.8em;
+
+        &:before {
+          margin: 0 auto;
+        }
+      }
     }
-    
+
     #location-name-row {
       overflow: initial;
       span {
@@ -240,17 +257,6 @@ input#grid-ref:-ms-input-placeholder { /* Internet Explorer 10+ */
     height: 100%;
     padding: 13px;
   }
-}
-
-button.lock-btn {
-  height: 100%;
-  width: 40px;
-  position: absolute;
-  right: -5px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  outline-style: none;
-  border-left: 1px solid #ddd;
 }
 
 .leaflet-control-button.leaflet-control {
@@ -276,7 +282,7 @@ input#location-gridref {
 }
 
 input#location-gridref[data-source='gps'] {
-  color: $color-green
+  color: $color-green;
 }
 
 input#location-gridref[data-gr-error='error'] {

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import GPS from 'helpers/GPS';
 import Log from 'helpers/log';
-import BIGU from 'BIGU';
+import bigu from 'bigu';
 import appModel from 'app_model';
 
 const service = {
@@ -51,7 +51,7 @@ const service = {
   },
 
   _getSquare(location) {
-    const gridCoords = BIGU.latlng_to_grid_coords(
+    const gridCoords = bigu.latlng_to_grid_coords(
       location.latitude,
       location.longitude
     );

@@ -52,6 +52,14 @@ eslint plugins for your IDE.
 Project uses [AirBnB Style Guide](https://github.com/airbnb/javascript).
 
 
+## Branching
+
+Please use the [flow](http://nvie.com/posts/a-successful-git-branching-model/)
+ branching model. I recommend installing [git-flow](https://danielkummer.github.io/git-flow-cheatsheet/) extension.
+`feature/NAME`, `hotfix/VERSION`, `beta/VERSION` (instead of release).
+
+Once finished please create a pull request into `develop`.
+
 # Architecture
 
 The app is designed around [Backbone](backbone.org) framework that helps to 
@@ -121,10 +129,22 @@ as possible so for that we are using Travis CI. It detects new repository
 commits and runs the app tests on 20+ browsers using Sauce Labs. To see the build
 test output visit [Travis project builds](https://travis-ci.org/NERC-CEH/irecord-app).
 
-- To run the tests locally:
+- To run the tests locally install Chromium browser and run:
 
 ```bash
-grunt test
+npm test
+```
+
+- Auto watch:
+
+```bash
+npm run test:watch
+```
+
+- Generate coverage report:
+
+```bash
+npm run test:coverage
 ```
 
 # Cordova
@@ -137,6 +157,6 @@ Use XCode to build and upload
 
 Run and upload binaries from cordova/dist
 ```bash
-grunt cordova:android
+npm run build:cordova:android
 grunt cordova:android:old
 ```

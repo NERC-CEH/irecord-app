@@ -1,17 +1,16 @@
 language: node_js
 node_js:
-  - "4.5"
+  - "8.1.4"
 before_install:
-  - npm install --ignore-scripts
-  - npm rebuild node-sass
+  - npm install
   - npm rebuild wd
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 script:
-  - grunt
-  - grunt test:sauce
+  - npm test
+  - npm run test:sauce
 notifications:
   email: true
 sudo: false

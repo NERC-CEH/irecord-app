@@ -7,7 +7,7 @@ import JST from 'JST';
 import StringHelp from 'helpers/string';
 import DateHelp from 'helpers/date';
 import Device from 'helpers/device';
-import typeaheadSearchFn from 'common/typeahead_search';
+import typeaheadSearchFn from 'helpers/typeahead_search';
 
 export default Marionette.View.extend({
   template: JST['common/input'],

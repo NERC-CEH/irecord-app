@@ -5,9 +5,9 @@ import 'marionette.sliding-view';
 const cellHeight = 65;
 
 const $main = $('#main');
-const viewportHeight = $main.height();
+let viewportHeight;
 const viewport = $main[0];
-const viewContainsNo = Math.floor(viewportHeight / cellHeight);
+let viewContainsNo;
 
 const Slider = Marionette.SlidingView.extend({
   id: 'list',
@@ -15,6 +15,9 @@ const Slider = Marionette.SlidingView.extend({
   className: 'table-view no-top',
 
   initialize() {
+    viewportHeight = $main.height();
+    viewContainsNo = Math.floor(viewportHeight / cellHeight);
+
     this.listenTo(this.referenceCollection, 'update', () => {
       this._updateCollection();
     });

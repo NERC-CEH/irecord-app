@@ -7,7 +7,7 @@ const path = require('path');
 const _ = require('lodash');
 
 const webpack = require('webpack');
-const ENV = process.env.NODE_ENV || process.env.ENV || 'testing';
+const ENV = process.env.NODE_ENV = 'test';
 
 // get development webpack config
 const webpackConfigDev = require('../config/webpack.dev');
@@ -21,7 +21,7 @@ webpackConfigDev.plugins.splice(0, 0, new webpack.DefinePlugin({
     ENV: JSON.stringify(ENV),
   },
 }));
-webpackConfigDev.resolve.root.push(path.resolve('./test/'));
+webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
 const sauceBrowsers = _.reduce([
   ['firefox', '45'],
