@@ -33,6 +33,11 @@ export function breadcrumbCallback(crumb) {
     return cleanCrumb;
   }
   if (crumb.category === 'xhr') {
+    if (crumb.data.method === 'GET' && crumb.data.url.match(/jpeg$/i)) {
+      // do not log image requests
+      return false;
+    }
+
     const cleanCrumb = _.cloneDeep(crumb);
     cleanCrumb.data = {
       url: removeUserId(crumb.data.url),

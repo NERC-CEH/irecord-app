@@ -24,6 +24,18 @@ describe('Helpers Analytics', () => {
         'https://www.brc.ac.uk/irecord/api/v1/users/USERID'
       );
     });
+
+    it('should not save image GETs', () => {
+      const crumb = {
+        category: 'xhr',
+        data: {
+          method: 'GET',
+          url: 'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312788.jpeg',
+        },
+      };
+      const resultCrumb = breadcrumbCallback(crumb);
+      expect(resultCrumb).to.be.false;
+    });
   });
 
   describe('removeUserId', () => {
