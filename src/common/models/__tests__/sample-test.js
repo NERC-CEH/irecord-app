@@ -38,6 +38,17 @@ function getRandomSample(taxon) {
 }
 
 describe('Sample', () => {
+  let sampleRemoteCreateStub;
+  beforeEach(() => {
+    sampleRemoteCreateStub = sinon
+      .stub(Sample.prototype, '_create')
+      .resolves({ data: {} });
+  });
+
+  afterEach(() => {
+    sampleRemoteCreateStub.restore();
+  });
+
   it('should have current date by default', () => {
     const sample = new Sample();
     const date = sample.get('date');
@@ -55,6 +66,19 @@ describe('Sample', () => {
 
     sample = getRandomSample();
     expect(sample.metadata.training).to.be.equal(true);
+  });
+
+  it('should not resend', done => {
+    const sample = getRandomSample(validTaxon);
+    sample.id = 123;
+    sample.metadata.server_on = new Date();
+    sample
+      .save(null, { remote: true })
+      .then(() => {
+        expect(sampleRemoteCreateStub.calledOnce).to.be.false;
+        done();
+      })
+      .catch(done);
   });
 
   describe('getKeys', () => {

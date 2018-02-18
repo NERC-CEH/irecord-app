@@ -112,6 +112,16 @@ let Sample = Indicia.Sample.extend({
       return Promise.resolve(this);
     }
 
+    // TODO: remove this once clear why the resubmission occurs
+    // https://www.brc.ac.uk/irecord/node/7194
+    if (this.id || this.metadata.server_on) {
+      // an error, this should never happen
+      Log(
+        'SampleModel: trying to set a record for submission that is already sent!',
+        'e'
+      );
+    }
+
     this.metadata.saved = true;
 
     if (!this.isValid({ remote: true })) {
@@ -125,6 +135,20 @@ let Sample = Indicia.Sample.extend({
 
     // save sample
     return this.save();
+  },
+
+  // TODO: remove this once clear why the resubmission occurs
+  // https://www.brc.ac.uk/irecord/node/7194
+  _syncRemote(...args) {
+    const { remote } = args[2] || {};
+
+    if (remote && (this.id || this.metadata.server_on)) {
+      // an error, this should never happen
+      Log('SampleModel: trying to send a record that is already sent!', 'e');
+      return Promise.resolve({ data: {} });
+    }
+
+    return Indicia.Sample.prototype._syncRemote.apply(this, args);
   },
 
   _setGPSlocationSetter() {
