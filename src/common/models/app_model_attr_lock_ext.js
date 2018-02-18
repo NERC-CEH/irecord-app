@@ -6,7 +6,7 @@ import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
 import { coreAttributes } from 'common/config/surveys/general';
 import userModel from 'user_model';
-import Sample from 'sample';
+import Indicia from 'indicia';
 
 export default {
   _getRawLocks(surveyType, surveyName) {
@@ -87,7 +87,7 @@ export default {
    */
   isAttrLocked(model, attr, noSurveyExists) {
     const fullAttrName =
-      model instanceof Sample ? `smp:${attr}` : `occ:${attr}`;
+      model instanceof Indicia.Sample ? `smp:${attr}` : `occ:${attr}`;
     const isCoreAttr = coreAttributes.includes(fullAttrName);
     const surveyConfig =
       isCoreAttr || noSurveyExists ? null : model.getSurvey();
