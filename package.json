@@ -21,7 +21,9 @@
     "test:watch": "karma start test/karma.conf.js --no-single-run",
     "test:sauce": "karma start test/karma.conf-sauce.js",
     "test:eslint": "mocha test/eslint-test.js",
-    "clean": "rm -rf node_modules dist yarn.lock package-lock.json"
+    "clean": "rm -rf node_modules dist yarn.lock package-lock.json",
+    "preversion": "npm test",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "backbone": "1.3.3",
@@ -34,7 +36,7 @@
     "fastclick": "1.0.3",
     "hammerjs": "2.0.6",
     "indexeddbshim": "2.2.1",
-    "indicia": "Indicia-Team/indicia-js#v4.2.5",
+    "indicia": "Indicia-Team/indicia-js#v4.2.6",
     "jquery": "3.1.0",
     "jquery-touchswipe": "1.6.15",
     "leaflet": "0.7.7",
