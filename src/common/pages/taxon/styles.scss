@@ -32,6 +32,10 @@
 #suggestions .table-view-cell {
   padding: 8px 65px 8px 15px;
 
+  &:nth-child(odd) {
+    background-color: $color-gray-light;
+  }
+
   @include empty-list();
 
   button {
