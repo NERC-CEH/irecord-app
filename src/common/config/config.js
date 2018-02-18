@@ -6,6 +6,8 @@ import Indicia from 'indicia';
 const HOST =
   process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
 
+
+const notInTest = process.env.ENV !== 'test';
 const CONFIG = {
   // variables replaced on build
   version: process.env.APP_VERSION,
@@ -21,16 +23,16 @@ const CONFIG = {
   site_url: HOST,
 
   // use prod logging if testing otherwise full log
-  log: process.env.ENV !== 'test',
+  log: notInTest,
 
   // google analytics
   ga: {
-    id: process.env.APP_GA,
+    id: notInTest && process.env.APP_GA,
   },
 
   // error analytics
   sentry: {
-    key: process.env.APP_SENTRY_KEY,
+    key: notInTest && process.env.APP_SENTRY_KEY,
     project: '128357',
   },
 
