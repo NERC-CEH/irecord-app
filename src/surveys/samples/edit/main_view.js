@@ -51,7 +51,6 @@ export default Marionette.View.extend({
     const sample = this.model.get('sample');
     const occ = sample.getOccurrence();
     const specie = occ.get('taxon') || {};
-    const appModel = this.model.get('appModel');
 
     // taxon
     const scientificName = specie.scientific_name;
@@ -59,19 +58,6 @@ export default Marionette.View.extend({
 
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
-
-    const attrLocks = {
-      date: appModel.isAttrLocked(sample, 'date'),
-      location: appModel.isAttrLocked(sample, 'location'),
-      number: appModel.isAttrLocked(occ, 'number'),
-      sensitive: occ.metadata.sensitivity_precision,
-      abundance: appModel.isAttrLocked(occ, 'abundance'),
-      stage: appModel.isAttrLocked(occ, 'stage'),
-      status: appModel.isAttrLocked(occ, 'status'),
-      identifiers: appModel.isAttrLocked(occ, 'identifiers'),
-      comment: appModel.isAttrLocked(occ, 'comment'),
-      activity: appModel.isAttrLocked(sample, 'activity'),
-    };
 
     let number = StringHelp.limit(occ.get('number'));
     if (!number) {
@@ -101,7 +87,6 @@ export default Marionette.View.extend({
       comment: StringHelp.limit(occ.get('comment')),
       group_title: group ? group.title : null,
       group,
-      locks: attrLocks,
     };
   },
 
