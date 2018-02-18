@@ -85,21 +85,24 @@ let Sample = Indicia.Sample.extend({
     const newAttrs = {
       survey_id: surveyConfig.id,
       input_form: surveyConfig.webForm,
-      device: Device.getPlatform(),
-      device_version: Device.getVersion(),
     };
+
+    const smpAttrs = surveyConfig.attrs.smp;
+    const updatedSubmission = Object.assign({}, submission, newAttrs);
+    updatedSubmission.fields = Object.assign({}, updatedSubmission.fields, {
+      [smpAttrs.device.id]: smpAttrs.device.values[Device.getPlatform()],
+      [smpAttrs.device_version.id]: Device.getVersion(),
+      [smpAttrs.app_version.id]: `${CONFIG.version}.${CONFIG.build}`,
+    });
 
     // add the survey_id to subsamples too
     if (this.metadata.complex_survey) {
-      submission.samples.forEach(subSample => {
+      updatedSubmission.samples.forEach(subSample => {
         subSample.survey_id = surveyConfig.id; // eslint-disable-line
         subSample.input_form = surveyConfig.webForm; // eslint-disable-line
       });
-    } else {
-      newAttrs.location_type = 'latlon';
     }
 
-    const updatedSubmission = Object.assign({}, submission, newAttrs);
     return Promise.resolve([updatedSubmission, media]);
   },
 
