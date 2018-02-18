@@ -3,6 +3,7 @@
  **************************************************************************** */
 import $ from 'jquery';
 import Indicia from 'indicia';
+import DateHelp from 'helpers/date';
 
 const survey = {
   name: 'default',
@@ -24,10 +25,35 @@ const survey = {
           return location.gridref;
         },
       },
+      location_accuracy: { id: 282 },
+      location_altitude: { id: 283 },
+      location_altitude_accuracy: { id: 284 },
+      location_source: { id: 760 },
+      location_gridref: { id: 335 },
+
+      device: {
+        id: 273,
+        values: {
+          iOS: 2398,
+          Android: 2399,
+        },
+      },
+
+      device_version: { id: 759 },
+
+      date: {
+        values(date) {
+          return DateHelp.print(date);
+        },
+        isValid: val => val && val.toString() !== 'Invalid Date',
+        type: 'date',
+        max: () => new Date(),
+      },
       recorders: {
         id: 1018,
         info:
-          'If anyone helped with the identification please enter their name here.',
+          'If anyone helped with the identification please enter their name here. ' +
+          'To remove an entry clear out the name.',
         values(val, submission) {
           const attributes = {};
           const recorderCount = survey.attrs.smp.recorder_count;
@@ -118,6 +144,11 @@ const survey = {
       },
     },
     occ: {
+      taxon: {
+        values(taxon) {
+          return taxon.warehouse_id;
+        },
+      },
       abundance: {
         id: 610,
       },
@@ -155,6 +186,9 @@ const survey = {
 
       comment: {
         info: 'Please add any extra info about this record.',
+      },
+      training: {
+        id: 'training',
       },
     },
   },
