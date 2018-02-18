@@ -56,6 +56,12 @@ describe('User Model', () => {
       return activity;
     }
 
+    afterEach(() => {
+      if (UserModel.prototype.fetchActivities.restore) {
+        UserModel.prototype.fetchActivities.restore();
+      }
+    });
+
     it('has functions', () => {
       const userModel = new UserModel();
       expect(userModel.hasActivityExpired).to.be.a('function');
