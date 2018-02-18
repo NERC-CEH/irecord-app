@@ -12,8 +12,8 @@
 </div>
 <ul class="table-view core inputs info no-top">
   <li class="table-view-cell species">
-    <% if (obj.common_name) { %>
-      <span class="media-object pull-right descript"><%- obj.common_name %></span>
+    <% if (obj.commonName) { %>
+      <span class="media-object pull-right descript"><%- obj.commonName %></span>
     <% } %>
     <span class="media-object pull-right descript"><i><%- obj.scientific_name %></i></span>
   </li>
