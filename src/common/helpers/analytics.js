@@ -4,7 +4,6 @@
  * Uses Google analytics to track the page navigation and Sentry to server log
  * client side errors.
  */
-import _ from 'lodash';
 import Backbone from 'backbone';
 import Raven from 'raven-js';
 import CONFIG from 'config';

@@ -19,6 +19,14 @@
       "allowTernary": true // eg. a ? b() : c()
     }]
   },
+  "overrides": [
+    {
+      "files": ["**/__tests__/*.js"],
+      "rules": {
+        "no-unused-expressions": 0
+      }
+    }
+  ],
   "globals": {
     "sinon": true,
     "expect": true,

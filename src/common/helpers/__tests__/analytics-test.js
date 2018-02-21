@@ -1,5 +1,5 @@
 import Raven from 'raven-js';
-import API, {
+import {
   removeUserId,
   breadcrumbCallback,
   dataCallback,
