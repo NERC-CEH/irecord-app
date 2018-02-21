@@ -26,7 +26,7 @@ webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
 module.exports = config => {
   config.set({
-    browsers: ['ChromeCustom'],
+    browsers: ['Chromium'],
 
     customLaunchers: {
       ChromeCustom: {

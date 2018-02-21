@@ -59,7 +59,8 @@ const API = {
         body: filtersView,
         buttons: [
           {
-            title: 'Done',
+            title: 'Close',
+            class: 'btn-positive',
             onClick() {
               radio.trigger('app:dialog:hide');
             },

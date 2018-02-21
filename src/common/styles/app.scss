@@ -411,10 +411,24 @@ li h3 {
   margin: 10px auto;
 }
 
+.btn-clear {
+  border-color: transparent;
+  background-color: transparent;
+  &:hover {
+    border-color: transparent;
+    background-color: transparent;
+  }
+}
+
 .btn {
+  height: 2.8em;
+  font-size: 1.6rem;
+  padding: 0 1em;
+
   padding: 0 20px;
   height: $button-height;
   font-size: $button-font-size;
+  border-radius: 4px;
 }
 
 .info-message,

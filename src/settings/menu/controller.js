@@ -32,11 +32,12 @@ const API = {
         title: 'Reset',
         class: 'error',
         body:
-          'Are you sure you want to reset the application to its initial state? ' +
-          'This will wipe all the locally stored app data!',
+          '<p>Are you sure you want to reset the application to its initial state? ' +
+          'This will wipe all the locally stored app data!</p>',
         buttons: [
           {
             title: 'Cancel',
+            class: 'btn-clear',
             onClick() {
               radio.trigger('app:dialog:hide');
             },
@@ -70,9 +71,9 @@ const API = {
 
   deleteAllSamples() {
     let body =
-      'Are you sure you want to remove all successfully synchronised local records?';
+      '<p>Are you sure you want to remove all successfully synchronised local records?</p>';
     body +=
-      '</br><i><b>Note:</b> records on the server will not be touched.</i>';
+      '<p><i><b>Note:</b> records on the server will not be touched.</i></p>';
 
     radio.trigger('app:dialog', {
       title: 'Remove All',
@@ -80,6 +81,7 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
+          class: 'btn-clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           },
@@ -117,12 +119,13 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
+          class: 'btn-clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           },
         },
         {
-          title: 'OK',
+          title: 'Submit',
           class: 'btn-positive',
           onClick() {
             Log('Settings:Menu:Controller: sending all samples.');
