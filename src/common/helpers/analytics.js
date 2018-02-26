@@ -9,7 +9,7 @@ import Raven from 'raven-js';
 import CONFIG from 'config';
 import Log from './log';
 
-function removeUUID(string) {
+function _removeUUID(string) {
   // remove specific UUIDs
   return string.replace(
     /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
@@ -25,8 +25,8 @@ export function breadcrumbCallback(crumb) {
   // clean UUIDs
   if (crumb.category === 'navigation') {
     crumb.data = {
-      to: removeUUID(crumb.data.to),
-      from: removeUUID(crumb.data.from),
+      to: _removeUUID(crumb.data.to),
+      from: _removeUUID(crumb.data.from),
     };
     return crumb;
   }
@@ -206,7 +206,7 @@ const API = {
       url = `/${url}`;
     }
 
-    url = this._removeUUID(url);
+    url = _removeUUID(url);
     return url;
   },
 };
