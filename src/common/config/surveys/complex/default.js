@@ -40,6 +40,7 @@ const survey = {
       },
 
       device_version: { id: 759 },
+      app_version: { id: 1139 },
 
       date: {
         values(date) {
