@@ -6,6 +6,7 @@
 import 'es6-promise/auto';
 import 'indexeddbshim';
 import 'helpers/object-assign';
+import 'helpers/array-fill';
 
 import 'jquery';
 import 'lodash';
