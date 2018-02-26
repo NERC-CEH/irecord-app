@@ -1,9 +1,5 @@
 import Raven from 'raven-js';
-import {
-  removeUserId,
-  breadcrumbCallback,
-  dataCallback,
-} from '../analytics';
+import { removeUserId, breadcrumbCallback, dataCallback } from '../analytics';
 
 // a = [
 //   {
@@ -152,6 +148,24 @@ describe('Helpers Analytics', () => {
       expect(processed.breadcrumbs.values.length).to.be.equal(3);
       expect(processed.breadcrumbs.values[1].data.url.includes('_x2')).to.be
         .true;
+    });
+
+    it('should remove UUID from culprit', () => {
+      const culprit = 'F7F5C5C0-44ED-46F9-B8E1-8694F58E9B42';
+      const processed = dataCallback({
+        culprit,
+        breadcrumbs: { values: new Array(102) },
+      });
+      expect(processed.culprit).to.be.equal('UUID');
+    });
+
+    it('should remove UUID from request url', () => {
+      const url = 'F7F5C5C0-44ED-46F9-B8E1-8694F58E9B42';
+      const processed = dataCallback({
+        request: { url },
+        breadcrumbs: { values: new Array(102) },
+      });
+      expect(processed.request.url).to.be.equal('UUID');
     });
   });
 

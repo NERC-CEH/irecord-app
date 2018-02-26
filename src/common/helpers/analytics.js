@@ -96,6 +96,11 @@ export function dataCallback(data) {
   const maxBreadcrumbs = 100;
   const maxIndex = Math.max(data.breadcrumbs.values.length - maxBreadcrumbs, 0);
   data.breadcrumbs.values.splice(0, maxIndex);
+
+  data.culprit = _removeUUID(data.culprit || '');
+  if (data.request && data.request.url) {
+    data.request.url = _removeUUID(data.request.url);
+  }
   return data;
 }
 
