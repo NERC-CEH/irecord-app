@@ -158,5 +158,4 @@ Use XCode to build and upload
 Run and upload binaries from cordova/dist
 ```bash
 npm run build:cordova:android
-grunt cordova:android:old
 ```
