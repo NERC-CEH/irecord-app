@@ -4,6 +4,7 @@ import Occurrence from 'occurrence';
 import userModel from 'user_model';
 import appModel from 'app_model';
 import Survey from 'common/config/surveys/Survey';
+import Device from 'helpers/device';
 import { coreAttributes } from 'common/config/surveys/general';
 import bryophytesSyrvey from 'common/config/surveys/general/bryophytes';
 import dragonfliesSyrvey from 'common/config/surveys/general/dragonflies';
@@ -119,11 +120,11 @@ describe('Sample', () => {
       // occurrence
       expect(invalids.occurrences).to.be.an('object').and.to.be.empty;
 
-      const occurrence = new Occurrence();
-      sample.addOccurrence(occurrence);
+      const occ = new Occurrence();
+      sample.addOccurrence(occ);
       invalids = sample.validate(null, { remote: true });
       expect(invalids.occurrences).to.not.be.empty;
-      expect(invalids.occurrences).to.have.property(occurrence.cid);
+      expect(invalids.occurrences).to.have.property(occ.cid);
     });
   });
 
@@ -379,6 +380,125 @@ describe('Sample', () => {
       expect(sample.startGPS).to.be.a('function');
       expect(sample.stopGPS).to.be.a('function');
       expect(sample.isGPSRunning).to.be.a('function');
+    });
+  });
+
+  describe('onSend', () => {
+    let devicePlatformStub;
+    let deviceVersionStub;
+    before(() => {
+      devicePlatformStub = sinon.stub(Device, 'getPlatform');
+      deviceVersionStub = sinon.stub(Device, 'getVersion');
+    });
+
+    after(() => {
+      devicePlatformStub.restore();
+      deviceVersionStub.restore();
+    });
+    function getFullRandomSample() {
+      const occ = new Occurrence({
+        taxon: validTaxon,
+      });
+      const sample = new Sample(
+        {
+          location: {
+            latitude: 12.12,
+            longitude: -0.23,
+            name: 'automatic test',
+          },
+        },
+        {
+          occurrences: [occ],
+          Collection: savedSamples,
+        }
+      );
+      return sample;
+    }
+
+    it('should return a promise', () => {
+      const sample = getFullRandomSample();
+      expect(sample.onSend()).to.be.instanceOf(Promise);
+    });
+
+    it('should not modify original submission', done => {
+      const sample = getFullRandomSample();
+      const submission = {};
+      sample
+        .onSend(submission)
+        .then(() => {
+          expect(Object.keys(submission).length).to.eql(0);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should add survey id', done => {
+      const sample = getFullRandomSample();
+      const submission = {};
+      sample
+        .onSend(submission)
+        .then(returns => {
+          expect(returns[0].survey_id).to.exist;
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should add input form', done => {
+      const sample = getFullRandomSample();
+      const submission = {};
+      sample
+        .onSend(submission)
+        .then(returns => {
+          expect(returns[0].input_form).to.exist;
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should add a device platform', done => {
+      devicePlatformStub.returns('Android');
+
+      const sample = getFullRandomSample();
+      const smpAttrs = sample.getSurvey().attrs.smp;
+      const submission = {};
+      sample
+        .onSend(submission)
+        .then(returns => {
+          expect(returns[0].fields[smpAttrs.device.id]).to.eql(
+            smpAttrs.device.values.Android
+          );
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should add a device version', done => {
+      deviceVersionStub.returns(1);
+
+      const sample = getFullRandomSample();
+      const smpAttrs = sample.getSurvey().attrs.smp;
+      const submission = {};
+      sample
+        .onSend(submission)
+        .then(returns => {
+          expect(returns[0].fields[smpAttrs.device_version.id]).to.eql(1);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should add a app version', done => {
+      const sample = getFullRandomSample();
+      const smpAttrs = sample.getSurvey().attrs.smp;
+      const submission = {};
+      sample
+        .onSend(submission)
+        .then(returns => {
+          expect(returns[0].fields[smpAttrs.app_version.id]).to.exist;
+          done();
+        })
+        .catch(done);
     });
   });
 });
