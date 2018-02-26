@@ -121,7 +121,7 @@ let Sample = Indicia.Sample.extend({
       // an error, this should never happen
       Log(
         'SampleModel: trying to set a record for submission that is already sent!',
-        'e'
+        'w'
       );
     }
 
@@ -147,7 +147,7 @@ let Sample = Indicia.Sample.extend({
 
     if (remote && (this.id || this.metadata.server_on)) {
       // an error, this should never happen
-      Log('SampleModel: trying to send a record that is already sent!', 'e');
+      Log('SampleModel: trying to send a record that is already sent!', 'w');
       return Promise.resolve({ data: {} });
     }
 
