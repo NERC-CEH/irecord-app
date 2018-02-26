@@ -23,10 +23,9 @@
 
 
 <div class="table-view-cell input-row">
-  I agree to Terms and Conditions
+  I agree to <a href="#info/terms" style="display: inline; color: #91a71c;">Terms and Conditions</a>
   <div id="user-terms-agree" class="toggle no-yes">
     <div class="toggle-handle"></div>
   </div>
 </div>
-
 <button id="register-button" class="btn btn-narrow btn-positive btn-block">Create</button>

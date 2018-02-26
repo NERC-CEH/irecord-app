@@ -49,6 +49,13 @@ const Router = Marionette.AppRouter.extend({
         route: 'info/privacy/main',
       });
     },
+    'info/terms(/)': () => {
+      CommonController.show({
+        title: 'T&Cs',
+        App,
+        route: 'info/terms/main',
+      });
+    },
     'info/brc-approved(/)': () => {
       CommonController.show({
         title: 'BRC Approved',
