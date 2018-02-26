@@ -4,6 +4,7 @@ node_js:
 before_install:
   - npm install
   - npm rebuild wd
+  - export PATH=$PATH:$(pwd)/node_modules/.bin
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -12,6 +13,7 @@ script:
   - npm test
   - npm run test:eslint
   - npm run test:sauce
+  - npm run build:cordova
 notifications:
   email: true
 sudo: false
