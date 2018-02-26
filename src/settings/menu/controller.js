@@ -32,8 +32,8 @@ const API = {
         title: 'Reset',
         class: 'error',
         body:
-          '<p>Are you sure you want to reset the application to its initial state? ' +
-          'This will wipe all the locally stored app data!</p>',
+          'Are you sure you want to reset the application to its initial state? ' +
+          '<p><b>This will wipe all the locally stored app data!</b></p>',
         buttons: [
           {
             title: 'Cancel',
@@ -71,7 +71,7 @@ const API = {
 
   deleteAllSamples() {
     let body =
-      '<p>Are you sure you want to remove all successfully synchronised local records?</p>';
+      'Are you sure you want to remove all successfully synchronised local records?';
     body +=
       '<p><i><b>Note:</b> records on the server will not be touched.</i></p>';
 
