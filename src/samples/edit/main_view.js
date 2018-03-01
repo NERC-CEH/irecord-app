@@ -74,6 +74,8 @@ export default Marionette.View.extend({
     const location = sample.get('location') || {};
 
     const attrLocks = {};
+    // todo: don't rely on core attributes list to build this as it could contain
+    // more than we need
     coreAttributes.forEach(attr => {
       const model = attr.split(':')[0] === 'smp' ? sample : occ;
       attrLocks[attr] = appModel.isAttrLocked(model, attr.split(':')[1]);

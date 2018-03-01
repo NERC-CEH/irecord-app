@@ -8,6 +8,7 @@ import bryophytesSurvey from './bryophytes';
 export const coreAttributes = [
   'smp:location',
   'smp:locationName',
+  'smp:location_type',
   'smp:date',
   'occ:comment',
 ];
