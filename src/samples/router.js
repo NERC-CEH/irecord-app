@@ -53,7 +53,7 @@ const Router = Marionette.AppRouter.extend({
     'samples/:id': ShowController.show,
     'samples/:id/edit(/)': EditController.show,
     'samples/:id/edit/location(/)': EditLocationController.show,
-    'samples/:id/edit/smp:activity(/)': ActivitiesController.show,
+    'samples/:id/edit/activity(/)': ActivitiesController.show,
     'samples/:id/edit/:attr(/)': EditAttrController.show,
     'samples/*path': () => {
       radio.trigger('app:404:show');

@@ -49,7 +49,7 @@
   </li>
   <% if (obj['smp:activity']) { %>
       <li class="table-view-cell">
-        <a href="#samples/<%- obj.id %>/edit/smp:activity" id="activity-button"
+        <a href="#samples/<%- obj.id %>/edit/activity" id="activity-button"
            class="<%- obj.locks['smp:activity'] ? 'lock' : 'navigate-right' %>">
           <span class="media-object pull-left icon icon-users"></span>
           <span class="media-object pull-right descript"><%- obj['smp:activity'] %></span>
