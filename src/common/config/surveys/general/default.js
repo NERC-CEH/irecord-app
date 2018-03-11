@@ -154,17 +154,13 @@ const survey = {
     }
 
     // occurrences
-    if (this.occurrences.length === 0) {
-      attributes.occurrences = 'no species selected';
-    } else {
-      this.occurrences.each(occurrence => {
-        const errors = occurrence.validate(null, { remote: true });
-        if (errors) {
-          const occurrenceID = occurrence.cid;
-          occurrences[occurrenceID] = errors;
-        }
-      });
-    }
+    this.occurrences.each(occurrence => {
+      const errors = occurrence.validate(null, { remote: true });
+      if (errors) {
+        const occurrenceID = occurrence.cid;
+        occurrences[occurrenceID] = errors;
+      }
+    });
 
     return [attributes, null, occurrences];
   },

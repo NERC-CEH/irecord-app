@@ -54,11 +54,6 @@ let Sample = Indicia.Sample.extend({
 
   validateRemote() {
     const survey = this.getSurvey();
-    if (!survey || !survey.verify) {
-      Log('Sample:model: no such survey in remote verify.', 'e');
-      throw new Error('No sample survey to verify.');
-    }
-
     const verify = survey.verify.bind(this);
     const [attributes, samples, occurrences] = verify(this.attributes);
 
@@ -283,13 +278,10 @@ let Sample = Indicia.Sample.extend({
 
     const occ = this.getOccurrence();
     if (!occ) {
-      throw new Error('No occurrence present to get survey');
+    return Survey.factory();
     }
 
-    const taxon = occ.get('taxon');
-    if (!taxon || !taxon.group) {
-      throw new Error('No occurrence taxon group is present to get survey');
-    }
+    const taxon = occ.get('taxon') || {};
 
     return Survey.factory(taxon.group);
   },

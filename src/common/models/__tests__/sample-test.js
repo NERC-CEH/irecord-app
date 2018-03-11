@@ -288,27 +288,6 @@ describe('Sample', () => {
       expect(survey).to.equal(1);
     });
 
-    it('should throw if no occurrence exists', done => {
-      const sample = new Sample();
-      try {
-        sample.getSurvey();
-      } catch (err) {
-        expect(err.message).to.equal('No occurrence present to get survey');
-        done();
-      }
-    });
-
-    it('should throw if no occurrence taxon group exists', () => {
-      const sample = getRandomSample();
-      try {
-        sample.getSurvey();
-      } catch (err) {
-        expect(err.message).to.equal(
-          'No occurrence taxon group is present to get survey'
-        );
-      }
-    });
-
     it('should return complex survey', () => {
       surveyFacotryStub.withArgs(null, true).returns('complex');
       const sample = getRandomSample();
