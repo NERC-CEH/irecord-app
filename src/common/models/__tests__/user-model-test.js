@@ -50,8 +50,8 @@ describe('User Model', () => {
         title: '',
         description: '',
         type: '',
-        group_from_date: '2015-01-01',
-        group_to_date: '2020-01-01',
+        activity_from_date: '2015-01-01',
+        activity_to_date: '2020-01-01',
       };
       return activity;
     }
@@ -184,7 +184,7 @@ describe('User Model', () => {
 
       // check out of range
       const expiredActivity = getRandActivity();
-      expiredActivity.group_to_date = '2000-01-01';
+      expiredActivity.activity_to_date = '2000-01-01';
 
       userModel.set('activities', [expiredActivity]);
 
@@ -208,7 +208,7 @@ describe('User Model', () => {
     it('should remove expired activities on initialize', () => {
       let userModel = new UserModel();
       const expiredActivity = getRandActivity();
-      expiredActivity.group_to_date = '2000-01-01';
+      expiredActivity.activity_to_date = '2000-01-01';
 
       userModel.set('activities', [expiredActivity, getRandActivity()]);
       userModel.save();
@@ -263,8 +263,8 @@ describe('User Model', () => {
             data: [
               {
                 id: 1,
-                group_from_date: '2016-05-03',
-                group_to_date: '2016-05-25',
+                activity_from_date: '2016-05-03',
+                activity_to_date: '2016-05-25',
               },
             ],
           }),
@@ -278,8 +278,8 @@ describe('User Model', () => {
           expect(parsedActivity.title).to.be.a('string');
           // expect(parsedActivity.description).to.be.a('string');
           // expect(parsedActivity.type).to.be.a('string');
-          // expect(parsedActivity.group_from_date).to.be.a('string');
-          // expect(parsedActivity.group_to_date).to.be.a('string');
+          // expect(parsedActivity.activity_from_date).to.be.a('string');
+          // expect(parsedActivity.activity_to_date).to.be.a('string');
           // expect(parsedActivity.synced_on).to.be.a('string');
         });
         server.respond();

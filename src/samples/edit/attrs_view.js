@@ -5,6 +5,18 @@ import Indicia from 'indicia';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
 
+const _addActivitiesLink = tpl => `${tpl}
+      <% if (obj.activity_title) { %>
+      <li class="table-view-cell">
+        <a href="#samples/<%- obj.id %>/edit/smp:activity" id="activity-button"
+           class="<%- obj.locks['smp:activity'] ? 'lock' : 'navigate-right' %>">
+          <span class="media-object pull-left icon icon-users"></span>
+          <span class="media-object pull-right descript"><%- obj['smp:activity_title'] %></span>
+          Activity
+        </a>
+      </li>
+      <% } %>`;
+
 function template(sample) {
   const survey = sample.getSurvey();
 
@@ -43,19 +55,9 @@ function template(sample) {
       </li>`;
   });
 
-  // add groups support
+  // add activities support
   if (survey.name === 'default') {
-    tpl += `
-      <% if (obj.group_title) { %>
-      <li class="table-view-cell">
-        <a href="#samples/<%- obj.id %>/edit/smp:activity" id="activity-button"
-           class="<%- obj.locks['activity'] ? 'lock' : 'navigate-right' %>">
-          <span class="media-object pull-left icon icon-users"></span>
-          <span class="media-object pull-right descript"><%- obj['smp:group_title'] %></span>
-          Activity
-        </a>
-      </li>
-      <% } %>`;
+    tpl = _addActivitiesLink(tpl);
   }
 
   return _.template(tpl);
@@ -107,14 +109,14 @@ export default Marionette.View.extend({
     });
 
     // show activity title.
-    const group = sample.get('group');
+    const activity = sample.get('activity');
 
     const serialized = {
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
-      group_title: group ? group.title : null,
-      group,
+      activity_title: activity ? activity.title : null,
+      activity,
       locks: attrLocks,
     };
 
@@ -147,7 +149,5 @@ export default Marionette.View.extend({
    * Returns the attribute value extracted from the view.
    * @returns {{}}
    */
-  getValues() {
-
-  }
+  getValues() {},
 });

@@ -16,16 +16,16 @@ import HeaderView from '../../views/header_view';
 import RefreshView from './refresh_view';
 
 /**
- * Model to hold details of an activity (group entity)
+ * Model to hold details of an activity (activity entity)
  */
 const ActivityModel = Backbone.Model.extend({
   defaults: {
     id: null,
     title: '',
     description: '',
-    group_type: '',
-    group_from_date: null,
-    group_to_date: null,
+    activity_type: '',
+    activity_from_date: null,
+    activity_to_date: null,
     checked: false,
   },
 });
@@ -64,7 +64,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
     let sampleActivity;
 
     if (sample) {
-      sampleActivity = sample.get('group');
+      sampleActivity = sample.get('activity');
     }
 
     const selectedActivity = sampleActivity || lockedActivity || {};
@@ -187,7 +187,7 @@ const API = {
   save(activity = {}) {
     const activityID = activity.id;
     if (sample) {
-      sample.set('group', userModel.getActivity(activityID));
+      sample.set('activity', userModel.getActivity(activityID));
       sample
         .save()
         .then(() => window.history.back()) // return to previous page after save

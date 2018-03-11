@@ -34,8 +34,8 @@ describe('App Model', () => {
         name: '',
         description: '',
         type: '',
-        group_from_date: '2015-01-01',
-        group_to_date: '2020-01-01',
+        activity_from_date: '2015-01-01',
+        activity_to_date: '2020-01-01',
       };
       return activity;
     }
@@ -43,7 +43,7 @@ describe('App Model', () => {
     it('should remove expired activity lock', () => {
       let appModel = new AppModel();
       const activity = getRandActivity();
-      activity.group_to_date = '2000-01-01';
+      activity.activity_to_date = '2000-01-01';
       appModel.setAttrLock('smp:activity', activity);
       appModel.save();
       expect(appModel.getAttrLock('smp:activity')).to.be.an('object');

@@ -72,7 +72,7 @@ describe('List Controller', function() {
     it('should call sample.setTaxon', done => {
       const sample = new Sample();
       sample.addOccurrence(new Occurrence());
-      API.setTaxon(sample, { group: 1 })
+      API.setTaxon(sample, { activity: 1 })
         .then(() => {
           expect(sampleSetTaxonStub.called).to.be.equal(true);
           done();

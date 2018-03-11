@@ -324,14 +324,14 @@ describe('Sample', () => {
         name: '',
         description: '',
         type: '',
-        group_from_date: '2015-01-01',
-        group_to_date: '2020-01-01',
+        activity_from_date: '2015-01-01',
+        activity_to_date: '2020-01-01',
       };
       return activity;
     }
     it('has functions', () => {
       const sample = new Sample();
-      expect(sample.checkExpiredGroup).to.be.a('function');
+      expect(sample.checkExpiredActivity).to.be.a('function');
     });
 
     it('should remove expired activities on init', done => {
@@ -339,9 +339,9 @@ describe('Sample', () => {
       const activity = getRandActivity();
       userModel.set('activities', [activity]);
       userModel.save();
-      sample.set('group', activity);
+      sample.set('activity', activity);
       sample.save().then(() => {
-        expect(sample.get('group')).to.be.an('object');
+        expect(sample.get('activity')).to.be.an('object');
 
         // expire activities
         userModel.set('activities', []);
@@ -351,7 +351,7 @@ describe('Sample', () => {
         const newCollection = new Collection([], { store, model: Sample });
         newCollection.fetch().then(() => {
           const newSample = newCollection.get(sample);
-          expect(newSample.get('group')).to.be.undefined;
+          expect(newSample.get('activity')).to.be.undefined;
           done();
         });
       });
@@ -363,14 +363,14 @@ describe('Sample', () => {
 
       // OK
       userModel.set('activities', [activity]);
-      sample.set('group', activity);
+      sample.set('activity', activity);
       userModel.trigger('sync:activities:end');
-      expect(sample.get('group')).to.be.an('object');
+      expect(sample.get('activity')).to.be.an('object');
 
       // expire
       userModel.set('activities', []);
       userModel.trigger('sync:activities:end');
-      expect(sample.get('group')).to.be.undefined;
+      expect(sample.get('activity')).to.be.undefined;
     });
   });
 

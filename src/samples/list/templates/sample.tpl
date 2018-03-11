@@ -11,8 +11,8 @@
     <% if (obj.training) { %>
     <div class="media-object pull-left training"></div>
     <% } %>
-    <% if (obj.group) { %>
-    <div class="media-object pull-left group"></div>
+    <% if (obj.activity) { %>
+    <div class="media-object pull-left activity"></div>
     <% } %>
     <div class="media-object pull-left photo"><%= obj.img %></div>
     <div class="pull-right">

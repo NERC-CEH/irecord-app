@@ -62,10 +62,9 @@ const survey = {
         max: () => new Date(),
       },
 
-      group: {
-        values(group) {
-          return group.id;
-        },
+      activity: {
+        id: 'group',
+        values: activity => activity.id,
         type: 'input',
       },
     },

@@ -129,7 +129,7 @@ const SampleView = Marionette.View.extend({
       number = StringHelp.limit(occ.get('number-ranges'));
     }
 
-    const group = sample.get('group');
+    const activity = sample.get('activity');
 
     const isDefaultSurvey =
       sample.getOccurrence().get('taxon') && // photo-first sample check
@@ -159,7 +159,7 @@ const SampleView = Marionette.View.extend({
       commentLocked: appModel.isAttrLocked(occ, 'comment', !isDefaultSurvey),
       numberLocked: appModel.isAttrLocked(occ, 'number', !isDefaultSurvey),
       stageLocked: appModel.isAttrLocked(occ, 'stage', !isDefaultSurvey),
-      group,
+      activity,
       img: img ? `<img src="${img}"/>` : '',
     };
   },

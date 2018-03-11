@@ -47,8 +47,8 @@ let Sample = Indicia.Sample.extend({
   },
 
   initialize() {
-    this.checkExpiredGroup(); // activities
-    this.listenTo(userModel, 'sync:activities:end', this.checkExpiredGroup);
+    this.checkExpiredActivity(); // activities
+    this.listenTo(userModel, 'sync:activities:end', this.checkExpiredActivity);
     this._setGPSlocationSetter();
   },
 
@@ -200,21 +200,21 @@ let Sample = Indicia.Sample.extend({
     };
   },
 
-  checkExpiredGroup() {
-    const activity = this.get('group');
+  checkExpiredActivity() {
+    const activity = this.get('activity');
     if (activity) {
       const expired = userModel.hasActivityExpired(activity);
       if (expired) {
         const newActivity = userModel.getActivity(activity.id);
         if (!newActivity) {
           // the old activity is expired and removed
-          Log('Sample:Group: removing exipired activity.');
-          this.unset('group');
+          Log('Sample:Activity: removing exipired activity.');
+          this.unset('activity');
           this.save();
         } else {
           // old activity has been updated
-          Log('Sample:Group: updating exipired activity.');
-          this.set('group', newActivity);
+          Log('Sample:Activity: updating exipired activity.');
+          this.set('activity', newActivity);
           this.save();
         }
       }

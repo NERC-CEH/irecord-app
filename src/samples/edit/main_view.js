@@ -42,7 +42,7 @@ export default Marionette.View.extend({
 
     let classes = 'attr-edit slim ';
 
-    if (sample.get('group')) {
+    if (sample.get('activity')) {
       amount++;
     }
 

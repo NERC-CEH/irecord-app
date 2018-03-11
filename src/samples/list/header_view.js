@@ -34,11 +34,11 @@ export default Marionette.View.extend({
   },
 
   serializeData() {
-    const group = this.model.getAttrLock('smp:activity');
+    const activity = this.model.getAttrLock('smp:activity');
 
     return {
       training: this.model.get('useTraining'),
-      group_title: group ? group.title : null,
+      activity_title: activity ? activity.title : null,
     };
   },
 });

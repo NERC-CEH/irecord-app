@@ -96,7 +96,7 @@
         top: 0;
       }
 
-      .group {
+      .activity {
         width: 7px;
         height: 100%;
         margin: 0;
@@ -107,7 +107,7 @@
         top: 0;
       }
 
-      .training + .group {
+      .training + .activity {
         left: 7px;
       }
 
@@ -182,7 +182,7 @@
         }
 
         //pull right
-        .group-status {
+        .activity-status {
           position: absolute;
           top: 30px;
           right: 40px;

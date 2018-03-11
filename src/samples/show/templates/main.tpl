@@ -56,10 +56,10 @@
     <span class="comment descript"><%- obj.identifiers %></span>
   </li>
   <% } %>
-  <% if (obj.group_title) { %>
+  <% if (obj.activity_title) { %>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-users"></span>
-    <span class="media-object pull-right descript"><%- obj.group_title %></span>
+    <span class="media-object pull-right descript"><%- obj.activity_title %></span>
     Activity
   </li>
   <% } %>

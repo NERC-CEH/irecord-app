@@ -113,7 +113,7 @@ const Factory = {
         case 'smp:activity':
           if (!userModel.hasActivityExpired(val)) {
             Log('SampleModel:AttrLocks: appending activity to the sample.');
-            sample.set('group', val);
+            sample.set('activity', val);
           } else {
             // unset the activity as it's now expired
             Log('SampleModel:AttrLocks: activity has expired.');

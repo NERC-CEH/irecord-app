@@ -89,12 +89,12 @@ export default {
     // check if out of range
     const today = new Date();
     let tooLate = false;
-    if (activity.group_to_date) {
-      tooLate = new Date(activity.group_to_date) < today;
+    if (activity.activity_to_date) {
+      tooLate = new Date(activity.activity_to_date) < today;
     }
     let tooEarly = false;
-    if (activity.group_from_date) {
-      tooEarly = new Date(activity.group_from_date) > today;
+    if (activity.activity_from_date) {
+      tooEarly = new Date(activity.activity_from_date) > today;
     }
 
     // activity not found in available list, or activity found but out of date range
@@ -133,9 +133,9 @@ export default {
         id: null,
         title: '',
         description: '',
-        group_type: '',
-        group_from_date: '',
-        group_to_date: '',
+        activity_type: '',
+        activity_from_date: '',
+        activity_to_date: '',
       };
 
       data.forEach(activity => {
@@ -144,16 +144,16 @@ export default {
 
         // from
         let date;
-        if (fullActivity.group_from_date) {
-          date = new Date(fullActivity.group_from_date);
-          fullActivity.group_from_date = date.toString();
+        if (fullActivity.activity_from_date) {
+          date = new Date(fullActivity.activity_from_date);
+          fullActivity.activity_from_date = date.toString();
         }
 
         // to
-        if (fullActivity.group_to_date) {
-          date = new Date(fullActivity.group_to_date);
+        if (fullActivity.activity_to_date) {
+          date = new Date(fullActivity.activity_to_date);
           date.setDate(date.getDate() + 1); // include the last day
-          fullActivity.group_to_date = date.toString();
+          fullActivity.activity_to_date = date.toString();
         }
         activities.push(fullActivity);
       });

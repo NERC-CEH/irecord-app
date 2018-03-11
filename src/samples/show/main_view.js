@@ -57,7 +57,7 @@ export default Marionette.View.extend({
     }
 
     // show activity title.
-    const group = sample.get('group');
+    const activity = sample.get('activity');
 
     return {
       id: occ.id,
@@ -75,7 +75,7 @@ export default Marionette.View.extend({
       stage: StringHelp.limit(occ.get('stage')),
       identifiers: occ.get('identifiers'),
       comment: occ.get('comment'),
-      group_title: group ? group.title : null,
+      activity_title: activity ? activity.title : null,
       media: occ.media,
     };
   },

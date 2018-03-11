@@ -42,7 +42,7 @@ describe('Edit Controller', () => {
       const sample = new Sample();
       sample.addOccurrence(new Occurrence());
 
-      API.updateTaxon(sample, { group: 1 })
+      API.updateTaxon(sample, { activity: 1 })
         .then(() => {
           expect(sampleSetTaxonStub.called).to.be.equal(true);
           done();

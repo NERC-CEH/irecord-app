@@ -65,7 +65,7 @@ export default Marionette.View.extend({
     }
 
     // show activity title.
-    const group = sample.get('group');
+    const activity = sample.get('activity');
 
     return {
       surveySampleID: sample.parent.cid,
@@ -85,8 +85,8 @@ export default Marionette.View.extend({
       stage: StringHelp.limit(occ.get('stage')),
       identifiers: StringHelp.limit(occ.get('identifiers')),
       comment: StringHelp.limit(occ.get('comment')),
-      group_title: group ? group.title : null,
-      group,
+      activity_title: activity ? activity.title : null,
+      activity,
     };
   },
 
