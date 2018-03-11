@@ -205,6 +205,20 @@ class DatabaseStorage {
   }
 }
 
+export function updateSamples(samples, callback) {
+  samples.each(sample => {
+    const group = sample.get('group');
+    if (group) {
+      Log('Update: moving a sample group to activity');
+      sample.set('activity', group);
+      sample.unset('group');
+      sample.save();
+    }
+  });
+
+  callback();
+}
+
 const API = {
   /**
    * Main update function.
@@ -281,7 +295,7 @@ const API = {
    * The sequence of updates that should take place.
    * @type {string[]}
    */
-  updatesSeq: ['2.0.0'],
+  updatesSeq: ['2.0.0', '3.0.0'],
 
   /**
    * Update functions.
@@ -363,6 +377,25 @@ const API = {
           });
         });
       });
+    },
+    '3.0.0': callback => {
+      Log('Update: version 3.0.0', 'i');
+
+      function onFinish() {
+        Log('Update: finished.', 'i');
+        callback();
+      }
+
+      if (savedSamples.fetching) {
+        Log('Update: waiting for samples collection to be ready', 'i');
+        savedSamples.once('fetching:done', () =>
+          updateSamples(savedSamples, onFinish)
+        );
+        savedSamples.once('fetching:error', callback);
+        return;
+      }
+
+      updateSamples(savedSamples, onFinish);
     },
   },
 
