@@ -105,7 +105,7 @@ export default {
 
     switch (fullAttrName) {
       case 'smp:activity':
-        value = model.get(attr);
+        value = model.get(attr) || {};
         return lockedVal.id === value.id;
       case 'smp:location':
         if (!lockedVal) {

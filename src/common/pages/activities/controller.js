@@ -60,7 +60,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
       return;
     }
 
-    const lockedActivity = appModel.getAttrLock('activity');
+    const lockedActivity = appModel.getAttrLock('smp:activity');
     let sampleActivity;
 
     if (sample) {
@@ -82,12 +82,12 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
     // add user activities
     const activitiesData = _.cloneDeep(userModel.get('activities'));
-    $.each(activitiesData, (index, activ) => {
+    $.each(activitiesData, (index, active) => {
       // todo:  server '71' == local 71
-      activ.checked = selectedActivity.id === activ.id; // eslint-disable-line
-      foundOneToCheck = foundOneToCheck || activ.checked;
+      active.checked = selectedActivity.id === active.id; // eslint-disable-line
+      foundOneToCheck = foundOneToCheck || active.checked;
 
-      this.add(new ActivityModel(activ));
+      this.add(new ActivityModel(active));
     });
   },
 });

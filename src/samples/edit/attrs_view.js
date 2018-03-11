@@ -5,18 +5,6 @@ import Indicia from 'indicia';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
 
-const _addActivitiesLink = tpl => `${tpl}
-      <% if (obj.activity_title) { %>
-      <li class="table-view-cell">
-        <a href="#samples/<%- obj.id %>/edit/smp:activity" id="activity-button"
-           class="<%- obj.locks['smp:activity'] ? 'lock' : 'navigate-right' %>">
-          <span class="media-object pull-left icon icon-users"></span>
-          <span class="media-object pull-right descript"><%- obj['smp:activity_title'] %></span>
-          Activity
-        </a>
-      </li>
-      <% } %>`;
-
 function template(sample) {
   const survey = sample.getSurvey();
 
@@ -55,11 +43,6 @@ function template(sample) {
       </li>`;
   });
 
-  // add activities support
-  if (survey.name === 'default') {
-    tpl = _addActivitiesLink(tpl);
-  }
-
   return _.template(tpl);
 }
 
@@ -90,7 +73,11 @@ export default Marionette.View.extend({
 
   tagName: 'ul',
   id: 'attrs',
-  className: 'table-view inputs no-top',
+  className() {
+    return `table-view inputs no-top ${
+      this.options.activityExists ? 'withActivity' : ''
+    }`;
+  },
 
   serializeData() {
     const sample = this.model.get('sample');
@@ -108,15 +95,10 @@ export default Marionette.View.extend({
       attrLocks[attr] = appModel.isAttrLocked(model, splitAttrName[1]);
     });
 
-    // show activity title.
-    const activity = sample.get('activity');
-
     const serialized = {
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
-      activity_title: activity ? activity.title : null,
-      activity,
       locks: attrLocks,
     };
 

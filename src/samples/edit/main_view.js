@@ -21,7 +21,13 @@ export default Marionette.View.extend({
   },
 
   onRender() {
-    const attrView = new AttrsView({ model: this.model });
+    const sample = this.model.get('sample');
+    const activity = sample.get('activity');
+
+    const attrView = new AttrsView({
+      model: this.model,
+      activityExists: !!activity,
+    });
     attrView.on('attr:update', (attr, value) =>
       this.trigger('attr:update', attr, value)
     );
@@ -81,6 +87,10 @@ export default Marionette.View.extend({
       attrLocks[attr] = appModel.isAttrLocked(model, attr.split(':')[1]);
     });
 
+    // show activity title.
+    const activity = sample.get('activity');
+    const activityTitle = activity ? activity.title : null;
+
     return {
       id: sample.cid,
       scientificName: StringHelp.limit(scientificName),
@@ -91,6 +101,7 @@ export default Marionette.View.extend({
       'smp:locationName': StringHelp.limit(location.name),
       'smp:date': DateHelp.print(sample.get('date'), true),
       'occ:comment': StringHelp.limit(occ.get('comment')),
+      'smp:activity': activityTitle,
       locks: attrLocks,
     };
   },

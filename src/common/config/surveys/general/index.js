@@ -11,6 +11,7 @@ export const coreAttributes = [
   'smp:location_type',
   'smp:date',
   'occ:comment',
+  'smp:activity',
 ];
 
 export default {

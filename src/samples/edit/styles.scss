@@ -46,6 +46,10 @@
     overflow: auto;
     border-bottom: none;
 
+    &.withActivity {
+      height: calc(100vh - 80px - 220px - 44px - 44px - 36px);
+    }
+
     .table-view-cell:last-child {
       border-bottom: 1px solid $color-gray;
     }
