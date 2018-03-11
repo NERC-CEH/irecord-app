@@ -116,7 +116,7 @@ export default {
       user: this.getUser.bind(this),
       password: this.getPassword.bind(this),
       params: {
-        path: 'some_string_to_pass',
+        path: 'enter-app-record',
       },
     });
 
