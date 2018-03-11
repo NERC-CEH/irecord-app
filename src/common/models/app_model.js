@@ -20,13 +20,11 @@ const AppModel = Backbone.Model.extend({
     useGridRef: true,
     useGridMap: true,
 
-    useExperiments: CONFIG.experiments,
+    useExperiments: false,
     useGridNotifications: false,
     gridSquareUnit: 'monad',
 
     taxonGroupFilters: [],
-
-    useTraining: CONFIG.training,
   },
 
   localStorage: new Store(CONFIG.name),

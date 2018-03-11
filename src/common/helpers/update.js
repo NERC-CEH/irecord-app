@@ -226,69 +226,34 @@ const API = {
   run(callback, silent = false) {
     const currentVersion = appModel.get('appVersion');
     const newVersion = CONFIG.version;
+    const currentBuild = appModel.get('appBuild');
+    const newBuild = CONFIG.build;
+
+    // when Beta testing we set training mode
+    if (currentVersion !== newVersion || currentBuild !== newBuild) {
+      appModel.set('useTraining', CONFIG.training);
+    }
+
+    if (currentBuild !== newBuild) {
+      appModel.set('appBuild', newBuild);
+      appModel.save();
+    }
 
     if (currentVersion !== newVersion) {
       // todo: check for backward downgrade
       // set new app version
-      API._updateAppVersion(currentVersion, newVersion);
+      appModel.set('appVersion', newVersion);
+      appModel.save();
 
       // first install
       if (!currentVersion) {
-        callback();
-      }
-
-      // find first update
-      const firstUpdate = API._findFirst(API.updatesSeq, currentVersion);
-      if (firstUpdate < 0) {
         return callback();
-      } // no update for this version
-
-      // hide loader
-      if (navigator && navigator.splashscreen) {
-        navigator.splashscreen.hide();
       }
 
-      if (!silent) {
-        radio.trigger('app:dialog:show', {
-          title: 'Updating',
-          body: 'This should take only a moment...',
-          hideAllowed: false,
-        });
-      }
-      const startTime = Date.now();
-
-      // apply all updates
-      return API._applyUpdates(firstUpdate, error => {
-        if (error) {
-          if (!silent) {
-            radio.trigger(
-              'app:dialog:error',
-              'Sorry, an error has occurred while updating the app'
-            );
-          }
-          return null;
-        }
-
-        const timeDiff = Date.now() - startTime;
-        if (timeDiff < MIN_UPDATE_TIME) {
-          setTimeout(() => {
-            if (!silent) {
-              radio.trigger('app:dialog:hide', true);
-            }
-            callback();
-          }, MIN_UPDATE_TIME - timeDiff);
-        } else {
-          if (!silent) {
-            radio.trigger('app:dialog:hide', true);
-          }
-          callback();
-        }
-        return null;
-      });
+      return API._initApplyUpdates(currentVersion, callback, silent);
     }
 
-    callback();
-    return null;
+    return callback();
   },
 
   /**
@@ -399,6 +364,59 @@ const API = {
     },
   },
 
+  _initApplyUpdates(currentVersion, callback, silent) {
+    // find first update
+    const firstUpdate = API._findFirst(API.updatesSeq, currentVersion);
+    if (firstUpdate < 0) {
+      return callback();
+    } // no update for this version
+
+    // hide loader
+    if (navigator && navigator.splashscreen) {
+      navigator.splashscreen.hide();
+    }
+
+    if (!silent) {
+      radio.trigger('app:dialog:show', {
+        title: 'Updating',
+        body: 'This should take only a moment...',
+        hideAllowed: false,
+      });
+    }
+    const startTime = Date.now();
+
+    // apply all updates
+    return API._applyUpdates(firstUpdate, error => {
+      if (error) {
+        if (!silent) {
+          radio.trigger(
+            'app:dialog:error',
+            'Sorry, an error has occurred while updating the app'
+          );
+        }
+        return null;
+      }
+
+      const timeDiff = Date.now() - startTime;
+      if (timeDiff < MIN_UPDATE_TIME) {
+        setTimeout(() => {
+          if (!silent) {
+            radio.trigger('app:dialog:hide', true);
+          }
+          callback();
+        }, MIN_UPDATE_TIME - timeDiff);
+      } else {
+        if (!silent) {
+          radio.trigger('app:dialog:hide', true);
+        }
+        callback();
+      }
+
+      Analytics.trackEvent('App', 'updated');
+      return null;
+    });
+  },
+
   /**
    * Returns the index of the first found update in sequence.
    * @param updatesSeq
@@ -460,16 +478,6 @@ const API = {
       API._applyUpdates(updateIndex + 1, callback);
       return null;
     });
-  },
-
-  _updateAppVersion(currentVersion, newVersion) {
-    appModel.set('appVersion', newVersion);
-    appModel.save();
-
-    // log only updates and not init as no prev value on init
-    if (currentVersion) {
-      Analytics.trackEvent('App', 'updated');
-    }
   },
 };
 

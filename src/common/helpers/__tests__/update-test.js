@@ -25,12 +25,11 @@ Update.updates = {
   },
 };
 
-let applyUpdatesSpy, appVerSpy, spy1, spy2, spy3, spy4;
+let applyUpdatesSpy, spy1, spy2, spy3, spy4;
 
 describe('Update', () => {
   beforeEach(() => {
     applyUpdatesSpy = sinon.spy(Update, '_applyUpdates');
-    appVerSpy = sinon.spy(Update, '_updateAppVersion');
 
     spy1 = sinon.spy(Update.updates, '3.0.0');
     spy2 = sinon.spy(Update.updates, '3.1.2');
@@ -40,7 +39,6 @@ describe('Update', () => {
 
   afterEach(() => {
     applyUpdatesSpy.restore();
-    appVerSpy.restore();
 
     spy1.restore();
     spy2.restore();
