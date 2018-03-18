@@ -81,7 +81,7 @@ const API = {
   },
 
   showGridNotification(location) {
-    const body = `<center><h1>${location.gridref}</h1></center>`;
+    const body = `<h1 style="text-align: center;">${location.gridref}</h1>`;
 
     radio.trigger('app:dialog', {
       title: 'Grid Square',
