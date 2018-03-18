@@ -88,11 +88,15 @@
     margin: 10px 0;
   }
 
-  div {
+  & > div {
     text-align: center;
     padding: 5px 20px;
     overflow: auto;
     overflow-x: hidden;
+
+    & * {
+      text-align: left;
+    }
   }
 }
 
