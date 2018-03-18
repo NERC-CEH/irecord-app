@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * A common webpack configuration.
- *****************************************************************************/
+ **************************************************************************** */
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -20,6 +20,10 @@ module.exports = {
   entry: {
     app: './main.js',
     vendor: './vendor.js',
+
+    // Enables utilities for manual testing
+    manualTestUtils:
+      process.env.APP_MANUAL_TESTING && '../test/manual-test-utils.js',
   },
   output: {
     path: path.resolve(__dirname, '../dist/main'),

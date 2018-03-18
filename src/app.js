@@ -18,7 +18,6 @@ import CommonController from './common/controller';
 import DialogRegion from './common/views/dialog_region';
 import HideableRegion from './common/views/hideable_region';
 import './common/router_extension';
-// import '../test/manual-testing';
 
 const App = new Marionette.Application();
 

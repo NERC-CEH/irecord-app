@@ -38,12 +38,10 @@ module.exports = config => {
     frameworks: ['mocha', 'chai', 'sinon'],
 
     files: [
-      { pattern: 'mocks.js', watched: false },
       { pattern: 'loader.js', watched: true },
     ],
 
     preprocessors: {
-      'mocks.js': ['webpack'],
       'loader.js': ['webpack'],
     },
 
