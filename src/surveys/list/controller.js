@@ -107,6 +107,7 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
+          class: 'btn-clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           },

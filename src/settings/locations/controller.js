@@ -81,18 +81,19 @@ const API = {
       body: editView,
       buttons: [
         {
+          title: 'Cancel',
+          class: 'btn-clear',
+          onClick() {
+            radio.trigger('app:dialog:hide');
+          },
+        },
+        {
           title: 'Save',
           class: 'btn-positive',
           onClick() {
             // update location
             const locationEdit = editView.getValues();
             appModel.setLocation(location.set(locationEdit).toJSON());
-            radio.trigger('app:dialog:hide');
-          },
-        },
-        {
-          title: 'Cancel',
-          onClick() {
             radio.trigger('app:dialog:hide');
           },
         },
