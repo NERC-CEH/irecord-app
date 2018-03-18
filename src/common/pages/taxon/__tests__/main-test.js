@@ -120,9 +120,9 @@ describe('Taxon Search Engine', () => {
           // eslint-disable-next-line
           searchEngine
             .search('X Cupressocyparis')
-            .then(results => {
-              expect(results).to.be.an('array');
-              expect(results.length).to.equal(1);
+            .then(cupressocyparisResults => {
+              expect(cupressocyparisResults).to.be.an('array');
+              expect(cupressocyparisResults.length).to.equal(1);
               done();
             })
             .catch(done);
@@ -143,9 +143,9 @@ describe('Taxon Search Engine', () => {
         // eslint-disable-next-line
         searchEngine
           .search('Jumping spiders')
-          .then(results => {
-            expect(results).to.be.an('array');
-            expect(results.length).to.equal(1);
+          .then(spidersResults => {
+            expect(spidersResults).to.be.an('array');
+            expect(spidersResults.length).to.equal(1);
             done();
           })
           .catch(done);
@@ -207,19 +207,17 @@ describe('Taxon Search Engine', () => {
         .search('Phytomyza ilicis')
         .then(results => {
           expect(results).to.not.be.empty;
-          const result = results[0];
+          let result = results[0];
 
           expect(result.warehouse_id).to.be.equal(229548);
           expect(result.scientific_name).to.be.equal('Phytomyza ilicis');
 
           // genus
-          // eslint-disable-next-line
           searchEngine
             .search('Rotaliella')
-            .then(results => {
-              expect(results).to.not.be.empty;
-              // eslint-disable-next-line
-              const result = results[0];
+            .then(rotaliellaResults => {
+              expect(rotaliellaResults).to.not.be.empty;
+              result = rotaliellaResults[0];
 
               expect(result.warehouse_id).to.be.equal(213771);
               expect(result.scientific_name).to.be.equal('Rotaliella');
@@ -228,10 +226,9 @@ describe('Taxon Search Engine', () => {
               // eslint-disable-next-line
               searchEngine
                 .search('Giant Blackberry')
-                .then(results => {
-                  expect(results).to.not.be.empty;
-                  // eslint-disable-next-line
-                  const result = results[0];
+                .then(blackberryResults => {
+                  expect(blackberryResults).to.not.be.empty;
+                  result = blackberryResults[0];
 
                   expect(result.warehouse_id).to.be.equal(208098);
                   expect(result.common_name).to.be.equal('Giant Blackberry');
@@ -243,24 +240,23 @@ describe('Taxon Search Engine', () => {
                   // eslint-disable-next-line
                   searchEngine
                     .search('cockle')
-                    .then(results => {
-                      expect(results).to.not.be.empty;
+                    .then(cockleResults => {
+                      expect(cockleResults).to.not.be.empty;
                       let found = false;
-                      results.forEach(species => {
+                      cockleResults.forEach(species => {
                         if (species.common_name === 'Heart Cockle') {
                           found = true;
                         }
                       });
                       expect(found).to.be.true;
 
-                      // eslint-disable-next-line
                       searchEngine
                         .search('blackthorn')
-                        .then(results => {
-                          expect(results).to.not.be.empty;
+                        .then(blackthornResults => {
+                          expect(blackthornResults).to.not.be.empty;
                           // eslint-disable-next-line
                           let found = false;
-                          results.forEach(species => {
+                          blackthornResults.forEach(species => {
                             if (species.common_name === 'Blackthorn') {
                               found = true;
                             }
