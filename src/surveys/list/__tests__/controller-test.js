@@ -19,7 +19,8 @@ describe('Surveys List Controller', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   beforeEach(done => {
@@ -27,7 +28,8 @@ describe('Surveys List Controller', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   after(done => {
@@ -37,7 +39,8 @@ describe('Surveys List Controller', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   afterEach(done => {
@@ -45,7 +48,8 @@ describe('Surveys List Controller', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   it('should have configs', () => {
@@ -71,9 +75,8 @@ describe('Surveys List Controller', () => {
           .and.to.be.instanceOf(Sample);
 
         expect(savedSurveySample.metadata.complex_survey).to.be.equal(true);
-
         done();
       })
-      .catch(err => done(err));
+      .catch(done);
   });
 });

@@ -231,19 +231,23 @@ describe('User Model', () => {
         JSON.stringify({ data: [activity] }),
       ]);
 
-      userModel.synchronizingActivities.then(() => {
-        sinon.spy(UserModel.prototype, 'fetchActivities');
+      userModel.synchronizingActivities
+        .then(() => {
+          sinon.spy(UserModel.prototype, 'fetchActivities');
 
-        clock.tick(1000 * 60 * 60 * 24); // 1day
-        userModel = new UserModel();
-        userModel.synchronizingActivities.then(() => {
-          expect(userModel.fetchActivities.called).to.be.true;
-          clock.restore();
-          userModel.fetchActivities.restore();
-          done();
-        });
-        server.respond();
-      });
+          clock.tick(1000 * 60 * 60 * 24); // 1day
+          userModel = new UserModel();
+          userModel.synchronizingActivities
+            .then(() => {
+              expect(userModel.fetchActivities.called).to.be.true;
+              clock.restore();
+              userModel.fetchActivities.restore();
+              done();
+            })
+            .catch(done);
+          server.respond();
+        })
+        .catch(done);
       server.respond();
     });
 

@@ -319,21 +319,27 @@ describe('Sample', () => {
       userModel.set('activities', [activity]);
       userModel.save();
       sample.set('activity', activity);
-      sample.save().then(() => {
-        expect(sample.get('activity')).to.be.an('object');
+      sample
+        .save()
+        .then(() => {
+          expect(sample.get('activity')).to.be.an('object');
 
-        // expire activities
-        userModel.set('activities', []);
-        userModel.save();
+          // expire activities
+          userModel.set('activities', []);
+          userModel.save();
 
-        // get the same sample - fresh
-        const newCollection = new Collection([], { store, model: Sample });
-        newCollection.fetch().then(() => {
-          const newSample = newCollection.get(sample);
-          expect(newSample.get('activity')).to.be.undefined;
-          done();
-        });
-      });
+          // get the same sample - fresh
+          const newCollection = new Collection([], { store, model: Sample });
+          newCollection
+            .fetch()
+            .then(() => {
+              const newSample = newCollection.get(sample);
+              expect(newSample.get('activity')).to.be.undefined;
+              done();
+            })
+            .catch(done);
+        })
+        .catch(done);
     });
 
     it('should remove expired activities on activities sync', () => {
@@ -469,6 +475,7 @@ describe('Sample', () => {
 
     it('should add a app version', done => {
       const sample = getFullRandomSample();
+
       const smpAttrs = sample.getSurvey().attrs.smp;
       const submission = {};
       sample

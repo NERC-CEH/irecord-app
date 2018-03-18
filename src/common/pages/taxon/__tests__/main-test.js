@@ -41,7 +41,10 @@ function getRandomSpecies() {
 describe('Taxon Search Engine', () => {
   before(done => {
     // todo: remove this as the engine should work without it!
-    searchEngine.init().then(done);
+    searchEngine
+      .init()
+      .then(done)
+      .catch(done);
   });
 
   it('should be an API object with search function', () => {
@@ -52,27 +55,36 @@ describe('Taxon Search Engine', () => {
 
   describe('search', () => {
     it('should accept a string and a callback', done => {
-      searchEngine.search('blackbird').then(() => {
-        done();
-      });
+      searchEngine
+        .search('blackbird')
+        .then(() => {
+          done();
+        })
+        .catch(done);
     });
 
     it('should accept both capitalized and lowercase strings', done => {
       searchEngine.search('blackbird').then(results => {
-        searchEngine.search('Blackbird').then(results2 => {
-          expect(results).to.deep.equal(results2);
-          done();
-        });
+        searchEngine
+          .search('Blackbird')
+          .then(results2 => {
+            expect(results).to.deep.equal(results2);
+            done();
+          })
+          .catch(done);
       });
     });
 
     describe('common names', () => {
       it('should look into middle names', done => {
-        searchEngine.search('woodpecker').then(results => {
-          expect(results).to.be.an('array');
-          expect(results.length > 0).to.be.true;
-          done();
-        });
+        searchEngine
+          .search('woodpecker')
+          .then(results => {
+            expect(results).to.be.an('array');
+            expect(results.length > 0).to.be.true;
+            done();
+          })
+          .catch(done);
       });
     });
 
@@ -91,23 +103,31 @@ describe('Taxon Search Engine', () => {
                 .then(resultsBracket => {
                   expect(results).to.deep.equal(resultsBracket);
                   done();
-                });
-            });
+                })
+                .catch(done);
+            })
+            .catch(done);
         });
       });
     });
     it('should accept hybrids', done => {
-      searchEngine.search('Caryopteris incana x mongholica =').then(results => {
-        expect(results).to.be.an('array');
-        expect(results.length).to.equal(1);
-
-        // eslint-disable-next-line
-        searchEngine.search('X Cupressocyparis').then(results => {
+      searchEngine
+        .search('Caryopteris incana x mongholica =')
+        .then(results => {
           expect(results).to.be.an('array');
           expect(results.length).to.equal(1);
-          done();
-        });
-      });
+
+          // eslint-disable-next-line
+          searchEngine
+            .search('X Cupressocyparis')
+            .then(results => {
+              expect(results).to.be.an('array');
+              expect(results.length).to.equal(1);
+              done();
+            })
+            .catch(done);
+        })
+        .catch(done);
     });
 
     it('should find genus common names', done => {
@@ -121,29 +141,35 @@ describe('Taxon Search Engine', () => {
         });
         expect(found).to.be.true;
         // eslint-disable-next-line
-        searchEngine.search('Jumping spiders').then(results => {
-          expect(results).to.be.an('array');
-          expect(results.length).to.equal(1);
-          done();
-        });
+        searchEngine
+          .search('Jumping spiders')
+          .then(results => {
+            expect(results).to.be.an('array');
+            expect(results.length).to.equal(1);
+            done();
+          })
+          .catch(done);
       });
     });
 
     describe('genus', () => {
       it('should add all species belonging to it', done => {
-        searchEngine.search('Puffinus').then(results => {
-          expect(results.length).to.be.equal(9);
-          const genus = results[0];
-          expect(genus.warehouse_id).to.be.equal(141974);
-          expect(genus.scientific_name).to.be.equal('Puffinus');
+        searchEngine
+          .search('Puffinus')
+          .then(results => {
+            expect(results.length).to.be.equal(9);
+            const genus = results[0];
+            expect(genus.warehouse_id).to.be.equal(141974);
+            expect(genus.scientific_name).to.be.equal('Puffinus');
 
-          const puffinusAsimilis = results[1];
-          expect(puffinusAsimilis.warehouse_id).to.be.equal(160697);
-          expect(puffinusAsimilis.scientific_name).to.be.equal(
-            'Puffinus assimilis'
-          );
-          done();
-        });
+            const puffinusAsimilis = results[1];
+            expect(puffinusAsimilis.warehouse_id).to.be.equal(160697);
+            expect(puffinusAsimilis.scientific_name).to.be.equal(
+              'Puffinus assimilis'
+            );
+            done();
+          })
+          .catch(done);
       });
     });
 
@@ -177,90 +203,113 @@ describe('Taxon Search Engine', () => {
     // });
 
     it('should work with selected taxa', done => {
-      searchEngine.search('Phytomyza ilicis').then(results => {
-        expect(results).to.not.be.empty;
-        const result = results[0];
-
-        expect(result.warehouse_id).to.be.equal(229548);
-        expect(result.scientific_name).to.be.equal('Phytomyza ilicis');
-
-        // genus
-        // eslint-disable-next-line
-        searchEngine.search('Rotaliella').then(results => {
+      searchEngine
+        .search('Phytomyza ilicis')
+        .then(results => {
           expect(results).to.not.be.empty;
-          // eslint-disable-next-line
           const result = results[0];
 
-          expect(result.warehouse_id).to.be.equal(213771);
-          expect(result.scientific_name).to.be.equal('Rotaliella');
+          expect(result.warehouse_id).to.be.equal(229548);
+          expect(result.scientific_name).to.be.equal('Phytomyza ilicis');
 
-          // common name
+          // genus
           // eslint-disable-next-line
-          searchEngine.search('Giant Blackberry').then(results => {
-            expect(results).to.not.be.empty;
-            // eslint-disable-next-line
-            const result = results[0];
-
-            expect(result.warehouse_id).to.be.equal(208098);
-            expect(result.common_name).to.be.equal('Giant Blackberry');
-            expect(result.scientific_name).to.be.equal('Rubus armeniacus');
-
-            // specific cases
-                          // eslint-disable-next-line
-            searchEngine.search('cockle').then(results => {
+          searchEngine
+            .search('Rotaliella')
+            .then(results => {
               expect(results).to.not.be.empty;
-              let found = false;
-              results.forEach(species => {
-                if (species.common_name === 'Heart Cockle') {
-                  found = true;
-                }
-              });
-              expect(found).to.be.true;
-
               // eslint-disable-next-line
-              searchEngine.search('blackthorn').then(results => {
-                expect(results).to.not.be.empty;
-                // eslint-disable-next-line
-                let found = false;
-                results.forEach(species => {
-                  if (species.common_name === 'Blackthorn') {
-                    found = true;
-                  }
-                });
-                expect(found).to.be.true;
-                done();
-              });
-            });
-          });
-        });
-      });
+              const result = results[0];
+
+              expect(result.warehouse_id).to.be.equal(213771);
+              expect(result.scientific_name).to.be.equal('Rotaliella');
+
+              // common name
+              // eslint-disable-next-line
+              searchEngine
+                .search('Giant Blackberry')
+                .then(results => {
+                  expect(results).to.not.be.empty;
+                  // eslint-disable-next-line
+                  const result = results[0];
+
+                  expect(result.warehouse_id).to.be.equal(208098);
+                  expect(result.common_name).to.be.equal('Giant Blackberry');
+                  expect(result.scientific_name).to.be.equal(
+                    'Rubus armeniacus'
+                  );
+
+                  // specific cases
+                  // eslint-disable-next-line
+                  searchEngine
+                    .search('cockle')
+                    .then(results => {
+                      expect(results).to.not.be.empty;
+                      let found = false;
+                      results.forEach(species => {
+                        if (species.common_name === 'Heart Cockle') {
+                          found = true;
+                        }
+                      });
+                      expect(found).to.be.true;
+
+                      // eslint-disable-next-line
+                      searchEngine
+                        .search('blackthorn')
+                        .then(results => {
+                          expect(results).to.not.be.empty;
+                          // eslint-disable-next-line
+                          let found = false;
+                          results.forEach(species => {
+                            if (species.common_name === 'Blackthorn') {
+                              found = true;
+                            }
+                          });
+                          expect(found).to.be.true;
+                          done();
+                        })
+                        .catch(done);
+                    })
+                    .catch(done);
+                })
+                .catch(done);
+            })
+            .catch(done);
+        })
+        .catch(done);
     });
 
     describe('return', () => {
       it('should be an array', done => {
-        searchEngine.search('blackbird').then(results => {
-          expect(results).to.be.an('array');
-          expect(results.length).to.equal(8);
-          done();
-        });
+        searchEngine
+          .search('blackbird')
+          .then(results => {
+            expect(results).to.be.an('array');
+            expect(results.length).to.equal(8);
+            done();
+          })
+          .catch(done);
       });
       it('should hold warehouse_id', done => {
-        searchEngine.search('blackbird').then(results => {
-          const result = results[0];
+        searchEngine
+          .search('blackbird')
+          .then(results => {
+            const result = results[0];
 
-          expect(result).to.be.an('object');
-          expect(result).to.have.all.keys(
-            'array_id',
-            'species_id',
-            'found_in_name',
-            'warehouse_id',
-            'group',
-            'scientific_name',
-            'common_name',
-            'synonym'
-          );
-          done();
-        });
+            expect(result).to.be.an('object');
+            expect(result).to.have.all.keys(
+              'array_id',
+              'species_id',
+              'found_in_name',
+              'warehouse_id',
+              'group',
+              'scientific_name',
+              'common_name',
+              'synonym'
+            );
+            done();
+          })
+          .catch(done);
       });
     });
   });

@@ -14,7 +14,8 @@ describe('Saved samples', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   beforeEach(done => {
@@ -22,7 +23,8 @@ describe('Saved samples', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   after(done => {
@@ -32,7 +34,8 @@ describe('Saved samples', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   afterEach(done => {
@@ -40,7 +43,8 @@ describe('Saved samples', () => {
     savedSamples
       .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   it('should be a Indicia Collection', () => {

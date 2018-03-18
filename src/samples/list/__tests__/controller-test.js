@@ -30,7 +30,8 @@ describe('List Controller', function() {
       savedSamples
         .fetch()
         .then(() => savedSamples.destroy())
-        .then(() => done());
+        .then(() => done())
+        .catch(done);
     });
 
     afterEach(done => {
@@ -38,7 +39,8 @@ describe('List Controller', function() {
       savedSamples
         .fetch()
         .then(() => savedSamples.destroy())
-        .then(() => done());
+        .then(() => done())
+        .catch(done);
     });
 
     it.skip('should create a new sample with a photo', done => {
