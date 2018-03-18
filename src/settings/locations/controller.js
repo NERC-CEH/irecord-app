@@ -65,7 +65,7 @@ const API = {
       onAttach() {
         const $input = this.$el.find('#location-name');
         $input.focus();
-        if (Device.isAndroid()) {
+        if (window.cordova && Device.isAndroid()) {
           window.Keyboard.show();
           $input.focusout(() => {
             window.Keyboard.hide();
