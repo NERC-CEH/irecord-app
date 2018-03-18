@@ -1,69 +1,95 @@
 module.exports = grunt => ({
-    default: ['init', 'jst', 'webpack:main'],
+  default: ['init', 'jst', 'webpack:main'],
 
-    init: ['exec:data', 'copy', 'vendor'],
+  init: ['init:validate', 'exec:data', 'copy', 'vendor'],
 
-    vendor: [
-      'replace:latlon',
-      'replace:ratchet',
-      'replace:ratchet_fonts',
-      'replace:fontello_fonts',
-      'replace:photoswipe',
-    ],
+  'init:validate': () => {
+    if (process.env.APP_FORCE) {
+      grunt.option('force', true);
+    }
 
-    // Development run
-    update: ['jst', 'webpack:main'],
+    // check for missing env vars
+    if (process.env.APP_MANUAL_TESTING) {
+      grunt.warn('APP_MANUAL_TESTING is enabled');
+    }
+    if (process.env.APP_TRAINING) {
+      grunt.warn('APP_TRAINING is enabled');
+    }
 
-    // Development update
-    dev: ['init', 'jst', 'webpack:dev'],
+    [
+      'APP_OS_MAP_KEY',
+      'APP_MAPBOX_MAP_KEY',
+      'APP_SENTRY_KEY',
+      'APP_INDICIA_API_KEY',
+      'APP_GA',
+    ].forEach(setting => {
+      if (!process.env[setting]) {
+        grunt.warn(`${setting} env variable is missing`);
+      }
+    });
+  },
 
-    // Development run
-    'dev:update': ['jst', 'webpack:dev'],
+  vendor: [
+    'replace:latlon',
+    'replace:ratchet',
+    'replace:ratchet_fonts',
+    'replace:fontello_fonts',
+    'replace:photoswipe',
+  ],
 
-    // Cordova set up
-    cordova: [
-      // prepare www source
-      'default',
+  // Development run
+  update: ['jst', 'webpack:main'],
 
-      // init cordova source
-      // add www source to cordova
-      'exec:cordova_init',
+  // Development update
+  dev: ['init', 'jst', 'webpack:dev'],
 
-      'exec:cordova_clean_www',
-      'exec:cordova_copy_dist',
-      'replace:cordova_config',
-      'replace:cordova_build',
-      'exec:cordova_add_platforms',
-    ],
+  // Development run
+  'dev:update': ['jst', 'webpack:dev'],
 
-    /**
-     * Updates cordova project - use after tinkering with src or congig
-     */
-    'cordova:update': [
-      'exec:cordova_clean_www',
-      'exec:cordova_copy_dist',
-      'replace:cordova_config',
-      'replace:cordova_build',
-      'exec:cordova_rebuild',
-    ],
+  // Cordova set up
+  cordova: [
+    // prepare www source
+    'default',
 
-    /**
-     * Runs the app to a connected Android device/emulator
-     */
-    'cordova:android:run': ['exec:cordova_run_android'],
+    // init cordova source
+    // add www source to cordova
+    'exec:cordova_init',
 
-    'cordova:android': [
-      'prompt:keystore',
-      'cordova:_prepAndroid',
-      'replace:cordova_config',
-      'replace:cordova_build',
-      'exec:cordova_android_build',
-    ],
+    'exec:cordova_clean_www',
+    'exec:cordova_copy_dist',
+    'replace:cordova_config',
+    'replace:cordova_build',
+    'exec:cordova_add_platforms',
+  ],
 
-    /**
-     * Sets up the right SDK version and package ID for the config generator
-     */
-    'cordova:_prepAndroid': () => {
-      grunt.option('android', true);
-    },
-  });
+  /**
+   * Updates cordova project - use after tinkering with src or congig
+   */
+  'cordova:update': [
+    'exec:cordova_clean_www',
+    'exec:cordova_copy_dist',
+    'replace:cordova_config',
+    'replace:cordova_build',
+    'exec:cordova_rebuild',
+  ],
+
+  /**
+   * Runs the app to a connected Android device/emulator
+   */
+  'cordova:android:run': ['exec:cordova_run_android'],
+
+  'cordova:android': [
+    'prompt:keystore',
+    'cordova:_prepAndroid',
+    'replace:cordova_config',
+    'replace:cordova_build',
+    'exec:cordova_android_build',
+  ],
+
+  /**
+   * Sets up the right SDK version and package ID for the config generator
+   */
+  'cordova:_prepAndroid': () => {
+    grunt.option('android', true);
+  },
+});

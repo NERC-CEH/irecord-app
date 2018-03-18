@@ -42,6 +42,13 @@ takes care of passing the ES6 code through Babel and pulling the code together
 to make an *dist/main/app.js* file that is loaded in the *index.html*.
 
 
+## Environmental Variables
+
+The app's build process requires certain environmental variables to be present. 
+If any missing then the build will fail. If you want to bypass this and force the build you
+can use `APP_FORCE=true` set to your environment. Alternatively, you can
+set all your vars to an `.env` file in the root dir.
+
 ## Style Guide
 
 The code is *[eslint](http://eslint.org)*'ed, to detect issues early on, so it is 
