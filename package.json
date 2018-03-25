@@ -4,7 +4,7 @@
   "title": "iRecord App",
   "description": "iRecord mobile application.",
   "version": "3.0.0",
-  "build": "4",
+  "build": "5",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "build": "grunt",
