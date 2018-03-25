@@ -129,10 +129,10 @@
       button in the attribute edit page header. This will change the symbol to
       locked <span class="icon icon-lock-closed"></span> both on the button and next to the attribute.
       <br><br>
-      Note: locations acquired through GPS can not be locked. Also, running the GPS on a record
-      that has a locked location will overwrite the location with the newly acquired GPS position
-      but will not overwrite the existing lock, so subsequent records will still
-      have the initially locked location.
+      <b>Note:</b> For a GPS-sourced location, only the location name can be locked, not the GPS value.
+      As you move about, the GPS value will change. This will allow recording of different
+      GPS values within an named area while keeping the location name the same. You can lock
+      a location if it is selected using a map or entered manually.
     </p>
   </li>
 
@@ -184,6 +184,9 @@
       from the settings page <span class="icon icon-settings"></span>. Swipe a location
       left and click edit <span class="icon icon-edit"></span> or delete
       <span class="icon icon-delete"></span> buttons.
+      <br><br>
+      <span class="location-favourite icon icon-star "></span> You can make your location stick to the top of the locations list
+      by clicking the Favourite toggle.
     </p>
   </li>
   <li class="table-view-cell">
