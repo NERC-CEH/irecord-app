@@ -24,6 +24,10 @@ module.exports = {
     // Enables utilities for manual testing
     manualTestUtils:
       process.env.APP_MANUAL_TESTING && '../test/manual-test-utils.js',
+
+    // Enables automatic screenshot taking for releases
+    screenshotsSetup:
+      process.env.APP_SCREENSHOTS && '../other/cordova/screenshots-setup.js',
   },
   output: {
     path: path.resolve(__dirname, '../dist/main'),
@@ -121,6 +125,7 @@ module.exports = {
           process.env.APP_INDICIA_API_HOST || ''
         ),
         APP_TRAINING: process.env.APP_TRAINING || false,
+        APP_SCREENSHOTS: process.env.APP_SCREENSHOTS || false,
         APP_EXPERIMENTS: process.env.APP_EXPERIMENTS || false,
         APP_SENTRY_KEY: JSON.stringify(process.env.APP_SENTRY_KEY || ''),
         APP_GA: JSON.stringify(process.env.APP_GA || false),

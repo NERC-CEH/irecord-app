@@ -8,14 +8,18 @@ module.exports = grunt => ({
       grunt.option('force', true);
     }
 
-    // check for missing env vars
+    // check for non-production specific env vars
     if (process.env.APP_MANUAL_TESTING) {
       grunt.warn('APP_MANUAL_TESTING is enabled');
     }
     if (process.env.APP_TRAINING) {
       grunt.warn('APP_TRAINING is enabled');
     }
+    if (process.env.APP_SCREENSHOTS) {
+      grunt.warn('APP_SCREENSHOTS is enabled');
+    }
 
+    // check for missing env vars
     [
       'APP_OS_MAP_KEY',
       'APP_MAPBOX_MAP_KEY',

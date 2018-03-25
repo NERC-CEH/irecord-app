@@ -92,19 +92,16 @@ App.on('start', () => {
           },
           false
         );
-      } else {
-        // development loader
-        $(document).ready(() => {
-          $('#loader').remove();
-        });
       }
 
-      // // For screenshots capture only
-      // import savedSamples from 'saved_samples';
-      // $(document).ready(() => {
-      //    window.testing.screenshotsPopulate(savedSamples);
-      //  });
-      //
+      // For screenshots capture only
+      if (process.env.APP_SCREENSHOTS) {
+        $(document).ready(() => {
+          appModel.clear().set(appModel.defaults);
+          appModel.save();
+          window.screenshotsPopulate();
+        });
+      }
     }
   });
 });
