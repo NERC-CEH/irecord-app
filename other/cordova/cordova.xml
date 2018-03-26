@@ -27,16 +27,16 @@
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
     <plugin name="cordova-plugin-camera" spec="~3.0.0" />
     <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Please</string>
+        <string>To access your camera when attaching images to records</string>
     </edit-config>
     <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Please</string>
+        <string>To access your photo library when attaching images to records</string>
     </edit-config>
     <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Please</string>
+        <string>To access your GPS when automatically attaching locations to records</string>
     </edit-config>
     <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Please</string>
+        <string>To access your photo library for attaching images to records</string>
     </edit-config>
     <plugin name="cordova-plugin-save-image" spec="~0.2.6" />
 
