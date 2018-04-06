@@ -1,10 +1,11 @@
-a:focus, a:hover {
+a:focus,
+a:hover {
   text-decoration: none;
 }
 
 ul.accordion {
   li {
-    a[data-toggle="collapse"] {
+    a[data-toggle='collapse'] {
       border-bottom: 1px solid $color-gray;
       background-color: $color-gray-light;
 
@@ -45,7 +46,6 @@ button {
   border: none;
 }
 
-
 /*************/
 /** typeahead */
 /*************/
@@ -79,4 +79,3 @@ button {
     width: 100%;
   }
 }
-

@@ -13,20 +13,19 @@
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-key"></label>
-    <input id="user-password" type="password" placeholder="Password" name="password" >
+    <input id="user-password" type="text" placeholder="Password" name="password" >
   </div>
   <div class="input-row">
     <label class="media-object pull-left icon icon-key"></label>
-    <input id="user-password-confirm" type="password" placeholder="Confirm password" name="password-confirm" >
+    <input id="user-password-confirm" type="text" placeholder="Confirm password" name="password-confirm" >
   </div>
 </div>
 
 
 <div class="table-view-cell input-row">
-  I agree to Terms and Conditions
+  I agree to <a href="#info/terms" style="display: inline; color: #91a71c;">Terms and Conditions</a>
   <div id="user-terms-agree" class="toggle no-yes">
     <div class="toggle-handle"></div>
   </div>
 </div>
-
 <button id="register-button" class="btn btn-narrow btn-positive btn-block">Create</button>

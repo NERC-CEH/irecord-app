@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * App object.
- *****************************************************************************/
+ **************************************************************************** */
 // polyfills
 import 'es6-promise/auto';
 
@@ -18,7 +18,6 @@ import CommonController from './common/controller';
 import DialogRegion from './common/views/dialog_region';
 import HideableRegion from './common/views/hideable_region';
 import './common/router_extension';
-// import '../test/manual-testing';
 
 const App = new Marionette.Application();
 
@@ -74,34 +73,35 @@ App.on('start', () => {
 
         // Although StatusB  ar in the global scope,
         // it is not available until after the deviceready event.
-        document.addEventListener('deviceready', () => {
-          Log('Showing the app.');
+        document.addEventListener(
+          'deviceready',
+          () => {
+            Log('Showing the app.');
 
-          // iOS make space for statusbar
-          if (Device.isIOS()) {
-            $('body').addClass('ios');
-          }
+            // iOS make space for statusbar
+            if (Device.isIOS()) {
+              $('body').addClass('ios');
+            }
 
-          // hide loader
-          if (navigator && navigator.splashscreen) {
-            navigator.splashscreen.hide();
-          }
+            // hide loader
+            if (navigator && navigator.splashscreen) {
+              navigator.splashscreen.hide();
+            }
 
-          Analytics.trackEvent('App', 'initialized');
-        }, false);
-      } else {
-        // development loader
-        $(document).ready(() => {
-          $('#loader').remove();
-        });
+            Analytics.trackEvent('App', 'initialized');
+          },
+          false
+        );
       }
 
-       // // For screenshots capture only
-       // import savedSamples from 'saved_samples';
-       // $(document).ready(() => {
-       //    window.testing.screenshotsPopulate(savedSamples);
-       //  });
-       //
+      // For screenshots capture only
+      if (process.env.APP_SCREENSHOTS) {
+        $(document).ready(() => {
+          appModel.clear().set(appModel.defaults);
+          appModel.save();
+          window.screenshotsPopulate();
+        });
+      }
     }
   });
 });
@@ -109,33 +109,42 @@ App.on('start', () => {
 // events
 radio.on('app:restart', App.restart);
 
-radio.on('app:dialog', (options) => {
+radio.on('app:dialog', options => {
   App.regions.getRegion('dialog').show(options);
 });
-radio.on('app:dialog:hide', (options) => {
+radio.on('app:dialog:hide', options => {
   App.regions.getRegion('dialog').hide(options);
 });
-radio.on('app:dialog:error', (options) => {
+radio.on('app:dialog:error', options => {
   App.regions.getRegion('dialog').error(options);
 });
 
-radio.on('app:main', (view) => {
+radio.on('app:main', view => {
   App.regions.getRegion('main').show(view);
 });
-radio.on('app:header', (view) => {
+radio.on('app:header', view => {
   App.regions.getRegion('header').show(view);
 });
-radio.on('app:footer', (view) => {
+radio.on('app:footer', view => {
   App.regions.getRegion('footer').show(view);
 });
-radio.on('app:main:hide', (options) => {
-  App.regions.getRegion('main').hide(options).empty();
+radio.on('app:main:hide', options => {
+  App.regions
+    .getRegion('main')
+    .hide(options)
+    .empty();
 });
-radio.on('app:header:hide', (options) => {
-  App.regions.getRegion('header').hide(options).empty();
+radio.on('app:header:hide', options => {
+  App.regions
+    .getRegion('header')
+    .hide(options)
+    .empty();
 });
-radio.on('app:footer:hide', (options) => {
-  App.regions.getRegion('footer').hide(options).empty();
+radio.on('app:footer:hide', options => {
+  App.regions
+    .getRegion('footer')
+    .hide(options)
+    .empty();
 });
 
 radio.on('app:loader', () => {
@@ -144,7 +153,6 @@ radio.on('app:loader', () => {
 radio.on('app:loader:hide', () => {
   App.regions.getRegion('dialog').hideLoader();
 });
-
 
 radio.on('app:404:show', () => {
   CommonController.show({
@@ -155,4 +163,3 @@ radio.on('app:404:show', () => {
 });
 
 export { App as default };
-

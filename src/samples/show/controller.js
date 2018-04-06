@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Show controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import radio from 'radio';
 import Log from 'helpers/log';
@@ -15,9 +15,8 @@ const API = {
   show(sampleID) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID]);
+        API.show.apply(this, [sampleID]);
       });
       return;
     }
@@ -58,11 +57,10 @@ const API = {
         return;
       }
 
-      sample.save(null, { remote: true })
-        .catch((err) => {
-          Log(err, 'e');
-          radio.trigger('app:dialog:error', err);
-        });
+      sample.save(null, { remote: true }).catch(err => {
+        Log(err, 'e');
+        radio.trigger('app:dialog:error', err);
+      });
     } else {
       radio.trigger('app:dialog:error', {
         message: 'Looks like you are offline!',

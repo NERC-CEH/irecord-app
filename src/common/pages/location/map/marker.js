@@ -88,15 +88,13 @@ const marker = {
     this.marker.addTo(this.map);
   },
 
-
   /**
    * Generates a polygon.
    * @param location
    * @returns {*}
    */
   generateRectangleMarker(location, options = {}) {
-    const dimensions = LocHelp.getSquareBounds(location) ||
-      [[0, 0], [0, 0]];
+    const dimensions = LocHelp.getSquareBounds(location) || [[0, 0], [0, 0]];
 
     const newMarker = L.polygon(dimensions, {
       color: options.color || 'red',

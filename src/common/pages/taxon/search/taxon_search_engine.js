@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Generates species list suggestions.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Log from 'helpers/log';
@@ -17,17 +17,20 @@ const MAX = 20;
 const API = {
   init() {
     Log('Taxon search engine: initializing.');
-    const that = this;
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       loading = true;
-      require.ensure([], () => {
-        loading = false;
-        species = require('species.data'); // eslint-disable-line
-        commonNamePointers = require('species_names.data'); // eslint-disable-line
-        that.trigger('data:loaded');
-        resolve();
-      }, 'data');
+      require.ensure(
+        [],
+        () => {
+          loading = false;
+          species = require('species.data'); // eslint-disable-line
+          commonNamePointers = require('species_names.data'); // eslint-disable-line
+          this.trigger('data:loaded');
+          resolve();
+        },
+        'data'
+      );
     });
   },
 
@@ -55,18 +58,15 @@ const API = {
 
     // check if data exists
     if (!species) {
-      const that = this;
-
       // initialise data load
       if (!loading) {
-        return API.init()
-          .then(() => API.search(searchPhrase || '', options));
+        return API.init().then(() => API.search(searchPhrase || '', options));
       }
 
       // wait until loaded
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         // the process has started, wait until done
-        that.on('data:loaded', () => {
+        this.on('data:loaded', () => {
           API.search(searchPhrase || '', options).then(resolve);
         });
       });
@@ -83,17 +83,35 @@ const API = {
     const isScientific = helpers.isPhraseScientific(normSearchPhrase);
     if (isScientific || scientificOnly) {
       // search sci names
-      searchSciNames(species, normSearchPhrase,
-        results, maxResults, null, informalGroups);
+      searchSciNames(
+        species,
+        normSearchPhrase,
+        results,
+        maxResults,
+        null,
+        informalGroups
+      );
     } else {
       // search common names
-      results = searchCommonNames(species, commonNamePointers, normSearchPhrase, MAX, informalGroups);  // eslint-disable-line
+      results = searchCommonNames(
+        species,
+        commonNamePointers,
+        normSearchPhrase,
+        MAX,
+        informalGroups
+      ); // eslint-disable-line
 
       // if not enough
       if (results.length <= MAX) {
         // search sci names
-        searchSciNames(species, normSearchPhrase,
-          results, MAX, null, informalGroups);
+        searchSciNames(
+          species,
+          normSearchPhrase,
+          results,
+          MAX,
+          null,
+          informalGroups
+        );
       }
     }
 

@@ -1,12 +1,11 @@
 /** ****************************************************************************
  * Surveys List main view.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import InputView from 'common/views/inputView';
 import TextareaView from 'common/views/textareaInputView';
-import CONFIG from 'config';
 import viceCounties from 'vice_counties.data';
 import RecordersAttrView from './recordersAttrView';
 
@@ -36,7 +35,7 @@ export default Marionette.View.extend({
    */
   _getAttrView() {
     const sample = this.model;
-    const surveyConfig = CONFIG.indicia.surveys.plant;
+    const surveyAttrs = sample.getSurvey().attrs;
     let attrView;
     switch (this.options.attr) {
       case 'date':
@@ -48,14 +47,14 @@ export default Marionette.View.extend({
         break;
       case 'recorders':
         attrView = new RecordersAttrView({
-          config: surveyConfig.sample.recorders,
+          config: surveyAttrs.smp.recorders,
           default: sample.get('recorders') || [],
         });
         break;
 
       case 'vice-county':
         const codes = [];
-        const names = viceCounties.map((a) => {
+        const names = viceCounties.map(a => {
           codes.push(a.code);
           return a.name;
         });
@@ -64,7 +63,7 @@ export default Marionette.View.extend({
         const value = sample.get('vice-county') || {};
 
         attrView = new InputView({
-          config: surveyConfig.sample['vice-county'],
+          config: surveyAttrs.smp['vice-county'],
           typeahead,
           default: value.name,
         });
@@ -72,7 +71,7 @@ export default Marionette.View.extend({
 
       case 'comment':
         attrView = new TextareaView({
-          config: surveyConfig.sample.comment,
+          config: surveyAttrs.smp.comment,
           default: sample.get('comment'),
         });
         break;

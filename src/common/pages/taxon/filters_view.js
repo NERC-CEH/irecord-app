@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Species List filter view.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import informalGroups from 'informal_groups.data';

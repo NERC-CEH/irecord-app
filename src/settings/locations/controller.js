@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Settings Locations controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import radio from 'radio';
@@ -65,7 +65,7 @@ const API = {
       onAttach() {
         const $input = this.$el.find('#location-name');
         $input.focus();
-        if (Device.isAndroid()) {
+        if (window.cordova && Device.isAndroid()) {
           window.Keyboard.show();
           $input.focusout(() => {
             window.Keyboard.hide();
@@ -81,18 +81,19 @@ const API = {
       body: editView,
       buttons: [
         {
+          title: 'Cancel',
+          class: 'btn-clear',
+          onClick() {
+            radio.trigger('app:dialog:hide');
+          },
+        },
+        {
           title: 'Save',
           class: 'btn-positive',
           onClick() {
             // update location
             const locationEdit = editView.getValues();
             appModel.setLocation(location.set(locationEdit).toJSON());
-            radio.trigger('app:dialog:hide');
-          },
-        },
-        {
-          title: 'Cancel',
-          onClick() {
             radio.trigger('app:dialog:hide');
           },
         },

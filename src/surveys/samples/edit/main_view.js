@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys Sample Edit main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import $ from 'jquery';
 import Indicia from 'indicia';
@@ -26,7 +26,11 @@ export default Marionette.View.extend({
 
   initialize() {
     const sample = this.model.get('sample');
-    this.listenTo(sample, 'request:remote error:remote geolocation', this.render);
+    this.listenTo(
+      sample,
+      'request:remote error:remote geolocation',
+      this.render
+    );
   },
 
   onSettingToggled(e) {
@@ -47,7 +51,6 @@ export default Marionette.View.extend({
     const sample = this.model.get('sample');
     const occ = sample.getOccurrence();
     const specie = occ.get('taxon') || {};
-    const appModel = this.model.get('appModel');
 
     // taxon
     const scientificName = specie.scientific_name;
@@ -56,31 +59,13 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
-    if (!numberLock) {
-      numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
-    }
-
-    const attrLocks = {
-      date: appModel.isAttrLocked('date', sample.get('date')),
-      location: appModel.isAttrLocked('location', sample.get('location')),
-      number: numberLock,
-      sensitive: occ.metadata.sensitivity_precision,
-      abundance: appModel.isAttrLocked('abundance', occ.get('abundance')),
-      stage: appModel.isAttrLocked('stage', occ.get('stage')),
-      status: appModel.isAttrLocked('status', occ.get('status')),
-      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
-      comment: appModel.isAttrLocked('comment', occ.get('comment')),
-      activity: appModel.isAttrLocked('activity', sample.get('group')),
-    };
-
-    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
+    let number = StringHelp.limit(occ.get('number'));
     if (!number) {
-      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+      number = StringHelp.limit(occ.get('number-ranges'));
     }
 
     // show activity title.
-    const group = sample.get('group');
+    const activity = sample.get('activity');
 
     return {
       surveySampleID: sample.parent.cid,
@@ -95,14 +80,13 @@ export default Marionette.View.extend({
       locationEditAllowed: this.options.locationEditAllowed,
       date: DateHelp.print(sample.get('date'), true),
       number,
-      abundance: occ.get('abundance') && StringHelp.limit(occ.get('abundance')),
-      status: occ.get('status') && StringHelp.limit(occ.get('status')),
-      stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
-      identifiers: occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
-      comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
-      group_title: group ? group.title : null,
-      group,
-      locks: attrLocks,
+      abundance: StringHelp.limit(occ.get('abundance')),
+      status: StringHelp.limit(occ.get('status')),
+      stage: StringHelp.limit(occ.get('stage')),
+      identifiers: StringHelp.limit(occ.get('identifiers')),
+      comment: StringHelp.limit(occ.get('comment')),
+      activity_title: activity ? activity.title : null,
+      activity,
     };
   },
 

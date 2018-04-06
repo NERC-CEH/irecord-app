@@ -1,1 +1,3 @@
-<a id="refresh-btn" class="icon icon-arrows-cw">Refresh</a>
+<a id="refresh-btn" class="icon icon-arrows-cw">
+  Refresh
+</a>

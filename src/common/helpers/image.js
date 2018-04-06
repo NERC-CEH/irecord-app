@@ -1,11 +1,24 @@
 /** ****************************************************************************
  * Functions to work with media.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 import _ from 'lodash';
 import Log from './log';
 import Analytics from './analytics';
 import Device from './device';
+
+export function _onGetImageError(err = '', resolve, reject) {
+  const e = err.toLowerCase();
+  if (
+    e.includes('has no access') ||
+    e.includes('cancelled') ||
+    e.includes('selected')
+  ) {
+    resolve(); // no image selected
+    return;
+  }
+  reject(err);
+}
 
 const Image = {
   deleteInternalStorage(name, callback) {
@@ -116,14 +129,7 @@ const Image = {
 
       navigator.camera.getPicture(
         onSuccess,
-        err => {
-          const e = err.toLowerCase();
-          if (e.includes('cancelled') || e.includes('selected')) {
-            resolve(); // no image selected
-            return;
-          }
-          reject(err);
-        },
+        err => _onGetImageError(err, resolve, reject),
         cameraOptions
       );
       Analytics.trackEvent('Image', 'get', cameraOptions.sourceType);

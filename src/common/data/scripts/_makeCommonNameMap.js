@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Extract common names as pointers in an array.
- *****************************************************************************/
+ **************************************************************************** */
 
 /* eslint-disable */
 
@@ -32,7 +32,7 @@ const helpers = {
   },
 };
 
-module.exports = (species) => {
+module.exports = species => {
   const commonNames = []; // eg. first second third
 
   /**
@@ -74,15 +74,31 @@ module.exports = (species) => {
     }
 
     if (speciesArray) {
-      for (let k = 0, speciesLength = speciesArray.length; k < speciesLength; k++) {
+      for (
+        let k = 0, speciesLength = speciesArray.length;
+        k < speciesLength;
+        k++
+      ) {
         const speciesInArray = speciesArray[k];
         // add common names
         if (speciesInArray[SPECIES_COMMON_INDEX]) {
-          addWord(speciesInArray[SPECIES_COMMON_INDEX], i, j, k, SPECIES_COMMON_INDEX);
+          addWord(
+            speciesInArray[SPECIES_COMMON_INDEX],
+            i,
+            j,
+            k,
+            SPECIES_COMMON_INDEX
+          );
         }
         // add synonyms
         if (speciesInArray[SPECIES_COMMON_SYN_INDEX]) {
-          addWord(speciesInArray[SPECIES_COMMON_SYN_INDEX], i, j, k, SPECIES_COMMON_SYN_INDEX);
+          addWord(
+            speciesInArray[SPECIES_COMMON_SYN_INDEX],
+            i,
+            j,
+            k,
+            SPECIES_COMMON_SYN_INDEX
+          );
         }
       }
     }
@@ -110,4 +126,4 @@ module.exports = (species) => {
   }
 
   return commonNames;
-}
+};

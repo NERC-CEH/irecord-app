@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * App model. Persistent.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
 import CONFIG from 'config';
@@ -15,18 +15,16 @@ const AppModel = Backbone.Model.extend({
     showWelcome: true,
 
     locations: [],
-    attrLocks: {},
+    attrLocks: { general: {}, complex: {} },
     autosync: true,
     useGridRef: true,
     useGridMap: true,
 
-    useExperiments: CONFIG.experiments,
+    useExperiments: false,
     useGridNotifications: false,
     gridSquareUnit: 'monad',
 
     taxonGroupFilters: [],
-
-    useTraining: CONFIG.training,
   },
 
   localStorage: new Store(CONFIG.name),

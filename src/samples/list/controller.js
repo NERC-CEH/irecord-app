@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample List controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 import radio from 'radio';
 import Log from 'helpers/log';
@@ -19,9 +19,8 @@ const API = {
     Log(`Samples:List:Controller: showing ${savedSamples.length}.`);
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that);
+        API.show.apply(this);
       });
       radio.trigger('app:main', new LoaderView());
     } else {
@@ -31,7 +30,7 @@ const API = {
     // HEADER
     const headerView = new HeaderView({ model: appModel });
 
-    headerView.on('photo:upload', (e) => {
+    headerView.on('photo:upload', e => {
       const photo = e.target.files[0];
       API.photoUpload(photo);
     });
@@ -68,7 +67,7 @@ const API = {
       radio.trigger('samples:edit:attr', childView.model.cid, attr);
     });
 
-    mainView.on('childview:taxon:add', (childView) => {
+    mainView.on('childview:taxon:add', childView => {
       const sample = childView.model;
       radio.trigger('samples:edit:attr', sample.cid, 'taxon', {
         onSuccess(taxon, editButtonClicked) {
@@ -78,7 +77,7 @@ const API = {
       });
     });
 
-    mainView.on('childview:sample:delete', (childView) => {
+    mainView.on('childview:sample:delete', childView => {
       API.sampleDelete(childView.model);
     });
 
@@ -89,7 +88,8 @@ const API = {
     Log('Samples:List:Controller: deleting sample.');
 
     const syncStatus = sample.getSyncStatus();
-    let body = 'This record hasn\'t been saved to iRecord yet, ' +
+    let body =
+      "This record hasn't been saved to iRecord yet, " +
       'are you sure you want to remove it from your device?';
 
     if (syncStatus === Indicia.SYNCED) {
@@ -102,6 +102,7 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
+          class: 'btn-clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           },
@@ -135,9 +136,12 @@ const API = {
         {
           title: 'Camera',
           onClick() {
-            ImageHelp.getImage().then((entry) => {
-             entry && API.createNewSampleWithPhoto('general', entry.nativeURL);
-            }).catch(showErrMsg);
+            ImageHelp.getImage()
+              .then(entry => {
+                entry &&
+                  API.createNewSampleWithPhoto('general', entry.nativeURL);
+              })
+              .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
@@ -147,9 +151,16 @@ const API = {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
-            }).then((entry) => {
-              entry && API.createNewSampleWithPhoto('general', entry.nativeURL, () => {});
-            }).catch(showErrMsg);
+            })
+              .then(entry => {
+                entry &&
+                  API.createNewSampleWithPhoto(
+                    'general',
+                    entry.nativeURL,
+                    () => {}
+                  );
+              })
+              .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
@@ -157,14 +168,15 @@ const API = {
     });
   },
 
-  createNewSampleWithPhoto() {
-    Factory.createSampleWithPhoto.apply(this, arguments)
+  createNewSampleWithPhoto(...args) {
+    Factory.createSampleWithPhoto
+      .apply(this, args)
       .then(sample => sample.save())
-      .then((sample) => {
+      .then(sample => {
         // add to main collection
         savedSamples.add(sample);
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
@@ -175,7 +187,7 @@ const API = {
       onSuccess(taxon, editButtonClicked) {
         Factory.createSample('general', null, taxon)
           .then(sample => sample.save())
-          .then((sample) => {
+          .then(sample => {
             // add to main collection
             savedSamples.add(sample);
 
@@ -200,16 +212,17 @@ const API = {
    * @returns {*}
    */
   setTaxon(sample, taxon, editButtonClicked) {
-    sample.getOccurrence().set('taxon', taxon);
-    // return to previous - edit page
-    return sample.save().then(() => {
-      if (editButtonClicked) {
-        radio.trigger('samples:edit', sample.cid, { replace: true });
-      } else {
-        // return back to list page
-        window.history.back();
-      }
-    });
+    return sample
+      .setTaxon(taxon)
+      .then(() => sample.save())
+      .then(() => {
+        if (editButtonClicked) {
+          radio.trigger('samples:edit', sample.cid, { replace: true });
+        } else {
+          // return back to list page
+          window.history.back();
+        }
+      });
   },
 };
 

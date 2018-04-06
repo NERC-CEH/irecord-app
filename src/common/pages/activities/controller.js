@@ -1,6 +1,6 @@
 /** *****************************************************************************
  * Activities List controller.
- ******************************************************************************/
+ ***************************************************************************** */
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
@@ -16,16 +16,16 @@ import HeaderView from '../../views/header_view';
 import RefreshView from './refresh_view';
 
 /**
- * Model to hold details of an activity (group entity)
+ * Model to hold details of an activity (activity entity)
  */
 const ActivityModel = Backbone.Model.extend({
   defaults: {
     id: null,
     title: '',
     description: '',
-    group_type: '',
-    group_from_date: null,
-    group_to_date: null,
+    activity_type: '',
+    activity_from_date: null,
+    activity_to_date: null,
     checked: false,
   },
 });
@@ -37,15 +37,18 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
   initialize() {
     Log('Activities:Controller: initializing collection.');
-    const that = this;
 
     this.updateActivitiesCollection();
 
     this.listenTo(userModel, 'sync:activities:start', () => {
       Log('Activities:Controller: reseting collection for sync.');
-      that.reset();
+      this.reset();
     });
-    this.listenTo(userModel, 'sync:activities:end', this.updateActivitiesCollection);
+    this.listenTo(
+      userModel,
+      'sync:activities:end',
+      this.updateActivitiesCollection
+    );
   },
 
   updateActivitiesCollection() {
@@ -57,12 +60,11 @@ const ActivitiesCollection = Backbone.Collection.extend({
       return;
     }
 
-    const that = this;
-    const lockedActivity = appModel.getAttrLock('activity');
+    const lockedActivity = appModel.getAttrLock('smp:activity');
     let sampleActivity;
 
     if (sample) {
-      sampleActivity = sample.get('group');
+      sampleActivity = sample.get('activity');
     }
 
     const selectedActivity = sampleActivity || lockedActivity || {};
@@ -80,12 +82,12 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
     // add user activities
     const activitiesData = _.cloneDeep(userModel.get('activities'));
-    $.each(activitiesData, (index, activ) => {
+    $.each(activitiesData, (index, active) => {
       // todo:  server '71' == local 71
-      activ.checked = selectedActivity.id === activ.id; // eslint-disable-line
-      foundOneToCheck = foundOneToCheck || activ.checked;
+      active.checked = selectedActivity.id === active.id; // eslint-disable-line
+      foundOneToCheck = foundOneToCheck || active.checked;
 
-      that.add(new ActivityModel(activ));
+      this.add(new ActivityModel(active));
     });
   },
 });
@@ -130,9 +132,8 @@ const API = {
     if (sampleID) {
       // wait till savedSamples is fully initialized
       if (savedSamples.fetching) {
-        const that = this;
         savedSamples.once('fetching:done', () => {
-          API.show.apply(that, [sampleID]);
+          API.show.apply(this, [sampleID]);
         });
         return;
       }
@@ -176,26 +177,26 @@ const API = {
   },
 
   refreshActivities() {
-    userModel.syncActivities(true)
-      .catch((err) => {
-        Log(err, 'e');
-        radio.trigger('app:dialog:error', err);
-      });
+    userModel.syncActivities(true).catch(err => {
+      Log(err, 'e');
+      radio.trigger('app:dialog:error', err);
+    });
     Analytics.trackEvent('Activities', 'refresh');
   },
 
   save(activity = {}) {
     const activityID = activity.id;
     if (sample) {
-      sample.set('group', userModel.getActivity(activityID));
-      sample.save()
+      sample.set('activity', userModel.getActivity(activityID));
+      sample
+        .save()
         .then(() => window.history.back()) // return to previous page after save
-        .catch((err) => {
+        .catch(err => {
           Log(err, 'e');
           radio.trigger('app:dialog:error', err);
         });
     } else {
-      appModel.setAttrLock('activity', userModel.getActivity(activityID));
+      appModel.setAttrLock('smp:activity', userModel.getActivity(activityID));
       // return to previous page after save
       window.history.back();
     }
@@ -207,13 +208,16 @@ const API = {
   userLoginMessage() {
     radio.trigger('app:dialog', {
       title: 'Information',
-      body: 'Please log in to the app before selecting an alternative ' +
-      'activity for your records.',
-      buttons: [{
-        id: 'ok',
-        title: 'OK',
-        onClick: App.regions.getRegion('dialog').hide,
-      }],
+      body:
+        'Please log in to the app before selecting an alternative ' +
+        'activity for your records.',
+      buttons: [
+        {
+          id: 'ok',
+          title: 'OK',
+          onClick: App.regions.getRegion('dialog').hide,
+        },
+      ],
     });
   },
 };

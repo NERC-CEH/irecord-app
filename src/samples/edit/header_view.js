@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Edit header view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
 import JST from 'JST';
@@ -27,13 +27,12 @@ export default Marionette.View.extend({
 
   serializeData() {
     // show activity title.
-    const group = this.model.get('group');
+    const activity = this.model.get('activity');
 
     return {
-      group_title: group ? group.title : null,
+      activity_title: activity ? activity.title : null,
       training: this.model.metadata.training,
       isSynchronising: this.model.getSyncStatus() === Indicia.SYNCHRONISING,
     };
   },
 });
-

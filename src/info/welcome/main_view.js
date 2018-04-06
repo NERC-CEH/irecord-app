@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Info Menu main view.
- *****************************************************************************/
+ **************************************************************************** */
 
 import $ from 'jquery';
 import 'jquery-touchswipe';
@@ -40,6 +40,7 @@ export default Marionette.View.extend({
   },
 
   startSwipe() {
+    // eslint-disable-next-line
     const that = this;
     const WIDTH = $(document).width();
     let currentImg = 0;
@@ -83,9 +84,9 @@ export default Marionette.View.extend({
         const duration = 0;
 
         if (direction === 'left') {
-          scrollImages((WIDTH * currentImg) + distance, duration);
+          scrollImages(WIDTH * currentImg + distance, duration);
         } else if (direction === 'right') {
-          scrollImages((WIDTH * currentImg) - distance, duration);
+          scrollImages(WIDTH * currentImg - distance, duration);
         }
       } else if (phase === 'cancel') {
         scrollImages(WIDTH * currentImg, speed);
@@ -106,7 +107,7 @@ export default Marionette.View.extend({
     };
 
     $(() => {
-      imgs = that.$el.find('#swaps');
+      imgs = this.$el.find('#swaps');
       imgs.swipe(swipeOptions);
     });
   },

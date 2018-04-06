@@ -1,88 +1,41 @@
 {
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
   "env": {
     "browser": true,
     "mocha": true
   },
+  "extends": ["airbnb-base", "prettier"],
   "rules": {
-    "indent": ["error", 2, { "SwitchCase": 1 }],
-    "no-cond-assign": [2,"always"],
-    "no-constant-condition": 2,
-    "no-control-regex": 1,
-    "no-debugger": 1,
-    "no-dupe-args": 2,
-    "no-dupe-keys": 2,
-    "no-duplicate-case": 2,
-    "no-empty-character-class": 1,
-    "no-ex-assign": 2,
-    "no-extra-boolean-cast": 1,
-    "no-extra-semi": 1,
-    "no-func-assign": 2,
-    "no-invalid-regexp": 1,
-    "no-irregular-whitespace": 2,
-    "no-negated-in-lhs": 1,
-    "no-obj-calls": 2,
-    "no-regex-spaces": 1,
-    "no-sparse-arrays": 1,
-    "no-unreachable": 2,
-    "use-isnan": 1,
-    "valid-typeof": 2,
-    "no-unexpected-multiline": 1,
-    "complexity": [1,20],
-    "default-case": 1,
-    "eqeqeq": [1,"smart"],
-    "guard-for-in": 1,
-    "no-alert": 1,
-    "no-caller": 2,
-    "no-div-regex": 1,
-    "no-else-return": 1,
-    "no-eval": 2,
-    "no-fallthrough": 2,
-    "no-octal": 2,
-    "no-redeclare": [2,{"builtinGlobals":true}],
-    "no-undef": 1,
-    "no-unused-vars": 0,
-    "brace-style": [1,"1tbs",{"allowSingleLine":true}],
-    "comma-spacing": [1,{"after":true}],
-    "comma-dangle": [2, "always-multiline"],
-    "consistent-this": [1,"self"],
-    "eol-last": 2,
-    "key-spacing": [2,{"afterColon":true, "mode": "minimum"}],
-    "max-nested-callbacks": [1,10],
-    "no-mixed-spaces-and-tabs": [2,"smart-tabs"],
-    "no-multiple-empty-lines": [2,{"max":2}],
-    "no-nested-ternary": 2,
-    "no-new-object": 2,
-    "no-trailing-spaces": [1,{"skipBlankLines":false}],
-    "prefer-const": 2,
-    "curly": 1,
-    "object-curly-spacing": [2, "always"]
+    "import/no-mutable-exports": 0,
+    "import/extensions": 0,
+    "no-case-declarations": 0,
+    "no-console": 0,
+    "no-plusplus": 0,
+    "no-param-reassign": 0, // TODO: switch back once fixed
+    "prefer-destructuring": 0, // TODO: switch back once fixed
+    "no-mutable-exports": 0,
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": [2, {
+      "allowShortCircuit": true, // eg. a || a()
+      "allowTernary": true // eg. a ? b() : c()
+    }]
   },
+  "overrides": [
+    {
+      "files": ["**/__tests__/*.js"],
+      "rules": {
+        "no-unused-expressions": 0
+      }
+    }
+  ],
   "globals": {
     "sinon": true,
-    "before": true,
-    "beforeEach": true,
-    "after": true,
-    "afterEach": true,
-    "describe": true,
-    "it": true,
     "expect": true,
-
-    "parseInt": true,
-
-    "cordova": true,
-    "StatusBar": true,
-    "splashscreen": true,
-    "Promise": true
+    "cordova": true
   },
   "settings": {
     "import/resolver": {
       "webpack": {
-        "config": "config/webpack.common.js"
+        "config": "other/webpack.common.js"
       }
     }
   }

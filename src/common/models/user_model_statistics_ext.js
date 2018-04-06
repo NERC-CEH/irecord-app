@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * App Model statistics functions.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 import Log from 'helpers/log';
 import CONFIG from 'config';
@@ -10,7 +10,6 @@ export default {
   syncStats(force) {
     Log('UserModel:Statistics: synchronising.');
 
-    const that = this;
     if (this.synchronizingStatistics) {
       return this.synchronizingStatistics;
     }
@@ -21,12 +20,12 @@ export default {
 
       this.synchronizingStatistics = this.fetchStatsSpecies()
         .then(() => {
-          delete that.synchronizingStatistics;
-          that.trigger('sync:statistics:species:end');
+          delete this.synchronizingStatistics;
+          this.trigger('sync:statistics:species:end');
         })
-        .catch((err) => {
-          delete that.synchronizingStatistics;
-          that.trigger('sync:statistics:species:end');
+        .catch(err => {
+          delete this.synchronizingStatistics;
+          this.trigger('sync:statistics:species:end');
           return Promise.reject(err);
         });
     }
@@ -46,7 +45,6 @@ export default {
    */
   fetchStatsSpecies() {
     Log('UserModel:Statistics: fetching.');
-    const that = this;
     const statistics = this.get('statistics');
 
     const report = new Indicia.Report({
@@ -65,7 +63,7 @@ export default {
       },
     });
 
-    const promise = report.run().then((receivedData) => {
+    const promise = report.run().then(receivedData => {
       const data = receivedData.data;
       if (!data || !(data instanceof Array)) {
         const err = new Error('Error while retrieving stats response.');
@@ -76,25 +74,27 @@ export default {
       const toWait = [];
 
       // try to find all species in the internal taxa database
-      data.forEach((stat) => {
-        const parsePromise = new Promise((fulfill) => {
+      data.forEach(stat => {
+        const parsePromise = new Promise(fulfill => {
           const options = {
             maxResults: 1,
             scientificOnly: true,
           };
 
           // turn it to a full species descriptor from species data set
-          SpeciesSearchEngine.search(stat.taxon, options)
-            .then((results) => {
-              const foundedSpecies = results[0];
-              if (results.length && foundedSpecies.scientific_name === stat.taxon) {
-                if (foundedSpecies.common_name) {
-                  foundedSpecies.found_in_name = 'common_name';
-                }
-                species.push(foundedSpecies);
+          SpeciesSearchEngine.search(stat.taxon, options).then(results => {
+            const foundedSpecies = results[0];
+            if (
+              results.length &&
+              foundedSpecies.scientific_name === stat.taxon
+            ) {
+              if (foundedSpecies.common_name) {
+                foundedSpecies.found_in_name = 'common_name';
               }
-              fulfill();
-            });
+              species.push(foundedSpecies);
+            }
+            fulfill();
+          });
         });
 
         toWait.push(parsePromise);
@@ -105,8 +105,8 @@ export default {
         statistics.synced_on = new Date().toString();
         statistics.species = species;
         statistics.speciesRaw = receivedData.data;
-        that.set('statistics', statistics);
-        that.save();
+        this.set('statistics', statistics);
+        this.save();
       });
     });
 
@@ -121,7 +121,9 @@ export default {
   _lastStatsSyncExpired() {
     const statistics = this.get('statistics');
 
-    if (!statistics.synced_on) return true;
+    if (!statistics.synced_on) {
+      return true;
+    }
 
     const lastSync = new Date(statistics.synced_on);
 

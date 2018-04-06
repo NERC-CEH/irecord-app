@@ -1,6 +1,6 @@
 /** ****************************************************************************
  *
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 
 const SCI_NAME_INDEX = 2; // in genera and above
@@ -16,7 +16,7 @@ const helpers = {
     return phrase.replace(/\\[\-\'\"()\\]/g, '.?'); // eslint-disable-line
   },
 
-// todo: change èéöüáöëïåß -> eeou..
+  // todo: change èéöüáöëïåß -> eeou..
   getFirstWordRegexString(phraseOrig) {
     let phrase = helpers.escapeRegExp(phraseOrig);
     phrase = helpers.removeNonAlphanumerics(phrase);
@@ -71,9 +71,9 @@ const helpers = {
    */
   isPhraseScientific(searchPhrase) {
     const check = [
-      ' ssp\.? ', // eslint-disable-line
-      ' subsect\.? ', // eslint-disable-line
-      ' nothovar\.? ', // eslint-disable-line
+      ' ssp.? ', // eslint-disable-line
+      ' subsect.? ', // eslint-disable-line
+      ' nothovar.? ', // eslint-disable-line
     ];
 
     const re = new RegExp(check.join('|'), 'i');
@@ -158,7 +158,9 @@ const helpers = {
     }
 
     // checkup
-    if (high < low) return null;
+    if (high < low) {
+      return null;
+    }
 
     const mid = parseInt((low + high) / 2, 10);
     const campared = comparator(mid);

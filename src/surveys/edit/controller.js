@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Survey Edit controller.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Backbone from 'backbone';
 import _ from 'lodash';
@@ -20,9 +20,8 @@ const API = {
   show(sampleID) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID]);
+        API.show.apply(this, [sampleID]);
       });
       return;
     }
@@ -43,7 +42,6 @@ const API = {
       radio.trigger('surveys:show', sampleID, { replace: true });
       return;
     }
-
 
     // MAIN
     const locationEditAllowed = !API.hasChildSamplesWithLocation(sample);
@@ -104,23 +102,25 @@ const API = {
         }
 
         // sync
-        sample.save(null, { remote: true })
-          .catch((err = {}) => {
-            Log(err, 'e');
+        sample.save(null, { remote: true }).catch((err = {}) => {
+          Log(err, 'e');
 
-            const visibleDialog = App.regions.getRegion('dialog').$el.is(':visible');
-            // we don't want to close any other dialog
-            if (err.message && !visibleDialog) {
-              radio.trigger('app:dialog:error',
-                `Sorry, we have encountered a problem while sending the record.
+          const visibleDialog = App.regions
+            .getRegion('dialog')
+            .$el.is(':visible');
+          // we don't want to close any other dialog
+          if (err.message && !visibleDialog) {
+            radio.trigger(
+              'app:dialog:error',
+              `Sorry, we have encountered a problem while sending the record.
                 
                  <p><i>${err.message}</i></p>`
-              );
-            }
-          });
+            );
+          }
+        });
         radio.trigger('sample:saved');
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
@@ -150,10 +150,10 @@ const API = {
         missing += '<hr>';
       }
 
-      _.each(errorModel.samples, (model) => {
+      _.each(errorModel.samples, model => {
         missing += deepErrorsMsg(model, true);
       });
-      _.each(errorModel.occurrences, (model) => {
+      _.each(errorModel.occurrences, model => {
         missing += deepErrorsMsg(model, true);
       });
 
@@ -208,7 +208,9 @@ const API = {
     if (!reset) {
       // extend old location to preserve its previous attributes like name or id
       let oldLocation = sample.get('location');
-      if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
+      if (!_.isObject(oldLocation)) {
+        oldLocation = {};
+      } // check for locked true
       location = $.extend(oldLocation, location);
     }
 
@@ -227,11 +229,10 @@ const API = {
       API.updateChildrenLocations(sample);
     }
 
-    return sample.save()
-      .catch((error) => {
-        Log(error, 'e');
-        radio.trigger('app:dialog:error', error);
-      });
+    return sample.save().catch(error => {
+      Log(error, 'e');
+      radio.trigger('app:dialog:error', error);
+    });
   },
 
   /**
@@ -239,7 +240,7 @@ const API = {
    * @param sample
    */
   updateChildrenLocations(sample) {
-    sample.samples.forEach((child) => {
+    sample.samples.forEach(child => {
       const loc = child.get('location');
 
       // the child must not have any location
@@ -261,7 +262,10 @@ const API = {
    */
   isSurveyLocationSet(surveySample) {
     const location = surveySample.get('location');
-    const accurateEnough = LocHelp.checkGridType(location, surveySample.metadata.gridSquareUnit);
+    const accurateEnough = LocHelp.checkGridType(
+      location,
+      surveySample.metadata.gridSquareUnit
+    );
     return accurateEnough && location.name;
   },
 
@@ -272,7 +276,7 @@ const API = {
    */
   hasChildSamplesWithLocation(surveySample) {
     let has = false;
-    surveySample.samples.forEach((sample) => {
+    surveySample.samples.forEach(sample => {
       const location = sample.get('location') || {};
       if (location.latitude) {
         has = true;

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * User router.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import App from 'app';
@@ -20,7 +20,9 @@ const Router = Marionette.AppRouter.extend({
     'user/statistics(/)': StatisticsController.show,
     'user/register(/)': RegisterController.show,
     'user/reset(/)': ResetController.show,
-    'user/*path': () => { radio.trigger('app:404:show'); },
+    'user/*path': () => {
+      radio.trigger('app:404:show');
+    },
   },
 });
 

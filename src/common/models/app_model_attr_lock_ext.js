@@ -1,24 +1,48 @@
 /** ****************************************************************************
  * App Model attribute lock functions.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
+import { coreAttributes } from 'common/config/surveys/general';
 import userModel from 'user_model';
+import Indicia from 'indicia';
 
 export default {
-  _getRawLocks(survey) {
+  _getRawLocks(surveyType, surveyName) {
     const locks = this.get('attrLocks');
-    locks[survey] || (locks[survey] = {});
+
+    if (!locks[surveyType][surveyName]) {
+      locks[surveyType] = Object.assign({}, locks[surveyType], {
+        [surveyName]: {},
+      });
+      this.set('attrLocks', locks);
+      this.save();
+    }
 
     return locks;
   },
-  setAttrLock(attr, value, survey = 'general') {
-    const val = _.cloneDeep(value);
-    const locks = this._getRawLocks(survey);
 
-    locks[survey][attr] = val;
-    this.set(locks);
+  _extractTypeName(surveyConfig) {
+    surveyConfig = surveyConfig || {};
+    const surveyType = surveyConfig.complex ? 'complex' : 'general';
+    const surveyName = surveyConfig.name || 'default';
+    return { surveyType, surveyName };
+  },
+
+  /**
+   *
+   * @param attr in format modelType:attrName
+   * @param value
+   * @param surveyConfig
+   */
+  setAttrLock(attr, value, surveyConfig) {
+    const val = _.cloneDeep(value);
+    const { surveyType, surveyName } = this._extractTypeName(surveyConfig);
+    const locks = this._getRawLocks(surveyType, surveyName);
+
+    locks[surveyType][surveyName][attr] = val;
+    this.set('attrLocks', locks);
     this.save();
     this.trigger('change:attrLocks');
 
@@ -27,42 +51,90 @@ export default {
     }
   },
 
-  unsetAttrLock(attr, survey = 'general') {
-    const locks = this._getRawLocks(survey);
-    delete locks[survey][attr];
-    this.set(locks);
+  /**
+   *
+   * @param attr in format modelType:attrName
+   * @param surveyConfig
+   */
+  unsetAttrLock(attr, surveyConfig) {
+    const { surveyType, surveyName } = this._extractTypeName(surveyConfig);
+    const locks = this._getRawLocks(surveyType, surveyName);
+
+    delete locks[surveyType][surveyName][attr];
+    this.set('attrLocks', locks);
     this.save();
     this.trigger('change:attrLocks');
   },
 
-  getAttrLock(attr, survey = 'general') {
-    const locks = this._getRawLocks(survey);
-    return locks[survey][attr];
+  /**
+   *
+   * @param attr in format modelType:attrName
+   * @param surveyConfig
+   * @returns {*}
+   */
+  getAttrLock(attr, surveyConfig) {
+    const { surveyType, surveyName } = this._extractTypeName(surveyConfig);
+    const locks = this._getRawLocks(surveyType, surveyName);
+
+    return locks[surveyType][surveyName][attr];
   },
 
-  isAttrLocked(attr, value = {}, survey = 'general') {
-    let lockedVal = this.getAttrLock(attr, survey);
-    if (!lockedVal) return false; // has not been locked
-    if (lockedVal === true) return true; // has been locked
-    switch (attr) {
-      case 'activity':
+  /**
+   *
+   * @param model
+   * @param attr no modelType required only attrName
+   * @returns {boolean}
+   */
+  isAttrLocked(model, attr, noSurveyExists) {
+    const fullAttrName =
+      model instanceof Indicia.Sample ? `smp:${attr}` : `occ:${attr}`;
+    const isCoreAttr = coreAttributes.includes(fullAttrName);
+    const surveyConfig =
+      isCoreAttr || noSurveyExists ? null : model.getSurvey();
+
+    let value;
+    let lockedVal = this.getAttrLock(fullAttrName, surveyConfig);
+    if (!lockedVal) {
+      // has not been locked
+      return false;
+    }
+    if (lockedVal === true) {
+      // has been locked
+      return true;
+    }
+
+    switch (fullAttrName) {
+      case 'smp:activity':
+        value = model.get(attr) || {};
         return lockedVal.id === value.id;
-      case 'location':
+      case 'smp:location':
         if (!lockedVal) {
           return false;
         }
-
+        value = model.get(attr);
         // map or gridref
-        return lockedVal.latitude === value.latitude &&
-          lockedVal.longitude === value.longitude;
-      case 'locationName':
+        return (
+          lockedVal.latitude === value.latitude &&
+          lockedVal.longitude === value.longitude
+        );
+      case 'smp:locationName':
         if (!lockedVal) {
           return false;
         }
-
-        return lockedVal.name === value.name;
-      case 'date':
-        if (isNaN(Date.parse(value)) || isNaN(Date.parse(lockedVal))) {
+        value = model.get('location');
+        return lockedVal === value.name;
+      case 'occ:number':
+        value = model.get(attr);
+        return (
+          lockedVal === model.get(attr) ||
+          lockedVal === model.get('number-ranges')
+        );
+      case 'smp:date':
+        value = model.get(attr);
+        if (
+          Number.isNaN(Date.parse(value)) ||
+          Number.isNaN(Date.parse(lockedVal))
+        ) {
           return false;
         }
 
@@ -70,97 +142,22 @@ export default {
         const currentValue = new Date(value);
         return lockedVal.getTime() === currentValue.getTime();
       default:
+        value = model.get(attr);
         return value === lockedVal;
     }
   },
 
-  appendAttrLocks(sample) {
-    Log('AppModel:AttrLocks: appending.');
-
-    const survey = sample.metadata.survey;
-    const locks = this.get('attrLocks')[survey];
-
-    _.each(locks, (value, key) => {
-      // false or undefined
-      if (!value) {
-        return;
-      }
-
-      const val = _.cloneDeep(value);
-
-      let occurrence;
-      let model;
-      switch (key) {
-        case 'activity':
-          if (!userModel.hasActivityExpired(val)) {
-            Log('AppModel:AttrLocks: appending activity to the sample.');
-            sample.set('group', val);
-          } else {
-            // unset the activity as it's now expired
-            Log('AppModel:AttrLocks: activity has expired.');
-            this.unsetAttrLock('activity');
-          }
-          break;
-        case 'location':
-          let location = sample.get('location');
-          val.name = location.name; // don't overwrite old name
-          sample.set('location', val);
-          break;
-        case 'locationName':
-          // insert location name
-          location = sample.get('location');
-          location.name = val;
-          sample.set('location', location);
-          break;
-        case 'date':
-          // parse stringified date
-          sample.set('date', new Date(val));
-          break;
-        case 'number':
-          occurrence = sample.getOccurrence();
-          occurrence.set('number', val);
-          break;
-        case 'number-ranges':
-          occurrence = sample.getOccurrence();
-          occurrence.set('number-ranges', val);
-          break;
-        case 'stage':
-          occurrence = sample.getOccurrence();
-          occurrence.set('stage', val);
-          break;
-        case 'identifiers':
-          model = sample;
-          if (survey === 'general') {
-            occurrence = sample.getOccurrence();
-            model = occurrence;
-          }
-          model.set('identifiers', val);
-          break;
-        case 'comment':
-          model = sample;
-          if (survey === 'general') {
-            occurrence = sample.getOccurrence();
-            model = occurrence;
-          }
-          occurrence.set('comment', val);
-          break;
-        default:
-      }
-    });
-  },
-
   checkExpiredAttrLocks() {
-    const that = this;
-    const activity = this.getAttrLock('activity');
+    const activity = this.getAttrLock('smp:activity');
     if (activity) {
       if (userModel.hasActivityExpired(activity)) {
         Log('AppModel:AttrLocks: activity has expired.');
-        this.unsetAttrLock('activity');
+        this.unsetAttrLock('smp:activity');
       }
     }
     userModel.on('logout', () => {
       Log('AppModel:AttrLocks: activity has expired.');
-      that.unsetAttrLock('activity'); // remove locked activity
+      this.unsetAttrLock('smp:activity'); // remove locked activity
     });
   },
 };

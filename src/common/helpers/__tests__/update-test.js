@@ -1,32 +1,35 @@
 import appModel from 'app_model';
-import CONFIG from 'config'; // Replaced with alias
-import Update from '../update';
+import CONFIG from 'config';
+import Indicia from 'indicia';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import Update, { updateSamples } from '../update';
+import { savedSamples } from '../../saved_samples';
 
 /* eslint-disable */
 
 Update.updatesSeq = ['3.0.0', '3.1.2', '3.2.0', '4.0.0'];
 
 Update.updates = {
-  '3.0.0': function (callback) {
+  '3.0.0': function(callback) {
     callback();
   },
-  '3.1.2': function (callback) {
+  '3.1.2': function(callback) {
     callback();
   },
-  '3.2.0': function (callback) {
+  '3.2.0': function(callback) {
     callback();
   },
-  '4.0.0': function (callback) {
+  '4.0.0': function(callback) {
     callback();
   },
 };
 
-let applyUpdatesSpy, appVerSpy, spy1, spy2, spy3, spy4;
+let applyUpdatesSpy, spy1, spy2, spy3, spy4;
 
 describe('Update', () => {
   beforeEach(() => {
     applyUpdatesSpy = sinon.spy(Update, '_applyUpdates');
-    appVerSpy = sinon.spy(Update, '_updateAppVersion');
 
     spy1 = sinon.spy(Update.updates, '3.0.0');
     spy2 = sinon.spy(Update.updates, '3.1.2');
@@ -36,7 +39,6 @@ describe('Update', () => {
 
   afterEach(() => {
     applyUpdatesSpy.restore();
-    appVerSpy.restore();
 
     spy1.restore();
     spy2.restore();
@@ -79,12 +81,69 @@ describe('Update', () => {
   //   }, true);
   // });
 
-  it('should not call any update if no update with new version', (done) => {
+  it('should not call any update if no update with new version', done => {
     appModel.set('appVersion', '4.0.0');
     CONFIG.version = '4.1.0';
     Update.run(() => {
       expect(applyUpdatesSpy.called).to.be.false;
       done();
+    });
+  });
+
+  describe('3.0.0', () => {
+    function getRandomSample(taxon) {
+      const validTaxon = { warehouse_id: 1, group: 1 };
+
+      const occurrence = new Occurrence({
+        taxon: taxon || validTaxon,
+      });
+      const sample = new Sample(
+        {
+          location: {
+            latitude: 12.12,
+            longitude: -0.23,
+            name: 'automatic test',
+          },
+          group: 'activityName',
+        },
+        {
+          occurrences: [occurrence],
+          Collection: savedSamples,
+          onSend: () => {}, // overwrite Collection's one checking for user login
+        }
+      );
+
+      sample.metadata.saved = true;
+
+      return sample;
+    }
+
+    const Collection = Indicia.Collection.extend({
+      model: Sample,
+    });
+
+    it('should move saved samples group to activity attr', () => {
+      const samples = new Collection();
+      samples.add(getRandomSample());
+      samples.add(getRandomSample());
+
+      updateSamples(samples, () => {
+        samples.each(sample => {
+          expect(sample.get('activity')).to.eql('activityName');
+        });
+      });
+    });
+
+    it('should unset saved samples group', () => {
+      const samples = new Collection();
+      samples.add(getRandomSample());
+      samples.add(getRandomSample());
+
+      updateSamples(samples, () => {
+        samples.each(sample => {
+          expect(sample.get('group')).to.be.undefined;
+        });
+      });
     });
   });
 });

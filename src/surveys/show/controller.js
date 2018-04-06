@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys Show controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import radio from 'radio';
 import savedSamples from 'saved_samples';
@@ -12,9 +12,8 @@ const API = {
   show(sampleID) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID]);
+        API.show.apply(this, [sampleID]);
       });
       return;
     }

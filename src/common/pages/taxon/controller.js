@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Taxon controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import App from 'app';
 import radio from 'radio';
@@ -19,7 +19,10 @@ const API = {
     // MAIN
     API._showMainView(options);
     // should be done in the view
-    App.regions.getRegion('main').$el.find('#taxon').select();
+    App.regions
+      .getRegion('main')
+      .$el.find('#taxon')
+      .select();
 
     // reset the view listener
     radio.on('taxon:search:reset', () => {
@@ -39,7 +42,7 @@ const API = {
 
     headerView.on('filter', () => {
       const filtersView = new FiltersView({ model: appModel });
-      filtersView.on('filter', (filter) => {
+      filtersView.on('filter', filter => {
         if (!filter) {
           Log('Taxon:Controller: No filter provided', 'e');
           return;
@@ -56,7 +59,8 @@ const API = {
         body: filtersView,
         buttons: [
           {
-            title: 'Done',
+            title: 'Close',
+            class: 'btn-positive',
             onClick() {
               radio.trigger('app:dialog:hide');
             },
@@ -76,7 +80,7 @@ const API = {
       reset,
     });
     mainView.on('taxon:selected', options.onSuccess, this);
-    mainView.on('taxon:searched', (searchPhrase) => {
+    mainView.on('taxon:searched', searchPhrase => {
       // get taxa group filters
       let informalGroups = options.informalGroups;
       if (!informalGroups) {
@@ -85,11 +89,15 @@ const API = {
       }
 
       // search
-      SpeciesSearchEngine.search(searchPhrase, { informalGroups })
-        .then((suggestions) => {
-          const deDuped = API.deDuplicateSuggestions(suggestions);
-          mainView.updateSuggestions(new Backbone.Collection(deDuped), searchPhrase);
-        });
+      SpeciesSearchEngine.search(searchPhrase, {
+        informalGroups,
+      }).then(suggestions => {
+        const deDuped = API.deDuplicateSuggestions(suggestions);
+        mainView.updateSuggestions(
+          new Backbone.Collection(deDuped),
+          searchPhrase
+        );
+      });
     });
 
     radio.trigger('app:main', mainView);
@@ -103,17 +111,23 @@ const API = {
   deDuplicateSuggestions(suggestions) {
     let previous = {};
     const results = [];
-    suggestions.forEach((taxon) => {
-      const commonName = taxon.common_name && taxon.common_name.toLocaleLowerCase();
-      const previousCommonName = previous.common_name && previous.common_name.toLocaleLowerCase();
+    suggestions.forEach(taxon => {
+      const commonName =
+        taxon.common_name && taxon.common_name.toLocaleLowerCase();
+      const previousCommonName =
+        previous.common_name && previous.common_name.toLocaleLowerCase();
 
-      if (!commonName || !previousCommonName || commonName !== previousCommonName) {
+      if (
+        !commonName ||
+        !previousCommonName ||
+        commonName !== previousCommonName
+      ) {
         // common names don't match - not a dupe taxa
         results.push(taxon);
         previous = taxon;
       } else if (
         taxon.scientific_name.split(/\s+/).length ===
-        previous.scientific_name.split(/\s+/).length &&
+          previous.scientific_name.split(/\s+/).length &&
         // don't add same species with the same name twice
         previous.warehouse_id !== taxon.warehouse_id
       ) {
@@ -123,13 +137,17 @@ const API = {
         // vernacular name
         const previousQualified = Object.assign({}, previous);
         if (!previousQualified._deduped_common_name) {
-          previousQualified._deduped_common_name = `${previous.common_name} <small><i>(${previous.scientific_name})</i></small>`;
+          previousQualified._deduped_common_name = `${
+            previous.common_name
+          } <small><i>(${previous.scientific_name})</i></small>`;
           // replace last result with qualified copy
           results[results.length - 1] = previousQualified; // eslint-disable-line
         }
 
         const currentQualified = Object.assign({}, taxon);
-        currentQualified._deduped_common_name = `${taxon.common_name} <small><i>(${taxon.scientific_name})</i></small>`;
+        currentQualified._deduped_common_name = `${
+          taxon.common_name
+        } <small><i>(${taxon.scientific_name})</i></small>`;
         results[results.length] = currentQualified; // eslint-disable-line
       }
     });

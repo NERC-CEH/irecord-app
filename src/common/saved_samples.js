@@ -11,7 +11,7 @@ const Collection = Indicia.Collection.extend({
     Log('SavedSamples: removing all synced samples.');
 
     const toWait = [];
-    this.models.forEach((sample) => {
+    this.models.forEach(sample => {
       if (sample.getSyncStatus() === Indicia.SYNCED) {
         toWait.push(sample.destroy());
       }
@@ -23,29 +23,27 @@ const Collection = Indicia.Collection.extend({
   setAllToSend() {
     Log('SavedSamples: setting all samples to send.');
 
-    const that = this;
     const toWait = [];
-    this.models.forEach((sample) => {
+    this.models.forEach(sample => {
       const validPromise = sample.setToSend();
       if (!validPromise) {
         return;
       }
       toWait.push(validPromise);
     });
-    return Promise.all(toWait)
-      .then(() => {
-        const toWaitSend = [];
-        that.models.forEach((sample) => {
-          const validPromise = sample.save(null, { remote: true });
-          if (!validPromise) {
-            return;
-          }
-          toWaitSend.push(validPromise);
-        });
-        // return Promise.all(toWaitSend);
-        // no promise return since we don't want wait till all are submitted
-        // as this can be done in the background
+    return Promise.all(toWait).then(() => {
+      const toWaitSend = [];
+      this.models.forEach(sample => {
+        const validPromise = sample.save(null, { remote: true });
+        if (!validPromise) {
+          return;
+        }
+        toWaitSend.push(validPromise);
       });
+      // return Promise.all(toWaitSend);
+      // no promise return since we don't want wait till all are submitted
+      // as this can be done in the background
+    });
   },
 
   /**
@@ -59,20 +57,20 @@ const Collection = Indicia.Collection.extend({
   },
 });
 
-
 const savedSamples = new Collection();
 Log('SavedSamples: fetching all samples.');
 
 // load all the samples from storage
 savedSamples.fetching = true;
-savedSamples.fetch()
+savedSamples
+  .fetch()
   .then(() => {
     Log('SavedSamples: fetching all samples done.');
 
     savedSamples.fetching = false;
     savedSamples.trigger('fetching:done');
   })
-  .catch((err) => {
+  .catch(err => {
     Log(err, 'e');
 
     savedSamples.fetching = false;

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Settings router.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import App from 'app';
 import radio from 'radio';
@@ -16,7 +16,9 @@ const Router = Marionette.AppRouter.extend({
     'settings(/)': MenuController.show,
     'settings/locations(/)': LocationsController.show,
     'settings/survey(/)': SurveyController.show,
-    'settings/*path': () => { radio.trigger('app:404:show'); },
+    'settings/*path': () => {
+      radio.trigger('app:404:show');
+    },
   },
 });
 

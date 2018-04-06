@@ -20,11 +20,11 @@ function LogSlider(options = {}) {
 LogSlider.prototype = {
   // Calculate value from a slider position
   value(position) {
-    return Math.exp(((position - this.minpos) * this.scale) + this.minlval);
+    return Math.exp((position - this.minpos) * this.scale + this.minlval);
   },
   // Calculate slider position from a value
   position(value) {
-    return this.minpos + ((Math.log(value) - this.minlval) / this.scale);
+    return this.minpos + (Math.log(value) - this.minlval) / this.scale;
   },
 };
 
@@ -42,11 +42,14 @@ export default Marionette.View.extend({
     const config = this.options.config || {};
 
     this.model = new Backbone.Model({
-      message: this.options.label || config.label,
+      message: this.options.info || config.info,
       value: this.options.default || config.default,
     });
 
-    this.model.set('position', logsl.position(this.model.get('value') || 1).toFixed(0));
+    this.model.set(
+      'position',
+      logsl.position(this.model.get('value') || 1).toFixed(0)
+    );
   },
 
   getValues() {

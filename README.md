@@ -93,6 +93,8 @@ npm start
 
 ### Cordova app
 
+Building a cordova application requires cordova 7.1.0
+
 - Initialize the project:
 
 ```bash

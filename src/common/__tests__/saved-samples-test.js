@@ -5,38 +5,46 @@ import savedSamples from 'saved_samples';
 describe('Saved samples', () => {
   let server;
 
-  before((done) => {
+  before(done => {
     server = sinon.fakeServer.create();
     server.respondImmediately = true;
     // userLogin = sinon.stub(userModel, 'hasLogIn').returns(true);
 
     // clean up in case of trash
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
-  beforeEach((done) => {
+  beforeEach(done => {
     // clean up in case of trash
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
-  after((done) => {
+  after(done => {
     // userLogin.reset();
 
     // clean up afterwards
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
-  afterEach((done) => {
+  afterEach(done => {
     // clean up afterwards
-    savedSamples.fetch()
+    savedSamples
+      .fetch()
       .then(() => savedSamples.destroy())
-      .then(() => done());
+      .then(() => done())
+      .catch(done);
   });
 
   it('should be a Indicia Collection', () => {

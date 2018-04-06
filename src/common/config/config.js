@@ -1,16 +1,15 @@
 /** ****************************************************************************
  * Main app configuration file.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 
-import generalSurvey from './general_survey';
-import plantSurvey from './plant_survey';
+const HOST =
+  process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
 
-const HOST = process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
 
+const notInTest = process.env.ENV !== 'test';
 const CONFIG = {
   // variables replaced on build
-  /* global APP_VERSION, APP_BUILD, APP_NAME, APP_INDICIA_API_KEY */
   version: process.env.APP_VERSION,
   build: process.env.APP_BUILD,
   name: process.env.APP_NAME,
@@ -24,16 +23,16 @@ const CONFIG = {
   site_url: HOST,
 
   // use prod logging if testing otherwise full log
-  log: process.env.ENV !== 'test',
+  log: notInTest,
 
   // google analytics
   ga: {
-    id: process.env.APP_GA,
+    id: notInTest && process.env.APP_GA,
   },
 
   // error analytics
   sentry: {
-    key: process.env.APP_SENTRY_KEY,
+    key: notInTest && process.env.APP_SENTRY_KEY,
     project: '128357',
   },
 
@@ -43,7 +42,10 @@ const CONFIG = {
   },
 
   reports: {
-    url: `${HOST + Indicia.API_BASE + Indicia.API_VER + Indicia.API_REPORTS_PATH}`,
+    url: `${HOST +
+      Indicia.API_BASE +
+      Indicia.API_VER +
+      Indicia.API_REPORTS_PATH}`,
     timeout: 80000,
   },
 
@@ -60,11 +62,6 @@ const CONFIG = {
     host: HOST,
     api_key: process.env.APP_INDICIA_API_KEY,
     website_id: 23,
-
-    surveys: {
-      general: generalSurvey,
-      plant: plantSurvey,
-    },
   },
 };
 

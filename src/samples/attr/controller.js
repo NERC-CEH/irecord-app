@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Attribute controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
@@ -8,7 +8,9 @@ import DateHelp from 'helpers/date';
 import radio from 'radio';
 import appModel from 'app_model';
 import savedSamples from 'saved_samples';
+import { coreAttributes } from 'common/config/surveys/general';
 import MainView from './main_view';
+
 import HeaderView from '../../common/views/header_view';
 import LockView from '../../common/views/attr_lock_view';
 
@@ -16,9 +18,8 @@ const API = {
   show(sampleID, attr) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID, attr]);
+        API.show.apply(this, [sampleID, attr]);
       });
       return;
     }
@@ -48,11 +49,21 @@ const API = {
     radio.trigger('app:main', mainView);
 
     // HEADER
+    const surveyConfig = sample.getSurvey();
+    const isCoreAttr = coreAttributes.includes(attr);
     const lockView = new LockView({
       model: new Backbone.Model({ appModel, sample }),
       attr,
-      onLockClick: API.onLockClick,
+      onLockClick: view => API.onLockClick(view, !isCoreAttr && surveyConfig),
+      surveyConfig: !isCoreAttr && surveyConfig,
     });
+
+    const surveyAttrs = surveyConfig.attrs;
+
+    const attrParts = attr.split(':');
+    const attrType = attrParts[0];
+    const attrName = attrParts[1];
+    const attrConfig = surveyAttrs[attrType][attrName];
 
     const headerView = new HeaderView({
       onExit() {
@@ -61,7 +72,7 @@ const API = {
         });
       },
       rightPanel: lockView,
-      model: new Backbone.Model({ title: attr }),
+      model: new Backbone.Model({ title: attrConfig.label || attrName }),
     });
 
     radio.trigger('app:header', headerView);
@@ -77,21 +88,16 @@ const API = {
     radio.trigger('app:footer:hide');
   },
 
-  onLockClick(view) {
+  onLockClick(view, surveyConfig) {
     Log('Samples:Attr:Controller: lock clicked.');
     const attr = view.options.attr;
     // invert the lock of the attribute
     // real value will be put on exit
-    if (attr === 'number') {
-      if (appModel.getAttrLock(attr)) {
-        appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
-      } else {
-        appModel.setAttrLock('number-ranges',
-          !appModel.getAttrLock('number-ranges'));
-      }
-    } else {
-      appModel.setAttrLock(attr, !appModel.getAttrLock(attr));
-    }
+    appModel.setAttrLock(
+      attr,
+      !appModel.getAttrLock(attr, surveyConfig),
+      surveyConfig
+    );
   },
 
   onExit(mainView, sample, attr, callback) {
@@ -102,8 +108,6 @@ const API = {
 
   /**
    * Update sample with new values
-   * @param values
-   * @param sample
    */
   save(attr, values, sample, callback) {
     Log('Samples:Attr:Controller: saving.');
@@ -113,92 +117,87 @@ const API = {
     const occ = sample.getOccurrence();
 
     switch (attr) {
-      case 'date':
-        currentVal = sample.get('date');
-
-        // validate before setting up
-        if (values.date && values.date.toString() !== 'Invalid Date') {
-          newVal = values.date;
-          sample.set('date', newVal);
-        }
-        break;
-      case 'number':
-        currentVal = occ.get('number');
+      case 'occ:number':
+        currentVal = occ.get('number') || occ.get('number-ranges');
 
         // todo: validate before setting up
-        if (values.number) {
+        if (values[attr][0]) {
           // specific number
-          newVal = values.number;
+          newVal = values[attr][0];
           occ.set('number', newVal);
           occ.unset('number-ranges');
         } else {
           // number ranges
-          attr = 'number-ranges'; // eslint-disable-line
-          newVal = values[attr];
+          newVal = values[attr][1];
           occ.set('number-ranges', newVal);
           occ.unset('number');
         }
         break;
-      case 'stage':
-      case 'identifiers':
-      case 'comment':
-        currentVal = occ.get(attr);
+      default:
+        const surveyAttrs = sample.getSurvey().attrs;
+
+        const attrParts = attr.split(':');
+        const attrType = attrParts[0];
+        const attrName = attrParts[1];
+        const attrConfig = surveyAttrs[attrType][attrName];
+
+        const model = attrType === 'smp' ? sample : occ;
+
+        currentVal = model.get(attrName);
         newVal = values[attr];
 
-        // todo:validate before setting up
-        occ.set(attr, values[attr]);
-        break;
-      default:
+        // validate before setting up
+        if (attrConfig.isValid && !attrConfig.isValid(newVal)) {
+          radio.trigger('app:dialog', {
+            title: 'Sorry',
+            body: 'Invalid date selected',
+            timeout: 2000,
+          });
+          return;
+        }
+
+        model.set(attrName, values[attr]);
+      // Log('Samples:Attr:Controller: no such attribute to save!', 'e');
     }
 
     // save it
-    sample.save()
+    sample
+      .save()
       .then(() => {
         // update locked value if attr is locked
-        API.updateLock(attr, newVal, currentVal);
+        API.updateLock(attr, newVal, currentVal, sample.getSurvey());
         callback();
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
   },
 
-  updateLock(attr, newVal, currentVal) {
-    let lockedValue = appModel.getAttrLock(attr);
+  updateLock(attr, newVal, currentVal, surveyConfig) {
+    if (coreAttributes.includes(attr)) {
+      surveyConfig = null;
+    }
+    const lockedValue = appModel.getAttrLock(attr, surveyConfig);
 
     switch (attr) {
-      case 'date':
-        if (!lockedValue ||
-          (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date()))) {
+      case 'smp:date':
+        if (
+          !lockedValue ||
+          (lockedValue && DateHelp.print(newVal) === DateHelp.print(new Date()))
+        ) {
           // don't lock current day
-          appModel.setAttrLock(attr, null);
+          appModel.unsetAttrLock(attr);
         } else {
           appModel.setAttrLock(attr, newVal);
-        }
-        break;
-      case 'number-ranges':
-        if (!lockedValue) {
-          lockedValue = appModel.getAttrLock('number');
-        }
-      case 'number':
-        if (!lockedValue) {
-          lockedValue = appModel.getAttrLock('number-ranges');
-        }
-
-        if (!lockedValue) return; // nothing was locked
-
-        if (attr === 'number-ranges') {
-          appModel.setAttrLock(attr, newVal);
-          appModel.setAttrLock('number', null);
-        } else {
-          appModel.setAttrLock(attr, newVal);
-          appModel.setAttrLock('number-ranges', null);
         }
         break;
       default:
-        if (lockedValue && (lockedValue === true || lockedValue === currentVal)) {
-          appModel.setAttrLock(attr, newVal);
+        if (
+          lockedValue &&
+          (lockedValue === true || lockedValue === currentVal)
+        ) {
+          appModel.setAttrLock(attr, newVal, surveyConfig);
         }
     }
   },

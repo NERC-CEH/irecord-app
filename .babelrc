@@ -1,8 +1,9 @@
 {
   "presets": [
-    "es2015"
+    "env"
   ],
 
+  "plugins": ["transform-exponentiation-operator", "array-includes"],
   "env": {
     "test": {
       "plugins": [

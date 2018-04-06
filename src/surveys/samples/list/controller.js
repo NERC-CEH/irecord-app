@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys Samples List controller.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Indicia from 'indicia';
 import radio from 'radio';
@@ -10,7 +10,6 @@ import Occurrence from 'occurrence';
 import Factory from 'model_factory';
 import ImageHelp from 'helpers/image';
 import showErrMsg from 'helpers/show_err_msg';
-import CONFIG from 'config';
 import MainView from './main_view';
 import HeaderView from './header_view';
 import SurveysEditController from '../../edit/controller';
@@ -19,9 +18,8 @@ const API = {
   show(options = {}) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [options]);
+        API.show.apply(this, [options]);
       });
       return;
     }
@@ -48,7 +46,7 @@ const API = {
     // HEADER
     const headerView = new HeaderView({ model: surveySample });
     // header pic upload
-    headerView.on('photo:upload', (e) => {
+    headerView.on('photo:upload', e => {
       const photo = e.target.files[0];
       API.photoUpload(surveySample, photo);
     });
@@ -56,13 +54,18 @@ const API = {
     // android gallery/camera selection
     headerView.on('photo:selection', () => API.photoSelect(surveySample));
     headerView.on('create', () => {
-      radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
-        onSuccess(taxon, editButtonClicked) {
-          API.createNewSample(surveySample, taxon, editButtonClicked);
-        },
-        showEditButton: true,
-        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
-      });
+      radio.trigger(
+        'surveys:samples:edit:taxon',
+        options.surveySampleID,
+        null,
+        {
+          onSuccess(taxon, editButtonClicked) {
+            API.createNewSample(surveySample, taxon, editButtonClicked);
+          },
+          showEditButton: true,
+          informalGroups: surveySample.getSurvey().taxonGroups,
+        }
+      );
     });
 
     radio.trigger('app:header', headerView);
@@ -81,15 +84,20 @@ const API = {
 
     // 'Add +' list button
     mainView.on('childview:create', () => {
-      radio.trigger('surveys:samples:edit:taxon', options.surveySampleID, null, {
-        onSuccess(taxon, editButtonClicked) {
-          API.createNewSample(surveySample, taxon, editButtonClicked);
-        },
-        showEditButton: true,
-        informalGroups: CONFIG.indicia.surveys.plant.informal_groups,
-      });
+      radio.trigger(
+        'surveys:samples:edit:taxon',
+        options.surveySampleID,
+        null,
+        {
+          onSuccess(taxon, editButtonClicked) {
+            API.createNewSample(surveySample, taxon, editButtonClicked);
+          },
+          showEditButton: true,
+          informalGroups: surveySample.getSurvey().taxonGroups,
+        }
+      );
     });
-    mainView.on('childview:sample:delete', (childView) => {
+    mainView.on('childview:sample:delete', childView => {
       API.sampleDelete(childView.model);
     });
     radio.trigger('app:main', mainView);
@@ -114,9 +122,12 @@ const API = {
         {
           title: 'Camera',
           onClick() {
-            ImageHelp.getImage().then((entry) => {
-              entry && API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
-            }).catch(showErrMsg);
+            ImageHelp.getImage()
+              .then(entry => {
+                entry &&
+                  API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
+              })
+              .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
@@ -126,9 +137,12 @@ const API = {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
               saveToPhotoAlbum: false,
-            }).then((entry) => {
-              entry && API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
-            }).catch(showErrMsg);
+            })
+              .then(entry => {
+                entry &&
+                  API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
+              })
+              .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           },
         },
@@ -144,14 +158,16 @@ const API = {
    */
   createNewSampleWithPhoto(surveySample, photo) {
     // todo: show loader
-    return Factory.createSampleWithPhoto('plant', photo)
-      .then(sample => API.configNewSample(surveySample, sample))
-      // rerender the view since smart list doesn't do that yet
-      .then(() => API._showMainView(surveySample, {}))
-      .catch((err) => {
-        Log(err, 'e');
-        radio.trigger('app:dialog:error', err);
-      });
+    return (
+      Factory.createSampleWithPhoto('plant', photo)
+        .then(sample => API.configNewSample(surveySample, sample))
+        // rerender the view since smart list doesn't do that yet
+        .then(() => API._showMainView(surveySample, {}))
+        .catch(err => {
+          Log(err, 'e');
+          radio.trigger('app:dialog:error', err);
+        })
+    );
   },
 
   /**
@@ -161,19 +177,16 @@ const API = {
    */
   createNewSample(surveySample, taxon, editButtonClicked) {
     return Factory.createSample('plant')
-      .then((sample) => {
+      .then(sample => {
         const occurrence = new Occurrence({ taxon });
         sample.addOccurrence(occurrence);
         return API.configNewSample(surveySample, sample, taxon);
       })
-      .then((sample) => {
+      .then(sample => {
         if (editButtonClicked) {
-          radio.trigger(
-            'surveys:samples:edit',
-            surveySample.cid,
-            sample.cid,
-            { replace: true },
-          );
+          radio.trigger('surveys:samples:edit', surveySample.cid, sample.cid, {
+            replace: true,
+          });
           return;
         }
 
@@ -185,7 +198,7 @@ const API = {
           timeout: 500,
         });
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * App Model past locations functions.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import UUID from 'helpers/UUID';
 import Log from 'helpers/log';
@@ -35,7 +35,7 @@ export default {
 
     // check if not duplicating existing location without id
     let duplication = false;
-    locations.forEach((loc) => {
+    locations.forEach(loc => {
       if (this._isIdentical(loc, location)) {
         duplication = true;
       }
@@ -50,7 +50,9 @@ export default {
     locations.splice(0, 0, location);
 
     // check if not exceeded limits
-    if (locations.length > MAX_SAVED) locations.pop(); // remove old one
+    if (locations.length > MAX_SAVED) {
+      locations.pop();
+    } // remove old one
 
     this.set('locations', locations);
     this.trigger('change:locations');
@@ -62,7 +64,6 @@ export default {
   removeLocation(location = {}) {
     Log('AppModel:PastLocations: removing.');
 
-    const that = this;
     const locations = this.get('locations');
 
     locations.forEach((loc, i) => {
@@ -70,17 +71,19 @@ export default {
         locations.splice(i, 1);
       }
     });
-    that.set('locations', locations);
-    that.trigger('change:locations');
-    that.save();
+    this.set('locations', locations);
+    this.trigger('change:locations');
+    this.save();
 
     return location;
   },
 
   _isIdentical(loc, location) {
-    return loc.name === location.name &&
+    return (
+      loc.name === location.name &&
       loc.latitude === location.latitude &&
-      loc.longitude === location.longitude;
+      loc.longitude === location.longitude
+    );
   },
 
   _locationIndex(location = {}) {
@@ -112,13 +115,15 @@ export default {
         // check if location is within UK
         let prettyLocation = LocHelp.locationToGrid(location, accuracy);
         if (!prettyLocation) {
-          prettyLocation = `${parseFloat(location.latitude).toFixed(4)}, ${
-            parseFloat(location.longitude).toFixed(4)}`;
+          prettyLocation = `${parseFloat(location.latitude).toFixed(
+            4
+          )}, ${parseFloat(location.longitude).toFixed(4)}`;
         }
         return prettyLocation;
       }
-      return `${parseFloat(location.latitude).toFixed(4)}, ${
-        parseFloat(location.longitude).toFixed(4)}`;
+      return `${parseFloat(location.latitude).toFixed(4)}, ${parseFloat(
+        location.longitude
+      ).toFixed(4)}`;
     }
     return '';
   },

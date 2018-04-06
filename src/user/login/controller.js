@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * User Login controller.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
@@ -32,7 +32,7 @@ const API = {
     });
     radio.trigger('app:header', headerView);
 
-    mainView.on('form:submit', (data) => {
+    mainView.on('form:submit', data => {
       if (!Device.isOnline()) {
         radio.trigger('app:dialog', {
           title: 'Sorry',
@@ -51,7 +51,7 @@ const API = {
             onSuccess && onSuccess();
             window.history.back();
           })
-          .catch((err) => {
+          .catch(err => {
             Log(err, 'e');
             radio.trigger('app:dialog:error', err);
           });

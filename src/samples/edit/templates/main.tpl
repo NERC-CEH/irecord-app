@@ -9,11 +9,11 @@
   </li>
   <li class="table-view-cell">
     <a href="#samples/<%- obj.id %>/edit/location" id="location-button"
-       class="<%- obj.locks['location'] || obj.locks['locationName'] ? '' : 'navigate-right' %>">
+       class="<%- obj.locks['smp:location'] || obj.locks['smp:locationName'] ? '' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-location"></span>
 
-      <% if (obj.location) { %>
-      <span class="location media-object pull-right descript <%- obj.locks['location'] ? 'lock' : '' %>"><%- obj.location %></span>
+      <% if (obj['smp:location']) { %>
+      <span class="location media-object pull-right descript <%- obj.locks['smp:location'] ? 'lock' : '' %>"><%- obj['smp:location'] %></span>
       <% } else { %>
       <% if (obj.isLocating) { %>
       <span class="media-object pull-right descript warn">Locating...</span>
@@ -22,8 +22,8 @@
       <% } %>
       <% } %>
 
-      <% if (obj.locationName) { %>
-      <span class="media-object pull-right descript <%- obj.locks['locationName'] ? 'lock' : '' %>""><%= obj.locationName %></span>
+      <% if (obj['smp:locationName']) { %>
+      <span class="media-object pull-right descript <%- obj.locks['smp:locationName'] ? 'lock' : '' %>"><%= obj['smp:locationName'] %></span>
       <% } else { %>
       <span class="media-object pull-right descript error">Name missing</span>
       <% } %>
@@ -32,53 +32,31 @@
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/date" id="date-button"
-       class="<%- obj.locks['date'] ? 'lock' : 'navigate-right' %>">
+    <a href="#samples/<%- obj.id %>/edit/smp:date" id="date-button"
+       class="<%- obj.locks['smp:date'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-calendar"></span>
-      <span class="media-object pull-right descript"><%- obj.date %></span>
+      <span class="media-object pull-right descript"><%- obj['smp:date'] %></span>
       Date
     </a>
   </li>
   <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/number" id="number-button"
-       class="<%- obj.locks['number'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-number"></span>
-      <span class="media-object pull-right descript"><%- obj.number %></span>
-      Number
-    </a>
-  </li>
-  <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/stage" id="stage-button"
-       class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-stage"></span>
-      <span class="media-object pull-right descript"><%- obj.stage %></span>
-      Stage
-    </a>
-  </li>
-  <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/comment" id="comment-button"
-       class="<%- obj.locks['comment'] ? 'lock' : 'navigate-right' %>">
+    <a href="#samples/<%- obj.id %>/edit/occ:comment" id="comment-button"
+       class="<%- obj.locks['occ:comment'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-comment"></span>
-      <span class="media-object pull-right descript"><%= obj.comment %></span>
+      <span class="media-object pull-right descript"><%- obj['occ:comment'] %></span>
       Comment
     </a>
   </li>
-  <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/identifiers" id="identifiers-button"
-       class="<%- obj.locks['identifiers'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-user-plus"></span>
-      <span class="media-object pull-right descript"><%= obj.identifiers %></span>
-      Identifiers
-    </a>
-  </li>
-  <% if (obj.group_title) { %>
-  <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/activity" id="activity-button"
-       class="<%- obj.locks['activity'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-users"></span>
-      <span class="media-object pull-right descript"><%- obj.group_title %></span>
-      Activity
-    </a>
-  </li>
+  <% if (obj['smp:activity']) { %>
+      <li class="table-view-cell">
+        <a href="#samples/<%- obj.id %>/edit/activity" id="activity-button"
+           class="<%- obj.locks['smp:activity'] ? 'lock' : 'navigate-right' %>">
+          <span class="media-object pull-left icon icon-users"></span>
+          <span class="media-object pull-right descript"><%- obj['smp:activity'] %></span>
+          Activity
+        </a>
+      </li>
   <% } %>
 </ul>
+
+<ul id="attrs"></ul>

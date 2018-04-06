@@ -1,4 +1,4 @@
-import ImageHelp from '../image';
+import ImageHelp, { _onGetImageError } from '../image';
 import Device from '../device';
 
 describe('Helpers Image', () => {
@@ -15,11 +15,11 @@ describe('Helpers Image', () => {
     window.cordova = { file: {} };
 
     window.navigator.camera = {
-      getPicture: (onSuccess, onError) => onSuccess(''),
+      getPicture: onSuccess => onSuccess(''),
     };
 
     window.resolveLocalFileSystemURL = (dir, callback) => {
-      callback({ copyTo: (fileSystem, name, callback, fail) => callback() });
+      callback({ copyTo: (fileSystem, name, done) => done() });
     };
 
     sinon.stub(Device, 'isAndroid').returns(false);
@@ -38,6 +38,27 @@ describe('Helpers Image', () => {
       const promise = ImageHelp.getImage();
       expect(promise).to.be.instanceOf(Promise);
       promise.then(done).catch(done);
+    });
+
+    describe('_onGetImageError', () => {
+      it('should reject on error', done => {
+        _onGetImageError('my error', null, err => {
+          expect(err).to.eql('my error');
+          done();
+        });
+      });
+
+      it('should resolve if error includes "cancelled"', done => {
+        _onGetImageError('user has cancelled the process', done);
+      });
+
+      it('should resolve if error includes "selected"', done => {
+        _onGetImageError('user has selected nothing', done);
+      });
+
+      it('should resolve if error includes "has no access"', done => {
+        _onGetImageError('has no access to assets', done);
+      });
     });
   });
 });

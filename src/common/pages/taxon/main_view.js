@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Taxon main view.
- *****************************************************************************/
+ **************************************************************************** */
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
@@ -15,7 +15,7 @@ const MIN_SEARCH_LENGTH = 2;
 const SpeciesView = Marionette.View.extend({
   tagName: 'li',
   className() {
-    return `table-view-cell ${(this.model.get('selected') ? 'selected' : '')}`;
+    return `table-view-cell ${this.model.get('selected') ? 'selected' : ''}`;
   },
 
   template: JST['common/taxon/species'],
@@ -34,7 +34,10 @@ const SpeciesView = Marionette.View.extend({
     const foundInName = this.model.get('found_in_name');
 
     let name;
-    if (foundInName === 'common_name' && this.model.get('_deduped_common_name')) {
+    if (
+      foundInName === 'common_name' &&
+      this.model.get('_deduped_common_name')
+    ) {
       name = this.model.get('_deduped_common_name');
     } else {
       name = this.model.get(foundInName);
@@ -61,7 +64,10 @@ const SpeciesView = Marionette.View.extend({
     let prettyName = name;
     const searchPos = name.toLowerCase().indexOf(searchPhrase);
     if (searchPos >= 0) {
-      prettyName = `${name.slice(0, searchPos)}<b>${name.slice(searchPos, searchPos + searchPhrase.length)}</b>${name.slice(searchPos + searchPhrase.length)}`;
+      prettyName = `${name.slice(0, searchPos)}<b>${name.slice(
+        searchPos,
+        searchPos + searchPhrase.length
+      )}</b>${name.slice(searchPos + searchPhrase.length)}`;
     }
 
     return prettyName;
@@ -81,7 +87,6 @@ const SpeciesView = Marionette.View.extend({
     this.trigger('taxon:selected', species, edit);
   },
 });
-
 
 const NoSuggestionsView = Marionette.View.extend({
   tagName: 'li',
@@ -160,7 +165,8 @@ export default Marionette.View.extend({
     this.selectedIndex = this.suggestionsCol.length > 0 ? 0 : -1;
 
     // select first
-    this.suggestionsCol.length && this.suggestionsCol.at(0).set('selected', true);
+    this.suggestionsCol.length &&
+      this.suggestionsCol.at(0).set('selected', true);
 
     const suggestionsColView = new SuggestionsView({
       collection: this.suggestionsCol,
@@ -168,14 +174,14 @@ export default Marionette.View.extend({
       searchPhrase,
     });
 
-    suggestionsColView.on('childview:taxon:selected',
-      (speciesID, edit) => this.trigger('taxon:selected', speciesID, edit));
+    suggestionsColView.on('childview:taxon:selected', (speciesID, edit) =>
+      this.trigger('taxon:selected', speciesID, edit)
+    );
 
     this.getRegion('suggestions').show(suggestionsColView);
   },
 
   _keydown(e) {
-    const that = this;
     const input = e.target.value;
     if (!input) {
       return null;
@@ -187,7 +193,9 @@ export default Marionette.View.extend({
         e.preventDefault();
 
         // exit if no suggestions
-        if (this.selectedIndex < 0 || !this.suggestionsCol) return null;
+        if (this.selectedIndex < 0 || !this.suggestionsCol) {
+          return null;
+        }
 
         // find which one is currently selected
         const selectedModel = this.suggestionsCol.at(this.selectedIndex);
@@ -212,8 +220,12 @@ export default Marionette.View.extend({
         // Down
         e.preventDefault();
 
-        if ((this.suggestionsCol && this.suggestionsCol.length) && // initialized
-          this.selectedIndex < this.suggestionsCol.length - 1) { // not out of boundaries
+        if (
+          this.suggestionsCol &&
+          this.suggestionsCol.length && // initialized
+          this.selectedIndex < this.suggestionsCol.length - 1
+        ) {
+          // not out of boundaries
           this.suggestionsCol.at(this.selectedIndex).set('selected', false);
           this.selectedIndex++;
           this.suggestionsCol.at(this.selectedIndex).set('selected', true);
@@ -241,7 +253,7 @@ export default Marionette.View.extend({
         }
 
         // proceed if minimum length phrase was provided
-        if ((text.replace(/\.|\s/g, '').length) >= MIN_SEARCH_LENGTH) {
+        if (text.replace(/\.|\s/g, '').length >= MIN_SEARCH_LENGTH) {
           text = text.trim();
 
           // Clear previous timeout
@@ -252,15 +264,15 @@ export default Marionette.View.extend({
           // Set new timeout - don't run if user is typing
           this.timeout = setTimeout(() => {
             // let controller know
-            that.trigger('taxon:searched', text.toLowerCase());
+            this.trigger('taxon:searched', text.toLowerCase());
           }, 100);
         }
     }
     return null;
   },
 
-  _keyup(e) { // eslint-disable-line
-    const that = this;
+  // eslint-disable-next-line
+  _keyup(e) {
     const input = e.target.value;
     if (!input) {
       return null;
@@ -269,8 +281,10 @@ export default Marionette.View.extend({
     switch (e.keyCode) {
       case 13:
       // press Enter
+      // falls through
       case 38:
       // Up
+      // falls through
       case 40:
         // Down
         break;
@@ -279,7 +293,7 @@ export default Marionette.View.extend({
         let text = input;
 
         // proceed if minimum length phrase was provided
-        if ((text.replace(/\.|\s/g, '').length) >= MIN_SEARCH_LENGTH) {
+        if (text.replace(/\.|\s/g, '').length >= MIN_SEARCH_LENGTH) {
           text = text.trim();
 
           // Clear previous timeout
@@ -290,7 +304,7 @@ export default Marionette.View.extend({
           // Set new timeout - don't run if user is typing
           this.timeout = setTimeout(() => {
             // let controller know
-            that.trigger('taxon:searched', text.toLowerCase());
+            this.trigger('taxon:searched', text.toLowerCase());
           }, 100);
         }
     }

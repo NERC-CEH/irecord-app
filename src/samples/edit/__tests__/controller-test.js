@@ -1,3 +1,5 @@
+import Sample from 'sample';
+import Occurrence from 'occurrence';
 import API from '../controller';
 
 describe('Edit Controller', () => {
@@ -5,8 +7,8 @@ describe('Edit Controller', () => {
     expect(API.show).to.be.a('function');
   });
 
-  it('should have a save method', () => {
-    expect(API.save).to.be.a('function');
+  it('should have a send method', () => {
+    expect(API.send).to.be.a('function');
   });
 
   it('should have a photoUpload method', () => {
@@ -19,5 +21,33 @@ describe('Edit Controller', () => {
 
   it('should have a photoSelect method', () => {
     expect(API.photoSelect).to.be.a('function');
+  });
+
+  describe('updateTaxon', () => {
+    let sampleSetTaxonStub;
+    before(() => {
+      sampleSetTaxonStub = sinon
+        .stub(Sample.prototype, 'setTaxon')
+        .returns(Promise.reject());
+    });
+
+    after(() => {
+      sampleSetTaxonStub.restore();
+    });
+
+    it('should exist', () => {
+      expect(API.updateTaxon).to.be.a('function');
+    });
+    it('should call sample.setTaxon', done => {
+      const sample = new Sample();
+      sample.addOccurrence(new Occurrence());
+
+      API.updateTaxon(sample, { activity: 1 })
+        .then(() => {
+          expect(sampleSetTaxonStub.called).to.be.equal(true);
+          done();
+        })
+        .catch(done);
+    });
   });
 });

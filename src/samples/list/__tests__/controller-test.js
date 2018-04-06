@@ -1,7 +1,10 @@
 import savedSamples from 'saved_samples';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
 import API from '../controller';
 
-describe('List Controller', function () { // eslint-disable-line
+// eslint-disable-next-line
+describe('List Controller', function() {
   // it can take time to add/remove samples
   this.timeout(10000);
 
@@ -21,35 +24,62 @@ describe('List Controller', function () { // eslint-disable-line
     expect(API.photoSelect).to.be.a('function');
   });
 
-  it('should have a sampleDelete method', () => {
-    expect(API.sampleDelete).to.be.a('function');
-  });
-
   describe('photo picker', () => {
-    before((done) => {
+    before(done => {
       // clean up in case of trash
-      savedSamples.fetch()
+      savedSamples
+        .fetch()
         .then(() => savedSamples.destroy())
-        .then(() => done());
+        .then(() => done())
+        .catch(done);
     });
 
-    afterEach((done) => {
+    afterEach(done => {
       // clean up in case of trash
-      savedSamples.fetch()
+      savedSamples
+        .fetch()
         .then(() => savedSamples.destroy())
-        .then(() => done());
+        .then(() => done())
+        .catch(done);
     });
 
-    it('should create a new sample with a photo', (done) => {
+    it.skip('should create a new sample with a photo', done => {
       done();
     });
 
-    it('should throw error if no image is provided', (done) => {
+    it.skip('should throw error if no image is provided', done => {
       // Controller.createNewSample(null, (err) => {
       //  expect(err).to.not.be.null;
       //  done();
       // });
       done();
+    });
+  });
+
+  describe('setTaxon', () => {
+    let sampleSetTaxonStub;
+    before(() => {
+      sampleSetTaxonStub = sinon
+        .stub(Sample.prototype, 'setTaxon')
+        .returns(Promise.reject());
+    });
+
+    after(() => {
+      sampleSetTaxonStub.restore();
+    });
+
+    it('should exist', () => {
+      expect(API.setTaxon).to.be.a('function');
+    });
+    it('should call sample.setTaxon', done => {
+      const sample = new Sample();
+      sample.addOccurrence(new Occurrence());
+      API.setTaxon(sample, { activity: 1 })
+        .then(() => {
+          expect(sampleSetTaxonStub.called).to.be.equal(true);
+          done();
+        })
+        .catch(done);
     });
   });
 });

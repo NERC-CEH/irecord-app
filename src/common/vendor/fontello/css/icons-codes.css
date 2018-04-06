@@ -19,7 +19,6 @@
 .icon-calendar:before { content: '\e811'; } /* '' */
 .icon-location:before { content: '\e812'; } /* '' */
 .icon-lock-open:before { content: '\e813'; } /* '' */
-.icon-stage:before { content: '\e814'; } /* '' */
 .icon-help:before { content: '\e815'; } /* '' */
 .icon-thumbs-up:before { content: '\e816'; } /* '' */
 .icon-send:before { content: '\e817'; } /* '' */
@@ -37,12 +36,18 @@
 .icon-undo:before { content: '\e823'; } /* '' */
 .icon-delete:before { content: '\e824'; } /* '' */
 .icon-arrows-cw:before { content: '\e825'; } /* '' */
+.icon-dot:before { content: '\e826'; } /* '' */
 .icon-grid:before { content: '\e827'; } /* '' */
 .icon-star:before { content: '\e828'; } /* '' */
 .icon-statistics:before { content: '\e829'; } /* '' */
 .icon-training:before { content: '\e82a'; } /* '' */
 .icon-surveys:before { content: '\e82b'; } /* '' */
 .icon-fire:before { content: '\e82c'; } /* '' */
+.icon-land:before { content: '\e82d'; } /* '' */
+.icon-stage:before { content: '\e82e'; } /* '' */
+.icon-fruit:before { content: '\e830'; } /* '' */
+.icon-gender:before { content: '\e831'; } /* '' */
+.icon-magnify:before { content: '\e832'; } /* '' */
 .icon-link-ext:before { content: '\f08e'; } /* '' */
 .icon-history:before { content: '\f1da'; } /* '' */
 .icon-low-vision:before { content: '\f2a8'; } /* '' */

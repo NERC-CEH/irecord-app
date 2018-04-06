@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys Attr controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import Indicia from 'indicia';
 import savedSamples from 'saved_samples';
@@ -16,9 +16,8 @@ const API = {
   show(sampleID, attr) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID, attr]);
+        API.show.apply(this, [sampleID, attr]);
       });
       return;
     }
@@ -86,23 +85,12 @@ const API = {
   },
 
   onLockClick(view) {
-    Log('Surveys:Attr:Controller: lock clicked.');
     const attr = view.options.attr;
+    const fullAttrName = `occ:${attr}`;
+    Log('Surveys:Attr:Controller: lock clicked.');
     // invert the lock of the attribute
     // real value will be put on exit
-    if (attr === 'number') {
-      if (appModel.getAttrLock(attr, 'plant')) {
-        appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'plant'), 'plant');
-      } else {
-        appModel.setAttrLock(
-          'number-ranges',
-          !appModel.getAttrLock('number-ranges'),
-          'plant'
-        );
-      }
-    } else {
-      appModel.setAttrLock(attr, !appModel.getAttrLock(attr, 'plant'), 'plant');
-    }
+      appModel.setAttrLock(fullAttrName, !appModel.getAttrLock(fullAttrName));
   },
 
   onExit(mainView, sample, attr, callback) {
@@ -136,7 +124,7 @@ const API = {
         currentVal = sample.get(attr);
         newVal = null;
         // validate - check if exists in the list
-        viceCounties.forEach((vc) => {
+        viceCounties.forEach(vc => {
           if (vc.code === values[attr] || vc.name === values[attr]) {
             newVal = vc;
           }
@@ -157,21 +145,22 @@ const API = {
     }
 
     // save it
-    sample.save()
+    sample
+      .save()
       .then(() => {
         // update locked value if attr is locked
         API.updateLock(attr, newVal, currentVal);
         callback();
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
   },
 
-  updateLock(attr, newVal, currentVal) { // eslint-disable-line
+  updateLock() {
+    // eslint-disable-line
     // let lockedValue = appModel.getAttrLock(attr, 'plant');
-
     // switch (attr) {
     //   case 'date':
     //     if (!lockedValue ||

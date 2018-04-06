@@ -1,10 +1,12 @@
 /** ****************************************************************************
  * Surveys Sample List main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import radio from 'radio';
-import _MainView, { SampleView as _SampleView } from '../../../samples/list/main_view';
+import _MainView, {
+  SampleView as _SampleView,
+} from '../../../samples/list/main_view';
 import SlidingView from '../../../common/views/sliding_view';
 import './styles.scss';
 
@@ -79,7 +81,6 @@ const NoSamplesView = Marionette.View.extend({
   },
 });
 
-
 const SmartCollectionView = SlidingView.extend({
   childView: SampleView,
   emptyView: NoSamplesView,
@@ -95,7 +96,6 @@ const SmartCollectionView = SlidingView.extend({
     };
   },
 });
-
 
 const MainView = _MainView.extend({
   template: JST['surveys/samples/list/main'],
@@ -121,12 +121,14 @@ const MainView = _MainView.extend({
   onRender() {
     const mainRegion = this.getRegion('body');
 
-    mainRegion.show(new SmartCollectionView({
-      referenceCollection: this.collection,
-      appModel: this.options.appModel,
-      scroll: this.options.scroll,
-      surveySampleID: this.options.surveySample.cid,
-    }));
+    mainRegion.show(
+      new SmartCollectionView({
+        referenceCollection: this.collection,
+        appModel: this.options.appModel,
+        scroll: this.options.scroll,
+        surveySampleID: this.options.surveySample.cid,
+      })
+    );
   },
 });
 

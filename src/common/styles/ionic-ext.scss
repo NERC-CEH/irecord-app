@@ -1,4 +1,4 @@
-@import "./_variables.scss";
+@import './_variables.scss';
 
 /**
 * Ionic Framework:
@@ -30,14 +30,14 @@
 }
 
 // Range number input
-.range input[type="number"] {
+.range input[type='number'] {
   flex: 0 0 50px;
   background: none;
   padding-left: 5px;
   padding-right: 0;
 }
 
-label.item-input-wrapper{
+label.item-input-wrapper {
   width: 90%;
   height: 35px;
   margin: 6px;

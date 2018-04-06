@@ -13,6 +13,7 @@ const service = {
 
     Log('GridAtlasService:GPS: start.');
 
+    // eslint-disable-next-line
     const that = this;
     const options = {
       accuracyLimit: 100, // meters

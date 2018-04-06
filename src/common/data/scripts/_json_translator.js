@@ -6,7 +6,7 @@
 'use strict'; // eslint-disable-line
 
 const taxonCleaner = require('./_clean');
-const csv = require('csv');
+const csv = require('csv');  // eslint-disable-line
 
 const SYNONYM = 4;
 const COMMON_NAME = 3;
@@ -14,12 +14,13 @@ const TAXON = 2;
 const GROUP = 1;
 const ID = 0;
 
-
 function normalizeValue(value) {
   // check if int
   // https://coderwall.com/p/5tlhmw/converting-strings-to-number-in-javascript-pitfalls
   const int = value * 1;
-  if (!isNaN(int)) return int;
+  if (!Number.isNaN(int)) {
+    return int;
+  }
   return value;
 }
 
@@ -27,7 +28,7 @@ function processRow(header, row) {
   const rowObj = [];
 
   // for each row column value set it in the right rowObj
-  row.forEach((columnVal) => {
+  row.forEach(columnVal => {
     if (columnVal) {
       rowObj.push(normalizeValue(columnVal));
     }
@@ -44,7 +45,7 @@ function processRow(header, row) {
 function run(output) {
   const obj = [];
   const header = output.shift();
-  output.forEach((row) => {
+  output.forEach(row => {
     const rowObj = processRow(header, row);
     obj.push(rowObj);
   });
@@ -84,7 +85,6 @@ function optimise(output) {
     optimised.push(genus);
   }
 
-
   /**
    * Finds the last genus entered in the optimised list.
    * Looks for the matching taxa and informal group.
@@ -101,12 +101,7 @@ function optimise(output) {
     // no genus with the same name and group was found
     if (lastGenus[TAXON] !== taxaNameSplitted[0]) {
       // create a new genus with matching group
-      lastGenus = [
-        0,
-        taxa[GROUP],
-        taxaNameSplitted[0],
-        [],
-      ];
+      lastGenus = [0, taxa[GROUP], taxaNameSplitted[0], []];
       optimised.push(lastGenus);
       return lastGenus;
     }
@@ -119,7 +114,6 @@ function optimise(output) {
 
     return lastGenus;
   }
-
 
   function addSpecies(taxa, taxaNameSplitted) {
     // species that needs to be appended to genus
@@ -180,19 +174,21 @@ function optimise(output) {
     return true;
   }
 
-  output.forEach((taxa) => {
+  output.forEach(taxa => {
     const taxaName = taxa[TAXON];
     const taxaNameSplitted = taxaName.split(' ');
 
     // hybrid genus names starting with X should
     // have a full genus eg. X Agropogon littoralis
     if (taxaNameSplitted[0] === 'X') {
-      taxaNameSplitted[0] = `${taxaNameSplitted.shift()} ${taxaNameSplitted[0]}`;
+      taxaNameSplitted[0] = `${taxaNameSplitted.shift()} ${
+        taxaNameSplitted[0]
+      }`;
     }
     if (taxaNameSplitted.length === 1) {
       // genus
       if (isGenusDuplicate(taxa)) {
-        console.log(`Duplicate genus found: ${taxa.toString()}`);
+        console.warn(`Duplicate genus found: ${taxa.toString()}`);
         return;
       }
       addGenus(taxa);
@@ -213,4 +209,3 @@ module.exports = (data, callback) => {
     callback(err, optimise(jsonOutput));
   });
 };
-

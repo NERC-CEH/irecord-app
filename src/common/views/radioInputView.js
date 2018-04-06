@@ -13,7 +13,6 @@ export default Marionette.View.extend({
     'click input[type="radio"]': 'save',
   },
 
-
   initialize() {
     const config = this.options.config || {};
 
@@ -26,7 +25,7 @@ export default Marionette.View.extend({
 
     this.model = new Backbone.Model({
       value: this.options.default || config.default,
-      message: this.options.label || config.label,
+      message: this.options.info || config.info,
       selection,
       selected: this.options.default || config.default,
     });
@@ -34,13 +33,12 @@ export default Marionette.View.extend({
 
   getValues() {
     let values;
-    const that = this;
     const $inputs = this.$el.find('input');
     $inputs.each((int, elem) => {
       if ($(elem).prop('checked')) {
         const newVal = $(elem).val();
         // don't set default
-        if (newVal !== that.options.config.default) {
+        if (newVal !== this.options.config.default) {
           values = newVal;
         }
       }

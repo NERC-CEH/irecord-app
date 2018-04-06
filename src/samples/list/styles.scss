@@ -1,6 +1,6 @@
-@import "../../common/styles/_variables.scss";
-@import "../../common/styles/swipe-list.scss";
-@import "../../common/styles/mixins.scss";
+@import '../../common/styles/_variables.scss';
+@import '../../common/styles/swipe-list.scss';
+@import '../../common/styles/mixins.scss';
 
 //HEADER
 #samples-header {
@@ -16,10 +16,10 @@
     width: 100%;
     left: 0;
     position: absolute;
-    padding: .4em;
+    padding: 0.4em;
     opacity: 0;
     margin: -8px 0 !important;
-    height: inherit!important;
+    height: inherit !important;
   }
 
   &:hover {
@@ -96,7 +96,7 @@
         top: 0;
       }
 
-      .group {
+      .activity {
         width: 7px;
         height: 100%;
         margin: 0;
@@ -107,7 +107,7 @@
         top: 0;
       }
 
-      .training + .group {
+      .training + .activity {
         left: 7px;
       }
 
@@ -115,7 +115,7 @@
         margin: -9px 8px 0 -14px;
         height: 60px;
         width: 60px;
-        background-color: #E5EACD;
+        background-color: #e5eacd;
 
         img {
           height: 100%;
@@ -182,7 +182,7 @@
         }
 
         //pull right
-        .group-status {
+        .activity-status {
           position: absolute;
           top: 30px;
           right: 40px;
@@ -282,6 +282,10 @@
             color: $color-gray-dark;
           }
 
+          span.locked,
+          div.locked {
+            color: $color-blue;
+          }
         }
       }
     }

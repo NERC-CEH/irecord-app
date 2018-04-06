@@ -2,26 +2,26 @@
  * App wide configuration of variables.
  *****************************************************************************/
 
-$color-white:        white;
-$color-gray-light:   #f7f7f7;
-$color-gray:         #ddd;
-$color-gray-dark:    #868686;
-$color-black:        #333;
-$color-blue:         #38c;
-$color-blue-dark:    #1962a0;
-$color-green-dark:   #4E5A0C;
-$color-green:        #91A71C;
-$color-green-light:  #BBD245;
-$color-orange:       #ef473a;
-$color-orange-light: #FF9935;
-$color-yellow:       #FFC019;
-$color-brown:        #614705;
-$color-red:          #e42012;
-$color-red-dark:     #a01919;
-$color-main:         $color-green;
-$color-main-light:   $color-green-light;
-$color-main-dark:    $color-green-dark;
-
+$color-white: white;
+$color-gray-light: #f7f7f7;
+$color-gray-light-super: #fdfdfd;
+$color-gray: #ddd;
+$color-gray-dark: #868686;
+$color-black: #333;
+$color-blue: #38c;
+$color-blue-dark: #1962a0;
+$color-green-dark: #4e5a0c;
+$color-green: #91a71c;
+$color-green-light: #bbd245;
+$color-orange: #ef473a;
+$color-orange-light: #ff9935;
+$color-yellow: #ffc019;
+$color-brown: #614705;
+$color-red: #e42012;
+$color-red-dark: #a01919;
+$color-main: $color-green;
+$color-main-light: $color-green-light;
+$color-main-dark: $color-green-dark;
 
 $app-max-width: 650px;
 
@@ -50,8 +50,8 @@ $OS_MAP_URL: 'https://openspace.ordnancesurvey.co.uk/osmapapi/ts?KEY=#{$OS_MAP_K
     font-size: 13.3333px;
     line-height: 17.3333px;
 
-    height: initial!important;
-    min-height: initial!important;
+    height: initial !important;
+    min-height: initial !important;
     padding: 13px 0;
     border: none;
     margin: 0;

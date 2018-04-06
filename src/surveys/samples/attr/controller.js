@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys Samples Attr controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Backbone from 'backbone';
 import radio from 'radio';
 import Log from 'helpers/log';
@@ -14,9 +14,8 @@ const API = {
   show(surveySampleID, sampleID, attr) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [surveySampleID, sampleID]);
+        API.show.apply(this, [surveySampleID, sampleID]);
       });
       return;
     }
@@ -122,21 +121,22 @@ const API = {
     }
 
     // save it
-    sample.save()
+    sample
+      .save()
       .then(() => {
         // update locked value if attr is locked
         API.updateLock(attr, newVal, currentVal);
         callback();
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
   },
 
-  updateLock(attr, newVal, currentVal) { // eslint-disable-line
+  updateLock() {
+    // eslint-disable-line
     // let lockedValue = appModel.getAttrLock(attr, 'plant');
-
     // switch (attr) {
     //   case 'date':
     //     if (!lockedValue ||

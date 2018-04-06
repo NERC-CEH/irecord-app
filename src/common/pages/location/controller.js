@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Location controller.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
@@ -26,9 +26,8 @@ const API = {
   show(sampleID, subSampleID, options = {}) {
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that, [sampleID]);
+        API.show.apply(this, [sampleID]);
       });
       return;
     }
@@ -84,29 +83,28 @@ const API = {
     mainView.on('past:click', () => API.onPastLocationsClick(sample));
 
     // map
-    mainView.on('location:select:map',
-      (loc, createNew) => API.setLocation(sample, loc, createNew)
+    mainView.on('location:select:map', (loc, createNew) =>
+      API.setLocation(sample, loc, createNew)
     );
 
     // gridref
-    mainView.on('location:gridref:change',
-      data => API.onManualGridrefChange(sample, data)
+    mainView.on('location:gridref:change', data =>
+      API.onManualGridrefChange(sample, data)
     );
 
     // gps
     mainView.on('gps:click', () => API.onGPSClick(sample));
 
     // location name
-    mainView.on('location:name:change',
-      locationName => API.updateLocationName(sample, locationName)
+    mainView.on('location:name:change', locationName =>
+      API.updateLocationName(sample, locationName)
     );
 
     mainView.on('lock:click:location', API.onLocationLockClick);
     mainView.on('lock:click:name', API.onNameLockClick);
 
-    const location = sample.get('location') || {};
-    const locationIsLocked = appModel.isAttrLocked('location', location);
-    const nameIsLocked = appModel.isAttrLocked('locationName', location.name);
+    const locationIsLocked = appModel.isAttrLocked(sample, 'location');
+    const nameIsLocked = appModel.isAttrLocked(sample, 'locationName');
     mainView.on('navigateBack', () => {
       API.exit(sample, locationIsLocked, nameIsLocked);
     });
@@ -140,7 +138,9 @@ const API = {
     if (!reset) {
       // extend old location to preserve its previous attributes like name or id
       let oldLocation = sample.get('location');
-      if (!_.isObject(oldLocation)) oldLocation = {}; // check for locked true
+      if (!_.isObject(oldLocation)) {
+        oldLocation = {};
+      } // check for locked true
       location = $.extend(oldLocation, location);
     }
 
@@ -151,21 +151,21 @@ const API = {
     sample.set('location', location);
     sample.trigger('change:location');
 
-    return sample.save()
-      .catch((error) => {
-        Log(error, 'e');
-        radio.trigger('app:dialog:error', error);
-      });
+    return sample.save().catch(error => {
+      Log(error, 'e');
+      radio.trigger('app:dialog:error', error);
+    });
   },
 
   exit(sample, locationWasLocked, nameWasLocked) {
     Log('Location:Controller: exiting.');
 
-    sample.save()
+    sample
+      .save()
       .then(() => {
         // save to past locations and update location ID on record
         const location = sample.get('location') || {};
-        if ((location.latitude)) {
+        if (location.latitude) {
           const locationID = appModel.setLocation(location);
           location.id = locationID;
           sample.set('location', location);
@@ -175,7 +175,7 @@ const API = {
 
         window.history.back();
       })
-      .catch((error) => {
+      .catch(error => {
         Log(error, 'e');
         radio.trigger('app:dialog:error', error);
       });
@@ -188,8 +188,8 @@ const API = {
   updateLocks(location = {}, locationWasLocked, nameWasLocked) {
     Log('Location:Controller: updating locks.');
 
-    const currentLock = appModel.getAttrLock('location');
-    const currentLockedName = appModel.getAttrLock('locationName');
+    const currentLock = appModel.getAttrLock('smp:location');
+    const currentLockedName = appModel.getAttrLock('smp:locationName');
 
     // location
     if (location.source !== 'gps' && location.latitude) {
@@ -200,22 +200,20 @@ const API = {
 
       // we can lock location and name on their own
       // don't lock GPS though, because it varies more than a map or gridref
-      if (currentLock &&
-        (currentLock === true || locationWasLocked)) {
+      if (currentLock && (currentLock === true || locationWasLocked)) {
         // update locked value if attr is locked
         // check if previously the value was locked and we are updating
         Log('Updating lock.');
-        appModel.setAttrLock('location', clonedLocation);
+        appModel.setAttrLock('smp:location', clonedLocation);
       }
     } else if (currentLock === true) {
       // reset if no location or location name selected but locked is clicked
-      appModel.setAttrLock('location', null);
+      appModel.unsetAttrLock('smp:location');
     }
 
     // name
-    if (currentLockedName &&
-      (currentLockedName === true || nameWasLocked)) {
-      appModel.setAttrLock('locationName', location.name);
+    if (currentLockedName && (currentLockedName === true || nameWasLocked)) {
+      appModel.setAttrLock('smp:locationName', location.name);
     }
   },
 
@@ -242,7 +240,6 @@ const API = {
     const location = sample.get('location') || {};
     location.name = escapedName;
 
-
     // check if we need custom location setting functionality
     if (locationSetFunc) {
       locationSetFunc(sample, location);
@@ -267,7 +264,9 @@ const API = {
       // check if it is in GB land and not in the sea
       if (LocHelp.isValidGridRef(normalizedGridref)) {
         // GB Grid Reference
-        const parsedGridRef = GridRefUtils.GridRefParser.factory(normalizedGridref);
+        const parsedGridRef = GridRefUtils.GridRefParser.factory(
+          normalizedGridref
+        );
 
         location.source = 'gridref';
         location.gridref = parsedGridRef.preciseGridRef;
@@ -332,14 +331,14 @@ const API = {
     Log('Location:Controller: executing onLocationLockClick.');
     // invert the lock of the attribute
     // real value will be put on exit
-    appModel.setAttrLock('location', !appModel.getAttrLock('location'));
+    appModel.setAttrLock('smp:location', !appModel.getAttrLock('smp:location'));
   },
 
   onNameLockClick() {
     Log('Location:Controller: executing onNameLockClick.');
     // invert the lock of the attribute
     // real value will be put on exit
-    appModel.setAttrLock('locationName', !appModel.getAttrLock('locationName'));
+    appModel.setAttrLock('smp:locationName', !appModel.getAttrLock('smp:locationName'));
   },
 };
 

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Sample Show main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
@@ -23,7 +23,7 @@ export default Marionette.View.extend({
 
     const items = [];
     const sample = this.model.get('sample');
-    sample.getOccurrence().media.each((image) => {
+    sample.getOccurrence().media.each(image => {
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
@@ -31,7 +31,7 @@ export default Marionette.View.extend({
       });
     });
 
-// Initializes and opens PhotoSwipe
+    // Initializes and opens PhotoSwipe
     const gallery = new Gallery(items);
     gallery.init();
   },
@@ -51,14 +51,13 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
+    let number = StringHelp.limit(occ.get('number'));
     if (!number) {
-      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
+      number = StringHelp.limit(occ.get('number-ranges'));
     }
 
-
     // show activity title.
-    const group = sample.get('group');
+    const activity = sample.get('activity');
 
     return {
       id: occ.id,
@@ -73,10 +72,10 @@ export default Marionette.View.extend({
       locationName: location.name,
       date: DateHelp.print(sample.get('date'), true),
       number,
-      stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
+      stage: StringHelp.limit(occ.get('stage')),
       identifiers: occ.get('identifiers'),
       comment: occ.get('comment'),
-      group_title: group ? group.title : null,
+      activity_title: activity ? activity.title : null,
       media: occ.media,
     };
   },
@@ -101,4 +100,3 @@ export default Marionette.View.extend({
     window.history.back();
   },
 });
-

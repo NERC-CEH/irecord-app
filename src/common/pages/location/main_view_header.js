@@ -1,13 +1,13 @@
 /** ****************************************************************************
  * Location main view header functions.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import LocHelp from 'helpers/location';
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import Log from 'helpers/log';
 import typeaheadSearchFn from 'helpers/typeahead_search';
-import 'typeahead';
+import 'typeahead'; // eslint-disable-line
 
 const HeaderView = Marionette.View.extend({
   template: JST['common/location/header'],
@@ -26,9 +26,8 @@ const HeaderView = Marionette.View.extend({
     const sample = this.model.get('sample');
     this.listenTo(sample, 'change:location', this.onLocationChange);
 
-
     const appModel = this.model.get('appModel');
-    this.locationInitiallyLocked = appModel.isAttrLocked('location', this._getCurrentLocation());
+    this.locationInitiallyLocked = appModel.isAttrLocked(sample, 'location');
     this.listenTo(appModel, 'change:attrLocks', this.updateLocks);
   },
 
@@ -64,7 +63,8 @@ const HeaderView = Marionette.View.extend({
         limit: 3,
         name: 'names',
         source: typeaheadSearchFn(strs, 3, a => a.name),
-      });
+      }
+    );
   },
 
   changeName(e) {
@@ -82,8 +82,10 @@ const HeaderView = Marionette.View.extend({
     switch (e.keyCode) {
       case 13:
       // press Enter
+      // falls through
       case 38:
       // Up
+      // falls through
       case 40:
         // Down
         break;
@@ -108,11 +110,10 @@ const HeaderView = Marionette.View.extend({
         if (empty || validGridRef || validLatLong) {
           this._refreshGrErrorState(false);
 
-          const that = this;
           // Set new timeout - don't run if user is typing
           this.grRefreshTimeout = setTimeout(() => {
             // let controller know
-            that.triggerMethod('gridref:change', value);
+            this.triggerMethod('gridref:change', value);
           }, 200);
         } else {
           this._refreshGrErrorState(true);
@@ -191,7 +192,7 @@ const HeaderView = Marionette.View.extend({
 
     // location name lock
     const $nameLockBtn = this.$el.find('#name-lock-btn');
-    const nameLocked = appModel.isAttrLocked('locationName', location.name);
+    const nameLocked = appModel.isAttrLocked(sample, 'locationName');
     if (nameLocked) {
       $nameLockBtn.addClass('icon-lock-closed');
       $nameLockBtn.removeClass('icon-lock-open');
@@ -212,7 +213,6 @@ const HeaderView = Marionette.View.extend({
     const location = this._getCurrentLocation();
     let value = location.gridref;
 
-
     // avoid testing location.longitude as this can validly be zero within the UK
     if ((!appModel.get('useGridRef') || !value) && location.latitude) {
       value = `${location.latitude}, ${location.longitude}`;
@@ -221,7 +221,8 @@ const HeaderView = Marionette.View.extend({
     const disableLocationLock = location.source === 'gps';
 
     const locationLocked = this.isLocationLocked(disableLocationLock);
-    const nameLocked = appModel.isAttrLocked('locationName', location.name);
+    const sample = this.model.get('sample');
+    const nameLocked = appModel.isAttrLocked(sample, 'locationName');
 
     return {
       hideName: this.options.hideName,
@@ -237,9 +238,12 @@ const HeaderView = Marionette.View.extend({
   isLocationLocked(disableLocationLock = false) {
     const appModel = this.model.get('appModel');
 
-    const currentLock = appModel.getAttrLock('location');
-    return !disableLocationLock && currentLock &&
-      (currentLock === true || this.locationInitiallyLocked);
+    const currentLock = appModel.getAttrLock('smp:location');
+    return (
+      !disableLocationLock &&
+      currentLock &&
+      (currentLock === true || this.locationInitiallyLocked)
+    );
   },
 });
 

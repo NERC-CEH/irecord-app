@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Some location transformation logic.
- *****************************************************************************/
+ **************************************************************************** */
 import bigu from 'bigu';
 import Log from './log';
 
@@ -91,19 +91,19 @@ const helpers = {
     const x = gridCoords.x;
     const y = gridCoords.y;
 
-    if (((x % normAcc) - accuracy) < 0) {
+    if (x % normAcc - accuracy < 0) {
       return true;
     }
 
-    if (((x % normAcc) + accuracy) > normAcc) {
+    if (x % normAcc + accuracy > normAcc) {
       return true;
     }
 
-    if (((y % normAcc) - accuracy) < 0) {
+    if (y % normAcc - accuracy < 0) {
       return true;
     }
 
-    if (((y % normAcc) + accuracy) > normAcc) {
+    if (y % normAcc + accuracy > normAcc) {
       return true;
     }
 
@@ -122,9 +122,18 @@ const helpers = {
 
       if (parsedRef) {
         const nationalGridRefSW = parsedRef.osRef;
-        const a = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y);  // eslint-disable-line
-        const b = new parsedRef.NationalRef(nationalGridRefSW.x + parsedRef.length, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
-        const c = new parsedRef.NationalRef(nationalGridRefSW.x, nationalGridRefSW.y + parsedRef.length); // eslint-disable-line
+        const a = new parsedRef.NationalRef(
+          nationalGridRefSW.x + parsedRef.length,
+          nationalGridRefSW.y
+        ); // eslint-disable-line
+        const b = new parsedRef.NationalRef(
+          nationalGridRefSW.x + parsedRef.length,
+          nationalGridRefSW.y + parsedRef.length
+        ); // eslint-disable-line
+        const c = new parsedRef.NationalRef(
+          nationalGridRefSW.x,
+          nationalGridRefSW.y + parsedRef.length
+        ); // eslint-disable-line
         return [
           nationalGridRefSW.to_latLng(),
           a.to_latLng(),
@@ -205,7 +214,10 @@ const helpers = {
    */
   isInGB(location) {
     if (location.latitude) {
-      const nationaGridCoords = bigu.latlng_to_grid_coords(location.latitude, location.longitude);
+      const nationaGridCoords = bigu.latlng_to_grid_coords(
+        location.latitude,
+        location.longitude
+      );
       if (!nationaGridCoords) {
         return false;
       }
@@ -213,7 +225,6 @@ const helpers = {
     }
     return false;
   },
-
 
   /**
    * Checks if location gridref size matches the provided one.

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Surveys List controller.
- *****************************************************************************/
+ **************************************************************************** */
 import Indicia from 'indicia';
 import Backbone from 'backbone';
 import radio from 'radio';
@@ -19,9 +19,8 @@ const API = {
     Log('Surveys:List:Controller: showing.');
     // wait till savedSamples is fully initialized
     if (savedSamples.fetching) {
-      const that = this;
       savedSamples.once('fetching:done', () => {
-        API.show.apply(that);
+        API.show.apply(this);
       });
       radio.trigger('app:main', new LoaderView());
     } else {
@@ -62,7 +61,7 @@ const API = {
     });
 
     mainView.on('childview:create', API.addSurvey);
-    mainView.on('childview:sample:delete', (childView) => {
+    mainView.on('childview:sample:delete', childView => {
       API.sampleDelete(childView.model);
     });
 
@@ -75,14 +74,14 @@ const API = {
       return;
     }
 
-    gridAlertService.start((location) => {
+    gridAlertService.start(location => {
       console.log(location.gridref);
       API.showGridNotification(location);
     });
   },
 
   showGridNotification(location) {
-    const body = `<center><h1>${location.gridref}</h1></center>`;
+    const body = `<h1 style="text-align: center;">${location.gridref}</h1>`;
 
     radio.trigger('app:dialog', {
       title: 'Grid Square',
@@ -94,7 +93,8 @@ const API = {
     Log('Samples:List:Controller: deleting sample.');
 
     const syncStatus = sample.getSyncStatus();
-    let body = 'This record hasn\'t been saved to iRecord yet, ' +
+    let body =
+      "This record hasn't been saved to iRecord yet, " +
       'are you sure you want to remove it from your device?';
 
     if (syncStatus === Indicia.SYNCED) {
@@ -107,6 +107,7 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
+          class: 'btn-clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           },
@@ -126,10 +127,10 @@ const API = {
 
   addSurvey() {
     API.addSurveySample()
-      .then((sample) => {
+      .then(sample => {
         radio.trigger('surveys:edit', sample.cid);
       })
-      .catch((err) => {
+      .catch(err => {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });

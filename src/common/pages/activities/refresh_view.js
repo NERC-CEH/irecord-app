@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Activities list refresh view.
  * Provides button for top right of header.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import JST from 'JST';
 

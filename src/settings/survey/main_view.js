@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Settings Survey main view.
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import LocHelp from 'helpers/location';
@@ -41,7 +41,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const templateData = {
-      message: 'Please pick the life stage.',
+      message: 'Please pick your grid square unit.',
       selection: Object.keys(LocHelp.gridref_accuracy).map(key => ({
         label: LocHelp.gridref_accuracy[key].label,
         value: key,
@@ -52,4 +52,3 @@ export default Marionette.View.extend({
     return templateData;
   },
 });
-

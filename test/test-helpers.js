@@ -5,7 +5,8 @@ import serverResponses from './server_responses.js';
 
 function getRandomSample(occurrence) {
   if (!occurrence) {
-    occurrence = new Occurrence({ // eslint-disable-line
+    occurrence = new Occurrence({
+      // eslint-disable-line
       taxon: { warehouse_id: 166205 },
     });
   }
@@ -34,17 +35,18 @@ function generateSampleResponse(server, type, data) {
 
   switch (type) {
     case 'OK':
-      server.respondWith((req) => {
+      server.respondWith(req => {
         let model = data;
         if (typeof data === 'function') {
           const submission = JSON.parse(req.requestBody.get('submission'));
           model = data(submission.external_key);
         }
 
-        req.respond.apply(req, serverResponses(type, { // eslint-disable-line
-            cid: model.cid, // eslint-disable-line
+        req.respond(
+          ...serverResponses(type, {
+            cid: model.cid,
             occurrence_cid: model.getOccurrence().cid, // eslint-disable-line
-          }) // eslint-disable-line
+          })
         );
       });
       break;
@@ -57,7 +59,7 @@ function generateSampleResponse(server, type, data) {
           cid: data.cid,
           subsample_cid: data.getSample().cid,
           occurrence_cid: data.getSample().getOccurrence().cid,
-        }),
+        })
       );
       break;
 
@@ -68,23 +70,15 @@ function generateSampleResponse(server, type, data) {
         serverResponses(type, {
           occurrence_cid: data.getOccurrence().cid, // eslint-disable-line
           cid: data.cid, // eslint-disable-line
-        }), // eslint-disable-line
+        }) // eslint-disable-line
       );
       break;
 
     case 'ERR':
-      server.respondWith(
-        'POST',
-        SAMPLE_POST_URL,
-        serverResponses(type),
-      );
+      server.respondWith('POST', SAMPLE_POST_URL, serverResponses(type));
       break;
     default:
-
   }
 }
 
-export {
-  getRandomSample,
-  generateSampleResponse,
-};
+export { getRandomSample, generateSampleResponse };

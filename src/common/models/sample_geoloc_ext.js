@@ -3,7 +3,7 @@
  *
  * Sample geolocation events:
  * start, update, error, success, stop
- *****************************************************************************/
+ **************************************************************************** */
 import $ from 'jquery';
 import GPS from 'helpers/GPS';
 import Log from 'helpers/log';
@@ -11,7 +11,7 @@ import LocHelp from 'helpers/location';
 import appModel from 'app_model';
 
 export function updateSampleLocation(sample, location) {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     const newLocation = Object.assign({}, location);
     newLocation.source = 'gps';
     newLocation.updateTime = new Date(); // track when gps was acquired
@@ -40,6 +40,7 @@ const extension = {
   startGPS(accuracyLimit) {
     Log('SampleModel:GPS: start.');
 
+    // eslint-disable-next-line
     const that = this;
     const options = {
       accuracyLimit,
@@ -66,7 +67,8 @@ const extension = {
               that.trigger('geolocation:success', location);
             }
           })
-          .catch(error => {
+          .catch(() => {
+            // todo: return err
             that.trigger('geolocation:error', location);
           });
       },

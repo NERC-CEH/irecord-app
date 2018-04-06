@@ -6,7 +6,7 @@ export default Marionette.View.extend({
   template: JST['common/header'],
 
   className() {
-    return `common-header ${this.options.classes}`;
+    return `common-header ${this.options.classes} capitalize`;
   },
 
   regions: {
@@ -37,4 +37,3 @@ export default Marionette.View.extend({
     }
   },
 });
-

@@ -1,6 +1,6 @@
 /** ****************************************************************************
  * Settings router.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import $ from 'jquery';
 import App from 'app';
@@ -26,7 +26,7 @@ const $mainRegion = $('#main');
 /**
  * Scroll to the last position
  */
-radio.on('surveys:list:show', (samples) => {
+radio.on('surveys:list:show', samples => {
   if (Device.isIOS()) {
     // iOS scroll glitch fix
     setTimeout(() => {
@@ -48,7 +48,7 @@ radio.on('surveys:list:show', (samples) => {
 const Router = Marionette.AppRouter.extend({
   routes: {
     'surveys(/)': {
-      route: (surveySampleID) => {
+      route: surveySampleID => {
         ListController.show({
           surveySampleID,
           scroll, // inform about the last scroll
@@ -61,7 +61,7 @@ const Router = Marionette.AppRouter.extend({
     'surveys/:id': ShowController.show,
     'surveys/:id/edit(/)': EditController.show,
     'surveys/:id/edit/samples(/)': {
-      route: (surveySampleID) => {
+      route: surveySampleID => {
         SamplesListController.show({
           surveySampleID,
           scroll: scrollSamples, // inform about the last scroll
@@ -73,17 +73,21 @@ const Router = Marionette.AppRouter.extend({
     },
     'surveys/:id/edit/samples/new(/)': SamplesEditTaxonController.show,
     'surveys/:id/edit/samples/:id/edit(/)': SamplesEditController.show,
-    'surveys/:id/edit/samples/:id/edit/taxon(/)': SamplesEditTaxonController.show,
+    'surveys/:id/edit/samples/:id/edit/taxon(/)':
+      SamplesEditTaxonController.show,
     'surveys/:id/edit/samples/:id/edit/location(/)': LocationController.show,
-    'surveys/:id/edit/samples/:id/edit/:attr(/)': SamplesEditAttrController.show,
+    'surveys/:id/edit/samples/:id/edit/:attr(/)':
+      SamplesEditAttrController.show,
 
     'surveys/:id/edit/location(/)': LocationController.show,
     'surveys/:id/edit/:attr(/)': EditAttrController.show,
-    'surveys/*path': () => { radio.trigger('app:404:show'); },
+    'surveys/*path': () => {
+      radio.trigger('app:404:show');
+    },
   },
 });
 
-radio.on('surveys:list', (options) => {
+radio.on('surveys:list', options => {
   App.navigate('surveys', options);
   ListController.show();
 });
@@ -98,20 +102,31 @@ radio.on('surveys:show', (sampleID, options) => {
   ShowController.show(sampleID);
 });
 
-
 radio.on('surveys:samples:edit', (surveySampleID, sampleID, options) => {
-  App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit`, options);
+  App.navigate(
+    `surveys/${surveySampleID}/edit/samples/${sampleID}/edit`,
+    options
+  );
   SamplesEditController.show(surveySampleID, sampleID);
 });
 
-radio.on('surveys:samples:edit:taxon', (surveySampleID, sampleID, options = {}) => {
-  App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit/taxon`, options);
-  SamplesEditTaxonController.show(options);
-});
+radio.on(
+  'surveys:samples:edit:taxon',
+  (surveySampleID, sampleID, options = {}) => {
+    App.navigate(
+      `surveys/${surveySampleID}/edit/samples/${sampleID}/edit/taxon`,
+      options
+    );
+    SamplesEditTaxonController.show(options);
+  }
+);
 
 radio.on('app:location:show', (surveySampleID, sampleID, options = {}) => {
   if (sampleID) {
-    App.navigate(`surveys/${surveySampleID}/edit/samples/${sampleID}/edit/location`, options);
+    App.navigate(
+      `surveys/${surveySampleID}/edit/samples/${sampleID}/edit/location`,
+      options
+    );
   } else {
     App.navigate(`surveys/${surveySampleID}/edit/location`, options);
   }

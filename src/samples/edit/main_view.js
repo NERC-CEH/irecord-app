@@ -1,16 +1,38 @@
 /** ****************************************************************************
  * Sample Edit main view.
- *****************************************************************************/
+ **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
 import JST from 'JST';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
-
+import { coreAttributes } from 'common/config/surveys/general';
+import AttrsView from './attrs_view';
 import './styles.scss';
 
 export default Marionette.View.extend({
   template: JST['samples/edit/main'],
+
+  regions: {
+    attrs: {
+      el: '#attrs',
+      replaceElement: true,
+    },
+  },
+
+  onRender() {
+    const sample = this.model.get('sample');
+    const activity = sample.get('activity');
+
+    const attrView = new AttrsView({
+      model: this.model,
+      activityExists: !!activity,
+    });
+    attrView.on('attr:update', (attr, value) =>
+      this.trigger('attr:update', attr, value)
+    );
+    this.showChildView('attrs', attrView);
+  },
 
   triggers: {
     'click a#species-button': 'taxon:update',
@@ -24,9 +46,9 @@ export default Marionette.View.extend({
     const sample = this.model.get('sample');
     let amount = 0;
 
-    let classes = 'slim ';
+    let classes = 'attr-edit slim ';
 
-    if (sample.get('group')) {
+    if (sample.get('activity')) {
       amount++;
     }
 
@@ -57,44 +79,29 @@ export default Marionette.View.extend({
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
-    let numberLock = appModel.isAttrLocked('number', occ.get('number'));
-    if (!numberLock) {
-      numberLock = appModel.isAttrLocked('number-ranges', occ.get('number-ranges'));
-    }
-    const attrLocks = {
-      date: appModel.isAttrLocked('date', sample.get('date')),
-      location: appModel.isAttrLocked('location', location),
-      number: numberLock,
-      locationName: appModel.isAttrLocked('locationName', location.name),
-      stage: appModel.isAttrLocked('stage', occ.get('stage')),
-      identifiers: appModel.isAttrLocked('identifiers', occ.get('identifiers')),
-      comment: appModel.isAttrLocked('comment', occ.get('comment')),
-      activity: appModel.isAttrLocked('activity', sample.get('group')),
-    };
-
-    let number = occ.get('number') && StringHelp.limit(occ.get('number'));
-    if (!number) {
-      number = occ.get('number-ranges') && StringHelp.limit(occ.get('number-ranges'));
-    }
+    const attrLocks = {};
+    // todo: don't rely on core attributes list to build this as it could contain
+    // more than we need
+    coreAttributes.forEach(attr => {
+      const model = attr.split(':')[0] === 'smp' ? sample : occ;
+      attrLocks[attr] = appModel.isAttrLocked(model, attr.split(':')[1]);
+    });
 
     // show activity title.
-    const group = sample.get('group');
+    const activity = sample.get('activity');
+    const activityTitle = activity ? activity.title : null;
 
     return {
       id: sample.cid,
-      scientificName,
-      commonName,
+      scientificName: StringHelp.limit(scientificName),
+      commonName: StringHelp.limit(commonName),
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
-      location: locationPrint,
-      locationName: location.name,
-      date: DateHelp.print(sample.get('date'), true),
-      number,
-      stage: occ.get('stage') && StringHelp.limit(occ.get('stage')),
-      identifiers: occ.get('identifiers') && StringHelp.limit(occ.get('identifiers')),
-      comment: occ.get('comment') && StringHelp.limit(occ.get('comment')),
-      group_title: group ? group.title : null,
-      group,
+      'smp:location': StringHelp.limit(locationPrint),
+      'smp:locationName': StringHelp.limit(location.name),
+      'smp:date': DateHelp.print(sample.get('date'), true),
+      'occ:comment': StringHelp.limit(occ.get('comment')),
+      'smp:activity': activityTitle,
       locks: attrLocks,
     };
   },
