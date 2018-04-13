@@ -3,8 +3,8 @@
   "id": "uk.ac.ceh.ir",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "3.0.0",
-  "build": "7",
+  "version": "3.0.1",
+  "build": "1",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "build": "grunt",
