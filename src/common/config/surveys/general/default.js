@@ -33,7 +33,7 @@ const survey = {
           // add other location related attributes
           $.extend(submission.fields, attributes);
 
-          return `${location.latitude}, ${location.longitude}`;
+          return `${location.latitude.toFixed(7)}, ${location.longitude.toFixed(7)}`;
         },
       },
       location_accuracy: { id: 282 },
