@@ -5,7 +5,7 @@ describe('Default survey config', () => {
     it('should truncate lat long values to 7', () => {
       const location = {
         latitude: 50.869662311682666,
-        longitude: -0.000365611268033992,
+        longitude: '-0.000365611268033992', // test string
       };
       const parsedLocation = defaultSurveyConf.attrs.smp.location.values(
         location,
