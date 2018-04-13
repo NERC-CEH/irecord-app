@@ -76,6 +76,13 @@ describe('App Model attr locks', () => {
       appModel.set('attrLocks', attrLocks);
       expect(appModel._getRawLocks('A', 'b')).to.be.eql({ A: { b: {} } });
     });
+
+    it("should initiate a survey holder type if doesn't exist", () => {
+      const appModel = new AppModel();
+      const attrLocks = {};
+      appModel.set('attrLocks', attrLocks);
+      expect(appModel._getRawLocks('A', 'b')).to.be.eql({ A: { b: {} } });
+    });
   });
 
   describe('setAttrLock', () => {

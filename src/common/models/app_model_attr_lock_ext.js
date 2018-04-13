@@ -12,7 +12,7 @@ export default {
   _getRawLocks(surveyType, surveyName) {
     const locks = this.get('attrLocks');
 
-    if (!locks[surveyType][surveyName]) {
+    if (!locks[surveyType] || !locks[surveyType][surveyName]) {
       locks[surveyType] = Object.assign({}, locks[surveyType], {
         [surveyName]: {},
       });
