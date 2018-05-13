@@ -6,7 +6,7 @@
 'use strict'; // eslint-disable-line
 
 const taxonCleaner = require('./_clean');
-const csv = require('csv');  // eslint-disable-line
+const csv = require('csv'); // eslint-disable-line
 
 const SYNONYM = 4;
 const COMMON_NAME = 3;

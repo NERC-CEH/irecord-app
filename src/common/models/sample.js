@@ -278,7 +278,7 @@ let Sample = Indicia.Sample.extend({
 
     const occ = this.getOccurrence();
     if (!occ) {
-    return Survey.factory();
+      return Survey.factory();
     }
 
     const taxon = occ.get('taxon') || {};

@@ -57,7 +57,9 @@ const API = {
         },
       });
     });
-    mainView.on('attr:update', (attr, value) => API.updateAttr(sample, attr, value));
+    mainView.on('attr:update', (attr, value) =>
+      API.updateAttr(sample, attr, value)
+    );
     radio.trigger('app:main', mainView);
 
     // HEADER

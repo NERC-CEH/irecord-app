@@ -338,7 +338,10 @@ const API = {
     Log('Location:Controller: executing onNameLockClick.');
     // invert the lock of the attribute
     // real value will be put on exit
-    appModel.setAttrLock('smp:locationName', !appModel.getAttrLock('smp:locationName'));
+    appModel.setAttrLock(
+      'smp:locationName',
+      !appModel.getAttrLock('smp:locationName')
+    );
   },
 };
 

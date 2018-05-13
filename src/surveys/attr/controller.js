@@ -90,7 +90,7 @@ const API = {
     Log('Surveys:Attr:Controller: lock clicked.');
     // invert the lock of the attribute
     // real value will be put on exit
-      appModel.setAttrLock(fullAttrName, !appModel.getAttrLock(fullAttrName));
+    appModel.setAttrLock(fullAttrName, !appModel.getAttrLock(fullAttrName));
   },
 
   onExit(mainView, sample, attr, callback) {
