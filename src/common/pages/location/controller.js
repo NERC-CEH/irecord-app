@@ -183,13 +183,16 @@ const API = {
 
   /**
    * Updates the locks.
-   * @param sample
    */
   updateLocks(location = {}, locationWasLocked, nameWasLocked) {
     Log('Location:Controller: updating locks.');
 
+    this.updateLocationLock(location, locationWasLocked);
+    this.updateLocationNameLock(location.name, nameWasLocked);
+  },
+
+  updateLocationLock(location, locationWasLocked) {
     const currentLock = appModel.getAttrLock('smp:location');
-    const currentLockedName = appModel.getAttrLock('smp:locationName');
 
     // location
     if (location.source !== 'gps' && location.latitude) {
@@ -210,10 +213,19 @@ const API = {
       // reset if no location or location name selected but locked is clicked
       appModel.unsetAttrLock('smp:location');
     }
+  },
 
-    // name
-    if (currentLockedName && (currentLockedName === true || nameWasLocked)) {
-      appModel.setAttrLock('smp:locationName', location.name);
+  updateLocationNameLock(locationName, nameWasLocked) {
+    if (!locationName) {
+      return;
+    }
+
+    const currentLockedName = appModel.getAttrLock('smp:locationName');
+
+    if (currentLockedName) {
+      if (currentLockedName === true || nameWasLocked) {
+        appModel.setAttrLock('smp:locationName', locationName);
+      }
     }
   },
 

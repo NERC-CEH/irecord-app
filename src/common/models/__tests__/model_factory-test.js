@@ -1,4 +1,5 @@
 import Sample from 'sample';
+import Occurrence from 'occurrence';
 import Image from 'common/models/image';
 import ImageHelp from 'helpers/image';
 import Factory from '../model_factory';
@@ -73,6 +74,35 @@ describe('Model Factory', () => {
   describe('appendAttrLocks', () => {
     it('should exist', () => {
       expect(Factory._appendAttrLocks).to.be.a('function');
+    });
+
+    it('should append locks', () => {
+      const sample = new Sample();
+      sample.addOccurrence(new Occurrence());
+
+      const comment = 'my comment';
+      Factory._appendAttrLocks(sample, {
+        'smp:comment': comment,
+        'occ:comment': comment,
+      });
+      expect(sample.get('comment')).to.eql(comment);
+      expect(sample.getOccurrence().get('comment')).to.eql(comment);
+    });
+
+    it('should not append locks if no value exists', () => {
+      const sample = new Sample();
+      sample.addOccurrence(new Occurrence());
+
+      Factory._appendAttrLocks(sample, { 'smp:comment': null });
+      expect(sample.get('comment')).to.eql(undefined);
+    });
+
+    it('should not append locks if value equals temporary "true" flag', () => {
+      const sample = new Sample();
+      sample.addOccurrence(new Occurrence());
+
+      Factory._appendAttrLocks(sample, { 'smp:comment': true });
+      expect(sample.get('comment')).to.eql(undefined);
     });
   });
   describe('createSampleWithPhoto', () => {

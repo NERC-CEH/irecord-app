@@ -102,8 +102,8 @@ const Factory = {
 
     Object.keys(locks).forEach(attr => {
       const value = locks[attr];
-      // false or undefined
-      if (!value) {
+      // false or undefined or temp 'true' flag
+      if (!value || value === true) {
         return;
       }
 
