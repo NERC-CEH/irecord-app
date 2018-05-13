@@ -24,6 +24,7 @@ const AppModel = Backbone.Model.extend({
     useGridNotifications: false,
     gridSquareUnit: 'monad',
 
+    feedbackGiven: false,
     taxonGroupFilters: [],
   },
 

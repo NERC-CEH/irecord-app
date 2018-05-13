@@ -8,6 +8,7 @@ import Analytics from 'helpers/analytics';
 import ImageHelp from 'helpers/image';
 import showErrMsg from 'helpers/show_err_msg';
 import appModel from 'app_model';
+import userModel from 'user_model';
 import savedSamples from 'saved_samples';
 import Factory from 'model_factory';
 import MainView from './main_view';
@@ -63,6 +64,7 @@ const API = {
       collection,
       scroll: options.scroll,
       appModel,
+      userModel,
     });
 
     mainView.on('childview:create', () => API.createNewSample());

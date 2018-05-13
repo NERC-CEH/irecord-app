@@ -13,6 +13,7 @@ import DateHelp from 'helpers/date';
 import JST from 'JST';
 import Gallery from '../../common/gallery';
 import SlidingView from '../../common/views/sliding_view';
+import RecommendationView from './recommendations_view';
 import './styles.scss';
 
 const SampleView = Marionette.View.extend({
@@ -263,6 +264,15 @@ const MainView = Marionette.View.extend({
       el: '#list',
       replaceElement: true,
     },
+    recommendation: {
+      el: '#recommendation',
+    },
+  },
+
+  childViewEvents: {
+    'recommendation:done': function() {
+      this.removeRegion('recommendation');
+    },
   },
 
   onRender() {
@@ -275,6 +285,33 @@ const MainView = Marionette.View.extend({
         scroll: this.options.scroll,
       })
     );
+
+    if (this.shouldAskForFeedback()) {
+      const recommendationRegion = this.getRegion('recommendation');
+
+      const recommendationView = new RecommendationView({
+        appModel: this.options.appModel,
+      });
+      recommendationRegion.show(recommendationView);
+    }
+  },
+
+  shouldAskForFeedback() {
+    const appModel = this.options.appModel;
+    const userModel = this.options.userModel;
+    if (appModel.get('feedbackGiven')) {
+      return false;
+    }
+
+    if (appModel.get('useTraining')) {
+      return false;
+    }
+
+    if (!userModel.hasLogIn()) {
+      return false;
+    }
+
+    return this.collection.length > 2;
   },
 });
 

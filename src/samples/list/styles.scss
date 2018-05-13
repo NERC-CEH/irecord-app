@@ -275,4 +275,33 @@
       }
     }
   }
+
+  #recommendation {
+    margin: 40px;
+
+    &:empty {
+      display: none;
+    }
+
+    div {
+      text-align: center;
+      h3 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #333;
+      }
+      .buttons {
+        width: 100%;
+        margin: 20px auto;
+
+        a {
+          line-height: 47px;
+        }
+      }
+    }
+  }
+
+  &.band-margin-1 > #recommendation {
+    margin-top: 76px;
+  }
 }
