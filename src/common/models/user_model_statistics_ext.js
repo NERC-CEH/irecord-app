@@ -18,11 +18,23 @@ export default {
       // init or refresh
       this.trigger('sync:statistics:species:start');
 
-      this.synchronizingStatistics = this.fetchStatsSpecies()
-        .then(() => {
-          delete this.synchronizingStatistics;
-          this.trigger('sync:statistics:species:end');
-        })
+      const statistics = this.get('statistics');
+
+      this.synchronizingStatistics = this._fetchStatsSpecies()
+        .then(stats =>
+          this._processStatistics(stats).then(species => {
+            const updatedStatistics = Object.assign({}, statistics, {
+              synced_on: new Date().toString(),
+              species,
+              speciesRaw: stats,
+            });
+            this.set('statistics', updatedStatistics);
+            this.save();
+
+            delete this.synchronizingStatistics;
+            this.trigger('sync:statistics:species:end');
+          })
+        )
         .catch(err => {
           delete this.synchronizingStatistics;
           this.trigger('sync:statistics:species:end');
@@ -43,9 +55,8 @@ export default {
    * Loads the list of available stats from the warehouse then updates the
    * collection in the main view.
    */
-  fetchStatsSpecies() {
+  _fetchStatsSpecies() {
     Log('UserModel:Statistics: fetching.');
-    const statistics = this.get('statistics');
 
     const report = new Indicia.Report({
       report: '/library/taxa/filterable_explore_list.xml',
@@ -63,54 +74,52 @@ export default {
       },
     });
 
-    const promise = report.run().then(receivedData => {
-      const data = receivedData.data;
-      if (!data || !(data instanceof Array)) {
-        const err = new Error('Error while retrieving stats response.');
-        return Promise.reject(err);
+    return report.run().then(receivedData => {
+      const stats = receivedData.data;
+
+      if (!(stats instanceof Array)) {
+        // exception: when user has no records the report returns { count:0, records:[] }
+        if (stats && stats.count === 0) {
+          return [];
+        }
+
+        throw new Error('Error while retrieving stats response.');
       }
 
-      const species = [];
-      const toWait = [];
+      return stats;
+    });
+  },
 
-      // try to find all species in the internal taxa database
-      data.forEach(stat => {
-        const parsePromise = new Promise(fulfill => {
-          const options = {
-            maxResults: 1,
-            scientificOnly: true,
-          };
+  _processStatistics(stats) {
+    const species = [];
+    const toWait = [];
 
-          // turn it to a full species descriptor from species data set
-          SpeciesSearchEngine.search(stat.taxon, options).then(results => {
-            const foundedSpecies = results[0];
-            if (
-              results.length &&
-              foundedSpecies.scientific_name === stat.taxon
-            ) {
-              if (foundedSpecies.common_name) {
-                foundedSpecies.found_in_name = 'common_name';
-              }
-              species.push(foundedSpecies);
+    // try to find all species in the internal taxa database
+    stats.forEach(stat => {
+      const parsePromise = new Promise(fulfill => {
+        const options = {
+          maxResults: 1,
+          scientificOnly: true,
+        };
+
+        // turn it to a full species descriptor from species data set
+        SpeciesSearchEngine.search(stat.taxon, options).then(results => {
+          const foundedSpecies = results[0];
+          if (results.length && foundedSpecies.scientific_name === stat.taxon) {
+            if (foundedSpecies.common_name) {
+              foundedSpecies.found_in_name = 'common_name';
             }
-            fulfill();
-          });
+            species.push(foundedSpecies);
+          }
+          fulfill();
         });
-
-        toWait.push(parsePromise);
       });
 
-      // save the user and exit
-      return Promise.all(toWait).then(() => {
-        statistics.synced_on = new Date().toString();
-        statistics.species = species;
-        statistics.speciesRaw = receivedData.data;
-        this.set('statistics', statistics);
-        this.save();
-      });
+      toWait.push(parsePromise);
     });
 
-    return promise;
+    // save the user and exit
+    return Promise.all(toWait).then(() => species);
   },
 
   /**
