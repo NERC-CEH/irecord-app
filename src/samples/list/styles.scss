@@ -85,17 +85,6 @@
         padding-top: 20px;
       }
 
-      .training {
-        width: 7px;
-        height: 100%;
-        margin: 0;
-        background-color: $color-black;
-        z-index: 100;
-        position: absolute;
-        left: 0;
-        top: 0;
-      }
-
       .activity {
         width: 7px;
         height: 100%;
@@ -105,10 +94,6 @@
         position: absolute;
         left: 0;
         top: 0;
-      }
-
-      .training + .activity {
-        left: 7px;
       }
 
       .photo {

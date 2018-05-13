@@ -47,9 +47,12 @@ const API = {
   },
 
   showMainView(options) {
+    const training = appModel.get('useTraining');
+
     // get subcollection
     const collection = savedSamples.subcollection({
-      filter: model => model.metadata.complex_survey,
+      filter: model =>
+        !model.metadata.complex_survey && model.metadata.training === training,
     });
     collection.comparator = savedSamples.comparator;
     collection.sort();

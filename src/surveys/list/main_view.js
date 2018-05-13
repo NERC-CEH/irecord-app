@@ -76,7 +76,6 @@ const SampleView = Marionette.View.extend({
       surveyLabel: 'Plant',
       id: sample.cid,
       saved: sample.metadata.saved,
-      training: sample.metadata.training,
       onDatabase: syncStatus === Indicia.SYNCED,
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
@@ -150,12 +149,6 @@ const MainView = _MainView.extend({
         scroll: this.options.scroll,
       })
     );
-  },
-
-  serializeData() {
-    return {
-      useTraining: this.options.appModel.get('useTraining'),
-    };
   },
 });
 

@@ -8,9 +8,6 @@
   <% } else { %>
   <a id="add-species-btn" class="mobile">
     <% } %>
-    <% if (obj.training) { %>
-    <div class="media-object pull-left training"></div>
-    <% } %>
     <% if (obj.activity) { %>
     <div class="media-object pull-left activity"></div>
     <% } %>

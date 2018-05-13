@@ -138,7 +138,6 @@ const SampleView = Marionette.View.extend({
     return {
       id: sample.cid,
       saved: sample.metadata.saved,
-      training: sample.metadata.training,
       onDatabase: syncStatus === Indicia.SYNCED,
       isLocating: sample.isGPSRunning(),
       location: locationPrint,

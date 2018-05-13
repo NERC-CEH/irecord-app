@@ -1,7 +1,4 @@
 <a href="#surveys/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>" class="mobile">
-    <% if (obj.training) { %>
-    <div class="media-object pull-left training"></div>
-    <% } %>
     <div class="media-object pull-left photo"><%= obj.img %></div>
     <div class="pull-right">
       <% if (obj.saved) { %>

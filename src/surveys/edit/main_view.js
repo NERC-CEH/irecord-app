@@ -62,7 +62,6 @@ export default Marionette.View.extend({
 
     return {
       id: sample.cid,
-      training: sample.metadata.training,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
       locationEditAllowed: this.options.locationEditAllowed,
