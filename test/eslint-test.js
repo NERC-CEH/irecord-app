@@ -17,21 +17,22 @@ const results = engine.executeOnFiles(paths).results;
 
 function formatMessages(messages) {
   const errors = messages.map(
-    message =>
-      `${message.line}:${message.column} ${message.message.slice(0, -1)} - ${
-        message.ruleId
-      }\n`
+    err =>
+      `${err.line}:${err.column} ${err.message.slice(0, -1)} - ${err.ruleId}\n`
   );
-
   return `\n${errors.join('')}`;
 }
+
+const errorsFilter = err =>
+  !err.message.includes('File ignored because of a matching ignore pattern');
 
 function generateTest(result) {
   const { filePath, messages } = result;
 
   it(`validates ${filePath}`, () => {
-    if (messages.length > 0) {
-      assert.fail(false, true, formatMessages(messages));
+    const filteredErrors = messages.filter(errorsFilter);
+    if (filteredErrors.length > 0) {
+      assert.fail(false, true, formatMessages(filteredErrors));
     }
   });
 }
