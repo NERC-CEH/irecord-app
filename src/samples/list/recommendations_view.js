@@ -8,9 +8,11 @@ const MainView = Marionette.View.extend({
   template: JST['samples/list/recommendation'],
 
   events: {
+    // eslint-disable-next-line
     'click #btn-negative': function() {
       this.nextStep(false);
     },
+    // eslint-disable-next-line
     'click #btn-positive': function() {
       this.nextStep(true);
     },

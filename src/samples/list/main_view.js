@@ -270,6 +270,7 @@ const MainView = Marionette.View.extend({
   },
 
   childViewEvents: {
+    // eslint-disable-next-line
     'recommendation:done': function() {
       this.removeRegion('recommendation');
     },
@@ -311,7 +312,7 @@ const MainView = Marionette.View.extend({
       return false;
     }
 
-    return this.collection.length > 2;
+    return this.collection.length > 10;
   },
 });
 
