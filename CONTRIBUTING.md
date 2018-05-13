@@ -56,16 +56,12 @@ important to lint your code before commiting the changes to the repository.
 To do that you can run eslint command line tool or choose one of the numerous 
 eslint plugins for your IDE.
 
-Project uses [AirBnB Style Guide](https://github.com/airbnb/javascript).
-
+Please see the `.eslintrc` file for rules in use.
 
 ## Branching
 
-Please use the [flow](http://nvie.com/posts/a-successful-git-branching-model/)
- branching model. I recommend installing [git-flow](https://danielkummer.github.io/git-flow-cheatsheet/) extension.
-`feature/NAME`, `hotfix/VERSION`, `beta/VERSION` (instead of release).
-
-Once finished please create a pull request into `develop`.
+Please use `feature/NAME`, `hotfix/VERSION`. 
+Once finished please create a pull request into `master`.
 
 # Architecture
 
@@ -77,25 +73,6 @@ provide, so we use Backbone plugin [Marionette](marionettejs.org) to extend and
 improve the Backbone Views. Since Backbone doesn't provide a controller - 
 the logic is shared between Views (making them somewhat presenter like), 
 we have introduced simple controllers which hold the internal app logic. 
-The app is structured in such a way:  
-
-```
-├── images
-├── scripts
-│   ├── components
-│   │   ├── common
-│   │   │   ├── pages
-│   │   │   └── templates
-│   │   └── **component**
-│   │       └── **sub component**
-│   │           └── templates
-│   ├── data
-│   └── helpers
-├── styles
-│   ├── common
-│   └── **component**
-└── vendor
-```
 
 ## Components folder
 
@@ -111,14 +88,6 @@ includes: list, edit, attribute, show sub components.
 
 * Common page level components (common sub components) are placed in *pages* 
 folder within common folder.
-
-
-## Helpers folder
-
-* App helper libraries
-* Independent from Marionette, otherwise should be in *common*
-* Too small to be put into vendor
-
 
 ## Other
 

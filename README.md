@@ -37,7 +37,7 @@ App configuration is hosted in multiple places. **Note:** config changes should 
 
 * **Main configuration** in `src/common/config.js`.
 * App version/build is set in the package.json
-* Cordova config is `config/cordova/cordova.xml`
+* Cordova config is `other/cordova/cordova.xml`
 * [Environmental variables](https://wiki.archlinux.org/index.php/environment_variables) like *INDICIA_API_KEY* can optionally be placed in `.env` file
 
 
