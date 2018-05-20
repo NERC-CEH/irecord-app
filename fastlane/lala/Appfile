@@ -1,0 +1,4 @@
+app_identifier "uk.ac.ceh.ir" # The bundle identifier of your app
+apple_id "apps@ceh.ac.uk" # Your Apple email address
+itc_team_id "117329956" # iTunes Connect Team ID
+team_id "X4GARM6E7K" # Developer Portal Team ID

@@ -1,0 +1,5 @@
+git_url "https://github.com/NERC-CEH/app-signing"
+type "development" # The default type, can be: appstore, adhoc, enterprise or development
+app_identifier ["uk.ac.ceh.ir"]
+team_id "X4GARM6E7K"
+username "apps@ceh.ac.uk"

@@ -1,0 +1,57 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build app"
+  lane :build do
+    username = "apps@ceh.ac.uk"
+    git_url = "https://github.com/NERC-CEH/app-signing"
+    app_identifier = "uk.ac.ceh.ir"
+    app_name_sanitized = 'iRecord App'
+    ios_project_path = "/Users/kazlauskis/Workspace/personal/iR/Code/dist/cordova/platforms/ios/iRecord App.xcodeproj"
+    ios_workspace_path = "./dist/cordova/platforms/ios/#{app_name_sanitized}.xcworkspace"
+
+    # Compile the ionic app
+    #sh("ionic build ios --release")
+
+    # Get certificate
+    #cert(
+    #  username: username
+    #)
+
+    # Get provisioning profile
+   # match(type: "appstore", app_identifier: "uk.ac.ceh.*", readonly: true, username: username, git_url: git_url)
+
+    #sigh(
+    #  force: false,
+    #  username: username,
+    #  app_identifier: app_identifier,
+    #  team_id: "X4GARM6E7K" # Developer Portal Team ID
+    #)
+
+    # Recreate schemes to ensure a smooth transition from cordova to gym
+    #recreate_schemes(
+    #  project: ios_project_path
+    #)
+
+
+
+    # Archive app into ipa
+    gym(
+      scheme: app_name_sanitized,
+      workspace: ios_workspace_path,
+
+
+      include_bitcode: false,
+      clean: true,
+      silent: false,
+      export_method: "enterprise",
+      export_xcargs: "-allowProvisioningUpdates",
+      export_options: {
+        provisioningProfiles: {
+          "uk.ac.ceh.ir" => "XC iOS: uk.ac.ceh.ir"
+        },
+        "signingStyle": "manual"
+      },
+    )
+  end
+end

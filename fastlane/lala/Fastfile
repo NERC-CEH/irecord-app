@@ -1,0 +1,22 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build app"
+  lane :build do
+
+
+    gym(
+      scheme: "iRecord App",
+      project: "./dist/cordova/platforms/ios/iRecord App.xcodeproj",
+      output_directory: "./build",
+      output_name: "iRecord App"
+    )
+
+  # Upload the IPA to Testflight
+  #   testflight(
+  #      skip_waiting_for_build_processing: true,
+  #      ipa: "../dist/cordova/platforms/ios/builds/iRecord App.ipa"
+  #   )
+
+  end
+end

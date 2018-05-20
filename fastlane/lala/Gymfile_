@@ -1,0 +1,10 @@
+scheme "iRecord App"
+project "./dist/cordova/platforms/ios/iRecord App.xcodeproj"
+output_directory "./build"
+output_name "iRecord App"
+export_options(
+  method: "development",
+  provisioningProfiles: {
+    "uk.ac.ceh.ir" => "match Development uk.ac.ceh.*"
+  }
+)

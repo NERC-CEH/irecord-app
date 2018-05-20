@@ -1,10 +1,9 @@
 {
   "ios": {
-    "debug": {
-      "developmentTeam": "{DEV_TEAM_ID}"
-    },
     "release": {
-      "developmentTeam": "{DEV_TEAM_ID}"
+      "codeSignIdentity": "iPhone Distribution",
+      "developmentTeam": "X4GARM6E7K",
+      "packageType": "app-store"
     }
   }
 }
