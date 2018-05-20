@@ -10,30 +10,30 @@
 <ul class="table-view core inputs info no-top">
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-location"></span>
-    <span class="media-object pull-right descript"><%- obj.locationName %></span>
-    <span class="media-object pull-right descript"><%- obj.location %></span>
+    <span class="media-object pull-right descript"><%= obj.locationName %></span>
+    <span class="media-object pull-right descript"><%= obj.location %></span>
     Location
   </li>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-calendar"></span>
-    <span class="media-object pull-right descript"><%- obj.date %></span>
+    <span class="media-object pull-right descript"><%= obj.date %></span>
     Date
   </li>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-stage"></span>
-    <span class="media-object pull-right descript"><%- obj.species %></span>
+    <span class="media-object pull-right descript"><%= obj.species %></span>
     Species
   </li>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-users"></span>
-    <span class="media-object pull-right descript"><%- obj.recorders %></span>
+    <span class="media-object pull-right descript"><%= obj.recorders %></span>
     Recorders
   </li>
   <% if (obj.comment) { %>
   <li class="table-view-cell">
     <span class="media-object pull-left icon icon-comment"></span>
     Comment
-    <span class="comment descript"><%- obj.comment %></span>
+    <span class="comment descript"><%= obj.comment %></span>
   </li>
   <% } %>
 </ul>

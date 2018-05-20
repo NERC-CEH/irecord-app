@@ -35,7 +35,7 @@
     <a href="#samples/<%- obj.id %>/edit/smp:date" id="date-button"
        class="<%- obj.locks['smp:date'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-calendar"></span>
-      <span class="media-object pull-right descript"><%- obj['smp:date'] %></span>
+      <span class="media-object pull-right descript"><%= obj['smp:date'] %></span>
       Date
     </a>
   </li>
@@ -43,7 +43,7 @@
     <a href="#samples/<%- obj.id %>/edit/occ:comment" id="comment-button"
        class="<%- obj.locks['occ:comment'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-comment"></span>
-      <span class="media-object pull-right descript"><%- obj['occ:comment'] %></span>
+      <span class="media-object pull-right descript"><%= obj['occ:comment'] %></span>
       Comment
     </a>
   </li>
@@ -52,7 +52,7 @@
         <a href="#samples/<%- obj.id %>/edit/activity" id="activity-button"
            class="<%- obj.locks['smp:activity'] ? 'lock' : 'navigate-right' %>">
           <span class="media-object pull-left icon icon-users"></span>
-          <span class="media-object pull-right descript"><%- obj['smp:activity'] %></span>
+          <span class="media-object pull-right descript"><%= obj['smp:activity'] %></span>
           Activity
         </a>
       </li>

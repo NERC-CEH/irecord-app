@@ -3,9 +3,9 @@
     <a id="species-button" class="navigate-right">
       <% if (obj.commonName || obj.scientificName) { %>
         <% if (obj.commonName) { %>
-        <span class="media-object pull-right descript long"><%- obj.commonName %></span>
+        <span class="media-object pull-right descript long"><%= obj.commonName %></span>
         <% } %>
-        <span class="media-object pull-right descript long"><i><%- obj.scientificName %></i></span>
+        <span class="media-object pull-right descript long"><i><%= obj.scientificName %></i></span>
       <% } else { %>
       <span class="media-object pull-right descript error">Species missing</span>
       <% } %>
@@ -19,7 +19,7 @@
           <% if (obj.isLocating) { %>
             <span class="media-object pull-right descript warn">Locating...</span>
           <% } else { %>
-            <span class="media-object pull-right descript"><%- obj.location %></span>
+            <span class="media-object pull-right descript"><%= obj.location %></span>
           <% } %>
       <% } else { %>
       <span class="media-object pull-right descript error">No list location</span>

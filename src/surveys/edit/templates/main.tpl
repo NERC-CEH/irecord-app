@@ -10,7 +10,7 @@
       <% } %>
 
       <% if (obj.location) { %>
-      <span class="media-object pull-right descript"><%- obj.location %></span>
+      <span class="media-object pull-right descript"><%= obj.location %></span>
       <% } else { %>
       <% if (obj.isLocating) { %>
       <span class="media-object pull-right descript warn">Locating...</span>
@@ -25,7 +25,7 @@
     <a href="#surveys/<%- obj.id %>/edit/vice-county"
        class="<%- obj.locks['vice-county'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-address"></span>
-      <span class="media-object pull-right descript short"><%- obj['vice-county'] %></span>
+      <span class="media-object pull-right descript short"><%= obj['vice-county'] %></span>
       Vice-county
     </a>
   </li>
@@ -33,7 +33,7 @@
     <a href="#surveys/<%- obj.id %>/edit/date" id="date-button"
        class="<%- obj.locks['date'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-calendar"></span>
-      <span class="media-object pull-right descript"><%- obj.date %></span>
+      <span class="media-object pull-right descript"><%= obj.date %></span>
       Date
     </a>
   </li>
@@ -41,7 +41,7 @@
     <a href="#surveys/<%- obj.id %>/edit/samples"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-stage"></span>
-      <span class="media-object pull-right descript"><%- obj.species ? obj.species : '' %></span>
+      <span class="media-object pull-right descript"><%= obj.species ? obj.species : '' %></span>
       Species
     </a>
   </li>
@@ -49,7 +49,7 @@
     <a href="#surveys/<%- obj.id %>/edit/recorders"
        class="<%- obj.locks['stage'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-users"></span>
-      <span class="media-object pull-right descript"><%- obj.recorders ? obj.recorders : '' %></span>
+      <span class="media-object pull-right descript"><%= obj.recorders ? obj.recorders : '' %></span>
       Recorders
     </a>
   </li>
