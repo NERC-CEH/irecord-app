@@ -52,7 +52,7 @@ const API = {
     // get subcollection
     const collection = savedSamples.subcollection({
       filter: model =>
-        !model.metadata.complex_survey && model.metadata.training === training,
+        model.metadata.complex_survey && model.metadata.training === training,
     });
     collection.comparator = savedSamples.comparator;
     collection.sort();
