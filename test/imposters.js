@@ -1,0 +1,125 @@
+{
+  "imposters": [
+    {
+      "port": 4545,
+      "protocol": "http",
+      "stubs": [
+        {
+          "predicates": [
+            {
+              "matches": {
+                "method": "GET",
+                "path": "/api/v1/users/.+$",
+                "headers": {
+                  "Authorization": "Basic .+",
+                  "x-api-key": ".+"
+                }
+              }
+            }
+          ],
+          "responses": [
+            {
+              "is": {
+                "statusCode": 200,
+                "body": {
+                  "data": {
+                    "type": "users",
+                    "id": 12345,
+                    "firstname": "Test",
+                    "secondname": "Test",
+                    "name": "test",
+                    "email": "test@ceh.ac.uk",
+                    "warehouse_id": 1234
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "predicates": [
+            {
+              "matches": {
+                "method": "POST",
+                "path": "/api/v1/samples",
+                "body": {
+                  "data": {
+                    "external_key": "(.+)",
+                    "survey_id": 374,
+                    "input_form": "enter-app-record",
+                    "fields": {
+                      "date": ".+",
+                      "entered_sref_system": 4326,
+                      "location_name": ".+",
+                      "entered_sref": ".+"
+                    },
+                    "media": [],
+                    "occurrences": [
+                      {
+                        "external_key": "(.+)",
+                        "fields": {
+                          "taxa_taxon_list_id": ".+"
+                        },
+                        "media": []
+                      }
+                    ],
+                    "samples": [],
+                    "type": "samples"
+                  }
+                },
+                "headers": {
+                  "Authorization": "Basic .+",
+                  "x-api-key": ".+"
+                }
+              }
+            }
+          ],
+          "responses": [
+            {
+              "is": {
+                "statusCode": 201,
+                "body": {
+                  "data": {
+                    "id": 1,
+                    "external_key": "${EXTERNAL_KEY}",
+                    "created_on": "20180527 22:15:49",
+                    "updated_on": "20180527 22:15:49",
+                    "occurrences": [
+                      {
+                        "id": 1,
+                        "external_key": "${EXTERNAL_KEY}",
+                        "created_on": "20180527 22:15:49",
+                        "updated_on": "20180527 22:15:49"
+                      }
+                    ]
+                  }
+                }
+              },
+              "_behaviors": {
+                "copy": [
+                  {
+                    "from": "body",
+                    "into": "${EXTERNAL_KEY}",
+                    "using": {
+                      "method": "jsonpath",
+                      "selector": "$..external_key"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "responses": [
+            {
+              "is": {
+                "statusCode": 404
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
