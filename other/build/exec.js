@@ -58,8 +58,8 @@ module.exports = function(grunt) {
       stdout: true,
     },
 
-    cordova_run_android: {
-      command: 'cd dist/cordova && cordova run android',
+    cordova_build_android: {
+      command: 'cd dist/cordova && cordova build android',
       stdout: true,
     },
   };

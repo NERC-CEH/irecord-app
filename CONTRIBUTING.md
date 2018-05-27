@@ -135,3 +135,11 @@ Run and upload binaries from cordova/dist
 ```bash
 npm run build:cordova:android
 ```
+
+# Acceptance tests
+ Check that `appium-doctor` shows all green and then:
+ 
+`mb --configfile test/imposters.js`
+`emulate test`
+`export APP_INDICIA_API_HOST=localhost:4545`
+`npm run test:acceptance`
