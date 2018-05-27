@@ -28,6 +28,7 @@
     }
   ],
   "globals": {
+    "browser": true,
     "sinon": true,
     "expect": true,
     "cordova": true
