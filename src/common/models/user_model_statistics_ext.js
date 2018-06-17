@@ -77,16 +77,15 @@ export default {
     return report.run().then(receivedData => {
       const stats = receivedData.data;
 
-      if (!(stats instanceof Array)) {
-        // exception: when user has no records the report returns { count:0, records:[] }
-        if (stats && stats.count === 0) {
-          return [];
-        }
+      if (stats instanceof Array) {
+        return stats;
+      }
 
+      if (!stats || !(stats.records instanceof Array)) {
         throw new Error('Error while retrieving stats response.');
       }
 
-      return stats;
+      return stats.records;
     });
   },
 

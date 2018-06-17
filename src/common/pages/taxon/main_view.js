@@ -91,7 +91,7 @@ const SpeciesView = Marionette.View.extend({
 const NoSuggestionsView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: _.template('No species found with this name'),
+  template: _.template(t('No species found with this name')),
 });
 
 const SuggestionsView = Marionette.CollectionView.extend({

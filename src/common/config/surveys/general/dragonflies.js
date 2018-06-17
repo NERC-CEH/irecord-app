@@ -29,7 +29,7 @@ export default {
         id: 59,
         label: 'Site type',
         icon: 'land',
-        default: '',
+        default: 'Not selected',
         values: {
           Lake: 672,
           Reservoir: 673,

@@ -20,7 +20,7 @@ export default {
       1}/${today.getFullYear()}`;
     const isToday = todayDateOnly === sampleDate;
 
-    return pretty && isToday ? 'Today' : sampleDate;
+    return pretty && isToday ? t('Today') : sampleDate;
   },
 
   /**

@@ -5,7 +5,7 @@
   <button  id="sample-save-btn"
            class="icon <%- obj.isSynchronising ? 'icon-plus icon-spin disabled' : 'icon-send' %>"></button>
 </div>
-<h1 class="title">Edit</h1>
+<h1 class="title"><%= t("Edit") %></h1>
 
 
 <%  if(obj.activity_title || obj.training) { %>

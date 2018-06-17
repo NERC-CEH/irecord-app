@@ -91,7 +91,7 @@ const API = {
         // should we sync?
         if (!Device.isOnline()) {
           radio.trigger('app:dialog:error', {
-            message: 'Looks like you are offline!',
+            message: t('Looks like you are offline!'),
           });
           return;
         }

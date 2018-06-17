@@ -1,6 +1,6 @@
 <% if (obj.message) { %>
 <div class="info-message">
-  <p><%= obj.message %></p>
+  <p><%= t(obj.message) %></p>
 </div>
 <% } %>
 <div class="range">

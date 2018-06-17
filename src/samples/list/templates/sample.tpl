@@ -26,14 +26,14 @@
       <% if (obj.taxon) { %>
       <div class="species"> <%= obj.taxon %></div>
       <% } else { %>
-      <div class="species error">Species missing</div>
+      <div class="species error"><%= t("Species missing") %></div>
       <% } %>
 
       <div class="core">
         <% if (obj.date) { %>
         <span class="date <%= obj.dateLocked && 'locked' %>"><%= obj.date %></span>
         <% } else { %>
-        <span class="date error">Date</span>
+        <span class="date error"><%= t("Date") %></span>
         <% } %>
 
         @
@@ -42,13 +42,13 @@
           <% if (obj.locationName) { %>
           <span class="location <%= obj.locationLocked && 'locked' %>"><%= obj.locationName %></span>
           <%  } else { %>
-            <span class="location error">No location name</span>
+            <span class="location error"><%= t("No location name") %></span>
           <% } %>
         <% } else { %>
           <% if (obj.isLocating) { %>
-          <span class="location warn">Locating...</span>
+          <span class="location warn"><%= t("Locating") %>...</span>
           <% } else { %>
-          <span class="location error">No location</span>
+          <span class="location error"><%= t("No location") %></span>
           <% } %>
         <% } %>
       </div>
@@ -56,7 +56,7 @@
       <div class="attributes">
         <% if (obj.isDefaultSurvey) { %>
           <div class="number <%= obj.numberLocked && 'locked' %>"><%= obj.number %></div>
-          <div class="stage <%= obj.stageLocked && 'locked' %>"><%= obj.stage %></div>
+          <div class="stage <%= obj.stageLocked && 'locked' %>"><%= t(obj.stage) %></div>
         <% } %>
         <div class="comment <%= obj.commentLocked && 'locked' %>"><%= obj.comment %></div>
       </div>

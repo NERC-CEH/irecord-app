@@ -53,7 +53,7 @@ const StandardDialogView = Marionette.View.extend({
       } else {
         const title = new Marionette.View({
           tagName: 'h3',
-          template: _.template(this.options.title),
+          template: _.template(t(this.options.title)),
         });
         this.showChildView('header', title);
       }
@@ -64,8 +64,13 @@ const StandardDialogView = Marionette.View.extend({
       if (this.options.body instanceof Marionette.View) {
         this.showChildView('body', this.options.body);
       } else {
+        let bodyView = this.options.body;
+        if (typeof this.options.body === 'string') {
+          bodyView = t(bodyView);
+        }
+
         const body = new Marionette.View({
-          template: _.template(this.options.body),
+          template: _.template(bodyView),
         });
         this.showChildView('body', body);
       }
@@ -85,7 +90,7 @@ const StandardDialogView = Marionette.View.extend({
             const className = this.model.get('class');
             return `btn ${className || ''}`;
           },
-          template: _.template('<%- obj.title %>'),
+          template: _.template('<%- t(obj.title) %>'),
           events: {
             click() {
               const onClick = this.model.attributes.onClick;

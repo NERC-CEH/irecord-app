@@ -21,9 +21,34 @@ const API = {
     radio.trigger('app:header', headerView);
   },
 
+  showLogoutConfirmationDialog(callbackIfTrue) {
+    radio.trigger('app:dialog', {
+      title: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          title: 'Cancel',
+          class: 'btn-clear',
+          onClick() {
+            radio.trigger('app:dialog:hide');
+          },
+        },
+        {
+          title: 'Logout',
+          class: 'btn-negative',
+          onClick() {
+            callbackIfTrue();
+            radio.trigger('app:dialog:hide');
+          },
+        },
+      ],
+    });
+  },
+
   logout() {
     Log('Info:Menu:Controller: logging out.');
-    userModel.logOut();
+    API.showLogoutConfirmationDialog(() => {
+      userModel.logOut();
+    });
   },
 };
 

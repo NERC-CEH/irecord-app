@@ -22,7 +22,7 @@ function template(sample) {
     if (attr.type === 'toggle') {
       tpl += `<li class="table-view-cell">
           <a>
-            ${label}
+            <%= t("${label}") %>
             <span class="media-object pull-left icon icon-${icon} toggle-icon"></span>
             <div id="${attrName}-toggle" data-setting="${element}"
                  class="toggle no-yes <%- obj["${element}"] ? 'active' : '' %>">
@@ -37,8 +37,8 @@ function template(sample) {
         <a href="#samples/${sample.cid}/edit/${element}" id="${element}-button"
            class="<%- obj.locks['${element}'] ? 'lock' : 'navigate-right' %>">
           <span class="media-object pull-left icon icon-${icon}"></span>
-          <span class="media-object pull-right descript"><%- obj['${element}']%></span>
-          ${label}
+          <span class="media-object pull-right descript"><%- t(obj['${element}'])%></span>
+          <%= t("${label}") %>
         </a>
       </li>`;
   });

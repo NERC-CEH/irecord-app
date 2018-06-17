@@ -3,7 +3,7 @@
   <p> <%- obj.location %></p>
   <span class="location-favourite icon icon-star <%- obj.favourite ? 'on' : '' %>"></span>
   <span class="location-date"><%- obj.date %></span>
-  <span class="location-source">source: <%- obj.source %></span>
+  <span class="location-source"><%= t("source") %>: <%- t(obj.source) %></span>
 </div>
 
 <div class="mobile-swipe-edit">

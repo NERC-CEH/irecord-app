@@ -19,7 +19,7 @@ export default {
         id: 208,
         label: 'Habitat',
         icon: 'land',
-        default: '',
+        default: 'Not selected',
         values: {
           'Arable land, gardens or parks': 1598,
           'Bogs and fens': 1538,

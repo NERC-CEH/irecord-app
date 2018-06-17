@@ -16,35 +16,35 @@
       <span class="location media-object pull-right descript <%- obj.locks['smp:location'] ? 'lock' : '' %>"><%- obj['smp:location'] %></span>
       <% } else { %>
       <% if (obj.isLocating) { %>
-      <span class="media-object pull-right descript warn">Locating...</span>
+      <span class="media-object pull-right descript warn"><%= t("Locating") %>...</span>
       <% } else { %>
-      <span class="media-object pull-right descript error">Location missing</span>
+      <span class="media-object pull-right descript error"><%= t("Location missing") %></span>
       <% } %>
       <% } %>
 
       <% if (obj['smp:locationName']) { %>
       <span class="media-object pull-right descript <%- obj.locks['smp:locationName'] ? 'lock' : '' %>"><%= obj['smp:locationName'] %></span>
       <% } else { %>
-      <span class="media-object pull-right descript error">Name missing</span>
+      <span class="media-object pull-right descript error"><%= t("Name missing") %></span>
       <% } %>
 
-      Location
+      <%= t("Location") %>
     </a>
   </li>
   <li class="table-view-cell">
     <a href="#samples/<%- obj.id %>/edit/smp:date" id="date-button"
        class="<%- obj.locks['smp:date'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-calendar"></span>
-      <span class="media-object pull-right descript"><%= obj['smp:date'] %></span>
-      Date
+      <span class="media-object pull-right descript"><%- obj['smp:date'] %></span>
+      <%= t("Date") %>
     </a>
   </li>
   <li class="table-view-cell">
     <a href="#samples/<%- obj.id %>/edit/occ:comment" id="comment-button"
        class="<%- obj.locks['occ:comment'] ? 'lock' : 'navigate-right' %>">
       <span class="media-object pull-left icon icon-comment"></span>
-      <span class="media-object pull-right descript"><%= obj['occ:comment'] %></span>
-      Comment
+      <span class="media-object pull-right descript"><%- obj['occ:comment'] %></span>
+      <%= t("Comment") %>
     </a>
   </li>
   <% if (obj['smp:activity']) { %>
@@ -52,8 +52,8 @@
         <a href="#samples/<%- obj.id %>/edit/activity" id="activity-button"
            class="<%- obj.locks['smp:activity'] ? 'lock' : 'navigate-right' %>">
           <span class="media-object pull-left icon icon-users"></span>
-          <span class="media-object pull-right descript"><%= obj['smp:activity'] %></span>
-          Activity
+          <span class="media-object pull-right descript"><%- obj['smp:activity'] %></span>
+          <%= t("Activity") %>
         </a>
       </li>
   <% } %>

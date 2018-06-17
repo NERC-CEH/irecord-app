@@ -11,7 +11,7 @@ const API = {
     const MainView =
       options.mainView ||
       Marionette.View.extend({
-        template: JST[options.route],
+        template: options.template || JST[options.route],
       });
     radio.trigger(
       'app:main',

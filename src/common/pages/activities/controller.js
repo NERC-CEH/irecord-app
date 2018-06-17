@@ -71,7 +71,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
     // add default activity
     const defaultActivity = new ActivityModel({
-      title: 'Default',
+      title: t('Default'),
       description: '',
       checked: !selectedActivity.id,
     });

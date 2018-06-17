@@ -65,6 +65,14 @@
   color: $button-black;
 }
 
+.inputs {
+  .table-view-cell a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .descript {
   width: 52%;
 

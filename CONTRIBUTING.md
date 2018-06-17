@@ -102,8 +102,7 @@ variables: App, Backbone, Device, GPS etc.
 New functionality should be provided with tests in *\_\_tests\_\_* folder next to the 
 code that is being tested. It is important to test any new code on as many devices
 as possible so for that we are using Travis CI. It detects new repository 
-commits and runs the app tests on 20+ browsers using Sauce Labs. To see the build
-test output visit [Travis project builds](https://travis-ci.org/NERC-CEH/irecord-app).
+commits and runs the app tests on 20+ browsers using Sauce Labs. 
 
 - To run the tests locally install Chromium browser and run:
 

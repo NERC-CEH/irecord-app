@@ -13,7 +13,7 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(11);
+    expect(_.keys(appModel.attributes).length).to.be.equal(12);
     // should set the exact value checks in the modules requiring them
     expect(appModel.get('showWelcome')).to.be.equal(true);
     expect(appModel.get('locations')).to.be.an('array');

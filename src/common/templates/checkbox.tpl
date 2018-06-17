@@ -1,6 +1,6 @@
 <% if (obj.message) { %>
 <div class="info-message">
-  <p><%= obj.message %></p>
+  <p><%= t(obj.message) %></p>
 </div>
 <% } %>
 
@@ -10,7 +10,7 @@
     <label class="checkbox">
       <input type="checkbox" value="<%= option %>" <%- obj.selected.indexOf(option) >= 0 ? 'checked' : ''%>>
     </label>
-    <%= option %>
+    t(<%= option %>)
   </li>
 <% }) %>
 </ul>

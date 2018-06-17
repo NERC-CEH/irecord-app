@@ -160,7 +160,7 @@ header {
   .pull-left,
   .pull-right {
     height: 44px;
-    width: 40%;
+    width: 33%;
 
     button,
     a {
@@ -188,6 +188,13 @@ header {
 }
 
 header .title {
+  width: 33%;
+  position: relative;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   color: $header-text-color;
   font-weight: 500;
   font-size: 17px;
@@ -197,6 +204,18 @@ header .title {
     margin-top: -8px;
   }
 }
+
+// give title more space if right panel is not there
+header #right-panel.pull-right:empty {
+  display: none;
+
+  &  + .title {
+    position: absolute;
+    display: block;
+    width: 100%;
+  }
+}
+
 
 header .subtitle {
   position: absolute;
@@ -522,12 +541,8 @@ input {
   }
 }
 
-.toggle.no-yes:before {
-  content: 'no';
-}
-
-.toggle.active.no-yes:before {
-  content: 'yes';
+.toggle.active:before, .toggle:before {
+    content: '';
 }
 
 .toggle.active {
@@ -795,12 +810,20 @@ textarea {
 }
 
 header .pull-right {
-  a {
-    padding-right: 5px;
-    padding-left: 5px;
+  div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-    &:before {
-      margin-right: 0.4em;
+    a {
+      padding-right: 5px;
+      padding-left: 5px;
+
+      white-space: nowrap;
+
+      &:before {
+        margin-right: 0.4em;
+      }
     }
   }
 }

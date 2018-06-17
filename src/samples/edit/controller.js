@@ -133,7 +133,7 @@ const API = {
           if (err.message && !visibleDialog) {
             radio.trigger(
               'app:dialog:error',
-              `Sorry, we have encountered a problem while sending the record.
+              `${t('Sorry, we have encountered a problem while sending the record.')}
                 
                  <p><i>${err.message}</i></p>`
             );
@@ -154,12 +154,12 @@ const API = {
     let missing = '';
     if (invalids.occurrences) {
       _.each(invalids.occurrences, (message, invalid) => {
-        missing += `<b>${invalid}</b> - ${message}</br>`;
+        missing += `<b>${t(invalid)}</b> - ${t(message)}</br>`;
       });
     }
     if (invalids.attributes) {
       _.each(invalids.attributes, (message, invalid) => {
-        missing += `<b>${invalid}</b> - ${message}</br>`;
+        missing += `<b>${t(invalid)}</b> - ${t(message)}</br>`;
       });
     }
 
@@ -185,8 +185,8 @@ const API = {
     radio.trigger('app:dialog', {
       title: 'Delete',
       body:
-        'Are you sure you want to remove this photo from the sample?' +
-        '</br><i><b>Note:</b> it will remain in the gallery.</i>',
+        t('Are you sure you want to remove this photo from the sample?') +
+        t('</br><i><b>Note:</b> it will remain in the gallery.</i>'),
       buttons: [
         {
           title: 'Cancel',

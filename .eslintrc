@@ -28,6 +28,7 @@
     }
   ],
   "globals": {
+    "t": true,
     "browser": true,
     "sinon": true,
     "expect": true,

@@ -8,7 +8,7 @@ export default Marionette.View.extend({
     return _.template(`
     <div class="info-message">
       <p>
-        How many individuals of this type?
+        <%= t("How many individuals of this type?") %>
       </p>
     </div>
     <div id="slider"></div>

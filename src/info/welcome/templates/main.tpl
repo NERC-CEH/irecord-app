@@ -3,7 +3,7 @@
     <div id="swaps">
       <div class="swap first">
         <div class="message">
-          <h2>Welcome</h2>
+          <h2><%= t("Welcome") %></h2>
           <p>
             <b>iRecord</b> is a platform for management and sharing of your
             wildlife observations. Learn more by swiping left.
@@ -56,6 +56,6 @@
     <div class="circle" data-id="4" />
   </div>
   <button id="exit" class="btn btn-block">
-    Get Started
+    <%= t("Get Started") %>
   </button>
 </div>

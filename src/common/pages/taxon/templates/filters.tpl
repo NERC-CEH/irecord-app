@@ -6,7 +6,7 @@
         <input type="checkbox" value="<%- obj.filters[i].id %>"
         <%- obj.selectedFilters.indexOf(parseInt(obj.filters[i].id, 10)) >= 0 ? 'checked' : '' %> >
       </label>
-      <span class="filter-label"><%- obj.filters[i].label %></span>
+      <span class="filter-label"><%- t(obj.filters[i].label) %></span>
     </li>
   <% } %>
 

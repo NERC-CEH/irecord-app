@@ -6,8 +6,10 @@ module.exports = function(grunt) {
       command() {
         return `cd src/common/data && 
           node --harmony make.js && 
+          node --harmony make_translations.js && 
           mkdir -p ../../../dist/_build/ && 
           mv species*data.json ../../../dist/_build/ && 
+          mv translations*data.json ../../../dist/_build/ && 
           cp *data.json ../../../dist/_build/ `;
       },
       stdout: true,

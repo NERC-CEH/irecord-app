@@ -23,7 +23,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const filters = Object.keys(informalGroups)
-      .sort((a, b) => informalGroups[a].localeCompare(informalGroups[b]))
+      .sort((a, b) => t(informalGroups[a]).localeCompare(t(informalGroups[b])))
       .map(id => ({ id, label: informalGroups[id] }));
 
     return {

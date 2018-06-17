@@ -107,33 +107,33 @@ let UserModel = Backbone.Model.extend({
     const errors = {};
 
     if (!attrs.email) {
-      errors.email = "can't be blank";
+      errors.email = t("can't be blank");
     } else if (!Validate.email(attrs.email)) {
       errors.email = 'invalid';
     }
 
     if (!attrs.firstname) {
-      errors.firstName = "can't be blank";
+      errors.firstName = t("can't be blank");
     }
 
     if (!attrs.secondname) {
-      errors.secondname = "can't be blank";
+      errors.secondname = t("can't be blank");
     }
 
     if (!attrs.password) {
-      errors.password = "can't be blank";
+      errors.password = t("can't be blank");
     } else if (attrs.password.length < 2) {
-      errors.password = 'is too short';
+      errors.password = t('is too short');
     }
 
     if (!attrs['password-confirm']) {
-      errors['password-confirm'] = "can't be blank";
+      errors['password-confirm'] = t("can't be blank");
     } else if (attrs['password-confirm'] !== attrs.password) {
-      errors['password-confirm'] = 'passwords are not equal';
+      errors['password-confirm'] = t('passwords are not equal');
     }
 
     if (!attrs['terms-agree']) {
-      errors['terms-agree'] = 'you must agree to the terms';
+      errors['terms-agree'] = t('you must agree to the terms');
     }
 
     if (!_.isEmpty(errors)) {
@@ -147,11 +147,11 @@ let UserModel = Backbone.Model.extend({
     const errors = {};
 
     if (!attrs.name) {
-      errors.name = "can't be blank";
+      errors.name = t("can't be blank");
     }
 
     if (!attrs.password) {
-      errors.password = "can't be blank";
+      errors.password = t("can't be blank");
     }
 
     if (!_.isEmpty(errors)) {
@@ -165,7 +165,7 @@ let UserModel = Backbone.Model.extend({
     const errors = {};
 
     if (!attrs.name) {
-      errors.name = "can't be blank";
+      errors.name = t("can't be blank");
     }
 
     if (!_.isEmpty(errors)) {

@@ -4,11 +4,11 @@
 
 <div id="right-panel" class="pull-right"></div>
 
-<h1 class="title <%- obj.subtitle ? 'with-subtitle' : '' %>"><%- obj.title %></h1>
+<h1 class="title <%- obj.subtitle ? 'with-subtitle' : '' %>"><%- t(obj.title) %></h1>
 <%  if(obj.subtitle) { %>
-  <h3 class="subtitle"><%- obj.subtitle %></h3>
+  <h3 class="subtitle"><%- t(obj.subtitle) %></h3>
 <% } %>
 
 <%  if(obj.subheader) { %>
-<div id="subheader"><%- obj.subheader %></div>
+<div id="subheader"><%- t(obj.subheader) %></div>
 <% } %>

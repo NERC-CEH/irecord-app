@@ -10,7 +10,7 @@ import DateHelp from 'helpers/date';
 const EmptyListView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: _.template('No previous locations'),
+  template: _.template(t('No previous locations')),
 });
 
 const PastLocationView = Marionette.View.extend({

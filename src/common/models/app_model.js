@@ -13,6 +13,7 @@ const AppModel = Backbone.Model.extend({
 
   defaults: {
     showWelcome: true,
+    language: 'EN',
 
     locations: [],
     attrLocks: { general: {}, complex: {} },

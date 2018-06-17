@@ -1,3 +1,3 @@
 <a id="refresh-btn" class="icon icon-arrows-cw">
-  Refresh
+  <%= t("Refresh") %>
 </a>
