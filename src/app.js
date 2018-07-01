@@ -5,6 +5,8 @@
 import 'es6-promise/auto';
 
 import $ from 'jquery';
+import React from 'react'; // eslint-disable-line
+import ReactDOM from 'react-dom';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import FastClick from 'fastclick';
@@ -121,11 +123,25 @@ radio.on('app:dialog:error', options => {
 });
 
 radio.on('app:main', view => {
-  App.regions.getRegion('main').show(view);
+  if (view instanceof Backbone.View) {
+    ReactDOM.unmountComponentAtNode(App.regions.getRegion('main').$el[0]);
+    App.regions.getRegion('main').show(view);
+    return;
+  }
+
+  ReactDOM.render(view, App.regions.getRegion('main').$el[0]);
 });
+
 radio.on('app:header', view => {
-  App.regions.getRegion('header').show(view);
+  if (view instanceof Backbone.View) {
+    ReactDOM.unmountComponentAtNode(App.regions.getRegion('header').$el[0]);
+    App.regions.getRegion('header').show(view);
+    return;
+  }
+
+  ReactDOM.render(view, App.regions.getRegion('header').$el[0]);
 });
+
 radio.on('app:footer', view => {
   App.regions.getRegion('footer').show(view);
 });
@@ -163,4 +179,4 @@ radio.on('app:404:show', () => {
   });
 });
 
-export { App as default };
+export {App as default};

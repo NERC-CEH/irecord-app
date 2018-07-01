@@ -1,19 +1,22 @@
 /** ****************************************************************************
  * Info router.
  **************************************************************************** */
+import React from 'react';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 import App from 'app';
 import radio from 'radio';
+import Header from '../common/Components/Header';
 import CommonController from '../common/controller';
 import InfoMenuController from './menu/controller';
 import WelcomeController from './welcome/controller';
-import './brc_approved/BRC_approved_logo.png';
-import './brc_approved/styles.scss';
-import './help/swipe_record.png';
-import './credits/sponsor_logo.png';
+import PrivacyPolicy from './PrivacyPolicy';
+import BRCApproved from './BRCApproved';
+import Terms from './Terms';
+import Credits from './Credits';
+import Help from './Help';
 
 App.info = {};
 
@@ -33,42 +36,24 @@ const Router = Marionette.AppRouter.extend({
       });
     },
     'info/help(/)': () => {
-      CommonController.show({
-        title: 'Help',
-        App,
-        route: 'info/help/main',
-        model: new Backbone.Model({
-          site_url: CONFIG.site_url,
-        }),
-      });
+      radio.trigger('app:header', <Header>Help</Header>);
+      radio.trigger('app:main', <Help />);
     },
     'info/privacy(/)': () => {
-      CommonController.show({
-        title: 'Privacy Policy',
-        App,
-        route: 'info/privacy/main',
-      });
+      radio.trigger('app:header', <Header>Privacy Policy</Header>);
+      radio.trigger('app:main', <PrivacyPolicy />);
     },
     'info/terms(/)': () => {
-      CommonController.show({
-        title: 'T&Cs',
-        App,
-        route: 'info/terms/main',
-      });
+      radio.trigger('app:header', <Header>T&Cs</Header>);
+      radio.trigger('app:main', <Terms />);
     },
     'info/brc-approved(/)': () => {
-      CommonController.show({
-        title: 'BRC Approved',
-        App,
-        route: 'info/brc_approved/main',
-      });
+      radio.trigger('app:header', <Header>BRC Approved</Header>);
+      radio.trigger('app:main', <BRCApproved />);
     },
     'info/credits(/)': () => {
-      CommonController.show({
-        title: 'Credits',
-        App,
-        route: 'info/credits/main',
-      });
+      radio.trigger('app:header', <Header>Credits</Header>);
+      radio.trigger('app:main', <Credits />);
     },
     'info/*path': () => {
       radio.trigger('app:404:show');
