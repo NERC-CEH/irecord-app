@@ -65,7 +65,7 @@ const survey = {
       },
 
       activity: {
-        id: 'group',
+        id: 'group_id',
         values: activity => activity.id,
         type: 'input',
       },
