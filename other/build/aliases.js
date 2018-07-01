@@ -15,6 +15,9 @@ module.exports = grunt => ({
     if (process.env.APP_TRAINING) {
       grunt.warn('APP_TRAINING is enabled');
     }
+    if (process.env.APP_INDICIA_API_HOST) {
+      grunt.warn('APP_INDICIA_API_HOST is enabled');
+    }
     if (process.env.APP_SCREENSHOTS) {
       grunt.warn('APP_SCREENSHOTS is enabled');
     }

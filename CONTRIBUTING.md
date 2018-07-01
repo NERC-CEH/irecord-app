@@ -138,7 +138,12 @@ npm run build:cordova:android
 # Acceptance tests
  Check that `appium-doctor` shows all green and then:
  
-`mb --configfile test/imposters.js`
+`mb --configfile test/imposters.json`
+
 `emulate test`
+
+`npm i chromedriver@2.34.1`
+
 `export APP_INDICIA_API_HOST=localhost:4545`
+
 `npm run test:acceptance`
