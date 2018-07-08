@@ -2,6 +2,8 @@
  * App object.
  **************************************************************************** */
 // polyfills
+import 'core-js/es6/map';
+import 'core-js/es6/set';
 import 'es6-promise/auto';
 
 import $ from 'jquery';
@@ -123,23 +125,35 @@ radio.on('app:dialog:error', options => {
 });
 
 radio.on('app:main', view => {
+  const region = App.regions.getRegion('main');
   if (view instanceof Backbone.View) {
-    ReactDOM.unmountComponentAtNode(App.regions.getRegion('main').$el[0]);
-    App.regions.getRegion('main').show(view);
+    if (ReactDOM.unmountComponentAtNode && region.$el[0]) {
+      ReactDOM.unmountComponentAtNode(region.$el[0]);
+    } else {
+      // todo: for some reason the unmount function is sometimes not found
+      Log("App: main view React DOM unmount did't happen", 'w');
+    }
+    region.show(view);
     return;
   }
 
-  ReactDOM.render(view, App.regions.getRegion('main').$el[0]);
+  ReactDOM.render(view, region.$el[0]);
 });
 
 radio.on('app:header', view => {
+  const region = App.regions.getRegion('header');
   if (view instanceof Backbone.View) {
-    ReactDOM.unmountComponentAtNode(App.regions.getRegion('header').$el[0]);
-    App.regions.getRegion('header').show(view);
+    if (ReactDOM.unmountComponentAtNode && region.$el[0]) {
+      ReactDOM.unmountComponentAtNode(region.$el[0]);
+    } else {
+      // todo: for some reason the unmount function is sometimes not found
+      Log("App: header view React DOM unmount did't happen", 'w');
+    }
+    region.show(view);
     return;
   }
 
-  ReactDOM.render(view, App.regions.getRegion('header').$el[0]);
+  ReactDOM.render(view, region.$el[0]);
 });
 
 radio.on('app:footer', view => {
@@ -179,4 +193,4 @@ radio.on('app:404:show', () => {
   });
 });
 
-export {App as default};
+export { App as default };

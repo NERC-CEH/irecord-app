@@ -1,5 +1,8 @@
 // ES5 shims for Function.prototype.bind, Object.prototype.keys, etc.
 require('core-js/es5');
+require('core-js/es6/map');
+require('core-js/es6/set');
+
 // other shims
 require('indexeddbshim');
 require('es6-promise/auto');

@@ -47,6 +47,7 @@ const sauceBrowsers = _.reduce(
 
     ['internet explorer', '11', 'Windows 10'],
 
+    ['android', '6'],
     ['android', '5.1'],
     ['android', '5'],
     ['android', '4.4'],
