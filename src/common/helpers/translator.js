@@ -2,8 +2,10 @@ import dictionary from 'translations.data';
 import appModel from 'app_model';
 
 function translate(key) {
-  window.dictionary = dictionary;
+  // todo: remove this if we have translations
+  return key;
 
+  // eslint-disable-next-line
   const language = appModel.get('language');
   const translations = dictionary[key];
   if (!translations) {
