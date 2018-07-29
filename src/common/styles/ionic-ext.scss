@@ -6,11 +6,11 @@
 *
 * Borrowed some styles :)
 */
-.item-radio:hover .item-content {
+:not(ion-item).item-radio:hover .item-content {
   background-color: $color-gray-light;
 }
 
-.item {
+:not(ion-item).item {
   border: 0;
   border-bottom: 2px solid $color-gray-light;
 }
@@ -52,4 +52,8 @@ label.item-input-wrapper {
     background: transparent;
     font-size: 14px;
   }
+}
+
+ion-item > span.icon {
+  margin-left: -16px;
 }

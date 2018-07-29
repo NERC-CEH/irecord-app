@@ -65,6 +65,32 @@ img {
   }
 }
 
+ion-item[error] {
+  height: 50px;
+  transition: border 0.2s ease-in-out;
+
+  .item-inner {
+    border-bottom: 1px solid $color-orange;
+  }
+
+  .icon {
+    color: $color-orange;
+  }
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    right: 0;
+    font-size: 0.75em;
+    color: $color-orange;
+    content: attr(error);
+    white-space: nowrap;
+    transition: content 0.2s ease-in-out;
+  }
+}
+
+
 .input-row.error {
   height: 50px;
   border-bottom: 1px solid $color-orange;
@@ -455,7 +481,7 @@ li h3 {
 .warning-message {
   font-size: 13px;
   font-weight: normal;
-  margin: 0 (-$main-content-margin);
+  margin: 0 (-$main-content-margin) 2px;
   border-radius: 0;
   padding: 3px 15px 3px 42px;
   line-height: 1.4em;

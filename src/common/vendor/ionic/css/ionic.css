@@ -9,7 +9,7 @@
  * Items
  * --------------------------------------------------
  */
-.item {
+:not(ion-item).item {
   border-color: #ddd;
   background-color: #fff;
   color: #444;
@@ -181,19 +181,19 @@
  * Radio Button Inputs
  * --------------------------------------------------
  */
-.item-radio {
+:not(ion-item).item-radio {
   padding: 0;
 }
-.item-radio:hover {
+:not(ion-item).item-radio:hover {
   cursor: pointer;
 }
 
-.item-radio .item-content {
+:not(ion-item).item-radio .item-content {
   /* give some room to the right for the checkmark icon */
   padding-right: 64px;
 }
 
-.item-radio .radio-icon {
+:not(ion-item).item-radio .radio-icon {
   /* checkmark icon will be hidden by default */
   position: absolute;
   top: 0;
@@ -205,7 +205,7 @@
   font-size: 24px;
 }
 
-.item-radio input {
+:not(ion-item).item-radio input {
   /* hide any radio button inputs elements (the ugly circles) */
   position: absolute;
   left: 0;
@@ -214,11 +214,11 @@
   z-index: 10;
   opacity: 0;
 }
-.item-radio input:checked + .radio-content .item-content {
+:not(ion-item).item-radio input:checked + .radio-content .item-content {
   /* style the item content when its checked */
   background: #f7f7f7;
 }
-.item-radio input:checked + .radio-content .radio-icon {
+:not(ion-item).item-radio input:checked + .radio-content .radio-icon {
   /* show the checkmark icon when its checked */
   visibility: visible;
 }
