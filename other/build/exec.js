@@ -2,6 +2,10 @@ require('dotenv').config({ silent: true }); // get local environment variables f
 
 module.exports = function(grunt) {
   return {
+    ionic_copy: {
+      command: 'cp -R node_modules/@ionic dist/main',
+      stdout: true,
+    },
     data: {
       command() {
         return `cd src/common/data && 

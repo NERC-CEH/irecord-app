@@ -1,7 +1,7 @@
 module.exports = grunt => ({
   default: ['init', 'jst', 'webpack:main'],
 
-  init: ['init:validate', 'exec:data', 'copy', 'vendor'],
+  init: ['init:validate', 'exec:data', 'copy', 'exec:ionic_copy', 'vendor'],
 
   'init:validate': () => {
     if (process.env.APP_FORCE) {
