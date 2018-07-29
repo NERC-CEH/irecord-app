@@ -1,7 +1,6 @@
 import $ from 'jquery';
+import L from 'leaflet';
 import './leaflet_button_ext.scss';
-
-/* global L */
 
 /**
  * https://gist.github.com/ejh/2935327

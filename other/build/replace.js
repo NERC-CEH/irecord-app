@@ -6,6 +6,20 @@ const pkg = require('../../package.json');
 
 module.exports = grunt => ({
     // Fix double define problem
+    leaflet: {
+      src: [
+        'node_modules/leaflet/dist/leaflet-src.js',
+      ],
+      overwrite: true,
+      replacements: [
+        {
+          from: "window.L = L",
+          to: '//window.L = L',
+        }
+      ],
+    },
+
+    // Fix double define problem
     latlon: {
       src: [
         'node_modules/geodesy/latlon-ellipsoidal.js',

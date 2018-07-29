@@ -37,6 +37,7 @@ module.exports = grunt => ({
   },
 
   vendor: [
+    'replace:leaflet',
     'replace:ratchet',
     'replace:ratchet_fonts',
     'replace:fontello_fonts',
