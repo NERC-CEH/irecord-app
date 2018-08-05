@@ -15,7 +15,7 @@
     "build:cordova:update": "grunt cordova:update",
     "build:cordova:android": "grunt cordova:android",
     "postinstall": "grunt dev",
-    "start": "node other/server.js",
+    "start": "WEBPACK_SERVE=production webpack-serve --config other/webpack.dev.js --content dist/main --port 8000",
     "start-dev": "webpack-serve --config other/webpack.dev.js --content dist/main --port 8000",
     "test": "karma start test/karma.conf.js",
     "test:coverage": "karma start test/karma.conf.js --reporters mocha,coverage",
