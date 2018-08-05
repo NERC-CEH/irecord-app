@@ -39,7 +39,7 @@ const API = {
         buttons: [
           {
             title: 'Cancel',
-            class: 'btn-clear',
+            type: 'clear',
             onClick() {
               radio.trigger('app:dialog:hide');
             },
@@ -84,7 +84,7 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
-          class: 'btn-clear',
+          type: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           },
@@ -122,14 +122,13 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
-          class: 'btn-clear',
+          type: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           },
         },
         {
           title: 'Submit',
-          class: 'btn-positive',
           onClick() {
             Log('Settings:Menu:Controller: sending all samples.');
             savedSamples

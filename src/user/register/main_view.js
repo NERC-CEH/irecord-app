@@ -5,6 +5,7 @@ import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Validate from 'helpers/validate';
 import JST from 'JST';
+import './styles.scss';
 
 export default Marionette.View.extend({
   template: JST['user/register/main'],

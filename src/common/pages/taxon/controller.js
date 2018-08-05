@@ -60,7 +60,6 @@ const API = {
         buttons: [
           {
             title: 'Close',
-            class: 'btn-positive',
             onClick() {
               radio.trigger('app:dialog:hide');
             },

@@ -28,4 +28,4 @@
     <div class="toggle-handle"></div>
   </div>
 </div>
-<button id="register-button" class="btn btn-narrow btn-positive btn-block"><%= t("Create") %></button>
+<ion-button id="register-button"><%= t("Create") %></ion-button>

@@ -53,7 +53,6 @@ const API = {
               buttons: [
                 {
                   title: 'OK, got it',
-                  class: 'btn-positive',
                   onClick() {
                     radio.trigger('app:dialog:hide');
                     window.history.back();

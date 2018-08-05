@@ -7,4 +7,4 @@
     <input id="user-name" name="name" type="email" placeholder='<%= t("Username or email") %>'>
   </div>
 </div>
-<button id="reset-button" class="btn btn-narrow btn-positive btn-block"><%= t("Request") %></button>
+<ion-button id="reset-button"><%= t("Request") %></ion-button>

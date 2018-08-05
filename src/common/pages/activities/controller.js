@@ -215,7 +215,6 @@ const API = {
         {
           id: 'ok',
           title: 'OK',
-          class: 'btn-positive',
           onClick: App.regions.getRegion('dialog').hide,
         },
       ],

@@ -85,11 +85,13 @@ const StandardDialogView = Marionette.View.extend({
           id() {
             return this.model.id || Math.floor(Math.random() * 10000);
           },
-          tagName: 'button',
-          className() {
-            const className = this.model.get('class');
-            return `btn ${className || ''}`;
+          attributes() {
+            return {
+              expand: 'full',
+              fill: this.model.get('type') || 'solid',
+            };
           },
+          tagName: 'ion-button',
           template: _.template('<%- t(obj.title) %>'),
           events: {
             click() {

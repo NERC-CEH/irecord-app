@@ -55,7 +55,7 @@
     <div class="circle" data-id="3" />
     <div class="circle" data-id="4" />
   </div>
-  <button id="exit" class="btn btn-block">
+  <ion-button id="exit">
     <%= t("Get Started") %>
-  </button>
+  </ion-button>
 </div>

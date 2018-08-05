@@ -1,6 +1,6 @@
 <p><%= t("No records to show") %>.</p>
 
-<a id="create-new-btn" class="btn btn-positive btn-outlined">
-  <span class="icon icon-plus pull-left"></span>
+<ion-button  id="create-new-btn" fill="outline">
+  <ion-icon slot="start" name="add"></ion-icon>
   <%= t("Let's add one!") %>
-</a>
+</ion-button>

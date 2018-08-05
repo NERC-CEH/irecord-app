@@ -1,6 +1,6 @@
 <p>No species added.</p>
 
-<a id="create-new-btn" class="btn btn-positive btn-outlined">
-  <span class="icon icon-plus pull-left"></span>
+<ion-button  id="create-new-btn" fill="outline">
+  <ion-icon slot="start" name="add"></ion-icon>
   Add
-</a>
+</ion-button>

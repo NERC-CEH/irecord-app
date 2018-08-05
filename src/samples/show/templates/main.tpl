@@ -1,11 +1,10 @@
 <div class="info-message">
   <p><%= t("This record has been submitted and cannot be edited within this App") %>.
     <% if (obj.id) { %>
-    <a href="<%= obj.site_url %>/record-details?occurrence_id=<%= obj.id %>"
-       class="btn btn-block btn-narrow">
+    <ion-button id="record-external-link" color="light" href="<%= obj.site_url %>/record-details?occurrence_id=<%= obj.id %>">
+      <ion-icon slot="end" name="exit"></ion-icon>
       <%= t("View on iRecord") %>
-      <span class="pull-right icon icon-link-ext"></span>
-    </a>
+    </ion-button>
     <% } else { %>
       <%= t("Go to the") %> <a href="<%= obj.site_url %>"><%= t("iRecord website") %></a> <%= t("to edit") %>.</p>
     <% } %>
@@ -73,7 +72,7 @@
 </ul>
 
 <% if (obj.useExperiments) { %>
-  <button id="resend-btn" class="btn btn-narrow btn-negative btn-block"><%= t("Resend the record") %></button>
+  <ion-button id="resend-btn" color="danger"><%= t("Resend the record") %></ion-button>
 <% } %>
 
 <div id="occurrence-id"><%- obj.cid %></div>

@@ -58,6 +58,14 @@
     }
   }
 
+  button.edit-shortcut {
+    height: 47px;
+    padding: 0 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   h3 {
     white-space: normal;
     overflow: visible;
