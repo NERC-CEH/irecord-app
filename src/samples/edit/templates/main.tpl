@@ -1,62 +1,57 @@
-<ul class="table-view core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
-  <li class="table-view-cell">
-    <a id="species-button" class="navigate-right">
+<ion-list lines="full" class="core inputs no-top <%- obj.isSynchronising ? 'disabled' : '' %>">
+  <ion-item id="species-button" detail>
+    <ion-label text-wrap>
       <% if (obj.commonName) { %>
-      <span class="media-object pull-right descript long"><%= obj.commonName %></span>
+      <span class="descript long"><%= obj.commonName %></span>
       <% } %>
-      <span class="media-object pull-right descript long"><i><%= obj.scientificName %></i></span>
-    </a>
-  </li>
-  <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/location" id="location-button"
-       class="<%- obj.locks['smp:location'] || obj.locks['smp:locationName'] ? '' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-location"></span>
+      <span class="descript long"><i><%= obj.scientificName %></i></span>
+    </ion-label>
 
-      <% if (obj['smp:location']) { %>
-      <span class="location media-object pull-right descript <%- obj.locks['smp:location'] ? 'lock' : '' %>"><%- obj['smp:location'] %></span>
-      <% } else { %>
-      <% if (obj.isLocating) { %>
-      <span class="media-object pull-right descript warn"><%= t("Locating") %>...</span>
-      <% } else { %>
-      <span class="media-object pull-right descript error"><%= t("Location missing") %></span>
-      <% } %>
-      <% } %>
+    </ion-item>
+    <ion-item href="#samples/<%- obj.id %>/edit/location" id="location-button"
+            detail detail-icon="<%- obj.locks['smp:location'] || obj.locks['smp:locationName'] ? 'lock' : 'ios-arrow-forward' %>">
+      <span slot="start" class="icon icon-location"></span>
 
-      <% if (obj['smp:locationName']) { %>
-      <span class="media-object pull-right descript <%- obj.locks['smp:locationName'] ? 'lock' : '' %>"><%= obj['smp:locationName'] %></span>
-      <% } else { %>
-      <span class="media-object pull-right descript error"><%= t("Name missing") %></span>
-      <% } %>
+      <ion-label slot="end" text-wrap>
+        <% if (obj['smp:location']) { %>
+        <span slot="end" class="location long descript <%- obj.locks['smp:location'] ? 'lock' : '' %>"><%- obj['smp:location'] %></span>
+        <% } else { %>
+        <% if (obj.isLocating) { %>
+        <span slot="end" class="descript long warn"><%= t("Locating") %>...</span>
+        <% } else { %>
+        <span slot="end" class="descript long error"><%= t("Location missing") %></span>
+        <% } %>
+        <% } %>
+
+        <% if (obj['smp:locationName']) { %>
+        <span slot="end" class="descript long <%- obj.locks['smp:locationName'] ? 'lock' : '' %>"><%= obj['smp:locationName'] %></span>
+        <% } else { %>
+        <span slot="end" class="descript long error"><%= t("Name missing") %></span>
+        <% } %>
+      </ion-label>
 
       <%= t("Location") %>
-    </a>
-  </li>
-  <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/smp:date" id="date-button"
-       class="<%- obj.locks['smp:date'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-calendar"></span>
-      <span class="media-object pull-right descript"><%- obj['smp:date'] %></span>
+  </ion-item>
+  <ion-item href="#samples/<%- obj.id %>/edit/smp:date" id="date-button"
+            detail detail-icon="<%- obj.locks['smp:date'] ? 'lock' : 'ios-arrow-forward' %>">
+      <span slot="start" class="icon icon-calendar"></span>
+      <span slot="end" class="descript"><%- obj['smp:date'] %></span>
       <%= t("Date") %>
-    </a>
-  </li>
-  <li class="table-view-cell">
-    <a href="#samples/<%- obj.id %>/edit/occ:comment" id="comment-button"
-       class="<%- obj.locks['occ:comment'] ? 'lock' : 'navigate-right' %>">
-      <span class="media-object pull-left icon icon-comment"></span>
-      <span class="media-object pull-right descript"><%- obj['occ:comment'] %></span>
+  </ion-item>
+  <ion-item href="#samples/<%- obj.id %>/edit/occ:comment" id="comment-button"
+            detail detail-icon="<%- obj.locks['occ:comment'] ? 'lock' : 'ios-arrow-forward' %>">
+      <span slot="start" class="icon icon-comment"></span>
+      <span slot="end" class="descript"><%- obj['occ:comment'] %></span>
       <%= t("Comment") %>
-    </a>
-  </li>
+  </ion-item>
   <% if (obj['smp:activity']) { %>
-      <li class="table-view-cell">
-        <a href="#samples/<%- obj.id %>/edit/activity" id="activity-button"
-           class="<%- obj.locks['smp:activity'] ? 'lock' : 'navigate-right' %>">
-          <span class="media-object pull-left icon icon-users"></span>
-          <span class="media-object pull-right descript"><%- obj['smp:activity'] %></span>
-          <%= t("Activity") %>
-        </a>
-      </li>
+    <ion-item href="#samples/<%- obj.id %>/edit/activity" id="activity-button"
+              detail detail-icon="<%- obj.locks['smp:activity'] ? 'lock' : 'ios-arrow-forward' %>">
+        <span slot="start" class="icon icon-users"></span>
+        <span slot="end" class="descript"><%- obj['smp:activity'] %></span>
+        <%= t("Activity") %>
+    </ion-item>
   <% } %>
-</ul>
+</ion-list>
 
-<ul id="attrs"></ul>
+<ion-list lines="full" id="attrs"></ion-list>

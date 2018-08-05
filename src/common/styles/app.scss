@@ -406,7 +406,7 @@ header .subtitle {
   border-top: none;
 }
 
-.table-view > * {
+.table-view > *:not(ion-item) {
   padding: 11px 15px 11px 15px;
 
   //no border on last item since table-view has a border
@@ -857,4 +857,9 @@ header .pull-right {
 // increase margin on pull left list items
 .table-view .media-object.pull-left {
   margin-right: 15px;
+}
+
+
+ion-item > span.icon {
+  margin-left: -13px !important;
 }

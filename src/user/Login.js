@@ -114,41 +114,36 @@ class Component extends React.Component {
           <p>{t("Please sign in with your iRecord account or register.")}</p>
         </div>
 
-        <form>
-          <ion-list no-border>
-            <ion-item error={this.state.userNameError}>
-              <span className="icon icon-user" slot="start"></span>
-              <ion-input ref={this.userName} required type="text"
-                         placeholder={t("Username or email")}></ion-input>
-            </ion-item>
-            <ion-item error={this.state.userPasswordError}>
-              <span className="icon icon-key" slot="start"></span>
-              <ion-input ref={this.userPassword} required
-                         type="password"
-                         placeholder={t("Password")}></ion-input>
-            </ion-item>
-          </ion-list>
-          <ion-button style={{ width: '100%', margin: '0 auto' }}
-                      onClick={this.onClick.bind(this)}
-                      color="light">{t("Sign in")}</ion-button>
-        </form>
+        <ion-list lines="full">
+          <ion-item error={this.state.userNameError}>
+            <span className="icon icon-user" slot="start"></span>
+            <ion-input ref={this.userName} required type="text"
+                       placeholder={t("Username or email")}></ion-input>
+          </ion-item>
+          <ion-item error={this.state.userPasswordError}>
+            <span className="icon icon-key" slot="start"></span>
+            <ion-input ref={this.userPassword} required
+                       type="password"
+                       placeholder={t("Password")}></ion-input>
+          </ion-item>
+        </ion-list>
 
-        <ion-row>
-          <ion-col>
-            <ion-list>
-              <ion-item href="#user/register">
-                          <span slot="start"
-                                className="icon icon-user-plus"></span>
-                {t("Register")}
-              </ion-item>
-              <ion-item href="#user/reset">
-                          <span slot="start"
-                                className="icon icon-key"></span>
-                {t("Request a new password")}
-              </ion-item>
-            </ion-list>
-          </ion-col>
-        </ion-row>
+        <ion-button style={{ width: '100%', margin: '0 auto' }}
+                    onClick={this.onClick.bind(this)}
+                    color="light">{t("Sign in")}</ion-button>
+
+        <ion-list lines="full">
+          <ion-item href="#user/register">
+            <span slot="start"
+                  className="icon icon-user-plus"></span>
+            {t("Register")}
+          </ion-item>
+          <ion-item href="#user/reset">
+            <span slot="start"
+                  className="icon icon-key"></span>
+            {t("Request a new password")}
+          </ion-item>
+        </ion-list>
       </div>
     );
   }

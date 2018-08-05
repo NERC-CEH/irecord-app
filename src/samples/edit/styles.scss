@@ -73,6 +73,14 @@
   }
 }
 
+.descript-multiline {
+  float: right;
+  white-space: normal;
+  width: 100%;
+  position: absolute;
+  right: 27px;
+}
+
 .descript {
   width: 52%;
 
@@ -80,9 +88,10 @@
     width: 50%;
   }
   &.long {
-    width: 90%;
+    width: 100%;
   }
 
+  margin-right: 9px !important;
   min-height: 21px;
   font-size: $text-font-size;
 
@@ -121,26 +130,14 @@
   margin-right: 7px;
 }
 
-.lock {
-  &.descript, // location
-  .descript {
+ion-item[detail-icon='lock'] {
+  & > ion-label > .lock.descript, // location
+  & > .descript {
+    right: 10px;
+    margin-right: 0 !important;
     color: $color-blue;
+    position: relative;
   }
-
-  &:after {
-    position: absolute;
-    right: 15px;
-    top: auto;
-    bottom: 12px;
-
-    color: $color-blue;
-    font-family: icons;
-    content: '\e80c';
-  }
-}
-// location below location name
-.location.lock:after {
-  top: 10px;
 }
 
 $footer-height: 80px;
@@ -219,4 +216,10 @@ footer #edit-footer {
   background-color: $color-white;
   border-top: 1px solid $color-gray;
   box-shadow: 0px -1px 6px 0px #b5b5b5;
+}
+
+#species-button slot {
+  width: 100%;
+  float: right;
+  display: block;
 }

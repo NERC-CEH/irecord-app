@@ -26,6 +26,7 @@ export default Marionette.View.extend({
 
     const attrView = new AttrsView({
       model: this.model,
+      attributes: { lines: 'full' },
       activityExists: !!activity,
     });
     attrView.on('attr:update', (attr, value) =>
@@ -35,7 +36,7 @@ export default Marionette.View.extend({
   },
 
   triggers: {
-    'click a#species-button': 'taxon:update',
+    'click #species-button': 'taxon:update',
   },
 
   /**

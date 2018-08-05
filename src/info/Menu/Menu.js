@@ -1,90 +1,69 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import {observer} from 'mobx-react';
 import PropTypes from 'prop-types';
 
 const Component = observer(props => {
   const { password: login, firstname, secondname } = props.user;
   return (
-    <ul className="table-view buttons">
+    <ion-list lines="full">
       {login && (
-        <li className="table-view-cell">
-          <a
-            id="logout-button"
-            className="navigate-right"
-            onClick={props.logOut}
-          >
-            <span className="media-object pull-left icon icon-logout" />
-            {t('Logout')}: {firstname} {secondname}
-          </a>
-        </li>
+        <ion-item detail
+          id="logout-button"
+          onClick={props.logOut}
+        >
+          <span slot="start" className="icon icon-logout"/>
+          {t('Logout')}: {firstname} {secondname}
+        </ion-item>
       )}
       {login && (
-        <li className="table-view-cell">
-          <a href="#user/statistics" className="navigate-right">
-            <span className="media-object pull-left icon icon-statistics" />
-            {t('Statistics')}
-          </a>
-        </li>
+        <ion-item href="#user/statistics" detail>
+          <span slot="start" className="icon icon-statistics"/>
+          {t('Statistics')}
+        </ion-item>
       )}
 
       {!login && (
-        <li className="table-view-cell">
-          <a href="#user/login" className="navigate-right">
-            <span className="media-object pull-left icon icon-user" />
-            {t('Login')}
-          </a>
-        </li>
+        <ion-item href="#user/login" detail>
+          <span slot="start" className="icon icon-user"/>
+          {t('Login')}
+        </ion-item>
       )}
 
       {!login && (
-        <li className="table-view-cell">
-          <a href="#user/register" className="navigate-right">
-            <span className="media-object pull-left icon icon-user-plus" />
-            {t('Register')}
-          </a>
-        </li>
+        <ion-item href="#user/register" detail>
+          <span slot="start" className="icon icon-user-plus"/>
+          {t('Register')}
+        </ion-item>
       )}
 
-      <li className="table-view-divider">{t('Settings')}</li>
-      <li className="table-view-cell">
-        <a href="#settings" className="navigate-right">
-          <span className="media-object pull-left icon icon-settings" />
-          {t('App')}
-        </a>
-      </li>
+      <ion-item-divider>{t('Settings')}</ion-item-divider>
+      <ion-item href="#settings" detail>
+        <span slot="start" className="icon icon-settings"/>
+        {t('App')}
+      </ion-item>
 
-      <li className="table-view-divider">{t('Info')}</li>
-      <li className="table-view-cell">
-        <a href="#info/about" className="navigate-right">
-          <span className="media-object pull-left icon icon-info" />
-          {t('About')}
-        </a>
-      </li>
-      <li className="table-view-cell">
-        <a href="#info/help" className="navigate-right">
-          <span className="media-object pull-left icon icon-help" />
-          {t('Help')}
-        </a>
-      </li>
-      <li className="table-view-cell">
-        <a href="#info/privacy" className="navigate-right">
-          <span className="media-object pull-left icon icon-lock-closed" />
-          {t('Privacy Policy')}
-        </a>
-      </li>
-      <li className="table-view-cell">
-        <a href="#info/brc-approved" className="navigate-right">
-          <span className="media-object pull-left icon icon-thumbs-up" />
-          {t('BRC Approved')}
-        </a>
-      </li>
-      <li className="table-view-cell">
-        <a href="#info/credits" className="navigate-right">
-          <span className="media-object pull-left icon icon-heart" />
-          {t('Credits')}
-        </a>
-      </li>
-    </ul>
+      <ion-item-divider>{t('Info')}</ion-item-divider>
+      <ion-item href="#info/about" detail>
+        <span slot="start" className="icon icon-info"/>
+        {t('About')}
+      </ion-item>
+      <ion-item href="#info/help" detail>
+        <span slot="start" className="icon icon-help"/>
+        {t('Help')}
+      </ion-item>
+      <ion-item href="#info/privacy" detail>
+        <span slot="start" className="icon icon-lock-closed"/>
+        {t('Privacy Policy')}
+      </ion-item>
+      <ion-item href="#info/brc-approved" detail>
+        <span slot="start" className="icon icon-thumbs-up"/>
+        {t('BRC Approved')}
+      </ion-item>
+      <ion-item href="#info/credits" detail>
+        <span slot="start" className="icon icon-heart"/>
+        {t('Credits')}
+      </ion-item>
+    </ion-list>
   );
 });
 

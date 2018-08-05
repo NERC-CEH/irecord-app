@@ -3,25 +3,19 @@
  **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import Device from 'helpers/device';
 import JST from 'JST';
 
 export default Marionette.View.extend({
-  tagName: 'ul',
-  className: 'table-view',
+  tagName: 'ion-list',
+  attributes: { lines: "full" },
   template: JST['settings/menu/main'],
 
   events: {
-    'toggle #use-training-btn': 'onSettingToggled',
-    'click #use-training-btn': 'onSettingToggled',
-    'toggle #use-gridref-btn': 'useGridRef',
-    'click #use-gridref-btn': 'useGridRef',
-    'toggle #use-experiments-btn': 'onSettingToggled',
-    'click #use-experiments-btn': 'onSettingToggled',
-    'toggle #use-gridmap-btn': 'onSettingToggled',
-    'click #use-gridmap-btn': 'onSettingToggled',
-    'toggle #use-autosync-btn': 'onSettingToggled',
-    'click #use-autosync-btn': 'onSettingToggled',
+    'ionChange #use-training-btn': 'onSettingToggled',
+    'ionChange #use-gridref-btn': 'useGridRef',
+    'ionChange #use-experiments-btn': 'onSettingToggled',
+    'ionChange #use-gridmap-btn': 'onSettingToggled',
+    'ionChange #use-autosync-btn': 'onSettingToggled',
   },
 
   triggers: {
@@ -41,16 +35,8 @@ export default Marionette.View.extend({
   },
 
   onSettingToggled(e) {
-    const setting = $(e.currentTarget).data('setting');
-    let active = $(e.currentTarget).hasClass('active');
-
-    if (e.type !== 'toggle' && !Device.isMobile()) {
-      // Device.isMobile() android generates both swipe and click
-
-      active = !active; // invert because it takes time to get the class
-      $(e.currentTarget).toggleClass('active', active);
-    }
-
+    const setting = $(e.currentTarget).prop('value');
+    const active = $(e.currentTarget).prop('checked');
     this.trigger('setting:toggled', setting, active);
   },
 

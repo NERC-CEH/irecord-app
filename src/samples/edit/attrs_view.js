@@ -3,7 +3,6 @@ import _ from 'lodash';
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
 import StringHelp from 'helpers/string';
-import Device from 'helpers/device';
 
 function template(sample) {
   const survey = sample.getSurvey();
@@ -20,27 +19,23 @@ function template(sample) {
     const icon = attr.icon || 'dot';
 
     if (attr.type === 'toggle') {
-      tpl += `<li class="table-view-cell">
-          <a>
-            <%= t("${label}") %>
-            <span class="media-object pull-left icon icon-${icon} toggle-icon"></span>
-            <div id="${attrName}-toggle" data-setting="${element}"
-                 class="toggle no-yes <%- obj["${element}"] ? 'active' : '' %>">
-              <div class="toggle-handle"></div>
-            </div>
-          </a>
-        </li>`;
+      tpl += `
+          <ion-item>
+            <ion-label><%= t("${label}") %></ion-label>
+            <ion-toggle id="${attrName}-toggle" value="${element}" slot="end" <%- obj["${element}"] ? 'checked' : '' %>></ion-toggle>
+            <span slot="start" class="media-object pull-left icon icon-${icon} toggle-icon"></span>
+          </ion-item>
+       `;
       return;
     }
 
-    tpl += `<li class="table-view-cell">
-        <a href="#samples/${sample.cid}/edit/${element}" id="${element}-button"
-           class="<%- obj.locks['${element}'] ? 'lock' : 'navigate-right' %>">
-          <span class="media-object pull-left icon icon-${icon}"></span>
-          <span class="media-object pull-right descript"><%- t(obj['${element}'])%></span>
+    tpl += `<ion-item 
+              href="#samples/${sample.cid}/edit/${element}" 
+              id="${element}-button" detail detail-icon="<%- obj.locks['${element}'] ? 'lock' : 'ios-arrow-forward' %>">
+          <span slot="start" class="media-object pull-left icon icon-${icon}"></span>
+          <span slot="end" class="media-object pull-right descript"><%- t(obj['${element}'])%></span>
           <%= t("${label}") %>
-        </a>
-      </li>`;
+      </ion-item>`;
   });
 
   return _.template(tpl);
@@ -53,25 +48,17 @@ export default Marionette.View.extend({
   },
 
   events: {
-    'toggle .toggle': 'onSettingToggled',
-    'click .toggle': 'onSettingToggled',
+    'ionChange ion-toggle': 'onSettingToggled',
   },
 
   onSettingToggled(e) {
-    const setting = $(e.currentTarget).data('setting');
-    let active = $(e.currentTarget).hasClass('active');
-
-    if (e.type !== 'toggle' && !Device.isMobile()) {
-      // Device.isMobile() android generates both swipe and click
-
-      active = !active; // invert because it takes time to get the class
-      $(e.currentTarget).toggleClass('active', active);
-    }
+    const setting = $(e.currentTarget).prop('value');
+    const active = $(e.currentTarget).prop('checked');
 
     this.trigger('attr:update', setting, active);
   },
 
-  tagName: 'ul',
+  tagName: 'ion-list',
   id: 'attrs',
   className() {
     return `table-view inputs no-top ${
