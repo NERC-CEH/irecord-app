@@ -141,7 +141,7 @@ class Component extends React.Component {
                                 className="icon icon-user-plus"></span>
                 {t("Register")}
               </ion-item>
-              <ion-item href="#user/register">
+              <ion-item href="#user/reset">
                           <span slot="start"
                                 className="icon icon-key"></span>
                 {t("Request a new password")}
@@ -152,55 +152,6 @@ class Component extends React.Component {
       </div>
     );
   }
-//
-//     render() {
-//     return (
-//
-// <div>
-//   <div className="info-message">
-//     <p>Please sign in with your iRecord account or register.</p>
-//   </div>
-//
-//   <form>
-//     <ion-list no-border>
-//       <ion-item>
-//         <span className="icon icon-user" slot="start"></span>
-//         <ion-input required type="text"
-//                    placeholder="Username or email"></ion-input>
-//       </ion-item>
-//       <ion-item>
-//         <span className="icon icon-key" slot="start"></span>
-//         <ion-input required
-//                    type="password"
-//                    placeholder="Password"></ion-input>
-//       </ion-item>
-//     </ion-list>
-//     <ion-button style="width: 100%; margin: 0 auto"
-//                 type="submit"
-//                 color="light">Sign in
-//     </ion-button>
-//   </form>
-//
-//   <ion-row>
-//     <ion-col>
-//       <ion-list>
-//         <ion-item href="#user/register">
-//                            <span slot="start"
-//                                  className="icon icon-user-plus"></span>
-//           Register
-//         </ion-item>
-//         <ion-item href="#user/register">
-//                            <span slot="start"
-//                                  className="icon icon-key"></span>
-//           Request a new password
-//         </ion-item>
-//       </ion-list>
-//     </ion-col>
-//   </ion-row>
-// </div>
-//
-//     );
-//   }
 }
 
 Component.propTypes = {
