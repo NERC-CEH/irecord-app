@@ -8,22 +8,16 @@ const _ = require('lodash');
 
 const webpack = require('webpack');
 
-process.env.NODE_ENV = 'test';
-const ENV = process.env.NODE_ENV;
-
 // get development webpack config
 const webpackConfigDev = require('../other/webpack.dev');
-// clean it up a bit
-delete webpackConfigDev.context;
+// // clean it up a bit
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
-webpackConfigDev.plugins.splice(1, 2); // temp remove of clashing plugins
-webpackConfigDev.plugins.splice(
-  0,
-  0,
+delete webpackConfigDev.optimization; // no need
+webpackConfigDev.plugins.push(
   new webpack.DefinePlugin({
     'process.env': {
-      ENV: JSON.stringify(ENV),
+      ENV: JSON.stringify(process.env.NODE_ENV),
     },
   })
 );
