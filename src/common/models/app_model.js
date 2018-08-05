@@ -3,6 +3,7 @@
  **************************************************************************** */
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
+import { observable } from 'mobx';
 import CONFIG from 'config';
 import Log from 'helpers/log';
 import pastLocationsExtension from './app_model_past_loc_ext';
@@ -39,6 +40,8 @@ const AppModel = Backbone.Model.extend({
 
     this.fetch();
     this.checkExpiredAttrLocks();
+
+    this.attributes = observable(this.attributes);
   },
 
   toggleTaxonFilter(filter) {

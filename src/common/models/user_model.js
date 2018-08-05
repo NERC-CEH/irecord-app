@@ -4,6 +4,7 @@
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
+import { observable } from 'mobx';
 import CONFIG from 'config';
 import Log from 'helpers/log';
 import Validate from 'helpers/validate';
@@ -43,6 +44,8 @@ let UserModel = Backbone.Model.extend({
     this.fetch();
     this.syncActivities();
     this.syncStats();
+
+    this.attributes = observable(this.attributes);
   },
 
   /**
