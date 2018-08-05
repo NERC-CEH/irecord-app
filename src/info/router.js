@@ -17,6 +17,7 @@ import BRCApproved from './BRCApproved';
 import Terms from './Terms';
 import Credits from './Credits';
 import Help from './Help';
+import About from './About';
 
 App.info = {};
 
@@ -25,15 +26,9 @@ const Router = Marionette.AppRouter.extend({
     'info(/)': InfoMenuController.show,
     'info/welcome(/)': WelcomeController.show,
     'info/about(/)': () => {
-      CommonController.show({
-        title: 'About',
-        App,
-        route: 'info/about/main',
-        model: new Backbone.Model({
-          version: CONFIG.version,
-          build: CONFIG.build,
-        }),
-      });
+      radio.trigger('app:header', <Header>About</Header>);
+      radio.trigger('app:main', <About version={CONFIG.version}
+                                       build={CONFIG.build}/>);
     },
     'info/help(/)': () => {
       radio.trigger('app:header', <Header>Help</Header>);
