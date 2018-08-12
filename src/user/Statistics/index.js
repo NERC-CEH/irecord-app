@@ -13,18 +13,16 @@ class Component extends React.Component {
     }
 
     if (!statistics.speciesRaw || !statistics.speciesRaw.length) {
-      return;
+      return null;
     }
 
     const favSpecies = userModel.attributes.statistics.speciesRaw.map(
-      species => {
-        return (
-          <ion-item key={species.taxon}>
-            <span className="stat">{species.count}</span>
-            {species.common || species.taxon}
-          </ion-item>
-        );
-      }
+      species => (
+        <ion-item key={species.taxon}>
+          <span className="stat">{species.count}</span>
+          {species.common || species.taxon}
+        </ion-item>
+      )
     );
 
     return (

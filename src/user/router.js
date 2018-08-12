@@ -14,6 +14,7 @@ import ResetController from './reset/controller';
 import ActivitiesController from '../common/pages/activities/controller';
 import Statistics from './Statistics';
 import StatisticsHeader from './Statistics/StatisticsHeader';
+
 App.user = {};
 
 function loginController(onSuccess) {
