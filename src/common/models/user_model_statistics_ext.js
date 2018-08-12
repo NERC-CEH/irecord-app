@@ -10,17 +10,15 @@ export default {
   syncStats(force) {
     Log('UserModel:Statistics: synchronising.');
 
-    if (this.synchronizingStatistics) {
-      return this.synchronizingStatistics;
+    if (this.metadata.synchronizingStatistics) {
+      return this.metadata.synchronizingStatistics;
     }
 
     if ((this.hasLogIn() && this._lastStatsSyncExpired()) || force) {
       // init or refresh
-      this.trigger('sync:statistics:species:start');
-
       const statistics = this.get('statistics');
 
-      this.synchronizingStatistics = this._fetchStatsSpecies()
+      this.metadata.synchronizingStatistics = this._fetchStatsSpecies()
         .then(stats =>
           this._processStatistics(stats).then(species => {
             const updatedStatistics = Object.assign({}, statistics, {
@@ -31,18 +29,16 @@ export default {
             this.set('statistics', updatedStatistics);
             this.save();
 
-            delete this.synchronizingStatistics;
-            this.trigger('sync:statistics:species:end');
+            this.metadata.synchronizingStatistics = false;
           })
         )
         .catch(err => {
-          delete this.synchronizingStatistics;
-          this.trigger('sync:statistics:species:end');
+          this.metadata.synchronizingStatistics = false;
           return Promise.reject(err);
         });
     }
 
-    return this.synchronizingStatistics;
+    return this.metadata.synchronizingStatistics;
   },
 
   resetStats() {

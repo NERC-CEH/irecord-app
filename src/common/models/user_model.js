@@ -33,19 +33,24 @@ let UserModel = Backbone.Model.extend({
     },
   },
 
+  metadata: {
+      synchronizingStatistics: null,
+  },
+
   localStorage: new Store(CONFIG.name),
+
 
   /**
    * Initializes the user.
    */
   initialize() {
     Log('UserModel: initializing');
+    this.attributes = observable(this.attributes);
+    this.metadata = observable(this.metadata);
 
     this.fetch();
     this.syncActivities();
     this.syncStats();
-
-    this.attributes = observable(this.attributes);
   },
 
   /**
