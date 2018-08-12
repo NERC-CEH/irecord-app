@@ -3,6 +3,5 @@
 <p>No lists to show.</p>
 
 <ion-button  id="create-new-btn" fill="outline">
-  <ion-icon slot="start" name="add"></ion-icon>
   Create
 </ion-button>

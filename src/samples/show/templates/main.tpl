@@ -2,7 +2,6 @@
   <p><%= t("This record has been submitted and cannot be edited within this App") %>.
     <% if (obj.id) { %>
     <ion-button id="record-external-link" color="light" href="<%= obj.site_url %>/record-details?occurrence_id=<%= obj.id %>">
-      <ion-icon slot="end" name="exit"></ion-icon>
       <%= t("View on iRecord") %>
     </ion-button>
     <% } else { %>

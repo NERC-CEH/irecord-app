@@ -1,7 +1,6 @@
 <div class="info-message">
   <p>This record has been submitted and cannot be edited within this App.
     <ion-button id="record-external-link" color="light" href="<%= obj.site_url %>/enter-vascular-plants?sample_id=<%= obj.id %>">
-      <ion-icon slot="end" name="exit"></ion-icon>
       View on iRecord
     </ion-button>
   </p>
