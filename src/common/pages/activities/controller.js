@@ -1,8 +1,6 @@
 /** *****************************************************************************
  * Activities List controller.
  ***************************************************************************** */
-import $ from 'jquery';
-import _ from 'lodash';
 import Backbone from 'backbone';
 import Log from 'helpers/log';
 import Analytics from 'helpers/analytics';
@@ -76,7 +74,6 @@ const ActivitiesCollection = Backbone.Collection.extend({
       checked: !selectedActivity.id,
     });
 
-    const foundOneToCheck = false;
     this.reset();
     this.add(defaultActivity);
 
@@ -85,7 +82,6 @@ const ActivitiesCollection = Backbone.Collection.extend({
       // todo:  server '71' == local 71
       const checkedActivity = Object.assign({}, activity, {
         checked: selectedActivity.id === activity.id,
-        foundOneToCheck: foundOneToCheck || activity.checked,
       });
       this.add(new ActivityModel(checkedActivity));
     });
@@ -116,7 +112,7 @@ const API = {
 
     // FOOTER
     radio.trigger('app:footer:hide');
-    window.activitiesCollection = activitiesCollection;
+
     // MAIN
     const mainView = new MainView({
       collection: activitiesCollection,

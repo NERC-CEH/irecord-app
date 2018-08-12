@@ -4,6 +4,5 @@
     %>[<%= obj.type %>]<% } %></p>
   <% } %>
 </ion-label>
-<ion-radio value="<%= obj.id %>"<%- obj.checked ? 'checked' : ''%> >
-</ion-radio>
+<ion-radio value="<%= obj.id %>" <%- obj.checked ? 'checked' : ''%> ></ion-radio>
 
