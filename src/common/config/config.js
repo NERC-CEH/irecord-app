@@ -6,15 +6,14 @@ import Indicia from 'indicia';
 const HOST =
   process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
 
-
-const notInTest = process.env.ENV !== 'test';
+const notInTest = process.env.NODE_ENV !== 'test';
 const CONFIG = {
   // variables replaced on build
   version: process.env.APP_VERSION,
   build: process.env.APP_BUILD,
   name: process.env.APP_NAME,
 
-  environment: process.env.ENV,
+  environment: process.env.NODE_ENV,
   experiments: process.env.APP_EXPERIMENTS,
   training: process.env.APP_TRAINING,
 

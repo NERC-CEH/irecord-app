@@ -10,12 +10,6 @@ module.exports = webpackMerge(commonConfig, {
   mode: 'production',
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-
-    new webpack.DefinePlugin({
-      'process.env': {
-        ENV: JSON.stringify('production'),
-      },
-    }),
   ],
   optimization: {
     runtimeChunk: false,

@@ -14,12 +14,13 @@ const webpackConfigDev = require('../other/webpack.dev');
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
 delete webpackConfigDev.optimization; // no need
-webpackConfigDev.plugins.push(
-  new webpack.DefinePlugin({
-    'process.env': {
-      ENV: JSON.stringify(process.env.NODE_ENV),
-    },
-  })
+const definePlugin = new webpack.DefinePlugin({
+  'process.env': {
+    NODE_ENV: JSON.stringify('test'),
+  },
+});
+webpackConfigDev.plugins = webpackConfigDev.plugins.map(
+  p => (p instanceof webpack.DefinePlugin ? definePlugin : p)
 );
 webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 

@@ -1,9 +1,6 @@
 require('dotenv').config({ silent: true }); // get local environment variables from .env
-
-const path = require('path');
 const webpack = require('webpack');
-
-process.env.NODE_ENV = 'test';
+const path = require('path');
 
 // get development webpack config
 const webpackConfigDev = require('../other/webpack.dev');
@@ -11,12 +8,14 @@ const webpackConfigDev = require('../other/webpack.dev');
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
 delete webpackConfigDev.optimization; // no need
-webpackConfigDev.plugins.push(
-  new webpack.DefinePlugin({
-    'process.env': {
-      ENV: JSON.stringify(process.env.NODE_ENV),
-    },
-  })
+
+const definePlugin = new webpack.DefinePlugin({
+  'process.env': {
+    NODE_ENV: JSON.stringify('test'),
+  },
+});
+webpackConfigDev.plugins = webpackConfigDev.plugins.map(
+  p => (p instanceof webpack.DefinePlugin ? definePlugin : p)
 );
 webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
@@ -33,9 +32,7 @@ module.exports = config => {
 
     frameworks: ['mocha', 'chai', 'sinon'],
 
-    files: [
-      { pattern: 'loader.js', watched: true },
-    ],
+    files: [{ pattern: 'loader.js', watched: true }],
 
     preprocessors: {
       'loader.js': ['webpack'],
