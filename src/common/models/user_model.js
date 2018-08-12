@@ -116,7 +116,7 @@ let UserModel = Backbone.Model.extend({
     }
 
     if (!attrs.firstname) {
-      errors.firstName = t("can't be blank");
+      errors.firstname = t("can't be blank");
     }
 
     if (!attrs.secondname) {
@@ -129,14 +129,14 @@ let UserModel = Backbone.Model.extend({
       errors.password = t('is too short');
     }
 
-    if (!attrs['password-confirm']) {
-      errors['password-confirm'] = t("can't be blank");
-    } else if (attrs['password-confirm'] !== attrs.password) {
-      errors['password-confirm'] = t('passwords are not equal');
+    if (!attrs.passwordConfirm) {
+      errors.passwordConfirm = t("can't be blank");
+    } else if (attrs.passwordConfirm !== attrs.password) {
+      errors.passwordConfirm = t('passwords are not equal');
     }
 
-    if (!attrs['terms-agree']) {
-      errors['terms-agree'] = t('you must agree to the terms');
+    if (!attrs.termsAgree) {
+      errors.termsAgree = t('you must agree to the terms');
     }
 
     if (!_.isEmpty(errors)) {

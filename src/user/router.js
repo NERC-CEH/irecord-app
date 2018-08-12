@@ -9,7 +9,7 @@ import radio from 'radio';
 import userModel from 'user_model';
 import Header from '../common/Components/Header';
 import Login from './Login';
-import RegisterController from './register/controller';
+import Register from './Register';
 import ResetController from './reset/controller';
 import ActivitiesController from '../common/pages/activities/controller';
 import StatisticsController from './statistics/controller';
@@ -24,7 +24,7 @@ function loginController(onSuccess) {
 
   Log('User:Login:Controller: showing.');
   radio.trigger('app:header', <Header>Login</Header>);
-  radio.trigger('app:main', <Login onSuccess={onSuccess}/>);
+  radio.trigger('app:main', <Login onSuccess={onSuccess} />);
 }
 
 const Router = Marionette.AppRouter.extend({
@@ -32,7 +32,16 @@ const Router = Marionette.AppRouter.extend({
     'user/login(/)': loginController,
     'user/activities(/)': ActivitiesController.show,
     'user/statistics(/)': StatisticsController.show,
-    'user/register(/)': RegisterController.show,
+    'user/register(/)': () => {
+      // don't show if logged in
+      if (userModel.hasLogIn()) {
+        window.history.back();
+      }
+
+      Log('User:Register:Controller: showing.');
+      radio.trigger('app:header', <Header>Register</Header>);
+      radio.trigger('app:main', <Register />);
+    },
     'user/reset(/)': ResetController.show,
     'user/*path': () => {
       radio.trigger('app:404:show');
@@ -42,7 +51,7 @@ const Router = Marionette.AppRouter.extend({
 
 radio.on('user:login', (options = {}) => {
   App.navigate('user/login', options);
-  loginController(options.onSuccess)
+  loginController(options.onSuccess);
 });
 
 App.on('before:start', () => {
