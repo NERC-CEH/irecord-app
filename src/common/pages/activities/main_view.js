@@ -13,8 +13,7 @@ import './styles.scss';
  * Single activity item view
  */
 const ActivityView = Marionette.View.extend({
-  tagName: 'div',
-  className: 'activity',
+  tagName: 'ion-item',
   template: JST['common/activities/activity'],
 });
 
@@ -27,12 +26,12 @@ export default Marionette.CompositeView.extend({
   emptyView: LoaderView,
   childView: ActivityView,
   template: JST['common/activities/wrapper'],
-  childViewContainer: 'div.list',
+  childViewContainer: 'ion-radio-group',
 
   // Checking an item fires save and closes the page
   triggers() {
     return {
-      'click input': 'save',
+      'ionSelect ion-radio': 'save',
     };
   },
 
@@ -41,7 +40,7 @@ export default Marionette.CompositeView.extend({
    * @returns {*}
    */
   getActivity() {
-    const $inputs = this.$el.find('input');
+    const $inputs = this.$el.find('ion-radio');
     let activity;
     $inputs.each((int, elem) => {
       if ($(elem).prop('checked')) {

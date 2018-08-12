@@ -14,7 +14,7 @@ export default Marionette.View.extend({
   template: JST['common/radio'],
 
   events: {
-    'click input[type="radio"]': 'saveRadio',
+    'ionSelect ion-radio': 'saveRadio',
   },
 
   saveRadio() {
@@ -27,7 +27,7 @@ export default Marionette.View.extend({
   getValues() {
     let value;
 
-    const $inputs = this.$el.find('input');
+    const $inputs = this.$el.find('ion-radio');
     $inputs.each((int, elem) => {
       if ($(elem).prop('checked')) {
         const newVal = $(elem).val();

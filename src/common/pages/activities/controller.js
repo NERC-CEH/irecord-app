@@ -76,18 +76,18 @@ const ActivitiesCollection = Backbone.Collection.extend({
       checked: !selectedActivity.id,
     });
 
-    let foundOneToCheck = false;
+    const foundOneToCheck = false;
     this.reset();
     this.add(defaultActivity);
 
     // add user activities
-    const activitiesData = _.cloneDeep(userModel.get('activities'));
-    $.each(activitiesData, (index, active) => {
+    userModel.get('activities').forEach(activity => {
       // todo:  server '71' == local 71
-      active.checked = selectedActivity.id === active.id; // eslint-disable-line
-      foundOneToCheck = foundOneToCheck || active.checked;
-
-      this.add(new ActivityModel(active));
+      const checkedActivity = Object.assign({}, activity, {
+        checked: selectedActivity.id === activity.id,
+        foundOneToCheck: foundOneToCheck || activity.checked,
+      });
+      this.add(new ActivityModel(checkedActivity));
     });
   },
 });
@@ -116,7 +116,7 @@ const API = {
 
     // FOOTER
     radio.trigger('app:footer:hide');
-
+    window.activitiesCollection = activitiesCollection;
     // MAIN
     const mainView = new MainView({
       collection: activitiesCollection,
