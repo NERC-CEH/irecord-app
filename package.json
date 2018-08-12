@@ -38,7 +38,7 @@
     "backbone.marionette": "3.0.0",
     "backbone.radio": "2.0.0",
     "bigu": "kazlauskis/bigu#v0.2.2",
-    "cordova": "7.1.0",
+    "cordova": "8.0.0",
     "core-js": "2.5.1",
     "es6-promise": "4.1.1",
     "fastclick": "1.0.3",

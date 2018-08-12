@@ -35,7 +35,8 @@ module.exports = function(grunt) {
       stdout: true,
     },
     cordova_add_platforms: {
-      command: 'cd dist/cordova && cordova platforms add ios android',
+      // @6.4.0 because of https://github.com/ionic-team/ionic/issues/13857#issuecomment-381744212
+      command: 'cd dist/cordova && cordova platforms add ios android@6.4.0',
       stdout: true,
     },
     /**
