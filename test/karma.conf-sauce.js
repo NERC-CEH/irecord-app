@@ -26,26 +26,24 @@ webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
 const sauceBrowsers = _.reduce(
   [
+    ['firefox', '60'],
     ['firefox', '45'],
     ['firefox', '44'],
     ['firefox', '43'],
     ['firefox', '42'],
     ['firefox', '41'],
 
+    ['chrome', '67'],
     ['chrome', '48'],
     ['chrome', '46'],
     ['chrome', '44'],
     ['chrome', '42'],
     ['chrome', '40'],
-    ['chrome', '38'],
-    ['chrome', '30'],
-
-    ['internet explorer', '11', 'Windows 10'],
+    ['chrome', '37'],
 
     ['android', '6'],
     ['android', '5.1'],
     ['android', '5'],
-    ['android', '4.4'],
   ],
   (memo, platform) => {
     // internet explorer -> ie
