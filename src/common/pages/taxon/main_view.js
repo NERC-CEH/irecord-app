@@ -143,7 +143,7 @@ export default Marionette.View.extend({
     if (!hideFavourites) {
       const userModel = this.model;
       const statistics = userModel.get('statistics') || { species: [] };
-      const favouriteSpecies = statistics.species;
+      const favouriteSpecies = statistics.species.peek();
       if (favouriteSpecies.length) {
         this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
       }

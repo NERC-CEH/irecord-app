@@ -8,11 +8,11 @@ import JST from 'JST';
 
 export default Marionette.View.extend({
   id: 'species-list-filters',
-  tagName: 'ul',
-  className: 'table-view accordion',
+  tagName: 'ion-list',
+  attributes: { lines: 'full' },
   template: JST['common/taxon/filters'],
   events: {
-    'click input[type="checkbox"]': 'saveFilter',
+    'ionChange ion-checkbox': 'saveFilter',
   },
 
   saveFilter(e) {
