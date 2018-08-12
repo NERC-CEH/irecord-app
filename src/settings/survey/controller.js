@@ -29,7 +29,7 @@ const API = {
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Locations',
+        title: 'Grid Unit',
       }),
     });
     radio.trigger('app:header', headerView);

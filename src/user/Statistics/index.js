@@ -9,7 +9,7 @@ class Component extends React.Component {
     const { userModel } = this.props;
     const { statistics } = userModel.attributes;
     if (userModel.metadata.synchronizingStatistics) {
-      return <ion-spinner />;
+      return <ion-spinner class="centered" />;
     }
 
     if (!statistics.speciesRaw || !statistics.speciesRaw.length) {
