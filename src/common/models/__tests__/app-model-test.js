@@ -16,7 +16,7 @@ describe('App Model', () => {
     expect(_.keys(appModel.attributes).length).to.be.equal(12);
     // should set the exact value checks in the modules requiring them
     expect(appModel.get('showWelcome')).to.be.equal(true);
-    expect(appModel.get('locations')).to.be.an('array');
+    expect(appModel.get('locations') instanceof Array).to.be.true;
     expect(appModel.get('attrLocks'))
       .to.be.an('object')
       .and.has.all.keys('general', 'complex');

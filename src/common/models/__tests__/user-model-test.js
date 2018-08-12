@@ -72,7 +72,7 @@ describe('User Model', () => {
 
     it('should have attributes', () => {
       const userModel = new UserModel();
-      expect(userModel.get('activities')).to.be.an('array');
+      expect(userModel.get('activities') instanceof Array).to.be.true;
     });
 
     it('should sync activities from server', done => {

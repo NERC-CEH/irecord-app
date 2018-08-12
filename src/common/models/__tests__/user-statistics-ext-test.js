@@ -16,7 +16,7 @@ describe('User statistics extension', () => {
 
     const stats = userModel.get('statistics');
     expect(stats).to.be.an('object');
-    expect(stats.species).to.be.an('array');
+    expect(stats.species instanceof Array).to.be.true;
   });
 
   describe('_fetchStatsSpecies', () => {
