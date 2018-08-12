@@ -12,7 +12,6 @@ import 'helpers/array-fill';
 
 import 'jquery';
 import 'lodash';
-import 'fastclick';
 import 'typeahead'; // eslint-disable-line
 import 'bootstrap';
 import 'ratchet';

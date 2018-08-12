@@ -11,7 +11,6 @@ import React from 'react'; // eslint-disable-line
 import ReactDOM from 'react-dom';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import FastClick from 'fastclick';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Update from 'helpers/update';
@@ -59,8 +58,6 @@ App.on('start', () => {
   Update.run(() => {
     // release the beast
     Log('App: starting.');
-
-    FastClick.attach(document.body);
 
     if (Backbone.history) {
       Backbone.history.start();

@@ -41,7 +41,6 @@
     "cordova": "8.0.0",
     "core-js": "2.5.1",
     "es6-promise": "4.1.1",
-    "fastclick": "1.0.3",
     "hammerjs": "2.0.6",
     "html-webpack-plugin": "3.2.0",
     "indexeddbshim": "2.2.1",
