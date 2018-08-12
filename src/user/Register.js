@@ -3,7 +3,6 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import userModel from 'user_model';
-import PropTypes from 'prop-types';
 import $ from 'jquery';
 import _ from 'lodash';
 import CONFIG from 'config';
@@ -71,8 +70,8 @@ function register(formData) {
 }
 
 class Component extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.userEmail = React.createRef();
     this.userFirstname = React.createRef();
     this.userSecondname = React.createRef();
@@ -220,9 +219,5 @@ class Component extends React.Component {
     );
   }
 }
-
-Component.propTypes = {
-  onSuccess: PropTypes.func,
-};
 
 export default Component;
