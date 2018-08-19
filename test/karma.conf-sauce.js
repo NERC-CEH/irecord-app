@@ -8,9 +8,7 @@ const _ = require('lodash');
 
 const webpack = require('webpack');
 
-// get development webpack config
 const webpackConfigDev = require('../other/webpack.dev');
-// // clean it up a bit
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
 delete webpackConfigDev.optimization; // no need
