@@ -40,6 +40,6 @@ if (!Array.prototype.fill) {
 
       // Step 13.
       return O;
-    },
+    }
   });
 }

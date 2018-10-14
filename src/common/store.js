@@ -7,7 +7,7 @@ const storeConfig = {};
 // enable SQLite
 if (window.cordova) {
   _.extend(storeConfig, {
-    driverOrder: [CordovaSQLiteDriver, 'indexeddb', 'websql'],
+    driverOrder: [CordovaSQLiteDriver, 'indexeddb', 'websql']
   });
 }
 const store = new Indicia.Store(storeConfig);

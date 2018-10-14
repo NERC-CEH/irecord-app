@@ -28,7 +28,7 @@ module.exports = grunt => ({
       'APP_MAPBOX_MAP_KEY',
       'APP_SENTRY_KEY',
       'APP_INDICIA_API_KEY',
-      'APP_GA',
+      'APP_GA'
     ].forEach(setting => {
       if (!process.env[setting]) {
         grunt.warn(`${setting} env variable is missing`);
@@ -41,7 +41,7 @@ module.exports = grunt => ({
     'replace:ratchet',
     'replace:ratchet_fonts',
     'replace:fontello_fonts',
-    'replace:photoswipe',
+    'replace:photoswipe'
   ],
 
   // Development run
@@ -66,7 +66,7 @@ module.exports = grunt => ({
     'exec:cordova_copy_dist',
     'replace:cordova_config',
     'replace:cordova_build',
-    'exec:cordova_add_platforms',
+    'exec:cordova_add_platforms'
   ],
 
   /**
@@ -77,7 +77,7 @@ module.exports = grunt => ({
     'exec:cordova_copy_dist',
     'replace:cordova_config',
     'replace:cordova_build',
-    'exec:cordova_rebuild',
+    'exec:cordova_rebuild'
   ],
 
   /**
@@ -90,7 +90,7 @@ module.exports = grunt => ({
     'cordova:_prepAndroid',
     'replace:cordova_config',
     'replace:cordova_build',
-    'exec:cordova_android_build',
+    'exec:cordova_android_build'
   ],
 
   /**
@@ -98,5 +98,5 @@ module.exports = grunt => ({
    */
   'cordova:_prepAndroid': () => {
     grunt.option('android', true);
-  },
+  }
 });

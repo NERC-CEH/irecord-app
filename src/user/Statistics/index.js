@@ -36,7 +36,7 @@ class Component extends React.Component {
 }
 
 Component.propTypes = {
-  userModel: PropTypes.object,
+  userModel: PropTypes.object
 };
 
 export default Component;

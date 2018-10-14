@@ -87,7 +87,7 @@ describe('Survey', () => {
       const survey = Survey.factory(buterfliesGroupId);
       // overwritten
       expect(survey.attrs.occ['number-ranges'].values).to.eql(butterflyRanges);
-      
+
       // same as general
       expect(survey.attrs.occ.number).to.be.an('object');
     });

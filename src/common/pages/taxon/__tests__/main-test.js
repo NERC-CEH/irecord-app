@@ -29,7 +29,7 @@ function getRandomSpecies() {
     const speciesInArray = speciesArray[randArrayIndex];
     species = [
       speciesInArray[WAREHOUSE_ID],
-      `${sp[2]} ${speciesInArray[NAME]}`,
+      `${sp[2]} ${speciesInArray[NAME]}`
     ];
   } else {
     species = [sp[WAREHOUSE_ID], sp[2]];

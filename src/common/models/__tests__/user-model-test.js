@@ -39,7 +39,7 @@ describe('User Model', () => {
         email: '123@123.com',
         password: '123@123.com',
         name: '123',
-        surname: '123',
+        surname: '123'
       });
       userModel.save();
     });
@@ -51,7 +51,7 @@ describe('User Model', () => {
         description: '',
         type: '',
         activity_from_date: '2015-01-01',
-        activity_to_date: '2020-01-01',
+        activity_to_date: '2020-01-01'
       };
       return activity;
     }
@@ -82,7 +82,7 @@ describe('User Model', () => {
       server.respondWith([
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify({ data: [activity] }),
+        JSON.stringify({ data: [activity] })
       ]);
 
       userModel
@@ -116,7 +116,7 @@ describe('User Model', () => {
       server.respondWith([
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify({ data: [activity] }),
+        JSON.stringify({ data: [activity] })
       ]);
 
       // first fetch
@@ -166,7 +166,7 @@ describe('User Model', () => {
       server.respondWith([
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify({ data: [activity] }),
+        JSON.stringify({ data: [activity] })
       ]);
       server.respond();
     });
@@ -228,7 +228,7 @@ describe('User Model', () => {
       server.respondWith([
         200,
         { 'Content-Type': 'application/json' },
-        JSON.stringify({ data: [activity] }),
+        JSON.stringify({ data: [activity] })
       ]);
 
       userModel.synchronizingActivities
@@ -270,10 +270,10 @@ describe('User Model', () => {
               {
                 id: 1,
                 activity_from_date: '2016-05-03',
-                activity_to_date: '2016-05-25',
-              },
-            ],
-          }),
+                activity_to_date: '2016-05-25'
+              }
+            ]
+          })
         ]);
         userModel.synchronizingActivities.then(() => {
           const activities = userModel.get('activities');
@@ -300,7 +300,7 @@ describe('User Model', () => {
         server.respondWith([
           200,
           { 'Content-Type': 'application/json' },
-          JSON.stringify([{ id: 1 }]),
+          JSON.stringify([{ id: 1 }])
         ]);
       });
     });

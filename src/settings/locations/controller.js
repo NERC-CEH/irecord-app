@@ -18,7 +18,7 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      model: appModel,
+      model: appModel
     });
 
     if (options && options.onSelect) {
@@ -33,8 +33,8 @@ const API = {
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Past Locations',
-      }),
+        title: 'Past Locations'
+      })
     });
     radio.trigger('app:header', headerView);
 
@@ -58,7 +58,7 @@ const API = {
       getValues() {
         return {
           name: StringHelp.escape(this.$el.find('#location-name').val()),
-          favourite: this.$el.find('#favourite-btn').hasClass('active'),
+          favourite: this.$el.find('#favourite-btn').hasClass('active')
         };
       },
 
@@ -71,7 +71,7 @@ const API = {
             window.Keyboard.hide();
           });
         }
-      },
+      }
     });
 
     const editView = new EditView({ model: location });
@@ -85,7 +85,7 @@ const API = {
           type: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Save',
@@ -94,11 +94,11 @@ const API = {
             const locationEdit = editView.getValues();
             appModel.setLocation(location.set(locationEdit).toJSON());
             radio.trigger('app:dialog:hide');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
-  },
+  }
 };
 
 export { API as default };

@@ -108,7 +108,7 @@ const API = {
         id: CONFIG.map.mapbox_satellite_id,
         accessToken: CONFIG.map.mapbox_api_key,
         tileSize: 256, // specify as, OS layer overwites this with 200 otherwise,
-        minZoom: MIN_WGS84_ZOOM,
+        minZoom: MIN_WGS84_ZOOM
       }
     );
 
@@ -120,7 +120,7 @@ const API = {
         id: CONFIG.map.mapbox_osm_id,
         accessToken: CONFIG.map.mapbox_api_key,
         tileSize: 256, // specify as, OS layer overwites this with 200 otherwise
-        minZoom: MIN_WGS84_ZOOM,
+        minZoom: MIN_WGS84_ZOOM
       }
     );
 
@@ -163,7 +163,7 @@ const API = {
       {
         'Ordnance Survey': this.layers.OS,
         'Open Street Map': this.layers.OSM,
-        Satellite: this.layers.Satellite,
+        Satellite: this.layers.Satellite
       },
       {}
     );
@@ -185,7 +185,7 @@ const API = {
       onClick: () => {
         this.trigger('past:click');
       },
-      maxWidth: 30, // number
+      maxWidth: 30 // number
     });
 
     this.map.addControl(button);
@@ -434,7 +434,7 @@ const API = {
 
     scale = 5000 / 10 ** scale; // meters
     return scale < 1 ? 1 : scale;
-  },
+  }
 };
 
 $.extend(API, mapMarker);

@@ -12,12 +12,12 @@ export const coreAttributes = [
   'smp:location_type',
   'smp:date',
   'occ:comment',
-  'smp:activity',
+  'smp:activity'
 ];
 
 export default {
   [defaultSurvey.name]: defaultSurvey,
   [dragonfliesSurvey.name]: dragonfliesSurvey,
   [bryophytesSurvey.name]: bryophytesSurvey,
-  [butterfliesSurvey.name]: butterfliesSurvey,
+  [butterfliesSurvey.name]: butterfliesSurvey
 };

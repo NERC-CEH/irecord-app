@@ -16,20 +16,20 @@ const validTaxon = { warehouse_id: 1, group: 1 };
 
 function getRandomSample(taxon) {
   const occurrence = new Occurrence({
-    taxon: taxon || validTaxon,
+    taxon: taxon || validTaxon
   });
   const sample = new Sample(
     {
       location: {
         latitude: 12.12,
         longitude: -0.23,
-        name: 'automatic test',
-      },
+        name: 'automatic test'
+      }
     },
     {
       occurrences: [occurrence],
       Collection: savedSamples,
-      onSend: () => {}, // overwrite Collection's one checking for user login
+      onSend: () => {} // overwrite Collection's one checking for user login
     }
   );
 
@@ -304,7 +304,7 @@ describe('Sample', () => {
         description: '',
         type: '',
         activity_from_date: '2015-01-01',
-        activity_to_date: '2020-01-01',
+        activity_to_date: '2020-01-01'
       };
       return activity;
     }
@@ -382,19 +382,19 @@ describe('Sample', () => {
     });
     function getFullRandomSample() {
       const occ = new Occurrence({
-        taxon: validTaxon,
+        taxon: validTaxon
       });
       const sample = new Sample(
         {
           location: {
             latitude: 12.12,
             longitude: -0.23,
-            name: 'automatic test',
-          },
+            name: 'automatic test'
+          }
         },
         {
           occurrences: [occ],
-          Collection: savedSamples,
+          Collection: savedSamples
         }
       );
       return sample;

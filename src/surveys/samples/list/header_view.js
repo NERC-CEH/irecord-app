@@ -10,12 +10,12 @@ export default Marionette.View.extend({
   template: JST['surveys/samples/list/header'],
 
   triggers: {
-    'click #create-new-btn': 'create',
+    'click #create-new-btn': 'create'
   },
 
   events: {
     'change input': 'photoUpload',
-    'click a[data-rel="back"]': 'navigateBack',
+    'click a[data-rel="back"]': 'navigateBack'
   },
 
   navigateBack() {
@@ -39,7 +39,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     return {
-      training: this.model.metadata.training,
+      training: this.model.metadata.training
     };
-  },
+  }
 });

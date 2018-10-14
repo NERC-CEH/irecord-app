@@ -23,7 +23,7 @@ const survey = {
           // add other location related attributes
           $.extend(submission.fields, attributes);
           return location.gridref;
-        },
+        }
       },
       location_accuracy: { id: 282 },
       location_altitude: { id: 283 },
@@ -35,8 +35,8 @@ const survey = {
         id: 273,
         values: {
           iOS: 2398,
-          Android: 2399,
-        },
+          Android: 2399
+        }
       },
 
       device_version: { id: 759 },
@@ -48,7 +48,7 @@ const survey = {
         },
         isValid: val => val && val.toString() !== 'Invalid Date',
         type: 'date',
-        max: () => new Date(),
+        max: () => new Date()
       },
       recorders: {
         id: 1018,
@@ -85,7 +85,7 @@ const survey = {
           $.extend(submission.fields, attributes);
 
           return val;
-        },
+        }
       },
       recorder_count: {
         id: 992,
@@ -95,8 +95,8 @@ const survey = {
           '3-5': 7301,
           '6-10': 7302,
           '21+': 7304,
-          '11-20': 7303,
-        },
+          '11-20': 7303
+        }
       },
       'vice-county': {
         id: 991,
@@ -110,7 +110,7 @@ const survey = {
           $.extend(submission.fields, attributes);
 
           return parseInt(val.id, 10);
-        },
+        }
       },
       'time-surveying': {
         id: 993,
@@ -135,23 +135,23 @@ const survey = {
           '8h30mins - 8h59mins': 7485,
           '9h - 9h29mins': 7486,
           '9h30mins - 9h59mins': 7487,
-          '10hrs or longer': 7488,
-        },
+          '10hrs or longer': 7488
+        }
       },
 
       comment: {
         info:
-          "Please include any additional notes about the grid square's environment or your survey methodology. Do not include details about indivual occurences here.",
-      },
+          "Please include any additional notes about the grid square's environment or your survey methodology. Do not include details about indivual occurences here."
+      }
     },
     occ: {
       taxon: {
         values(taxon) {
           return taxon.warehouse_id;
-        },
+        }
       },
       abundance: {
-        id: 610,
+        id: 610
       },
       status: {
         id: 507,
@@ -165,8 +165,8 @@ const survey = {
           'Introduced - surviving': 10662,
           'Introduced - casual': 10663,
           'Introduced - established': 5712,
-          'Introduced - invasive': 5713,
-        },
+          'Introduced - invasive': 5713
+        }
       },
       stage: {
         id: 466,
@@ -178,20 +178,20 @@ const survey = {
           Juvenile: 5328,
           Mature: 5332,
           Seedling: 5327,
-          Vegetative: 5329,
-        },
+          Vegetative: 5329
+        }
       },
       identifiers: {
-        id: 125,
+        id: 125
       },
 
       comment: {
-        info: 'Please add any extra info about this record.',
+        info: 'Please add any extra info about this record.'
       },
       training: {
-        id: 'training',
-      },
-    },
+        id: 'training'
+      }
+    }
   },
 
   verify(attrs) {
@@ -263,7 +263,7 @@ const survey = {
     });
 
     return [attributes, samples, occurrences];
-  },
+  }
 };
 
 export default survey;

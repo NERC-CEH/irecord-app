@@ -19,18 +19,18 @@ describe('App Model attr locks', () => {
     it('should extract survey name and type', () => {
       const appModel = new AppModel();
       const surveyConfig = {
-        name: 'a',
+        name: 'a'
       };
       expect(appModel._extractTypeName(surveyConfig)).to.be.eql({
         surveyType: 'general',
-        surveyName: 'a',
+        surveyName: 'a'
       });
     });
 
     it('should default to general survey type', () => {
       const appModel = new AppModel();
       const surveyConfig = {
-        name: 'a',
+        name: 'a'
       };
       expect(appModel._extractTypeName(surveyConfig).surveyType).to.be.eql(
         'general'
@@ -48,11 +48,11 @@ describe('App Model attr locks', () => {
       const appModel = new AppModel();
       const surveyConfig = {
         name: 'a',
-        complex: true,
+        complex: true
       };
       expect(appModel._extractTypeName(surveyConfig)).to.be.eql({
         surveyType: 'complex',
-        surveyName: 'a',
+        surveyName: 'a'
       });
     });
   });

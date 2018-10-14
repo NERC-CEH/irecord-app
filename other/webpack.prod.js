@@ -8,9 +8,7 @@ const commonConfig = require('./webpack.common.js');
 
 module.exports = webpackMerge(commonConfig, {
   mode: 'production',
-  plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-  ],
+  plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
   optimization: {
     runtimeChunk: false,
     splitChunks: {
@@ -18,16 +16,16 @@ module.exports = webpackMerge(commonConfig, {
         commons: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
-          chunks: 'all',
-        },
-      },
+          chunks: 'all'
+        }
+      }
     },
     minimizer: [
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true,
-      }),
-    ],
-  },
+        sourceMap: true
+      })
+    ]
+  }
 });

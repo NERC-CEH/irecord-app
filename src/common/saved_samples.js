@@ -54,7 +54,7 @@ const Collection = Indicia.Collection.extend({
   comparator(a) {
     const date = new Date(a.metadata.created_on);
     return -date.getTime();
-  },
+  }
 });
 
 const savedSamples = new Collection();

@@ -18,7 +18,7 @@ const HeaderView = Marionette.View.extend({
     'change #location-gridref': 'changeGridRef',
     'keyup #location-gridref': 'keyupGridRef',
     'blur #location-name': 'blurInput',
-    'blur #location-gridref': 'blurInput',
+    'blur #location-gridref': 'blurInput'
   },
 
   initialize() {
@@ -57,12 +57,12 @@ const HeaderView = Marionette.View.extend({
       {
         hint: false,
         highlight: false,
-        minLength: 0,
+        minLength: 0
       },
       {
         limit: 3,
         name: 'names',
-        source: typeaheadSearchFn(strs, 3, a => a.name),
+        source: typeaheadSearchFn(strs, 3, a => a.name)
       }
     );
   },
@@ -231,7 +231,7 @@ const HeaderView = Marionette.View.extend({
       locationName: location.name,
       value,
       locationLocked,
-      nameLocked,
+      nameLocked
     };
   },
 
@@ -244,7 +244,7 @@ const HeaderView = Marionette.View.extend({
       currentLock &&
       (currentLock === true || this.locationInitiallyLocked)
     );
-  },
+  }
 });
 
 export default HeaderView;

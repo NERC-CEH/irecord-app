@@ -27,7 +27,7 @@ function login(details) {
       headers: {
         authorization: `Basic ${userAuth}`,
         'x-api-key': CONFIG.indicia.api_key,
-        'content-type': 'application/json',
+        'content-type': 'application/json'
       },
       success(receivedData) {
         const data = receivedData.data || {};
@@ -50,13 +50,12 @@ function login(details) {
           );
         }
         reject(new Error(message));
-      },
+      }
     });
   });
 
   return promise;
 }
-
 
 class Component extends React.Component {
   constructor(props) {
@@ -69,7 +68,7 @@ class Component extends React.Component {
   updateInputValidation(validation) {
     this.setState({
       userNameError: validation.name,
-      userPasswordError: validation.password,
+      userPasswordError: validation.password
     });
   }
 
@@ -77,14 +76,14 @@ class Component extends React.Component {
     if (!Device.isOnline()) {
       radio.trigger('app:dialog', {
         title: 'Sorry',
-        body: 'Looks like you are offline!',
+        body: 'Looks like you are offline!'
       });
       return;
     }
 
     const data = {
       name: this.userName.current.value,
-      password: this.userPassword.current.value,
+      password: this.userPassword.current.value
     };
 
     const validationError = userModel.validateLogin(data);
@@ -159,7 +158,7 @@ class Component extends React.Component {
 }
 
 Component.propTypes = {
-  onSuccess: PropTypes.func,
+  onSuccess: PropTypes.func
 };
 
 export default Component;

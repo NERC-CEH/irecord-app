@@ -16,8 +16,8 @@ export default Marionette.View.extend({
   regions: {
     attrs: {
       el: '#attrs',
-      replaceElement: true,
-    },
+      replaceElement: true
+    }
   },
 
   onRender() {
@@ -27,7 +27,7 @@ export default Marionette.View.extend({
     const attrView = new AttrsView({
       model: this.model,
       attributes: { lines: 'full' },
-      activityExists: !!activity,
+      activityExists: !!activity
     });
     attrView.on('attr:update', (attr, value) =>
       this.trigger('attr:update', attr, value)
@@ -36,7 +36,7 @@ export default Marionette.View.extend({
   },
 
   triggers: {
-    'click #species-button': 'taxon:update',
+    'click #species-button': 'taxon:update'
   },
 
   /**
@@ -103,7 +103,7 @@ export default Marionette.View.extend({
       'smp:date': DateHelp.print(sample.get('date'), true),
       'occ:comment': StringHelp.limit(occ.get('comment')),
       'smp:activity': activityTitle,
-      locks: attrLocks,
+      locks: attrLocks
     };
-  },
+  }
 });

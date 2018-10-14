@@ -59,8 +59,8 @@ if (false) {
     container: false,
     viewport: {
       selector: 'body',
-      padding: 0,
-    },
+      padding: 0
+    }
   };
 
   Tooltip.prototype.init = function(type, element, options) {
@@ -119,7 +119,7 @@ if (false) {
     this.options.selector
       ? (this._options = $.extend({}, this.options, {
           trigger: 'manual',
-          selector: '',
+          selector: ''
         }))
       : this.fixTitle();
   };
@@ -134,7 +134,7 @@ if (false) {
     if (options.delay && typeof options.delay == 'number') {
       options.delay = {
         show: options.delay,
-        hide: options.delay,
+        hide: options.delay
       };
     }
 
@@ -338,9 +338,9 @@ if (false) {
           using: function(props) {
             $tip.css({
               top: Math.round(props.top),
-              left: Math.round(props.left),
+              left: Math.round(props.left)
             });
-          },
+          }
         },
         offset
       ),
@@ -443,14 +443,14 @@ if (false) {
       // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
       elRect = $.extend({}, elRect, {
         width: elRect.right - elRect.left,
-        height: elRect.bottom - elRect.top,
+        height: elRect.bottom - elRect.top
       });
     }
     var elOffset = isBody ? { top: 0, left: 0 } : $element.offset();
     var scroll = {
       scroll: isBody
         ? document.documentElement.scrollTop || document.body.scrollTop
-        : $element.scrollTop(),
+        : $element.scrollTop()
     };
     var outerDims = isBody
       ? { width: $(window).width(), height: $(window).height() }
@@ -468,21 +468,21 @@ if (false) {
     return placement == 'bottom'
       ? {
           top: pos.top + pos.height,
-          left: pos.left + pos.width / 2 - actualWidth / 2,
+          left: pos.left + pos.width / 2 - actualWidth / 2
         }
       : placement == 'top'
         ? {
             top: pos.top - actualHeight,
-            left: pos.left + pos.width / 2 - actualWidth / 2,
+            left: pos.left + pos.width / 2 - actualWidth / 2
           }
         : placement == 'left'
           ? {
               top: pos.top + pos.height / 2 - actualHeight / 2,
-              left: pos.left - actualWidth,
+              left: pos.left - actualWidth
             }
           : /* placement == 'right' */ {
               top: pos.top + pos.height / 2 - actualHeight / 2,
-              left: pos.left + pos.width,
+              left: pos.left + pos.width
             };
   };
 
@@ -666,7 +666,7 @@ if (false) {
     trigger: 'click',
     content: '',
     template:
-      '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+      '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
   });
 
   // NOTE: POPOVER EXTENDS tooltip.js
@@ -693,7 +693,9 @@ if (false) {
       .end() // we use append for html objects to maintain js events
       [
         this.options.html
-          ? typeof content == 'string' ? 'html' : 'append'
+          ? typeof content == 'string'
+            ? 'html'
+            : 'append'
           : 'text'
       ](content);
 
@@ -792,7 +794,7 @@ if (false) {
   Collapse.TRANSITION_DURATION = 350;
 
   Collapse.DEFAULTS = {
-    toggle: true,
+    toggle: true
   };
 
   Collapse.prototype.dimension = function() {

@@ -16,12 +16,12 @@ export default Marionette.View.extend({
 
   triggers: {
     'click a#species-button': 'taxon:update',
-    'click a#location-button': 'location:update',
+    'click a#location-button': 'location:update'
   },
 
   events: {
     'toggle #sensitive-btn': 'onSettingToggled',
-    'click #sensitive-btn': 'onSettingToggled',
+    'click #sensitive-btn': 'onSettingToggled'
   },
 
   initialize() {
@@ -86,11 +86,11 @@ export default Marionette.View.extend({
       identifiers: StringHelp.limit(occ.get('identifiers')),
       comment: StringHelp.limit(occ.get('comment')),
       activity_title: activity ? activity.title : null,
-      activity,
+      activity
     };
   },
 
   getValues() {
     return this.$el.find('');
-  },
+  }
 });

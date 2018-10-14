@@ -14,7 +14,7 @@ import './styles.scss';
  */
 const ActivityView = Marionette.View.extend({
   tagName: 'ion-item',
-  template: JST['common/activities/activity'],
+  template: JST['common/activities/activity']
 });
 
 /**
@@ -31,7 +31,7 @@ export default Marionette.CompositeView.extend({
   // Checking an item fires save and closes the page
   triggers() {
     return {
-      'ionSelect ion-radio': 'save',
+      'ionSelect ion-radio': 'save'
     };
   },
 
@@ -58,7 +58,7 @@ export default Marionette.CompositeView.extend({
 
   serializeData() {
     return {
-      site_url: CONFIG.site_url,
+      site_url: CONFIG.site_url
     };
-  },
+  }
 });

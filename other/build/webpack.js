@@ -10,5 +10,5 @@ module.exports = {
 
   build: {
     // configuration for this build
-  },
+  }
 };

@@ -15,14 +15,14 @@ export default Marionette.View.extend({
 
   triggers: {
     'click #surveys-btn': 'surveys',
-    'click #create-new-btn': 'create',
+    'click #create-new-btn': 'create'
   },
 
   regions: {
     toggle: {
       el: '#toggle',
-      replaceElement: true,
-    },
+      replaceElement: true
+    }
   },
 
   onRender() {
@@ -34,7 +34,7 @@ export default Marionette.View.extend({
 
     const ToggleView = Marionette.View.extend({
       events: {
-        'toggle #use-atlas-btn': 'onSettingToggled',
+        'toggle #use-atlas-btn': 'onSettingToggled'
         // 'click #use-atlas-btn': 'onSettingClicked',
       },
 
@@ -54,7 +54,7 @@ export default Marionette.View.extend({
           : 'Grid Alert';
         return {
           locating,
-          gridSquareUnit,
+          gridSquareUnit
         };
       },
 
@@ -71,7 +71,7 @@ export default Marionette.View.extend({
         }
 
         this.trigger('toggled', active);
-      },
+      }
     });
 
     const toggleView = new ToggleView();
@@ -90,7 +90,7 @@ export default Marionette.View.extend({
     const appModel = this.options.appModel;
 
     return {
-      training: appModel.get('useTraining'),
+      training: appModel.get('useTraining')
     };
-  },
+  }
 });

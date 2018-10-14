@@ -16,7 +16,7 @@ const API = {
       onClick: () => {
         this.trigger('gps:click');
       },
-      maxWidth: 30, // number
+      maxWidth: 30 // number
     });
 
     this.map.addControl(button);
@@ -69,7 +69,7 @@ const API = {
       $gpsButtonSpan.removeClass('icon-plus icon-spin');
       $gpsButtonSpan.addClass('icon-location');
     }
-  },
+  }
 };
 
 export default API;

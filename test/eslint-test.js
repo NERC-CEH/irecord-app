@@ -10,7 +10,7 @@ const assert = require('chai').assert;
 const paths = glob.sync('./+(src|test)/**/*.js');
 const engine = new CLIEngine({
   envs: ['node', 'mocha'],
-  useEslintrc: true,
+  useEslintrc: true
 });
 
 const results = engine.executeOnFiles(paths).results;

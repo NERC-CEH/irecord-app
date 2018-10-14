@@ -69,7 +69,7 @@ describe('Helpers Analytics', () => {
         timestamp: 1518983935.123,
         type: 'http',
         category: 'xhr',
-        data: { url: 'https://www.brc.ac.uk/irecord/api/v1/users/ty%40uk2' },
+        data: { url: 'https://www.brc.ac.uk/irecord/api/v1/users/ty%40uk2' }
       };
 
       const resultCrumb = breadcrumbCallback(crumb);
@@ -86,8 +86,8 @@ describe('Helpers Analytics', () => {
         category: 'xhr',
         data: {
           method: 'GET',
-          url: 'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312788.jpeg',
-        },
+          url: 'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312788.jpeg'
+        }
       };
       const resultCrumb = breadcrumbCallback(crumb);
       expect(resultCrumb.data.url).to.be.eql(
@@ -116,7 +116,7 @@ describe('Helpers Analytics', () => {
           timestamp: 1518983845.561,
           category: 'ui.click',
           message:
-            'li.table-view-cell.swipe > a.mobile > div.media-body > div.core',
+            'li.table-view-cell.swipe > a.mobile > div.media-body > div.core'
         },
         {
           timestamp: 1518983969.273,
@@ -125,8 +125,8 @@ describe('Helpers Analytics', () => {
           data: {
             method: 'GET',
             url:
-              'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312788.jpeg',
-          },
+              'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312788.jpeg'
+          }
         },
         {
           timestamp: 1518983971.273,
@@ -135,14 +135,14 @@ describe('Helpers Analytics', () => {
           data: {
             method: 'GET',
             url:
-              'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312789.jpeg',
-          },
+              'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312789.jpeg'
+          }
         },
         {
           timestamp: 1518983845.562,
           category: 'navigation',
-          data: { to: '/#samples/UUID/edit', from: '/#samples' },
-        },
+          data: { to: '/#samples/UUID/edit', from: '/#samples' }
+        }
       ];
       const processed = dataCallback({ breadcrumbs: { values } });
       expect(processed.breadcrumbs.values.length).to.be.equal(3);
@@ -154,7 +154,7 @@ describe('Helpers Analytics', () => {
       const culprit = 'F7F5C5C0-44ED-46F9-B8E1-8694F58E9B42';
       const processed = dataCallback({
         culprit,
-        breadcrumbs: { values: new Array(102) },
+        breadcrumbs: { values: new Array(102) }
       });
       expect(processed.culprit).to.be.equal('UUID');
     });
@@ -163,7 +163,7 @@ describe('Helpers Analytics', () => {
       const url = 'F7F5C5C0-44ED-46F9-B8E1-8694F58E9B42';
       const processed = dataCallback({
         request: { url },
-        breadcrumbs: { values: new Array(102) },
+        breadcrumbs: { values: new Array(102) }
       });
       expect(processed.request.url).to.be.equal('UUID');
     });

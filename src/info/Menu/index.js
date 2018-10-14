@@ -13,7 +13,7 @@ function showLogoutConfirmationDialog(callbackIfTrue) {
         type: 'clear',
         onClick() {
           radio.trigger('app:dialog:hide');
-        },
+        }
       },
       {
         title: 'Logout',
@@ -21,9 +21,9 @@ function showLogoutConfirmationDialog(callbackIfTrue) {
         onClick() {
           callbackIfTrue();
           radio.trigger('app:dialog:hide');
-        },
-      },
-    ],
+        }
+      }
+    ]
   });
 }
 
@@ -39,7 +39,7 @@ const Controller = props => {
 };
 
 Controller.propTypes = {
-  userModel: PropTypes.object,
+  userModel: PropTypes.object
 };
 
 export default Controller;

@@ -71,7 +71,7 @@ const extension = {
             // TODO: return err
             that.trigger('geolocation:error', location);
           });
-      },
+      }
     };
 
     this.locating = GPS.start(options);
@@ -102,7 +102,7 @@ const extension = {
   printLocation() {
     const location = this.get('location') || {};
     return appModel.printLocation(location);
-  },
+  }
 };
 
 export { extension as default };

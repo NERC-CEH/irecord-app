@@ -50,7 +50,7 @@ export default {
         id: 16,
         info: 'How many individuals of this type?',
         label: 'Abundance',
-        icon: 'number',
+        icon: 'number'
       },
       'number-ranges': {
         type: 'radio',

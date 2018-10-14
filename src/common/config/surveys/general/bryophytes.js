@@ -9,7 +9,7 @@ export default {
     'occ:female',
     'occ:bulbils',
     'occ:gemmae',
-    'occ:tubers',
+    'occ:tubers'
   ],
 
   attrs: {
@@ -30,9 +30,9 @@ export default {
           'Inland water': 1530,
           'Mixed habitats': 1616,
           'Unvegetated or sparsely vegetated habitats': 1586,
-          Woodland: 1574,
-        },
-      },
+          Woodland: 1574
+        }
+      }
     },
     occ: {
       microscopicallyChecked: {
@@ -40,47 +40,47 @@ export default {
         id: 470,
         icon: 'magnify',
         label: 'Microscopically Checked',
-        default: false,
+        default: false
       },
       fruit: {
         type: 'toggle',
         id: 471,
         label: 'Fruit',
         icon: 'fruit',
-        default: false,
+        default: false
       },
       male: {
         type: 'toggle',
         id: 475,
         label: 'Male',
         icon: 'gender',
-        default: false,
+        default: false
       },
       female: {
         type: 'toggle',
         id: 476,
         label: 'Female',
         icon: 'gender',
-        default: false,
+        default: false
       },
       bulbils: {
         type: 'toggle',
         id: 472,
         label: 'Bulbils',
-        default: false,
+        default: false
       },
       gemmae: {
         type: 'toggle',
         id: 473,
         label: 'Gemmae',
-        default: false,
+        default: false
       },
       tubers: {
         type: 'toggle',
         id: 474,
         label: 'Tubers',
-        default: false,
-      },
-    },
-  },
+        default: false
+      }
+    }
+  }
 };

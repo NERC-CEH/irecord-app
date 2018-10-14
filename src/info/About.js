@@ -19,9 +19,9 @@ const Component = props => (
       <p>
         We encourage everyone to get involved with recording species as it is
         very easy and quick to submit useful records without specialist
-        knowledge. It doesn&apos;t matter whether you are an amateur enthusiast or a
-        qualified biologist, iRecord App is for anyone who wants to contribute
-        to our database observations of the natural environment.
+        knowledge. It doesn&apos;t matter whether you are an amateur enthusiast
+        or a qualified biologist, iRecord App is for anyone who wants to
+        contribute to our database observations of the natural environment.
       </p>
     </li>
     <li>
@@ -47,7 +47,7 @@ const Component = props => (
 
 Component.propTypes = {
   version: PropTypes.string,
-  build: PropTypes.string,
+  build: PropTypes.string
 };
 
 export default Component;

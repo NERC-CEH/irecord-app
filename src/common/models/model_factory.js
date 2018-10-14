@@ -35,13 +35,13 @@ const Factory = {
       {
         location_type: 'british',
         sample_method_id: 7305,
-        recorders,
+        recorders
       },
       {
         metadata: {
           complex_survey: true,
-          gridSquareUnit: appModel.get('gridSquareUnit'),
-        },
+          gridSquareUnit: appModel.get('gridSquareUnit')
+        }
       }
     );
 
@@ -165,7 +165,7 @@ const Factory = {
     return ImageHelp.getImageModel(ImageModel, photo).then(image =>
       Factory.createSample(survey, image)
     );
-  },
+  }
 };
 
 export default Factory;

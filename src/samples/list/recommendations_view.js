@@ -15,7 +15,7 @@ const MainView = Marionette.View.extend({
     // eslint-disable-next-line
     'click #btn-positive': function() {
       this.nextStep(true);
-    },
+    }
   },
 
   nextStep(userActionIsPositive) {
@@ -57,22 +57,22 @@ const MainView = Marionette.View.extend({
       initial: {
         question: 'Enjoying iRecord App?',
         negativeOption: 'Not really',
-        positiveOption: 'Yes!',
+        positiveOption: 'Yes!'
       },
       negativeFeedback: {
         question: 'Would you mind giving us some feedback?',
         negativeOption: 'No, thanks',
         positiveOption: 'OK, sure',
-        link: true,
+        link: true
       },
       positiveFeedback: {
         question: `How about a rating on the ${storeName} then?`,
         negativeOption: 'No, thanks',
-        positiveOption: 'OK, sure',
-      },
+        positiveOption: 'OK, sure'
+      }
     };
     return steps[this.step || 'initial'];
-  },
+  }
 });
 
 export { MainView as default };

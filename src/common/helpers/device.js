@@ -136,5 +136,5 @@ export default {
   isOnline,
   connectionWifi,
   getVersion,
-  getPlatform,
+  getPlatform
 };

@@ -17,7 +17,7 @@ export default () => (
           messages to the forums. By putting this information on the site, you
           are saying that:
         </p>
-        <ol type="a" style={{textIndent: 0}}>
+        <ol type="a" style={{ textIndent: 0 }}>
           <li>
             <p>
               the content is yours, or you have the permission of the owner to

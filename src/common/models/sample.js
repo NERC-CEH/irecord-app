@@ -28,7 +28,7 @@ let Sample = Indicia.Sample.extend({
 
   metadata() {
     return {
-      training: appModel.get('useTraining'),
+      training: appModel.get('useTraining')
     };
   },
 
@@ -43,7 +43,7 @@ let Sample = Indicia.Sample.extend({
    */
   defaults() {
     return {
-      location: {},
+      location: {}
     };
   },
 
@@ -69,7 +69,7 @@ let Sample = Indicia.Sample.extend({
       return {
         attributes,
         samples,
-        occurrences,
+        occurrences
       };
     }
 
@@ -83,7 +83,7 @@ let Sample = Indicia.Sample.extend({
     const surveyConfig = this.getSurvey();
     const newAttrs = {
       survey_id: surveyConfig.id,
-      input_form: surveyConfig.webForm,
+      input_form: surveyConfig.webForm
     };
 
     const smpAttrs = surveyConfig.attrs.smp;
@@ -91,7 +91,7 @@ let Sample = Indicia.Sample.extend({
     updatedSubmission.fields = Object.assign({}, updatedSubmission.fields, {
       [smpAttrs.device.id]: smpAttrs.device.values[Device.getPlatform()],
       [smpAttrs.device_version.id]: Device.getVersion(),
-      [smpAttrs.app_version.id]: `${CONFIG.version}.${CONFIG.build}`,
+      [smpAttrs.app_version.id]: `${CONFIG.version}.${CONFIG.build}`
     });
 
     // add the survey_id to subsamples too
@@ -288,7 +288,7 @@ let Sample = Indicia.Sample.extend({
     const taxon = occ.get('taxon') || {};
 
     return Survey.factory(taxon.group);
-  },
+  }
 });
 
 // add geolocation functionality

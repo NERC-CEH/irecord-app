@@ -126,5 +126,5 @@ export default {
       ).toFixed(4)}`;
     }
     return '';
-  },
+  }
 };

@@ -8,7 +8,7 @@ import JST from 'JST';
 import DateHelp from 'helpers/date';
 import Gallery from '../../common/gallery';
 import _MainView, {
-  SampleView as _SampleView,
+  SampleView as _SampleView
 } from '../../samples/list/main_view';
 import SlidingView from '../../common/views/sliding_view';
 import './styles.scss';
@@ -34,7 +34,7 @@ const SampleView = Marionette.View.extend({
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
-        h: image.get('height') || 800,
+        h: image.get('height') || 800
       });
     });
 
@@ -84,13 +84,13 @@ const SampleView = Marionette.View.extend({
       comment: sample.get('comment'),
       isSynchronising: syncStatus === Indicia.SYNCHRONISING,
       date,
-      img: img ? `<img src="${img}"/>` : '',
+      img: img ? `<img src="${img}"/>` : ''
     };
   },
 
   _swipe: _SampleView.prototype._swipe,
   _swipeEnd: _SampleView.prototype._swipeEnd,
-  _swipeHome: _SampleView.prototype._swipeHome,
+  _swipeHome: _SampleView.prototype._swipeHome
 });
 
 const NoSamplesView = Marionette.View.extend({
@@ -99,8 +99,8 @@ const NoSamplesView = Marionette.View.extend({
   template: JST['surveys/list/list-none'],
 
   triggers: {
-    'click #create-new-btn': 'create',
-  },
+    'click #create-new-btn': 'create'
+  }
 });
 
 const SmartCollectionView = SlidingView.extend({
@@ -110,7 +110,7 @@ const SmartCollectionView = SlidingView.extend({
   onAttach() {
     // let the world know when the list is in place
     radio.trigger('surveys:list:show');
-  },
+  }
 });
 
 const MainView = _MainView.extend({
@@ -119,8 +119,8 @@ const MainView = _MainView.extend({
   regions: {
     body: {
       el: '#list',
-      replaceElement: true,
-    },
+      replaceElement: true
+    }
   },
 
   /**
@@ -146,10 +146,10 @@ const MainView = _MainView.extend({
       new SmartCollectionView({
         referenceCollection: this.collection,
         appModel: this.options.appModel,
-        scroll: this.options.scroll,
+        scroll: this.options.scroll
       })
     );
-  },
+  }
 });
 
 export default MainView;

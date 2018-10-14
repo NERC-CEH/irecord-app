@@ -18,7 +18,8 @@ function fetch() {
     const options = {
       method: 'GET',
       hostname: 'www.brc.ac.uk',
-      path: '/irecord/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=15',
+      path:
+        '/irecord/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=15',
       headers: {
         'x-api-key': apiKey,
         Authorization: 'Basic dGVzdDp0ZXN0=',
@@ -64,14 +65,18 @@ function saveSpeciesToFile(species) {
 function saveCommonNamesToFile(commonNames) {
   return new Promise((resolve, reject) => {
     console.log(`Writing ./species_names.data.json`);
-    fs.writeFile(`./species_names.data.json`, JSON.stringify(commonNames), err => {
-      if (err) {
-        reject(err);
-        return;
-      }
+    fs.writeFile(
+      `./species_names.data.json`,
+      JSON.stringify(commonNames),
+      err => {
+        if (err) {
+          reject(err);
+          return;
+        }
 
-      resolve(commonNames);
-    });
+        resolve(commonNames);
+      }
+    );
   });
 }
 

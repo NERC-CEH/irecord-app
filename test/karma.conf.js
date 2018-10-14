@@ -3,14 +3,15 @@ const webpack = require('webpack');
 const path = require('path');
 
 const webpackConfigDev = require('../other/webpack.dev');
+
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
 delete webpackConfigDev.optimization; // no need
 
 const definePlugin = new webpack.DefinePlugin({
   'process.env': {
-    NODE_ENV: JSON.stringify('test'),
-  },
+    NODE_ENV: JSON.stringify('test')
+  }
 });
 webpackConfigDev.plugins = webpackConfigDev.plugins.map(
   p => (p instanceof webpack.DefinePlugin ? definePlugin : p)
@@ -24,8 +25,8 @@ module.exports = config => {
     customLaunchers: {
       ChromeCustom: {
         base: 'ChromiumHeadless',
-        flags: ['--no-sandbox'],
-      },
+        flags: ['--no-sandbox']
+      }
     },
 
     frameworks: ['mocha', 'chai', 'sinon'],
@@ -33,13 +34,13 @@ module.exports = config => {
     files: [{ pattern: 'loader.js', watched: true }],
 
     preprocessors: {
-      'loader.js': ['webpack'],
+      'loader.js': ['webpack']
     },
 
     webpack: webpackConfigDev,
 
     webpackServer: {
-      noInfo: true,
+      noInfo: true
     },
 
     webpackMiddleware: {
@@ -53,8 +54,8 @@ module.exports = config => {
         timings: false,
         chunks: false,
         chunkModules: false,
-        children: false,
-      },
+        children: false
+      }
     },
 
     coverageReporter: {
@@ -62,9 +63,9 @@ module.exports = config => {
       reporters: [
         {
           type: 'html',
-          subdir: 'html',
-        },
-      ],
+          subdir: 'html'
+        }
+      ]
     },
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -83,6 +84,6 @@ module.exports = config => {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+    singleRun: true
   });
 };

@@ -117,7 +117,7 @@ const API = {
 
     // return results in the order
     return Promise.resolve(results);
-  },
+  }
 };
 
 _.extend(API, Backbone.Events);

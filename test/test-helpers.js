@@ -7,7 +7,7 @@ function getRandomSample(occurrence) {
   if (!occurrence) {
     occurrence = new Occurrence({
       // eslint-disable-line
-      taxon: { warehouse_id: 166205 },
+      taxon: { warehouse_id: 166205 }
     });
   }
 
@@ -16,14 +16,14 @@ function getRandomSample(occurrence) {
       location: {
         latitude: 12.12,
         longitude: -0.23,
-        name: 'automatic test',
-      },
+        name: 'automatic test'
+      }
     },
     {
       occurrences: [occurrence],
       metadata: {
-        survey: 'general',
-      },
+        survey: 'general'
+      }
     }
   );
 
@@ -45,7 +45,7 @@ function generateSampleResponse(server, type, data) {
         req.respond(
           ...serverResponses(type, {
             cid: model.cid,
-            occurrence_cid: model.getOccurrence().cid, // eslint-disable-line
+            occurrence_cid: model.getOccurrence().cid // eslint-disable-line
           })
         );
       });
@@ -58,7 +58,7 @@ function generateSampleResponse(server, type, data) {
         serverResponses(type, {
           cid: data.cid,
           subsample_cid: data.getSample().cid,
-          occurrence_cid: data.getSample().getOccurrence().cid,
+          occurrence_cid: data.getSample().getOccurrence().cid
         })
       );
       break;
@@ -69,7 +69,7 @@ function generateSampleResponse(server, type, data) {
         SAMPLE_POST_URL,
         serverResponses(type, {
           occurrence_cid: data.getOccurrence().cid, // eslint-disable-line
-          cid: data.cid, // eslint-disable-line
+          cid: data.cid // eslint-disable-line
         }) // eslint-disable-line
       );
       break;

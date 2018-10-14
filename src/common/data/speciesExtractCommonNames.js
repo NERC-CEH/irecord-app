@@ -29,7 +29,7 @@ const helpers = {
 
   isGenusPointer(p) {
     return p.length === 2;
-  },
+  }
 };
 
 module.exports = species => {

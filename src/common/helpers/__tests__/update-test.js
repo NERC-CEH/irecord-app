@@ -22,7 +22,7 @@ Update.updates = {
   },
   '4.0.0': function(callback) {
     callback();
-  },
+  }
 };
 
 let applyUpdatesSpy, spy1, spy2, spy3, spy4;
@@ -95,21 +95,21 @@ describe('Update', () => {
       const validTaxon = { warehouse_id: 1, group: 1 };
 
       const occurrence = new Occurrence({
-        taxon: taxon || validTaxon,
+        taxon: taxon || validTaxon
       });
       const sample = new Sample(
         {
           location: {
             latitude: 12.12,
             longitude: -0.23,
-            name: 'automatic test',
+            name: 'automatic test'
           },
-          group: 'activityName',
+          group: 'activityName'
         },
         {
           occurrences: [occurrence],
           Collection: savedSamples,
-          onSend: () => {}, // overwrite Collection's one checking for user login
+          onSend: () => {} // overwrite Collection's one checking for user login
         }
       );
 
@@ -119,7 +119,7 @@ describe('Update', () => {
     }
 
     const Collection = Indicia.Collection.extend({
-      model: Sample,
+      model: Sample
     });
 
     it('should move saved samples group to activity attr', () => {

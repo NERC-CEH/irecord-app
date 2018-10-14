@@ -7,7 +7,7 @@ import JST from 'JST';
 
 export default Marionette.View.extend({
   tagName: 'ion-list',
-  attributes: { lines: "full" },
+  attributes: { lines: 'full' },
   template: JST['settings/menu/main'],
 
   events: {
@@ -15,13 +15,13 @@ export default Marionette.View.extend({
     'ionChange #use-gridref-btn': 'useGridRef',
     'ionChange #use-experiments-btn': 'onSettingToggled',
     'ionChange #use-gridmap-btn': 'onSettingToggled',
-    'ionChange #use-autosync-btn': 'onSettingToggled',
+    'ionChange #use-autosync-btn': 'onSettingToggled'
   },
 
   triggers: {
     'click #delete-all-btn': 'samples:delete:all',
     'click #submit-all-btn': 'samples:submit:all',
-    'click #app-reset-btn': 'app:reset',
+    'click #app-reset-btn': 'app:reset'
   },
 
   useGridRef(e) {
@@ -48,7 +48,7 @@ export default Marionette.View.extend({
       useGridMap: appModel.get('useGridMap'),
       useExperiments: appModel.get('useExperiments'),
       autosync: appModel.get('autosync'),
-      gridSquareUnit: appModel.get('gridSquareUnit'),
+      gridSquareUnit: appModel.get('gridSquareUnit')
     };
-  },
+  }
 });

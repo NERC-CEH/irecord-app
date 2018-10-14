@@ -10,6 +10,6 @@ export default Marionette.View.extend({
 
   // Trigger a refresh even when the button is clicked
   triggers: {
-    'click #refresh-btn': 'refreshClick',
-  },
+    'click #refresh-btn': 'refreshClick'
+  }
 });

@@ -131,7 +131,7 @@
 }
 
 ion-item[detail-icon='lock'] {
-  & > ion-label > .lock.descript, // location
+  & > ion-label > .lock.descript, /* location*/
   & > .descript {
     right: 10px;
     margin-right: 0 !important;

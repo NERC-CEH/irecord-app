@@ -14,8 +14,8 @@ export default Marionette.View.extend({
   regions: {
     attribute: {
       el: '#attribute',
-      replaceElement: true,
-    },
+      replaceElement: true
+    }
   },
 
   onRender() {
@@ -42,13 +42,13 @@ export default Marionette.View.extend({
         attrView = new InputView({
           default: sample.get('date'),
           type: 'date',
-          max: new Date(),
+          max: new Date()
         });
         break;
       case 'recorders':
         attrView = new RecordersAttrView({
           config: surveyAttrs.smp.recorders,
-          default: sample.get('recorders') || [],
+          default: sample.get('recorders') || []
         });
         break;
 
@@ -65,14 +65,14 @@ export default Marionette.View.extend({
         attrView = new InputView({
           config: surveyAttrs.smp['vice-county'],
           typeahead,
-          default: value.name,
+          default: value.name
         });
         break;
 
       case 'comment':
         attrView = new TextareaView({
           config: surveyAttrs.smp.comment,
-          default: sample.get('comment'),
+          default: sample.get('comment')
         });
         break;
 
@@ -92,5 +92,5 @@ export default Marionette.View.extend({
     values[this.options.attr] = this.attrView.getValues();
 
     return values;
-  },
+  }
 });

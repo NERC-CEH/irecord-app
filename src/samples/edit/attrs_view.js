@@ -48,7 +48,7 @@ export default Marionette.View.extend({
   },
 
   events: {
-    'ionChange ion-toggle': 'onSettingToggled',
+    'ionChange ion-toggle': 'onSettingToggled'
   },
 
   onSettingToggled(e) {
@@ -73,7 +73,7 @@ export default Marionette.View.extend({
 
     // get attr locks
     const attrLocks = {
-      number: appModel.isAttrLocked(occ, 'number'),
+      number: appModel.isAttrLocked(occ, 'number')
     };
     const survey = sample.getSurvey();
     survey.editForm.forEach(attr => {
@@ -86,7 +86,7 @@ export default Marionette.View.extend({
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
       isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
-      locks: attrLocks,
+      locks: attrLocks
     };
 
     survey.editForm.forEach(element => {
@@ -118,5 +118,5 @@ export default Marionette.View.extend({
    * Returns the attribute value extracted from the view.
    * @returns {{}}
    */
-  getValues() {},
+  getValues() {}
 });

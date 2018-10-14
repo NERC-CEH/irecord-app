@@ -23,7 +23,7 @@ const API = {
     const GPSoptions = {
       enableHighAccuracy: true,
       maximumAge: 0,
-      timeout: API.TIMEOUT,
+      timeout: API.TIMEOUT
     };
 
     const onSuccess = position => {
@@ -32,7 +32,7 @@ const API = {
         longitude: position.coords.longitude.toFixed(8),
         accuracy: parseInt(position.coords.accuracy, 10),
         altitude: parseInt(position.coords.altitude, 10),
-        altitudeAccuracy: parseInt(position.coords.altitudeAccuracy, 10),
+        altitudeAccuracy: parseInt(position.coords.altitudeAccuracy, 10)
       };
 
       if (location.accuracy <= accuracyLimit) {
@@ -62,7 +62,7 @@ const API = {
     }
 
     navigator.geolocation.clearWatch(id);
-  },
+  }
 };
 
 export { API as default };

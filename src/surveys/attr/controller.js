@@ -43,7 +43,7 @@ const API = {
     const mainView = new MainView({
       attr,
       model: sample,
-      viceCounties,
+      viceCounties
     });
     // if exit on selection click
     mainView.on('save', () => {
@@ -68,7 +68,7 @@ const API = {
         });
       },
       // rightPanel: lockView,
-      model: new Backbone.Model({ title: attr }),
+      model: new Backbone.Model({ title: attr })
     });
 
     radio.trigger('app:header', headerView);
@@ -176,7 +176,7 @@ const API = {
     //       appModel.setAttrLock(attr, newVal);
     //     }
     // }
-  },
+  }
 };
 
 export { API as default };

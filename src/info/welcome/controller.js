@@ -18,7 +18,7 @@ const API = {
     Log('Info:Welcome:Controller: exit.');
     appModel.save({ showWelcome: false });
     radio.trigger('samples:list', { replace: true });
-  },
+  }
 };
 
 export { API as default };

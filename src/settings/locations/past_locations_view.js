@@ -10,7 +10,7 @@ import DateHelp from 'helpers/date';
 const EmptyListView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: _.template(t('No previous locations')),
+  template: _.template(t('No previous locations'))
 });
 
 const PastLocationView = Marionette.View.extend({
@@ -22,7 +22,7 @@ const PastLocationView = Marionette.View.extend({
   triggers: {
     'click .location': 'location:select',
     'click #delete': 'location:delete',
-    'click #edit': 'location:edit',
+    'click #edit': 'location:edit'
   },
 
   serializeData() {
@@ -35,7 +35,7 @@ const PastLocationView = Marionette.View.extend({
       favourite: this.model.get('favourite'),
       source: this.model.get('source'),
       date: date ? DateHelp.print(date, true) : '',
-      location,
+      location
     };
   },
 
@@ -51,11 +51,11 @@ const PastLocationView = Marionette.View.extend({
 
     const options = {
       threshold: 50,
-      toolsWidth: 100,
+      toolsWidth: 100
     };
 
     const hammertime = new Hammer(this.el, {
-      direction: Hammer.DIRECTION_HORIZONTAL,
+      direction: Hammer.DIRECTION_HORIZONTAL
     });
 
     // on tap bring back
@@ -129,7 +129,7 @@ const PastLocationView = Marionette.View.extend({
       this.$record.css('transform', `translateX(${this.position}px)`);
       this.docked = false;
     }
-  },
+  }
 });
 
 export default Marionette.CompositeView.extend({
@@ -158,7 +158,7 @@ export default Marionette.CompositeView.extend({
           }
         }
         return -1;
-      },
+      }
     });
 
     this.listenTo(appModel, 'change:locations', () => {
@@ -168,7 +168,7 @@ export default Marionette.CompositeView.extend({
     });
 
     this.childViewOptions = {
-      appModel,
+      appModel
     };
-  },
+  }
 });

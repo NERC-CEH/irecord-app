@@ -19,7 +19,7 @@ export default Marionette.View.extend({
   template: JST['info/welcome/main'],
 
   triggers: {
-    'click #exit': 'exit',
+    'click #exit': 'exit'
   },
 
   onAttach() {
@@ -103,7 +103,7 @@ export default Marionette.View.extend({
       triggerOnTouchEnd: true,
       swipeStatus,
       allowPageScroll: 'vertical',
-      threshold: 75,
+      threshold: 75
     };
 
     $(() => {
@@ -120,5 +120,5 @@ export default Marionette.View.extend({
         $(circle).addClass('circle-full');
       }
     });
-  },
+  }
 });

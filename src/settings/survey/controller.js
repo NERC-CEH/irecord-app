@@ -14,7 +14,7 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      model: appModel,
+      model: appModel
     });
 
     // if exit on selection click
@@ -29,14 +29,14 @@ const API = {
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Grid Unit',
-      }),
+        title: 'Grid Unit'
+      })
     });
     radio.trigger('app:header', headerView);
 
     // FOOTER
     radio.trigger('app:footer:hide');
-  },
+  }
 };
 
 export { API as default };

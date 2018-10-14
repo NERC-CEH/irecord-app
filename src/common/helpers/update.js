@@ -361,7 +361,7 @@ const API = {
       }
 
       updateSamples(savedSamples, onFinish);
-    },
+    }
   },
 
   _initApplyUpdates(currentVersion, callback, silent) {
@@ -380,7 +380,7 @@ const API = {
       radio.trigger('app:dialog:show', {
         title: 'Updating',
         body: 'This should take only a moment...',
-        hideAllowed: false,
+        hideAllowed: false
       });
     }
     const startTime = Date.now();
@@ -478,7 +478,7 @@ const API = {
       API._applyUpdates(updateIndex + 1, callback);
       return null;
     });
-  },
+  }
 };
 
 export default API;

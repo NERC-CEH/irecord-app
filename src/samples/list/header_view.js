@@ -11,11 +11,11 @@ export default Marionette.View.extend({
 
   triggers: {
     'click #surveys-btn': 'surveys',
-    'click #create-new-btn': 'create',
+    'click #create-new-btn': 'create'
   },
 
   events: {
-    'change input': 'photoUpload',
+    'change input': 'photoUpload'
   },
 
   photoUpload(e) {
@@ -38,7 +38,7 @@ export default Marionette.View.extend({
 
     return {
       training: this.model.get('useTraining'),
-      activity_title: activity ? activity.title : null,
+      activity_title: activity ? activity.title : null
     };
-  },
+  }
 });

@@ -43,8 +43,8 @@ exports.config = {
 
       // When set to true, it will not show permission dialogs, but instead grant all
       // permissions automatically.
-      autoGrantPermissions: true,
-    },
+      autoGrantPermissions: true
+    }
   ],
 
   // Where the files we are testing can be found.
@@ -56,8 +56,8 @@ exports.config = {
   appium: {
     args: {
       'chromedriver-executable':
-        './node_modules/chromedriver/lib/chromedriver/chromedriver',
-    },
+        './node_modules/chromedriver/lib/chromedriver/chromedriver'
+    }
   },
 
   // The reporter is what formats your test results on the command line. 'spec' lists
@@ -69,7 +69,7 @@ exports.config = {
 
   mochaOpts: {
     ui: 'bdd',
-    timeout: 30000,
+    timeout: 30000
   },
 
   before: function before() {
@@ -79,5 +79,5 @@ exports.config = {
     global.expect = chai.expect;
     global.assert = chai.assert;
     global.should = chai.should();
-  },
+  }
 };

@@ -48,13 +48,13 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      model: new Backbone.Model({ sample, appModel }),
+      model: new Backbone.Model({ sample, appModel })
     });
     mainView.on('taxon:update', () => {
       radio.trigger('samples:edit:attr', sampleID, 'taxon', {
         onSuccess(taxon) {
           API.updateTaxon(sample, taxon);
-        },
+        }
       });
     });
     mainView.on('attr:update', (attr, value) =>
@@ -64,7 +64,7 @@ const API = {
 
     // HEADER
     const headerView = new HeaderView({
-      model: sample,
+      model: sample
     });
 
     headerView.on('save', () => {
@@ -75,7 +75,7 @@ const API = {
 
     // FOOTER
     const footerView = new FooterView({
-      model: sample,
+      model: sample
     });
 
     footerView.on('photo:upload', e => {
@@ -112,7 +112,7 @@ const API = {
         // should we sync?
         if (!Device.isOnline()) {
           radio.trigger('app:dialog:error', {
-            message: 'Looks like you are offline!',
+            message: 'Looks like you are offline!'
           });
           return;
         }
@@ -133,7 +133,9 @@ const API = {
           if (err.message && !visibleDialog) {
             radio.trigger(
               'app:dialog:error',
-              `${t('Sorry, we have encountered a problem while sending the record.')}
+              `${t(
+                'Sorry, we have encountered a problem while sending the record.'
+              )}
                 
                  <p><i>${err.message}</i></p>`
             );
@@ -166,7 +168,7 @@ const API = {
     radio.trigger('app:dialog', {
       title: 'Sorry',
       body: missing,
-      timeout: 2000,
+      timeout: 2000
     });
   },
 
@@ -193,7 +195,7 @@ const API = {
           type: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Delete',
@@ -205,13 +207,13 @@ const API = {
                 Log('Samples:Edit:Controller: photo deleted.');
 
                 // hide loader
-              },
+              }
             });
             radio.trigger('app:dialog:hide');
             Analytics.trackEvent('Sample', 'photo remove');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   },
 
@@ -236,14 +238,14 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
-              saveToPhotoAlbum: false,
+              saveToPhotoAlbum: false
             })
               .then(entry => {
                 entry &&
@@ -255,9 +257,9 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   },
 
@@ -300,7 +302,7 @@ const API = {
       .setTaxon(taxon)
       .then(() => sample.save())
       .then(() => window.history.back());
-  },
+  }
 };
 
 export { API as default };

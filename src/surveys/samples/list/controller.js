@@ -63,7 +63,7 @@ const API = {
             API.createNewSample(surveySample, taxon, editButtonClicked);
           },
           showEditButton: true,
-          informalGroups: surveySample.getSurvey().taxonGroups,
+          informalGroups: surveySample.getSurvey().taxonGroups
         }
       );
     });
@@ -79,7 +79,7 @@ const API = {
     const mainView = new MainView({
       collection: surveySample.samples,
       surveySample,
-      scroll: options.scroll,
+      scroll: options.scroll
     });
 
     // 'Add +' list button
@@ -93,7 +93,7 @@ const API = {
             API.createNewSample(surveySample, taxon, editButtonClicked);
           },
           showEditButton: true,
-          informalGroups: surveySample.getSurvey().taxonGroups,
+          informalGroups: surveySample.getSurvey().taxonGroups
         }
       );
     });
@@ -129,14 +129,14 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
-              saveToPhotoAlbum: false,
+              saveToPhotoAlbum: false
             })
               .then(entry => {
                 entry &&
@@ -144,9 +144,9 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   },
 
@@ -185,7 +185,7 @@ const API = {
       .then(sample => {
         if (editButtonClicked) {
           radio.trigger('surveys:samples:edit', surveySample.cid, sample.cid, {
-            replace: true,
+            replace: true
           });
           return;
         }
@@ -195,7 +195,7 @@ const API = {
 
         radio.trigger('app:dialog', {
           title: 'Added',
-          timeout: 500,
+          timeout: 500
         });
       })
       .catch(err => {
@@ -230,7 +230,7 @@ const API = {
     surveySample.addSample(sample);
 
     return surveySample.save().then(() => sample);
-  },
+  }
 };
 
 export { API as default };

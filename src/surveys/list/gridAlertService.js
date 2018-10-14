@@ -33,7 +33,7 @@ const service = {
           that.gridref = gridref;
           callback(location);
         }
-      },
+      }
     };
 
     this.locating = GPS.start(options);
@@ -67,7 +67,7 @@ const service = {
     }
 
     return gridCoords.to_gridref(2000);
-  },
+  }
 };
 
 export default service;

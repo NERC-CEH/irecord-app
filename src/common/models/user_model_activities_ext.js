@@ -116,8 +116,8 @@ export default {
       user: this.getUser.bind(this),
       password: this.getPassword.bind(this),
       params: {
-        path: 'enter-app-record',
-      },
+        path: 'enter-app-record'
+      }
     });
 
     const promise = report.run().then(receivedData => {
@@ -135,7 +135,7 @@ export default {
         description: '',
         activity_type: '',
         activity_from_date: '',
-        activity_to_date: '',
+        activity_to_date: ''
       };
 
       data.forEach(activity => {
@@ -186,5 +186,5 @@ export default {
     }
 
     return daydiff(lastSync, new Date()) >= 1;
-  },
+  }
 };

@@ -14,13 +14,13 @@ const Tab = Marionette.View.extend({
 
   attributes() {
     return {
-      'data-id': this.model.id,
+      'data-id': this.model.id
     };
   },
 
   triggers: {
-    click: 'open:tab',
-  },
+    click: 'open:tab'
+  }
 });
 
 const Tabs = Marionette.CollectionView.extend({
@@ -36,7 +36,7 @@ const Tabs = Marionette.CollectionView.extend({
     this.render();
 
     this.trigger('showTab', tabId);
-  },
+  }
 });
 
 export default Marionette.View.extend({
@@ -46,12 +46,12 @@ export default Marionette.View.extend({
 
   regions: {
     tabs: '.tabs',
-    content: '.content',
+    content: '.content'
   },
 
   childViewOptions() {
     return {
-      vent: this.options.vent,
+      vent: this.options.vent
     };
   },
 
@@ -62,7 +62,7 @@ export default Marionette.View.extend({
 
     this.tabsCollection = new Backbone.Collection(this.options.tabs);
     const tabsCollectionView = new Tabs({
-      collection: this.tabsCollection,
+      collection: this.tabsCollection
     });
     this.getRegion('tabs').show(tabsCollectionView);
 
@@ -80,8 +80,8 @@ export default Marionette.View.extend({
     }
     const contentView = new tab.ContentView({
       model: this.model,
-      vent: this.options.vent,
+      vent: this.options.vent
     });
     this.getRegion('content').show(contentView);
-  },
+  }
 });

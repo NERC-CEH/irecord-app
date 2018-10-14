@@ -191,4 +191,3 @@ UserModel = UserModel.extend(statisticsExtension);
 
 const userModel = new UserModel();
 export { userModel as default, UserModel };
-

@@ -47,7 +47,7 @@ fs.readFile('./translations.csv', 'utf8', (err, data) => {
       './translations.data.json',
       JSON.stringify(obj),
 
-      (writeErr) => {
+      writeErr => {
         if (err) {
           console.log(writeErr);
           return;

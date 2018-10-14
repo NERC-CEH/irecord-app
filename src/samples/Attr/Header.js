@@ -38,7 +38,8 @@ class Component extends React.Component {
     const attrName = attrParts[1];
     const attrConfig = surveyAttrs[attrType][attrName];
 
-    const capitalizedAttrName = attrName.charAt(0).toUpperCase() + attrName.substr(1);
+    const capitalizedAttrName =
+      attrName.charAt(0).toUpperCase() + attrName.substr(1);
     const title = attrConfig.label || capitalizedAttrName;
 
     let locked = false;

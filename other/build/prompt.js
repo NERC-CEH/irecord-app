@@ -5,9 +5,9 @@ module.exports = {
         {
           name: 'keystore-password',
           type: 'password',
-          message: 'Please enter keystore password:',
-        },
-      ],
-    },
-  },
+          message: 'Please enter keystore password:'
+        }
+      ]
+    }
+  }
 };

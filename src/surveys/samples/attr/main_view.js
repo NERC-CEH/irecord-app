@@ -13,8 +13,8 @@ export default Marionette.View.extend({
   regions: {
     attribute: {
       el: '#attribute',
-      replaceElement: true,
-    },
+      replaceElement: true
+    }
   },
 
   onRender() {
@@ -45,34 +45,34 @@ export default Marionette.View.extend({
           validate(value) {
             const re = /^(\d+|[DAFOR]|LA|LF)$/;
             return re.test(value);
-          },
+          }
         });
         break;
       case 'identifiers':
         attrView = new InputView({
           config: surveyAttrs.occ.identifiers,
-          default: occ.get('identifiers'),
+          default: occ.get('identifiers')
         });
         break;
 
       case 'status':
         attrView = new RadioInputView({
           config: surveyAttrs.occ.status,
-          default: occ.get('status'),
+          default: occ.get('status')
         });
         break;
 
       case 'stage':
         attrView = new RadioInputView({
           config: surveyAttrs.occ.stage,
-          default: occ.get('stage'),
+          default: occ.get('stage')
         });
         break;
 
       case 'comment':
         attrView = new TextareaView({
           config: surveyAttrs.occ.comment,
-          default: occ.get('comment'),
+          default: occ.get('comment')
         });
         break;
 
@@ -92,5 +92,5 @@ export default Marionette.View.extend({
     values[this.options.attr] = this.attrView.getValues();
 
     return values;
-  },
+  }
 });

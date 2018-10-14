@@ -16,7 +16,7 @@ const API = {
     Log('Settings:Menu:Controller: showing.');
 
     const mainView = new MainView({
-      model: appModel,
+      model: appModel
     });
     mainView.on('setting:toggled', (setting, on) => {
       Log('Settings:Menu:Controller: setting toggled.');
@@ -42,7 +42,7 @@ const API = {
             type: 'clear',
             onClick() {
               radio.trigger('app:dialog:hide');
-            },
+            }
           },
           {
             title: 'Reset',
@@ -52,12 +52,12 @@ const API = {
               API.resetApp(() => {
                 radio.trigger('app:dialog', {
                   title: 'Done!',
-                  timeout: 1000,
+                  timeout: 1000
                 });
               });
-            },
-          },
-        ],
+            }
+          }
+        ]
       });
     });
 
@@ -65,8 +65,8 @@ const API = {
 
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Settings',
-      }),
+        title: 'Settings'
+      })
     });
     radio.trigger('app:header', headerView);
   },
@@ -87,7 +87,7 @@ const API = {
           type: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Remove',
@@ -101,7 +101,7 @@ const API = {
               .then(() => {
                 radio.trigger('app:dialog', {
                   title: 'Done!',
-                  timeout: 1000,
+                  timeout: 1000
                 });
               })
               .catch(err => {
@@ -109,9 +109,9 @@ const API = {
                 radio.trigger('app:dialog:error', err);
               });
             Analytics.trackEvent('Settings', 'delete all');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   },
 
@@ -125,7 +125,7 @@ const API = {
           type: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Submit',
@@ -136,7 +136,7 @@ const API = {
               .then(() => {
                 radio.trigger('app:dialog', {
                   title: 'Done!',
-                  timeout: 1000,
+                  timeout: 1000
                 });
               })
               .catch(err => {
@@ -144,9 +144,9 @@ const API = {
                 radio.trigger('app:dialog:error', err);
               });
             Analytics.trackEvent('Settings', 'send all');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   },
 
@@ -168,7 +168,7 @@ const API = {
       });
 
     Analytics.trackEvent('Settings', 'reset app');
-  },
+  }
 };
 
 export { API as default };

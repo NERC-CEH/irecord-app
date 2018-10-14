@@ -73,7 +73,9 @@ class Component extends React.Component {
         };
 
         window.datePicker.show(options, date => {
-          this.onChange({ target: { value: DateHelp.toDateInputValue(new Date(date)) } });
+          this.onChange({
+            target: { value: DateHelp.toDateInputValue(new Date(date)) }
+          });
         });
         return;
       }

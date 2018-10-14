@@ -9,7 +9,7 @@ export default Marionette.View.extend({
   template: JST['settings/locations/main'],
 
   regions: {
-    locations: '#locations',
+    locations: '#locations'
   },
 
   onChildviewLocationDelete(view) {
@@ -30,9 +30,9 @@ export default Marionette.View.extend({
 
   onAttach() {
     const pastLocationsView = new PastLocationsView({
-      model: this.model,
+      model: this.model
     });
 
     this.getRegion('locations').show(pastLocationsView);
-  },
+  }
 });

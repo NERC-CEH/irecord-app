@@ -106,7 +106,7 @@ function searchSciNames(
           found_in_name: 'scientific_name',
           warehouse_id: speciesEntry[WAREHOUSE_INDEX],
           group: speciesEntry[GROUP_INDEX],
-          scientific_name: speciesEntry[SCI_NAME_INDEX],
+          scientific_name: speciesEntry[SCI_NAME_INDEX]
         };
         results.push(fullRes);
       }
@@ -135,7 +135,7 @@ function searchSciNames(
                   speciesInArray[SPECIES_SCI_NAME_INDEX]
                 }`,
                 common_name: speciesInArray[SPECIES_COMMON_INDEX],
-                synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
+                synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX]
               };
               results.push(fullRes);
             }
@@ -151,7 +151,7 @@ function searchSciNames(
                 speciesInArray[SPECIES_SCI_NAME_INDEX]
               }`,
               common_name: speciesInArray[SPECIES_COMMON_INDEX],
-              synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
+              synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX]
             };
             results.push(fullRes);
           }

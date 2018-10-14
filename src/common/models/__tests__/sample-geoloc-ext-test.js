@@ -9,7 +9,7 @@ describe('Sample Geolocation Extension', () => {
         set: (key, location) => {
           expect(location.latitude).to.equal('x');
           done();
-        },
+        }
       };
       updateSampleLocation(mockSample, { latitude: 'x' });
     });
@@ -18,7 +18,7 @@ describe('Sample Geolocation Extension', () => {
       const mockSample = {
         get: () => {},
         save: () => Promise.resolve(),
-        set: () => {},
+        set: () => {}
       };
       expect(updateSampleLocation(mockSample)).to.be.instanceOf(Promise);
     });
@@ -27,11 +27,11 @@ describe('Sample Geolocation Extension', () => {
       const mockSample = {
         get: () => {},
         set: () => {},
-        save: () => Promise.resolve(),
+        save: () => Promise.resolve()
       };
 
       updateSampleLocation(mockSample, {
-        latitude: 'x',
+        latitude: 'x'
       })
         .then(locationWasSet => {
           expect(locationWasSet).to.equal(true);
@@ -45,11 +45,11 @@ describe('Sample Geolocation Extension', () => {
         get: () => {},
         set: () => {},
         save: () => Promise.resolve(),
-        setGPSLocation: () => false,
+        setGPSLocation: () => false
       };
 
       updateSampleLocation(mockSample, {
-        latitude: 'x',
+        latitude: 'x'
       })
         .then(locationWasSet => {
           expect(locationWasSet).to.equal(false);
@@ -64,11 +64,11 @@ describe('Sample Geolocation Extension', () => {
       get: () => {},
       set: () => {},
       save: () => Promise.resolve(),
-      setGPSLocation: () => Promise.resolve(),
+      setGPSLocation: () => Promise.resolve()
     };
 
     updateSampleLocation(mockSample, {
-      latitude: 'x',
+      latitude: 'x'
     })
       .then(locationWasSet => {
         expect(locationWasSet).to.equal(true);

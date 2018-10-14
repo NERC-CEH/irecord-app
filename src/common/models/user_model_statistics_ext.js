@@ -24,7 +24,7 @@ export default {
             const updatedStatistics = Object.assign({}, statistics, {
               synced_on: new Date().toString(),
               species,
-              speciesRaw: stats,
+              speciesRaw: stats
             });
             this.set('statistics', updatedStatistics);
             this.save();
@@ -66,8 +66,8 @@ export default {
         my_records: 1,
         limit: 10,
         orderby: 'count',
-        sortdir: 'DESC',
-      },
+        sortdir: 'DESC'
+      }
     });
 
     return report.run().then(receivedData => {
@@ -94,7 +94,7 @@ export default {
       const parsePromise = new Promise(fulfill => {
         const options = {
           maxResults: 1,
-          scientificOnly: true,
+          scientificOnly: true
         };
 
         // turn it to a full species descriptor from species data set
@@ -136,5 +136,5 @@ export default {
     }
 
     return daydiff(lastSync, new Date()) >= 1;
-  },
+  }
 };

@@ -19,7 +19,7 @@ const StatisticsHeader = props => (
 );
 
 StatisticsHeader.propTypes = {
-  userModel: PropTypes.object,
+  userModel: PropTypes.object
 };
 
 export default StatisticsHeader;

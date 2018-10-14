@@ -10,15 +10,15 @@ export default Marionette.View.extend({
   template: JST['samples/edit/header'],
 
   events: {
-    'click a[data-rel="back"]': 'navigateBack',
+    'click a[data-rel="back"]': 'navigateBack'
   },
 
   triggers: {
-    'click #sample-save-btn': 'save',
+    'click #sample-save-btn': 'save'
   },
 
   modelEvents: {
-    'request:remote sync:remote error:remote': 'render',
+    'request:remote sync:remote error:remote': 'render'
   },
 
   navigateBack() {
@@ -32,7 +32,7 @@ export default Marionette.View.extend({
     return {
       activity_title: activity ? activity.title : null,
       training: this.model.metadata.training,
-      isSynchronising: this.model.getSyncStatus() === Indicia.SYNCHRONISING,
+      isSynchronising: this.model.getSyncStatus() === Indicia.SYNCHRONISING
     };
-  },
+  }
 });

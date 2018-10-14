@@ -11,7 +11,7 @@ export default Marionette.View.extend({
   template: JST['surveys/edit/main'],
 
   triggers: {
-    'click a#location-button': 'location:update',
+    'click a#location-button': 'location:update'
   },
 
   /**
@@ -72,7 +72,7 @@ export default Marionette.View.extend({
       species: Object.keys(uniqueTaxa).length,
       recorders: (sample.get('recorders') || []).length,
       comment: StringHelp.limit(sample.get('comment')),
-      locks: {},
+      locks: {}
     };
-  },
+  }
 });

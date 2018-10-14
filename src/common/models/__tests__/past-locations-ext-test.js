@@ -4,7 +4,7 @@ function genLocation() {
   const location = {
     latitude: 12,
     longitude: 12,
-    name: 'name',
+    name: 'name'
   };
 
   return location;

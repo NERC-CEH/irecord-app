@@ -20,7 +20,7 @@ function normalizeValue(value) {
 
 function checkAllSpeciesHasInformalGroup(speciesList) {
   console.log('Checking if all the species has an informal group metadata.');
-  
+
   const groups = Object.keys(speciesInformalGroups);
   speciesList.forEach(species => {
     if (!groups.includes(`${species[GROUP]}`)) {

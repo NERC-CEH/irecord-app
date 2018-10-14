@@ -23,8 +23,8 @@ const API = {
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Reset',
-      }),
+        title: 'Reset'
+      })
     });
     radio.trigger('app:header', headerView);
 
@@ -32,7 +32,7 @@ const API = {
       if (!Device.isOnline()) {
         radio.trigger('app:dialog', {
           title: 'Sorry',
-          body: 'Looks like you are offline!',
+          body: 'Looks like you are offline!'
         });
         return;
       }
@@ -47,7 +47,7 @@ const API = {
             radio.trigger('app:dialog', {
               title: 'Success',
               body:
-                'Further instructions have been sent to your e-mail address.',
+                'Further instructions have been sent to your e-mail address.'
             });
             window.history.back();
           })
@@ -77,7 +77,7 @@ const API = {
     const promise = new Promise((fulfill, reject) => {
       const details = {
         type: 'users',
-        password: ' ', // reset password
+        password: ' ' // reset password
       };
 
       // Reset password
@@ -88,9 +88,9 @@ const API = {
         data: JSON.stringify({ data: details }),
         headers: {
           'x-api-key': CONFIG.indicia.api_key,
-          'content-type': 'application/json',
+          'content-type': 'application/json'
         },
-        timeout: CONFIG.users.timeout,
+        timeout: CONFIG.users.timeout
       })
         .then(fulfill)
         .fail((xhr, textStatus, errorThrown) => {
@@ -106,7 +106,7 @@ const API = {
     });
 
     return promise;
-  },
+  }
 };
 
 export { API as default };

@@ -5,7 +5,7 @@ import Marionette from 'backbone.marionette';
 import JST from 'JST';
 import radio from 'radio';
 import _MainView, {
-  SampleView as _SampleView,
+  SampleView as _SampleView
 } from '../../../samples/list/main_view';
 import SlidingView from '../../../common/views/sliding_view';
 import './styles.scss';
@@ -62,13 +62,13 @@ const SampleView = Marionette.View.extend({
       identifiers: occ.get('identifiers'),
       abundance: occ.get('abundance'),
       sensitive: occ.metadata.sensitivity_precision,
-      img: img ? `<img src="${img}"/>` : '',
+      img: img ? `<img src="${img}"/>` : ''
     };
   },
 
   _swipe: _SampleView.prototype._swipe,
   _swipeEnd: _SampleView.prototype._swipeEnd,
-  _swipeHome: _SampleView.prototype._swipeHome,
+  _swipeHome: _SampleView.prototype._swipeHome
 });
 
 const NoSamplesView = Marionette.View.extend({
@@ -77,8 +77,8 @@ const NoSamplesView = Marionette.View.extend({
   template: JST['surveys/samples/list/list-none'],
 
   triggers: {
-    'click #create-new-btn': 'create',
-  },
+    'click #create-new-btn': 'create'
+  }
 });
 
 const SmartCollectionView = SlidingView.extend({
@@ -92,9 +92,9 @@ const SmartCollectionView = SlidingView.extend({
 
   childViewOptions() {
     return {
-      surveySampleID: this.options.surveySampleID,
+      surveySampleID: this.options.surveySampleID
     };
-  },
+  }
 });
 
 const MainView = _MainView.extend({
@@ -126,10 +126,10 @@ const MainView = _MainView.extend({
         referenceCollection: this.collection,
         appModel: this.options.appModel,
         scroll: this.options.scroll,
-        surveySampleID: this.options.surveySample.cid,
+        surveySampleID: this.options.surveySample.cid
       })
     );
-  },
+  }
 });
 
 export { MainView as default, SampleView };

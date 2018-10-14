@@ -10,7 +10,7 @@ export default InputView.extend({
   template: JST['surveys/attr/recorders'],
 
   events: {
-    'click button.add-new': 'addNew',
+    'click button.add-new': 'addNew'
   },
 
   addNew() {
@@ -28,5 +28,5 @@ export default InputView.extend({
     });
 
     return values;
-  },
+  }
 });

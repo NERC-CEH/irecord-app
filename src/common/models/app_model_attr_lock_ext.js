@@ -14,7 +14,7 @@ export default {
 
     if (!locks[surveyType] || !locks[surveyType][surveyName]) {
       locks[surveyType] = Object.assign({}, locks[surveyType], {
-        [surveyName]: {},
+        [surveyName]: {}
       });
       this.set('attrLocks', locks);
       this.save();
@@ -159,5 +159,5 @@ export default {
       Log('AppModel:AttrLocks: activity has expired.');
       this.unsetAttrLock('smp:activity'); // remove locked activity
     });
-  },
+  }
 };

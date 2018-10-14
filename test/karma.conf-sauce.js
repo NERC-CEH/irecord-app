@@ -9,13 +9,14 @@ const _ = require('lodash');
 const webpack = require('webpack');
 
 const webpackConfigDev = require('../other/webpack.dev');
+
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
 delete webpackConfigDev.optimization; // no need
 const definePlugin = new webpack.DefinePlugin({
   'process.env': {
-    NODE_ENV: JSON.stringify('test'),
-  },
+    NODE_ENV: JSON.stringify('test')
+  }
 });
 webpackConfigDev.plugins = webpackConfigDev.plugins.map(
   p => (p instanceof webpack.DefinePlugin ? definePlugin : p)
@@ -41,7 +42,7 @@ const sauceBrowsers = _.reduce(
 
     ['android', '6'],
     ['android', '5.1'],
-    ['android', '5'],
+    ['android', '5']
   ],
   (memo, platform) => {
     // internet explorer -> ie
@@ -55,7 +56,7 @@ const sauceBrowsers = _.reduce(
         base: 'SauceLabs',
         browserName: platform[0],
         version: platform[1],
-        platform: platform[2],
+        platform: platform[2]
       },
       Boolean
     );
@@ -79,13 +80,13 @@ module.exports = config => {
     files: [{ pattern: 'loader.js', watched: false }],
 
     preprocessors: {
-      'loader.js': ['webpack'],
+      'loader.js': ['webpack']
     },
 
     webpack: webpackConfigDev,
 
     webpackServer: {
-      noInfo: true,
+      noInfo: true
     },
 
     webpackMiddleware: {
@@ -99,8 +100,8 @@ module.exports = config => {
         timings: false,
         chunks: false,
         chunkModules: false,
-        children: false,
-      },
+        children: false
+      }
     },
 
     singleRun: true,
@@ -118,7 +119,7 @@ module.exports = config => {
         process.env.TRAVIS_BUILD_ID
       })`,
       startConnect: false,
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
     },
 
     captureTimeout: 120000,
@@ -126,6 +127,6 @@ module.exports = config => {
 
     // Browsers to launch, commented out to prevent karma from starting
     // too many concurrent browsers and timing sauce out.
-    browsers: _.keys(sauceBrowsers),
+    browsers: _.keys(sauceBrowsers)
   });
 };

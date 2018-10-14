@@ -34,7 +34,7 @@ describe('App Model', () => {
         description: '',
         type: '',
         activity_from_date: '2015-01-01',
-        activity_to_date: '2020-01-01',
+        activity_to_date: '2020-01-01'
       };
       return activity;
     }

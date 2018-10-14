@@ -54,5 +54,5 @@ _.extend(Backbone.Router.prototype, Backbone.Events, {
     );
 
     return this;
-  },
+  }
 });

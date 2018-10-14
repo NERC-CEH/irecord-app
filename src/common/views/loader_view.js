@@ -7,5 +7,5 @@ import '../styles/loading.scss';
 export default Marionette.View.extend({
   tagName: 'ion-spinner',
   className: 'centered',
-  template: false,
+  template: false
 });

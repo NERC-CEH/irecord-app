@@ -14,7 +14,7 @@ export default Marionette.View.extend({
   template: JST['common/radio'],
 
   events: {
-    'ionSelect ion-radio': 'saveRadio',
+    'ionSelect ion-radio': 'saveRadio'
   },
 
   saveRadio() {
@@ -44,11 +44,11 @@ export default Marionette.View.extend({
       message: 'Please pick your grid square unit.',
       selection: Object.keys(LocHelp.gridref_accuracy).map(key => ({
         label: LocHelp.gridref_accuracy[key].label,
-        value: key,
+        value: key
       })),
-      selected: this.model.get('gridSquareUnit'),
+      selected: this.model.get('gridSquareUnit')
     };
 
     return templateData;
-  },
+  }
 });

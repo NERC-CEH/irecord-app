@@ -8,7 +8,11 @@ import Device from './device';
 
 export function _onGetImageError(err = '', resolve, reject) {
   const e = err.toLowerCase();
-  if (e.includes('has no access') || e.includes('cancelled') || e.includes('selected')) {
+  if (
+    e.includes('has no access') ||
+    e.includes('cancelled') ||
+    e.includes('selected')
+  ) {
     resolve(); // no image selected
     return;
   }

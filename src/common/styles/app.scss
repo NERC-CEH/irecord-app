@@ -90,7 +90,6 @@ ion-item[error] {
   }
 }
 
-
 .input-row.error {
   height: 50px;
   border-bottom: 1px solid $color-orange;
@@ -235,13 +234,12 @@ header .title {
 header #right-panel.pull-right:empty {
   display: none;
 
-  &  + .title {
+  & + .title {
     position: absolute;
     display: block;
     width: 100%;
   }
 }
-
 
 header .subtitle {
   position: absolute;
@@ -571,8 +569,9 @@ input {
   }
 }
 
-.toggle.active:before, .toggle:before {
-    content: '';
+.toggle.active:before,
+.toggle:before {
+  content: '';
 }
 
 .toggle.active {
@@ -862,7 +861,6 @@ header .pull-right {
 .table-view .media-object.pull-left {
   margin-right: 15px;
 }
-
 
 ion-item > span.icon {
   margin-left: -13px !important;

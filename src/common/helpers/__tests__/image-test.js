@@ -9,13 +9,13 @@ describe('Helpers Image', () => {
       EncodingType: {},
       MediaType: {},
       PictureSourceType: {},
-      PopoverArrowDirection: {},
+      PopoverArrowDirection: {}
     };
 
     window.cordova = { file: {} };
 
     window.navigator.camera = {
-      getPicture: onSuccess => onSuccess(''),
+      getPicture: onSuccess => onSuccess('')
     };
 
     window.resolveLocalFileSystemURL = (dir, callback) => {

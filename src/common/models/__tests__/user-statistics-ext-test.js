@@ -31,26 +31,32 @@ describe('User statistics extension', () => {
     it('should return statistics', done => {
       const stub = [1, 2, 3];
       const user = new UserModel();
-      reportRunStub.resolves({ data: { records: stub}});
-      user._fetchStatsSpecies().then(stats => {
-        expect(stats).to.eql(stub);
-        done();
-      }).catch(done)
+      reportRunStub.resolves({ data: { records: stub } });
+      user
+        ._fetchStatsSpecies()
+        .then(stats => {
+          expect(stats).to.eql(stub);
+          done();
+        })
+        .catch(done);
     });
 
     it('should return statistics when report is badly formatted', done => {
       const stub = [1, 2, 3];
       const user = new UserModel();
       reportRunStub.resolves({ data: stub });
-      user._fetchStatsSpecies().then(stats => {
-        expect(stats).to.eql(stub);
-        done();
-      }).catch(done)
+      user
+        ._fetchStatsSpecies()
+        .then(stats => {
+          expect(stats).to.eql(stub);
+          done();
+        })
+        .catch(done);
     });
 
     it('should return err if no statistics array received', done => {
       const user = new UserModel();
-      reportRunStub.resolves({ data: {}});
+      reportRunStub.resolves({ data: {} });
       user._fetchStatsSpecies().catch(e => {
         expect(e.message).to.eql('Error while retrieving stats response.');
         done();

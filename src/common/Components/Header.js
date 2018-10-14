@@ -20,7 +20,7 @@ const Header = props => (
 
 Header.propTypes = {
   children: PropTypes.any.isRequired,
-  rightPanel: PropTypes.any,
+  rightPanel: PropTypes.any
 };
 
 export default Header;

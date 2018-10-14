@@ -12,7 +12,7 @@ export default Marionette.View.extend({
   attributes: { lines: 'full' },
   template: JST['common/taxon/filters'],
   events: {
-    'ionChange ion-checkbox': 'saveFilter',
+    'ionChange ion-checkbox': 'saveFilter'
   },
 
   saveFilter(e) {
@@ -28,7 +28,7 @@ export default Marionette.View.extend({
 
     return {
       selectedFilters: this.model.get('taxonGroupFilters'),
-      filters,
+      filters
     };
-  },
+  }
 });

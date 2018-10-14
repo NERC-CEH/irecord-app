@@ -1,3 +1,3 @@
 module.exports = {
-  dist: ['dist', 'bower_components'],
+  dist: ['dist', 'bower_components']
 };

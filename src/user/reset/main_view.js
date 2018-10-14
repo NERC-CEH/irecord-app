@@ -10,14 +10,14 @@ export default Marionette.View.extend({
   template: JST['user/reset/main'],
 
   events: {
-    'click #reset-button': 'reset',
+    'click #reset-button': 'reset'
   },
 
   reset() {
     const $inputName = this.$el.find('#user-name');
 
     const data = {
-      name: $inputName.val(),
+      name: $inputName.val()
     };
 
     this.trigger('form:submit', data);
@@ -26,5 +26,5 @@ export default Marionette.View.extend({
   onFormDataInvalid(errors) {
     const $view = this.$el;
     Validate.updateViewFormErrors($view, errors, '#user-');
-  },
+  }
 });

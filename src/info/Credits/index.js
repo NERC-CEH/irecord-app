@@ -1,5 +1,5 @@
 import React from 'react';
-import './sponsor_logo.png'
+import './sponsor_logo.png';
 
 export default () => (
   <ul className="table-view">

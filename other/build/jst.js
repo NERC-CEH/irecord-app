@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 
 module.exports = {
@@ -8,7 +6,7 @@ module.exports = {
       amd: true,
       namespace: 'JST',
       templateSettings: {
-        variable: 'obj',
+        variable: 'obj'
       },
       prettify: true,
       processName(filepath) {
@@ -35,13 +33,13 @@ module.exports = {
         }
 
         return path;
-      },
+      }
     },
     files: {
       'dist/_build/JST.js': [
         'src/**/**/**/**/*.tpl',
-        'src/common/templates/*.tpl',
-      ],
-    },
-  },
+        'src/common/templates/*.tpl'
+      ]
+    }
+  }
 };

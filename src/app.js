@@ -46,8 +46,8 @@ App.on('before:start', () => {
       header: new HideableRegion({ el: '#header' }),
       footer: new HideableRegion({ el: '#footer' }),
       main: '#main',
-      dialog: DialogRegion,
-    },
+      dialog: DialogRegion
+    }
   });
 
   App.regions = new RegionContainer();
@@ -185,7 +185,7 @@ radio.on('app:404:show', () => {
   CommonController.show({
     App,
     route: 'common/404',
-    title: 404,
+    title: 404
   });
 });
 

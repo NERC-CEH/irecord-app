@@ -18,8 +18,8 @@ const Router = Marionette.AppRouter.extend({
     'settings/survey(/)': SurveyController.show,
     'settings/*path': () => {
       radio.trigger('app:404:show');
-    },
-  },
+    }
+  }
 });
 
 radio.on('settings:locations', (options = {}) => {

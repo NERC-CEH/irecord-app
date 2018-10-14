@@ -30,21 +30,21 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      model: sample,
+      model: sample
     });
     radio.trigger('app:main', mainView);
 
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'List',
-      }),
+        title: 'List'
+      })
     });
     radio.trigger('app:header', headerView);
 
     // FOOTER
     radio.trigger('app:footer:hide');
-  },
+  }
 };
 
 export { API as default };

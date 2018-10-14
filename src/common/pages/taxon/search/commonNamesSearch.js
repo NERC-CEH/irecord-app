@@ -108,7 +108,7 @@ export default function(
             group: genus[GROUP_INDEX],
             scientific_name: genus[SCI_NAME_INDEX],
             common_name: genus[GENUS_COMMON_INDEX],
-            synonym: genus[GENUS_COMMON_SYN_INDEX],
+            synonym: genus[GENUS_COMMON_SYN_INDEX]
           };
           results.push(fullRes);
         }
@@ -146,7 +146,7 @@ export default function(
               speciesEntry[SPECIES_SCI_NAME_INDEX]
             }`,
             common_name: speciesEntry[SPECIES_COMMON_INDEX],
-            synonym: speciesEntry[SPECIES_COMMON_SYN_INDEX],
+            synonym: speciesEntry[SPECIES_COMMON_SYN_INDEX]
           };
           results.push(fullRes);
         }

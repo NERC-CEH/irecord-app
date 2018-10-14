@@ -30,5 +30,5 @@ export default {
    */
   validate(date) {
     return date.toString() !== 'Invalid Date' && date <= new Date();
-  },
+  }
 };

@@ -55,7 +55,7 @@ const API = {
     // get subcollection
     const collection = savedSamples.subcollection({
       filter: model =>
-        !model.metadata.complex_survey && model.metadata.training === training,
+        !model.metadata.complex_survey && model.metadata.training === training
     });
     collection.comparator = savedSamples.comparator;
     collection.sort();
@@ -64,7 +64,7 @@ const API = {
       collection,
       scroll: options.scroll,
       appModel,
-      userModel,
+      userModel
     });
 
     mainView.on('childview:create', () => API.createNewSample());
@@ -78,7 +78,7 @@ const API = {
         onSuccess(taxon, editButtonClicked) {
           API.setTaxon(sample, taxon, editButtonClicked);
         },
-        showEditButton: true,
+        showEditButton: true
       });
     });
 
@@ -93,13 +93,16 @@ const API = {
     Log('Samples:List:Controller: deleting sample.');
 
     const syncStatus = sample.getSyncStatus();
-    let body =
-      window.t("This record hasn't been saved to iRecord yet, " +
-      'are you sure you want to remove it from your device?');
+    let body = window.t(
+      "This record hasn't been saved to iRecord yet, " +
+        'are you sure you want to remove it from your device?'
+    );
 
     if (syncStatus === Indicia.SYNCED) {
-      body = t('Are you sure you want to remove this record from your device?' +
-      '</br><i><b>Note:</b> it will remain on the server.</i>');
+      body = t(
+        'Are you sure you want to remove this record from your device?' +
+          '</br><i><b>Note:</b> it will remain on the server.</i>'
+      );
     }
     radio.trigger('app:dialog', {
       title: 'Delete',
@@ -110,7 +113,7 @@ const API = {
           type: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Delete',
@@ -119,9 +122,9 @@ const API = {
             sample.destroy();
             radio.trigger('app:dialog:hide');
             Analytics.trackEvent('List', 'sample remove');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   },
 
@@ -148,14 +151,14 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          },
+          }
         },
         {
           title: 'Gallery',
           onClick() {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
-              saveToPhotoAlbum: false,
+              saveToPhotoAlbum: false
             })
               .then(entry => {
                 entry &&
@@ -167,9 +170,9 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   },
 
@@ -205,7 +208,7 @@ const API = {
             }
           });
       },
-      showEditButton: true,
+      showEditButton: true
     });
   },
 
@@ -228,7 +231,7 @@ const API = {
           window.history.back();
         }
       });
-  },
+  }
 };
 
 export { API as default };
