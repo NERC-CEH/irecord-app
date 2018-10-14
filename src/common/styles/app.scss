@@ -365,7 +365,7 @@ header .subtitle {
   background-color: $color-orange;
 }
 
-//todo: alert is absolete
+//TODO: alert is absolete
 .alert {
   color: $color-orange;
 
@@ -510,6 +510,10 @@ li h3 {
       top: 0;
     }
   }
+
+  ion-button {
+    display: block;
+  }
 }
 
 .info-message {
@@ -614,7 +618,7 @@ input {
   }
 }
 
-//todo: should be automatic centering
+//TODO: should be automatic centering
 a.btn span:before {
   padding-top: 13px;
 }
