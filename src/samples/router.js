@@ -11,7 +11,9 @@ import savedSamples from 'saved_samples';
 import userModel from 'user_model';
 import appModel from 'app_model';
 import ListController from './list/controller';
-import ShowController from './show/controller';
+import ShowRecord from './Show';
+import Header from '../common/Components/Header';
+import Loader from '../common/Components/Loader';
 import EditController from './edit/controller';
 import EditLocationController from '../common/pages/location/controller';
 import EditAttrController from './attr/controller';
@@ -37,6 +39,51 @@ radio.on('species:list:show', () => {
   }
 });
 
+function getSample(callback, ...args) {
+  if (savedSamples.fetching) {
+    // wait till savedSamples is fully initialized
+    radio.trigger('app:main', <Loader />);
+    savedSamples.once('fetching:done', () => {
+      callback.apply(this, args);
+    });
+
+    return null;
+  }
+
+  const [sampleID] = args;
+  const sample = savedSamples.get(sampleID);
+
+  // Not found
+  if (!sample) {
+    Log('No sample model found.', 'e');
+    radio.trigger('app:404:show', { replace: true });
+    return null;
+  }
+
+  // can't edit a saved one - to be removed when sample update
+  // is possible on the server
+  const isRecursive = callback === showRecord; //eslint-disable-line
+  if (sample.getSyncStatus() === Indicia.SYNCED && !isRecursive) {
+    radio.trigger('samples:show', sampleID, { replace: true });
+    return null;
+  }
+
+  return sample;
+}
+
+function showRecord(sampleID) {
+  Log('Samples:Show: visited.');
+
+  const sample = getSample(showRecord, sampleID);
+  if (!sample) {
+    return;
+  }
+
+  radio.trigger('app:header', <Header>Record</Header>);
+  radio.trigger('app:main', <ShowRecord sample={sample} />);
+  radio.trigger('app:footer:hide');
+}
+
 const Router = Marionette.AppRouter.extend({
   routes: {
     'samples(/)': {
@@ -50,7 +97,7 @@ const Router = Marionette.AppRouter.extend({
       },
     },
     'samples/new(/)': TaxonController.show,
-    'samples/:id': ShowController.show,
+    'samples/:id': showRecord,
     'samples/:id/edit(/)': EditController.show,
     'samples/:id/edit/location(/)': EditLocationController.show,
     'samples/:id/edit/activity(/)': ActivitiesController.show,
@@ -68,7 +115,7 @@ radio.on('samples:list', options => {
 
 radio.on('samples:show', (sampleID, options) => {
   App.navigate(`samples/${sampleID}`, options);
-  ShowController.show(sampleID);
+  showRecord(sampleID);
 });
 
 radio.on('samples:edit', (sampleID, options) => {
