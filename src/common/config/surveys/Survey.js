@@ -31,10 +31,18 @@ export default class Survey {
       }
     });
 
+    function skipAttributes(objValue, srcValue) {
+      if (_.isObject(srcValue) && srcValue.id) {
+        return srcValue;
+      }
+      return undefined;
+    }
+
     const mergedGeneralSurvey = _.merge(
       {},
       generalSurveys.default,
-      matchedSurvey
+      matchedSurvey,
+      skipAttributes
     );
     return new Survey(mergedGeneralSurvey);
   }

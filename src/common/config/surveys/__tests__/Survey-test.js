@@ -73,5 +73,23 @@ describe('Survey', () => {
       expect(survey.attrs.occ.adCount).to.be.an('object');
       expect(survey.attrs.occ.number).to.be.an('object');
     });
+
+    it('should overwrite rather than merge attribute definitions', () => {
+      const buterfliesGroupId = 104;
+      const butterflyRanges = {
+        '1': 2402,
+        '2-9': 2404,
+        '10-29': 2406,
+        '30-99': 2408,
+        '100+': 2410
+      };
+
+      const survey = Survey.factory(buterfliesGroupId);
+      // overwritten
+      expect(survey.attrs.occ['number-ranges'].values).to.eql(butterflyRanges);
+      
+      // same as general
+      expect(survey.attrs.occ.number).to.be.an('object');
+    });
   });
 });
