@@ -1,6 +1,8 @@
 /** ****************************************************************************
  * Sample router.
  **************************************************************************** */
+import React from 'react';
+import Indicia from 'indicia';
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
@@ -16,7 +18,10 @@ import Header from '../common/Components/Header';
 import Loader from '../common/Components/Loader';
 import EditController from './edit/controller';
 import EditLocationController from '../common/pages/location/controller';
-import EditAttrController from './attr/controller';
+import Attr from './Attr';
+import AttrHeader from './Attr/Header';
+
+// import AttrHeader from './Attr/Header';
 import ActivitiesController from '../common/pages/activities/controller';
 import TaxonController from '../common/pages/taxon/controller';
 
@@ -71,6 +76,19 @@ function getSample(callback, ...args) {
   return sample;
 }
 
+function showEditAttr(sampleID, attrID) {
+  Log('Samples:Attr: visited.');
+
+  const sample = getSample(showEditAttr, sampleID, attrID);
+  if (!sample) {
+    return;
+  }
+
+  radio.trigger('app:header', <AttrHeader sample={sample} attr={attrID} />);
+  radio.trigger('app:main', <Attr sample={sample} attr={attrID} />);
+  radio.trigger('app:footer:hide');
+}
+
 function showRecord(sampleID) {
   Log('Samples:Show: visited.');
 
@@ -89,23 +107,23 @@ const Router = Marionette.AppRouter.extend({
     'samples(/)': {
       route: () => {
         ListController.show({
-          scroll, // inform about the last scroll
+          scroll // inform about the last scroll
         });
       },
       leave() {
         scroll = $mainRegion.scrollTop();
-      },
+      }
     },
     'samples/new(/)': TaxonController.show,
     'samples/:id': showRecord,
     'samples/:id/edit(/)': EditController.show,
     'samples/:id/edit/location(/)': EditLocationController.show,
     'samples/:id/edit/activity(/)': ActivitiesController.show,
-    'samples/:id/edit/:attr(/)': EditAttrController.show,
+    'samples/:id/edit/:attr(/)': showEditAttr,
     'samples/*path': () => {
       radio.trigger('app:404:show');
-    },
-  },
+    }
+  }
 });
 
 radio.on('samples:list', options => {
@@ -136,7 +154,7 @@ radio.on('samples:edit:attr', (sampleID, attrID, options = {}) => {
       ActivitiesController.show(sampleID);
       break;
     default:
-      EditAttrController.show(sampleID, attrID);
+      showEditAttr(sampleID, attrID);
   }
 });
 

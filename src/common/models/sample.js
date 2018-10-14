@@ -3,6 +3,7 @@
  **************************************************************************** */
 import _ from 'lodash';
 import Indicia from 'indicia';
+import { observable } from 'mobx';
 import bigu from 'bigu';
 import CONFIG from 'config';
 import userModel from 'user_model';
@@ -47,6 +48,9 @@ let Sample = Indicia.Sample.extend({
   },
 
   initialize() {
+    this.attributes = observable(this.attributes);
+    this.metadata = observable(this.metadata);
+
     this.checkExpiredActivity(); // activities
     this.listenTo(userModel, 'sync:activities:end', this.checkExpiredActivity);
     this._setGPSlocationSetter();

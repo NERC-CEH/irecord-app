@@ -3,11 +3,11 @@
  **************************************************************************** */
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
-import { observable } from 'mobx';
 import CONFIG from 'config';
 import Log from 'helpers/log';
-import pastLocationsExtension from './app_model_past_loc_ext';
+import { observable } from 'mobx';
 import attributeLockExtension from './app_model_attr_lock_ext';
+import pastLocationsExtension from './app_model_past_loc_ext';
 
 const AppModel = Backbone.Model.extend({
   id: 'app',
@@ -27,7 +27,7 @@ const AppModel = Backbone.Model.extend({
     gridSquareUnit: 'monad',
 
     feedbackGiven: false,
-    taxonGroupFilters: [],
+    taxonGroupFilters: []
   },
 
   localStorage: new Store(CONFIG.name),
@@ -54,7 +54,7 @@ const AppModel = Backbone.Model.extend({
     }
 
     this.save();
-  },
+  }
 });
 
 // add previous/pased saved locations management

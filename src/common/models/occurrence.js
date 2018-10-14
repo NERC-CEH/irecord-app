@@ -1,8 +1,14 @@
 import Indicia from 'indicia';
+import { observable } from 'mobx';
 import ImageModel from './image';
 
 export default Indicia.Occurrence.extend({
   Media: ImageModel,
+
+  initialize() {
+    this.attributes = observable(this.attributes);
+    this.metadata = observable(this.metadata);
+  },
 
   // warehouse attribute keys
   keys() {
@@ -15,5 +21,5 @@ export default Indicia.Occurrence.extend({
     }
 
     return this.parent.getSurvey();
-  },
+  }
 });
