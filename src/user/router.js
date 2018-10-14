@@ -23,9 +23,10 @@ function loginController(onSuccess) {
     window.history.back();
   }
 
-  Log('User:Login:Controller: showing.');
+  Log('User:Login: visited.');
   radio.trigger('app:header', <Header>Login</Header>);
   radio.trigger('app:main', <Login onSuccess={onSuccess} />);
+  radio.trigger('app:footer:hide');
 }
 
 const Router = Marionette.AppRouter.extend({
@@ -33,9 +34,10 @@ const Router = Marionette.AppRouter.extend({
     'user/login(/)': loginController,
     'user/activities(/)': ActivitiesController.show,
     'user/statistics(/)': () => {
-      Log('User:Statistics:Controller: showing.');
+      Log('User:Statistics: visited.');
       radio.trigger('app:header', <StatisticsHeader userModel={userModel} />);
       radio.trigger('app:main', <Statistics userModel={userModel} />);
+      radio.trigger('app:footer:hide');
     },
     'user/register(/)': () => {
       // don't show if logged in
@@ -43,15 +45,16 @@ const Router = Marionette.AppRouter.extend({
         window.history.back();
       }
 
-      Log('User:Register:Controller: showing.');
+      Log('User:Register: visited.');
       radio.trigger('app:header', <Header>Register</Header>);
       radio.trigger('app:main', <Register />);
+      radio.trigger('app:footer:hide');
     },
     'user/reset(/)': ResetController.show,
     'user/*path': () => {
       radio.trigger('app:404:show');
-    },
-  },
+    }
+  }
 });
 
 radio.on('user:login', (options = {}) => {

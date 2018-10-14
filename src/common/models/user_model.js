@@ -1,14 +1,14 @@
 /** ****************************************************************************
  * User model describing the user model on backend. Persistent.
  **************************************************************************** */
-import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
-import { observable } from 'mobx';
 import CONFIG from 'config';
+import Analytics from 'helpers/analytics';
 import Log from 'helpers/log';
 import Validate from 'helpers/validate';
-import Analytics from 'helpers/analytics';
+import _ from 'lodash';
+import { observable } from 'mobx';
 import activitiesExtension from './user_model_activities_ext';
 import statisticsExtension from './user_model_statistics_ext';
 
@@ -29,16 +29,15 @@ let UserModel = Backbone.Model.extend({
     statistics: {
       synced_on: null,
       species: [],
-      speciesRaw: [],
-    },
+      speciesRaw: []
+    }
   },
 
   metadata: {
-      synchronizingStatistics: null,
+    synchronizingStatistics: null
   },
 
   localStorage: new Store(CONFIG.name),
-
 
   /**
    * Initializes the user.
@@ -181,7 +180,7 @@ let UserModel = Backbone.Model.extend({
     }
 
     return null;
-  },
+  }
 });
 
 // add activities management
@@ -192,3 +191,4 @@ UserModel = UserModel.extend(statisticsExtension);
 
 const userModel = new UserModel();
 export { userModel as default, UserModel };
+

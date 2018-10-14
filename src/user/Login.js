@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import $ from "jquery";
-import _ from "lodash";
+import $ from 'jquery';
+import _ from 'lodash';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import CONFIG from 'config';
 import userModel from 'user_model';
-
 
 /**
  * Starts an app sign in to the Drupal site process.
@@ -18,16 +17,17 @@ import userModel from 'user_model';
  * api_key for the mentioned module.
  */
 function login(details) {
-  Log('User:Login:Controller: logging in.');
+  Log('User:Login: logging in.');
   const promise = new Promise((fulfill, reject) => {
-    $.get({
+    const userAuth = btoa(`${details.name}:${details.password}`);
+    $.ajax({
+      method: 'get',
       url: CONFIG.users.url + encodeURIComponent(details.name), // url + user id
       timeout: CONFIG.users.timeout,
-      beforeSend(xhr) {
-        const userAuth = btoa(`${details.name}:${details.password}`);
-        xhr.setRequestHeader('Authorization', `Basic ${userAuth}`);
-        xhr.setRequestHeader('x-api-key', CONFIG.indicia.api_key);
-        xhr.setRequestHeader('content-type', 'application/json');
+      headers: {
+        authorization: `Basic ${userAuth}`,
+        'x-api-key': CONFIG.indicia.api_key,
+        'content-type': 'application/json',
       },
       success(receivedData) {
         const data = receivedData.data || {};
@@ -41,8 +41,8 @@ function login(details) {
         userModel.logIn(fullData);
         fulfill(fullData);
       },
-      error(xhr, textStatus) {
-        let message = textStatus;
+      error(xhr, textStatus, errorThrown) {
+        let message = errorThrown;
         if (xhr.responseJSON && xhr.responseJSON.errors) {
           message = xhr.responseJSON.errors.reduce(
             (name, err) => `${name}${err.title}\n`,
@@ -111,37 +111,46 @@ class Component extends React.Component {
     return (
       <div>
         <div className="info-message">
-          <p>{t("Please sign in with your iRecord account or register.")}</p>
+          <p>{t('Please sign in with your iRecord account or register.')}</p>
         </div>
 
         <ion-list lines="full">
           <ion-item error={this.state.userNameError}>
-            <span className="icon icon-user" slot="start"></span>
-            <ion-input ref={this.userName} required type="text"
-                       placeholder={t("Username or email")}></ion-input>
+            <span className="icon icon-user" slot="start" />
+            <ion-input
+              ref={this.userName}
+              required
+              type="text"
+              placeholder={t('Username or email')}
+            />
           </ion-item>
           <ion-item error={this.state.userPasswordError}>
-            <span className="icon icon-key" slot="start"></span>
-            <ion-input ref={this.userPassword} required
-                       type="password"
-                       placeholder={t("Password")}></ion-input>
+            <span className="icon icon-key" slot="start" />
+            <ion-input
+              ref={this.userPassword}
+              required
+              type="password"
+              placeholder={t('Password')}
+            />
           </ion-item>
         </ion-list>
 
-        <ion-button style={{ width: '100%', margin: '0 auto' }}
-                    onClick={this.onClick.bind(this)}
-                    color="light">{t("Sign in")}</ion-button>
+        <ion-button
+          style={{ width: '100%', margin: '0 auto' }}
+          onClick={this.onClick.bind(this)}
+          color="light"
+        >
+          {t('Sign in')}
+        </ion-button>
 
         <ion-list lines="full">
           <ion-item href="#user/register">
-            <span slot="start"
-                  className="icon icon-user-plus"></span>
-            {t("Register")}
+            <span slot="start" className="icon icon-user-plus" />
+            {t('Register')}
           </ion-item>
           <ion-item href="#user/reset">
-            <span slot="start"
-                  className="icon icon-key"></span>
-            {t("Request a new password")}
+            <span slot="start" className="icon icon-key" />
+            {t('Request a new password')}
           </ion-item>
         </ion-list>
       </div>
@@ -154,4 +163,3 @@ Component.propTypes = {
 };
 
 export default Component;
-

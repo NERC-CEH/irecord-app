@@ -23,32 +23,39 @@ App.info = {};
 const Router = Marionette.AppRouter.extend({
   routes: {
     'info(/)': () => {
+      Log('Info:Menu: visited.');
       radio.trigger('app:header', <Header>iRecord App</Header>);
       radio.trigger('app:main', <InfoMenu userModel={userModel}/>);
     },
     'info/welcome(/)': WelcomeController.show,
     'info/about(/)': () => {
+      Log('Info:About: visited.');
       radio.trigger('app:header', <Header>About</Header>);
       radio.trigger('app:main', <About version={CONFIG.version}
                                        build={CONFIG.build}/>);
     },
     'info/help(/)': () => {
+      Log('Info:Help: visited.');
       radio.trigger('app:header', <Header>Help</Header>);
       radio.trigger('app:main', <Help/>);
     },
     'info/privacy(/)': () => {
+      Log('Info:Privacy: visited.');
       radio.trigger('app:header', <Header>Privacy Policy</Header>);
       radio.trigger('app:main', <PrivacyPolicy/>);
     },
     'info/terms(/)': () => {
+      Log('Info:Terms: visited.');
       radio.trigger('app:header', <Header>T&Cs</Header>);
       radio.trigger('app:main', <Terms/>);
     },
     'info/brc-approved(/)': () => {
+      Log('Info:BRCApproved: visited.');
       radio.trigger('app:header', <Header>BRC Approved</Header>);
       radio.trigger('app:main', <BRCApproved/>);
     },
     'info/credits(/)': () => {
+      Log('Info:Credits: visited.');
       radio.trigger('app:header', <Header>Credits</Header>);
       radio.trigger('app:main', <Credits/>);
     },

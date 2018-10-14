@@ -93,8 +93,8 @@ const API = {
         timeout: CONFIG.users.timeout,
       })
         .then(fulfill)
-        .fail((xhr, textStatus) => {
-          let message = textStatus;
+        .fail((xhr, textStatus, errorThrown) => {
+          let message = errorThrown;
           if (xhr.responseJSON && xhr.responseJSON.errors) {
             message = xhr.responseJSON.errors.reduce(
               (name, err) => `${name}${err.title}\n`,

@@ -16,7 +16,7 @@ import CONFIG from 'config';
  * api_key for the mentioned module.
  */
 function register(formData) {
-  Log('User:Register:Controller: registering.');
+  Log('User:Register: registering.');
 
   // app logins
   const promise = new Promise((fulfill, reject) => {
@@ -53,8 +53,8 @@ function register(formData) {
         userModel.logIn(fullData);
         fulfill(fullData);
       },
-      error(xhr, textStatus) {
-        let message = textStatus;
+      error(xhr, textStatus, errorThrown) {
+        let message = errorThrown;
         if (xhr.responseJSON && xhr.responseJSON.errors) {
           message = xhr.responseJSON.errors.reduce(
             (name, err) => `${name}${err.title}\n`,
