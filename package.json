@@ -10,6 +10,7 @@
     "build": "grunt",
     "build:update": "grunt udpate",
     "build:dev": "grunt dev",
+    "build:species": "cd src/common/data && node species.js",
     "build:dev:update": "grunt dev:update",
     "build:cordova": "grunt cordova",
     "build:cordova:update": "grunt cordova:update",
