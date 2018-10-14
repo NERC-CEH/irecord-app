@@ -2,18 +2,13 @@
  * Functions to work with media.
  **************************************************************************** */
 import Indicia from 'indicia';
-import _ from 'lodash';
 import Log from './log';
 import Analytics from './analytics';
 import Device from './device';
 
 export function _onGetImageError(err = '', resolve, reject) {
   const e = err.toLowerCase();
-  if (
-    e.includes('has no access') ||
-    e.includes('cancelled') ||
-    e.includes('selected')
-  ) {
+  if (e.includes('has no access') || e.includes('cancelled') || e.includes('selected')) {
     resolve(); // no image selected
     return;
   }
@@ -21,36 +16,6 @@ export function _onGetImageError(err = '', resolve, reject) {
 }
 
 const Image = {
-  deleteInternalStorage(name, callback) {
-    function errorHandler(err) {
-      Log(err, 'e');
-      callback(err);
-    }
-    window.resolveLocalFileSystemURL(
-      cordova.file.dataDirectory,
-      fileSystem => {
-        const relativePath = name.replace(fileSystem.nativeURL, '');
-        fileSystem.getFile(
-          relativePath,
-          { create: false },
-          fileEntry => {
-            if (!fileEntry) {
-              callback();
-              return;
-            }
-
-            fileEntry.remove(() => {
-              Log('Helpers:Image: removed.');
-              callback();
-            }, errorHandler);
-          },
-          errorHandler
-        );
-      },
-      errorHandler
-    );
-  },
-
   /**
    * Gets a fileEntry of the selected image from the camera or gallery.
    * If none selected then fileEntry is empty.
@@ -61,7 +26,7 @@ const Image = {
     return new Promise((resolve, reject) => {
       Log('Helpers:Image: getting.');
 
-      const cameraOptions = {
+      const defaultCameraOptions = {
         sourceType: window.Camera.PictureSourceType.CAMERA,
         // allow edit is unpredictable on Android and it should not be used!
         allowEdit: false,
@@ -71,8 +36,10 @@ const Image = {
         destinationType: window.Camera.DestinationType.FILE_URI,
         encodingType: window.Camera.EncodingType.JPEG,
         saveToPhotoAlbum: true,
-        correctOrientation: true,
+        correctOrientation: true
       };
+
+      const cameraOptions = Object.assign({}, defaultCameraOptions, options);
 
       if (Device.isAndroid()) {
         // Android bug:
@@ -80,11 +47,9 @@ const Image = {
         delete cameraOptions.saveToPhotoAlbum;
       }
 
-      _.extend(cameraOptions, options);
-
       function copyFileToAppStorage(fileURI) {
         let URI = fileURI;
-        function copyFile(fileEntry) {
+        function onSuccessCopyFile(fileEntry) {
           const name = `${Date.now()}.jpeg`;
           window.resolveLocalFileSystemURL(
             cordova.file.dataDirectory,
@@ -107,7 +72,7 @@ const Image = {
           }
         }
 
-        window.resolveLocalFileSystemURL(URI, copyFile, reject);
+        window.resolveLocalFileSystemURL(URI, onSuccessCopyFile, reject);
       }
 
       function onSuccess(fileURI) {
@@ -122,9 +87,10 @@ const Image = {
             () => copyFileToAppStorage(fileURI),
             reject
           );
-        } else {
-          copyFileToAppStorage(fileURI);
+          return;
         }
+
+        copyFileToAppStorage(fileURI);
       }
 
       navigator.camera.getPicture(
@@ -140,6 +106,11 @@ const Image = {
    * Create new record with a photo
    */
   getImageModel(ImageModel, file) {
+    if (!file) {
+      const err = new Error('File not found while creating image model.');
+      return Promise.reject(err);
+    }
+
     // create and add new record
     const success = args => {
       const [data, type, width, height] = args;
@@ -147,35 +118,25 @@ const Image = {
         data,
         type,
         width,
-        height,
+        height
       });
 
       return imageModel.addThumbnail().then(() => imageModel);
     };
 
-    if (window.cordova) {
-      // cordova environment
-      return Indicia.Media.getDataURI(file).then(args => {
-        // don't resize, only get width and height
-        const [, , width, height] = args;
-        let fileName = file;
-
-        if (Device.isIOS()) {
-          // save only the file name or iOS, because the app UUID changes
-          // on every app update
-          const pathArray = file.split('/');
-          fileName = pathArray[pathArray.length - 1];
-        }
-        return success([fileName, 'jpeg', width, height]);
-      });
-    } else if (file instanceof File) {
-      // browser environment
+    const isBrowser = !window.cordova && file instanceof File;
+    if (isBrowser) {
       return Indicia.Media.getDataURI(file).then(success);
     }
 
-    const err = new Error('File not found while creating image model.');
-    return Promise.reject(err);
-  },
+    file = window.Ionic.WebView.convertFileSrc(file);
+    return Indicia.Media.getDataURI(file).then(args => {
+      // don't resize, only get width and height
+      const [, , width, height] = args;
+      const fileName = file.split('/').pop();
+      return success([fileName, 'jpeg', width, height]);
+    });
+  }
 };
 
 export { Image as default };

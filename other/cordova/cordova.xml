@@ -26,6 +26,8 @@
     <plugin name="cordova-sqlite-storage" spec="2.3.3" />
     <plugin name="cordova-plugin-camera" spec="4.0.3" />
     <plugin name="cordova-launch-review" spec="3.1.1" />
+    <plugin name="cordova-plugin-ionic-webview" spec="2.1.4" />
+    
     <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
         <string>To access your camera when attaching images to records</string>
     </edit-config>
