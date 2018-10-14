@@ -40,7 +40,7 @@ function getRandomSpecies() {
 
 describe('Taxon Search Engine', () => {
   before(done => {
-    // todo: remove this as the engine should work without it!
+    // TODO: remove this as the engine should work without it!
     searchEngine
       .init()
       .then(done)
@@ -89,7 +89,7 @@ describe('Taxon Search Engine', () => {
     });
 
     it('should treat non alpha numeric characters as spaces', done => {
-      // todo: check "Wakely's Dowd"
+      // TODO: check "Wakely's Dowd"
       searchEngine.search('Isle-of-Man Cabbage').then(results => {
         searchEngine.search('Isle of Man Cabbage').then(resultsDash => {
           expect(results).to.deep.equal(resultsDash);

@@ -2,7 +2,7 @@ import dictionary from 'translations.data';
 import appModel from 'app_model';
 
 function translate(key) {
-  // todo: remove this if we have translations
+  // TODO: remove this if we have translations
   return key;
 
   // eslint-disable-next-line
@@ -10,7 +10,7 @@ function translate(key) {
   const translations = dictionary[key];
   if (!translations) {
     dictionary[key] = { CK: '' };
-    console.log(`!new: ${key}`); // todo: remove
+    console.log(`!new: ${key}`); // TODO: remove
     return key;
   }
 

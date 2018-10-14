@@ -157,7 +157,7 @@ const API = {
    * @returns {*}
    */
   createNewSampleWithPhoto(surveySample, photo) {
-    // todo: show loader
+    // TODO: show loader
     return (
       Factory.createSampleWithPhoto('plant', photo)
         .then(sample => API.configNewSample(surveySample, sample))
@@ -215,7 +215,7 @@ const API = {
   configNewSample(surveySample, sample) {
     // set sample location to survey's location which
     // can be corrected by GPS or user later on
-    // todo: listen for surveySample attribute changes
+    // TODO: listen for surveySample attribute changes
     if (SurveysEditController.isSurveyLocationSet(surveySample)) {
       const surveyLocation = _.cloneDeep(surveySample.get('location'));
       delete surveyLocation.name;

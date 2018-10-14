@@ -68,7 +68,7 @@ const extension = {
             }
           })
           .catch(() => {
-            // todo: return err
+            // TODO: return err
             that.trigger('geolocation:error', location);
           });
       },

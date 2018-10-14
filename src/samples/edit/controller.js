@@ -174,7 +174,7 @@ const API = {
     Log('Samples:Edit:Controller: photo uploaded.');
 
     const occurrence = sample.getOccurrence();
-    // todo: show loader
+    // TODO: show loader
     API.addPhoto(occurrence, photo).catch(err => {
       Log(err, 'e');
       radio.trigger('app:dialog:error', err);

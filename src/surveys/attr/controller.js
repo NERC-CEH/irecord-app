@@ -138,7 +138,7 @@ const API = {
         currentVal = sample.get(attr);
         newVal = values[attr];
 
-        // todo:validate before setting up
+        // TODO:validate before setting up
         sample.set(attr, newVal);
         break;
       default:

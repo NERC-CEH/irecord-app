@@ -240,7 +240,7 @@ const API = {
     }
 
     if (currentVersion !== newVersion) {
-      // todo: check for backward downgrade
+      // TODO: check for backward downgrade
       // set new app version
       appModel.set('appVersion', newVersion);
       appModel.save();

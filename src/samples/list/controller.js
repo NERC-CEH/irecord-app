@@ -128,7 +128,7 @@ const API = {
   photoUpload(photo) {
     Log('Samples:List:Controller: photo upload.');
 
-    // todo: show loader
+    // TODO: show loader
     API.createNewSampleWithPhoto('general', photo);
   },
 

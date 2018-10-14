@@ -201,7 +201,7 @@ const survey = {
 
     const isChildSample = this.parent;
 
-    // todo: remove this bit once sample DB update is possible
+    // TODO: remove this bit once sample DB update is possible
     // check if saved or already send
     if (
       !isChildSample &&

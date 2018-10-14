@@ -16,7 +16,7 @@ const helpers = {
     return phrase.replace(/\\[\-\'\"()\\]/g, '.?'); // eslint-disable-line
   },
 
-  // todo: change èéöüáöëïåß -> eeou..
+  // TODO: change èéöüáöëïåß -> eeou..
   getFirstWordRegexString(phraseOrig) {
     let phrase = helpers.escapeRegExp(phraseOrig);
     phrase = helpers.removeNonAlphanumerics(phrase);

@@ -116,7 +116,7 @@ const API = {
         currentVal = occ.get(attr);
         newVal = values[attr];
 
-        // todo:validate before setting up
+        // TODO:validate before setting up
         occ.set(attr, values[attr]);
     }
 

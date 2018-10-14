@@ -61,7 +61,6 @@ App.on('start', () => {
 
     if (Backbone.history) {
       Backbone.history.start();
-
       if (App.getCurrentRoute() === '') {
         if (appModel.get('showWelcome')) {
           radio.trigger('info:welcome');
@@ -127,7 +126,7 @@ radio.on('app:main', view => {
     if (ReactDOM.unmountComponentAtNode && region.$el[0]) {
       ReactDOM.unmountComponentAtNode(region.$el[0]);
     } else {
-      // todo: for some reason the unmount function is sometimes not found
+      // TODO: for some reason the unmount function is sometimes not found
       Log("App: main view React DOM unmount did't happen", 'w');
     }
     region.show(view);
@@ -143,7 +142,7 @@ radio.on('app:header', view => {
     if (ReactDOM.unmountComponentAtNode && region.$el[0]) {
       ReactDOM.unmountComponentAtNode(region.$el[0]);
     } else {
-      // todo: for some reason the unmount function is sometimes not found
+      // TODO: for some reason the unmount function is sometimes not found
       Log("App: header view React DOM unmount did't happen", 'w');
     }
     region.show(view);

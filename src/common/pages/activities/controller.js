@@ -79,7 +79,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
 
     // add user activities
     userModel.get('activities').forEach(activity => {
-      // todo:  server '71' == local 71
+      // TODO:  server '71' == local 71
       const checkedActivity = Object.assign({}, activity, {
         checked: selectedActivity.id === activity.id,
       });
