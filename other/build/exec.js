@@ -6,17 +6,6 @@ module.exports = function(grunt) {
       command: 'cp -R node_modules/@ionic dist/main',
       stdout: true
     },
-    data: {
-      command() {
-        return `cd src/common/data && 
-          node --harmony make_translations.js && 
-          mkdir -p ../../../dist/_build/ && 
-          cp species*data.json ../../../dist/_build/ && 
-          mv translations*data.json ../../../dist/_build/ && 
-          cp *data.json ../../../dist/_build/ `;
-      },
-      stdout: true
-    },
     cordova_init: {
       command: 'cordova create dist/cordova',
       stdout: true

@@ -96,6 +96,10 @@ folder within common folder.
 For clarity reasons, Libraries and Helper code must be imported as capitalized 
 variables: App, Backbone, Device, GPS etc.
 
+### Adding language translations
+* Add to the package.json scripts:  `"build:translations": "cd src/common/data && node make_translations.js"`
+* create a `translations.csv` file in `src/common/data/`
+* uncomment `src/common/helpers/translator.js`
 
 # Continous Integration and Testing
 
@@ -108,6 +112,12 @@ commits and runs the app tests on 20+ browsers using Sauce Labs.
 
 ```bash
 npm test
+```
+
+- To run the tests on Sauce labs, download the [sauce labs connector](https://saucelabs.com/docs/connect) and then:
+```bash
+./sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY
+
 ```
 
 - Auto watch:

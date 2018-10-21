@@ -6,7 +6,7 @@ import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import InputView from 'common/views/inputView';
 import TextareaView from 'common/views/textareaInputView';
-import viceCounties from 'vice_counties.data';
+import viceCounties from 'common/data/vice_counties.data';
 import RecordersAttrView from './recordersAttrView';
 
 export default Marionette.View.extend({

@@ -3,7 +3,7 @@
  **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import informalGroups from 'informal_groups.data';
+import informalGroups from 'common/data/informal_groups.data';
 import JST from 'JST';
 
 export default Marionette.View.extend({

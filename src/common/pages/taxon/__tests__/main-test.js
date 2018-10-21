@@ -1,4 +1,4 @@
-import 'species.data';
+import 'common/data/species.data';
 import searchEngine from '../search/taxon_search_engine';
 
 /* eslint-disable no-unused-expressions */

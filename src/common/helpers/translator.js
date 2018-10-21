@@ -1,5 +1,10 @@
-import dictionary from 'translations.data';
+/** At the moment all disabled because iRecord App 
+ * doesn't support other languages than English.
+ */
+
+// import dictionary from 'common/data/translations.data';
 import appModel from 'app_model';
+
 
 function translate(key) {
   // TODO: remove this if we have translations

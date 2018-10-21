@@ -17,20 +17,21 @@ const MAX = 20;
 const API = {
   init() {
     Log('Taxon search engine: initializing.');
-
-    return new Promise(resolve => {
       loading = true;
-      require.ensure(
-        [],
-        () => {
+
+    return import(/* webpackChunkName: "data" */ 'common/data/species.data.json')
+      .then(({default:data}) => {
+        species = data;
+      })
+      .then(() =>
+        import(/* webpackChunkName: "data" */ 'common/data/species_names.data.json')
+      )
+      .then(({default:data}) => {
+        commonNamePointers = data;
+      })
+      .then(() => {
           loading = false;
-          species = require('species.data'); // eslint-disable-line
-          commonNamePointers = require('species_names.data'); // eslint-disable-line
           this.trigger('data:loaded');
-          resolve();
-        },
-        'data'
-      );
     });
   },
 
