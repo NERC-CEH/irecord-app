@@ -36,8 +36,7 @@ const sauceBrowsers = [
   ['android', '6'], // latest
   ['android', '5.1'],
   ['android', '5'], // bottom support
-  ['Safari', '11.3', 'iOS', 'iPhone 6'], // latest
-  ['Safari', '11.2', 'iOS', 'iPhone 6'],
+  ['Safari', '11.2', 'iOS', 'iPhone 6'], // latest
   ['Safari', '11.1', 'iOS', 'iPhone 6'],
   ['Safari', '10.3', 'iOS', 'iPhone 6'],
   ['Safari', '10.2', 'iOS', 'iPhone 6'] // bottom support
