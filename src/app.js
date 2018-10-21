@@ -4,7 +4,9 @@
 // polyfills
 import 'core-js/es6/map';
 import 'core-js/es6/set';
-import 'es6-promise/auto';
+import 'core-js/fn/object/assign';
+import 'core-js/fn/array/fill';
+import 'core-js/fn/array/includes';
 
 import $ from 'jquery';
 import React from 'react'; // eslint-disable-line

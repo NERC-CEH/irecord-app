@@ -1,13 +1,9 @@
-// ES5 shims for Function.prototype.bind, Object.prototype.keys, etc.
-require('core-js/es5');
+// polyfills
 require('core-js/es6/map');
 require('core-js/es6/set');
-
-// other shims
-require('indexeddbshim');
-require('es6-promise/auto');
-require('helpers/object-assign');
-require('helpers/array-fill');
+require('core-js/fn/object/assign');
+require('core-js/fn/array/fill');
+require('core-js/fn/array/includes');
 
 // Replace ./src/js with the directory of your application code and
 // make sure the file name regexp matches your test files.

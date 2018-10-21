@@ -2,13 +2,12 @@
  * Load all vendor code here.
  **************************************************************************** */
 
-// shims
+// polyfills
 import 'core-js/es6/map';
 import 'core-js/es6/set';
-import 'es6-promise/auto';
-import 'indexeddbshim';
-import 'helpers/object-assign';
-import 'helpers/array-fill';
+import 'core-js/fn/object/assign';
+import 'core-js/fn/array/fill';
+import 'core-js/fn/array/includes';
 
 import 'jquery';
 import 'lodash';

@@ -3,7 +3,7 @@
     "env"
   ],
 
-  "plugins": ["transform-decorators-legacy", "transform-exponentiation-operator", "array-includes"],
+  "plugins": ["transform-decorators-legacy", "transform-exponentiation-operator"],
   "env": {
     "test": {
       "plugins": [
