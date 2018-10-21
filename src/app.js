@@ -7,6 +7,7 @@ import 'core-js/es6/set';
 import 'core-js/fn/object/assign';
 import 'core-js/fn/array/fill';
 import 'core-js/fn/array/includes';
+import 'core-js/fn/string/includes';
 
 import $ from 'jquery';
 import React from 'react'; // eslint-disable-line

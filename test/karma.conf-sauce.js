@@ -15,7 +15,9 @@ delete webpackConfigDev.output; // no need to output files
 delete webpackConfigDev.optimization; // no need
 const definePlugin = new webpack.DefinePlugin({
   'process.env': {
-    NODE_ENV: JSON.stringify('test')
+    NODE_ENV: JSON.stringify('test'),
+    // https://github.com/webpack-contrib/karma-webpack/issues/316
+    SAUCE_LABS: JSON.stringify('true')
   }
 });
 webpackConfigDev.plugins = webpackConfigDev.plugins.map(
@@ -23,54 +25,45 @@ webpackConfigDev.plugins = webpackConfigDev.plugins.map(
 );
 webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
-const sauceBrowsers = _.reduce(
-  [
-    ['firefox', '60'],
-    ['firefox', '45'],
-    ['firefox', '44'],
-    ['firefox', '43'],
-    ['firefox', '42'],
-    ['firefox', '41'],
+const sauceBrowsers = [
+  /**  Browser environment */
+  ['chrome', '69'], // latest
+  ['chrome', '37'], // bottom support
+  ['safari', '12'], // latest
+  ['safari', '8'], // bottom support
 
-    ['chrome', '67'],
-    ['chrome', '48'],
-    ['chrome', '46'],
-    ['chrome', '44'],
-    ['chrome', '42'],
-    ['chrome', '40'],
-    ['chrome', '37'],
-
-    ['android', '6'],
-    ['android', '5.1'],
-    ['android', '5']
-  ],
-  (memo, platform) => {
-    // internet explorer -> ie
-    let label = platform[0].split(' ');
-    if (label.length > 1) {
-      label = _.invoke(label, 'charAt', 0);
-    }
-    label = `${label.join('')}_v${platform[1]}`.replace(' ', '_').toUpperCase();
-    memo[label] = _.pick(
-      {
-        base: 'SauceLabs',
-        browserName: platform[0],
-        version: platform[1],
-        platform: platform[2]
-      },
-      Boolean
-    );
-    return memo;
-  },
-  {}
-);
+  /**  Mobile environment */
+  ['android', '6'], // latest
+  ['android', '5.1'],
+  ['android', '5'], // bottom support
+  ['Safari', '11.3', 'iOS', 'iPhone 6'], // latest
+  ['Safari', '11.2', 'iOS', 'iPhone 6'],
+  ['Safari', '11.1', 'iOS', 'iPhone 6'],
+  ['Safari', '10.3', 'iOS', 'iPhone 6'],
+  ['Safari', '10.2', 'iOS', 'iPhone 6'] // bottom support
+].reduce((memo, platform) => {
+  let label = platform[0].split(' ');
+  if (label.length > 1) {
+    label = _.invoke(label, 'charAt', 0);
+  }
+  label = `${label.join('')}_v${platform[1]}`.replace(' ', '_').toUpperCase();
+  memo[label] = _.pick(
+    {
+      base: 'SauceLabs',
+      browserName: platform[0],
+      version: platform[1],
+      platform: platform[2],
+      device: platform[3]
+    },
+    Boolean
+  );
+  return memo;
+}, {});
 
 module.exports = config => {
   // Use ENV vars on Travis and sauce.json locally to get credentials
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
-    console.log(
-      'SAUCE_USERNAME and SAUCE_ACCESS_KEY env variables are required.'
-    );
+    console.log('SAUCE_USERNAME and SAUCE_ACCESS_KEY env variables are required.');
     process.exit(1);
   }
 
@@ -107,7 +100,7 @@ module.exports = config => {
     singleRun: true,
 
     // Number of sauce tests to start in parallel
-    concurrency: 9,
+    concurrency: 5,
 
     // test results reporter to use
     reporters: ['dots', 'saucelabs'],
@@ -115,18 +108,21 @@ module.exports = config => {
     colors: true,
     logLevel: config.LOG_WARN,
     sauceLabs: {
-      build: `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${
-        process.env.TRAVIS_BUILD_ID
-      })`,
+      build: `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`,
       startConnect: false,
       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
     },
+    urlRoot: '/__karma__/',
 
+    proxies: {
+      '/': 'http://localhost:4445'
+    },
     captureTimeout: 120000,
     customLaunchers: sauceBrowsers,
+    browserNoActivityTimeout: 45000,
 
     // Browsers to launch, commented out to prevent karma from starting
     // too many concurrent browsers and timing sauce out.
-    browsers: _.keys(sauceBrowsers)
+    browsers: Object.keys(sauceBrowsers)
   });
 };

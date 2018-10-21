@@ -130,9 +130,9 @@
     "wdio-mocha-framework": "0.3.4",
     "wdio-spec-reporter": "0.1.4",
     "webdriverio": "4.12.0",
-    "webpack": "4.16.2",
-    "webpack-bundle-analyzer": "2.13.1",
-    "webpack-cli": "3.1.0",
+    "webpack": "4.22.0",
+    "webpack-bundle-analyzer": "3.0.3",
+    "webpack-cli": "3.1.2",
     "webpack-merge": "4.1.4",
     "webpack-serve": "2.0.2"
   },

@@ -17,22 +17,19 @@ const MAX = 20;
 const API = {
   init() {
     Log('Taxon search engine: initializing.');
-      loading = true;
-
+    loading = true;
     return import(/* webpackChunkName: "data" */ 'common/data/species.data.json')
-      .then(({default:data}) => {
+      .then(({ default: data }) => {
         species = data;
       })
-      .then(() =>
-        import(/* webpackChunkName: "data" */ 'common/data/species_names.data.json')
-      )
-      .then(({default:data}) => {
+      .then(() => import(/* webpackChunkName: "data" */ 'common/data/species_names.data.json'))
+      .then(({ default: data }) => {
         commonNamePointers = data;
       })
       .then(() => {
-          loading = false;
-          this.trigger('data:loaded');
-    });
+        loading = false;
+        this.trigger('data:loaded');
+      });
   },
 
   /**
@@ -84,14 +81,7 @@ const API = {
     const isScientific = helpers.isPhraseScientific(normSearchPhrase);
     if (isScientific || scientificOnly) {
       // search sci names
-      searchSciNames(
-        species,
-        normSearchPhrase,
-        results,
-        maxResults,
-        null,
-        informalGroups
-      );
+      searchSciNames(species, normSearchPhrase, results, maxResults, null, informalGroups);
     } else {
       // search common names
       results = searchCommonNames(
@@ -105,14 +95,7 @@ const API = {
       // if not enough
       if (results.length <= MAX) {
         // search sci names
-        searchSciNames(
-          species,
-          normSearchPhrase,
-          results,
-          MAX,
-          null,
-          informalGroups
-        );
+        searchSciNames(species, normSearchPhrase, results, MAX, null, informalGroups);
       }
     }
 

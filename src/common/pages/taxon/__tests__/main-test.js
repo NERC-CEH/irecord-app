@@ -1,45 +1,8 @@
-import 'common/data/species.data';
 import searchEngine from '../search/taxon_search_engine';
 
-/* eslint-disable no-unused-expressions */
-
-const NAME = 1;
-const WAREHOUSE_ID = 0;
-
-/**
- * Gets a random species from the species list
- * @returns {Array}
- */
-// eslint-disable-next-line
-function getRandomSpecies() {
-  let randArrayIndex = (
-    Math.random() *
-    (window.species_list.length - 1)
-  ).toFixed(0);
-  const sp = window.species_list[randArrayIndex];
-  let species = [];
-  let speciesArray;
-  for (let j = 0, length = sp.length; j < length; j++) {
-    if (sp[j] instanceof Array) {
-      speciesArray = sp[j];
-    }
-  }
-  if (speciesArray) {
-    randArrayIndex = (Math.random() * (speciesArray.length - 1)).toFixed(0);
-    const speciesInArray = speciesArray[randArrayIndex];
-    species = [
-      speciesInArray[WAREHOUSE_ID],
-      `${sp[2]} ${speciesInArray[NAME]}`
-    ];
-  } else {
-    species = [sp[WAREHOUSE_ID], sp[2]];
-  }
-
-  return species;
-}
-
-describe('Taxon Search Engine', () => {
-  before(done => {
+(process.env.SAUCE_LABS ? describe.skip : describe)('Taxon Search Engine', () => {
+  before(function _(done) {
+    this.timeout(20000);
     // TODO: remove this as the engine should work without it!
     searchEngine
       .init()
@@ -164,15 +127,45 @@ describe('Taxon Search Engine', () => {
 
             const puffinusAsimilis = results[1];
             expect(puffinusAsimilis.warehouse_id).to.be.equal(160697);
-            expect(puffinusAsimilis.scientific_name).to.be.equal(
-              'Puffinus assimilis'
-            );
+            expect(puffinusAsimilis.scientific_name).to.be.equal('Puffinus assimilis');
             done();
           })
           .catch(done);
       });
     });
 
+    // const NAME = 1;
+    // const WAREHOUSE_ID = 0;
+    // /**
+    //  * Gets a random species from the species list
+    //  * @returns {Array}
+    //  */
+    // function getRandomSpecies() {
+    //   let randArrayIndex = (
+    //     Math.random() *
+    //     (window.species_list.length - 1)
+    //   ).toFixed(0);
+    //   const sp = window.species_list[randArrayIndex];
+    //   let species = [];
+    //   let speciesArray;
+    //   for (let j = 0, length = sp.length; j < length; j++) {
+    //     if (sp[j] instanceof Array) {
+    //       speciesArray = sp[j];
+    //     }
+    //   }
+    //   if (speciesArray) {
+    //     randArrayIndex = (Math.random() * (speciesArray.length - 1)).toFixed(0);
+    //     const speciesInArray = speciesArray[randArrayIndex];
+    //     species = [
+    //       speciesInArray[WAREHOUSE_ID],
+    //       `${sp[2]} ${speciesInArray[NAME]}`
+    //     ];
+    //   } else {
+    //     species = [sp[WAREHOUSE_ID], sp[2]];
+    //   }
+
+    //   return species;
+    // }
     // const SEARCH_TIMES = 10000;
     // describe(`random taxa search ${SEARCH_TIMES}`).then(() => {
     //  // random search of 100 names
@@ -232,9 +225,7 @@ describe('Taxon Search Engine', () => {
 
                   expect(result.warehouse_id).to.be.equal(208098);
                   expect(result.common_name).to.be.equal('Giant Blackberry');
-                  expect(result.scientific_name).to.be.equal(
-                    'Rubus armeniacus'
-                  );
+                  expect(result.scientific_name).to.be.equal('Rubus armeniacus');
 
                   // specific cases
                   // eslint-disable-next-line
