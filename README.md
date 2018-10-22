@@ -64,32 +64,13 @@ cd irecord-app
 npm install
 ```
 
-### Web app
-
-If you are building for the web platform only:
-
-`Production`
-
-```bash
-npm run build
-```
-
-`Development`
-
-```bash
-npm run build:dev
-```
-
-This will create a `dist` folder with the app code and its dependencies.
-
-
 #### Running app locally
 
 - [Express](http://expressjs.com/) framework is provided for a quick
 launch of a web server.
 
 ```bash
-npm start
+npm run build && npm start
 ```
 
 - Open the app on a browser [http://localhost:8000](http://localhost:8000)
