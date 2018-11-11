@@ -3,12 +3,12 @@
  **************************************************************************** */
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
+import template from './templates/main.tpl';
 
 export default Marionette.View.extend({
   tagName: 'ion-list',
   attributes: { lines: 'full' },
-  template: JST['settings/menu/main'],
+  template,
 
   events: {
     'ionChange #use-training-btn': 'onSettingToggled',

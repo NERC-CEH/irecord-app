@@ -4,10 +4,10 @@
 import Backbone from 'backbone';
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
+import template from 'templates/radio.tpl';
 
 export default Marionette.View.extend({
-  template: JST['common/radio'],
+  template,
 
   triggers: {
     'ionSelect ion-radio': 'save'

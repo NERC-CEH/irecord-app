@@ -2,19 +2,21 @@
  * Surveys Sample List main view.
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import radio from 'radio';
 import _MainView, {
   SampleView as _SampleView
 } from '../../../samples/list/main_view';
 import SlidingView from '../../../common/views/sliding_view';
 import './styles.scss';
+import template from './templates/main.tpl';
+import templateSample from './templates/sample.tpl';
+import templateNone from './templates/list-none.tpl';
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell swipe',
 
-  template: JST['surveys/samples/list/sample'],
+  template: templateSample,
 
   triggers: _SampleView.prototype.triggers,
 
@@ -74,7 +76,7 @@ const SampleView = Marionette.View.extend({
 const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: JST['surveys/samples/list/list-none'],
+  template: templateNone,
 
   triggers: {
     'click #create-new-btn': 'create'
@@ -98,7 +100,7 @@ const SmartCollectionView = SlidingView.extend({
 });
 
 const MainView = _MainView.extend({
-  template: JST['surveys/samples/list/main'],
+  template,
 
   /**
    * Need to push the main content down due to the subheader

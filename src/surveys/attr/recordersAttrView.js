@@ -3,11 +3,11 @@
  **************************************************************************** */
 import $ from 'jquery';
 import StringHelp from 'helpers/string';
-import JST from 'JST';
 import InputView from 'common/views/inputView';
+import template from './templates/recorders.tpl';
 
 export default InputView.extend({
-  template: JST['surveys/attr/recorders'],
+  template,
 
   events: {
     'click button.add-new': 'addNew'

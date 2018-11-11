@@ -4,8 +4,8 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import StringHelp from 'helpers/string';
+import template from 'templates/range_input.tpl';
 
 // http://stackoverflow.com/questions/846221/logarithmic-slider
 function LogSlider(options = {}) {
@@ -31,7 +31,7 @@ LogSlider.prototype = {
 const logsl = new LogSlider({ maxpos: 100, minval: 1, maxval: 500 });
 
 export default Marionette.View.extend({
-  template: JST['common/range_input'],
+  template,
 
   events: {
     'input input[type="range"]': 'updateRangeInputValue',

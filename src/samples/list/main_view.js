@@ -10,17 +10,19 @@ import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
 import DateHelp from 'helpers/date';
-import JST from 'JST';
 import Gallery from '../../common/gallery';
 import SlidingView from '../../common/views/sliding_view';
 import RecommendationView from './recommendations_view';
 import './styles.scss';
+import template from './templates/main.tpl';
+import templateSample from './templates/sample.tpl';
+import templateNone from './templates/list-none.tpl';
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell swipe',
 
-  template: JST['samples/list/sample'],
+  template: templateSample,
 
   triggers: {
     'click #delete': 'sample:delete',
@@ -216,7 +218,7 @@ const SampleView = Marionette.View.extend({
 const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: JST['samples/list/list-none'],
+  template: templateNone,
 
   triggers: {
     'click #create-new-btn': 'create'
@@ -235,7 +237,7 @@ const SmartCollectionView = SlidingView.extend({
 
 const MainView = Marionette.View.extend({
   id: 'samples-list-container',
-  template: JST['samples/list/main'],
+  template,
 
   /**
    * Need to push the main content down due to the subheader

@@ -3,11 +3,11 @@
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
-import JST from 'JST';
+import template from './templates/header.tpl';
 
 export default Marionette.View.extend({
   tagName: 'nav',
-  template: JST['samples/edit/header'],
+  template,
 
   events: {
     'click a[data-rel="back"]': 'navigateBack'

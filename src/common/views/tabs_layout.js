@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import _ from 'lodash';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
+import template from 'templates/tabs_container.tpl';
 import '../styles/tabs.scss';
 
 const Tab = Marionette.View.extend({
@@ -40,7 +40,7 @@ const Tabs = Marionette.CollectionView.extend({
 });
 
 export default Marionette.View.extend({
-  template: JST['common/tabs_container'],
+  template,
 
   className: 'tabs-container',
 

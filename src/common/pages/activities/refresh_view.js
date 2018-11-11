@@ -3,10 +3,10 @@
  * Provides button for top right of header.
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
+import template from './templates/refresh.tpl';
 
 export default Marionette.View.extend({
-  template: JST['common/activities/refresh'],
+  template,
 
   // Trigger a refresh even when the button is clicked
   triggers: {

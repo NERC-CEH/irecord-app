@@ -4,7 +4,6 @@
 import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import radio from 'radio';
-import JST from 'JST';
 import DateHelp from 'helpers/date';
 import Gallery from '../../common/gallery';
 import _MainView, {
@@ -12,12 +11,15 @@ import _MainView, {
 } from '../../samples/list/main_view';
 import SlidingView from '../../common/views/sliding_view';
 import './styles.scss';
+import templateSample from './templates/sample.tpl';
+import templateListNone from './templates/list-none.tpl';
+import template from './templates/main.tpl';
 
 const SampleView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell swipe',
 
-  template: JST['surveys/list/sample'],
+  template: templateSample,
 
   triggers: _SampleView.prototype.triggers,
 
@@ -96,7 +98,7 @@ const SampleView = Marionette.View.extend({
 const NoSamplesView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: JST['surveys/list/list-none'],
+  template: templateListNone,
 
   triggers: {
     'click #create-new-btn': 'create'
@@ -114,7 +116,7 @@ const SmartCollectionView = SlidingView.extend({
 });
 
 const MainView = _MainView.extend({
-  template: JST['surveys/list/main'],
+  template,
 
   regions: {
     body: {

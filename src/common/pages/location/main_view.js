@@ -3,17 +3,17 @@
  **************************************************************************** */
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 import 'typeahead'; // eslint-disable-line
 import HeaderView from './main_view_header';
 import mapFunctions from './map/main';
 import './styles.scss';
+import template from './templates/main.tpl';
 
 const LocationView = Marionette.View.extend({
   id: 'location-container',
-  template: JST['common/location/main'],
+  template,
 
   regions: {
     header: {

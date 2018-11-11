@@ -4,17 +4,18 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import CONFIG from 'config';
 import LoaderView from '../../views/loader_view';
 import './styles.scss';
+import template from './templates/activity.tpl';
+import templateWrapper from './templates/wrapper.tpl';
 
 /**
  * Single activity item view
  */
 const ActivityView = Marionette.View.extend({
   tagName: 'ion-item',
-  template: JST['common/activities/activity']
+  template
 });
 
 /**
@@ -25,7 +26,7 @@ export default Marionette.CompositeView.extend({
   className: 'no-top',
   emptyView: LoaderView,
   childView: ActivityView,
-  template: JST['common/activities/wrapper'],
+  template: templateWrapper,
   childViewContainer: 'ion-radio-group',
 
   // Checking an item fires save and closes the page

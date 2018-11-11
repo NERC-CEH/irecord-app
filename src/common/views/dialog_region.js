@@ -6,7 +6,7 @@ import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import radio from 'radio';
-import JST from 'JST';
+import template from 'templates/dialog.tpl';
 import '../styles/dialog.scss';
 
 const errorsTable = {
@@ -26,7 +26,7 @@ const errorsTable = {
 };
 
 const StandardDialogView = Marionette.View.extend({
-  template: JST['common/dialog'],
+  template,
   className() {
     let classes = 'content';
     if (this.options.class) {

@@ -45,6 +45,7 @@ const config = {
       app_model: 'common/models/app_model',
       user_model: 'common/models/user_model',
       model_factory: 'common/models/model_factory',
+      templates: 'common/templates',
 
       // vendor
       typeahead: 'typeahead.js/dist/typeahead.jquery',
@@ -56,6 +57,7 @@ const config = {
   },
   module: {
     rules: [
+      { test: /\.tpl/, loader: 'ejs-loader?variable=obj' },
       {
         test: /^((?!data\.).)*\.js$/,
         exclude: /(node_modules|bower_components|vendor(?!\.js))/,

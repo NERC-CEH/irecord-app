@@ -1,9 +1,9 @@
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
+import template from 'templates/header.tpl';
 
 export default Marionette.View.extend({
   tagName: 'nav',
-  template: JST['common/header'],
+  template,
 
   className() {
     return `common-header ${this.options.classes} capitalize`;

@@ -1,9 +1,9 @@
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
-import JST from 'JST';
+import template from 'templates/lock.tpl';
 
 export default Marionette.View.extend({
-  template: JST['common/lock'],
+  template,
 
   initialize() {
     Log('AttrLock:View: initializing.');

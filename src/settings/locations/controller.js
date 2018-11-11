@@ -7,10 +7,10 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
-import JST from 'JST';
 import appModel from 'app_model';
 import MainView from './main_view';
 import HeaderView from '../../common/views/header_view';
+import template from './templates/past_location_edit.tpl';
 
 const API = {
   show(options = {}) {
@@ -54,7 +54,7 @@ const API = {
 
     const location = model;
     const EditView = Marionette.View.extend({
-      template: JST['settings/locations/past_location_edit'],
+      template,
       getValues() {
         return {
           name: StringHelp.escape(this.$el.find('#location-name').val()),

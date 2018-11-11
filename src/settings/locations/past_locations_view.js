@@ -3,9 +3,10 @@ import _ from 'lodash';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import Hammer from 'hammerjs';
-import JST from 'JST';
 import Device from 'helpers/device';
 import DateHelp from 'helpers/date';
+import templatePastLocations from './templates/past_locations.tpl';
+import templatePastLocation from './templates/past_location.tpl';
 
 const EmptyListView = Marionette.View.extend({
   tagName: 'li',
@@ -17,7 +18,7 @@ const PastLocationView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell',
 
-  template: JST['settings/locations/past_location'],
+  template: templatePastLocation,
 
   triggers: {
     'click .location': 'location:select',
@@ -133,7 +134,7 @@ const PastLocationView = Marionette.View.extend({
 });
 
 export default Marionette.CompositeView.extend({
-  template: JST['settings/locations/past_locations'],
+  template: templatePastLocations,
 
   childViewContainer: '#user-locations',
 

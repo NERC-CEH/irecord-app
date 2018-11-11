@@ -1,5 +1,5 @@
 module.exports = grunt => ({
-  default: ['init', 'jst', 'webpack:main'],
+  default: ['init', 'webpack:main'],
 
   init: ['init:validate', 'copy:main', 'exec:ionic_copy', 'vendor'],
 
@@ -45,13 +45,13 @@ module.exports = grunt => ({
   ],
 
   // Development run
-  update: ['jst', 'webpack:main'],
+  update: ['webpack:main'],
 
   // Development update
-  dev: ['init', 'jst', 'webpack:dev'],
+  dev: ['init', 'webpack:dev'],
 
   // Development run
-  'dev:update': ['jst', 'webpack:dev'],
+  'dev:update': ['webpack:dev'],
 
   // Cordova set up
   cordova: [

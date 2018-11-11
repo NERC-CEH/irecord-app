@@ -5,10 +5,10 @@ import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import StringHelp from 'helpers/string';
 import DateHelp from 'helpers/date';
-import JST from 'JST';
+import template from './templates/main.tpl';
 
 export default Marionette.View.extend({
-  template: JST['surveys/edit/main'],
+  template,
 
   triggers: {
     'click a#location-button': 'location:update'

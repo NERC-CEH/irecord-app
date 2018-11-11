@@ -2,12 +2,12 @@
  * Sample List header view.
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
+import template from './templates/header.tpl';
 
 export default Marionette.View.extend({
   id: 'samples-header',
   tagName: 'nav',
-  template: JST['samples/list/header'],
+  template,
 
   triggers: {
     'click #surveys-btn': 'surveys',

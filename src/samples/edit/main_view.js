@@ -3,15 +3,15 @@
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Indicia from 'indicia';
-import JST from 'JST';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
 import { coreAttributes } from 'common/config/surveys/general';
 import AttrsView from './attrs_view';
 import './styles.scss';
+import template from './templates/main.tpl';
 
 export default Marionette.View.extend({
-  template: JST['samples/edit/main'],
+  template,
 
   regions: {
     attrs: {

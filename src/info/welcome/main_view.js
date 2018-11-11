@@ -5,7 +5,6 @@
 import $ from 'jquery';
 import 'jquery-touchswipe';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import Device from 'helpers/device';
 import './styles.scss';
 import './images/welcome_1.jpg';
@@ -13,10 +12,11 @@ import './images/welcome_2.jpg';
 import './images/welcome_3.jpg';
 import './images/welcome_4.jpg';
 import './images/welcome_5.jpg';
+import template from './templates/main.tpl';
 
 export default Marionette.View.extend({
   id: 'welcome',
-  template: JST['info/welcome/main'],
+  template,
 
   triggers: {
     'click #exit': 'exit'

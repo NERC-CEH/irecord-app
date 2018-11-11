@@ -4,13 +4,13 @@
 import $ from 'jquery';
 import LocHelp from 'helpers/location';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import Log from 'helpers/log';
 import typeaheadSearchFn from 'helpers/typeahead_search';
 import 'typeahead'; // eslint-disable-line
+import template from './templates/header.tpl';
 
 const HeaderView = Marionette.View.extend({
-  template: JST['common/location/header'],
+  template,
 
   events: {
     'change #location-name': 'changeName',

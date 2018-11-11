@@ -3,12 +3,12 @@
  */
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import StringHelp from 'helpers/string';
 import Device from 'helpers/device';
+import template from 'templates/textarea.tpl';
 
 export default Marionette.View.extend({
-  template: JST['common/textarea'],
+  template,
 
   initialize() {
     const config = this.options.config || {};

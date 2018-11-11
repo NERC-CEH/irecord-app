@@ -3,14 +3,14 @@
  */
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import StringHelp from 'helpers/string';
 import DateHelp from 'helpers/date';
 import Device from 'helpers/device';
 import typeaheadSearchFn from 'helpers/typeahead_search';
+import template from 'templates/input.tpl';
 
 export default Marionette.View.extend({
-  template: JST['common/input'],
+  template,
 
   initialize() {
     const config = this.options.config || {};

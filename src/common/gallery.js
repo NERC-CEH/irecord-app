@@ -1,10 +1,10 @@
 import $ from 'jquery';
 import PhotoSwipe from 'photoswipe-lib';
 import PhotoSwipeUIDefault from 'photoswipe-ui-default';
-import JST from 'JST';
+import template from 'templates/gallery.tpl';
 
 // initialize PhotoSwipe
-const photoSwipeContainer = JST['common/gallery']();
+const photoSwipeContainer = template();
 $('body').append(photoSwipeContainer);
 
 function Gallery(items, options = {}) {

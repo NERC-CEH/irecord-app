@@ -4,14 +4,14 @@
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import $ from 'jquery';
-import JST from 'JST';
 import Device from 'helpers/device';
 import gridAlertService from './gridAlertService';
+import template from './templates/header.tpl';
 
 export default Marionette.View.extend({
   id: 'surveys-header',
   tagName: 'nav',
-  template: JST['surveys/list/header'],
+  template,
 
   triggers: {
     'click #surveys-btn': 'surveys',

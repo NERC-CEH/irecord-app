@@ -4,13 +4,13 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import informalGroups from 'common/data/informal_groups.data';
-import JST from 'JST';
+import template from './templates/filters.tpl';
 
 export default Marionette.View.extend({
   id: 'species-list-filters',
   tagName: 'ion-list',
   attributes: { lines: 'full' },
-  template: JST['common/taxon/filters'],
+  template,
   events: {
     'ionChange ion-checkbox': 'saveFilter'
   },

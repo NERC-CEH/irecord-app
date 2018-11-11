@@ -5,12 +5,12 @@ import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import CONFIG from 'config';
 import DateHelp from 'helpers/date';
-import JST from 'JST';
+import template from './templates/main.tpl';
 
 export default Marionette.View.extend({
   tagName: 'ul',
   className: 'table-view',
-  template: JST['surveys/show/main'],
+  template,
 
   events: {},
 

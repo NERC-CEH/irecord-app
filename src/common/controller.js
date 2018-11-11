@@ -1,7 +1,6 @@
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
-import JST from 'JST';
 import radio from 'radio';
 import HeaderView from './views/header_view';
 
@@ -11,7 +10,7 @@ const API = {
     const MainView =
       options.mainView ||
       Marionette.View.extend({
-        template: options.template || JST[options.route]
+        template: options.template
       });
     radio.trigger(
       'app:main',

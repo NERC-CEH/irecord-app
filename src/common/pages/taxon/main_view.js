@@ -4,11 +4,12 @@
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import informalGroups from 'common/data/informal_groups.data';
 import './styles.scss';
+import template from './templates/species.tpl';
+import templateLayout from './templates/layout.tpl';
 
 const MIN_SEARCH_LENGTH = 2;
 
@@ -18,7 +19,7 @@ const SpeciesView = Marionette.View.extend({
     return `table-view-cell ${this.model.get('selected') ? 'selected' : ''}`;
   },
 
-  template: JST['common/taxon/species'],
+  template,
 
   events: {
     click: 'select'
@@ -108,7 +109,7 @@ const SuggestionsView = Marionette.CollectionView.extend({
 });
 
 export default Marionette.View.extend({
-  template: JST['common/taxon/layout'],
+  template: templateLayout,
 
   events: {
     'keydown #taxon': '_keydown',

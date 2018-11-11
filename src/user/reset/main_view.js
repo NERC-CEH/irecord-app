@@ -3,11 +3,11 @@
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Validate from 'helpers/validate';
-import JST from 'JST';
 import './styles.scss';
+import template from './templates/main.tpl';
 
 export default Marionette.View.extend({
-  template: JST['user/reset/main'],
+  template,
 
   events: {
     'click #reset-button': 'reset'

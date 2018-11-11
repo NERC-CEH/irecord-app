@@ -2,11 +2,11 @@
  * Taxon header view.
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
-import JST from 'JST';
+import template from './templates/header.tpl';
 
 export default Marionette.View.extend({
   tagName: 'nav',
-  template: JST['common/taxon/header'],
+  template,
 
   events: {
     'click a[data-rel="back"]': 'navigateBack',

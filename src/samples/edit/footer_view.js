@@ -5,8 +5,9 @@ import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
-import JST from 'JST';
 import Gallery from '../../common/gallery';
+import templateImagePickerTemplate from './templates/image_picker_empty.tpl';
+import templateImagePickerArray from './templates/image_picker_array.tpl';
 
 const SavedImageView = Marionette.View.extend({
   template: _.template(
@@ -36,14 +37,14 @@ const SavedImageView = Marionette.View.extend({
 });
 
 const EmptyView = Marionette.View.extend({
-  template: JST['samples/edit/image_picker_empty'],
+  template: templateImagePickerTemplate,
   tagName: 'span',
   className: 'empty'
 });
 
 export default Marionette.CompositeView.extend({
   id: 'edit-footer',
-  template: JST['samples/edit/image_picker_array'],
+  template: templateImagePickerArray,
   initialize() {
     this.collection = this.model.getOccurrence().media;
   },

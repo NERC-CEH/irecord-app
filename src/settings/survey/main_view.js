@@ -4,14 +4,13 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import LocHelp from 'helpers/location';
-import JST from 'JST';
-
+import template from 'templates/radio.tpl';
 import './styles.scss';
 
 export default Marionette.View.extend({
   id: 'survey-accuracy',
 
-  template: JST['common/radio'],
+  template,
 
   events: {
     'ionSelect ion-radio': 'saveRadio'

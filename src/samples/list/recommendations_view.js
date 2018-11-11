@@ -1,11 +1,11 @@
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
-import JST from 'JST';
 import './styles.scss';
+import template from './templates/recommendation.tpl';
 
 const MainView = Marionette.View.extend({
-  template: JST['samples/list/recommendation'],
+  template,
 
   events: {
     // eslint-disable-next-line
