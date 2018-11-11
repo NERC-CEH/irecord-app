@@ -1,7 +1,7 @@
 module.exports = grunt => ({
   default: ['init', 'jst', 'webpack:main'],
 
-  init: ['init:validate', 'copy', 'exec:ionic_copy', 'vendor'],
+  init: ['init:validate', 'copy:main', 'exec:ionic_copy', 'vendor'],
 
   'init:validate': () => {
     if (process.env.APP_FORCE) {
@@ -66,6 +66,7 @@ module.exports = grunt => ({
     'exec:cordova_copy_dist',
     'replace:cordova_config',
     'replace:cordova_build',
+    'copy:cordova_hooks',
     'exec:cordova_add_platforms'
   ],
 

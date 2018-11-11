@@ -16,5 +16,13 @@ module.exports = {
         flatten: true
       }
     ]
-  }
+  },
+    cordova_hooks: {
+    files: [
+      {
+        src: 'config/cordova/removeAdFramework.js',
+        dest: 'dist/cordova/hooks/removeAdFramework.js',
+      },
+    ],
+  },
 };

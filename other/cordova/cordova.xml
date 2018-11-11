@@ -27,7 +27,9 @@
     <plugin name="cordova-plugin-camera" spec="4.0.3" />
     <plugin name="cordova-launch-review" spec="3.1.1" />
     <plugin name="cordova-plugin-ionic-webview" spec="2.1.4" />
-    
+     <!--https://github.com/danwilson/google-analytics-plugin/issues/218-->
+    <hook src="hooks/removeAdFramework.js" type="after_plugin_install" />
+
     <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
         <string>To access your camera when attaching images to records</string>
     </edit-config>
@@ -79,33 +81,25 @@
     </platform>
 
     <platform name="ios">
-        <!-- iOS 8.0+ -->
-        <!-- iPhone 6 Plus  -->
-        <icon src="../../other/cordova/images/ios/icon/icon-60@3x.png" width="180" height="180" />
-        <!-- iOS 7.0+ -->
-        <!-- iPhone / iPod Touch  -->
-        <icon src="../../other/cordova/images/ios/icon/icon-60.png" width="60" height="60" />
-        <icon src="../../other/cordova/images/ios/icon/icon-60@2x.png" width="120" height="120" />
-        <!-- iPad -->
-        <icon src="../../other/cordova/images/ios/icon/icon-76.png" width="76" height="76" />
-        <icon src="../../other/cordova/images/ios/icon/icon-76@2x.png" width="152" height="152" />
-        <!-- iOS 6.1 -->
-        <!-- Spotlight Icon -->
+        <icon src="../../other/cordova/images/ios/icon/icon@2x.png" width="114" height="114" />
         <icon src="../../other/cordova/images/ios/icon/icon-40.png" width="40" height="40" />
         <icon src="../../other/cordova/images/ios/icon/icon-40@2x.png" width="80" height="80" />
-        <!-- iPhone / iPod Touch -->
-        <icon src="../../other/cordova/images/ios/icon/icon.png" width="57" height="57" />
-        <icon src="../../other/cordova/images/ios/icon/icon@2x.png" width="114" height="114" />
-        <!-- iPad -->
-        <icon src="../../other/cordova/images/ios/icon/icon-72.png" width="72" height="72" />
-        <icon src="../../other/cordova/images/ios/icon/icon-72@2x.png" width="144" height="144" />
-        <!-- iPhone Spotlight and Settings Icon -->
-        <icon src="../../other/cordova/images/ios/icon/icon-small.png" width="29" height="29" />
-        <icon src="../../other/cordova/images/ios/icon/icon-small@2x.png" width="58" height="58" />
-        <!-- iPad Spotlight and Settings Icon -->
+        <icon src="../../other/cordova/images/ios/icon/icon-40@3x.png" width="120" height="120" />
         <icon src="../../other/cordova/images/ios/icon/icon-50.png" width="50" height="50" />
         <icon src="../../other/cordova/images/ios/icon/icon-50@2x.png" width="100" height="100" />
-        <icon src="../../other/cordova/images/ios/icon/icon-1024.png" height="1024" width="1024" />
+        <icon src="../../other/cordova/images/ios/icon/icon-60.png" width="60" height="60" />
+        <icon src="../../other/cordova/images/ios/icon/icon-60@2x.png" width="120" height="120" />
+        <icon src="../../other/cordova/images/ios/icon/icon-60@3x.png" width="180" height="180" />
+        <icon src="../../other/cordova/images/ios/icon/icon-72.png" width="72" height="72" />
+        <icon src="../../other/cordova/images/ios/icon/icon-72@2x.png" width="144" height="144" />
+        <icon src="../../other/cordova/images/ios/icon/icon-76.png" width="76" height="76" />
+        <icon src="../../other/cordova/images/ios/icon/icon-76@2x.png" width="152" height="152" />
+        <icon src="../../other/cordova/images/ios/icon/icon-83.5@2x.png" width="" height="" />
+        <icon src="../../other/cordova/images/ios/icon/icon-1024.png" width="1024" height="1024" />
+        <icon src="../../other/cordova/images/ios/icon/icon-small.png" width="29" height="29" />
+        <icon src="../../other/cordova/images/ios/icon/icon-small@2x.png" width="58" height="58" />
+        <icon src="../../other/cordova/images/ios/icon/icon-small@3x.png" width="87" height="87" />
+        <icon src="../../other/cordova/images/ios/icon/icon.png" width="57" height="57" />
 
         <!-- images are determined by width and height. The following are supported -->
         <splash src="../../other/cordova/images/ios/splash/Default~iphone.png" width="320" height="480"/>
@@ -114,13 +108,10 @@
         <splash src="../../other/cordova/images/ios/splash/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
         <splash src="../../other/cordova/images/ios/splash/Default-Landscape~ipad.png" width="1024" height="768"/>
         <splash src="../../other/cordova/images/ios/splash/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-Landscape@~ipadpro.png" width="2732" height="2048"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-Portrait@~ipadpro.png" width="2048" height="2732"/>
         <splash src="../../other/cordova/images/ios/splash/Default-568h@2x~iphone.png" width="640" height="1136"/>
         <splash src="../../other/cordova/images/ios/splash/Default-667h.png" width="750" height="1334"/>
         <splash src="../../other/cordova/images/ios/splash/Default-736h.png" width="1242" height="2208"/>
         <splash src="../../other/cordova/images/ios/splash/Default-Landscape-736h.png" width="2208" height="1242"/>
-        <splash src="../../other/cordova/images/ios/splash/Default@2x~universal~anyany.png" width="2732" height="2732"/>
     </platform>
     <platform name="android">
         <icon src="../../other/cordova/images/android/icon/drawable-ldpi-icon.png" density="ldpi" />
