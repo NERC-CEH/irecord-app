@@ -126,6 +126,12 @@
   margin-left: 1%;
 }
 
+#attrs {
+  ion-item {
+    --background: transparent;
+  }
+}
+
 #lock-btn {
   margin-right: 7px;
 }

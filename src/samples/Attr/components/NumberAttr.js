@@ -18,6 +18,9 @@ class Component extends React.Component {
   };
 
   onRadioChange = rangesValue => {
+    if (!rangesValue && this.state.sliderValue) {
+      return;
+    }
     this.props.onChange([rangesValue]);
     window.history.back();
   };

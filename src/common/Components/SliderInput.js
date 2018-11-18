@@ -23,7 +23,7 @@ LogSlider.prototype = {
     return Math.floor(
       this.minpos + (Math.log(value) - this.minlval) / this.scale
     );
-  }
+  },
 };
 
 const logsl = new LogSlider({ maxpos: 100, minval: 1, maxval: 500 });
@@ -31,11 +31,12 @@ const logsl = new LogSlider({ maxpos: 100, minval: 1, maxval: 500 });
 class Component extends React.Component {
   constructor(props) {
     super(props);
-    this.input = React.createRef();
+    this.sliderRef = React.createRef();
+    this.inputRef = React.createRef();
     const value = props.default;
     this.state = {
       value,
-      position: logsl.position(value || 1).toFixed(0)
+      position: logsl.position(value || 1).toFixed(0),
     };
   }
 
@@ -63,6 +64,19 @@ class Component extends React.Component {
     this.props.onChange(value);
   };
 
+  componentDidMount() {
+    this.sliderRef.current.addEventListener('ionChange', this.onChangeSlider);
+    this.inputRef.current.addEventListener('ionChange', this.onChangeInput);
+  }
+
+  componentWillUnmount() {
+    this.sliderRef.current.removeEventListener(
+      'ionChange',
+      this.onChangeSlider
+    );
+    this.inputRef.current.removeEventListener('ionChange', this.onChangeInput);
+  }
+
   render() {
     const config = this.props.config || {};
     const message = this.props.info || config.info;
@@ -74,21 +88,22 @@ class Component extends React.Component {
             <p>{message}</p>
           </div>
         )}
-        <div className="range">
-          <input
-            type="range"
-            name="number"
+        <ion-item>
+          <ion-range
+            ref={this.sliderRef}
             min="1"
             max="100"
             onChange={this.onChangeSlider}
             value={this.state.position || 1}
           />
           <input
+            ref={this.inputRef}
+            style={{ width: '5%', minWidth: '60px' }}
             type="number"
             onChange={this.onChangeInput}
             value={this.state.value || ''}
           />
-        </div>
+        </ion-item>
       </div>
     );
   }
@@ -98,7 +113,7 @@ Component.propTypes = {
   default: PropTypes.number,
   config: PropTypes.any.isRequired,
   info: PropTypes.string,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Component;

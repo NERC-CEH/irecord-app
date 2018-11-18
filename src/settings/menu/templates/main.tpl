@@ -1,9 +1,9 @@
 <ion-item-divider><%= t("Records") %></ion-item-divider>
-<ion-item id="submit-all-btn" detail>
+<ion-item id="submit-all-btn">
   <span slot="start" class="icon icon-send"></span>
   <%= t("Submit All") %>
 </ion-item>
-<ion-item id="delete-all-btn" detail>
+<ion-item id="delete-all-btn">
   <span slot="start" class="icon icon-delete"></span>
   <%= t("Remove All Saved") %>
 </ion-item>
@@ -53,7 +53,7 @@
   <%- obj.useExperiments ? 'checked' : '' %>>
   </ion-toggle>
 </ion-item>
-<ion-item id="app-reset-btn" detail>
+<ion-item id="app-reset-btn">
   <span slot="start" class="icon icon-undo"></span>
   <%= t("Reset") %>
 </ion-item>

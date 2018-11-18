@@ -1,13 +1,15 @@
-<div class="input-group">
-  <div class="input-row">
-    <label class="media-object pull-left icon icon-address"></label>
-    <input id="location-name" name="name" type="text" placeholder="Location Name" value="<%- obj.name %>">
-  </div>
-  <div class="table-view-cell">
-    <%= t("Favourite") %>
-    <div id="favourite-btn" data-setting="favourite"
-         class="toggle no-yes <%- obj.favourite ? 'active' : '' %>">
-      <div class="toggle-handle"></div>
-    </div>
-  </div>
-</div>
+<ion-list lines="full">
+  <ion-item>
+    <ion-input
+      id="location-name"
+      type="text"
+      placeholder="Location Name"
+      value="<%- obj.name %>"
+    />
+  </ion-item>
+  <ion-item>
+    <ion-label><%= t("Favourite") %></ion-label>
+    <ion-toggle slot="end" id="favourite-btn" <%- obj.favourite ? 'checked' : '' %> />
+  </ion-item>
+</ion-list>
+

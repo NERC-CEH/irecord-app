@@ -39,14 +39,14 @@ const API = {
         buttons: [
           {
             title: 'Cancel',
-            type: 'clear',
+            fill: 'clear',
             onClick() {
               radio.trigger('app:dialog:hide');
             }
           },
           {
             title: 'Reset',
-            class: 'btn-negative',
+            color: 'danger',
             onClick() {
               // delete all
               API.resetApp(() => {
@@ -84,14 +84,14 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
-          type: 'clear',
+          fill: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           }
         },
         {
           title: 'Remove',
-          class: 'btn-negative',
+          color: 'danger',
           onClick() {
             Log('Settings:Menu:Controller: deleting all samples.');
 
@@ -122,7 +122,7 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
-          type: 'clear',
+          fill: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           }

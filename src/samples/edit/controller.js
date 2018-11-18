@@ -192,14 +192,14 @@ const API = {
       buttons: [
         {
           title: 'Cancel',
-          type: 'clear',
+          fill: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
           }
         },
         {
           title: 'Delete',
-          class: 'btn-negative',
+          color: 'danger',
           onClick() {
             // show loader
             photo.destroy({

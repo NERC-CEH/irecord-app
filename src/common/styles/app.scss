@@ -1,12 +1,11 @@
 /******************************************************************************
  * App wide styles. Only place where tag only selectors allowed.
  *****************************************************************************/
+@import '../../../node_modules/@ionic/core/css/ionic.bundle.css';
 @import '../vendor/bootstrap/css/bootstrap.css';
-@import '../vendor/ionic/css/ionic.css';
 
 @import './_variables.scss';
 @import './bootstrap-ext.scss';
-@import './ionic-ext.scss';
 @import './app-wide.scss';
 @import './cordova.scss';
 
@@ -864,4 +863,14 @@ header .pull-right {
 
 ion-item > span.icon {
   margin-left: -13px !important;
+}
+
+ion-item-sliding {
+  ion-item {
+    --background: white;
+  }
+}
+
+input[type="search"] {
+  margin-bottom: 0;
 }

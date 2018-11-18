@@ -3,12 +3,12 @@
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import Validate from 'helpers/validate';
-import './styles.scss';
 import template from './templates/main.tpl';
 
 export default Marionette.View.extend({
   template,
 
+  attributes: { style: 'text-align: center' },
   events: {
     'click #reset-button': 'reset'
   },

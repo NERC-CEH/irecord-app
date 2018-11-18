@@ -35,7 +35,7 @@ function showEditPopup(location) {
     getValues() {
       return {
         name: StringHelp.escape(this.$el.find('#location-name').val()),
-        favourite: this.$el.find('#favourite-btn').hasClass('active'),
+        favourite: this.$el.find('#favourite-btn').prop('checked'),
       };
     },
 
@@ -59,7 +59,7 @@ function showEditPopup(location) {
     buttons: [
       {
         title: 'Cancel',
-        type: 'clear',
+        fill: 'clear',
         onClick() {
           radio.trigger('app:dialog:hide');
         },
@@ -85,7 +85,7 @@ function showDeletePopup() {
       buttons: [
         {
           title: 'Cancel',
-          type: 'clear',
+          fill: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
             resolve();
@@ -93,7 +93,7 @@ function showDeletePopup() {
         },
         {
           title: 'Delete',
-          class: 'btn-negative',
+          color: 'danger',
           onClick() {
             radio.trigger('app:dialog:hide');
             resolve(true);
@@ -172,7 +172,7 @@ class Component extends React.Component {
             </ion-item>
 
             <ion-item-options side="end">
-              <ion-item-option onClick={() => this.deleteLocation(id)}>
+              <ion-item-option color="danger" onClick={() => this.deleteLocation(id)}>
                 <div className="edit icon icon-delete" />
               </ion-item-option>
               <ion-item-option onClick={() => this.editLocation(id)}>

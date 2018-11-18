@@ -88,7 +88,8 @@ const StandardDialogView = Marionette.View.extend({
           attributes() {
             return {
               expand: 'full',
-              fill: this.model.get('type') || 'solid'
+              fill: this.model.get('fill') || 'solid',
+              color: this.model.get('color') || 'primary'
             };
           },
           tagName: 'ion-button',

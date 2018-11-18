@@ -10,14 +10,14 @@ function showLogoutConfirmationDialog(callbackIfTrue) {
     buttons: [
       {
         title: 'Cancel',
-        type: 'clear',
+        fill: 'clear',
         onClick() {
           radio.trigger('app:dialog:hide');
         }
       },
       {
         title: 'Logout',
-        class: 'btn-negative',
+        color: 'danger',
         onClick() {
           callbackIfTrue();
           radio.trigger('app:dialog:hide');
