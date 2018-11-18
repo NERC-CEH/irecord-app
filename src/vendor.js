@@ -14,7 +14,6 @@ import 'jquery';
 import 'lodash';
 import 'typeahead'; // eslint-disable-line
 import 'bootstrap';
-import 'ratchet';
 import 'hammerjs';
 import 'underscore'; // eslint-disable-line
 import 'backbone';
