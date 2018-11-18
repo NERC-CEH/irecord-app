@@ -16,7 +16,7 @@ const SPECIES_COMMON_SYN_INDEX = 3; // in species and bellow
  * @param searchPhrase
  * @returns {Array}
  */
-function searchSciNames(
+function search(
   species,
   searchPhrase,
   results = [],
@@ -43,14 +43,7 @@ function searchSciNames(
 
   // check if hybrid eg. X Cupressocyparis
   if (!hybridRun && searchPhrase.match(/X\s.*/i)) {
-    searchSciNames(
-      species,
-      searchPhrase,
-      results,
-      maxResults,
-      true,
-      informalGroups
-    );
+    search(species, searchPhrase, results, maxResults, true, informalGroups);
   } else if (hybridRun) {
     // run with different first word
     firstWord = helpers.normalizeFirstWord(searchPhrase);
@@ -106,7 +99,7 @@ function searchSciNames(
           found_in_name: 'scientific_name',
           warehouse_id: speciesEntry[WAREHOUSE_INDEX],
           group: speciesEntry[GROUP_INDEX],
-          scientific_name: speciesEntry[SCI_NAME_INDEX]
+          scientific_name: speciesEntry[SCI_NAME_INDEX],
         };
         results.push(fullRes);
       }
@@ -135,7 +128,7 @@ function searchSciNames(
                   speciesInArray[SPECIES_SCI_NAME_INDEX]
                 }`,
                 common_name: speciesInArray[SPECIES_COMMON_INDEX],
-                synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX]
+                synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
               };
               results.push(fullRes);
             }
@@ -151,7 +144,7 @@ function searchSciNames(
                 speciesInArray[SPECIES_SCI_NAME_INDEX]
               }`,
               common_name: speciesInArray[SPECIES_COMMON_INDEX],
-              synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX]
+              synonym: speciesInArray[SPECIES_COMMON_SYN_INDEX],
             };
             results.push(fullRes);
           }
@@ -166,4 +159,21 @@ function searchSciNames(
   return results;
 }
 
-export { searchSciNames as default };
+function searchMulti(
+  species,
+  searchPhrase,
+  results = [],
+  maxResults,
+  hybridRun,
+  informalGroups = []
+) {
+  search(species, searchPhrase, results, maxResults, hybridRun, informalGroups);
+
+  const is5CharacterShortcut = searchPhrase.length === 5;
+  if (is5CharacterShortcut && results.length < maxResults) {
+    const searchPhraseShortcut = `${searchPhrase.substr(0,3)} ${searchPhrase.substr(3,4)}`;
+    search(species, searchPhraseShortcut, results, maxResults, hybridRun, informalGroups)
+  }
+}
+
+export { searchMulti as default };
