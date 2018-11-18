@@ -49,8 +49,8 @@ App.on('before:start', () => {
       header: new HideableRegion({ el: '#header' }),
       footer: new HideableRegion({ el: '#footer' }),
       main: '#main',
-      dialog: DialogRegion
-    }
+      dialog: DialogRegion,
+    },
   });
 
   App.regions = new RegionContainer();
@@ -152,24 +152,27 @@ radio.on('app:header', view => {
     return;
   }
 
+  $(region.$el[0]).show();
   ReactDOM.render(view, region.$el[0]);
 });
 
 radio.on('app:footer', view => {
   App.regions.getRegion('footer').show(view);
 });
+
 radio.on('app:main:hide', options => {
   App.regions
     .getRegion('main')
     .hide(options)
     .empty();
 });
+
 radio.on('app:header:hide', options => {
-  App.regions
-    .getRegion('header')
-    .hide(options)
-    .empty();
+  const region = App.regions.getRegion('header');
+  ReactDOM.unmountComponentAtNode(region.$el[0]);
+  region.hide(options).empty();
 });
+
 radio.on('app:footer:hide', options => {
   App.regions
     .getRegion('footer')
@@ -180,6 +183,7 @@ radio.on('app:footer:hide', options => {
 radio.on('app:loader', () => {
   App.regions.getRegion('dialog').showLoader();
 });
+
 radio.on('app:loader:hide', () => {
   App.regions.getRegion('dialog').hideLoader();
 });
@@ -188,7 +192,7 @@ radio.on('app:404:show', () => {
   CommonController.show({
     App,
     route: 'common/404',
-    title: 404
+    title: 404,
   });
 });
 
