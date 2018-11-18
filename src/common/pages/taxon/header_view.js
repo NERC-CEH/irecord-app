@@ -27,7 +27,7 @@ export default Marionette.View.extend({
 
   serializeData() {
     const filters = this.model.get('taxonGroupFilters');
-    const filterOn = filters.length;
+    const filterOn = filters.length || this.model.get('searchNamesOnly');
 
     return { filterOn, disableFilters: this.options.disableFilters };
   }

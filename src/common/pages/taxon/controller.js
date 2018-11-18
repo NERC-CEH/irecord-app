@@ -42,13 +42,21 @@ const API = {
 
     headerView.on('filter', () => {
       const filtersView = new FiltersView({ model: appModel });
-      filtersView.on('filter', filter => {
+      filtersView.on('filter:taxon', filter => {
         if (!filter) {
           Log('Taxon:Controller: No filter provided', 'e');
           return;
         }
         Log('Taxon:Controller: Filter set');
         appModel.toggleTaxonFilter(filter);
+
+        // reset header
+        API._showHeaderView(options);
+      });
+
+       filtersView.on('filter:name', filter => {
+        Log('Taxon:Controller: Filter for name set');
+        appModel.set('searchNamesOnly', filter).save();
 
         // reset header
         API._showHeaderView(options);
@@ -80,6 +88,13 @@ const API = {
     });
     mainView.on('taxon:selected', options.onSuccess, this);
     mainView.on('taxon:searched', searchPhrase => {
+      let namesFilter;
+      if (options.scientificOnly) {
+        namesFilter = 'scientific';
+      } else {
+        namesFilter = appModel.get('searchNamesOnly');
+      }
+
       // get taxa group filters
       let informalGroups = options.informalGroups;
       if (!informalGroups) {
@@ -89,7 +104,8 @@ const API = {
 
       // search
       SpeciesSearchEngine.search(searchPhrase, {
-        informalGroups
+        informalGroups,
+        namesFilter
       }).then(suggestions => {
         const deDuped = API.deDuplicateSuggestions(suggestions);
         mainView.updateSuggestions(

@@ -22,7 +22,9 @@ const API = {
       .then(({ default: data }) => {
         species = data;
       })
-      .then(() => import(/* webpackChunkName: "data" */ 'common/data/species_names.data.json'))
+      .then(() =>
+        import(/* webpackChunkName: "data" */ 'common/data/species_names.data.json')
+      )
       .then(({ default: data }) => {
         commonNamePointers = data;
       })
@@ -71,7 +73,8 @@ const API = {
     }
 
     const maxResults = options.maxResults || MAX;
-    const scientificOnly = options.scientificOnly;
+    const scientificOnly = options.namesFilter === 'scientific';
+    const commonNameOnly = options.namesFilter === 'common';
     const informalGroups = options.informalGroups || [];
 
     // normalize the search phrase
@@ -81,7 +84,14 @@ const API = {
     const isScientific = helpers.isPhraseScientific(normSearchPhrase);
     if (isScientific || scientificOnly) {
       // search sci names
-      searchSciNames(species, normSearchPhrase, results, maxResults, null, informalGroups);
+      searchSciNames(
+        species,
+        normSearchPhrase,
+        results,
+        maxResults,
+        null,
+        informalGroups
+      );
     } else {
       // search common names
       results = searchCommonNames(
@@ -90,18 +100,25 @@ const API = {
         normSearchPhrase,
         MAX,
         informalGroups
-      ); // eslint-disable-line
+      );
 
       // if not enough
-      if (results.length <= MAX) {
+      if (results.length <= MAX && !commonNameOnly) {
         // search sci names
-        searchSciNames(species, normSearchPhrase, results, MAX, null, informalGroups);
+        searchSciNames(
+          species,
+          normSearchPhrase,
+          results,
+          MAX,
+          null,
+          informalGroups
+        );
       }
     }
 
     // return results in the order
     return Promise.resolve(results);
-  }
+  },
 };
 
 _.extend(API, Backbone.Events);

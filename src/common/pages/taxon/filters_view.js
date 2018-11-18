@@ -1,7 +1,6 @@
 /** ****************************************************************************
  * Species List filter view.
  **************************************************************************** */
-import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import informalGroups from 'common/data/informal_groups.data';
 import template from './templates/filters.tpl';
@@ -12,13 +11,18 @@ export default Marionette.View.extend({
   attributes: { lines: 'full' },
   template,
   events: {
-    'ionChange ion-checkbox': 'saveFilter'
+    'ionChange ion-checkbox': 'saveTaxonFilter',
+    'ionChange ion-radio-group': 'saveNameFilter',
   },
 
-  saveFilter(e) {
-    const $input = $(e.target);
-    const filter = parseInt($input.val(), 10);
-    this.trigger('filter', filter);
+  saveTaxonFilter(e) {
+    const filter = parseInt(e.target.value, 10);
+    this.trigger('filter:taxon', filter);
+  },
+
+  saveNameFilter(e) {
+    const filter = e.target.value;
+    this.trigger('filter:name', filter);
   },
 
   serializeData() {
@@ -27,6 +31,7 @@ export default Marionette.View.extend({
       .map(id => ({ id, label: informalGroups[id] }));
 
     return {
+      searchNamesOnly: this.model.get('searchNamesOnly'),
       selectedFilters: this.model.get('taxonGroupFilters'),
       filters
     };
