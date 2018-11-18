@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { AppModel } from 'app_model';
 import { getRandomSample } from 'test-helpers'; // eslint-disable-line
 
@@ -13,7 +12,24 @@ describe('App Model', () => {
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(_.keys(appModel.attributes).length).to.be.equal(12);
+    expect(appModel.attributes).to.have.all.keys([
+      'id',
+      'showWelcome',
+      'language',
+      'locations',
+      'attrLocks',
+      'autosync',
+      'useGridRef',
+      'useGridMap',
+      'useExperiments',
+      'useGridNotifications',
+      'gridSquareUnit',
+      'feedbackGiven',
+      'taxonGroupFilters',
+      'searchNamesOnly',
+      'appVersion'
+    ]);
+
     // should set the exact value checks in the modules requiring them
     expect(appModel.get('showWelcome')).to.be.equal(true);
     expect(appModel.get('locations') instanceof Array).to.be.true;

@@ -1,0 +1,64 @@
+@import '../../common/styles/_variables.scss';
+
+span.location-favourite {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#user-locations {
+  div {
+    @include empty-list();
+  }
+
+  padding: 0;
+
+  .location {
+    width: 100%;
+    padding: 10px 0;
+
+    strong {
+      display: inline-block;
+      width: 90%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .location-date {
+      position: absolute;
+      left: 15px;
+      bottom: 0;
+      font-weight: 200;
+      font-size: $text-font-size;
+      color: $color-gray-dark;
+    }
+
+    .location-source {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      font-weight: 200;
+      font-size: $text-font-size;
+      color: $color-gray-dark;
+    }
+
+    .location-favourite {
+      position: absolute;
+      top: 10px;
+      right: 0px;
+      color: white;
+
+      &.on {
+        color: $color-yellow;
+        &:before {
+          text-shadow: none;
+        }
+      }
+
+      &:before {
+        text-shadow: 0px 0px 1px black;
+      }
+    }
+  }
+}

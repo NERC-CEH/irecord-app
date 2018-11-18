@@ -17,7 +17,7 @@ export default {
   setLocation(origLocation = {}) {
     Log('AppModel:PastLocations: setting.');
     const location = _.cloneDeep(origLocation);
-    const locations = this.get('locations');
+    const locations = this.attributes.locations;
 
     if (!location.latitude) {
       return null;
@@ -27,7 +27,6 @@ export default {
     const existingLocationIndex = this._locationIndex(location);
     if (existingLocationIndex >= 0) {
       locations.splice(existingLocationIndex, 1, location);
-      this.trigger('change:locations');
       this.save();
 
       return location;
@@ -55,27 +54,23 @@ export default {
     } // remove old one
 
     this.set('locations', locations);
-    this.trigger('change:locations');
     this.save();
 
     return location;
   },
 
-  removeLocation(location = {}) {
+  removeLocation(locationId) {
     Log('AppModel:PastLocations: removing.');
 
     const locations = this.get('locations');
 
     locations.forEach((loc, i) => {
-      if (loc.id === location.id) {
+      if (loc.id === locationId) {
         locations.splice(i, 1);
       }
     });
-    this.set('locations', locations);
+    this.set('locations', locations).save();
     this.trigger('change:locations');
-    this.save();
-
-    return location;
   },
 
   _isIdentical(loc, location) {

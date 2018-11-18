@@ -42,7 +42,7 @@ describe('Past locations extension', () => {
       expect(savedLocation.latitude).to.be.equal(location.latitude);
       expect(savedLocation.id).to.be.a('string');
 
-      appModel.removeLocation(savedLocation);
+      appModel.removeLocation(savedLocation.id);
       expect(appModel.get('locations').length).to.be.equal(0);
     });
 

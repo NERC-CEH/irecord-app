@@ -79,24 +79,6 @@
   }
 }
 
-.location-date {
-  position: absolute;
-  left: 9px;
-  bottom: 0;
-  font-weight: 200;
-  font-size: $text-font-size;
-  color: $color-gray-dark;
-}
-
-.location-source {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  font-weight: 200;
-  font-size: $text-font-size;
-  color: $color-gray-dark;
-}
-
 input#grid-ref {
   text-transform: uppercase;
 }
@@ -118,57 +100,6 @@ input#grid-ref::-moz-placeholder {
 input#grid-ref:-ms-input-placeholder {
   /* Internet Explorer 10+ */
   text-transform: none;
-}
-
-#user-locations .table-view-cell {
-  @include empty-list();
-
-  padding: 0;
-
-  .location {
-    position: relative;
-    z-index: 10;
-    padding: 11px;
-    background-color: $color-white;
-
-    //mobile swipe styles
-    transition: transform 0.3s cubic-bezier(0, 0, 0, 1);
-
-    strong {
-      display: inline-block;
-      width: 90%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .location-favourite {
-      position: absolute;
-      top: 10px;
-      right: 0px;
-      color: white;
-
-      &.on {
-        color: $color-yellow;
-        &:before {
-          text-shadow: none;
-        }
-      }
-
-      &:before {
-        text-shadow: 0px 0px 1px black;
-      }
-    }
-  }
-
-  .mobile-swipe-edit #edit,
-  .mobile-swipe-edit #delete {
-    padding-top: 20px;
-
-    &.with-name {
-      padding-top: 30px;
-    }
-  }
 }
 
 @media only screen and (max-width: 400px) {

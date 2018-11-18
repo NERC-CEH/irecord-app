@@ -1,6 +1,7 @@
 /** ****************************************************************************
  * App model. Persistent.
  **************************************************************************** */
+import _ from 'lodash';
 import Backbone from 'backbone';
 import Store from 'backbone.localstorage';
 import CONFIG from 'config';
@@ -13,6 +14,7 @@ const AppModel = Backbone.Model.extend({
   id: 'app',
 
   defaults: {
+    id: 'app',
     showWelcome: true,
     language: 'EN',
 
@@ -54,7 +56,28 @@ const AppModel = Backbone.Model.extend({
     }
 
     this.save();
-  }
+  },
+
+  save(key, val, options) {
+    let attrs;
+    if (key == null || typeof key === 'object') {
+      attrs = key;
+      options = val;
+    } else {
+      (attrs = {})[key] = val;
+    }
+
+    options = _.extend({ validate: true, parse: true }, options);
+
+    if (attrs) {
+      if (!this.set(attrs, options)) return false;
+    } else if (!this._validate(attrs, options)) {
+      return false;
+    }
+
+    const method = this.isNew() ? 'create' : 'update';
+    return this.sync(method, this, options);
+  },
 });
 
 // add previous/pased saved locations management

@@ -9,13 +9,14 @@ describe('User Model', () => {
     server = sinon.fakeServer.create();
 
     const userModel = new UserModel();
-    userModel.clear();
+    userModel.clear().set(userModel.defaults);
     userModel.save();
   });
 
   afterEach(() => {
     const userModel = new UserModel();
-    userModel.clear();
+    userModel.clear().set(userModel.defaults);
+
     userModel.save();
     server.restore();
   });

@@ -17,6 +17,7 @@ let UserModel = Backbone.Model.extend({
   id: 'user',
 
   defaults: {
+    id: 'user',
     drupalID: '',
     name: '',
     firstname: '',
@@ -180,7 +181,28 @@ let UserModel = Backbone.Model.extend({
     }
 
     return null;
-  }
+  },
+
+  save(key, val, options) {
+    let attrs;
+    if (key == null || typeof key === 'object') {
+      attrs = key;
+      options = val;
+    } else {
+      (attrs = {})[key] = val;
+    }
+
+    options = _.extend({ validate: true, parse: true }, options);
+
+    if (attrs) {
+      if (!this.set(attrs, options)) return false;
+    } else if (!this._validate(attrs, options)) {
+      return false;
+    }
+
+    const method = this.isNew() ? 'create' : 'update';
+    return this.sync(method, this, options);
+  },
 });
 
 // add activities management
