@@ -15,9 +15,9 @@ export default () => (
       </p>
       <p>
         <ul style={{ listStyleType: 'none' }}>
-          <li>David Roy (CEH)</li>
-          <li>Karolis Kazlauskis (CEH)</li>
-          <li>John van Breda (Biodiverse IT)</li>
+          <li><a href="https://www.ceh.ac.uk/staff/david-roy">David Roy (CEH)</a></li>
+          <li><a href="https://kazlauskis.com">Karolis Kazlauskis</a></li>
+          <li><a href="http://www.biodiverseit.co.uk">John van Breda (Biodiverse IT)</a></li>
           <li>Tom Humphrey (BSBI)</li>
           <li>Martin Harvey (CEH)</li>
           <li>Sally Rankin</li>
