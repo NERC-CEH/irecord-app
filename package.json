@@ -143,8 +143,8 @@
     "webpack-serve": "2.0.2"
   },
   "engines": {
-    "node": "8",
-    "npm": "5"
+    "node": ">=8",
+    "npm": ">=5"
   },
   "author": {
     "name": "Karolis Kazlauskis",
