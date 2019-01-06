@@ -1,127 +1,25 @@
-@import '../../common/styles/_variables.scss';
-
-$height: 100vh;
-$width: 500vw;
-
-#welcome {
-  position: fixed;
-  left: 0;
+ion-slides#welcome {
+  position: fixed !important;
   top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #3e3e3e;
 
-  background-color: $color-black;
+  --bullet-background-active: white;
 
-  ion-button#exit {
-    position: fixed;
-    bottom: 9px;
-    width: 100%;
-  }
+  ion-button {
+    position: absolute;
+    bottom: 37px;
 
-  #swaps-container {
-    height: $height;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-  }
-
-  #swaps {
-    display: block;
-    padding: 0;
-    margin: 0;
-    width: $width;
-
-    transition-property: transform;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-out;
-
-    /*apply a transform to kick in the hardware acceleration.  Without this, the first
-    time we add the transform you get odd rendering of the divs (half missing) */
-    transform: translate(0, 0);
-  }
-
-  #swaps .swap {
-    float: left;
-    position: relative;
-    padding: 0;
-    margin: 0;
-    width: 100vw;
-    height: $height;
-
-    /*apply a transform to kick in the hardware acceleration.  Without this, the first
-    time we add the transform you get odd rendering of the divs (half missing) */
-    transform: translate(0, 0);
-  }
-
-  #exit-button {
-    font-size: medium;
-    color: rgb(51, 38, 38);
-    background-color: rgba(245, 245, 245, 0.86);
-    border-color: #e8e8e8;
-    max-width: 500px;
-    width: 100%;
-    height: 56px;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .progress {
-    position: fixed;
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-    bottom: 70px;
-    left: 43%;
-  }
-
-  .circle {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: rgba(0, 0, 0, 0.15);
-    -moz-border-radius: 70px;
-    -webkit-border-radius: 70px;
-    border-radius: 70px;
-  }
-
-  .circle-full {
-    background: $color-white;
-  }
-
-  .dark {
-    background-color: rgba(0, 0, 0, 0.03);
-  }
-
-  .swap {
-    text-align: center;
-  }
-
-  .first {
-    background: url('images/welcome_1.jpg') no-repeat;
-    background-position: left;
-    background-size: cover;
-  }
-
-  .second {
-    background: url('images/welcome_2.jpg') no-repeat;
-    background-position: left;
-    background-size: cover;
-  }
-
-  .third {
-    background: url('images/welcome_3.jpg') no-repeat;
-    background-position: left;
-    background-size: cover;
-  }
-
-  .fourth {
-    background: url('images/welcome_4.jpg') no-repeat;
-    background-position: left;
-    background-size: cover;
-  }
-
-  .fifth {
-    background: url('images/welcome_5.jpg') no-repeat;
-    background-position: left;
-    background-size: cover;
+    &.skip {
+      bottom: 0;
+      left: 9%;
+    }
+    &.next {
+      bottom: 0;
+      right: 9%;
+    }
   }
 
   .message {
@@ -149,28 +47,59 @@ $width: 500vw;
 
   $bottom: 16vh;
 
-  .first .message {
-    text-align: left;
-    bottom: $bottom;
-  }
+  ion-slide {
+    &.first {
+      background: url('images/welcome_1.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
 
-  .second .message {
-    text-align: left;
-    top: 10vh;
-  }
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
 
-  .third .message {
-    text-align: left;
-    bottom: $bottom;
-  }
+    &.second {
+      background: url('images/welcome_2.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
 
-  .fourth .message {
-    text-align: left;
-    bottom: $bottom;
-  }
+      .message {
+        text-align: left;
+        top: 10vh;
+      }
+    }
 
-  .fifth .message {
-    text-align: left;
-    bottom: $bottom;
+    &.third {
+      background: url('images/welcome_3.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
+
+    &.fourth {
+      background: url('images/welcome_4.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
+
+    &.fifth {
+      background: url('images/welcome_5.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
   }
 }
