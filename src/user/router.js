@@ -47,7 +47,7 @@ const Router = Marionette.AppRouter.extend({
 
       Log('User:Register: visited.');
       radio.trigger('app:header', <Header>Register</Header>);
-      radio.trigger('app:main', <Register />);
+      radio.trigger('app:main', <Register userModel={userModel}/>);
       radio.trigger('app:footer:hide');
     },
     'user/reset(/)': () => {

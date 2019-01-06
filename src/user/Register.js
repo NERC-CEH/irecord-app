@@ -1,11 +1,13 @@
 import React from 'react';
 import radio from 'radio';
+import PropTypes from 'prop-types';
+import Validate from 'helpers/validate';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
-import userModel from 'user_model';
 import $ from 'jquery';
 import _ from 'lodash';
 import CONFIG from 'config';
+import Toggle from 'common/Components/Toggle';
 
 /**
  * Starts an app sign in to the Drupal site process.
@@ -15,7 +17,7 @@ import CONFIG from 'config';
  * It is important that the app authorises itself providing
  * api_key for the mentioned module.
  */
-function register(formData) {
+function register(formData, userModel) {
   Log('User:Register: registering.');
 
   // app logins
@@ -69,6 +71,46 @@ function register(formData) {
   return promise;
 }
 
+function validateForm(attrs) {
+  const errors = {};
+
+  if (!attrs.email) {
+    errors.email = t("can't be blank");
+  } else if (!Validate.email(attrs.email)) {
+    errors.email = 'invalid';
+  }
+
+  if (!attrs.firstname) {
+    errors.firstname = t("can't be blank");
+  }
+
+  if (!attrs.secondname) {
+    errors.secondname = t("can't be blank");
+  }
+
+  if (!attrs.password) {
+    errors.password = t("can't be blank");
+  } else if (attrs.password.length < 2) {
+    errors.password = t('is too short');
+  }
+
+  if (!attrs.passwordConfirm) {
+    errors.passwordConfirm = t("can't be blank");
+  } else if (attrs.passwordConfirm !== attrs.password) {
+    errors.passwordConfirm = t('passwords are not equal');
+  }
+
+  if (!attrs.termsAgree) {
+    errors.termsAgree = t('you must agree to the terms');
+  }
+
+  if (!_.isEmpty(errors)) {
+    return errors;
+  }
+
+  return null;
+}
+
 class Component extends React.Component {
   constructor() {
     super();
@@ -77,7 +119,7 @@ class Component extends React.Component {
     this.userSecondname = React.createRef();
     this.userPassword = React.createRef();
     this.userPasswordConfirm = React.createRef();
-    this.termsAgree = React.createRef();
+    this.onTermsAgree = this.onTermsAgree.bind(this);
     this.state = {};
   }
 
@@ -93,6 +135,8 @@ class Component extends React.Component {
   }
 
   onSubmit() {
+    const { userModel } = this.props;
+
     if (!Device.isOnline()) {
       radio.trigger('app:dialog', {
         title: 'Sorry',
@@ -107,17 +151,17 @@ class Component extends React.Component {
       secondname: this.userSecondname.current.value,
       password: this.userPassword.current.value,
       passwordConfirm: this.userPasswordConfirm.current.value,
-      termsAgree: this.termsAgree.current.checked,
+      termsAgree: this.state.termsAgree,
     };
 
-    const validationError = userModel.validateRegistration(data);
+    const validationError = validateForm(data);
     this.updateInputValidation(validationError || {});
     if (validationError) {
       return;
     }
 
     radio.trigger('app:loader');
-    register(data)
+    register(data, userModel)
       .then(() => {
         radio.trigger('app:dialog', {
           title: 'Welcome aboard!',
@@ -142,6 +186,10 @@ class Component extends React.Component {
         Log(err, 'e');
         radio.trigger('app:dialog:error', err);
       });
+  }
+
+  onTermsAgree(checked) {
+    this.setState({ termsAgree: checked });
   }
 
   render() {
@@ -204,16 +252,23 @@ class Component extends React.Component {
               </a>
             </ion-label>
 
-            <ion-toggle slot="end" ref={this.termsAgree} />
+            <Toggle onToggle={this.onTermsAgree} />
           </ion-item>
         </ion-list>
 
-        <ion-button onClick={this.onSubmit.bind(this)}>
-          {t('Create')}
+        <ion-button
+          onClick={this.onSubmit.bind(this)}
+          style={{ margin: '50px 0' }}
+          disabled={!this.state.termsAgree}>
+          {t('Register')}
         </ion-button>
       </div>
     );
   }
 }
+
+Component.propTypes = {
+  userModel: PropTypes.object.isRequired,
+};
 
 export default Component;
