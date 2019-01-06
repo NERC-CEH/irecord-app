@@ -168,7 +168,7 @@ if (process.env.NODE_ANALYZE) {
 }
 
 if (process.env.APP_MANUAL_TESTING) {
-  config.entry.push('../test/manual-test-utils.js');
+  config.entry.push('./test/manual-test-utils.js');
 }
 
 if (process.env.APP_SCREENSHOTS) {
