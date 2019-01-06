@@ -10,7 +10,7 @@ import userModel from 'user_model';
 import Header from '../common/Components/Header';
 import Login from './Login';
 import Register from './Register';
-import ResetController from './reset/controller';
+import Reset from './Reset';
 import ActivitiesController from '../common/pages/activities/controller';
 import Statistics from './Statistics';
 import StatisticsHeader from './Statistics/StatisticsHeader';
@@ -50,7 +50,12 @@ const Router = Marionette.AppRouter.extend({
       radio.trigger('app:main', <Register />);
       radio.trigger('app:footer:hide');
     },
-    'user/reset(/)': ResetController.show,
+    'user/reset(/)': () => {
+      Log('User:Reset: visited.');
+      radio.trigger('app:header', <Header>Reset</Header>);
+      radio.trigger('app:main', <Reset />);
+      radio.trigger('app:footer:hide');
+    },
     'user/*path': () => {
       radio.trigger('app:404:show');
     }
