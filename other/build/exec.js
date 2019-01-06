@@ -36,12 +36,12 @@ module.exports = function(grunt) {
         return `cd dist/cordova && 
             mkdir -p dist && 
             cordova --release build android && 
-            cd platforms/android/build/outputs/apk &&
+            cd platforms/android/build/outputs/apk/release/ &&
             jarsigner -sigalg SHA1withRSA -digestalg SHA1 
               -keystore ${process.env.KEYSTORE} 
               -storepass ${pass} android-release-unsigned.apk irecord &&
             zipalign 4 android-release-unsigned.apk main.apk && 
-            mv -f main.apk ../../../../../dist/`;
+            mv -f main.apk ../../../../../../dist/`;
       },
 
       stdout: true,
