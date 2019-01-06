@@ -136,7 +136,10 @@ radio.on('app:main', view => {
     return;
   }
 
-  ReactDOM.render(view, region.$el[0]);
+  if (region.currentView) {
+    region.currentView.destroy();
+  }
+  ReactDOM.render(view, document.getElementById('main'));
 });
 
 radio.on('app:header', view => {
@@ -152,12 +155,31 @@ radio.on('app:header', view => {
     return;
   }
 
+  if (region.currentView) {
+    region.currentView.destroy();
+  }
   $(region.$el[0]).show();
   ReactDOM.render(view, region.$el[0]);
 });
 
 radio.on('app:footer', view => {
-  App.regions.getRegion('footer').show(view);
+  const region = App.regions.getRegion('footer');
+  if (view instanceof Backbone.View) {
+    if (ReactDOM.unmountComponentAtNode && region.$el[0]) {
+      ReactDOM.unmountComponentAtNode(region.$el[0]);
+    } else {
+      // TODO: for some reason the unmount function is sometimes not found
+      Log("App: footer view React DOM unmount did't happen", 'w');
+    }
+    region.show(view);
+    return;
+  }
+
+  if (region.currentView) {
+    region.currentView.destroy();
+  }
+  $(region.$el[0]).show();
+  ReactDOM.render(view, region.$el[0]);
 });
 
 radio.on('app:main:hide', options => {
@@ -174,10 +196,9 @@ radio.on('app:header:hide', options => {
 });
 
 radio.on('app:footer:hide', options => {
-  App.regions
-    .getRegion('footer')
-    .hide(options)
-    .empty();
+  const region = App.regions.getRegion('footer');
+  ReactDOM.unmountComponentAtNode(region.$el[0]);
+  region.hide(options).empty();
 });
 
 radio.on('app:loader', () => {
