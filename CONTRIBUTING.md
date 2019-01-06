@@ -154,6 +154,7 @@ npm run build:cordova:android
 
 `npm i chromedriver@2.34.1`
 
-`export APP_INDICIA_API_HOST=localhost:4545`
+`export APP_FORCE=true && export APP_INDICIA_API_HOST=localhost:4545`
 
+`npm run build:cordova`
 `npm run test:acceptance`
