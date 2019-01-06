@@ -13,8 +13,6 @@ import 'core-js/fn/string/includes';
 import 'jquery';
 import 'lodash';
 import 'typeahead'; // eslint-disable-line
-import 'bootstrap';
-import 'hammerjs';
 import 'underscore'; // eslint-disable-line
 import 'backbone';
 import 'backbone.localstorage';

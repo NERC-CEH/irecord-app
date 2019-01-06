@@ -98,6 +98,7 @@ const API = {
       );
     });
     mainView.on('childview:sample:delete', childView => {
+      childView.el.closeOpened();
       API.sampleDelete(childView.model);
     });
     radio.trigger('app:main', mainView);

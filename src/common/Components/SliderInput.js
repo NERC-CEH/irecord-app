@@ -41,27 +41,33 @@ class Component extends React.Component {
   }
 
   onChangeInput = e => {
-    const value = parseInt(e.target.value, 10);
+    let value = parseInt(e.target.value, 10);
     if (Number.isNaN(value)) {
-      return;
+      value = null;
     }
 
-    const position = logsl.position(value);
-    this.setState({ value, position });
-
-    this.props.onChange(value);
+    const position = value > 0 ? logsl.position(value) : null;
+    if (this.state.sliderUpdating) {
+      this.setState({ value, sliderUpdating: false });
+    } else {
+      this.setState({ position, value, inputUpdating: true });
+      this.props.onChange(value);
+    }
   };
 
   onChangeSlider = e => {
-    const position = parseInt(e.target.value, 10);
+    let position = parseInt(e.target.value, 10);
     if (Number.isNaN(position)) {
-      return;
+      position = null;
     }
 
-    const value = logsl.value(position);
-    this.setState({ position, value });
-
-    this.props.onChange(value);
+    const value = position > 0 ? logsl.value(position) : null;
+    if (this.state.inputUpdating) {
+      this.setState({ position, inputUpdating: false });
+    } else {
+      this.setState({ position, value, sliderUpdating: true });
+      this.props.onChange(value);
+    }
   };
 
   componentDidMount() {

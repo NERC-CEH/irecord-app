@@ -6,29 +6,30 @@ import { getRandomSample } from 'test-helpers'; // eslint-disable-line
 describe('App Model', () => {
   before(() => {
     const appModel = new AppModel();
-    appModel.clear();
-    appModel.save();
+    appModel.resetDefaults();
   });
 
   it('has default values', () => {
     const appModel = new AppModel();
-    expect(appModel.attributes).to.have.all.keys([
-      'id',
-      'showWelcome',
-      'language',
-      'locations',
-      'attrLocks',
-      'autosync',
-      'useGridRef',
-      'useGridMap',
-      'useExperiments',
-      'useGridNotifications',
-      'gridSquareUnit',
-      'feedbackGiven',
-      'taxonGroupFilters',
-      'searchNamesOnly',
-      'appVersion'
-    ]);
+    console.log(Object.keys(appModel.attrs));
+    expect(appModel.attrs).to.have.all.keys(
+      [
+        'showWelcome',
+        'language',
+        'locations',
+        'attrLocks',
+        'autosync',
+        'useGridRef',
+        'useGridMap',
+        'useExperiments',
+        'useTraining',
+        'useGridNotifications',
+        'gridSquareUnit',
+        'feedbackGiven',
+        'taxonGroupFilters',
+        'searchNamesOnly',
+      ]
+    );
 
     // should set the exact value checks in the modules requiring them
     expect(appModel.get('showWelcome')).to.be.equal(true);
@@ -50,7 +51,7 @@ describe('App Model', () => {
         description: '',
         type: '',
         activity_from_date: '2015-01-01',
-        activity_to_date: '2020-01-01'
+        activity_to_date: '2020-01-01',
       };
       return activity;
     }

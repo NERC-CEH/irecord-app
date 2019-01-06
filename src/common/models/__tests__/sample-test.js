@@ -8,7 +8,7 @@ import Device from 'helpers/device';
 import { coreAttributes } from 'common/config/surveys/general';
 import bryophytesSyrvey from 'common/config/surveys/general/bryophytes';
 import dragonfliesSyrvey from 'common/config/surveys/general/dragonflies';
-import { savedSamples, Collection } from '../../saved_samples';
+import savedSamples, { Collection } from '../../saved_samples';
 import store from '../../store';
 
 /* eslint-disable no-unused-expressions */

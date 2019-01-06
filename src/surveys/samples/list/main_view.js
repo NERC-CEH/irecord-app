@@ -5,7 +5,7 @@ import Marionette from 'backbone.marionette';
 import radio from 'radio';
 import _MainView, {
   SampleView as _SampleView
-} from '../../../samples/list/main_view';
+} from '../../list/main_view_old';
 import SlidingView from '../../../common/views/sliding_view';
 import './styles.scss';
 import template from './templates/main.tpl';
@@ -13,8 +13,7 @@ import templateSample from './templates/sample.tpl';
 import templateNone from './templates/list-none.tpl';
 
 const SampleView = Marionette.View.extend({
-  tagName: 'li',
-  className: 'table-view-cell swipe',
+  tagName: 'ion-item-sliding',
 
   template: templateSample,
 
@@ -24,19 +23,17 @@ const SampleView = Marionette.View.extend({
 
   modelEvents: _SampleView.prototype.modelEvents,
 
-  photoView: _SampleView.prototype.photoView,
-  onRender: _SampleView.prototype.onRender,
   remove: _SampleView.prototype.remove,
 
   serializeData() {
     const sample = this.model;
     const occ = sample.getOccurrence();
-    const media = occ.media;
-    let img = media.length && media.at(0).get('thumbnail');
+    const media = occ.media.at(0);
+    let img = media && media.get('thumbnail');
 
     if (!img) {
       // backwards compatibility
-      img = media.length && media.at(0).getURL();
+      img = media && media.getURL();
     }
     const specie = occ.get('taxon') || {};
 
@@ -74,8 +71,9 @@ const SampleView = Marionette.View.extend({
 });
 
 const NoSamplesView = Marionette.View.extend({
-  tagName: 'li',
-  className: 'table-view-cell empty',
+  tagName: 'div',
+  className: 'empty',
+  id: 'empty-message',
   template: templateNone,
 
   triggers: {

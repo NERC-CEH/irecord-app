@@ -2,76 +2,76 @@
  * User model describing the user model on backend. Persistent.
  **************************************************************************** */
 import Backbone from 'backbone';
-import Store from 'backbone.localstorage';
-import CONFIG from 'config';
 import Analytics from 'helpers/analytics';
 import Log from 'helpers/log';
-import Validate from 'helpers/validate';
-import _ from 'lodash';
-import { observable } from 'mobx';
+import { observable, set as setMobXAttrs } from 'mobx';
+import { getStore } from 'common/store';
 import activitiesExtension from './user_model_activities_ext';
 import statisticsExtension from './user_model_statistics_ext';
 
-let UserModel = Backbone.Model.extend({
-  // eslint-disable-line
-  id: 'user',
+const getDefaultAttrs = () => ({
+  isLoggedIn: false,
+  drupalID: '',
+  name: '',
+  firstname: '',
+  secondname: '',
+  email: '',
+  password: '',
 
-  defaults: {
-    id: 'user',
-    drupalID: '',
-    name: '',
-    firstname: '',
-    secondname: '',
-    email: '',
-    password: '',
+  activities: [],
 
-    activities: [],
-
-    statistics: {
-      synced_on: null,
-      species: [],
-      speciesRaw: []
-    }
+  statistics: {
+    synced_on: null,
+    species: [],
+    speciesRaw: [],
   },
+});
 
-  metadata: {
-    synchronizingStatistics: null
-  },
+class UserModel {
+  @observable attrs = getDefaultAttrs();
 
-  localStorage: new Store(CONFIG.name),
-
-  /**
-   * Initializes the user.
-   */
-  initialize() {
+  constructor() {
     Log('UserModel: initializing');
-    this.attributes = observable(this.attributes);
-    this.metadata = observable(this.metadata);
 
-    this.fetch();
-    this.syncActivities();
-    this.syncStats();
-  },
+    this._init = getStore()
+      .then(store => store.getItem('user'))
+      .then(userStr => {
+        const user = JSON.parse(userStr);
+        if (!user) {
+          Log('UserModel: persisting for the first time');
+          this.save();
+        } else {
+          setMobXAttrs(this.attrs, user.attrs);
+        }
+
+        this.statisticsExtensionInit();
+        this.activitiesExtensionInit();
+      });
+  }
+
+  get(name) {
+    return this.attrs[name];
+  }
+
+  set(name, value) {
+    this.attrs[name] = value;
+    return this;
+  }
+
+  save() {
+    const userStr = JSON.stringify({
+      attrs: this.attrs,
+    });
+    return getStore().then(store => store.setItem('user', userStr));
+  }
 
   /**
    * Resets the user login information.
    */
   logOut() {
-    Log('UserModel: logging out.');
-
-    this.set('email', '');
-    this.set('password', '');
-    this.set('name', '');
-    this.set('firstname', '');
-    this.set('secondname', '');
-
-    this.resetActivities();
-    this.resetStats();
-
-    this.save();
-    this.trigger('logout');
-    Analytics.trackEvent('User', 'logout');
-  },
+    setMobXAttrs(this.attrs, getDefaultAttrs());
+    return this.save();
+  }
 
   /**
    * Sets the app login state of the user account.
@@ -88,128 +88,44 @@ let UserModel = Backbone.Model.extend({
     this.set('name', user.name || '');
     this.set('firstname', user.firstname || '');
     this.set('secondname', user.secondname || '');
-    this.save();
+    this.set('isLoggedIn', true);
 
-    this.trigger('login');
     this.syncActivities();
     this.syncStats();
+
     Analytics.trackEvent('User', 'login');
-  },
+
+    return this.save();
+  }
 
   /**
    * Returns user contact information.
    */
   hasLogIn() {
-    return this.get('password');
-  },
+    return this.attrs.isLoggedIn;
+  }
 
   getUser() {
     return this.get('email');
-  },
+  }
 
   getPassword() {
     return this.get('password');
-  },
+  }
 
-  validateRegistration(attrs) {
-    const errors = {};
-
-    if (!attrs.email) {
-      errors.email = t("can't be blank");
-    } else if (!Validate.email(attrs.email)) {
-      errors.email = 'invalid';
-    }
-
-    if (!attrs.firstname) {
-      errors.firstname = t("can't be blank");
-    }
-
-    if (!attrs.secondname) {
-      errors.secondname = t("can't be blank");
-    }
-
-    if (!attrs.password) {
-      errors.password = t("can't be blank");
-    } else if (attrs.password.length < 2) {
-      errors.password = t('is too short');
-    }
-
-    if (!attrs.passwordConfirm) {
-      errors.passwordConfirm = t("can't be blank");
-    } else if (attrs.passwordConfirm !== attrs.password) {
-      errors.passwordConfirm = t('passwords are not equal');
-    }
-
-    if (!attrs.termsAgree) {
-      errors.termsAgree = t('you must agree to the terms');
-    }
-
-    if (!_.isEmpty(errors)) {
-      return errors;
-    }
-
-    return null;
-  },
-
-  validateLogin(attrs) {
-    const errors = {};
-
-    if (!attrs.name) {
-      errors.name = t("can't be blank");
-    }
-
-    if (!attrs.password) {
-      errors.password = t("can't be blank");
-    }
-
-    if (!_.isEmpty(errors)) {
-      return errors;
-    }
-
-    return null;
-  },
-
-  validateReset(attrs) {
-    const errors = {};
-
-    if (!attrs.name) {
-      errors.name = t("can't be blank");
-    }
-
-    if (!_.isEmpty(errors)) {
-      return errors;
-    }
-
-    return null;
-  },
-
-  save(key, val, options) {
-    let attrs;
-    if (key == null || typeof key === 'object') {
-      attrs = key;
-      options = val;
-    } else {
-      (attrs = {})[key] = val;
-    }
-
-    options = _.extend({ validate: true, parse: true }, options);
-
-    if (attrs) {
-      if (!this.set(attrs, options)) return false;
-    } else if (!this._validate(attrs, options)) {
-      return false;
-    }
-
-    const method = this.isNew() ? 'create' : 'update';
-    return this.sync(method, this, options);
-  },
-});
+  resetDefaults() {
+    return this.logOut();
+  }
+}
 
 // add activities management
-UserModel = UserModel.extend(activitiesExtension);
+UserModel.prototype = Object.assign(UserModel.prototype, activitiesExtension);
 
 // add statistics management
-UserModel = UserModel.extend(statisticsExtension);
+UserModel.prototype = Object.assign(UserModel.prototype, statisticsExtension);
+
+// for legacy support
+UserModel.prototype = Object.assign(UserModel.prototype, Backbone.Events);
 
 const userModel = new UserModel();
 export { userModel as default, UserModel };

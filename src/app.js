@@ -21,6 +21,7 @@ import Device from 'helpers/device';
 import Analytics from 'helpers/analytics';
 import 'helpers/translator';
 import appModel from 'app_model';
+import userModel from 'user_model';
 import CommonController from './common/controller';
 import DialogRegion from './common/views/dialog_region';
 import HideableRegion from './common/views/hideable_region';
@@ -57,56 +58,59 @@ App.on('before:start', () => {
 });
 
 App.on('start', () => {
-  // update app first
-  Update.run(() => {
-    // release the beast
-    Log('App: starting.');
+  const modelsInit = Promise.all([appModel._init, userModel._init]);
+  modelsInit.then(() => {
+    // update app first
+    Update.run(() => {
+      // release the beast
+      Log('App: starting.');
 
-    if (Backbone.history) {
-      Backbone.history.start();
-      if (App.getCurrentRoute() === '') {
-        if (appModel.get('showWelcome')) {
-          radio.trigger('info:welcome');
-        } else {
-          radio.trigger('samples:list');
+      if (Backbone.history) {
+        Backbone.history.stop(); // https://stackoverflow.com/questions/7362989/backbone-history-has-already-been-started
+        Backbone.history.start();
+        if (App.getCurrentRoute() === '') {
+          if (appModel.get('showWelcome')) {
+            radio.trigger('info:welcome');
+          } else {
+            radio.trigger('samples:list');
+          }
+        }
+
+        if (window.cordova) {
+          Log('App: cordova setup.');
+
+          // Although StatusB  ar in the global scope,
+          // it is not available until after the deviceready event.
+          document.addEventListener(
+            'deviceready',
+            () => {
+              Log('Showing the app.');
+
+              // iOS make space for statusbar
+              if (Device.isIOS()) {
+                $('body').addClass('ios');
+              }
+
+              // hide loader
+              if (navigator && navigator.splashscreen) {
+                navigator.splashscreen.hide();
+              }
+
+              Analytics.trackEvent('App', 'initialized');
+            },
+            false
+          );
+        }
+
+        // For screenshots capture only
+        if (process.env.APP_SCREENSHOTS) {
+          $(document).ready(() => {
+            appModel.resetDefaults();
+            window.screenshotsPopulate();
+          });
         }
       }
-
-      if (window.cordova) {
-        Log('App: cordova setup.');
-
-        // Although StatusB  ar in the global scope,
-        // it is not available until after the deviceready event.
-        document.addEventListener(
-          'deviceready',
-          () => {
-            Log('Showing the app.');
-
-            // iOS make space for statusbar
-            if (Device.isIOS()) {
-              $('body').addClass('ios');
-            }
-
-            // hide loader
-            if (navigator && navigator.splashscreen) {
-              navigator.splashscreen.hide();
-            }
-
-            Analytics.trackEvent('App', 'initialized');
-          },
-          false
-        );
-      }
-
-      // For screenshots capture only
-      if (process.env.APP_SCREENSHOTS) {
-        $(document).ready(() => {
-          appModel.clear().set(appModel.defaults);
-          appModel.save();
-          window.screenshotsPopulate();
-        });
-      }
-    }
+    });
   });
 });
 

@@ -136,7 +136,7 @@ input#grid-ref:-ms-input-placeholder {
 }
 
 #location-container {
-  margin-top: -44px;
+  margin-top: -$header-height;
 
   #header-controls {
     position: absolute;

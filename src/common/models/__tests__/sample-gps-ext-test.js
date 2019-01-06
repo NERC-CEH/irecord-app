@@ -1,4 +1,4 @@
-import { updateSampleLocation } from '../sample_geoloc_ext';
+import { updateSampleLocation } from '../sample_gps_ext';
 
 describe('Sample Geolocation Extension', () => {
   describe('updateSampleLocation method', () => {

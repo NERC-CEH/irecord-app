@@ -1,6 +1,3 @@
-import appModel from 'app_model';
-import { coreAttributes } from 'common/config/surveys/general';
-import Log from 'helpers/log';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -11,23 +8,13 @@ class Component extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.onLeave = this.onLeave.bind(this)
   }
 
-  onLockClick = () => {
-    Log('Samples:Attr: lock clicked.');
-    const attr = this.props.attr;
-    let surveyConfig = this.props.sample.getSurvey();
-    const isCoreAttr = coreAttributes.includes(attr);
-
-    surveyConfig = !isCoreAttr && surveyConfig;
-    // invert the lock of the attribute
-    // real value will be put on exit
-    appModel.setAttrLock(
-      attr,
-      !appModel.getAttrLock(attr, surveyConfig),
-      surveyConfig
-    );
-  };
+  onLeave() {
+    this.props.onLeave && this.props.onLeave();
+    window.history.back();
+  }
 
   render() {
     const { sample } = this.props;
@@ -42,33 +29,36 @@ class Component extends React.Component {
       attrName.charAt(0).toUpperCase() + attrName.substr(1);
     const title = attrConfig.label || capitalizedAttrName;
 
-    let locked = false;
+    let locked;
 
     if (sample.metadata.complex_survey) {
-      locked = appModel.isAttrLocked(sample, attrName);
+      locked = this.props.appModel.isAttrLocked(sample, attrName);
       return null;
     }
     const occ = sample.getOccurrence();
     const model = attrType === 'smp' ? sample : occ;
-    locked = appModel.isAttrLocked(model, attrName);
+    locked = this.props.appModel.isAttrLocked(model, attrName);
 
     const lock = (
       <a
         id="lock-btn"
         className={`icon icon-lock-${locked ? 'closed' : 'open'}`}
-        onClick={this.onLockClick}
+        onClick={this.props.onLockClick}
       >
         {t(locked ? 'Locked' : 'Unlocked')}
       </a>
     );
 
-    return <Header rightPanel={lock}>{title}</Header>;
+    return <Header rightPanel={lock} onLeave={this.onLeave}>{title}</Header>;
   }
 }
 
 Component.propTypes = {
   sample: PropTypes.object.isRequired,
-  attr: PropTypes.string.isRequired
+  appModel: PropTypes.object.isRequired,
+  attr: PropTypes.string.isRequired,
+  onLockClick: PropTypes.func.isRequired,
+  onLeave: PropTypes.func.isRequired,
 };
 
 export default Component;

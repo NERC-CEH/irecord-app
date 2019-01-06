@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import Device from 'helpers/device';
 import StringHelp from 'helpers/string';
 import PropTypes from 'prop-types';
@@ -9,16 +8,13 @@ class Component extends React.Component {
     super(props);
     this.input = React.createRef();
     this.state = { value: this.props.default || this.props.config.default };
-    this.debouncedParentInform = _.debounce(e => {
-      const value = StringHelp.escape(e.target.value);
-      this.props.onChange(value);
-    }, 500);
   }
 
   onChange = e => {
     e.persist();
     this.setState({ value: e.target.value });
-    this.debouncedParentInform(e);
+    const value = StringHelp.escape(e.target.value);
+    this.props.onChange(value);
   };
 
   componentDidMount() {

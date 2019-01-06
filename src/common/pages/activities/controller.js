@@ -53,7 +53,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
     Log('Activities:Controller: updating collection.');
 
     // if loading have empty collection
-    if (userModel.synchronizingActivities) {
+    if (userModel.activities && userModel.activities.synchronizing) {
       this.reset();
       return;
     }

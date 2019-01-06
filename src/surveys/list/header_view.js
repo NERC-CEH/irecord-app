@@ -4,7 +4,6 @@
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import $ from 'jquery';
-import Device from 'helpers/device';
 import gridAlertService from './gridAlertService';
 import template from './templates/header.tpl';
 
@@ -15,7 +14,7 @@ export default Marionette.View.extend({
 
   triggers: {
     'click #surveys-btn': 'surveys',
-    'click #create-new-btn': 'create'
+    'click #add-survey-btn': 'create'
   },
 
   regions: {
@@ -34,17 +33,17 @@ export default Marionette.View.extend({
 
     const ToggleView = Marionette.View.extend({
       events: {
-        'toggle #use-atlas-btn': 'onSettingToggled'
-        // 'click #use-atlas-btn': 'onSettingClicked',
+        'ionChange #atlas-toggle': 'onSettingToggled',
       },
 
       template: _.template(`
-         <div id="atlas-toggle">
-          <span id="alert-label"><%- obj.gridSquareUnit %></span>
-            <div id="use-atlas-btn" class="toggle on-off <%- obj.locating ? 'active' : '' %>">
-              <div class="toggle-handle"></div>
-            </div>
-          </div>
+          <ion-item id="toggle">
+            <ion-label><%- obj.gridSquareUnit %></ion-label>
+            <ion-toggle slot="end" id="atlas-toggle"
+                        value="sensitive-btn"
+            <%- obj.locating ? 'checked' : '' %>>
+            </ion-toggle>
+          </ion-item>
        `),
 
       serializeData() {
@@ -58,18 +57,9 @@ export default Marionette.View.extend({
         };
       },
 
-      // onSettingClicked(e) {      },
 
       onSettingToggled(e) {
-        let active = $(e.currentTarget).hasClass('active');
-
-        if (e.type !== 'toggle' && !Device.isMobile()) {
-          // Device.isMobile() android generates both swipe and click
-
-          active = !active; // invert because it takes time to get the class
-          $(e.currentTarget).toggleClass('active', active);
-        }
-
+        const active = $(e.currentTarget).prop('checked');
         this.trigger('toggled', active);
       }
     });

@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const defaultOnLeave = () => window.history.back();
+
 const Header = props => (
   <div>
     <div id="left-panel" className="pull-left">
       <a
         data-rel="back"
         className="icon icon-left-nav"
-        onClick={() => window.history.back()}
+        onClick={props.onLeave || defaultOnLeave}
       />
     </div>
 
@@ -20,7 +22,8 @@ const Header = props => (
 
 Header.propTypes = {
   children: PropTypes.any.isRequired,
-  rightPanel: PropTypes.any
+  rightPanel: PropTypes.any,
+  onLeave: PropTypes.func,
 };
 
 export default Header;

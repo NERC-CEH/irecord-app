@@ -1,5 +1,5 @@
-<a href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit" class="mobile">
-  <div class="media-object pull-left photo"><%= obj.img %></div>
+<ion-item href="#surveys/<%- obj.surveySampleID %>/edit/samples/<%- obj.id %>/edit">
+  <div class="media-object photo"><%= obj.img %></div>
   <div class="media-body">
     <% if (obj.commonName || obj.scientificName) { %>
       <% if (obj.commonName) { %>
@@ -30,19 +30,22 @@
     </div>
 
     <% if (!obj.location && !obj.isLocating) { %>
-    <div class="attributes">
-      <div class="status"><%= obj.status %></div>
-      <% if (obj.stage) { %> <span class="icon icon-stage"></span> <% } %>
-      <% if (obj.abundance) { %> <span class="icon icon-number"></span> <% } %>
-      <% if (obj.comment) { %> <span class="icon icon-comment"></span> <% } %>
-      <% if (obj.identifiers) { %> <span class="icon icon-user-plus"></span> <% } %>
-      <% if (obj.sensitive) { %> <span class="icon icon-low-vision"></span> <% } %>
-    </div>
+      <div class="attributes sample-attributes">
+        <div class="status"><%= obj.status %></div>
+        <% if (obj.stage) { %> <span class="icon icon-stage"></span> <% } %>
+        <% if (obj.abundance) { %> <span class="icon icon-number"></span> <% } %>
+        <% if (obj.comment) { %> <span class="icon icon-comment"></span> <% } %>
+        <% if (obj.identifiers) { %> <span class="icon icon-user-plus"></span> <% } %>
+        <% if (obj.sensitive) { %> <span class="icon icon-low-vision"></span> <% } %>
+      </div>
     <% } %>
 
   </div>
-</a>
+</ion-item>
 
-<div class="mobile-swipe-edit">
-  <div id="delete" class="delete icon icon-delete"></div>
-</div>
+<ion-item-options side="end">
+  <ion-item-option id="delete" color="danger">
+    <div class="edit icon icon-delete"></div>
+  </ion-item-option>
+</ion-item-options>
+

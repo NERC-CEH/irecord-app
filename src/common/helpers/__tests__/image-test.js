@@ -9,13 +9,13 @@ describe('Helpers Image', () => {
       EncodingType: {},
       MediaType: {},
       PictureSourceType: {},
-      PopoverArrowDirection: {}
+      PopoverArrowDirection: {},
     };
 
     window.cordova = { file: {} };
 
     window.navigator.camera = {
-      getPicture: onSuccess => onSuccess('')
+      getPicture: onSuccess => onSuccess(''),
     };
 
     window.resolveLocalFileSystemURL = (dir, callback) => {
@@ -44,6 +44,13 @@ describe('Helpers Image', () => {
       it('should reject on error', done => {
         _onGetImageError('my error', null, err => {
           expect(err).to.eql('my error');
+          done();
+        });
+      });
+
+      it('should care for missing error', done => {
+        _onGetImageError({}, null, err => {
+          expect(err).to.eql('');
           done();
         });
       });

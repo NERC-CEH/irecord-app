@@ -6,35 +6,41 @@ import _ from 'lodash';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
 import CONFIG from 'config';
+import { observable } from 'mobx';
 
 export default {
+  activitiesExtensionInit() {
+    this.activities = observable({ synchronizing: null });
+    this.syncActivities();
+  },
+
   syncActivities(force) {
     Log('UserModel:Activities: synchronising.');
 
-    if (this.synchronizingActivities) {
-      return this.synchronizingActivities;
+    if (this.activities.synchronizing) {
+      return this.activities.synchronizing;
     }
 
     if ((this.hasLogIn() && this._lastSyncExpired()) || force) {
       // init or refresh
       this.trigger('sync:activities:start');
 
-      this.synchronizingActivities = this.fetchActivities()
+      this.activities.synchronizing = this.fetchActivities()
         .then(() => {
-          delete this.synchronizingActivities;
+          this.activities.synchronizing = false;
           this.trigger('sync:activities:end');
         })
         .catch(err => {
-          delete this.synchronizingActivities;
+          this.activities.synchronizing = false;
           this.trigger('sync:activities:end');
           return Promise.reject(err);
         });
 
-      return this.synchronizingActivities;
+      return this.activities.synchronizing;
     }
 
     // remove expired activities
-    const activities = this.get('activities') || [];
+    const activities = this.attrs.activities || [];
     for (let i = activities.length - 1; i >= 0; i--) {
       const activity = activities[i];
       if (this.hasActivityExpired(activity)) {
@@ -44,12 +50,6 @@ export default {
     }
 
     return Promise.resolve();
-  },
-
-  resetActivities() {
-    Log('UserModel:Activities: resetting.');
-    this.set('activities', []);
-    this.save();
   },
 
   hasActivity(activity) {
@@ -116,8 +116,8 @@ export default {
       user: this.getUser.bind(this),
       password: this.getPassword.bind(this),
       params: {
-        path: 'enter-app-record'
-      }
+        path: 'enter-app-record',
+      },
     });
 
     const promise = report.run().then(receivedData => {
@@ -135,7 +135,7 @@ export default {
         description: '',
         activity_type: '',
         activity_from_date: '',
-        activity_to_date: ''
+        activity_to_date: '',
       };
 
       data.forEach(activity => {
@@ -186,5 +186,5 @@ export default {
     }
 
     return daydiff(lastSync, new Date()) >= 1;
-  }
+  },
 };

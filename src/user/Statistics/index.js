@@ -1,22 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
+import Loader from 'common/Components/Loader';
 import './styles.scss';
 
 @observer
 class Component extends React.Component {
   render() {
     const { userModel } = this.props;
-    const { statistics } = userModel.attributes;
-    if (userModel.metadata.synchronizingStatistics) {
-      return <ion-spinner class="centered" />;
+    const { statistics } = userModel.attrs;
+    if (userModel.statistics.synchronizing) {
+      return <Loader />;
     }
 
     if (!statistics.speciesRaw || !statistics.speciesRaw.length) {
-      return null;
+      return <span className="empty-stats">No statistics available.</span>;
     }
 
-    const favSpecies = userModel.attributes.statistics.speciesRaw.map(
+    const favSpecies = userModel.attrs.statistics.speciesRaw.map(
       species => (
         <ion-item key={species.taxon}>
           <span className="stat">{species.count}</span>

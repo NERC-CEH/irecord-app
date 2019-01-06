@@ -7,6 +7,7 @@ import Marionette from 'backbone.marionette';
 import _ from 'lodash';
 import radio from 'radio';
 import template from 'templates/dialog.tpl';
+import Device from 'helpers/device';
 import '../styles/dialog.scss';
 
 const errorsTable = {
@@ -199,8 +200,9 @@ export default Marionette.Region.extend({
   },
 
   showLoader() {
+    const type = Device.isIOS() ? 'lines' : 'dots';
     const view = new Marionette.View({
-      template: _.template('<span class="icon icon-plus spin"></span>')
+      template: _.template(`<ion-spinner class="centered" name="${type}"/>`)
     });
 
     this.show({ view, hideAllowed: false });

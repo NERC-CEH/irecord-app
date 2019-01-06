@@ -2,11 +2,10 @@ import Indicia from 'indicia';
 import { UserModel } from '../user_model';
 import ext from '../user_model_statistics_ext';
 
-const { _fetchStatsSpecies, resetStats, syncStats } = ext;
+const { _fetchStatsSpecies, syncStats } = ext;
 
 describe('User statistics extension', () => {
   it('has functions', () => {
-    expect(resetStats).to.be.a('function');
     expect(syncStats).to.be.a('function');
     expect(_fetchStatsSpecies).to.be.a('function');
   });

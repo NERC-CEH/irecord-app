@@ -11,8 +11,7 @@ let viewContainsNo;
 
 const Slider = Marionette.SlidingView.extend({
   id: 'list',
-  tagName: 'ul',
-  className: 'table-view no-top',
+  tagName: 'ion-list',
 
   initialize() {
     viewportHeight = $main.height();

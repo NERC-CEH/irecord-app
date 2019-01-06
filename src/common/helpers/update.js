@@ -7,6 +7,7 @@ import CONFIG from 'config';
 import savedSamples from 'saved_samples';
 import appModel from 'app_model';
 import userModel from 'user_model';
+import { set as setMobXAttrs } from 'mobx';
 import Log from './log';
 import Analytics from './analytics';
 
@@ -50,7 +51,8 @@ function versionCompare(left, right) {
       parseInt(a[i], 10) > parseInt(b[i], 10)
     ) {
       return 1;
-    } else if (
+    }
+    if (
       (b[i] && !a[i] && parseInt(b[i], 10) > 0) ||
       parseInt(a[i], 10) < parseInt(b[i], 10)
     ) {
@@ -59,150 +61,6 @@ function versionCompare(left, right) {
   }
 
   return 0;
-}
-
-/**
- * part of 1.2.2 update
- */
-class DatabaseStorage {
-  constructor(options = {}) {
-    // because of iOS8 bug on home screen: null & readonly window.indexedDB
-    this.indexedDB = window._indexedDB || window.indexedDB;
-    this.IDBKeyRange = window._IDBKeyRange || window.IDBKeyRange;
-
-    this.VERSION = 1;
-    this.STORE_NAME = 'samples';
-
-    this.NAME = `morel-${options.appname}`;
-  }
-
-  /**
-   * Brings back all saved data from the database.
-   */
-  getAll(callback) {
-    this.open((err, store) => {
-      if (err) {
-        callback(err);
-        return;
-      }
-      try {
-        // Get everything in the store
-        const keyRange = this.IDBKeyRange.lowerBound(0);
-        const req = store.openCursor(keyRange);
-        const data = {};
-
-        req.onsuccess = e => {
-          try {
-            const result = e.target.result;
-
-            // If there's data, add it to array
-            if (result) {
-              data[result.key] = result.value;
-              result.continue();
-
-              // Reach the end of the data
-            } else {
-              callback(null, data);
-            }
-            // eslint-disable-next-line
-          } catch (err) {
-            callback && callback(err);
-          }
-        };
-
-        req.onerror = e => {
-          console.error('Database error.');
-          console.error(e.target.error);
-          const error = new Error(e.target.error);
-          callback(error);
-        };
-        // eslint-disable-next-line
-      } catch (err) {
-        callback && callback(err);
-      }
-    });
-  }
-
-  /**
-   * Opens a database connection and returns a store.
-   *
-   * @param onError
-   * @param callback
-   */
-  open(callback) {
-    let req = null;
-
-    try {
-      req = this.indexedDB.open(this.NAME, this.VERSION);
-
-      /**
-       * On Database opening success, returns the Samples object store.
-       *
-       * @param e
-       */
-      req.onsuccess = e => {
-        try {
-          const db = e.target.result;
-          const transaction = db.transaction([this.STORE_NAME], 'readwrite');
-          if (transaction) {
-            const store = transaction.objectStore(this.STORE_NAME);
-            if (store) {
-              callback(null, store);
-            } else {
-              const err = new Error('Database Problem: no such store');
-              callback(err);
-            }
-          }
-        } catch (err) {
-          callback(err);
-        }
-      };
-
-      /**
-       * If the Database needs an upgrade or is initialising.
-       *
-       * @param e
-       */
-      req.onupgradeneeded = e => {
-        try {
-          const db = e.target.result;
-          db.createObjectStore(this.STORE_NAME);
-        } catch (err) {
-          callback && callback(err);
-        }
-      };
-
-      /**
-       * Error of opening the database.
-       *
-       * @param e
-       */
-      req.onerror = e => {
-        console.error('Database error.');
-        console.error(e.target.error);
-        const error = new Error(e.target.error);
-        callback(error);
-      };
-
-      /**
-       * Error on database being blocked.
-       *
-       * @param e
-       */
-      req.onblocked = e => {
-        console.error('Database error.');
-        console.error(e.target.error);
-        const error = new Error(e.target.error);
-        callback(error);
-      };
-    } catch (err) {
-      callback(err);
-    }
-  }
-
-  delete() {
-    this.indexedDB.deleteDatabase(this.NAME);
-  }
 }
 
 export function updateSamples(samples, callback) {
@@ -224,125 +82,69 @@ const API = {
    * Main update function.
    */
   run(callback, silent = false) {
-    const currentVersion = appModel.get('appVersion');
-    const newVersion = CONFIG.version;
-    const currentBuild = appModel.get('appBuild');
-    const newBuild = CONFIG.build;
+    appModel._init.then(() => {
+      let currentVersion = appModel.get('appVersion');
 
-    // when Beta testing we set training mode
-    if (currentVersion !== newVersion || currentBuild !== newBuild) {
-      appModel.set('useTraining', CONFIG.training);
-    }
+      const newVersion = CONFIG.version;
+      let currentBuild = appModel.get('appBuild');
+      const newBuild = CONFIG.build;
 
-    if (currentBuild !== newBuild) {
-      appModel.set('appBuild', newBuild);
-      appModel.save();
-    }
+      // part of 4.0.0 update START
+      const oldStr = localStorage.getItem('irecord-app-app');
+      const old = JSON.parse(oldStr);
+      if (old && typeof old === 'object' && old.appVersion) {
+        currentVersion = old.appVersion;
+        currentBuild = old.appBuild;
+        delete old.appVersion;
+        delete old.appBuild;
+        localStorage.setItem('irecord-app-app', JSON.stringify(old));
+      }
+      // part of 4.0.0 update END
 
-    if (currentVersion !== newVersion) {
-      // TODO: check for backward downgrade
-      // set new app version
-      appModel.set('appVersion', newVersion);
-      appModel.save();
-
-      // first install
-      if (!currentVersion) {
-        return callback();
+      // when Beta testing we set training mode
+      if (currentVersion !== newVersion || currentBuild !== newBuild) {
+        appModel.set('useTraining', CONFIG.training);
       }
 
-      return API._initApplyUpdates(currentVersion, callback, silent);
-    }
+      let savePromise = Promise.resolve();
+      if (currentBuild !== newBuild) {
+        appModel.set('appBuild', newBuild);
+        savePromise = appModel.save();
+      }
 
-    return callback();
+      savePromise.then(() => {
+        if (currentVersion !== newVersion) {
+          // TODO: check for backward downgrade
+          // set new app version
+          appModel.set('appVersion', newVersion);
+          appModel.save().then(() => {
+            // first install
+            if (!currentVersion) {
+              callback();
+              return;
+            }
+
+            API._initApplyUpdates(currentVersion, callback, silent);
+          });
+          return;
+        }
+
+        callback();
+      });
+    });
   },
 
   /**
    * The sequence of updates that should take place.
    * @type {string[]}
    */
-  updatesSeq: ['2.0.0', '3.0.0'],
+  updatesSeq: ['3.0.0', '4.0.0'],
 
   /**
    * Update functions.
    * @type {{['1.1.0']: (())}}
    */
   updates: {
-    /**
-     *  Migrate to new indicia database.
-     */
-    '2.0.0': callback => {
-      Log('Update: version 2.0.0', 'i');
-
-      function finishUpdate() {
-        // reset app and user models
-        appModel.clear().set(appModel.defaults);
-        appModel.save();
-
-        userModel.clear().set(userModel.defaults);
-        userModel.save();
-
-        Log('Update: finished.', 'i');
-        callback(); // fully restart afterwards
-      }
-
-      function moveRecords(err, samples = []) {
-        if (err) {
-          Log(err, 'e');
-          return null;
-        }
-
-        const samplesCount = Object.keys(samples).length;
-        Log(`Update: copying ${samplesCount} samples to SQLite.`, 'i');
-
-        // samples
-        function updateSampleStructure(sample) {
-          const newSample = sample;
-          if (newSample.occurrences.length) {
-            newSample.occurrences[0].media = newSample.occurrences[0].images;
-            delete newSample.occurrences[0].images;
-          }
-
-          return newSample;
-        }
-
-        // eslint-disable-next-line
-        for (const sample in samples) {
-          // eslint-disable-next-line
-          if (samples.hasOwnProperty(sample)) {
-            const updatedSample = updateSampleStructure(samples[sample]);
-            savedSamples.add(updatedSample);
-          }
-        }
-
-        return savedSamples.save().then(() => {
-          Log('Update: copying done.', 'i');
-        });
-      }
-
-      // copy over all the samples to SQLite db
-      const oldDB = new DatabaseStorage({ appname: 'test' });
-      oldDB.getAll((err, samples = []) => {
-        moveRecords(err, samples).then(() => {
-          // clean up old db
-          Log('Update: clearing test db.', 'i');
-          oldDB.delete();
-
-          // recover lost records too
-          const evenOlderDB = new DatabaseStorage({ appname: 'ir' });
-          // eslint-disable-next-line
-          evenOlderDB.getAll((err, samples = []) => {
-            // eslint-disable-line
-            moveRecords(err, samples).then(() => {
-              // clean up old db
-              Log('Update: clearing ir db.', 'i');
-              evenOlderDB.delete();
-
-              finishUpdate();
-            });
-          });
-        });
-      });
-    },
     '3.0.0': callback => {
       Log('Update: version 3.0.0', 'i');
 
@@ -361,7 +163,49 @@ const API = {
       }
 
       updateSamples(savedSamples, onFinish);
-    }
+    },
+
+    '4.0.0': callback => {
+      Log('Update: version 4.0.0', 'i');
+
+      function onFinish() {
+        Log('Update: finished.', 'i');
+        callback();
+      }
+
+      function onError() {
+        Log('Update: errored.', 'e');
+        callback();
+      }
+
+      const userModelPromise = new Promise(resolve => {
+        const oldStr = localStorage.getItem('irecord-app-user');
+        const old = JSON.parse(oldStr);
+        if (old && typeof old === 'object') {
+          Log('Update: updating userModel.', 'i');
+          setMobXAttrs(userModel.attrs, old);
+          localStorage.removeItem('irecord-app-user');
+          userModel.save().then(resolve);
+          return;
+        }
+        resolve();
+      });
+
+      const appModelPromise = new Promise(resolve => {
+        const oldStr = localStorage.getItem('irecord-app-app');
+        const old = JSON.parse(oldStr);
+        if (old && typeof old === 'object') {
+          Log('Update: updating appModel.', 'i');
+          setMobXAttrs(appModel.attrs, old);
+          localStorage.removeItem('irecord-app-app');
+          appModel.save().then(resolve);
+          return;
+        }
+        resolve();
+      });
+
+      Promise.all([userModelPromise, appModelPromise]).then(onFinish, onError);
+    },
   },
 
   _initApplyUpdates(currentVersion, callback, silent) {
@@ -380,7 +224,7 @@ const API = {
       radio.trigger('app:dialog:show', {
         title: 'Updating',
         body: 'This should take only a moment...',
-        hideAllowed: false
+        hideAllowed: false,
       });
     }
     const startTime = Date.now();
@@ -478,7 +322,7 @@ const API = {
       API._applyUpdates(updateIndex + 1, callback);
       return null;
     });
-  }
+  },
 };
 
 export default API;

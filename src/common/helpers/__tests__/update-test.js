@@ -4,7 +4,7 @@ import Indicia from 'indicia';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
 import Update, { updateSamples } from '../update';
-import { savedSamples } from '../../saved_samples';
+import savedSamples from '../../saved_samples';
 
 /* eslint-disable */
 

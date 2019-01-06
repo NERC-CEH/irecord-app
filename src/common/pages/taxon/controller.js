@@ -56,7 +56,8 @@ const API = {
 
        filtersView.on('filter:name', filter => {
         Log('Taxon:Controller: Filter for name set');
-        appModel.set('searchNamesOnly', filter).save();
+        appModel.set('searchNamesOnly', filter);
+        appModel.save();
 
         // reset header
         API._showHeaderView(options);

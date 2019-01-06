@@ -14,15 +14,14 @@ class Component extends React.Component {
   onSliderChange = sliderValue => {
     // unset ranges selection
     this.setState({ rangesValue: null, sliderValue });
-    this.props.onChange([null, this.state.sliderValue]);
+    this.props.onChange([null, sliderValue]);
   };
 
   onRadioChange = rangesValue => {
     if (!rangesValue && this.state.sliderValue) {
       return;
     }
-    this.props.onChange([rangesValue]);
-    window.history.back();
+    this.props.onChange([rangesValue], true);
   };
 
   render() {

@@ -3,44 +3,6 @@ a:hover {
   text-decoration: none;
 }
 
-ul.accordion {
-  li {
-    a[data-toggle='collapse'] {
-      border-bottom: 1px solid $color-gray;
-      background-color: $color-gray-light;
-
-      &.collapsed {
-        background-color: inherit;
-        border-bottom: none;
-
-        &:before {
-          font-family: icons;
-          content: '\e804';
-        }
-      }
-
-      &:before {
-        font-size: 20px;
-        margin-right: 10px;
-        font-family: icons;
-        content: '\e81c';
-      }
-    }
-  }
-}
-
-//next sibling should not be hided by the button
-.accordion {
-  .table-view-cell > a + * {
-    margin-top: 21px;
-  }
-
-  //full width collapsable elements
-  .table-view-cell > a ~ * {
-    margin-right: -53px;
-  }
-}
-
 button {
   background-color: transparent;
   border: none;

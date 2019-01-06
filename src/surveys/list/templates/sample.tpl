@@ -1,14 +1,12 @@
-<a href="#surveys/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>" class="mobile">
-    <div class="media-object pull-left photo"><%= obj.img %></div>
-    <div class="pull-right">
-      <% if (obj.saved) { %>
+<ion-item href="#surveys/<%- obj.id %><%- obj.onDatabase ? '' : '/edit' %>" class="mobile">
+    <div class="photo"><%= obj.img %></div>
+    <% if (obj.saved) { %>
       <% if (obj.isSynchronising) { %>
-      <div class="online-status icon icon-plus spin"></div>
+        <div class="online-status icon icon-plus spin"></div>
       <% } else { %>
-      <div class="online-status icon icon-send <%- obj.onDatabase ? 'cloud' : 'local' %>"></div>
+        <div class="online-status icon icon-send <%- obj.onDatabase ? 'cloud' : 'local' %>"></div>
       <% } %>
-      <% } %>
-    </div>
+    <% } %>
 
     <div class="media-body">
       <span class="survey-label"><%= obj.surveyLabel %></span>
@@ -44,8 +42,10 @@
         <div class="comment"><%= obj.comment %></div>
       </div>
     </div>
-  </a>
+</ion-item>
 
-  <div class="mobile-swipe-edit">
-    <div id="delete" class="delete icon icon-delete"></div>
-  </div>
+<ion-item-options side="end">
+  <ion-item-option id="delete" color="danger">
+    <div class="edit icon icon-delete"></div>
+  </ion-item-option>
+</ion-item-options>

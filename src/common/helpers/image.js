@@ -6,7 +6,12 @@ import Log from './log';
 import Analytics from './analytics';
 import Device from './device';
 
-export function _onGetImageError(err = '', resolve, reject) {
+export function _onGetImageError(err, resolve, reject) {
+  if (typeof err !== 'string') {
+    // for some reason the plugin's errors can be non-strings
+    err = ''; //eslint-disable-line
+  }
+
   const e = err.toLowerCase();
   if (
     e.includes('has no access') ||
@@ -40,7 +45,7 @@ const Image = {
         destinationType: window.Camera.DestinationType.FILE_URI,
         encodingType: window.Camera.EncodingType.JPEG,
         saveToPhotoAlbum: true,
-        correctOrientation: true
+        correctOrientation: true,
       };
 
       const cameraOptions = Object.assign({}, defaultCameraOptions, options);
@@ -122,7 +127,7 @@ const Image = {
         data,
         type,
         width,
-        height
+        height,
       });
 
       return imageModel.addThumbnail().then(() => imageModel);
@@ -140,7 +145,7 @@ const Image = {
       const fileName = file.split('/').pop();
       return success([fileName, 'jpeg', width, height]);
     });
-  }
+  },
 };
 
 export { Image as default };

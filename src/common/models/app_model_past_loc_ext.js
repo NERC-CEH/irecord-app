@@ -17,7 +17,7 @@ export default {
   setLocation(origLocation = {}) {
     Log('AppModel:PastLocations: setting.');
     const location = _.cloneDeep(origLocation);
-    const locations = this.attributes.locations;
+    const locations = this.attrs.locations;
 
     if (!location.latitude) {
       return null;
@@ -69,7 +69,8 @@ export default {
         locations.splice(i, 1);
       }
     });
-    this.set('locations', locations).save();
+    this.set('locations', locations);
+    this.save();
     this.trigger('change:locations');
   },
 
@@ -121,5 +122,5 @@ export default {
       ).toFixed(4)}`;
     }
     return '';
-  }
+  },
 };

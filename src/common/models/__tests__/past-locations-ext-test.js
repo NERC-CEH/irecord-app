@@ -21,8 +21,7 @@ describe('Past locations extension', () => {
   describe('setLocation', () => {
     beforeEach(() => {
       const appModel = new AppModel();
-      appModel.clear();
-      appModel.save(appModel.defaults);
+      appModel.resetDefaults();
     });
 
     it('should set a new location', () => {

@@ -9,6 +9,8 @@ import GPS from 'helpers/GPS';
 import Log from 'helpers/log';
 import LocHelp from 'helpers/location';
 import appModel from 'app_model';
+import bigu from 'bigu';
+import { observable } from 'mobx';
 
 export function updateSampleLocation(sample, location) {
   return new Promise(resolve => {
@@ -37,6 +39,11 @@ export function updateSampleLocation(sample, location) {
 }
 
 const extension = {
+  gpsExtensionInit() {
+    this.gps = observable({ locating: null });
+    this._setGPSlocationSetter();
+  },
+
   startGPS(accuracyLimit) {
     Log('SampleModel:GPS: start.');
 
@@ -71,10 +78,10 @@ const extension = {
             // TODO: return err
             that.trigger('geolocation:error', location);
           });
-      }
+      },
     };
 
-    this.locating = GPS.start(options);
+    this.gps.locating = GPS.start(options);
     this.trigger('geolocation');
     this.trigger('geolocation:start');
   },
@@ -82,8 +89,8 @@ const extension = {
   stopGPS(options = {}) {
     Log('SampleModel:GPS: stop.');
 
-    GPS.stop(this.locating);
-    delete this.locating;
+    GPS.stop(this.gps.locating);
+    this.gps.locating = null;
 
     if (!options.silent) {
       this.trigger('geolocation');
@@ -92,7 +99,7 @@ const extension = {
   },
 
   isGPSRunning() {
-    return this.locating || this.locating === 0;
+    return !!(this.gps.locating || this.gps.locating === 0);
   },
 
   /**
@@ -102,7 +109,53 @@ const extension = {
   printLocation() {
     const location = this.get('location') || {};
     return appModel.printLocation(location);
-  }
+  },
+
+  _setGPSlocationSetter() {
+    if (!this.metadata.complex_survey) {
+      return;
+    }
+
+    // modify GPS service
+    this.setGPSLocation = location => {
+      // child samples
+      if (this.parent) {
+        this.set('location', location);
+        return this.save();
+      }
+
+      const gridSquareUnit = this.metadata.gridSquareUnit;
+      const gridCoords = bigu.latlng_to_grid_coords(
+        location.latitude,
+        location.longitude
+      );
+
+      if (!gridCoords) {
+        return null;
+      }
+
+      location.source = 'gridref'; // eslint-disable-line
+      if (gridSquareUnit === 'monad') {
+        // monad
+        location.accuracy = 500; // eslint-disable-line
+
+        gridCoords.x += (-gridCoords.x % 1000) + 500;
+        gridCoords.y += (-gridCoords.y % 1000) + 500;
+        location.gridref = gridCoords.to_gridref(1000); // eslint-disable-line
+      } else {
+        // tetrad
+        location.accuracy = 1000; // eslint-disable-line
+
+        gridCoords.x += (-gridCoords.x % 2000) + 1000;
+        gridCoords.y += (-gridCoords.y % 2000) + 1000;
+        location.gridref = gridCoords.to_gridref(2000); // eslint-disable-line
+        location.accuracy = 1000; // eslint-disable-line
+      }
+
+      this.set('location', location);
+      return this.save();
+    };
+  },
 };
 
 export { extension as default };

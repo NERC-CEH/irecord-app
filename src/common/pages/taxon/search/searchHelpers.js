@@ -166,7 +166,8 @@ const helpers = {
     const campared = comparator(mid);
     if (campared > 0) {
       return helpers.binarySearch(array, comparator, low, mid - 1);
-    } else if (campared < 0) {
+    }
+    if (campared < 0) {
       return helpers.binarySearch(array, comparator, mid + 1, high);
     }
     return mid;

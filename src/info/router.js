@@ -32,7 +32,14 @@ const Router = Marionette.AppRouter.extend({
     'info(/)': () => {
       Log('Info:Menu: visited.');
       radio.trigger('app:header', <Header>iRecord App</Header>);
-      radio.trigger('app:main', <InfoMenu userModel={userModel} />);
+      radio.trigger(
+        'app:main',
+        <InfoMenu
+          userModel={userModel}
+          appModel={appModel}
+          savedSamples={savedSamples}
+        />
+      );
     },
     'info/welcome(/)': showWelcome,
     'info/about(/)': () => {
@@ -70,8 +77,8 @@ const Router = Marionette.AppRouter.extend({
     },
     'info/*path': () => {
       radio.trigger('app:404:show');
-    }
-  }
+    },
+  },
 });
 
 radio.on('info:welcome', options => {

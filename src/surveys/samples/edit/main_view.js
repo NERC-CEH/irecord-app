@@ -5,7 +5,6 @@ import Marionette from 'backbone.marionette';
 import $ from 'jquery';
 import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
-import Device from 'helpers/device';
 import StringHelp from 'helpers/string';
 
 import './styles.scss';
@@ -15,13 +14,12 @@ export default Marionette.View.extend({
   template,
 
   triggers: {
-    'click a#species-button': 'taxon:update',
-    'click a#location-button': 'location:update'
+    'click ion-item#species-button': 'taxon:update',
+    'click ion-item#location-button': 'location:update'
   },
 
   events: {
-    'toggle #sensitive-btn': 'onSettingToggled',
-    'click #sensitive-btn': 'onSettingToggled'
+    'ionChange #sensitive-btn': 'onSettingToggled',
   },
 
   initialize() {
@@ -34,15 +32,8 @@ export default Marionette.View.extend({
   },
 
   onSettingToggled(e) {
-    const setting = $(e.currentTarget).data('setting');
-    let active = $(e.currentTarget).hasClass('active');
-
-    if (e.type !== 'toggle' && !Device.isMobile()) {
-      // Device.isMobile() android generates both swipe and click
-
-      active = !active; // invert because it takes time to get the class
-      $(e.currentTarget).toggleClass('active', active);
-    }
+    const setting = $(e.currentTarget).prop('value');
+    const active = $(e.currentTarget).prop('checked');
 
     this.trigger('setting:toggled', setting, active);
   },

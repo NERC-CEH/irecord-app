@@ -5,8 +5,11 @@
 #surveys-header {
   @include samples-surveys-header;
 
+  .pull-right {
+    width: 22%;
+  }
   #add-survey-btn {
-    width: 48%;
+    width: 100%;
     max-width: none;
 
     &:hover {
@@ -15,42 +18,24 @@
   }
 }
 
+.ios #subheader .surveys #toggle ion-toggle {
+  padding: 0;
+}
+
 #subheader .surveys {
   position: relative;
 
-  #atlas-toggle {
-    padding: 5px;
+  #toggle {
+    --border-style: none;
+    --background: none;
     font-size: 12px;
     text-align: right;
     position: absolute;
-    width: 130px;
-    margin-top: -5px;
+    width: 166px;
+    margin-top: -13px;
     right: 0;
     top: 8px;
-
-    #use-atlas-btn {
-      float: right;
-      margin-top: -3px;
-      margin-left: 5px;
-
-      &.toggle {
-        width: 60px;
-        height: 25px;
-
-        &:before {
-          font-size: 10px;
-        }
-
-        &.active .toggle-handle {
-          transform: translate3d(35px, 0, 0);
-        }
-
-        .toggle-handle {
-          height: 23px;
-          width: 23px;
-        }
-      }
-    }
+    color: white;
   }
 }
 
@@ -69,7 +54,7 @@
     }
 
     .samples {
-      widows: 30%;
+      width: 30%;
       float: left;
       font-size: 12px;
       margin-right: 10px;

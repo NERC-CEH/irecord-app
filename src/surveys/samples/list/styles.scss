@@ -3,11 +3,9 @@
     font-weight: normal !important;
   }
 
-  .attributes {
-    .status {
-      float: left;
-      font-size: 12px;
-      margin-right: 0;
-    }
+  .sample-attributes {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
   }
 }

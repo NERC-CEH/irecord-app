@@ -3,30 +3,30 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 
 const Component = observer(props => {
-  const { password: login, firstname, secondname } = props.user;
+  const { isLoggedIn, firstname, secondname } = props.user;
   return (
     <ion-list lines="full">
-      {login && (
+      {isLoggedIn && (
         <ion-item detail id="logout-button" onClick={props.logOut}>
           <span slot="start" className="icon icon-logout" />
           {t('Logout')}: {firstname} {secondname}
         </ion-item>
       )}
-      {login && (
+      {isLoggedIn && (
         <ion-item href="#user/statistics" detail>
           <span slot="start" className="icon icon-statistics" />
           {t('Statistics')}
         </ion-item>
       )}
 
-      {!login && (
+      {!isLoggedIn && (
         <ion-item href="#user/login" detail>
           <span slot="start" className="icon icon-user" />
           {t('Login')}
         </ion-item>
       )}
 
-      {!login && (
+      {!isLoggedIn && (
         <ion-item href="#user/register" detail>
           <span slot="start" className="icon icon-user-plus" />
           {t('Register')}

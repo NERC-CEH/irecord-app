@@ -21,7 +21,8 @@ function sortFavLocationsToTop(a, b) {
   if (aFav || bFav) {
     if (aFav && !bFav) {
       return -1;
-    } else if (!aFav && bFav) {
+    }
+    if (!aFav && bFav) {
       return 1;
     }
   }
@@ -138,6 +139,12 @@ class Component extends React.Component {
     delete locationCopy.favourite;
     delete locationCopy.date;
     this.props.onSelect(locationCopy);
+  }
+
+  componentWillUnmount() {
+    if (this.listRef.current){
+      this.listRef.current.closeSlidingItems();
+    }
   }
 
   render() {

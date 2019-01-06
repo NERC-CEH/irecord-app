@@ -65,6 +65,7 @@ const API = {
 
     mainView.on('childview:create', API.addSurvey);
     mainView.on('childview:sample:delete', childView => {
+      childView.el.closeOpened();
       API.sampleDelete(childView.model);
     });
 

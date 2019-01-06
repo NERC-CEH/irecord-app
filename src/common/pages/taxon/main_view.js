@@ -125,6 +125,10 @@ export default Marionette.View.extend({
     this.selectedIndex = 0;
   },
 
+  keyboardHideListener() {
+    window.Keyboard.hide();
+  },
+
   onAttach() {
     // don't show keyboard on list reset
     if (this.options.reset && Device.isIOS()) {
@@ -132,12 +136,13 @@ export default Marionette.View.extend({
     }
 
     // preselect the input for typing
-    const $input = this.$el.find('#taxon').focus();
+    this.$input = this.$el.find('ion-searchbar')[0];
+    setTimeout(() => {
+      this.$input.setFocus();
+      }, 150);
     if (window.cordova && Device.isAndroid()) {
       window.Keyboard.show();
-      $input.focusout(() => {
-        window.Keyboard.hide();
-      });
+      this.$input.addEventListener('ionBlur', this.keyboardHideListener);
     }
 
     const hideFavourites = this.options.hideFavourites;
@@ -148,6 +153,12 @@ export default Marionette.View.extend({
       if (favouriteSpecies.length) {
         this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
       }
+    }
+  },
+
+  onDetach() {
+    if (window.cordova && Device.isAndroid()) {
+      this.$input.removeEventListener('ionBlur', this.keyboardHideListener);
     }
   },
 

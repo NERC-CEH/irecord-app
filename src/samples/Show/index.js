@@ -40,7 +40,7 @@ function forceResend(sample) {
     window.history.back();
   } else {
     radio.trigger('app:dialog:error', {
-      message: 'Looks like you are offline!'
+      message: 'Looks like you are offline!',
     });
   }
 }
@@ -53,7 +53,7 @@ function photoView(e, sample) {
     items.push({
       src: image.getURL(),
       w: image.get('width') || 800,
-      h: image.get('height') || 800
+      h: image.get('height') || 800,
     });
   });
 
@@ -102,26 +102,25 @@ export default observer(props => {
     <ion-button
       id="record-external-link"
       color="light"
-      href={`${siteUrl}record-details?occurrence_id=${id}`}
-    >
+      href={`${siteUrl}record-details?occurrence_id=${id}`}>
       {t('View on iRecord')}
     </ion-button>
   ) : (
-    <div>
+    <p>
       {t('Go to the')} <a href={siteUrl}>{t('iRecord website')}</a>{' '}
       {t('to edit')}.
-    </div>
+    </p>
   );
 
   return (
-    <div>
+    <div id="record-show">
       <div className="info-message">
         <p>
           {t(
-            'This record has been submitted and cannot be edited within this App'
-          )}.
-          {infoMessage}
+            'This record has been submitted and cannot be edited within this App.'
+          )}
         </p>
+        {infoMessage}
       </div>
 
       <ul className="table-view core inputs info no-top">
@@ -201,13 +200,11 @@ export default observer(props => {
       </ul>
 
       {useExperiments && (
-        <ion-button
-          id="resend-btn"
-          color="danger"
-          onClick={() => forceResend(sample)}
-        >
-          {t('Resend the record')}
-        </ion-button>
+        <div id="resend-btn">
+          <ion-button color="danger" onClick={() => forceResend(sample)}>
+            {t('Resend the record')}
+          </ion-button>
+        </div>
       )}
       <div id="occurrence-id">{cid}</div>
     </div>

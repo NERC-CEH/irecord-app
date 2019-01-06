@@ -169,6 +169,10 @@ button {
   }
 }
 
+.bar-nav ~ .content {
+    padding-top: $header-height;
+}
+
 header {
   .pull-left {
     margin-right: 2px;
@@ -183,8 +187,9 @@ header {
 
   .pull-left,
   .pull-right {
-    height: 44px;
+    height: $header-height;
     width: 33%;
+    padding-top: 5px;
 
     button,
     a {
@@ -214,6 +219,7 @@ header {
 header .title {
   width: 33%;
   position: relative;
+  padding-top: 5px;
 
   white-space: nowrap;
   overflow: hidden;

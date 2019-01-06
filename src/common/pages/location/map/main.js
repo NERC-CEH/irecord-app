@@ -382,7 +382,8 @@ const API = {
     const deNormalizedZoom = zoom - OS_ZOOM_DIFF;
     if (deNormalizedZoom > MAX_OS_ZOOM - 1) {
       return MAX_OS_ZOOM - 1;
-    } else if (deNormalizedZoom < 0) {
+    }
+    if (deNormalizedZoom < 0) {
       return 0;
     }
 
@@ -401,11 +402,14 @@ const API = {
 
     if (metres >= 5000) {
       return 9;
-    } else if (metres >= 1000) {
+    }
+    if (metres >= 1000) {
       return 12; // tetrad
-    } else if (metres >= 500) {
+    }
+    if (metres >= 500) {
       return 13;
-    } else if (metres >= 50) {
+    }
+    if (metres >= 50) {
       return 16;
     }
 

@@ -6,8 +6,8 @@ import _ from 'lodash';
 import Indicia from 'indicia';
 import Log from 'helpers/log';
 import Gallery from '../../../common/gallery';
-import templateImagePickerArray from '../../../samples/edit/templates/image_picker_array.tpl';
-import templateImagePickerEmpty from '../../../samples/edit/templates/image_picker_empty.tpl';
+import templateImagePickerArray from './templates/image_picker_array.tpl';
+import templateImagePickerEmpty from './templates/image_picker_empty.tpl';
 
 const SavedImageView = Marionette.View.extend({
   template: _.template(

@@ -4,47 +4,47 @@
 import Indicia from 'indicia';
 import Log from 'helpers/log';
 import CONFIG from 'config';
+import { observable } from 'mobx';
 import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
 
 export default {
+  statisticsExtensionInit() {
+    this.statistics = observable({ synchronizing: null });
+    this.syncStats();
+  },
+
   syncStats(force) {
     Log('UserModel:Statistics: synchronising.');
 
-    if (this.metadata.synchronizingStatistics) {
-      return this.metadata.synchronizingStatistics;
+    if (this.statistics.synchronizing) {
+      return this.statistics.synchronizing;
     }
 
     if ((this.hasLogIn() && this._lastStatsSyncExpired()) || force) {
       // init or refresh
       const statistics = this.get('statistics');
 
-      this.metadata.synchronizingStatistics = this._fetchStatsSpecies()
+      this.statistics.synchronizing = this._fetchStatsSpecies()
         .then(stats =>
           this._processStatistics(stats).then(species => {
             const updatedStatistics = Object.assign({}, statistics, {
               synced_on: new Date().toString(),
               species,
-              speciesRaw: stats
+              speciesRaw: stats,
             });
             this.set('statistics', updatedStatistics);
             this.save();
 
-            this.metadata.synchronizingStatistics = false;
+            this.statistics.synchronizing = false;
           })
         )
         .catch(err => {
-          this.metadata.synchronizingStatistics = false;
+          this.statistics.synchronizing = false;
           return Promise.reject(err);
         });
     }
 
-    return this.metadata.synchronizingStatistics;
-  },
-
-  resetStats() {
-    Log('UserModel:Statistics: resetting.');
-    this.set('statistics', this.defaults.statistics);
-    this.save();
+    return this.statistics.synchronizing;
   },
 
   /**
@@ -66,8 +66,8 @@ export default {
         my_records: 1,
         limit: 10,
         orderby: 'count',
-        sortdir: 'DESC'
-      }
+        sortdir: 'DESC',
+      },
     });
 
     return report.run().then(receivedData => {
@@ -94,7 +94,7 @@ export default {
       const parsePromise = new Promise(fulfill => {
         const options = {
           maxResults: 1,
-          scientificOnly: true
+          scientificOnly: true,
         };
 
         // turn it to a full species descriptor from species data set
@@ -136,5 +136,5 @@ export default {
     }
 
     return daydiff(lastSync, new Date()) >= 1;
-  }
+  },
 };
