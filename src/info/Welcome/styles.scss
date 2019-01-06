@@ -1,0 +1,105 @@
+ion-slides#welcome {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #3e3e3e;
+
+  --bullet-background-active: white;
+
+  ion-button {
+    position: absolute;
+    bottom: 37px;
+
+    &.skip {
+      bottom: 0;
+      left: 9%;
+    }
+    &.next {
+      bottom: 0;
+      right: 9%;
+    }
+  }
+
+  .message {
+    position: absolute;
+    width: 50%;
+    padding-left: 10px;
+
+    // Hack around the tablet hidden message issue
+    @media only screen and (min-width: 650px) {
+      margin-left: -325px !important;
+      left: 50% !important;
+    }
+  }
+
+  .message p,
+  .message h2 {
+    padding: 10px;
+    color: whitesmoke;
+    background-color: rgba(123, 117, 55, 0.9);
+  }
+
+  .message p {
+    font-size: 0.9em;
+  }
+
+  $bottom: 16vh;
+
+  ion-slide {
+    &.first {
+      background: url('images/welcome_1.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
+
+    &.second {
+      background: url('images/welcome_2.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        top: 10vh;
+      }
+    }
+
+    &.third {
+      background: url('images/welcome_3.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
+
+    &.fourth {
+      background: url('images/welcome_4.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
+
+    &.fifth {
+      background: url('images/welcome_5.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        bottom: $bottom;
+      }
+    }
+  }
+}

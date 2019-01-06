@@ -8,9 +8,11 @@ import CONFIG from 'config';
 import App from 'app';
 import radio from 'radio';
 import userModel from 'user_model';
+import appModel from 'app_model';
+import savedSamples from 'saved_samples';
 import Header from '../common/Components/Header';
 import InfoMenu from './Menu';
-import WelcomeController from './welcome/controller';
+import Welcome from './Welcome';
 import PrivacyPolicy from './PrivacyPolicy';
 import BRCApproved from './BRCApproved';
 import Terms from './Terms';
@@ -20,6 +22,11 @@ import About from './About';
 
 App.info = {};
 
+function showWelcome() {
+  Log('Info:Welcome: visited.');
+  radio.trigger('app:main', <Welcome appModel={appModel}/>);
+}
+
 const Router = Marionette.AppRouter.extend({
   routes: {
     'info(/)': () => {
@@ -27,7 +34,7 @@ const Router = Marionette.AppRouter.extend({
       radio.trigger('app:header', <Header>iRecord App</Header>);
       radio.trigger('app:main', <InfoMenu userModel={userModel} />);
     },
-    'info/welcome(/)': WelcomeController.show,
+    'info/welcome(/)': showWelcome,
     'info/about(/)': () => {
       Log('Info:About: visited.');
       radio.trigger('app:header', <Header>About</Header>);
@@ -69,7 +76,7 @@ const Router = Marionette.AppRouter.extend({
 
 radio.on('info:welcome', options => {
   App.navigate('info/welcome', options);
-  WelcomeController.show();
+  showWelcome();
 });
 
 App.on('before:start', () => {
