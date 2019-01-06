@@ -1,28 +1,31 @@
 import Indicia from 'indicia';
-import CONFIG from 'config';
 import Log from 'helpers/log';
+
+function fixPreviousVersions(URL) {
+  if (URL.search('file://') >= 0) {
+    return URL.split('/').pop();
+  }
+  return URL;
+}
 
 function deleteFile(fileName) {
   return new Promise((resolve, reject) => {
+    function onFileGet(fileEntry) {
+      if (!fileEntry) {
+        resolve();
+        return;
+      }
+
+      fileEntry.remove(() => {
+        Log('Helpers:Image: removed.');
+        resolve();
+      }, reject);
+    }
+
     window.resolveLocalFileSystemURL(
       cordova.file.dataDirectory,
       fileSystem => {
-        fileSystem.getFile(
-          fileName,
-          { create: false },
-          fileEntry => {
-            if (!fileEntry) {
-              resolve();
-              return;
-            }
-
-            fileEntry.remove(() => {
-              Log('Helpers:Image: removed.');
-              resolve();
-            }, reject);
-          },
-          reject
-        );
+        fileSystem.getFile(fileName, { create: false }, onFileGet, reject);
       },
       reject
     );
@@ -39,8 +42,10 @@ export default Indicia.Media.extend({
       return;
     }
 
-    const fileName = this.get('data');
-    deleteFile(fileName)
+    let URL = this.get('data');
+    URL = fixPreviousVersions(URL);
+
+    deleteFile(URL)
       .then(() => {
         Indicia.Media.prototype.destroy.apply(this, args);
       })
@@ -54,13 +59,7 @@ export default Indicia.Media.extend({
       return URL;
     }
 
-    const fixPreviousVersions = CONFIG.build >= 8 && URL.search('file://') >= 0;
-    if (fixPreviousVersions) {
-      const fileName = URL.split('/').pop();
-      URL = cordova.file.dataDirectory + fileName;
-    }
-
-    URL = cordova.file.dataDirectory + URL;
+    URL = cordova.file.dataDirectory + fixPreviousVersions(URL);
     return window.Ionic.WebView.convertFileSrc(URL);
-  }
+  },
 });
