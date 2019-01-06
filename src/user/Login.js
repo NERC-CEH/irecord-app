@@ -6,7 +6,6 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import CONFIG from 'config';
-import userModel from 'user_model';
 
 /**
  * Starts an app sign in to the Drupal site process.
@@ -16,7 +15,7 @@ import userModel from 'user_model';
  * It is important that the app authorises itself providing
  * api_key for the mentioned module.
  */
-function login(details) {
+function login(details, userModel) {
   Log('User:Login: logging in.');
   const promise = new Promise((fulfill, reject) => {
     const userAuth = btoa(`${details.name}:${details.password}`);
@@ -57,6 +56,24 @@ function login(details) {
   return promise;
 }
 
+function validateForm(attrs) {
+  const errors = {};
+
+  if (!attrs.name) {
+    errors.name = t("can't be blank");
+  }
+
+  if (!attrs.password) {
+    errors.password = t("can't be blank");
+  }
+
+  if (!_.isEmpty(errors)) {
+    return errors;
+  }
+
+  return null;
+}
+
 class Component extends React.Component {
   constructor(props) {
     super(props);
@@ -73,6 +90,8 @@ class Component extends React.Component {
   }
 
   onClick() {
+    const { userModel } = this.props;
+
     if (!Device.isOnline()) {
       radio.trigger('app:dialog', {
         title: 'Sorry',
@@ -86,7 +105,7 @@ class Component extends React.Component {
       password: this.userPassword.current.value,
     };
 
-    const validationError = userModel.validateLogin(data);
+    const validationError = validateForm(data);
     this.updateInputValidation(validationError || {});
     if (validationError) {
       return;
@@ -94,7 +113,7 @@ class Component extends React.Component {
 
     // mainView.triggerMethod('form:data:invalid', {}); // update form
     radio.trigger('app:loader');
-    login(data)
+    login(data, userModel)
       .then(() => {
         radio.trigger('app:loader:hide');
         this.props.onSuccess && this.props.onSuccess();
@@ -134,16 +153,19 @@ class Component extends React.Component {
           </ion-item>
         </ion-list>
 
-        <ion-button onClick={this.onClick.bind(this)} color="primary">
+        <ion-button
+          onClick={this.onClick.bind(this)}
+          style={{ margin: '50px 0' }}
+          color="primary">
           {t('Sign in')}
         </ion-button>
 
         <ion-list lines="full">
-          <ion-item href="#user/register">
+          <ion-item href="#user/register" detail>
             <span slot="start" className="icon icon-user-plus" />
             {t('Register')}
           </ion-item>
-          <ion-item href="#user/reset">
+          <ion-item href="#user/reset" detail>
             <span slot="start" className="icon icon-key" />
             {t('Request a new password')}
           </ion-item>
@@ -155,6 +177,7 @@ class Component extends React.Component {
 
 Component.propTypes = {
   onSuccess: PropTypes.func,
+  userModel: PropTypes.object.isRequired,
 };
 
 export default Component;
