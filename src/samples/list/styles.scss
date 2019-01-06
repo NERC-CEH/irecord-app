@@ -1,5 +1,4 @@
 @import '../../common/styles/_variables.scss';
-@import '../../common/styles/swipe-list.scss';
 @import '../../common/styles/mixins.scss';
 
 //HEADER
@@ -30,39 +29,7 @@
 
 //LIST
 #samples-list-container {
-  #list {
-    margin: 0;
-
-    &.table-view {
-      border-color: $color-green-light;
-    }
-
-    .table-view-cell {
-      padding-right: 33px;
-    }
-
-    li {
-      min-height: 65px;
-      border-color: $color-green-light;
-
-      font-size: 13.3333px;
-      font-weight: normal;
-      height: 16px;
-      line-height: 17.3333px;
-
-      //shrink the size nicely
-      &.shrink {
-        min-height: 0;
-        margin: 0;
-        height: 0;
-        padding: 0;
-      }
-      -webkit-transition: height 200ms ease-in-out;
-      -moz-transition: height 200ms ease-in-out;
-      -o-transition: height 200ms ease-in-out;
-      transition: height 200ms ease-in-out;
-
-      &.empty {
+  #empty-message {
         height: initial !important;
         min-height: initial !important;
         padding: 13px 0;
@@ -80,11 +47,13 @@
           right: 0;
           margin: 31px auto 0;
         }
-      }
+    }
 
-      .mobile-swipe-edit #delete {
-        padding-top: 20px;
-      }
+  #list {
+    margin: 4px 0 0 0;
+
+    ion-item {
+      --padding-start: 0;
 
       .activity {
         width: 7px;
@@ -98,7 +67,7 @@
       }
 
       .photo {
-        margin: -9px 8px 0 -14px;
+        margin: 0 8px 2px 0;
         height: 60px;
         width: 60px;
         background-color: #e5eacd;
@@ -110,170 +79,122 @@
         }
       }
 
-      a {
-        cursor: default;
+      .media-body {
+        max-width: 75%;
 
-        //mobile swipe styles
-        transition: transform 0.3s cubic-bezier(0, 0, 0, 1);
-        z-index: 10;
-        background-color: $color-white;
+        .species {
+          display: block;
+          font-size: 15px;
+          font-weight: 700;
+          color: $button-black;
 
-        &:hover {
-          background-color: $color-gray-light;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
-          .online-status {
-            display: none;
-          }
-
-          .edit {
-            display: inline-block;
-
-            .delete {
-              margin-left: 25px;
-            }
-          }
-        }
-
-        &.mobile:hover {
-          background-color: $color-white;
-
-          .online-status {
-            display: inline-block;
-          }
-
-          .edit {
-            .delete {
-              margin-left: 0;
-            }
-          }
-        }
-
-        //pull right
-        .online-status {
-          margin-right: 7px;
-
-          &.icon:before {
-            font-size: 15px;
-          }
-
-          &.local {
+          &.error {
             color: $color-orange;
           }
-
-          &.cloud,
-          &.icon-plus {
-            font-size: 15px;
-            color: $color-main;
-          }
         }
 
-        //pull right
-        .activity-status {
-          position: absolute;
-          top: 30px;
-          right: 40px;
+        .core {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 12px;
 
-          color: $color-gray-dark;
-
-          &.icon:before {
-            font-size: 15px;
-          }
-        }
-
-        .edit {
-          display: none;
-          padding-top: 13px;
-
-          color: $color-gray-dark;
-
-          .icon {
-            cursor: initial;
-            &:before {
-              font-size: 17px;
-            }
-            &:hover {
-              color: $button-black;
-            }
-          }
-        }
-
-        //sample info
-        .media-body {
-          .species {
-            display: block;
-            font-size: 15px;
-            font-weight: 700;
+          span {
+            font-weight: 500;
             color: $button-black;
-
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
             &.error {
               color: $color-orange;
             }
-          }
 
-          .core {
-            width: 80%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 12px;
-
-            span {
-              font-weight: 500;
-              color: $button-black;
-              &.error {
-                color: $color-orange;
-              }
-
-              &.warn {
-                color: $color-yellow;
-              }
+            &.warn {
+              color: $color-yellow;
             }
-          }
-
-          .attributes {
-            clear: both;
-
-            .icon {
-              float: right;
-
-              &:before {
-                font-size: 14px;
-              }
-            }
-          }
-
-          div.stage,
-          div.number {
-            float: left;
-            font-size: 12px;
-            margin-right: 10px;
-          }
-
-          div.comment {
-            float: left;
-            width: 80px;
-
-            font-size: 12px;
-            margin-right: 10px;
-            overflow: hidden;
-
-            word-wrap: normal;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-
-            color: $color-gray-dark;
-          }
-
-          span.locked,
-          div.locked {
-            color: $color-blue;
           }
         }
+
+        .attributes {
+          clear: both;
+
+          .icon {
+            float: right;
+
+            &:before {
+              font-size: 14px;
+            }
+          }
+        }
+
+        div.stage,
+        div.number {
+          float: left;
+          font-size: 12px;
+          margin-right: 10px;
+        }
+
+        div.comment {
+          float: left;
+          width: 80px;
+
+          font-size: 12px;
+          margin-right: 10px;
+          overflow: hidden;
+
+          word-wrap: normal;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          color: $color-gray-dark;
+        }
+
+        span.locked,
+        div.locked {
+          color: $color-blue;
+        }
       }
+
+      ion-spinner {
+        position: absolute;
+        margin: 0;
+        top: 0;
+        right: 0;
+        height: 22px;
+        --color: $color-main;
+      }
+
+      .online-status {
+        position: absolute;
+        right: 0;
+        top: 11px;
+
+        margin-right: 7px;
+
+        &.icon:before {
+          font-size: 15px;
+        }
+
+        &.local {
+          color: $color-orange;
+        }
+
+        &.cloud,
+        &.icon-plus {
+          font-size: 15px;
+          color: $color-main;
+        }
+      }
+
+      a {
+        width: 100%;
+        cursor: default;
+      }
+    }
+
+   ion-item-option#minus {
+      border-left: 1px solid white;
     }
   }
 

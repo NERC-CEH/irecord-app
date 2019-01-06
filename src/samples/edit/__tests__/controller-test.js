@@ -1,28 +1,8 @@
 import Sample from 'sample';
 import Occurrence from 'occurrence';
-import API from '../controller';
+import { updateTaxon } from '../index';
 
 describe('Edit Controller', () => {
-  it('should have a show method', () => {
-    expect(API.show).to.be.a('function');
-  });
-
-  it('should have a send method', () => {
-    expect(API.send).to.be.a('function');
-  });
-
-  it('should have a photoUpload method', () => {
-    expect(API.photoUpload).to.be.a('function');
-  });
-
-  it('should have a photoDelete method', () => {
-    expect(API.photoDelete).to.be.a('function');
-  });
-
-  it('should have a photoSelect method', () => {
-    expect(API.photoSelect).to.be.a('function');
-  });
-
   describe('updateTaxon', () => {
     let sampleSetTaxonStub;
     before(() => {
@@ -35,14 +15,11 @@ describe('Edit Controller', () => {
       sampleSetTaxonStub.restore();
     });
 
-    it('should exist', () => {
-      expect(API.updateTaxon).to.be.a('function');
-    });
     it('should call sample.setTaxon', done => {
       const sample = new Sample();
       sample.addOccurrence(new Occurrence());
 
-      API.updateTaxon(sample, { activity: 1 })
+      updateTaxon(sample, { activity: 1 })
         .then(() => {
           expect(sampleSetTaxonStub.called).to.be.equal(true);
           done();
