@@ -1,9 +1,9 @@
 // get local environment variables from .env
 require('dotenv').config({ silent: true, path: '../../../.env' }); // eslint-disable-line
 const fs = require('fs');
+const http = require('https');
 const makeCommonNameMap = require('./speciesExtractCommonNames');
 const optimise = require('./speciesOptimise');
-const http = require('https');
 
 function fetch() {
   console.log('Pulling all the species from remote report.');
