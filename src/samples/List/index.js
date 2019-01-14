@@ -7,6 +7,7 @@ import savedSamples from 'saved_samples'; // TODO: should be moved out
 import Factory from 'model_factory';
 import Sample from './components/Sample';
 import UserFeedbackRequest from './components/UserFeedbackRequest';
+import './empty-icon.svg';
 import './styles.scss';
 
 function byDate(a, b) {
@@ -120,16 +121,17 @@ class Component extends React.Component {
       return (
         <ion-content id="samples-list-container" style={getBandMarginStyle(this.props)}>
           <div id="empty-message">
-            <p>{t('No records to show')}.</p>
+            <div>
+            <img src="images/empty-icon.svg" />
+            </div>
+            <h6>{t('You have no records')}.</h6>
 
-            <p>
-              <ion-button
-                id="create-new-btn"
-                fill="outline"
-                onClick={createNewSample}>
-                {t("Let's add one!")}
-              </ion-button>
-            </p>
+            <ion-button
+              id="create-new-btn"
+              fill="outline"
+              onClick={createNewSample}>
+              {t("Let's add one!")}
+            </ion-button>
           </div>
         </ion-content>
       );

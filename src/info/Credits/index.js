@@ -44,6 +44,7 @@ export default () => (
       <ul style={{ listStyleType: 'none' }}>
         <li>David Kitching</li>
         <li>UK Ladybird Survey</li>
+        <li>Map icon was made by <a href="https://www.flaticon.com/authors/nhor-phai" title="Nhor Phai">Nhor Phai</a></li>
       </ul>
     </li>
   </ul>
