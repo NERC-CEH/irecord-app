@@ -43,7 +43,6 @@ export default () => (
       </p>
       <ul style={{ listStyleType: 'none' }}>
         <li>David Kitching</li>
-        <li>Nadine Mitschunas</li>
         <li>UK Ladybird Survey</li>
       </ul>
     </li>
