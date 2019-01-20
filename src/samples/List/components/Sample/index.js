@@ -115,7 +115,7 @@ class Component extends React.Component {
     }
 
     const specie = occ.get('taxon') || {};
-    const media = occ.media.at(0);
+    const media = occ.media.length && occ.media.models[0];
     let img = media && media.get('thumbnail');
 
     if (!img) {
@@ -125,7 +125,6 @@ class Component extends React.Component {
 
     const taxon = specie[specie.found_in_name];
 
-
     const activity = sample.get('activity');
 
     const survey = sample.getSurvey();
@@ -134,7 +133,7 @@ class Component extends React.Component {
     const id = sample.cid;
     const onDatabase = sample.metadata.synced_on;
 
-    img = img ? <img src={img} onClick={e => showGallery(e, media)} /> : '';
+    img = img ? <img src={img} onClick={e => showGallery(e, occ.media.models)} /> : '';
 
     const openEditPage = () => {
       window.location.hash = `#samples/${id}${onDatabase ? '' : '/edit'}`;

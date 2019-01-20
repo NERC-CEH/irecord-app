@@ -28,7 +28,7 @@ const SampleView = Marionette.View.extend({
   serializeData() {
     const sample = this.model;
     const occ = sample.getOccurrence();
-    const media = occ.media.at(0);
+    const media = occ.media.length && occ.media.models[0];
     let img = media && media.get('thumbnail');
 
     if (!img) {

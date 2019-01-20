@@ -29,7 +29,7 @@ const SampleView = Marionette.View.extend({
   serializeData() {
     const sample = this.model;
     const date = DateHelp.print(sample.get('date'), true);
-    const media = sample.media.at(0);
+    const media = sample.media.length && sample.media.models[0];
     let img = media && media.get('thumbnail');
 
     if (!img) {
