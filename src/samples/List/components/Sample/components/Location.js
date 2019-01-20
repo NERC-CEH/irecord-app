@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import appModel from 'app_model';
+import { observer } from 'mobx-react';
 
-const Component = props => {
+const Component = observer(props => {
   const { sample, isDefaultSurvey } = props;
   const isLocating = sample.isGPSRunning();
   const locationPrint = sample.printLocation();
@@ -32,7 +33,7 @@ const Component = props => {
       {locationName}
     </span>
   );
-};
+});
 
 Component.propTypes = {
   sample: PropTypes.object.isRequired,

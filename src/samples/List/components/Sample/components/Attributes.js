@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StringHelp from 'helpers/string';
 import appModel from 'app_model';
+import { observer } from 'mobx-react';
 
-const Component = props => {
+const Component = observer(props => {
   const { occ, isDefaultSurvey } = props;
 
   let number = StringHelp.limit(occ.get('number'));
@@ -32,7 +33,7 @@ const Component = props => {
       {commentComponent}
     </div>
   );
-};
+});
 
 Component.propTypes = {
   occ: PropTypes.object.isRequired,

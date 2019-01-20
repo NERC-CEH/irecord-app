@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DateHelp from 'helpers/date';
 import appModel from 'app_model';
+import { observer } from 'mobx-react';
 
-const Component = props => {
+const Component = observer(props => {
   const { sample, isDefaultSurvey } = props;
 
   const date = DateHelp.print(sample.get('date'), true);
@@ -14,7 +15,7 @@ const Component = props => {
   }
 
   return <span className={`date ${dateLocked ? 'locked' : ''}`}>{date}</span>;
-};
+});
 
 Component.propTypes = {
   sample: PropTypes.object.isRequired,
