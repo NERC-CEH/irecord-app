@@ -5,7 +5,7 @@ import appModel from 'app_model';
 import { observer } from 'mobx-react';
 
 const Component = observer(props => {
-  const { occ, isDefaultSurvey } = props;
+  const { sample, occ, isDefaultSurvey } = props;
 
   let number = StringHelp.limit(occ.get('number'));
   if (!number) {
@@ -22,7 +22,8 @@ const Component = observer(props => {
     <div className={`comment ${commentLocked ? 'locked' : ''}`}>{comment}</div>
   );
 
-  if (!isDefaultSurvey) {
+  const survey = sample.getSurvey();
+  if (!isDefaultSurvey && survey.name !== 'butterflies') {
     return commentComponent;
   }
 
@@ -37,6 +38,7 @@ const Component = observer(props => {
 
 Component.propTypes = {
   occ: PropTypes.object.isRequired,
+  sample: PropTypes.object.isRequired,
   isDefaultSurvey: PropTypes.bool,
 };
 

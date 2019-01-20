@@ -164,7 +164,7 @@ class Component extends React.Component {
             </div>
 
             <div className="attributes">
-              <Attributes occ={occ} isDefaultSurvey={isDefaultSurvey} />
+              <Attributes occ={occ} isDefaultSurvey={isDefaultSurvey} sample={sample} />
             </div>
           </div>
         </ion-item>
