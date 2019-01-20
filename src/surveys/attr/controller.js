@@ -2,7 +2,6 @@
  * Surveys Attr controller.
  **************************************************************************** */
 import Backbone from 'backbone';
-import Indicia from 'indicia';
 import savedSamples from 'saved_samples';
 import radio from 'radio';
 import appModel from 'app_model';
@@ -34,7 +33,7 @@ const API = {
 
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
-    if (sample.getSyncStatus() === Indicia.SYNCED) {
+    if (sample.metadata.synced_on) {
       radio.trigger('Surveys:show', sampleID, { replace: true });
       return;
     }

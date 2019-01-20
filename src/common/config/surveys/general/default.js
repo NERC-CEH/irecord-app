@@ -2,7 +2,6 @@
  * General survey configuration file.
  **************************************************************************** */
 import $ from 'jquery';
-import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
 
 const survey = {
@@ -130,7 +129,7 @@ const survey = {
 
     // TODO: remove this bit once sample DB update is possible
     // check if saved or already send
-    if (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED) {
+    if (!this.metadata.saved || this.metadata.synced_on) {
       attributes.send = false;
     }
 

@@ -1,7 +1,6 @@
 /** ****************************************************************************
  * Surveys Edit main view.
  **************************************************************************** */
-import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import StringHelp from 'helpers/string';
 import DateHelp from 'helpers/date';
@@ -63,7 +62,7 @@ export default Marionette.View.extend({
     return {
       id: sample.cid,
       isLocating: sample.isGPSRunning(),
-      isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
+      isSynchronising: sample.remote.synchronising,
       locationEditAllowed: this.options.locationEditAllowed,
       location: locationPrint,
       locationName: location.name,

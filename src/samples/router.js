@@ -2,7 +2,6 @@
  * Sample router.
  **************************************************************************** */
 import React from 'react';
-import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
@@ -54,7 +53,7 @@ function getSample(callback, ...args) {
   // can't edit a saved one - to be removed when sample update
   // is possible on the server
   const isRecursive = callback === showRecord; //eslint-disable-line
-  if (sample.getSyncStatus() === Indicia.SYNCED && !isRecursive) {
+  if (sample.metadata.synced_on && !isRecursive) {
     radio.trigger('samples:show', sampleID, { replace: true });
     return null;
   }
@@ -72,7 +71,7 @@ function showEditRecord(sampleID) {
 
   // can't edit a saved one - to be removed when sample update
   // is possible on the server
-  if (sample.getSyncStatus() === Indicia.SYNCED) {
+  if (sample.metadata.synced_on) {
     radio.trigger('samples:show', sampleID, { replace: true });
     return;
   }

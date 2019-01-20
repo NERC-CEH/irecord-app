@@ -3,7 +3,6 @@
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import $ from 'jquery';
-import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
 
@@ -65,7 +64,7 @@ export default Marionette.View.extend({
       commonName,
       sensitive: occ.metadata.sensitivity_precision,
       isLocating: sample.isGPSRunning(),
-      isSynchronising: sample.getSyncStatus() === Indicia.SYNCHRONISING,
+      isSynchronising: sample.remote.synchronising,
       location: locationPrint,
       locationName: location.name,
       locationEditAllowed: this.options.locationEditAllowed,

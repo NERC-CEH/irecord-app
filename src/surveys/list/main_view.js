@@ -1,7 +1,6 @@
 /** ****************************************************************************
  * Surveys List main view.
  **************************************************************************** */
-import Indicia from 'indicia';
 import Marionette from 'backbone.marionette';
 import radio from 'radio';
 import DateHelp from 'helpers/date';
@@ -38,8 +37,6 @@ const SampleView = Marionette.View.extend({
       img = media && media.getURL();
     }
 
-    const syncStatus = this.model.getSyncStatus();
-
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
 
@@ -57,13 +54,13 @@ const SampleView = Marionette.View.extend({
       surveyLabel: 'Plant',
       id: sample.cid,
       saved: sample.metadata.saved,
-      onDatabase: syncStatus === Indicia.SYNCED,
+      onDatabase: sample.metadata.synced_on,
       isLocating: sample.isGPSRunning(),
       location: locationPrint,
       locationName: location.name,
       samples: Object.keys(uniqueTaxa).length,
       comment: sample.get('comment'),
-      isSynchronising: syncStatus === Indicia.SYNCHRONISING,
+      isSynchronising: sample.remote.synchronising,
       date,
       img: img ? `<img src="${img}"/>` : ''
     };

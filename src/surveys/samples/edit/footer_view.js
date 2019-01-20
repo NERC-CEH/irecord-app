@@ -3,7 +3,6 @@
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
 import _ from 'lodash';
-import Indicia from 'indicia';
 import Log from 'helpers/log';
 import Gallery from '../../../common/gallery';
 import templateImagePickerArray from './templates/image_picker_array.tpl';
@@ -73,7 +72,7 @@ export default Marionette.CompositeView.extend({
 
   serializeData() {
     return {
-      isSynchronising: this.model.getSyncStatus() === Indicia.SYNCHRONISING
+      isSynchronising: this.model.remote.synchronising
     };
   },
 

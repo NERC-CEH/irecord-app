@@ -5,7 +5,6 @@ import DateHelp from 'helpers/date';
 import Device from 'helpers/device';
 import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
-import Indicia from 'indicia';
 import { observer } from 'mobx-react';
 import radio from 'radio';
 import React from 'react';
@@ -65,8 +64,7 @@ function photoView(e, sample) {
 export default observer(props => {
   const { sample } = props;
 
-  const syncStatus = sample.getSyncStatus();
-  if (syncStatus === Indicia.SYNCHRONISING) {
+  if (sample.remote.synchronising) {
     return <Loader />;
   }
 

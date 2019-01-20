@@ -2,7 +2,6 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import radio from 'radio';
-import Indicia from 'indicia';
 import Analytics from 'helpers/analytics';
 import Log from 'helpers/log';
 import Location from './components/Location';
@@ -14,13 +13,13 @@ import Gallery from '../../../../common/gallery';
 export function sampleDelete(sample) {
   Log('Samples:List:Controller: deleting sample.');
 
-  const syncStatus = sample.getSyncStatus();
   let body = window.t(
     "This record hasn't been saved to iRecord yet, " +
       'are you sure you want to remove it from your device?'
   );
 
-  if (syncStatus === Indicia.SYNCED) {
+  const isSynced = sample.metadata.synced_on;
+  if (isSynced) {
     body = t(
       'Are you sure you want to remove this record from your device?' +
         '</br><i><b>Note:</b> it will remain on the server.</i>'
@@ -126,7 +125,6 @@ class Component extends React.Component {
 
     const taxon = specie[specie.found_in_name];
 
-    const syncStatus = sample.getSyncStatus();
 
     const activity = sample.get('activity');
 
@@ -134,7 +132,7 @@ class Component extends React.Component {
     const isDefaultSurvey = occ.get('taxon') && survey.name === 'default'; // photo-first sample check
 
     const id = sample.cid;
-    const onDatabase = syncStatus === Indicia.SYNCED;
+    const onDatabase = sample.metadata.synced_on;
 
     img = img ? <img src={img} onClick={e => showGallery(e, media)} /> : '';
 

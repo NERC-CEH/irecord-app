@@ -4,7 +4,6 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 import _ from 'lodash';
-import Indicia from 'indicia';
 import Device from 'helpers/device';
 import Log from 'helpers/log';
 import App from 'app';
@@ -38,7 +37,7 @@ const API = {
 
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
-    if (sample.getSyncStatus() === Indicia.SYNCED) {
+    if (sample.metadata.synced_on) {
       radio.trigger('surveys:show', sampleID, { replace: true });
       return;
     }

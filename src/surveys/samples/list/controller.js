@@ -2,7 +2,6 @@
  * Surveys Samples List controller.
  **************************************************************************** */
 import _ from 'lodash';
-import Indicia from 'indicia';
 import radio from 'radio';
 import savedSamples from 'saved_samples';
 import Log from 'helpers/log';
@@ -36,7 +35,7 @@ const API = {
 
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
-    if (surveySample.getSyncStatus() === Indicia.SYNCED) {
+    if (surveySample.metadata.synced_on) {
       radio.trigger('samples:show', options.surveySampleID, { replace: true });
       return;
     }

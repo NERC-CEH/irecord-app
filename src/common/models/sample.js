@@ -27,6 +27,7 @@ let Sample = Indicia.Sample.extend({
 
   metadata() {
     return {
+      saved: null,
       training: appModel.get('useTraining'),
     };
   },
@@ -49,6 +50,7 @@ let Sample = Indicia.Sample.extend({
   initialize() {
     this.attributes = observable(this.attributes);
     this.metadata = observable(this.metadata);
+    this.remote = observable({ synchronising: null });
     this.media.models = observable(this.media.models);
 
     // for mobx to keep same refs
@@ -188,14 +190,6 @@ let Sample = Indicia.Sample.extend({
         }
       }
     }
-  },
-
-  isLocalOnly() {
-    const status = this.getSyncStatus();
-    return (
-      this.metadata.saved &&
-      (status === Indicia.LOCAL || status === Indicia.SYNCHRONISING)
-    );
   },
 
   timeout() {

@@ -2,7 +2,6 @@
  * Plant survey configuration file.
  **************************************************************************** */
 import $ from 'jquery';
-import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
 
 const survey = {
@@ -205,7 +204,7 @@ const survey = {
     // check if saved or already send
     if (
       !isChildSample &&
-      (!this.metadata.saved || this.getSyncStatus() === Indicia.SYNCED)
+      (!this.metadata.saved || this.metadata.synced_on)
     ) {
       attributes.send = false;
     }

@@ -4,7 +4,6 @@ import Analytics from 'helpers/analytics';
 import Log from 'helpers/log';
 import ImageHelp from 'helpers/image';
 import radio from 'radio';
-import Indicia from 'indicia';
 import showErrMsg from 'helpers/show_err_msg';
 import { observer } from 'mobx-react';
 import Gallery from '../../common/gallery';
@@ -166,7 +165,7 @@ class Footer extends Component {
       });
     }
 
-    const isSynchronising = sample.getSyncStatus() === Indicia.SYNCHRONISING;
+    const isSynchronising = sample.remote.synchronising;
 
     return (
       <div id="edit-footer">

@@ -2,7 +2,6 @@
  * Sample Edit header view.
  **************************************************************************** */
 import Marionette from 'backbone.marionette';
-import Indicia from 'indicia';
 import template from './templates/header.tpl';
 
 export default Marionette.View.extend({
@@ -28,7 +27,7 @@ export default Marionette.View.extend({
   serializeData() {
     return {
       training: this.model.metadata.training,
-      isSynchronising: this.model.getSyncStatus() === Indicia.SYNCHRONISING
+      isSynchronising: this.model.remote.synchronising
     };
   }
 });

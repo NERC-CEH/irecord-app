@@ -28,7 +28,7 @@ const Collection = Indicia.Collection.extend({
 
     const toWait = [];
     this.models.forEach(sample => {
-      if (sample.getSyncStatus() === Indicia.SYNCED) {
+      if (sample.metadata.synced_on) {
         toWait.push(sample.destroy());
       }
     });

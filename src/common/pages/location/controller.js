@@ -4,7 +4,6 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
-import Indicia from 'indicia';
 import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import LocHelp from 'helpers/location';
@@ -42,7 +41,7 @@ const API = {
 
     // can't edit a saved one - to be removed when sample update
     // is possible on the server
-    if (sample.getSyncStatus() === Indicia.SYNCED) {
+    if (sample.metadata.synced_on) {
       radio.trigger('samples:show', sampleID, { replace: true });
       return;
     }

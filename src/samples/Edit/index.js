@@ -2,7 +2,6 @@ import { observer } from 'mobx-react';
 import React from 'react';
 import radio from 'radio';
 import './styles.scss';
-import Indicia from 'indicia';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
 import { coreAttributes } from 'common/config/surveys/general';
@@ -73,7 +72,7 @@ class Component extends React.Component {
     const activityTitle = activity ? activity.title : null;
 
     const id = sample.cid;
-    const isSynchronising = sample.getSyncStatus() === Indicia.SYNCHRONISING;
+    const isSynchronising = sample.remote.synchronising;
     const obj = {
       'smp:date': DateHelp.print(sample.get('date'), true),
       'occ:comment': StringHelp.limit(occ.get('comment')),

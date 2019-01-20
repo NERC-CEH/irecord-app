@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Indicia from 'indicia';
 import App from 'app';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
@@ -98,7 +97,7 @@ class Header extends Component {
 
     const activityTitle = activity ? activity.title : null;
     const training = sample.metadata.training;
-    const isSynchronising = sample.getSyncStatus() === Indicia.SYNCHRONISING;
+    const isSynchronising = sample.remote.synchronising;
 
     const sendButton = !isSynchronising ? (
       <button id="sample-save-btn" onClick={this.send}>

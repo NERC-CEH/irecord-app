@@ -4,7 +4,6 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import StringHelp from 'helpers/string';
 import Toggle from 'common/Components/Toggle';
-import Indicia from 'indicia';
 
 class Component extends React.Component {
   constructor(props) {
@@ -40,7 +39,7 @@ class Component extends React.Component {
       number: appModel.isAttrLocked(occ, 'number'),
     };
 
-    const isSynchronising = sample.getSyncStatus() === Indicia.SYNCHRONISING;
+    const isSynchronising = sample.remote.synchronising;
 
     const survey = sample.getSurvey();
 
