@@ -10,14 +10,14 @@ ion-slides#welcome {
 
   ion-button {
     position: absolute;
-    bottom: 37px;
+    bottom: 7%;
 
     &.skip {
-      bottom: 0;
+      bottom: 2%;
       left: 9%;
     }
     &.next {
-      bottom: 0;
+      bottom: 2%;
       right: 9%;
     }
   }
@@ -39,6 +39,10 @@ ion-slides#welcome {
     padding: 10px;
     color: whitesmoke;
     background-color: rgba(123, 117, 55, 0.9);
+  }
+
+  .swiper-pagination-bullets {
+    bottom: 3%;
   }
 
   .message p {
@@ -103,7 +107,7 @@ ion-slides#welcome {
       .message {
         text-align: left;
         right: 10vw;
-        bottom: $bottom;
+        bottom: 22vh;
       }
     }
   }
