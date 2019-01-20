@@ -4,10 +4,15 @@ function genLocation() {
   const location = {
     latitude: 12,
     longitude: 12,
-    name: 'name'
+    name: 'name',
   };
 
   return location;
+}
+
+function initAppModel() {
+  const appModel = new AppModel();
+  return appModel._init.then(() => appModel);
 }
 
 describe('Past locations extension', () => {
@@ -19,54 +24,54 @@ describe('Past locations extension', () => {
   });
 
   describe('setLocation', () => {
-    beforeEach(() => {
-      const appModel = new AppModel();
-      appModel.resetDefaults();
-    });
+    beforeEach(() => initAppModel().then(appModel => appModel.resetDefaults()));
 
     it('should set a new location', () => {
       const location = genLocation();
-
-      const appModel = new AppModel();
-      appModel.setLocation(location);
-      expect(appModel.get('locations').length).to.be.equal(1);
+      return initAppModel().then(appModel => {
+        appModel.setLocation(location);
+        expect(appModel.get('locations').length).to.be.equal(1);
+      });
     });
 
     it('should remove a location', () => {
       const location = genLocation();
 
-      const appModel = new AppModel();
-      const savedLocation = appModel.setLocation(location);
-      expect(savedLocation).to.be.an('object');
-      expect(savedLocation.latitude).to.be.equal(location.latitude);
-      expect(savedLocation.id).to.be.a('string');
+      return initAppModel().then(appModel => {
+        const savedLocation = appModel.setLocation(location);
+        expect(savedLocation).to.be.an('object');
+        expect(savedLocation.latitude).to.be.equal(location.latitude);
+        expect(savedLocation.id).to.be.a('string');
 
-      appModel.removeLocation(savedLocation.id);
-      expect(appModel.get('locations').length).to.be.equal(0);
+        appModel.removeLocation(savedLocation.id);
+        expect(appModel.get('locations').length).to.be.equal(0);
+      });
     });
 
     it('should not duplicate same location', () => {
       const location = genLocation();
 
-      const appModel = new AppModel();
-      const savedLocation = appModel.setLocation(location);
-      const secondSavedLocation = appModel.setLocation(savedLocation);
-      expect(secondSavedLocation).to.be.an('object');
+      return initAppModel().then(appModel => {
+        const savedLocation = appModel.setLocation(location);
+        const secondSavedLocation = appModel.setLocation(savedLocation);
+        expect(secondSavedLocation).to.be.an('object');
 
-      appModel.setLocation(location);
+        appModel.setLocation(location);
 
-      expect(appModel.get('locations').length).to.be.equal(1);
+        expect(appModel.get('locations').length).to.be.equal(1);
+      });
     });
 
     it('should update same location', () => {
       const location = genLocation();
 
-      const appModel = new AppModel();
-      const savedLocation = appModel.setLocation(location);
-      savedLocation.name = 'new';
-      const newSavedLocation = appModel.setLocation(savedLocation);
-      expect(newSavedLocation.name).to.be.equal('new');
-      expect(appModel.get('locations').length).to.be.equal(1);
+      return initAppModel().then(appModel => {
+        const savedLocation = appModel.setLocation(location);
+        savedLocation.name = 'new';
+        const newSavedLocation = appModel.setLocation(savedLocation);
+        expect(newSavedLocation.name).to.be.equal('new');
+        expect(appModel.get('locations').length).to.be.equal(1);
+      });
     });
   });
 });

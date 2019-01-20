@@ -39,14 +39,16 @@ class UserModel {
         const user = JSON.parse(userStr);
         if (!user) {
           Log('UserModel: persisting for the first time');
+          this._initDone = true;
           this.save();
-        } else {
-          setMobXAttrs(this.attrs, user.attrs);
+          return;
         }
 
-        this.statisticsExtensionInit();
-        this.activitiesExtensionInit();
-      });
+        setMobXAttrs(this.attrs, user.attrs);
+        this._initDone = true;
+      })
+      .then(() => this.statisticsExtensionInit())
+      .then(() => this.activitiesExtensionInit());
   }
 
   get(name) {
@@ -59,6 +61,9 @@ class UserModel {
   }
 
   save() {
+    if (!this._initDone) {
+      throw new Error(`User Model can't be saved before initialisation`);
+    }
     const userStr = JSON.stringify({
       attrs: this.attrs,
     });

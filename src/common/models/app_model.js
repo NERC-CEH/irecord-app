@@ -35,17 +35,19 @@ class AppModel {
     Log('AppModel: initializing');
     this._init = getStore()
       .then(store => store.getItem('app'))
-      .then(userStr => {
-        const app = JSON.parse(userStr);
+      .then(appStr => {
+        const app = JSON.parse(appStr);
         if (!app) {
           Log('AppModel: persisting for the first time');
+          this._initDone = true;
           this.save();
-        } else {
-          setMobXAttrs(this.attrs, app.attrs);
+          return;
         }
 
-        this.attrLocksExtensionInit();
-      });
+        setMobXAttrs(this.attrs, app.attrs);
+        this._initDone = true;
+      })
+      .then(() => this.attrLocksExtensionInit());
   }
 
   get(name) {
@@ -58,6 +60,9 @@ class AppModel {
   }
 
   save() {
+    if (!this._initDone) {
+      throw new Error(`App Model can't be saved before initialisation`);
+    }
     const userStr = JSON.stringify({
       attrs: this.attrs,
     });

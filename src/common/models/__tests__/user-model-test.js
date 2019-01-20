@@ -39,16 +39,17 @@ describe('User Model', () => {
 
   beforeEach(() => {
     server = sinon.fakeServer.create();
-
-    const userModel = new UserModel();
-    userModel.resetDefaults();
+    return initUserModel().then(userModel => {
+      userModel.resetDefaults();
+    });
   });
 
-  afterEach(() => {
-    const userModel = new UserModel();
-    userModel.resetDefaults();
-    server.restore();
-  });
+  afterEach(() =>
+    initUserModel().then(userModel => {
+      userModel.resetDefaults();
+      server.restore();
+    })
+  );
 
   it('has default values', () => {
     const userModel = new UserModel();
@@ -93,9 +94,7 @@ describe('User Model', () => {
       expect(userModel.get('activities') instanceof Array).to.be.true;
     });
 
-    it('should sync activities from server', done => {
-      const userModel = new UserModel();
-
+    it('should sync activities from server', () => {
       const activity = getRandActivity();
       server.respondWith([
         200,
@@ -103,29 +102,28 @@ describe('User Model', () => {
         JSON.stringify({ data: [activity] }),
       ]);
 
-      userModel
-        .fetchActivities()
-        .then(() => {
+      return initUserModel().then(userModel => {
+        const activitiesPromise = userModel.fetchActivities().then(() => {
           const activities = userModel.get('activities');
           expect(activities.length).to.be.equal(1);
-          done();
-        })
-        .catch(done);
+        });
 
-      server.respond();
+        server.respond();
+        return activitiesPromise;
+      });
     });
 
-    it('should not sync if user not logged in', () => {
-      let userModel = new UserModel();
-      userModel.logOut();
-      userModel.save();
+    it('should not sync if user not logged in', () =>
+      initUserModel().then(userModel => {
+        userModel.logOut();
+        userModel.save();
 
-      sinon.spy(UserModel.prototype, 'fetchActivities');
-      userModel = new UserModel();
+        sinon.spy(UserModel.prototype, 'fetchActivities');
+        userModel = new UserModel();
 
-      expect(userModel.fetchActivities.called).to.be.false;
-      userModel.fetchActivities.restore();
-    });
+        expect(userModel.fetchActivities.called).to.be.false;
+        userModel.fetchActivities.restore();
+      }));
 
     it.skip('should force fetch', done => {
       // skip because unstable async problems
@@ -189,14 +187,14 @@ describe('User Model', () => {
       });
     });
 
-    it('should reset activities on logout', () => {
-      const userModel = new UserModel();
-      userModel.set('activities', [getRandActivity(), getRandActivity()]);
+    it('should reset activities on logout', () =>
+      initUserModel().then(userModel => {
+        userModel.set('activities', [getRandActivity(), getRandActivity()]);
 
-      userModel.logOut();
-      const activities = userModel.get('activities');
-      expect(activities.length).to.be.equal(0);
-    });
+        userModel.logOut();
+        const activities = userModel.get('activities');
+        expect(activities.length).to.be.equal(0);
+      }));
 
     it('should check activity expiry', () => {
       const userModel = new UserModel();

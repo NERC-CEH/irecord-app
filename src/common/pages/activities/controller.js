@@ -88,7 +88,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
   }
 });
 
-const activitiesCollection = new ActivitiesCollection();
+let activitiesCollection;
 
 const API = {
   show(sampleID) {
@@ -96,6 +96,10 @@ const API = {
 
     if (!userModel.hasLogIn()) {
       API.userLoginMessage();
+    }
+
+    if (!activitiesCollection) {
+      activitiesCollection = new ActivitiesCollection();
     }
 
     // HEADER
