@@ -16,7 +16,7 @@
 
 <div class="taxon-groups">
   <ion-label><%- t('Taxon groups:') %></ion-label>
-  <% obj.filters.forEach((option, i) => { %>
+  <% obj.filters.forEach(function (option, i) { %>
   <ion-item>
     <ion-label class="filter-label"><%- t(obj.filters[i].label) %></ion-label>
     <ion-checkbox value="<%- obj.filters[i].id %>"

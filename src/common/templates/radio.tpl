@@ -7,7 +7,7 @@
 <ion-list lines="full">
   <ion-radio-group>
 
-    <% obj.selection.forEach((option) => { %>
+    <% obj.selection.forEach(function (option) { %>
     <ion-item>
       <ion-label><%= t(option.label || option.value) %></ion-label>
       <ion-radio value="<%= option.value %>"
