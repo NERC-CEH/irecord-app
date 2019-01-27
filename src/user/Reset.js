@@ -60,6 +60,7 @@ class Component extends React.Component {
   constructor(props) {
     super(props);
     this.userName = React.createRef();
+    this.onClick = this.onClick.bind(this);
     this.state = {};
   }
 
@@ -80,7 +81,6 @@ class Component extends React.Component {
 
     const data = {
       name: this.userName.current.value,
-      password: this.userPassword.current.value,
     };
 
     const validationError = validateForm(data);
@@ -117,18 +117,23 @@ class Component extends React.Component {
           </p>
         </div>
 
-        <ion-item error={this.state.userNameError}>
-          <span className="icon icon-user" slot="start" />
-          <ion-input
-            ref={this.userName}
-            required
-            type="email"
-            placeholder={t('Username or email')}
-          />
-        </ion-item>
+        <ion-list lines="full">
+          <ion-item error={this.state.userNameError}>
+            <span className="icon icon-user" slot="start" />
+            <ion-input
+              ref={this.userName}
+              required
+              type="email"
+              placeholder={t('Username or email')}
+            />
+          </ion-item>
+        </ion-list>
 
-        <ion-button id=" reset-button" style={{ margin: '50px 0' }}>
-          {t('Request')}
+        <ion-button
+          onClick={this.onClick}
+          expand="full"
+          color="primary">
+          {t('Reset')}
         </ion-button>
       </div>
     );
