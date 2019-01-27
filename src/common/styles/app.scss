@@ -78,7 +78,7 @@ ion-item[error] {
 
   &::after {
     position: absolute;
-    bottom: 0;
+    bottom: 2px;
     left: 50px;
     right: 0;
     font-size: 0.75em;
@@ -879,4 +879,12 @@ ion-item-sliding {
 
 input[type="search"] {
   margin-bottom: 0;
+}
+
+
+@media only screen and (min-width: 500px) {
+  #main ion-button[expand='full'] {
+    max-width: 300px;
+    margin: 0 auto;
+  }
 }

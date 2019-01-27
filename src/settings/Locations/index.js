@@ -9,6 +9,7 @@ import Device from 'helpers/device';
 import DateHelp from 'helpers/date';
 import StringHelp from 'helpers/string';
 import Marionette from 'backbone.marionette';
+import Icon from 'common/Components/Icon';
 import template from './past_location_edit.tpl';
 import './styles.scss';
 
@@ -150,7 +151,11 @@ class Component extends React.Component {
   render() {
     function getPastLocations() {
       if (!this.props.locations || !this.props.locations.length) {
-        return <div className="empty">{t('No previous locations')}</div>;
+
+        return <div className="empty">
+          <Icon i="location" />
+          <h6>{t('You have no previous locations.')}</h6>
+        </div>;
       }
 
       const locations = [...this.props.locations];

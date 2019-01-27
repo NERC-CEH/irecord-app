@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import Loader from 'common/Components/Loader';
 import './styles.scss';
+import './empty-statistics-icon.svg';
 
 @observer
 class Component extends React.Component {
@@ -14,8 +15,13 @@ class Component extends React.Component {
     }
 
     if (!statistics.speciesRaw || !statistics.speciesRaw.length) {
-      return <span className="empty-stats">No statistics available.</span>;
-    }
+      return <div id="empty-stats">
+          <div>
+              <img src="images/empty-statistics-icon.svg" />
+            </div>
+        <h6><span>No statistics available.</span></h6>
+      </div>
+      }
 
     const favSpecies = userModel.attrs.statistics.speciesRaw.map(
       species => (

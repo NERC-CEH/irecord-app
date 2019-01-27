@@ -120,6 +120,7 @@ class Component extends React.Component {
     this.userPassword = React.createRef();
     this.userPasswordConfirm = React.createRef();
     this.onTermsAgree = this.onTermsAgree.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.state = {};
   }
 
@@ -256,10 +257,11 @@ class Component extends React.Component {
           </ion-item>
         </ion-list>
 
-        <ion-button
-          onClick={this.onSubmit.bind(this)}
-          style={{ margin: '50px 0' }}
-          disabled={!this.state.termsAgree}>
+       <ion-button
+          onClick={this.onSubmit}
+          expand="full"
+          disabled={!this.state.termsAgree}
+          color="primary">
           {t('Register')}
         </ion-button>
       </div>

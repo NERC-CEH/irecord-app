@@ -29,7 +29,8 @@ const Component = props => (
         <strong>App Development</strong>
       </p>
       <p>
-        This app was hand crafted with love by the BRC mobile development team.
+        This app was hand crafted with love by
+        <a href="https://kazlauskis.com" style={{whiteSpace: 'nowrap'}}> Karolis Kazlauskis</a> and CEH developers.
         For suggestions and feedback please do not hesitate to{' '}
         <a href="mailto:apps%40ceh.ac.uk?subject=iRecord%20App%20Support%20%26%20Feedback&body=%0A%0A%0AVersion%3A%20<%- obj.version %>%0ABrowser%3A <%- window.navigator.appVersion %>%0A">
           contact us

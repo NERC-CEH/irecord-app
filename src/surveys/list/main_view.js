@@ -12,6 +12,7 @@ import './styles.scss';
 import templateSample from './templates/sample.tpl';
 import templateListNone from './templates/list-none.tpl';
 import template from './templates/main.tpl';
+import './empty-survey-list-icon.svg';
 
 const SampleView = Marionette.View.extend({
   tagName: 'ion-item-sliding',

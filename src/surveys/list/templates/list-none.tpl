@@ -1,7 +1,10 @@
-<p><b>Note:</b> only plant recording is supported at the moment.</p>
+<div>
+ <img src="images/empty-survey-list-icon.svg" />
+</div>
+<h6>You have no lists to show.</h6>
+<h6><small><b>Note:</b> only plant recording is supported at the moment.</small></h6>
 
-<p>No lists to show.</p>
-
-<ion-button  id="create-new-btn" fill="outline">
+<ion-button id="create-new-btn">
   Create
 </ion-button>
+

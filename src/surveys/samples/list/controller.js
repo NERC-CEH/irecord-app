@@ -120,19 +120,8 @@ const API = {
       title: 'Choose a method to upload a photo',
       buttons: [
         {
-          title: 'Camera',
-          onClick() {
-            ImageHelp.getImage()
-              .then(entry => {
-                entry &&
-                  API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
-              })
-              .catch(showErrMsg);
-            radio.trigger('app:dialog:hide');
-          }
-        },
-        {
           title: 'Gallery',
+          fill: 'clear',
           onClick() {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
@@ -145,7 +134,19 @@ const API = {
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           }
-        }
+        },
+         {
+          title: 'Camera',
+          onClick() {
+            ImageHelp.getImage()
+              .then(entry => {
+                entry &&
+                  API.createNewSampleWithPhoto(surveySample, entry.nativeURL);
+              })
+              .catch(showErrMsg);
+            radio.trigger('app:dialog:hide');
+          }
+        },
       ]
     });
   },

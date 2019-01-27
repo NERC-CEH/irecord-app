@@ -12,8 +12,18 @@ ion-spinner.centered {
   height: 32px;
 }
 
-.empty-stats {
-  display: block;
-  margin: 50px auto;
-  text-align: center;
+#empty-stats {
+  h6 {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  img {
+    display: block;
+    width: 70px;
+    margin: 30px auto;
+    opacity: 0.5;
+  }
 }

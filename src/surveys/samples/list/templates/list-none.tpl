@@ -1,5 +1,5 @@
-<p>No species added.</p>
+<h6>No species added.</h6>
 
-<ion-button  id="create-new-btn" fill="outline">
+<ion-button  id="create-new-btn">
   Add
 </ion-button>

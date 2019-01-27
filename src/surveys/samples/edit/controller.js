@@ -237,23 +237,8 @@ const API = {
       title: 'Choose a method to upload a photo',
       buttons: [
         {
-          title: 'Camera',
-          onClick() {
-            ImageHelp.getImage()
-              .then(entry => {
-                entry &&
-                  API.addPhoto(occurrence, entry.nativeURL, occErr => {
-                    if (occErr) {
-                      radio.trigger('app:dialog:error', occErr);
-                    }
-                  });
-              })
-              .catch(showErrMsg);
-            radio.trigger('app:dialog:hide');
-          }
-        },
-        {
           title: 'Gallery',
+          fill: 'clear',
           onClick() {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
@@ -270,7 +255,23 @@ const API = {
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
           }
-        }
+        },
+        {
+          title: 'Camera',
+          onClick() {
+            ImageHelp.getImage()
+              .then(entry => {
+                entry &&
+                  API.addPhoto(occurrence, entry.nativeURL, occErr => {
+                    if (occErr) {
+                      radio.trigger('app:dialog:error', occErr);
+                    }
+                  });
+              })
+              .catch(showErrMsg);
+            radio.trigger('app:dialog:hide');
+          }
+        },
       ]
     });
   },

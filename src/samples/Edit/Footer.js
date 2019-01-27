@@ -100,9 +100,13 @@ class Footer extends Component {
       title: t('Choose a method to upload a photo'),
       buttons: [
         {
-          title: t('Camera'),
+          title: t('Gallery'),
+          fill: 'clear',
           onClick() {
-            ImageHelp.getImage()
+            ImageHelp.getImage({
+              sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
+              saveToPhotoAlbum: false,
+            })
               .then(entry => {
                 entry &&
                   addPhoto(occurrence, entry.nativeURL, occErr => {
@@ -116,12 +120,9 @@ class Footer extends Component {
           },
         },
         {
-          title: t('Gallery'),
+          title: t('Camera'),
           onClick() {
-            ImageHelp.getImage({
-              sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
-              saveToPhotoAlbum: false,
-            })
+            ImageHelp.getImage()
               .then(entry => {
                 entry &&
                   addPhoto(occurrence, entry.nativeURL, occErr => {

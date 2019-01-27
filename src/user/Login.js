@@ -77,6 +77,7 @@ function validateForm(attrs) {
 class Component extends React.Component {
   constructor(props) {
     super(props);
+    this.onClick = this.onClick.bind(this);
     this.userName = React.createRef();
     this.userPassword = React.createRef();
     this.state = {};
@@ -154,22 +155,28 @@ class Component extends React.Component {
         </ion-list>
 
         <ion-button
-          onClick={this.onClick.bind(this)}
-          style={{ margin: '50px 0' }}
+          onClick={this.onClick}
+          expand="full"
           color="primary">
           {t('Sign in')}
         </ion-button>
 
-        <ion-list lines="full">
-          <ion-item href="#user/register" detail>
-            <span slot="start" className="icon icon-user-plus" />
-            {t('Register')}
-          </ion-item>
-          <ion-item href="#user/reset" detail>
-            <span slot="start" className="icon icon-key" />
-            {t('Request a new password')}
-          </ion-item>
-        </ion-list>
+        <ion-list>
+        <ion-button
+          href="#user/register"
+          expand="full"
+          fill="clear">
+          {t('Register')}
+        </ion-button>
+
+        <ion-button
+          href="#user/reset"
+          expand="full"
+          fill="clear">
+          {t('Forgot password?')}
+        </ion-button>
+                  </ion-list>
+
       </div>
     );
   }
