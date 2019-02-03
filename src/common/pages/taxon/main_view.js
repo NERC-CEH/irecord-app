@@ -135,14 +135,19 @@ export default Marionette.View.extend({
       return;
     }
 
-    // preselect the input for typing
-    this.$input = this.$el.find('ion-searchbar')[0];
-    setTimeout(() => {
-      this.$input.setFocus();
-      }, 150);
-    if (window.cordova && Device.isAndroid()) {
-      window.Keyboard.show();
-      this.$input.addEventListener('ionBlur', this.keyboardHideListener);
+    if (window.cordova) {
+      const searchBar = document.querySelector('ion-searchbar');
+
+      if (Device.isAndroid()) {
+        setTimeout(() => {
+          window.Keyboard.show();
+          searchBar.setFocus();
+        }, 500);
+      } else {
+        setTimeout(() => {
+          searchBar.setFocus();
+        }, 150);
+      }
     }
 
     const hideFavourites = this.options.hideFavourites;
@@ -153,12 +158,6 @@ export default Marionette.View.extend({
       if (favouriteSpecies.length) {
         this.updateSuggestions(new Backbone.Collection(favouriteSpecies), '');
       }
-    }
-  },
-
-  onDetach() {
-    if (window.cordova && Device.isAndroid()) {
-      this.$input.removeEventListener('ionBlur', this.keyboardHideListener);
     }
   },
 

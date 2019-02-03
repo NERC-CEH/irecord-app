@@ -43,7 +43,7 @@ class Component extends React.Component {
             ref={this.input}
             value={this.state.value}
             cols="80"
-            rows="16"
+            rows="5"
             onChange={this.onChange}
             autoFocus
           />
