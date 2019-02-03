@@ -29,7 +29,7 @@ const sauceBrowsers = [
   /**  Browser environment */
   ['chrome', '69'], // latest
   ['chrome', '37'], // bottom support
-  ['safari', '12'], // latest
+  ['safari', '11'], // latest
   ['safari', '8'], // bottom support
 
   /**  Mobile environment */
