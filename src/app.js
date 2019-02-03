@@ -86,8 +86,12 @@ App.on('start', () => {
             () => {
               Log('Showing the app.');
 
-              // iOS make space for statusbar
               if (Device.isIOS()) {
+                window.Keyboard.shrinkView(true);
+                window.Keyboard.disableScrollingInShrinkView(true);
+                window.Keyboard.automaticScrollToTopOnHiding = true;
+
+              // iOS make space for statusbar
                 $('body').addClass('ios');
               }
 
