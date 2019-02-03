@@ -126,9 +126,7 @@ class Component extends React.Component {
             </div>
             <h6>{t('You have no records')}.</h6>
 
-            <ion-button
-              id="create-new-btn"
-              onClick={createNewSample}>
+            <ion-button id="create-new-btn" onClick={createNewSample}>
               {t("Let's add one!")}
             </ion-button>
           </div>
@@ -140,6 +138,7 @@ class Component extends React.Component {
       <ion-content
         ref={this.contentRef}
         id="samples-list-container"
+        forceOverscroll={false}
         style={getBandMarginStyle(this.props)}>
         <UserFeedbackRequest
           samplesLength={samples.length}
