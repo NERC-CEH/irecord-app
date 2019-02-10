@@ -43,7 +43,15 @@ let Sample = Indicia.Sample.extend({
    */
   defaults() {
     return {
-      location: {},
+      location: {
+        accuracy: null,
+        altitude: null,
+        gridref: null,
+        latitude: null,
+        longitude: null,
+        name: null,
+        source: null,
+      },
     };
   },
 
