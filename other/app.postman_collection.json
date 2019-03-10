@@ -1,0 +1,2673 @@
+{
+	"info": {
+		"_postman_id": "efe18183-55d1-41f3-b8f7-ec78669ebcab",
+		"name": "Indicia API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reports (get species list)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=15",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reports",
+						"projects",
+						"irecord",
+						"taxa",
+						"taxa_list_for_app.xml"
+					],
+					"query": [
+						{
+							"key": "taxon_list_id",
+							"value": "15"
+						}
+					]
+				},
+				"description": "Returns a report results in JSON."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/reports/{{example_report_id}}?path=enter-app-record&my_records=1&limit=10&orderby=count&sortdir=DESC",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reports",
+								"{{example_report_id}}"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "enter-app-record"
+								},
+								{
+									"key": "my_records",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "orderby",
+									"value": "count"
+								},
+								{
+									"key": "sortdir",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET,POST,OPTIONS",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "223",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:22:41 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "test.brc.ac.uk",
+							"path": "/",
+							"secure": false,
+							"value": "OwJ5kjVv3eg2baAX9eFLhdkTgQFsFgAeuMV5DRztL5Q",
+							"key": "SESSf177f9be715f1d423711860537e98399"
+						}
+					],
+					"body": "{\"data\":[{\"taxon_meaning_id\":\"40291\",\"taxon\":\"Taphrina pruni\",\"common\":\"Pocket Plum\",\"taxon_group\":\"fungus\",\"taxonomy\":\"Fungi :: Taphrinales :: Taphrinaceae\",\"first_date\":\"2017-02-22\",\"last_date\":\"2017-02-22\",\"count\":\"9\"}]}"
+				}
+			]
+		},
+		{
+			"name": "User (get)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bbbb7fc5-115c-4c7f-85c9-9f2d09895f20",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea27e7aa-bdf0-47bc-afab-469cfb8faead",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data.id).to.eql('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/users/{{tmp_indicia_user_email}}",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"{{tmp_indicia_user_email}}"
+					]
+				},
+				"description": "Gets user information."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/users/{{indicia_user_email}}",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"{{indicia_user_email}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET,PUT,OPTIONS",
+							"name": "Access-Control-Allow-Methods",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": ""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": ""
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": ""
+						},
+						{
+							"key": "Content-Length",
+							"value": "162",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:22:33 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": ""
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "test.brc.ac.uk",
+							"path": "/",
+							"secure": false,
+							"value": "OwJ5kjVv3eg2baAX9eFLhdkTgQFsFgAeuMV5DRztL5Q",
+							"key": "SESSf177f9be715f1d423711860537e98399"
+						}
+					],
+					"body": "{\"data\":{\"type\":\"users\",\"id\":25641,\"firstname\":\"indicia\",\"secondname\":\"indicia\",\"name\":\"27313@12storage.com\",\"email\":\"27313@12storage.com\",\"warehouse_id\":131948}}"
+				}
+			]
+		},
+		{
+			"name": "User (update)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"type\": \"users\",\n    \"firstname\": \"indicia\",\n    \"secondname\": \"indicia\",\n    \"email\": \"{{tmp_indicia_user_email}}\",\n    \"password\": \"{{tmp_indicia_user_pass}}\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/users/{{tmp_indicia_user_email}}",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"{{tmp_indicia_user_email}}"
+					]
+				},
+				"description": "At the moment only allows resetting user password."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"users\",\n    \"firstname\": \"indicia\",\n    \"secondname\": \"indicia\",\n    \"email\": \"{{indicia_user_email}}\",\n    \"password\": \"{{indicia_user_pass}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/users/{{indicia_user_email}}",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"{{indicia_user_email}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET,PUT,OPTIONS",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "162",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:22:53 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "test.brc.ac.uk",
+							"path": "/",
+							"secure": false,
+							"value": "OwJ5kjVv3eg2baAX9eFLhdkTgQFsFgAeuMV5DRztL5Q",
+							"key": "SESSf177f9be715f1d423711860537e98399"
+						}
+					],
+					"body": "{\"data\":{\"type\":\"users\",\"id\":25641,\"firstname\":\"indicia\",\"secondname\":\"indicia\",\"name\":\"27313@12storage.com\",\"email\":\"27313@12storage.com\",\"warehouse_id\":131948}}"
+				}
+			]
+		},
+		{
+			"name": "Users (list)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4e8a2cf1-180c-40ad-9837-7dd534faf88b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data[0].id).to.eql('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/users?email={{tmp_indicia_user_email}}",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{tmp_indicia_user_email}}"
+						}
+					]
+				},
+				"description": "Lists website users."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/users?email={{indicia_user_email}}",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "{{indicia_user_email}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET,POST,OPTIONS",
+							"name": "Access-Control-Allow-Methods",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": ""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": ""
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": ""
+						},
+						{
+							"key": "Content-Length",
+							"value": "164",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:22:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": ""
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "test.brc.ac.uk",
+							"path": "/",
+							"secure": false,
+							"value": "OwJ5kjVv3eg2baAX9eFLhdkTgQFsFgAeuMV5DRztL5Q",
+							"key": "SESSf177f9be715f1d423711860537e98399"
+						}
+					],
+					"body": "{\"data\":[{\"type\":\"users\",\"id\":25641,\"firstname\":\"indicia\",\"secondname\":\"indicia\",\"name\":\"27313@12storage.com\",\"email\":\"27313@12storage.com\",\"warehouse_id\":131948}]}"
+				}
+			]
+		},
+		{
+			"name": "Users (create)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4b5988f8-d1bc-45dc-bd82-bd422cd7b4cb",
+						"type": "text/javascript",
+						"exec": [
+							"const email = `${Math.round((Math.random() * 100000 ))}@stelliteop.info`;",
+							"pm.globals.set(\"tmp_indicia_user_email\", email);",
+							"",
+							"const password = pm.globals.get(\"tmp_indicia_user_pass\");",
+							"const userAuth = `${email}:test`;",
+							"pm.globals.set(\"tmp_indicia_user_basic_auth\", `Basic ${btoa(userAuth)}`);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"type\": \"users\",\n    \"firstname\": \"indicia\",\n    \"secondname\": \"indicia\",\n    \"email\": \"{{tmp_indicia_user_email}}\",\n    \"password\": \"{{tmp_indicia_user_pass}}\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/users",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				},
+				"description": "Creates a new user on the website."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"users\",\n    \"firstname\": \"indicia\",\n    \"secondname\": \"indicia\",\n    \"email\": \"{{indicia_user_email}}\",\n    \"password\": \"{{indicia_user_pass}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/users",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET,POST,OPTIONS",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "160",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:23:05 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "test.brc.ac.uk",
+							"path": "/",
+							"secure": false,
+							"value": "OwJ5kjVv3eg2baAX9eFLhdkTgQFsFgAeuMV5DRztL5Q",
+							"key": "SESSf177f9be715f1d423711860537e98399"
+						}
+					],
+					"body": "{\"data\":{\"type\":\"users\",\"id\":25642,\"firstname\":\"indicia\",\"secondname\":\"indicia\",\"name\":\"9044@12storage.com\",\"email\":\"9044@12storage.com\",\"warehouse_id\":131949}}"
+				}
+			]
+		},
+		{
+			"name": "Samples (complex)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c2a14c2b-b638-496c-820c-23ea87044094",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2577e607-aeb0-4c3e-92b0-520f917638e3",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data.id).to.eql('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "submission",
+							"value": "{\n  \"data\": {\n    \"type\": \"samples\",\n    \"external_key\": \"{{$guid}}\",\n    \"survey_id\": 374,\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"273\": 2398,\n      \"date\": \"22/2/2017\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"test\",\n      \"location_source\": \"map\",\n      \"location_gridref\": \"NY41\",\n      \"location_accuracy\": 5000,\n      \"entered_sref\": \"54.5492362, -2.9213601\"\n    },\n    \"occurrences\": [\n      { \"external_key\": \"{{$guid}}\", \"fields\": { \"taxa_taxon_list_id\": 93855 } },\n      {\n        \"external_key\": \"{{$guid}}\",\n        \"fields\": { \"taxa_taxon_list_id\": 93855 },\n        \"media\": [{ \"name\": \"imagename\" }]\n      }\n    ],\n    \"samples\": [\n      {\n        \"external_key\": \"{{$guid}}\",\n        \"survey_id\": 374,\n        \"input_form\": \"enter-app-record\",\n        \"fields\": {\n          \"273\": 2398,\n          \"date\": \"22/2/2017\",\n          \"entered_sref_system\": 4326,\n          \"location_name\": \"test\",\n          \"location_source\": \"map\",\n          \"location_gridref\": \"NY41\",\n          \"location_accuracy\": 5000,\n          \"entered_sref\": \"54.5492362, -2.9213601\"\n        },\n        \"occurrences\": [\n          {\n            \"external_key\": \"{{$guid}}\",\n            \"fields\": { \"taxa_taxon_list_id\": 93855 },\n            \"media\": [{ \"name\": \"imagename2\" }]\n          }\n        ]\n      }\n    ],\n    \"media\": [{ \"name\": \"imagename3\" }]\n  }\n}\n",
+							"type": "text"
+						},
+						{
+							"key": "imagename",
+							"type": "file",
+							"src": ""
+						},
+						{
+							"key": "imagename2",
+							"type": "file",
+							"src": ""
+						},
+						{
+							"key": "imagename3",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/samples",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"samples"
+					]
+				},
+				"description": "Creates a new sample record. Shows how super complex data models can be saved. Uses form-data to send photos and submission in one request."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": "The mime type of this content"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "submission",
+									"value": "{   \"data\": {     \"type\": \"samples\",     \"external_key\": \"{{UUID1}}\",     \"survey_id\": 374,     \"input_form\": \"enter-app-record\",     \"fields\": {       \"273\": 2398,       \"date\": \"22/2/2017\",       \"entered_sref_system\": 4326,       \"location_name\": \"test\",       \"location_source\": \"map\",       \"location_gridref\": \"NY41\",       \"location_accuracy\": 5000,       \"entered_sref\": \"54.5492362, -2.9213601\"     },     \"occurrences\": [       {         \"external_key\": \"{{UUID2}}\",         \"fields\": {           \"taxa_taxon_list_id\": 93855         }       },       {         \"external_key\": \"{{UUID3}}\",         \"fields\": {           \"taxa_taxon_list_id\": 93855         },         \"media\": [           {             \"name\": \"imagename\"           }         ]       }     ],     \"samples\": [       {         \"external_key\": \"{{UUID4}}\",         \"survey_id\": 374,         \"input_form\": \"enter-app-record\",         \"fields\": {           \"273\": 2398,           \"date\": \"22/2/2017\",           \"entered_sref_system\": 4326,           \"location_name\": \"test\",           \"location_source\": \"map\",           \"location_gridref\": \"NY41\",           \"location_accuracy\": 5000,           \"entered_sref\": \"54.5492362, -2.9213601\"         },         \"occurrences\": [           {             \"external_key\": \"{{UUID5}}\",             \"fields\": {               \"taxa_taxon_list_id\": 93855             },             \"media\": [               {                 \"name\": \"imagename2\"               }             ]           }         ]       }     ],     \"media\": [       {         \"name\": \"imagename3\"       }     ]   } }",
+									"type": "text"
+								},
+								{
+									"key": "imagename",
+									"type": "file"
+								},
+								{
+									"key": "imagename2",
+									"type": "file"
+								},
+								{
+									"key": "imagename3",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "996",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:34:36 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":2140587,\"external_key\":\"e25c5fc2-9341-4431-a24d-0c5cc05f557f\",\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\",\"samples\":[{\"id\":2140588,\"external_key\":\"40648fd3-496f-417e-abc2-871b27e66ec3\",\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\",\"occurrences\":[{\"id\":4367905,\"external_key\":\"b261bc23-be4c-439e-b97b-ad390f93a797\",\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\",\"media\":[{\"id\":422681,\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\"}]}]}],\"occurrences\":[{\"id\":4367906,\"external_key\":\"2f082e36-bb9a-4df6-a03e-160b610185bf\",\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\"},{\"id\":4367907,\"external_key\":\"6d7988e8-9384-419b-bb35-bdbdb65eb926\",\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\",\"media\":[{\"id\":422682,\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\"}]}],\"media\":[{\"id\":10621,\"created_on\":\"20170321 11:34:33\",\"updated_on\":\"20170321 11:34:33\"}]}}"
+				}
+			]
+		},
+		{
+			"name": "Samples (simple)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d3b988c7-a0ba-4352-aa32-2450d753f839",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "30418da1-cbfd-4450-a3f2-56fa7e1a6e9a",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data.id).to.eql('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"type\": \"samples\",\n    \"external_key\": \"{{$guid}}\",\n    \"survey_id\": {{warehouse_survey_id}},\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"273\": 2398,\n      \"date\": \"22/2/2017\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"test\",\n      \"location_source\": \"map\",\n      \"location_gridref\": \"NY41\",\n      \"location_accuracy\": 5000,\n      \"entered_sref\": \"54.5492362, -2.9213601\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/samples",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"samples"
+					]
+				},
+				"description": "Creates a new sample record. Anonymous submission."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"samples\",\n    \"external_key\": \"{{UUID1}}\",\n    \"survey_id\": 374,\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"273\": 2398,\n      \"date\": \"22/2/2017\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"test\",\n      \"location_source\": \"map\",\n      \"location_gridref\": \"NY41\",\n      \"location_accuracy\": 5000,\n      \"entered_sref\": \"54.5492362, -2.9213601\"\n    },\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{UUID2}}\",\n        \"record_status\": \"I\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      },\n      {\n        \"external_key\": \"{{UUID3}}\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "429",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:11:46 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "SESSf177f9be715f1d423711860537e98399=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.test.brc.ac.uk; HttpOnly",
+							"name": "Set-Cookie",
+							"description": "an HTTP cookie"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":2140577,\"external_key\":\"437291d2-051c-4b2b-89cc-f2ba09b72417\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\",\"occurrences\":[{\"id\":4367889,\"external_key\":\"351275ee-5c89-40de-beed-d1384bd578c5\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"},{\"id\":4367890,\"external_key\":\"635f91d4-74f2-4889-b46e-bd7e86dfb4bf\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"}]}}"
+				}
+			]
+		},
+		{
+			"name": "Samples (general survey)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d3b988c7-a0ba-4352-aa32-2450d753f839",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "30418da1-cbfd-4450-a3f2-56fa7e1a6e9a",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data.id).to.eql('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"type\": \"samples\",\n    \"external_key\": \"{{$guid}}\",\n    \"survey_id\": 374,\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"273\": 2398,\n      \"date\": \"22/2/2017\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"test\",\n      \"location_source\": \"map\",\n      \"location_gridref\": \"NY41\",\n      \"location_accuracy\": 5000,\n      \"entered_sref\": \"54.5492362, -2.9213601\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/samples",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"samples"
+					]
+				},
+				"description": "Creates a new sample record. Anonymous submission."
+			},
+			"response": [
+				{
+					"name": "Samples (general survey)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tmp_indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"external_key\": \"{{tmp_UUID1}}\",\n    \"survey_id\": \"{{warehouse_survey_id}}\",\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"282\": 5000,\n      \"335\": \"NX40\",\n      \"759\": \"\",\n      \"760\": \"map\",\n      \"1139\": \"4.0.0.1\",\n      \"date\": \"30/9/2018\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"Wallingford\",\n      \"entered_sref\": \"54.3797500, -4.4424300\"\n    },\n    \"media\": [],\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{tmp_UUID2}}\",\n        \"fields\": {\n          \"18\": \"It was me who has identified it.\",\n          \"106\": 1951,\n          \"523\": 668,\n          \"taxa_taxon_list_id\": 179833,\n          \"comment\": \"This is my sample level comment.\"\n        },\n        \"media\": [],\n        \"training\": true\n      }\n    ],\n    \"samples\": [],\n    \"type\": \"samples\"\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "authorization, x-api-key",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "294",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Sep 2018 14:39:12 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "nginx",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Xss-Protection",
+							"value": "1; mode=block",
+							"name": "X-Xss-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":4001319,\"external_key\":\"ddb19931-d3eb-4b7e-addb-79d3af96e48e\",\"created_on\":\"20180930 15:37:20\",\"updated_on\":\"20180930 15:37:20\",\"occurrences\":[{\"id\":7922534,\"external_key\":\"3e7492f7-f8e7-466e-ac08-33106aca1335\",\"created_on\":\"20180930 15:37:21\",\"updated_on\":\"20180930 15:37:21\"}]}}"
+				},
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"samples\",\n    \"external_key\": \"{{UUID1}}\",\n    \"survey_id\": 374,\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"273\": 2398,\n      \"date\": \"22/2/2017\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"test\",\n      \"location_source\": \"map\",\n      \"location_gridref\": \"NY41\",\n      \"location_accuracy\": 5000,\n      \"entered_sref\": \"54.5492362, -2.9213601\"\n    },\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{UUID2}}\",\n        \"record_status\": \"I\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      },\n      {\n        \"external_key\": \"{{UUID3}}\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "429",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:11:46 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "SESSf177f9be715f1d423711860537e98399=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.test.brc.ac.uk; HttpOnly",
+							"name": "Set-Cookie",
+							"description": "an HTTP cookie"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":2140577,\"external_key\":\"437291d2-051c-4b2b-89cc-f2ba09b72417\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\",\"occurrences\":[{\"id\":4367889,\"external_key\":\"351275ee-5c89-40de-beed-d1384bd578c5\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"},{\"id\":4367890,\"external_key\":\"635f91d4-74f2-4889-b46e-bd7e86dfb4bf\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"}]}}"
+				}
+			]
+		},
+		{
+			"name": "Reports (get)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a03a7735-3c9b-4b06-9a88-33dde2e1e20f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data.records[0].taxon_meaning_id).to.eql('string');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/reports/{{example_report_id}}?path=enter-app-record&my_records=1&limit=10&orderby=count&sortdir=DESC",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reports",
+						"{{example_report_id}}"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "enter-app-record"
+						},
+						{
+							"key": "my_records",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "orderby",
+							"value": "count"
+						},
+						{
+							"key": "sortdir",
+							"value": "DESC"
+						}
+					]
+				},
+				"description": "Returns a report results in JSON."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/reports/{{example_report_id}}?path=enter-app-record&my_records=1&limit=10&orderby=count&sortdir=DESC",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reports",
+								"{{example_report_id}}"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "enter-app-record"
+								},
+								{
+									"key": "my_records",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "orderby",
+									"value": "count"
+								},
+								{
+									"key": "sortdir",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET,POST,OPTIONS",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "223",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:22:41 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "test.brc.ac.uk",
+							"path": "/",
+							"secure": false,
+							"value": "OwJ5kjVv3eg2baAX9eFLhdkTgQFsFgAeuMV5DRztL5Q",
+							"key": "SESSf177f9be715f1d423711860537e98399"
+						}
+					],
+					"body": "{\"data\":[{\"taxon_meaning_id\":\"40291\",\"taxon\":\"Taphrina pruni\",\"common\":\"Pocket Plum\",\"taxon_group\":\"fungus\",\"taxonomy\":\"Fungi :: Taphrinales :: Taphrinaceae\",\"first_date\":\"2017-02-22\",\"last_date\":\"2017-02-22\",\"count\":\"9\"}]}"
+				}
+			]
+		},
+		{
+			"name": "Samples (dragonfly survey)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d3b988c7-a0ba-4352-aa32-2450d753f839",
+						"exec": [
+							"function UUID() {",
+							"  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {",
+							"    // eslint-disable-next-line",
+							"    const r = Math.random() * 16 | 0;",
+							"    // eslint-disable-next-line",
+							"    const v = c === 'x' ? r : (r & 0x3 | 0x8);",
+							"    return v.toString(16);",
+							"  });",
+							"}",
+							"",
+							"",
+							"postman.setGlobalVariable(\"tmp_UUID1\", UUID());",
+							"postman.setGlobalVariable(\"tmp_UUID2\", UUID());",
+							"postman.setGlobalVariable(\"tmp_UUID3\", UUID());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "30418da1-cbfd-4450-a3f2-56fa7e1a6e9a",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data.id).to.eql('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"external_key\": \"{{$guid}}\",\n    \"survey_id\": \"{{warehouse_survey_id}}\",\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"59\": 674,\n      \"282\": 5000,\n      \"335\": \"NS53\",\n      \"759\": \"\",\n      \"760\": \"map\",\n      \"1139\": \"4.0.0.1\",\n      \"date\": \"30/9/2018\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"Wallingford\",\n      \"entered_sref\": \"55.6036100, -4.3733400\"\n    },\n    \"media\": [],\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{$guid}}\",\n        \"fields\": {\n          \"34\": 669,\n          \"35\": 669,\n          \"36\": 669,\n          \"37\": 669,\n          \"38\": 669,\n          \"39\": 669,\n          \"taxa_taxon_list_id\": 156779,\n          \"comment\": \"This is my occ level comment.\"\n        },\n        \"media\": [],\n        \"training\": true\n      }\n    ],\n    \"samples\": [],\n    \"type\": \"samples\"\n  }\n}\n"
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/samples",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"samples"
+					]
+				},
+				"description": "Creates a new sample record. Anonymous submission."
+			},
+			"response": [
+				{
+					"name": "Samples (dragonfly survey)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tmp_indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"external_key\": \"{{tmp_UUID1}}\",\n    \"survey_id\": \"{{warehouse_survey_id}}\",\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"59\": 674,\n      \"282\": 5000,\n      \"335\": \"NS53\",\n      \"759\": \"\",\n      \"760\": \"map\",\n      \"1139\": \"4.0.0.1\",\n      \"date\": \"30/9/2018\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"Wallingford\",\n      \"entered_sref\": \"55.6036100, -4.3733400\"\n    },\n    \"media\": [],\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{tmp_UUID2}}\",\n        \"fields\": {\n          \"34\": 669,\n          \"35\": 669,\n          \"36\": 669,\n          \"37\": 669,\n          \"38\": 669,\n          \"39\": 669,\n          \"taxa_taxon_list_id\": 156779,\n          \"comment\": \"This is my sample level comment.\"\n        },\n        \"media\": [],\n        \"training\": true\n      }\n    ],\n    \"samples\": [],\n    \"type\": \"samples\"\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "authorization, x-api-key",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "294",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Sep 2018 14:53:59 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "nginx",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Xss-Protection",
+							"value": "1; mode=block",
+							"name": "X-Xss-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":4001323,\"external_key\":\"b11d54ee-5c90-4818-8d24-120de172a1cc\",\"created_on\":\"20180930 15:53:48\",\"updated_on\":\"20180930 15:53:48\",\"occurrences\":[{\"id\":7922538,\"external_key\":\"934e899f-b379-42d2-821c-bf8c48c45c53\",\"created_on\":\"20180930 15:53:48\",\"updated_on\":\"20180930 15:53:48\"}]}}"
+				},
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"samples\",\n    \"external_key\": \"{{UUID1}}\",\n    \"survey_id\": 374,\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"273\": 2398,\n      \"date\": \"22/2/2017\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"test\",\n      \"location_source\": \"map\",\n      \"location_gridref\": \"NY41\",\n      \"location_accuracy\": 5000,\n      \"entered_sref\": \"54.5492362, -2.9213601\"\n    },\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{UUID2}}\",\n        \"record_status\": \"I\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      },\n      {\n        \"external_key\": \"{{UUID3}}\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "429",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:11:46 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "SESSf177f9be715f1d423711860537e98399=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.test.brc.ac.uk; HttpOnly",
+							"name": "Set-Cookie",
+							"description": "an HTTP cookie"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":2140577,\"external_key\":\"437291d2-051c-4b2b-89cc-f2ba09b72417\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\",\"occurrences\":[{\"id\":4367889,\"external_key\":\"351275ee-5c89-40de-beed-d1384bd578c5\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"},{\"id\":4367890,\"external_key\":\"635f91d4-74f2-4889-b46e-bd7e86dfb4bf\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"}]}}"
+				}
+			]
+		},
+		{
+			"name": "Samples (bryophytes survey)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d3b988c7-a0ba-4352-aa32-2450d753f839",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "30418da1-cbfd-4450-a3f2-56fa7e1a6e9a",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Have an id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(typeof jsonData.data.id).to.eql('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-api-key",
+						"value": "{{indicia_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{tmp_indicia_user_basic_auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"external_key\": \"{{$guid}}\",\n    \"survey_id\": \"{{warehouse_survey_id}}\",\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"208\": 1550,\n      \"282\": 5000,\n      \"335\": \"NX99\",\n      \"759\": \"\",\n      \"760\": \"map\",\n      \"1139\": \"4.0.0.1\",\n      \"date\": \"30/9/2018\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"Wallingford\",\n      \"entered_sref\": \"55.2730000, -3.7205400\"\n    },\n    \"media\": [],\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{$guid}}\",\n        \"fields\": {\n          \"470\": true,\n          \"471\": true,\n          \"472\": true,\n          \"473\": true,\n          \"474\": true,\n          \"475\": true,\n          \"476\": true,\n          \"taxa_taxon_list_id\": 187335,\n          \"comment\": \"This is my occ level comment.\"\n        },\n        \"media\": [],\n        \"training\": true\n      }\n    ],\n    \"samples\": [],\n    \"type\": \"samples\"\n  }\n}\n"
+				},
+				"url": {
+					"raw": "{{indicia_api_host}}/api/v1/samples",
+					"host": [
+						"{{indicia_api_host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"samples"
+					]
+				},
+				"description": "Creates a new sample record. Anonymous submission."
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"samples\",\n    \"external_key\": \"{{UUID1}}\",\n    \"survey_id\": 374,\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"273\": 2398,\n      \"date\": \"22/2/2017\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"test\",\n      \"location_source\": \"map\",\n      \"location_gridref\": \"NY41\",\n      \"location_accuracy\": 5000,\n      \"entered_sref\": \"54.5492362, -2.9213601\"\n    },\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{UUID2}}\",\n        \"record_status\": \"I\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      },\n      {\n        \"external_key\": \"{{UUID3}}\",\n        \"fields\": {\n          \"taxa_taxon_list_id\": 93855\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "429",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Mar 2017 11:11:46 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/7.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "SESSf177f9be715f1d423711860537e98399=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.test.brc.ac.uk; HttpOnly",
+							"name": "Set-Cookie",
+							"description": "an HTTP cookie"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.1.3",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":2140577,\"external_key\":\"437291d2-051c-4b2b-89cc-f2ba09b72417\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\",\"occurrences\":[{\"id\":4367889,\"external_key\":\"351275ee-5c89-40de-beed-d1384bd578c5\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"},{\"id\":4367890,\"external_key\":\"635f91d4-74f2-4889-b46e-bd7e86dfb4bf\",\"created_on\":\"20170321 11:11:47\",\"updated_on\":\"20170321 11:11:47\"}]}}"
+				},
+				{
+					"name": "Samples (bryophytes survey)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{indicia_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tmp_indicia_user_basic_auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"external_key\": \"{{tmp_UUID1}}\",\n    \"survey_id\": \"{{warehouse_survey_id}}\",\n    \"input_form\": \"enter-app-record\",\n    \"fields\": {\n      \"208\": 1550,\n      \"282\": 5000,\n      \"335\": \"NX99\",\n      \"759\": \"\",\n      \"760\": \"map\",\n      \"1139\": \"4.0.0.1\",\n      \"date\": \"30/9/2018\",\n      \"entered_sref_system\": 4326,\n      \"location_name\": \"Wallingford\",\n      \"entered_sref\": \"55.2730000, -3.7205400\"\n    },\n    \"media\": [],\n    \"occurrences\": [\n      {\n        \"external_key\": \"{{tmp_UUID2}}\",\n        \"fields\": {\n          \"470\": true,\n          \"471\": true,\n          \"472\": true,\n          \"473\": true,\n          \"474\": true,\n          \"475\": true,\n          \"476\": true,\n          \"taxa_taxon_list_id\": 187335,\n          \"comment\": \"This is my sample level comment.\"\n        },\n        \"media\": [],\n        \"training\": true\n      }\n    ],\n    \"samples\": [],\n    \"type\": \"samples\"\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{indicia_api_host}}/api/v1/samples",
+							"host": [
+								"{{indicia_api_host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"samples"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "authorization, x-api-key",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Language",
+							"value": "en",
+							"name": "Content-Language",
+							"description": "The language the content is in"
+						},
+						{
+							"key": "Content-Length",
+							"value": "294",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 30 Sep 2018 14:53:49 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Sun, 19 Nov 1978 05:00:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Server",
+							"value": "nginx",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-Xss-Protection",
+							"value": "1; mode=block",
+							"name": "X-Xss-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [],
+					"body": "{\"data\":{\"id\":4001322,\"external_key\":\"291e34fe-ac5f-47cb-adba-286bb5a94eaa\",\"created_on\":\"20180930 15:53:38\",\"updated_on\":\"20180930 15:53:38\",\"occurrences\":[{\"id\":7922537,\"external_key\":\"34649c6e-9ae9-4523-a7d1-daa1f6974d37\",\"created_on\":\"20180930 15:53:39\",\"updated_on\":\"20180930 15:53:39\"}]}}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "497072c5-9ade-4049-9a62-8eaf7e621cba",
+				"type": "text/javascript",
+				"exec": [
+					"const email = pm.globals.get(\"tmp_indicia_user_email\");",
+					"const password = pm.globals.get(\"tmp_indicia_user_pass\");",
+					"const userAuth = `${email}:${password}`;",
+					"pm.globals.set(\"tmp_indicia_user_basic_auth\", `Basic ${btoa(userAuth)}`);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "80d7253b-dc1d-4985-ba21-5c4b09e8fd11",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "1a5cf04f-786a-4f54-8626-7ea19a7e8f06",
+			"key": "example_report_id",
+			"value": "library/taxa/filterable_explore_list.xml",
+			"type": "string"
+		},
+		{
+			"id": "9fd28711-6c9f-4ea5-9d73-3d9cd6299295",
+			"key": "indicia_api_host",
+			"value": "https://brc.ac.uk/irecord",
+			"type": "string"
+		},
+		{
+			"id": "19f98795-ee06-44c6-9126-6a91dd6e98d6",
+			"key": "warehouse_survey_id",
+			"value": "374",
+			"type": "string"
+		},
+		{
+			"id": "a37ba1b1-b944-41bb-88dd-013eed431a30",
+			"key": "warehouse_website_id",
+			"value": "23",
+			"type": "string"
+		}
+	]
+}
