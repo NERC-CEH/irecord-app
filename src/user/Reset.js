@@ -30,10 +30,7 @@ function reset(data) {
       .fail((xhr, textStatus, errorThrown) => {
         let message = errorThrown;
         if (xhr.responseJSON && xhr.responseJSON.errors) {
-          message = xhr.responseJSON.errors.reduce(
-            (name, err) => `${name}${err.title}\n`,
-            ''
-          );
+          message = xhr.responseJSON.errors.reduce((name, err) => `${name}${err.title}\n`, '');
         }
         reject(new Error(message));
       });
@@ -79,8 +76,9 @@ class Component extends React.Component {
       return;
     }
 
+    const name = this.userName.current.value;
     const data = {
-      name: this.userName.current.value,
+      name: name.trim(),
     };
 
     const validationError = validateForm(data);
@@ -109,12 +107,7 @@ class Component extends React.Component {
     return (
       <div style={{ textAlign: 'center' }}>
         <div className="info-message">
-          <p>
-            {t(
-              'Enter your username or email address to request a password reset'
-            )}
-            .
-          </p>
+          <p>{t('Enter your username or email address to request a password reset')}.</p>
         </div>
 
         <ion-list lines="full">
@@ -129,10 +122,7 @@ class Component extends React.Component {
           </ion-item>
         </ion-list>
 
-        <ion-button
-          onClick={this.onClick}
-          expand="full"
-          color="primary">
+        <ion-button onClick={this.onClick} expand="full" color="primary">
           {t('Reset')}
         </ion-button>
       </div>

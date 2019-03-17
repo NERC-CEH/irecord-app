@@ -43,10 +43,7 @@ function login(details, userModel) {
       error(xhr, textStatus, errorThrown) {
         let message = errorThrown;
         if (xhr.responseJSON && xhr.responseJSON.errors) {
-          message = xhr.responseJSON.errors.reduce(
-            (name, err) => `${name}${err.title}\n`,
-            ''
-          );
+          message = xhr.responseJSON.errors.reduce((name, err) => `${name}${err.title}\n`, '');
         }
         reject(new Error(message));
       },
@@ -101,9 +98,12 @@ class Component extends React.Component {
       return;
     }
 
+    const name = this.userName.current.value;
+    const password = this.userPassword.current.value;
+
     const data = {
-      name: this.userName.current.value,
-      password: this.userPassword.current.value,
+      name: name.trim(),
+      password,
     };
 
     const validationError = validateForm(data);
@@ -154,29 +154,19 @@ class Component extends React.Component {
           </ion-item>
         </ion-list>
 
-        <ion-button
-          onClick={this.onClick}
-          expand="full"
-          color="primary">
+        <ion-button onClick={this.onClick} expand="full" color="primary">
           {t('Sign in')}
         </ion-button>
 
         <ion-list>
-        <ion-button
-          href="#user/register"
-          expand="full"
-          fill="clear">
-          {t('Register')}
-        </ion-button>
+          <ion-button href="#user/register" expand="full" color="light">
+            {t('Register')}
+          </ion-button>
 
-        <ion-button
-          href="#user/reset"
-          expand="full"
-          fill="clear">
-          {t('Forgot password?')}
-        </ion-button>
-                  </ion-list>
-
+          <ion-button href="#user/reset" expand="full" color="light">
+            {t('Forgot password?')}
+          </ion-button>
+        </ion-list>
       </div>
     );
   }
