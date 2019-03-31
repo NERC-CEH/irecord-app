@@ -7,6 +7,5 @@ node_modules
 .env*
 *.patch
 yarn.lock
-package-lock.json
 coverage
 .vscode
