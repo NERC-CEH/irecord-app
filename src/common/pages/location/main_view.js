@@ -18,14 +18,14 @@ const LocationView = Marionette.View.extend({
   regions: {
     header: {
       el: '#map-header',
-      replaceElement: true
-    }
+      replaceElement: true,
+    },
   },
 
   triggers: {
     'click #location-lock-btn': 'lock:click:location',
     'click #name-lock-btn': 'lock:click:name',
-    'click a[data-rel="back"]': 'navigateBack'
+    'click a[data-rel="back"]': 'navigateBack',
   },
 
   childViewEvents: {
@@ -41,7 +41,7 @@ const LocationView = Marionette.View.extend({
     // eslint-disable-next-line
     'input:blur': function() {
       this._refreshMapHeight();
-    }
+    },
   },
 
   initialize() {
@@ -70,7 +70,7 @@ const LocationView = Marionette.View.extend({
     const headerView = new HeaderView({
       model: new Backbone.Model({ appModel, sample }),
       hideName: this.options.hideName,
-      hideLocks: this.options.hideLocks
+      hideLocks: this.options.hideLocks,
     });
     this.showChildView('header', headerView);
   },
@@ -85,7 +85,7 @@ const LocationView = Marionette.View.extend({
       accuracy: location.accuracy,
       latitude: location.latitude,
       longitude: location.longitude,
-      accuracyLimit: CONFIG.gps_accuracy_limit // TODO: get from GPS
+      accuracyLimit: CONFIG.gps_accuracy_limit, // TODO: get from GPS
     };
   },
 
@@ -110,7 +110,7 @@ const LocationView = Marionette.View.extend({
 
   _getCurrentLocation() {
     return this.model.get('sample').get('location') || {};
-  }
+  },
 });
 
 export default LocationView.extend(mapFunctions);

@@ -59,7 +59,7 @@ const API = {
       vent: App,
       hideName: options.hideName,
       hideLocks: options.hideLocks,
-      hidePast: options.hidePast
+      hidePast: options.hidePast,
     });
     API.attachMainViewEvents(mainView, sample);
 
@@ -334,7 +334,7 @@ const API = {
 
         sample.set('location', location);
         window.history.back();
-      }
+      },
     });
   },
 
@@ -353,7 +353,7 @@ const API = {
       'smp:locationName',
       !appModel.getAttrLock('smp:locationName')
     );
-  }
+  },
 };
 
 export { API as default };

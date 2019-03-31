@@ -34,7 +34,7 @@ export default Marionette.View.extend({
       'vice-county': vc.name,
       species: sample.samples.length,
       comment: sample.get('comment'),
-      recorders: (sample.get('recorders') || []).length
+      recorders: (sample.get('recorders') || []).length,
     };
-  }
+  },
 });

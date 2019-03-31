@@ -31,7 +31,7 @@ export default {
       $controlGroup.addClass('error');
       $controlGroup.attr('error-message', value);
     });
-  }
+  },
 
   /**
    * A generic sample/occurrence attribute validator

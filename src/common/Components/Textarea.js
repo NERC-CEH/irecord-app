@@ -57,7 +57,7 @@ Component.propTypes = {
   default: PropTypes.string,
   config: PropTypes.any.isRequired,
   info: PropTypes.string,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Component;

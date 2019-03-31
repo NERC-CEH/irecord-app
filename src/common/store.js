@@ -4,7 +4,7 @@ import LocalForage from 'localforage';
 
 // create local store
 let storeConfig = {
-  driverOrder: ['indexeddb', 'websql', 'localstorage']
+  driverOrder: ['indexeddb', 'websql', 'localstorage'],
 };
 
 // enable SQLite
@@ -36,24 +36,24 @@ function getLocalForage() {
     });
   }
 
-    let customDriversPromise = Promise.resolve();
-    const { driverOrder } = storeConfig;
-    if (driverOrder && typeof driverOrder[0] === 'object') {
-      customDriversPromise = LocalForage.defineDriver(driverOrder[0]);
-    }
+  let customDriversPromise = Promise.resolve();
+  const { driverOrder } = storeConfig;
+  if (driverOrder && typeof driverOrder[0] === 'object') {
+    customDriversPromise = LocalForage.defineDriver(driverOrder[0]);
+  }
 
-    return customDriversPromise.then(() => {
-      const dbConfig = {
-        name: 'indicia',
-        storeName: 'generic',
-      };
+  return customDriversPromise.then(() => {
+    const dbConfig = {
+      name: 'indicia',
+      storeName: 'generic',
+    };
 
-      // init
-      const localForage = LocalForage.createInstance(dbConfig);
-      return localForage
-        .setDriver(_getDriverOrder(driverOrder))
-        .then(() => localForage)
-    });
+    // init
+    const localForage = LocalForage.createInstance(dbConfig);
+    return localForage
+      .setDriver(_getDriverOrder(driverOrder))
+      .then(() => localForage);
+  });
 }
 
 let store;

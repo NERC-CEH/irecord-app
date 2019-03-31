@@ -38,7 +38,7 @@ function optimise(speciesFromReport) {
     parseInt(s.taxon_group, 10),
     s.taxon,
     s.common_name,
-    s.synonym
+    s.synonym,
   ]);
 
   checkAllSpeciesHasInformalGroup(speciesFlattened);
@@ -54,7 +54,7 @@ function optimise(speciesFromReport) {
     const genus = [
       taxa[ID], // id
       taxa[GROUP], // group
-      taxon // taxon
+      taxon, // taxon
     ];
 
     const name = taxonCleaner(taxa[COMMON_NAME], true, true);

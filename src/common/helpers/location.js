@@ -9,12 +9,12 @@ const helpers = {
   gridref_accuracy: {
     tetrad: {
       label: 'Tetrad (2km square)',
-      length: 5
+      length: 5,
     },
     monad: {
       label: 'Monad (1km square)',
-      length: 6
-    }
+      length: 6,
+    },
     // '100m': 8, // 100m
   },
 
@@ -91,19 +91,19 @@ const helpers = {
     const x = gridCoords.x;
     const y = gridCoords.y;
 
-    if (x % normAcc - accuracy < 0) {
+    if ((x % normAcc) - accuracy < 0) {
       return true;
     }
 
-    if (x % normAcc + accuracy > normAcc) {
+    if ((x % normAcc) + accuracy > normAcc) {
       return true;
     }
 
-    if (y % normAcc - accuracy < 0) {
+    if ((y % normAcc) - accuracy < 0) {
       return true;
     }
 
-    if (y % normAcc + accuracy > normAcc) {
+    if ((y % normAcc) + accuracy > normAcc) {
       return true;
     }
 
@@ -138,7 +138,7 @@ const helpers = {
           nationalGridRefSW.to_latLng(),
           a.to_latLng(),
           b.to_latLng(),
-          c.to_latLng()
+          c.to_latLng(),
         ];
       }
 
@@ -246,7 +246,7 @@ const helpers = {
     }
 
     return gridref.length === length;
-  }
+  },
 };
 
 export default helpers;

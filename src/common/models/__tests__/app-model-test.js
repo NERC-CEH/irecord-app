@@ -58,7 +58,8 @@ describe('App Model', () => {
       return activity;
     }
 
-    it('should remove expired activity lock', () => initAppModel()
+    it('should remove expired activity lock', () =>
+      initAppModel()
         .then(appModel => {
           const activity = getRandActivity();
           activity.activity_to_date = '2000-01-01';

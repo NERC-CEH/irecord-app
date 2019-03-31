@@ -14,7 +14,7 @@ export default Marionette.View.extend({
 
   triggers: {
     'click ion-item#species-button': 'taxon:update',
-    'click ion-item#location-button': 'location:update'
+    'click ion-item#location-button': 'location:update',
   },
 
   events: {
@@ -76,11 +76,11 @@ export default Marionette.View.extend({
       identifiers: StringHelp.limit(occ.get('identifiers')),
       comment: StringHelp.limit(occ.get('comment')),
       activity_title: activity ? activity.title : null,
-      activity
+      activity,
     };
   },
 
   getValues() {
     return this.$el.find('');
-  }
+  },
 });

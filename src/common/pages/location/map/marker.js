@@ -51,7 +51,7 @@ const marker = {
       if (location.latitude) {
         const parentMarker = this.generateRectangleMarker(location, {
           color: 'blue',
-          fillOpacity: 0.01
+          fillOpacity: 0.01,
         });
         parentMarker.addTo(this.map);
       }
@@ -100,7 +100,7 @@ const marker = {
       color: options.color || 'red',
       weight: 2,
       opacity: 1,
-      fillOpacity: options.fillOpacity || 0.2
+      fillOpacity: options.fillOpacity || 0.2,
     });
 
     return newMarker;
@@ -119,7 +119,7 @@ const marker = {
       color: 'red',
       weight: 1,
       opacity: 1,
-      fillOpacity: 0.7
+      fillOpacity: 0.7,
     };
 
     let newMarker;
@@ -152,7 +152,7 @@ const marker = {
     const location = {
       latitude: parseFloat(e.latlng.lat.toFixed(5)),
       longitude: parseFloat(e.latlng.lng.toFixed(5)),
-      source: 'map'
+      source: 'map',
     };
 
     const zoom = this.getMapZoom();
@@ -178,7 +178,7 @@ const marker = {
       this.map.removeLayer(this.marker);
       this.marker = null;
     }
-  }
+  },
 };
 
 export default marker;

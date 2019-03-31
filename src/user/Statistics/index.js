@@ -15,22 +15,24 @@ class Component extends React.Component {
     }
 
     if (!statistics.speciesRaw || !statistics.speciesRaw.length) {
-      return <div id="empty-stats">
+      return (
+        <div id="empty-stats">
           <div>
-              <img src="images/empty-statistics-icon.svg" />
-            </div>
-        <h6><span>No statistics available.</span></h6>
-      </div>
-      }
+            <img src="images/empty-statistics-icon.svg" />
+          </div>
+          <h6>
+            <span>No statistics available.</span>
+          </h6>
+        </div>
+      );
+    }
 
-    const favSpecies = userModel.attrs.statistics.speciesRaw.map(
-      species => (
-        <ion-item key={species.taxon}>
-          <span className="stat">{species.count}</span>
-          {species.common || species.taxon}
-        </ion-item>
-      )
-    );
+    const favSpecies = userModel.attrs.statistics.speciesRaw.map(species => (
+      <ion-item key={species.taxon}>
+        <span className="stat">{species.count}</span>
+        {species.common || species.taxon}
+      </ion-item>
+    ));
 
     return (
       <ion-list lines="full">
@@ -43,7 +45,7 @@ class Component extends React.Component {
 }
 
 Component.propTypes = {
-  userModel: PropTypes.object
+  userModel: PropTypes.object,
 };
 
 export default Component;

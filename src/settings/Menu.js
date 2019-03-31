@@ -153,13 +153,15 @@ class Component extends React.Component {
         <ion-item-divider>{t('Records')}</ion-item-divider>
         <ion-item
           id="submit-all-btn"
-          onClick={() => sendAllSamples(savedSamples)}>
+          onClick={() => sendAllSamples(savedSamples)}
+        >
           <span slot="start" className="icon icon-send" />
           {t('Submit All')}
         </ion-item>
         <ion-item
           id="delete-all-btn"
-          onClick={() => deleteAllSamples(savedSamples)}>
+          onClick={() => deleteAllSamples(savedSamples)}
+        >
           <span slot="start" className="icon icon-delete" />
           {t('Remove All Saved')}
         </ion-item>
@@ -213,7 +215,8 @@ class Component extends React.Component {
         </ion-item>
         <ion-item
           id="app-reset-btn"
-          onClick={() => resetDialog(savedSamples, appModel, userModel)}>
+          onClick={() => resetDialog(savedSamples, appModel, userModel)}
+        >
           <span slot="start" className="icon icon-undo" />
           {t('Reset')}
         </ion-item>

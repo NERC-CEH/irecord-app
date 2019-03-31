@@ -33,7 +33,7 @@ export default Marionette.View.extend({
     return {
       searchNamesOnly: this.model.get('searchNamesOnly'),
       selectedFilters: this.model.get('taxonGroupFilters'),
-      filters
+      filters,
     };
-  }
+  },
 });

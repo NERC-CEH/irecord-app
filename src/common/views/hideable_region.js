@@ -9,5 +9,5 @@ export default Marionette.Region.extend({
   hide() {
     this.$el.hide();
     return this;
-  }
+  },
 });

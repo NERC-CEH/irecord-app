@@ -9,15 +9,15 @@ export default Marionette.View.extend({
   template,
 
   events: {
-    'click a[data-rel="back"]': 'navigateBack'
+    'click a[data-rel="back"]': 'navigateBack',
   },
 
   triggers: {
-    'click #sample-save-btn': 'save'
+    'click #sample-save-btn': 'save',
   },
 
   modelEvents: {
-    'request:remote sync:remote error:remote': 'render'
+    'request:remote sync:remote error:remote': 'render',
   },
 
   navigateBack() {
@@ -27,7 +27,7 @@ export default Marionette.View.extend({
   serializeData() {
     return {
       training: this.model.metadata.training,
-      isSynchronising: this.model.remote.synchronising
+      isSynchronising: this.model.remote.synchronising,
     };
-  }
+  },
 });

@@ -73,9 +73,7 @@ const Collection = Indicia.Collection.extend({
   },
 
   resetDefaults() {
-    const destroyAllSamples = this.models.map(sample =>
-      sample.destroy()
-    );
+    const destroyAllSamples = this.models.map(sample => sample.destroy());
     return Promise.all(destroyAllSamples);
   },
 });

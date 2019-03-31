@@ -7,9 +7,9 @@ const responses = {
           external_key: data.occurrence_cid,
           sample_id: Math.random(),
           sample_external_key: data.cid,
-          title: 'Occurrence already exists.'
-        }
-      ]
+          title: 'Occurrence already exists.',
+        },
+      ],
     };
 
     return [409, resp];
@@ -28,10 +28,10 @@ const responses = {
           {
             type: 'occurrence',
             id: Math.random(),
-            external_key: data.occurrence_cid
-          }
-        ]
-      }
+            external_key: data.occurrence_cid,
+          },
+        ],
+      },
     };
 
     return [200, resp];
@@ -52,12 +52,12 @@ const responses = {
               {
                 type: 'occurrence',
                 id: Math.random(),
-                external_key: data.occurrence_cid
-              }
-            ]
-          }
-        ]
-      }
+                external_key: data.occurrence_cid,
+              },
+            ],
+          },
+        ],
+      },
     };
 
     return [200, resp];
@@ -65,7 +65,7 @@ const responses = {
 
   ERR() {
     return [502, {}];
-  }
+  },
 };
 
 export default function(functionName, data) {

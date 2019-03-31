@@ -18,7 +18,8 @@ function getLocationName(sample, locks) {
   return (
     <span
       slot="end"
-      className={`descript long ${locks['smp:locationName'] ? 'lock' : ''}`}>
+      className={`descript long ${locks['smp:locationName'] ? 'lock' : ''}`}
+    >
       {locationName}
     </span>
   );
@@ -30,7 +31,8 @@ function getLocation(sample, locks) {
   if (isLocating) {
     return (
       <span slot="end" className="descript long warn">
-        {t('Locating')}...
+        {t('Locating')}
+...
       </span>
     );
   }
@@ -48,7 +50,8 @@ function getLocation(sample, locks) {
       slot="end"
       className={`location long descript ${
         locks['smp:location'] ? 'lock' : ''
-      }`}>
+      }`}
+    >
       {locationPretty}
     </span>
   );

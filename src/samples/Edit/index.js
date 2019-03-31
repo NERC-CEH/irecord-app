@@ -96,7 +96,8 @@ class Component extends React.Component {
           lines="full"
           class={`core inputs slim ${
             isSynchronising ? 'disabled' : ''
-          } ${getBandMarginClass(sample)}`}>
+          } ${getBandMarginClass(sample)}`}
+        >
           <ion-item id="species-button" detail onClick={this.changeSpecies}>
             <ion-label text-wrap>
               {commonName && (
@@ -111,7 +112,8 @@ class Component extends React.Component {
             href={`#samples/${id}/edit/location`}
             id="location-button"
             detail
-            detail-icon={getButtonIcon('smp:location')}>
+            detail-icon={getButtonIcon('smp:location')}
+          >
             <span slot="start" className="media-object icon icon-location" />
 
             <ion-label slot="end" text-wrap>
@@ -124,7 +126,8 @@ class Component extends React.Component {
             href={`#samples/${id}/edit/smp:date`}
             id="date-button"
             detail
-            detail-icon={getButtonIcon('smp:date')}>
+            detail-icon={getButtonIcon('smp:date')}
+          >
             <span slot="start" className="media-object icon icon-calendar" />
             <span slot="end" className="descript">
               {obj['smp:date']}
@@ -135,7 +138,8 @@ class Component extends React.Component {
             href={`#samples/${id}/edit/occ:comment`}
             id="comment-button"
             detail
-            detail-icon={getButtonIcon('occ:comment')}>
+            detail-icon={getButtonIcon('occ:comment')}
+          >
             <span slot="start" className="media-object icon icon-comment" />
             <span slot="end" className="descript">
               {obj['occ:comment']}
@@ -147,7 +151,8 @@ class Component extends React.Component {
               href={`#samples/${id}/edit/activity`}
               id="activity-button"
               detail
-              detail-icon={getButtonIcon('smp:activity')}>
+              detail-icon={getButtonIcon('smp:activity')}
+            >
               <span slot="start" className="media-object icon icon-users" />
               <span slot="end" className="descript">
                 {obj['smp:activity']}

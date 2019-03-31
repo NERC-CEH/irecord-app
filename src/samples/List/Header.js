@@ -66,7 +66,7 @@ function photoSelect() {
           radio.trigger('app:dialog:hide');
         },
       },
-       {
+      {
         title: t('Camera'),
         onClick() {
           ImageHelp.getImage()
@@ -119,7 +119,8 @@ class Component extends React.Component {
         <div className="pull-right">
           <div
             className="img-picker icon icon-camera"
-            onClick={window.cordova && photoSelect}>
+            onClick={window.cordova && photoSelect}
+          >
             {!window.cordova && (
               <input type="file" accept="image/*" onChange={photoUpload} />
             )}

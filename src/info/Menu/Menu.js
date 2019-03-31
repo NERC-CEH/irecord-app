@@ -9,7 +9,11 @@ const Component = observer(props => {
       {isLoggedIn && (
         <ion-item detail id="logout-button" onClick={props.logOut}>
           <span slot="start" className="icon icon-logout" />
-          {t('Logout')}: {firstname} {secondname}
+          {t('Logout')}
+:
+          {firstname} 
+          {' '}
+          {secondname}
         </ion-item>
       )}
       {isLoggedIn && (
@@ -66,7 +70,7 @@ const Component = observer(props => {
 
 Component.propTypes = {
   logOut: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
 };
 
 export default Component;

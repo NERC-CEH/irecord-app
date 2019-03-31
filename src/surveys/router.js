@@ -51,12 +51,12 @@ const Router = Marionette.AppRouter.extend({
       route: surveySampleID => {
         ListController.show({
           surveySampleID,
-          scroll // inform about the last scroll
+          scroll, // inform about the last scroll
         });
       },
       leave() {
         scroll = $mainRegion.scrollTop();
-      }
+      },
     },
     'surveys/:id': ShowController.show,
     'surveys/:id/edit(/)': EditController.show,
@@ -64,12 +64,12 @@ const Router = Marionette.AppRouter.extend({
       route: surveySampleID => {
         SamplesListController.show({
           surveySampleID,
-          scroll: scrollSamples // inform about the last scroll
+          scroll: scrollSamples, // inform about the last scroll
         });
       },
       leave() {
         scrollSamples = $mainRegion.scrollTop();
-      }
+      },
     },
     'surveys/:id/edit/samples/new(/)': SamplesEditTaxonController.show,
     'surveys/:id/edit/samples/:id/edit(/)': SamplesEditController.show,
@@ -83,8 +83,8 @@ const Router = Marionette.AppRouter.extend({
     'surveys/:id/edit/:attr(/)': EditAttrController.show,
     'surveys/*path': () => {
       radio.trigger('app:404:show');
-    }
-  }
+    },
+  },
 });
 
 radio.on('surveys:list', options => {

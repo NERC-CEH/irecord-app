@@ -10,7 +10,7 @@ export default Marionette.View.extend({
   template,
 
   triggers: {
-    'ionSelect ion-radio': 'save'
+    'ionSelect ion-radio': 'save',
   },
 
   initialize() {
@@ -27,7 +27,7 @@ export default Marionette.View.extend({
       value: this.options.default || config.default,
       message: this.options.info || config.info,
       selection,
-      selected: this.options.default || config.default
+      selected: this.options.default || config.default,
     });
   },
 
@@ -52,5 +52,5 @@ export default Marionette.View.extend({
     $inputs.each((int, elem) => {
       $(elem).prop('checked', false);
     });
-  }
+  },
 });

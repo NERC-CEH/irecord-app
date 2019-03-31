@@ -19,7 +19,8 @@ class Collapse extends Component {
         onClick={this.onClick}
         class={`collapse-block in-list hydrated item ${
           this.state.open ? 'opened' : ''
-        }`}>
+        }`}
+      >
         <div className="header">{this.props.title}</div>
         {this.state.open && <div className="body">{this.props.children}</div>}
       </ion-item>

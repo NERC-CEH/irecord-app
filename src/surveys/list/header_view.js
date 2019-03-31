@@ -14,14 +14,14 @@ export default Marionette.View.extend({
 
   triggers: {
     'click #surveys-btn': 'surveys',
-    'click #add-survey-btn': 'create'
+    'click #add-survey-btn': 'create',
   },
 
   regions: {
     toggle: {
       el: '#toggle',
-      replaceElement: true
-    }
+      replaceElement: true,
+    },
   },
 
   onRender() {
@@ -53,15 +53,14 @@ export default Marionette.View.extend({
           : 'Grid Alert';
         return {
           locating,
-          gridSquareUnit
+          gridSquareUnit,
         };
       },
-
 
       onSettingToggled(e) {
         const active = $(e.currentTarget).prop('checked');
         this.trigger('toggled', active);
-      }
+      },
     });
 
     const toggleView = new ToggleView();
@@ -80,7 +79,7 @@ export default Marionette.View.extend({
     const appModel = this.options.appModel;
 
     return {
-      training: appModel.get('useTraining')
+      training: appModel.get('useTraining'),
     };
-  }
+  },
 });

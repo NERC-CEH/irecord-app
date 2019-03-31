@@ -30,7 +30,10 @@ function reset(data) {
       .fail((xhr, textStatus, errorThrown) => {
         let message = errorThrown;
         if (xhr.responseJSON && xhr.responseJSON.errors) {
-          message = xhr.responseJSON.errors.reduce((name, err) => `${name}${err.title}\n`, '');
+          message = xhr.responseJSON.errors.reduce(
+            (name, err) => `${name}${err.title}\n`,
+            ''
+          );
         }
         reject(new Error(message));
       });
@@ -93,7 +96,9 @@ class Component extends React.Component {
       .then(() => {
         radio.trigger('app:dialog', {
           title: 'Success',
-          body: t('Further instructions have been sent to your e-mail address.'),
+          body: t(
+            'Further instructions have been sent to your e-mail address.'
+          ),
         });
         window.history.back();
       })
@@ -107,7 +112,12 @@ class Component extends React.Component {
     return (
       <div style={{ textAlign: 'center' }}>
         <div className="info-message">
-          <p>{t('Enter your username or email address to request a password reset')}.</p>
+          <p>
+            {t(
+              'Enter your username or email address to request a password reset'
+            )}
+            .
+          </p>
         </div>
 
         <ion-list lines="full">

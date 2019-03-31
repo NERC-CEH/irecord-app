@@ -54,7 +54,7 @@ const API = {
         API._showHeaderView(options);
       });
 
-       filtersView.on('filter:name', filter => {
+      filtersView.on('filter:name', filter => {
         Log('Taxon:Controller: Filter for name set');
         appModel.set('searchNamesOnly', filter);
         appModel.save();
@@ -71,9 +71,9 @@ const API = {
             title: 'Close',
             onClick() {
               radio.trigger('app:dialog:hide');
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
     });
 
@@ -85,7 +85,7 @@ const API = {
       model: userModel,
       showEditButton: options.showEditButton,
       hideFavourites: options.informalGroups,
-      reset
+      reset,
     });
     mainView.on('taxon:selected', options.onSuccess, this);
     mainView.on('taxon:searched', searchPhrase => {
@@ -106,7 +106,7 @@ const API = {
       // search
       SpeciesSearchEngine.search(searchPhrase, {
         informalGroups,
-        namesFilter
+        namesFilter,
       }).then(suggestions => {
         const deDuped = API.deDuplicateSuggestions(suggestions);
         mainView.updateSuggestions(
@@ -168,7 +168,7 @@ const API = {
       }
     });
     return results;
-  }
+  },
 };
 
 export { API as default };

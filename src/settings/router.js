@@ -47,7 +47,7 @@ const Router = Marionette.AppRouter.extend({
     'settings/survey(/)': () => {
       Log('Settings:Survey: visited.');
       radio.trigger('app:header', <Header>Grid Unit</Header>);
-      radio.trigger('app:main', <Survey appModel={appModel}/>);
+      radio.trigger('app:main', <Survey appModel={appModel} />);
       radio.trigger('app:footer:hide');
     },
     'settings/*path': () => {

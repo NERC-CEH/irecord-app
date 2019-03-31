@@ -69,12 +69,12 @@ class Component extends React.Component {
           mode: 'date',
           androidTheme: 16974373,
           allowOldDates: true,
-          allowFutureDates: false
+          allowFutureDates: false,
         };
 
         window.datePicker.show(options, date => {
           this.onChange({
-            target: { value: DateHelp.toDateInputValue(new Date(date)) }
+            target: { value: DateHelp.toDateInputValue(new Date(date)) },
           });
         });
         return;
@@ -130,7 +130,7 @@ Component.propTypes = {
   validate: PropTypes.func,
   max: PropTypes.any,
   typeahead: PropTypes.func,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
 };
 
 export default Component;

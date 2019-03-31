@@ -23,8 +23,8 @@ function fetch() {
       headers: {
         'x-api-key': apiKey,
         Authorization: 'Basic dGVzdDp0ZXN0=',
-        'Cache-Control': 'no-cache'
-      }
+        'Cache-Control': 'no-cache',
+      },
     };
 
     const req = http.request(options, res => {

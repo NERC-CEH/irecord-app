@@ -22,7 +22,7 @@ const art = [
   '1 0000     00  1 0000    00      0000      00  ',
   '1 0000000000   1 0000      00      00000000	  ',
   '',
-  '* Find us: www.brc.ac.uk'
+  '* Find us: www.brc.ac.uk',
 ].join('\n');
 
 Log(art);

@@ -62,10 +62,8 @@ let Sample = Indicia.Sample.extend({
     this.media.models = observable(this.media.models);
 
     // for mobx to keep same refs
-    this.media.models.add = (...args) => Indicia.Collection.prototype.add.apply(this, [
-        ...args,
-        { sort: false },
-      ]);
+    this.media.models.add = (...args) =>
+      Indicia.Collection.prototype.add.apply(this, [...args, { sort: false }]);
 
     this.checkExpiredActivity(); // activities
     this.listenTo(userModel, 'sync:activities:end', this.checkExpiredActivity);

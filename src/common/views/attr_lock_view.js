@@ -13,7 +13,7 @@ export default Marionette.View.extend({
   },
 
   triggers: {
-    'click #lock-btn': 'lock:click'
+    'click #lock-btn': 'lock:click',
   },
 
   serializeData() {
@@ -33,7 +33,7 @@ export default Marionette.View.extend({
     locked = appModel.isAttrLocked(model, attrName);
 
     return {
-      locked
+      locked,
     };
-  }
+  },
 });

@@ -100,13 +100,18 @@ export default observer(props => {
     <ion-button
       id="record-external-link"
       color="light"
-      href={`${siteUrl}record-details?occurrence_id=${id}`}>
+      href={`${siteUrl}record-details?occurrence_id=${id}`}
+    >
       {t('View on iRecord')}
     </ion-button>
   ) : (
     <p>
-      {t('Go to the')} <a href={siteUrl}>{t('iRecord website')}</a>{' '}
-      {t('to edit')}.
+      {t('Go to the')} 
+      {' '}
+      <a href={siteUrl}>{t('iRecord website')}</a>
+      {' '}
+      {t('to edit')}
+.
     </p>
   );
 

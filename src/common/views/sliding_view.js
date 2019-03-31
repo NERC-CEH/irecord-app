@@ -64,9 +64,9 @@ const Slider = Marionette.SlidingView.extend({
 
   childViewOptions() {
     return {
-      appModel: this.options.appModel
+      appModel: this.options.appModel,
     };
-  }
+  },
 });
 
 export default Slider;

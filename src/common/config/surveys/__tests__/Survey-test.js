@@ -81,7 +81,7 @@ describe('Survey', () => {
         '2-9': 2404,
         '10-29': 2406,
         '30-99': 2408,
-        '100+': 2410
+        '100+': 2410,
       };
 
       const survey = Survey.factory(buterfliesGroupId);

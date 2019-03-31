@@ -119,12 +119,18 @@ class Component extends React.Component {
 
     if (!samples.length) {
       return (
-        <ion-content id="samples-list-container" style={getBandMarginStyle(this.props)}>
+        <ion-content
+          id="samples-list-container"
+          style={getBandMarginStyle(this.props)}
+        >
           <div id="empty-message">
             <div>
               <img src="images/empty-samples-list-icon.svg" />
             </div>
-            <h6>{t('You have no records')}.</h6>
+            <h6>
+              {t('You have no records')}
+.
+            </h6>
 
             <ion-button id="create-new-btn" onClick={createNewSample}>
               {t("Let's add one!")}
@@ -139,7 +145,8 @@ class Component extends React.Component {
         ref={this.contentRef}
         id="samples-list-container"
         forceOverscroll={false}
-        style={getBandMarginStyle(this.props)}>
+        style={getBandMarginStyle(this.props)}
+      >
         <UserFeedbackRequest
           samplesLength={samples.length}
           appModel={this.props.appModel}

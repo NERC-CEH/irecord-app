@@ -46,13 +46,13 @@ const API = {
     const locationEditAllowed = !API.hasChildSamplesWithLocation(sample);
     const mainView = new MainView({
       locationEditAllowed,
-      model: new Backbone.Model({ sample, appModel })
+      model: new Backbone.Model({ sample, appModel }),
     });
     mainView.on('location:update', () => {
       radio.trigger('app:location:show', sample.cid, null, {
         setLocation: API.setLocation,
         hideLocks: true,
-        hidePast: true
+        hidePast: true,
       });
     });
 
@@ -60,7 +60,7 @@ const API = {
 
     // HEADER
     const headerView = new HeaderView({
-      model: sample
+      model: sample,
     });
 
     headerView.on('save', () => {
@@ -90,7 +90,7 @@ const API = {
         // should we sync?
         if (!Device.isOnline()) {
           radio.trigger('app:dialog:error', {
-            message: t('Looks like you are offline!')
+            message: t('Looks like you are offline!'),
           });
           return;
         }
@@ -164,7 +164,7 @@ const API = {
     radio.trigger('app:dialog', {
       title: 'Sorry',
       body: missing,
-      timeout: 2000
+      timeout: 2000,
     });
   },
 
@@ -173,7 +173,7 @@ const API = {
 
     radio.trigger('app:dialog', {
       title: `Selected location should be a ${prettyName}`,
-      timeout: 2000
+      timeout: 2000,
     });
   },
 
@@ -283,7 +283,7 @@ const API = {
     });
 
     return has;
-  }
+  },
 };
 
 export { API as default };

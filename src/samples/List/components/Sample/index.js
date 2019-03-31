@@ -133,7 +133,11 @@ class Component extends React.Component {
     const id = sample.cid;
     const onDatabase = sample.metadata.synced_on;
 
-    img = img ? <img src={img} onClick={e => showGallery(e, occ.media.models)} /> : '';
+    img = img ? (
+      <img src={img} onClick={e => showGallery(e, occ.media.models)} />
+    ) : (
+      ''
+    );
 
     const openEditPage = () => {
       window.location.hash = `#samples/${id}${onDatabase ? '' : '/edit'}`;
@@ -163,7 +167,11 @@ class Component extends React.Component {
             </div>
 
             <div className="attributes">
-              <Attributes occ={occ} isDefaultSurvey={isDefaultSurvey} sample={sample} />
+              <Attributes
+                occ={occ}
+                isDefaultSurvey={isDefaultSurvey}
+                sample={sample}
+              />
             </div>
           </div>
         </ion-item>
@@ -172,7 +180,8 @@ class Component extends React.Component {
           <ion-item-option
             id="delete"
             color="danger"
-            onClick={() => sampleDelete(sample)}>
+            onClick={() => sampleDelete(sample)}
+          >
             <div className="edit icon icon-delete" />
           </ion-item-option>
         </ion-item-options>

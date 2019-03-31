@@ -41,7 +41,7 @@ const API = {
     // MAIN
     const mainView = new MainView({
       attr,
-      model: sample
+      model: sample,
     });
     radio.trigger('app:main', mainView);
 
@@ -59,7 +59,7 @@ const API = {
         });
       },
       // rightPanel: lockView,
-      model: new Backbone.Model({ title: attr })
+      model: new Backbone.Model({ title: attr }),
     });
 
     radio.trigger('app:header', headerView);
@@ -152,7 +152,7 @@ const API = {
     //       appModel.setAttrLock(attr, newVal);
     //     }
     // }
-  }
+  },
 };
 
 export { API as default };

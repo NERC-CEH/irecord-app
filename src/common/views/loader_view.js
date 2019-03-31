@@ -9,5 +9,5 @@ export default Marionette.View.extend({
   tagName: 'ion-spinner',
   className: 'centered',
   attributes: { name: Device.isIOS() ? 'lines' : 'dots' },
-  template: false
+  template: false,
 });

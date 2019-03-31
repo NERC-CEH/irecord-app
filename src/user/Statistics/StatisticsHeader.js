@@ -4,7 +4,7 @@ import Header from '../../common/Components/Header';
 
 const StatisticsHeader = props => (
   <Header
-    rightPanel={
+    rightPanel={(
       <a
         id="refresh-btn"
         onClick={() => props.userModel.syncStats(true)}
@@ -12,14 +12,14 @@ const StatisticsHeader = props => (
       >
         {t('Refresh')}
       </a>
-    }
+    )}
   >
     Statistics
   </Header>
 );
 
 StatisticsHeader.propTypes = {
-  userModel: PropTypes.object
+  userModel: PropTypes.object,
 };
 
 export default StatisticsHeader;

@@ -18,9 +18,7 @@ const Component = observer(props => {
   const isSynced = sample.metadata.synced_on;
   return (
     <div
-      className={`online-status icon icon-send ${
-        isSynced ? 'cloud' : 'local'
-      }`}
+      className={`online-status icon icon-send ${isSynced ? 'cloud' : 'local'}`}
     />
   );
 });

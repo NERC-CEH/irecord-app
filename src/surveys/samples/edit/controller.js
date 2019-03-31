@@ -53,14 +53,14 @@ const API = {
     // MAIN
     const mainView = new MainView({
       locationEditAllowed,
-      model: new Backbone.Model({ sample, appModel })
+      model: new Backbone.Model({ sample, appModel }),
     });
     mainView.on('location:update', () => {
       radio.trigger('app:location:show', surveySampleID, sample.cid, {
         setLocation: API.setLocation,
         hideName: true,
         hideLocks: true,
-        hidePast: true
+        hidePast: true,
       });
     });
     radio.trigger('app:main', mainView);
@@ -75,19 +75,19 @@ const API = {
         onSuccess(taxon) {
           API.updateTaxon(sample, taxon);
         },
-        informalGroups: sample.getSurvey().taxonGroups
+        informalGroups: sample.getSurvey().taxonGroups,
       });
     });
 
     // HEADER
     const headerView = new HeaderView({
-      model: new Backbone.Model({ title: 'Edit' })
+      model: new Backbone.Model({ title: 'Edit' }),
     });
     radio.trigger('app:header', headerView);
 
     // FOOTER
     const footerView = new FooterView({
-      model: sample
+      model: sample,
     });
 
     footerView.on('photo:upload', e => {
@@ -126,7 +126,7 @@ const API = {
         // should we sync?
         if (!Device.isOnline()) {
           radio.trigger('app:dialog:error', {
-            message: 'Looks like you are offline!'
+            message: 'Looks like you are offline!',
           });
           return;
         }
@@ -180,7 +180,7 @@ const API = {
     radio.trigger('app:dialog', {
       title: 'Sorry',
       body: missing,
-      timeout: 2000
+      timeout: 2000,
     });
   },
 
@@ -207,7 +207,7 @@ const API = {
           fill: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
-          }
+          },
         },
         {
           title: 'Remove',
@@ -219,13 +219,13 @@ const API = {
                 Log('Surveys:Sample:Edit:Controller: photo deleted.');
 
                 // hide loader
-              }
+              },
             });
             radio.trigger('app:dialog:hide');
             Analytics.trackEvent('Sample', 'photo remove');
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
   },
 
@@ -242,7 +242,7 @@ const API = {
           onClick() {
             ImageHelp.getImage({
               sourceType: window.Camera.PictureSourceType.PHOTOLIBRARY,
-              saveToPhotoAlbum: false
+              saveToPhotoAlbum: false,
             })
               .then(entry => {
                 entry &&
@@ -254,7 +254,7 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          }
+          },
         },
         {
           title: 'Camera',
@@ -270,9 +270,9 @@ const API = {
               })
               .catch(showErrMsg);
             radio.trigger('app:dialog:hide');
-          }
+          },
         },
-      ]
+      ],
     });
   },
 
@@ -281,7 +281,7 @@ const API = {
 
     radio.trigger('app:dialog', {
       title: `Selected location should be within ${gridref}`,
-      timeout: 2000
+      timeout: 2000,
     });
   },
 
@@ -369,7 +369,7 @@ const API = {
     sample.getOccurrence().set('taxon', taxon);
     // return to previous - edit page
     return sample.save().then(() => window.history.back());
-  }
+  },
 };
 
 export { API as default };

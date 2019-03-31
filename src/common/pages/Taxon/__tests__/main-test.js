@@ -203,14 +203,12 @@ import searchEngine from '../search/taxon_search_engine';
           }));
 
       it('should allow searching Recorder style (5 characters) ', () =>
-        searchEngine
-          .search('pufpu')
-          .then(results => {
-            const containsPuffinus = results.find(
-              res => res.scientific_name === 'Puffinus puffinus'
-            );
-            expect(containsPuffinus).to.be.an('object');
-          }));
+        searchEngine.search('pufpu').then(results => {
+          const containsPuffinus = results.find(
+            res => res.scientific_name === 'Puffinus puffinus'
+          );
+          expect(containsPuffinus).to.be.an('object');
+        }));
 
       describe('genus', () => {
         it('should add all species belonging to it', () =>

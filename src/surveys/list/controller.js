@@ -29,9 +29,9 @@ const API = {
     // HEADER
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: 'Surveys'
+        title: 'Surveys',
       }),
-      appModel
+      appModel,
     });
     headerView.on('surveys', () => {
       radio.trigger('samples:list', { replace: true });
@@ -51,7 +51,7 @@ const API = {
     // get subcollection
     const collection = savedSamples.subcollection({
       filter: model =>
-        model.metadata.complex_survey && model.metadata.training === training
+        model.metadata.complex_survey && model.metadata.training === training,
     });
     collection.comparator = savedSamples.comparator;
     collection.sort();
@@ -59,7 +59,7 @@ const API = {
     const mainView = new MainView({
       collection,
       scroll: options.scroll,
-      appModel
+      appModel,
     });
 
     mainView.on('childview:create', API.addSurvey);
@@ -88,7 +88,7 @@ const API = {
 
     radio.trigger('app:dialog', {
       title: 'Grid Square',
-      body
+      body,
     });
   },
 
@@ -112,7 +112,7 @@ const API = {
           fill: 'clear',
           onClick() {
             radio.trigger('app:dialog:hide');
-          }
+          },
         },
         {
           title: 'Delete',
@@ -121,9 +121,9 @@ const API = {
             sample.destroy();
             radio.trigger('app:dialog:hide');
             Analytics.trackEvent('List', 'sample remove');
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
   },
 
@@ -149,7 +149,7 @@ const API = {
         return sample;
       })
     );
-  }
+  },
 };
 
 export { API as default };

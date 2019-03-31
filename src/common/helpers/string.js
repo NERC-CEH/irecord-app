@@ -14,5 +14,5 @@ export default {
     div.appendChild(document.createTextNode(string.toString()));
     const escaped = div.innerHTML.trim();
     return escaped;
-  }
+  },
 };

@@ -8,7 +8,7 @@ class Component extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.onLeave = this.onLeave.bind(this)
+    this.onLeave = this.onLeave.bind(this);
   }
 
   onLeave() {
@@ -49,7 +49,11 @@ class Component extends React.Component {
       </a>
     );
 
-    return <Header rightPanel={lock} onLeave={this.onLeave}>{title}</Header>;
+    return (
+      <Header rightPanel={lock} onLeave={this.onLeave}>
+        {title}
+      </Header>
+    );
   }
 }
 

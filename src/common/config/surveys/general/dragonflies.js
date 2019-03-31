@@ -5,7 +5,7 @@ const numRanges = {
   '21-100': 668,
   '101-500': 669,
   '500+': 670,
-  Present: 671
+  Present: 671,
 };
 
 export default {
@@ -18,7 +18,7 @@ export default {
     'occ:ovCount',
     'occ:laCount',
     'occ:exCount',
-    'occ:emCount'
+    'occ:emCount',
     // 'smp:siteOther',
   ],
 
@@ -41,14 +41,14 @@ export default {
           Stream: 679,
           Ditch: 680,
           Canal: 681,
-          'Other (please specify in comments)': 682
-        }
+          'Other (please specify in comments)': 682,
+        },
       },
       siteOther: {
         type: 'text',
         id: 60,
-        label: 'Other Site Type'
-      }
+        label: 'Other Site Type',
+      },
     },
     occ: {
       adCount: {
@@ -58,7 +58,7 @@ export default {
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
-        values: numRanges
+        values: numRanges,
       },
       coCount: {
         type: 'radio',
@@ -67,7 +67,7 @@ export default {
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
-        values: numRanges
+        values: numRanges,
       },
       ovCount: {
         type: 'radio',
@@ -76,7 +76,7 @@ export default {
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
-        values: numRanges
+        values: numRanges,
       },
       laCount: {
         type: 'radio',
@@ -85,7 +85,7 @@ export default {
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
-        values: numRanges
+        values: numRanges,
       },
       exCount: {
         type: 'radio',
@@ -94,7 +94,7 @@ export default {
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
-        values: numRanges
+        values: numRanges,
       },
       emCount: {
         type: 'radio',
@@ -103,8 +103,8 @@ export default {
         icon: 'number',
         info: 'How many individuals of this type?',
         default: '',
-        values: numRanges
-      }
-    }
-  }
+        values: numRanges,
+      },
+    },
+  },
 };

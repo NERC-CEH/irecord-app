@@ -4,9 +4,7 @@
 import Marionette from 'backbone.marionette';
 import radio from 'radio';
 import DateHelp from 'helpers/date';
-import _MainView, {
-  SampleView as _SampleView
-} from './main_view_old';
+import _MainView, { SampleView as _SampleView } from './main_view_old';
 import SlidingView from '../../common/views/sliding_view';
 import './styles.scss';
 import templateSample from './templates/sample.tpl';
@@ -63,9 +61,9 @@ const SampleView = Marionette.View.extend({
       comment: sample.get('comment'),
       isSynchronising: sample.remote.synchronising,
       date,
-      img: img ? `<img src="${img}"/>` : ''
+      img: img ? `<img src="${img}"/>` : '',
     };
-  }
+  },
 });
 
 const NoSamplesView = Marionette.View.extend({
@@ -75,8 +73,8 @@ const NoSamplesView = Marionette.View.extend({
   template: templateListNone,
 
   triggers: {
-    'click #create-new-btn': 'create'
-  }
+    'click #create-new-btn': 'create',
+  },
 });
 
 const SmartCollectionView = SlidingView.extend({
@@ -86,7 +84,7 @@ const SmartCollectionView = SlidingView.extend({
   onAttach() {
     // let the world know when the list is in place
     radio.trigger('surveys:list:show');
-  }
+  },
 });
 
 const MainView = _MainView.extend({
@@ -95,8 +93,8 @@ const MainView = _MainView.extend({
   regions: {
     body: {
       el: '#list',
-      replaceElement: true
-    }
+      replaceElement: true,
+    },
   },
 
   /**
@@ -122,10 +120,10 @@ const MainView = _MainView.extend({
       new SmartCollectionView({
         referenceCollection: this.collection,
         appModel: this.options.appModel,
-        scroll: this.options.scroll
+        scroll: this.options.scroll,
       })
     );
-  }
+  },
 });
 
 export default MainView;

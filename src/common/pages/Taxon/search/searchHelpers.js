@@ -73,7 +73,7 @@ const helpers = {
     const check = [
       ' ssp.? ', // eslint-disable-line
       ' subsect.? ', // eslint-disable-line
-      ' nothovar.? ' // eslint-disable-line
+      ' nothovar.? ', // eslint-disable-line
     ];
 
     const re = new RegExp(check.join('|'), 'i');
@@ -190,7 +190,7 @@ const helpers = {
       name = species[p[0]][p[1]][p[2]][p[3]];
     }
     return name.toLowerCase();
-  }
+  },
 };
 
 export { helpers as default };

@@ -39,7 +39,7 @@ function error(err = {}) {
   if (typeof err === 'string' || err instanceof String) {
     err = {
       // eslint-disable-line
-      message: err
+      message: err,
     };
   }
 

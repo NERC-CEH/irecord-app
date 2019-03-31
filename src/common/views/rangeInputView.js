@@ -25,7 +25,7 @@ LogSlider.prototype = {
   // Calculate slider position from a value
   position(value) {
     return this.minpos + (Math.log(value) - this.minlval) / this.scale;
-  }
+  },
 };
 
 const logsl = new LogSlider({ maxpos: 100, minval: 1, maxval: 500 });
@@ -35,7 +35,7 @@ export default Marionette.View.extend({
 
   events: {
     'input input[type="range"]': 'updateRangeInputValue',
-    'change input[type="number"]': 'updateRangeSliderValue'
+    'change input[type="number"]': 'updateRangeSliderValue',
   },
 
   initialize() {
@@ -43,7 +43,7 @@ export default Marionette.View.extend({
 
     this.model = new Backbone.Model({
       message: this.options.info || config.info,
-      value: this.options.default || config.default
+      value: this.options.default || config.default,
     });
 
     this.model.set(
@@ -82,5 +82,5 @@ export default Marionette.View.extend({
   resetValue() {
     const $rangeOutput = this.$el.find('input[type="number"]');
     $rangeOutput.val(null);
-  }
+  },
 });

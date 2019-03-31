@@ -83,7 +83,7 @@ describe('Model Factory', () => {
       const comment = 'my comment';
       Factory._appendAttrLocks(sample, {
         'smp:comment': comment,
-        'occ:comment': comment
+        'occ:comment': comment,
       });
       expect(sample.get('comment')).to.eql(comment);
       expect(sample.getOccurrence().get('comment')).to.eql(comment);

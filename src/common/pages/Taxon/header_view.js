@@ -10,11 +10,11 @@ export default Marionette.View.extend({
 
   events: {
     'click a[data-rel="back"]': 'navigateBack',
-    'click #filter-btn': 'toggleFilters'
+    'click #filter-btn': 'toggleFilters',
   },
 
   modelEvents: {
-    'change:filter': 'render'
+    'change:filter': 'render',
   },
 
   toggleFilters(e) {
@@ -30,5 +30,5 @@ export default Marionette.View.extend({
     const filterOn = filters.length || this.model.get('searchNamesOnly');
 
     return { filterOn, disableFilters: this.options.disableFilters };
-  }
+  },
 });

@@ -171,8 +171,18 @@ function searchMulti(
 
   const is5CharacterShortcut = searchPhrase.length === 5;
   if (is5CharacterShortcut && results.length < maxResults) {
-    const searchPhraseShortcut = `${searchPhrase.substr(0,3)} ${searchPhrase.substr(3,4)}`;
-    search(species, searchPhraseShortcut, results, maxResults, hybridRun, informalGroups)
+    const searchPhraseShortcut = `${searchPhrase.substr(
+      0,
+      3
+    )} ${searchPhrase.substr(3, 4)}`;
+    search(
+      species,
+      searchPhraseShortcut,
+      results,
+      maxResults,
+      hybridRun,
+      informalGroups
+    );
   }
 }
 

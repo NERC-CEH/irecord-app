@@ -24,8 +24,8 @@ const ActivityModel = Backbone.Model.extend({
     activity_type: '',
     activity_from_date: null,
     activity_to_date: null,
-    checked: false
-  }
+    checked: false,
+  },
 });
 
 let sample; // should be initialized if editing samples' activity
@@ -71,7 +71,7 @@ const ActivitiesCollection = Backbone.Collection.extend({
     const defaultActivity = new ActivityModel({
       title: t('Default'),
       description: '',
-      checked: !selectedActivity.id
+      checked: !selectedActivity.id,
     });
 
     this.reset();
@@ -81,11 +81,11 @@ const ActivitiesCollection = Backbone.Collection.extend({
     userModel.get('activities').forEach(activity => {
       // TODO:  server '71' == local 71
       const checkedActivity = Object.assign({}, activity, {
-        checked: selectedActivity.id === activity.id
+        checked: selectedActivity.id === activity.id,
       });
       this.add(new ActivityModel(checkedActivity));
     });
-  }
+  },
 });
 
 let activitiesCollection;
@@ -108,8 +108,8 @@ const API = {
     const headerView = new HeaderView({
       rightPanel: refreshView,
       model: new Backbone.Model({
-        title: 'Activities'
-      })
+        title: 'Activities',
+      }),
     });
 
     radio.trigger('app:header', headerView);
@@ -119,7 +119,7 @@ const API = {
 
     // MAIN
     const mainView = new MainView({
-      collection: activitiesCollection
+      collection: activitiesCollection,
     });
 
     let onExit = () => {
@@ -215,11 +215,11 @@ const API = {
         {
           id: 'ok',
           title: 'OK',
-          onClick: App.regions.getRegion('dialog').hide
-        }
-      ]
+          onClick: App.regions.getRegion('dialog').hide,
+        },
+      ],
     });
-  }
+  },
 };
 
 export { API as default };

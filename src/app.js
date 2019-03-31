@@ -87,7 +87,7 @@ App.on('start', () => {
               Log('Showing the app.');
 
               if (Device.isIOS()) {
-              // iOS make space for statusbar
+                // iOS make space for statusbar
                 $('body').addClass('ios');
               }
 

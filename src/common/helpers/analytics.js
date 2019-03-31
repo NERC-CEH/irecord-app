@@ -26,7 +26,7 @@ export function breadcrumbCallback(crumb) {
   if (crumb.category === 'navigation') {
     crumb.data = {
       to: _removeUUID(crumb.data.to),
-      from: _removeUUID(crumb.data.from)
+      from: _removeUUID(crumb.data.from),
     };
     return crumb;
   }
@@ -39,7 +39,7 @@ export function breadcrumbCallback(crumb) {
     }
 
     crumb.data = {
-      url: removeUserId(crumb.data.url)
+      url: removeUserId(crumb.data.url),
     };
     return crumb;
   }
@@ -126,10 +126,10 @@ const API = {
           ignoreErrors: [
             'setSelectionRange', // there is some fastclick issue (does not affect ux)
             'Incorrect password or email', // no need to log that
-            'Backbone.history' // on refresh fires this error, todo: fix it
+            'Backbone.history', // on refresh fires this error, todo: fix it
           ],
           // breadcrumbCallback, // moved to dataCallback
-          dataCallback
+          dataCallback,
         }
       ).install();
 
@@ -147,7 +147,7 @@ const API = {
     // capture unhandled promises
     window.onunhandledrejection = e => {
       Raven.captureException(e.reason, {
-        extra: { unhandledPromise: true }
+        extra: { unhandledPromise: true },
       });
     };
 
@@ -213,7 +213,7 @@ const API = {
 
     url = _removeUUID(url);
     return url;
-  }
+  },
 };
 
 // init Analytics

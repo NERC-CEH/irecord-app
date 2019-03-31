@@ -22,7 +22,7 @@ const SpeciesView = Marionette.View.extend({
   template,
 
   events: {
-    click: 'select'
+    click: 'select',
   },
 
   modelEvents: { change: 'render' },
@@ -50,7 +50,7 @@ const SpeciesView = Marionette.View.extend({
     return {
       name: prettyName,
       showEditButton: this.options.showEditButton,
-      group: informalGroups[this.model.get('group')]
+      group: informalGroups[this.model.get('group')],
     };
   },
 
@@ -86,13 +86,13 @@ const SpeciesView = Marionette.View.extend({
     delete species.selected;
 
     this.trigger('taxon:selected', species, edit);
-  }
+  },
 });
 
 const NoSuggestionsView = Marionette.View.extend({
   tagName: 'li',
   className: 'table-view-cell empty',
-  template: _.template(t('No species found with this name'))
+  template: _.template(t('No species found with this name')),
 });
 
 const SuggestionsView = Marionette.CollectionView.extend({
@@ -103,9 +103,9 @@ const SuggestionsView = Marionette.CollectionView.extend({
   childViewOptions() {
     return {
       showEditButton: this.options.showEditButton,
-      searchPhrase: this.options.searchPhrase
+      searchPhrase: this.options.searchPhrase,
     };
-  }
+  },
 });
 
 export default Marionette.View.extend({
@@ -114,11 +114,11 @@ export default Marionette.View.extend({
   events: {
     'keydown #taxon': '_keydown',
     'keyup #taxon': '_keyup',
-    'click .delete': 'deleteSearch'
+    'click .delete': 'deleteSearch',
   },
 
   regions: {
-    suggestions: '#suggestions'
+    suggestions: '#suggestions',
   },
 
   initialize() {
@@ -182,7 +182,7 @@ export default Marionette.View.extend({
     const suggestionsColView = new SuggestionsView({
       collection: this.suggestionsCol,
       showEditButton: this.options.showEditButton,
-      searchPhrase
+      searchPhrase,
     });
 
     suggestionsColView.on('childview:taxon:selected', (speciesID, edit) =>
@@ -319,5 +319,5 @@ export default Marionette.View.extend({
           }, 100);
         }
     }
-  }
+  },
 });

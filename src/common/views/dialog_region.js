@@ -20,10 +20,10 @@ const errorsTable = {
         title: 'Restart',
         onClick: function onClick() {
           radio.trigger('app:restart');
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  },
 };
 
 const StandardDialogView = Marionette.View.extend({
@@ -39,7 +39,7 @@ const StandardDialogView = Marionette.View.extend({
   regions: {
     header: '.dialog-header',
     body: '.dialog-body',
-    footer: '.dialog-footer'
+    footer: '.dialog-footer',
   },
 
   initialize(options = {}) {
@@ -54,7 +54,7 @@ const StandardDialogView = Marionette.View.extend({
       } else {
         const title = new Marionette.View({
           tagName: 'h3',
-          template: _.template(t(this.options.title))
+          template: _.template(t(this.options.title)),
         });
         this.showChildView('header', title);
       }
@@ -71,7 +71,7 @@ const StandardDialogView = Marionette.View.extend({
         }
 
         const body = new Marionette.View({
-          template: _.template(bodyView)
+          template: _.template(bodyView),
         });
         this.showChildView('body', body);
       }
@@ -90,7 +90,7 @@ const StandardDialogView = Marionette.View.extend({
             return {
               expand: 'full',
               fill: this.model.get('fill') || 'solid',
-              color: this.model.get('color') || 'primary'
+              color: this.model.get('color') || 'primary',
             };
           },
           tagName: 'ion-button',
@@ -99,20 +99,20 @@ const StandardDialogView = Marionette.View.extend({
             click() {
               const onClick = this.model.attributes.onClick;
               onClick && onClick();
-            }
-          }
+            },
+          },
         });
 
         const ButtonsArrayView = Marionette.CollectionView.extend({
           className: 'dialog-buttons',
           collection: new Backbone.Collection(this.options.buttons),
-          childView: ButtonView
+          childView: ButtonView,
         });
 
         this.showChildView('footer', new ButtonsArrayView());
       }
     }
-  }
+  },
 });
 
 export default Marionette.Region.extend({
@@ -202,7 +202,7 @@ export default Marionette.Region.extend({
   showLoader() {
     const type = Device.isIOS() ? 'lines' : 'dots';
     const view = new Marionette.View({
-      template: _.template(`<ion-spinner class="centered" name="${type}"/>`)
+      template: _.template(`<ion-spinner class="centered" name="${type}"/>`),
     });
 
     this.show({ view, hideAllowed: false });
@@ -222,9 +222,9 @@ export default Marionette.Region.extend({
         {
           id: 'ok',
           title: 'OK',
-          onClick: this.hide
-        }
-      ]
+          onClick: this.hide,
+        },
+      ],
     };
 
     // lookup for codes
@@ -242,5 +242,5 @@ export default Marionette.Region.extend({
     if ($(e.target).prop('id') === 'dialog') {
       this.hide(e);
     }
-  }
+  },
 });

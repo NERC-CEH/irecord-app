@@ -15,7 +15,7 @@ export default Marionette.View.extend({
 
     this.model = new Backbone.Model({
       value: this.options.default || config.default,
-      message: this.options.info || config.info
+      message: this.options.info || config.info,
     });
   },
 
@@ -32,5 +32,5 @@ export default Marionette.View.extend({
         window.Keyboard.hide();
       });
     }
-  }
+  },
 });

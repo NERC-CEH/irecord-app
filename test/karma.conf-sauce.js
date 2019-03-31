@@ -17,11 +17,11 @@ const definePlugin = new webpack.DefinePlugin({
   'process.env': {
     NODE_ENV: JSON.stringify('test'),
     // https://github.com/webpack-contrib/karma-webpack/issues/316
-    SAUCE_LABS: JSON.stringify('true')
-  }
+    SAUCE_LABS: JSON.stringify('true'),
+  },
 });
-webpackConfigDev.plugins = webpackConfigDev.plugins.map(
-  p => (p instanceof webpack.DefinePlugin ? definePlugin : p)
+webpackConfigDev.plugins = webpackConfigDev.plugins.map(p =>
+  p instanceof webpack.DefinePlugin ? definePlugin : p
 );
 webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
@@ -39,7 +39,7 @@ const sauceBrowsers = [
   ['Safari', '11.2', 'iOS', 'iPhone 6'], // latest
   ['Safari', '11.1', 'iOS', 'iPhone 6'],
   ['Safari', '10.3', 'iOS', 'iPhone 6'],
-  ['Safari', '10.2', 'iOS', 'iPhone 6'] // bottom support
+  ['Safari', '10.2', 'iOS', 'iPhone 6'], // bottom support
 ].reduce((memo, platform) => {
   let label = platform[0].split(' ');
   if (label.length > 1) {
@@ -52,7 +52,7 @@ const sauceBrowsers = [
       browserName: platform[0],
       version: platform[1],
       platform: platform[2],
-      device: platform[3]
+      device: platform[3],
     },
     Boolean
   );
@@ -62,7 +62,9 @@ const sauceBrowsers = [
 module.exports = config => {
   // Use ENV vars on Travis and sauce.json locally to get credentials
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
-    console.log('SAUCE_USERNAME and SAUCE_ACCESS_KEY env variables are required.');
+    console.log(
+      'SAUCE_USERNAME and SAUCE_ACCESS_KEY env variables are required.'
+    );
     process.exit(1);
   }
 
@@ -72,13 +74,13 @@ module.exports = config => {
     files: [{ pattern: 'loader.js', watched: false }],
 
     preprocessors: {
-      'loader.js': ['webpack']
+      'loader.js': ['webpack'],
     },
 
     webpack: webpackConfigDev,
 
     webpackServer: {
-      noInfo: true
+      noInfo: true,
     },
 
     webpackMiddleware: {
@@ -92,8 +94,8 @@ module.exports = config => {
         timings: false,
         chunks: false,
         chunkModules: false,
-        children: false
-      }
+        children: false,
+      },
     },
 
     singleRun: true,
@@ -107,14 +109,16 @@ module.exports = config => {
     colors: true,
     logLevel: config.LOG_WARN,
     sauceLabs: {
-      build: `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`,
+      build: `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${
+        process.env.TRAVIS_BUILD_ID
+      })`,
       startConnect: false,
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
     },
     urlRoot: '/__karma__/',
 
     proxies: {
-      '/': 'http://localhost:4445'
+      '/': 'http://localhost:4445',
     },
     captureTimeout: 120000,
     customLaunchers: sauceBrowsers,
@@ -122,6 +126,6 @@ module.exports = config => {
 
     // Browsers to launch, commented out to prevent karma from starting
     // too many concurrent browsers and timing sauce out.
-    browsers: Object.keys(sauceBrowsers)
+    browsers: Object.keys(sauceBrowsers),
   });
 };

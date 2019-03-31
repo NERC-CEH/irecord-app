@@ -7,7 +7,7 @@ import './leaflet_button_ext.scss';
  */
 export default L.Control.extend({
   options: {
-    position: 'bottomleft'
+    position: 'bottomleft',
   },
   initialize(options) {
     this._button = {};
@@ -43,7 +43,7 @@ export default L.Control.extend({
       maxWidth: options.maxWidth || 70, // number
       doToggle: options.doToggle, // bool
       toggleStatus: options.toggleStatus, // bool
-      title: options.title ? options.title : '' // string
+      title: options.title ? options.title : '', // string
     };
 
     this._button = button;
@@ -139,5 +139,5 @@ export default L.Control.extend({
       }
       this.toggle();
     }
-  }
+  },
 });

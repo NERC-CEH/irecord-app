@@ -49,7 +49,7 @@ Component.propTypes = {
   rangesValue: PropTypes.any,
   sliderValue: PropTypes.any,
   onChange: PropTypes.func.isRequired,
-  config: PropTypes.object.isRequired
+  config: PropTypes.object.isRequired,
 };
 
 export default Component;

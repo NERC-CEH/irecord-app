@@ -94,7 +94,8 @@ class Component extends React.Component {
           href={`#samples/${sample.cid}/edit/${element}`}
           id={`${element}-button`}
           detail
-          detail-icon={locks[element] ? 'lock' : 'ios-arrow-forward'}>
+          detail-icon={locks[element] ? 'lock' : 'ios-arrow-forward'}
+        >
           <span slot="start" className={`media-object icon icon-${icon}`} />
           <span slot="end" className="media-object pull-right descript">
             {t(currentVal)}
@@ -110,7 +111,8 @@ class Component extends React.Component {
         id="attrs"
         class={`table-view inputs no-top ${
           activityExists ? 'withActivity' : ''
-        } ${isSynchronising ? 'disabled' : ''}`}>
+        } ${isSynchronising ? 'disabled' : ''}`}
+      >
         {attributes}
       </ion-list>
     );

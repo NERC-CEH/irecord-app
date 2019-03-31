@@ -20,7 +20,7 @@ const SampleView = Marionette.View.extend({
     'click #delete': 'sample:delete',
     'click #plus': 'sample:abundance:plus',
     'click #minus': 'sample:abundance:minus',
-    'click #add-species-btn': 'taxon:add'
+    'click #add-species-btn': 'taxon:add',
   },
 
   events: {
@@ -28,12 +28,12 @@ const SampleView = Marionette.View.extend({
     'click .js-attr': e => {
       e.preventDefault();
       this.trigger('sample:edit:attr', $(e.target).data('attr'));
-    }
+    },
   },
 
   modelEvents: {
     'request:remote sync:remote error:remote': 'render',
-    geolocation: 'render'
+    geolocation: 'render',
   },
 
   remove() {
@@ -49,9 +49,7 @@ const SampleView = Marionette.View.extend({
     }
   },
 
-  serializeData() {
-
-  }
+  serializeData() {},
 });
 
 const NoSamplesView = Marionette.View.extend({
@@ -61,8 +59,8 @@ const NoSamplesView = Marionette.View.extend({
   template: templateNone,
 
   triggers: {
-    'click #create-new-btn': 'create'
-  }
+    'click #create-new-btn': 'create',
+  },
 });
 
 const SmartCollectionView = SlidingView.extend({
@@ -72,7 +70,7 @@ const SmartCollectionView = SlidingView.extend({
   onAttach() {
     // let the world know when the list is in place
     radio.trigger('species:list:show');
-  }
+  },
 });
 
 const MainView = Marionette.View.extend({
@@ -104,18 +102,18 @@ const MainView = Marionette.View.extend({
   regions: {
     body: {
       el: '#list',
-      replaceElement: true
+      replaceElement: true,
     },
     recommendation: {
-      el: '#recommendation'
-    }
+      el: '#recommendation',
+    },
   },
 
   childViewEvents: {
     // eslint-disable-next-line
     'recommendation:done': function() {
       this.removeRegion('recommendation');
-    }
+    },
   },
 
   onRender() {
@@ -125,10 +123,9 @@ const MainView = Marionette.View.extend({
       new SmartCollectionView({
         referenceCollection: this.collection,
         appModel: this.options.appModel,
-        scroll: this.options.scroll
+        scroll: this.options.scroll,
       })
     );
-
   },
 
   shouldAskForFeedback() {
@@ -147,7 +144,7 @@ const MainView = Marionette.View.extend({
     }
 
     return this.collection.length > 10;
-  }
+  },
 });
 
 export { MainView as default, SampleView };

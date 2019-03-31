@@ -143,7 +143,7 @@ class Component extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.listRef.current){
+    if (this.listRef.current) {
       this.listRef.current.closeSlidingItems();
     }
   }
@@ -151,11 +151,12 @@ class Component extends React.Component {
   render() {
     function getPastLocations() {
       if (!this.props.locations || !this.props.locations.length) {
-
-        return <div className="empty">
-          <Icon i="location" />
-          <h6>{t('You have no previous locations.')}</h6>
-        </div>;
+        return (
+          <div className="empty">
+            <Icon i="location" />
+            <h6>{t('You have no previous locations.')}</h6>
+          </div>
+        );
       }
 
       const locations = [...this.props.locations];
@@ -178,13 +179,18 @@ class Component extends React.Component {
                 />
                 <span className="location-date">{dateStr}</span>
                 <span className="location-source">
-                  {t('source')}: {t(source)}
+                  {t('source')}
+:
+                  {t(source)}
                 </span>
               </div>
             </ion-item>
 
             <ion-item-options side="end">
-              <ion-item-option color="danger" onClick={() => this.deleteLocation(id)}>
+              <ion-item-option
+                color="danger"
+                onClick={() => this.deleteLocation(id)}
+              >
                 <div className="edit icon icon-delete" />
               </ion-item-option>
               <ion-item-option onClick={() => this.editLocation(id)}>
@@ -205,7 +211,8 @@ class Component extends React.Component {
       <React.Fragment>
         <div className="info-message" id="previous-location-message">
           <p>
-            {t('Here you can select or swipe to edit your previous locations')}.
+            {t('Here you can select or swipe to edit your previous locations')}
+.
           </p>
         </div>
         <div id="user-locations">{getPastLocations.apply(this)}</div>

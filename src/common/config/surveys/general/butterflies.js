@@ -1,7 +1,7 @@
 const sex = {
   Male: 1947,
   Female: 1948,
-  Mixed: 3482
+  Mixed: 3482,
 };
 
 const stage = {
@@ -9,7 +9,7 @@ const stage = {
   Larvae: 3931,
   Eggs: 3932,
   Pupae: 3930,
-  'Larval webs': 14079
+  'Larval webs': 14079,
 };
 
 const count = {
@@ -17,7 +17,7 @@ const count = {
   '2-9': 2404,
   '10-29': 2406,
   '30-99': 2408,
-  '100+': 2410
+  '100+': 2410,
 };
 
 export default {
@@ -35,7 +35,7 @@ export default {
         icon: 'gender',
         info: 'Please indicate the sex of the organism.',
         default: 'Not Recorded',
-        values: sex
+        values: sex,
       },
       stage: {
         type: 'radio',
@@ -44,13 +44,13 @@ export default {
         icon: 'stage',
         info: 'Please pick the life stage.',
         default: 'Not Recorded',
-        values: stage
+        values: stage,
       },
       number: {
         id: 16,
         info: 'How many individuals of this type?',
         label: 'Abundance',
-        icon: 'number'
+        icon: 'number',
       },
       'number-ranges': {
         type: 'radio',
@@ -58,8 +58,8 @@ export default {
         label: 'Abundance',
         icon: 'number',
         default: 'Not Recorded',
-        values: count
-      }
-    }
-  }
+        values: count,
+      },
+    },
+  },
 };

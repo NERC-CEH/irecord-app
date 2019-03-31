@@ -10,22 +10,22 @@ const API = {
     const MainView =
       options.mainView ||
       Marionette.View.extend({
-        template: options.template
+        template: options.template,
       });
     radio.trigger(
       'app:main',
       new MainView({
-        model: options.model || new Backbone.Model()
+        model: options.model || new Backbone.Model(),
       })
     );
 
     const headerView = new HeaderView({
       model: new Backbone.Model({
-        title: options.title || ''
-      })
+        title: options.title || '',
+      }),
     });
     radio.trigger('app:header', headerView);
-  }
+  },
 };
 
 export { API as default };

@@ -45,7 +45,7 @@ testing.records = {
         scientific_name: 'Lathyrus tuberosus',
         species_id: 3,
         synonym: 'Fyfield Pea',
-        warehouse_id: 113813
+        warehouse_id: 113813,
       };
 
       Factory.createSample('general', image, taxon).then(sample => {
@@ -55,7 +55,7 @@ testing.records = {
           latitude: 54.0310862,
           longitude: -2.3106393,
           name: `${sampleTestID} location`,
-          source: 'map'
+          source: 'map',
         });
         sample.getOccurrence().set('comment', sampleTestID);
 
@@ -96,11 +96,11 @@ testing.records = {
 
     const image = new Indicia.Media({
       data: imageData,
-      type: 'image/png'
+      type: 'image/png',
     });
 
     return image.addThumbnail().then(() => image);
-  }
+  },
 };
 
 testing.GPS = {
@@ -135,13 +135,13 @@ testing.GPS = {
       location = {
         latitude: latLng.lat,
         longitude: latLng.lng,
-        accuracy: options.accuracy || parsedRef.length / 2
+        accuracy: options.accuracy || parsedRef.length / 2,
       };
     }
 
     console.log(location);
     return GPS.change(location);
-  }
+  },
 };
 
 testing.images = {
@@ -158,7 +158,7 @@ testing.images = {
         reject
       );
     });
-  }
+  },
 };
 
 window.testing = testing;

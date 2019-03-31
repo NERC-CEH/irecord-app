@@ -15,9 +15,17 @@ export default () => (
       </p>
       <p>
         <ul style={{ listStyleType: 'none' }}>
-          <li><a href="https://www.ceh.ac.uk/staff/david-roy">David Roy (CEH)</a></li>
-          <li><a href="https://kazlauskis.com">Karolis Kazlauskis</a></li>
-          <li><a href="http://www.biodiverseit.co.uk">John van Breda (Biodiverse IT)</a></li>
+          <li>
+            <a href="https://www.ceh.ac.uk/staff/david-roy">David Roy (CEH)</a>
+          </li>
+          <li>
+            <a href="https://kazlauskis.com">Karolis Kazlauskis</a>
+          </li>
+          <li>
+            <a href="http://www.biodiverseit.co.uk">
+              John van Breda (Biodiverse IT)
+            </a>
+          </li>
           <li>Tom Humphrey (BSBI)</li>
           <li>Martin Harvey (CEH)</li>
           <li>Sally Rankin</li>
@@ -32,10 +40,14 @@ export default () => (
         </ul>
       </p>
       <p>
-        This app was part-funded by the{' '}
-        <a href="https://www.ceh.ac.uk/">Centre for Ecology & Hydrology</a>/<a href="http://jncc.defra.gov.uk/">
+        This app was part-funded by the
+        {' '}
+        <a href="https://www.ceh.ac.uk/">Centre for Ecology & Hydrology</a>
+/
+        <a href="http://jncc.defra.gov.uk/">
           Joint Nature Conservation Committee
-        </a>{' '}
+        </a>
+        {' '}
         partnership supporting BRC.
       </p>
       <p>
@@ -44,7 +56,16 @@ export default () => (
       <ul style={{ listStyleType: 'none' }}>
         <li>David Kitching</li>
         <li>UK Ladybird Survey</li>
-        <li>Map and Statistic icons were made by <a href="https://www.flaticon.com/authors/nhor-phai" title="Nhor Phai">Nhor Phai</a></li>
+        <li>
+          Map and Statistic icons were made by
+          {' '}
+          <a
+            href="https://www.flaticon.com/authors/nhor-phai"
+            title="Nhor Phai"
+          >
+            Nhor Phai
+          </a>
+        </li>
       </ul>
     </li>
   </ul>

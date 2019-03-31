@@ -17,7 +17,7 @@ const SavedImageView = Marionette.View.extend({
 
   events: {
     'click span.delete': 'delete',
-    'click img': 'photoView'
+    'click img': 'photoView',
   },
 
   photoView() {
@@ -30,15 +30,15 @@ const SavedImageView = Marionette.View.extend({
 
   serializeData() {
     return {
-      data: this.model.get('thumbnail')
+      data: this.model.get('thumbnail'),
     };
-  }
+  },
 });
 
 const EmptyView = Marionette.View.extend({
   template: templateImagePickerEmpty,
   tagName: 'span',
-  className: 'empty'
+  className: 'empty',
 });
 
 export default Marionette.CompositeView.extend({
@@ -58,7 +58,7 @@ export default Marionette.CompositeView.extend({
       if (window.cordova) {
         this.trigger('photo:selection');
       }
-    }
+    },
   },
 
   childViewContainer: '#img-array',
@@ -67,12 +67,12 @@ export default Marionette.CompositeView.extend({
   emptyView: EmptyView,
 
   modelEvents: {
-    'request:remote sync:remote error:remote': 'render'
+    'request:remote sync:remote error:remote': 'render',
   },
 
   serializeData() {
     return {
-      isSynchronising: this.model.remote.synchronising
+      isSynchronising: this.model.remote.synchronising,
     };
   },
 
@@ -90,7 +90,7 @@ export default Marionette.CompositeView.extend({
       items.push({
         src: image.getURL(),
         w: image.get('width') || 800,
-        h: image.get('height') || 800
+        h: image.get('height') || 800,
       });
     });
 
@@ -108,5 +108,5 @@ export default Marionette.CompositeView.extend({
         this.trigger('photo:selection');
       });
     }
-  }
+  },
 });

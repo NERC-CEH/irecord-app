@@ -36,8 +36,16 @@ function register(formData, userModel) {
       timeout: CONFIG.users.timeout,
       success(receivedData) {
         const data = receivedData.data || {};
-        if (!data.id || !data.email || !data.name || !data.firstname || !data.secondname) {
-          const err = new Error('Error while retrieving registration response.');
+        if (
+          !data.id ||
+          !data.email ||
+          !data.name ||
+          !data.firstname ||
+          !data.secondname
+        ) {
+          const err = new Error(
+            'Error while retrieving registration response.'
+          );
           reject(err);
           return;
         }
@@ -50,7 +58,10 @@ function register(formData, userModel) {
       error(xhr, textStatus, errorThrown) {
         let message = errorThrown;
         if (xhr.responseJSON && xhr.responseJSON.errors) {
-          message = xhr.responseJSON.errors.reduce((name, err) => `${name}${err.title}\n`, '');
+          message = xhr.responseJSON.errors.reduce(
+            (name, err) => `${name}${err.title}\n`,
+            ''
+          );
         }
         reject(new Error(message));
       },
@@ -192,7 +203,12 @@ class Component extends React.Component {
         <ion-list lines="full">
           <ion-item error={this.state.userEmailError}>
             <span className="icon icon-mail" slot="start" />
-            <ion-input ref={this.userEmail} required type="text" placeholder={t('Email')} />
+            <ion-input
+              ref={this.userEmail}
+              required
+              type="text"
+              placeholder={t('Email')}
+            />
           </ion-item>
           <ion-item error={this.state.userFirstnameError}>
             <span className="icon icon-user" slot="start" />
@@ -205,7 +221,12 @@ class Component extends React.Component {
           </ion-item>
           <ion-item error={this.state.userSecondnameError}>
             <span className="icon icon-user" slot="start" />
-            <ion-input ref={this.userSecondname} required type="text" placeholder={t('Surname')} />
+            <ion-input
+              ref={this.userSecondname}
+              required
+              type="text"
+              placeholder={t('Surname')}
+            />
           </ion-item>
           <ion-item error={this.state.userPasswordError}>
             <span className="icon icon-key" slot="start" />
@@ -228,8 +249,12 @@ class Component extends React.Component {
 
           <ion-item error={this.state.termsAgreeError}>
             <ion-label>
-              {t('I agree to')}{' '}
-              <a href="#info/terms" style={{ display: 'inline', color: '#91a71c' }}>
+              {t('I agree to')}
+              {' '}
+              <a
+                href="#info/terms"
+                style={{ display: 'inline', color: '#91a71c' }}
+              >
                 {t('Terms and Conditions')}
               </a>
             </ion-label>

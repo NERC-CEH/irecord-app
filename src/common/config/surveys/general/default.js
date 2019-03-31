@@ -35,7 +35,7 @@ const survey = {
           return `${parseFloat(location.latitude).toFixed(7)}, ${parseFloat(
             location.longitude
           ).toFixed(7)}`;
-        }
+        },
       },
       location_accuracy: { id: 282 },
       location_altitude: { id: 283 },
@@ -47,8 +47,8 @@ const survey = {
         id: 273,
         values: {
           iOS: 2398,
-          Android: 2399
-        }
+          Android: 2399,
+        },
       },
 
       device_version: { id: 759 },
@@ -60,30 +60,30 @@ const survey = {
         },
         isValid: val => val && val.toString() !== 'Invalid Date',
         type: 'date',
-        max: () => new Date()
+        max: () => new Date(),
       },
 
       activity: {
         id: 'group_id',
         values: activity => activity.id,
-        type: 'input'
-      }
+        type: 'input',
+      },
     },
     occ: {
       training: {
-        id: 'training'
+        id: 'training',
       },
 
       taxon: {
         values(taxon) {
           return taxon.warehouse_id;
-        }
+        },
       },
       number: {
         id: 16,
         info: 'How many individuals of this type?',
         label: 'Abundance',
-        icon: 'number'
+        icon: 'number',
       },
       'number-ranges': {
         id: 523,
@@ -94,8 +94,8 @@ const survey = {
           '6-20': 667,
           '21-100': 668,
           '101-500': 669,
-          '500+': 670
-        }
+          '500+': 670,
+        },
       },
       stage: {
         id: 106,
@@ -104,24 +104,24 @@ const survey = {
         values: {
           Adult: 1950,
           'Pre-adult': 1951,
-          Other: 1952
+          Other: 1952,
         },
         icon: 'stage',
-        type: 'radio'
+        type: 'radio',
       },
       identifiers: {
         id: 18,
         info:
           'If anyone helped with the identification please enter their name here.',
         icon: 'user-plus',
-        type: 'text'
+        type: 'text',
       },
       comment: {
         info: 'Please add any extra info about this record.',
         icon: 'comment',
-        type: 'text'
-      }
-    }
+        type: 'text',
+      },
+    },
   },
   verify(attrs) {
     const attributes = {};
@@ -164,7 +164,7 @@ const survey = {
     });
 
     return [attributes, null, occurrences];
-  }
+  },
 };
 
 export default survey;

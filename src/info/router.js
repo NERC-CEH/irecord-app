@@ -24,7 +24,7 @@ App.info = {};
 
 function showWelcome() {
   Log('Info:Welcome: visited.');
-  radio.trigger('app:main', <Welcome appModel={appModel}/>);
+  radio.trigger('app:main', <Welcome appModel={appModel} />);
 }
 
 const Router = Marionette.AppRouter.extend({

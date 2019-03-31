@@ -12,11 +12,11 @@ export default Marionette.View.extend({
   regions: {
     leftPanel: '#left-panel',
     rightPanel: '#right-panel',
-    subheader: '#subheader'
+    subheader: '#subheader',
   },
 
   events: {
-    'click a[data-rel="back"]': 'navigateBack'
+    'click a[data-rel="back"]': 'navigateBack',
   },
 
   onRender() {
@@ -35,5 +35,5 @@ export default Marionette.View.extend({
     } else {
       window.history.back();
     }
-  }
+  },
 });

@@ -144,7 +144,12 @@ class Footer extends Component {
     function getMedia() {
       const { models } = sample.getOccurrence().media;
       if (!models || !models.length) {
-        return <span className="empty"> {t('No photo has been added')}</span>;
+        return (
+          <span className="empty"> 
+            {' '}
+            {t('No photo has been added')}
+          </span>
+        );
       }
 
       return models.map((img, index) => {
@@ -172,10 +177,12 @@ class Footer extends Component {
       <div id="edit-footer">
         <div
           id="img-picker-array"
-          className={isSynchronising ? 'disabled' : ''}>
+          className={isSynchronising ? 'disabled' : ''}
+        >
           <div
             className="img-picker icon icon-camera"
-            onClick={window.cordova && this.photoSelect}>
+            onClick={window.cordova && this.photoSelect}
+          >
             {!window.cordova && (
               <input type="file" accept="image/*" onChange={this.photoUpload} />
             )}

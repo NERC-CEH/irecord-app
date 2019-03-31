@@ -19,7 +19,7 @@ export default Marionette.View.extend({
       type: this.options.type || config.type || 'text',
       max: this.options.max || config.max,
       message: this.options.info || config.info,
-      value: this.options.default || config.default
+      value: this.options.default || config.default,
     });
 
     this.type = this.model.get('type');
@@ -78,7 +78,7 @@ export default Marionette.View.extend({
           mode: 'date',
           androidTheme: 5,
           allowOldDates: true,
-          allowFutureDates: false
+          allowFutureDates: false,
         };
 
         window.datePicker.show(options, date => {
@@ -105,17 +105,17 @@ export default Marionette.View.extend({
       {
         hint: false,
         highlight: true,
-        minLength: 2
+        minLength: 2,
       },
       {
         limit: 3,
         name: 'names',
-        source: typeaheadSearchFn(lookup, 3)
+        source: typeaheadSearchFn(lookup, 3),
       }
     );
 
     $typeahead.bind('typeahead:select', () => {
       this.trigger('save');
     });
-  }
+  },
 });

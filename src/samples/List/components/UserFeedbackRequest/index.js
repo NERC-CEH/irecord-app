@@ -97,14 +97,16 @@ class Component extends React.Component {
           <ion-button
             id="btn-negative"
             fill="clear"
-            onClick={() => this.nextStep(false)}>
+            onClick={() => this.nextStep(false)}
+          >
             {negativeOption}
           </ion-button>
 
           <ion-button
             id="btn-positive"
             href={link}
-            onClick={() => this.nextStep(true)}>
+            onClick={() => this.nextStep(true)}
+          >
             {positiveOption}
           </ion-button>
         </div>

@@ -18,7 +18,12 @@ const Component = observer(props => {
 
   if (!locationPrint) {
     if (isLocating) {
-      return <span className="location warn">{t('Locating')}...</span>;
+      return (
+        <span className="location warn">
+          {t('Locating')}
+...
+        </span>
+      );
     }
 
     return <span className="location error">{t('No location')}</span>;

@@ -29,7 +29,11 @@ class Component extends React.PureComponent {
     const inputs = selection.map((option, i) => (
       <ion-item key={i}>
         <ion-label>{t(option.label || option.value)}</ion-label>
-        <ion-radio value={option.value} checked={option.value === selected} onClick={this.onChange}/>
+        <ion-radio
+          value={option.value}
+          checked={option.value === selected}
+          onClick={this.onChange}
+        />
       </ion-item>
     ));
 
@@ -54,7 +58,7 @@ Component.propTypes = {
   config: PropTypes.any.isRequired,
   info: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  selection: PropTypes.array
+  selection: PropTypes.array,
 };
 
 export default Component;
