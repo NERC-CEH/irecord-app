@@ -4,8 +4,6 @@
 
 /* eslint-disable */
 
-'use strict';
-
 const GENUS_COMMON_INDEX = 3;
 const GENUS_COMMON_SYN_INDEX = 4;
 const SPECIES_COMMON_INDEX = 2; // in species and bellow

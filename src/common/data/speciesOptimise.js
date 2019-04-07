@@ -1,4 +1,3 @@
-'use strict'; // eslint-disable-line
 const speciesInformalGroups = require('./informal_groups.data.json');
 const taxonCleaner = require('./speciesClean');
 

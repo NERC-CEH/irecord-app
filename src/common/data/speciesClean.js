@@ -1,5 +1,3 @@
-'use strict'; // eslint-disable-line
-
 module.exports = (taxon, common) => {
   if (!taxon) {
     return null;
