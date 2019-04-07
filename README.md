@@ -12,7 +12,7 @@ App web demo page: **[development](https://irecord-app.herokuapp.com)**
 
 ## Requirements
 
-* Android 5.0+ - or a WebView based on Chromium 37+
+* Android 5.1+ - or a WebView based on Chromium 38+
 * [iOS 10+](https://github.com/ionic-team/cordova-plugin-ionic-webview#plugin-requirements)
 
 ## Contribution

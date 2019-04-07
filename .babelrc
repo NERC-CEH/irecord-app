@@ -5,7 +5,7 @@
       "@babel/env",
       {
         "targets": {
-          "android": "5",
+          "android": "5.1",
           "ios": "10.2"
         },
         "modules": "commonjs",
