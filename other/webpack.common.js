@@ -25,14 +25,14 @@ const config = {
 
   output: {
     path: DIST_DIR,
-    filename: '[name].js'
+    filename: '[name].js',
   },
   resolve: {
     modules: [
       path.resolve('./dist/_build'),
       path.resolve('./node_modules/'),
       path.resolve('./src/'),
-      path.resolve('./src/common/vendor')
+      path.resolve('./src/common/vendor'),
     ],
     alias: {
       app: 'app',
@@ -52,28 +52,24 @@ const config = {
       bootstrap: 'bootstrap/js/bootstrap',
       ratchet: 'ratchet/dist/js/ratchet',
       'photoswipe-lib': 'photoswipe/dist/photoswipe',
-      'photoswipe-ui-default': 'photoswipe/dist/photoswipe-ui-default'
-    }
+      'photoswipe-ui-default': 'photoswipe/dist/photoswipe-ui-default',
+    },
   },
   module: {
     rules: [
       { test: /\.tpl/, loader: 'ejs-loader?variable=obj' },
       {
         test: /^((?!data\.).)*\.js$/,
-        exclude: /(node_modules|bower_components|vendor(?!\.js))/,
+        exclude: /(node_modules|vendor(?!\.js))/,
         loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'react', 'stage-2'],
-          plugins: ['transform-decorators-legacy', 'transform-class-properties']
-        }
       },
       {
         test: /(\.png)|(\.svg)|(\.jpg)/,
-        loader: 'file-loader?name=images/[name].[ext]'
+        loader: 'file-loader?name=images/[name].[ext]',
       },
       {
         test: /(\.woff)|(\.ttf)/,
-        loader: 'file-loader?name=font/[name].[ext]'
+        loader: 'file-loader?name=font/[name].[ext]',
       },
       {
         test: /\.s?[c|a]ss$/,
@@ -87,13 +83,13 @@ const config = {
               sourceMap: true,
               plugins() {
                 return [autoprefixer('last 2 version')];
-              }
-            }
+              },
+            },
           },
-          `sass-loader?includePaths[]=${srcPath}`
-        ]
-      }
-    ]
+          `sass-loader?includePaths[]=${srcPath}`,
+        ],
+      },
+    ],
   },
 
   optimization: {
@@ -103,16 +99,16 @@ const config = {
         commons: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
-          chunks: 'all'
-        }
-      }
-    }
+          chunks: 'all',
+        },
+      },
+    },
   },
 
   // ignore file sizes since cordova is localhost
   performance: {
     maxEntrypointSize: 10000000,
-    maxAssetSize: 10000000
+    maxAssetSize: 10000000,
   },
 
   plugins: [
@@ -120,47 +116,39 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': {
         // package.json variables
-        APP_BUILD: JSON.stringify(
-          process.env.TRAVIS_BUILD_ID || pkg.build || new Date().getTime()
-        ),
+        APP_BUILD: JSON.stringify(process.env.TRAVIS_BUILD_ID || pkg.build || new Date().getTime()),
         APP_NAME: JSON.stringify(pkg.name), // no need to be an env value
         APP_VERSION: JSON.stringify(pkg.version), // no need to be an env value
 
         // mandatory env. variables
-        APP_INDICIA_API_KEY: JSON.stringify(
-          process.env.APP_INDICIA_API_KEY || ''
-        ),
+        APP_INDICIA_API_KEY: JSON.stringify(process.env.APP_INDICIA_API_KEY || ''),
         APP_OS_MAP_KEY: JSON.stringify(process.env.APP_OS_MAP_KEY || ''),
-        APP_MAPBOX_MAP_KEY: JSON.stringify(
-          process.env.APP_MAPBOX_MAP_KEY || ''
-        ),
+        APP_MAPBOX_MAP_KEY: JSON.stringify(process.env.APP_MAPBOX_MAP_KEY || ''),
 
         // compulsory env. variables
-        APP_INDICIA_API_HOST: JSON.stringify(
-          process.env.APP_INDICIA_API_HOST || ''
-        ),
+        APP_INDICIA_API_HOST: JSON.stringify(process.env.APP_INDICIA_API_HOST || ''),
         APP_TRAINING: process.env.APP_TRAINING || false,
         APP_SCREENSHOTS: process.env.APP_SCREENSHOTS || false,
         APP_EXPERIMENTS: process.env.APP_EXPERIMENTS || false,
         APP_SENTRY_KEY: JSON.stringify(process.env.APP_SENTRY_KEY || ''),
-        APP_GA: JSON.stringify(process.env.APP_GA || false)
-      }
+        APP_GA: JSON.stringify(process.env.APP_GA || false),
+      },
     }),
     new MiniCssExtractPlugin({
-      filename: 'style.css'
+      filename: 'style.css',
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       inject: true,
       sourceMap: true,
-      chunksSortMode: 'dependency'
+      chunksSortMode: 'dependency',
     }),
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
   ],
   stats: {
-    children: false
+    children: false,
   },
-  cache: true
+  cache: true,
 };
 
 if (process.env.NODE_ANALYZE) {

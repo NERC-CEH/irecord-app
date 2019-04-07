@@ -1,10 +1,6 @@
-// polyfills
-require('core-js/es6/map');
-require('core-js/es6/set');
-require('core-js/fn/object/assign');
-require('core-js/fn/array/fill');
-require('core-js/fn/array/includes');
-require('core-js/fn/string/includes');
+// polyfills for Android 5.0
+require('core-js/features/map');
+require('core-js/features/set');
 
 // Replace ./src/js with the directory of your application code and
 // make sure the file name regexp matches your test files.
