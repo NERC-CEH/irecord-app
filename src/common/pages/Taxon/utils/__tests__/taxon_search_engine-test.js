@@ -1,4 +1,4 @@
-import searchEngine from '../search/taxon_search_engine';
+import searchEngine from '../taxon_search_engine';
 
 (process.env.SAUCE_LABS ? describe.skip : describe)(
   'Taxon Search Engine',

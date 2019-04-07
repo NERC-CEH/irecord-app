@@ -5,7 +5,7 @@ import Indicia from 'indicia';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 import { observable } from 'mobx';
-import SpeciesSearchEngine from '../pages/taxon/search/taxon_search_engine';
+import SpeciesSearchEngine from '../pages/Taxon/utils/taxon_search_engine';
 
 export default {
   statisticsExtensionInit() {

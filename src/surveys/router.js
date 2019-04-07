@@ -1,12 +1,14 @@
 /** ****************************************************************************
  * Settings router.
  **************************************************************************** */
+import React from 'react';
 import Marionette from 'backbone.marionette';
 import $ from 'jquery';
 import App from 'app';
 import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
+import appModel from 'app_model';
 import ListController from './list/controller';
 import ShowController from './show/controller';
 import EditAttrController from './attr/controller';
@@ -14,8 +16,9 @@ import EditController from './edit/controller';
 import SamplesListController from './samples/list/controller';
 import SamplesEditController from './samples/edit/controller';
 import SamplesEditAttrController from './samples/attr/controller';
-import SamplesEditTaxonController from '../common/pages/taxon/controller';
 import LocationController from '../common/pages/location/controller';
+import Taxon from '../common/pages/Taxon';
+import TaxonHeader from '../common/pages/Taxon/Header';
 
 App.settings = {};
 
@@ -45,6 +48,25 @@ radio.on('surveys:list:show', samples => {
   }
 });
 
+const showTaxonSelect = options => {
+  Log('Survey:Sample:new: visited.');
+
+  const defaultProps = {
+    showEditButton: false,
+    informalGroups: null,
+    onSuccess: null,
+    favouriteSpecies: null,
+  };
+  const props = { ...defaultProps, ...options };
+
+  radio.trigger(
+    'app:header',
+    <TaxonHeader appModel={appModel} disableFilters />
+  );
+  radio.trigger('app:main', <Taxon {...props} />);
+  radio.trigger('app:footer:hide');
+};
+
 const Router = Marionette.AppRouter.extend({
   routes: {
     'surveys(/)': {
@@ -71,10 +93,9 @@ const Router = Marionette.AppRouter.extend({
         scrollSamples = $mainRegion.scrollTop();
       },
     },
-    'surveys/:id/edit/samples/new(/)': SamplesEditTaxonController.show,
+    'surveys/:id/edit/samples/new(/)': showTaxonSelect,
     'surveys/:id/edit/samples/:id/edit(/)': SamplesEditController.show,
-    'surveys/:id/edit/samples/:id/edit/taxon(/)':
-      SamplesEditTaxonController.show,
+    'surveys/:id/edit/samples/:id/edit/taxon(/)': showTaxonSelect,
     'surveys/:id/edit/samples/:id/edit/location(/)': LocationController.show,
     'surveys/:id/edit/samples/:id/edit/:attr(/)':
       SamplesEditAttrController.show,
@@ -117,7 +138,7 @@ radio.on(
       `surveys/${surveySampleID}/edit/samples/${sampleID}/edit/taxon`,
       options
     );
-    SamplesEditTaxonController.show(options);
+    showTaxonSelect(options);
   }
 );
 

@@ -45,7 +45,7 @@ class Component extends React.Component {
 
   changeSpecies() {
     const { sample } = this.props;
-    radio.trigger('samples:edit:attr', sample.id, 'taxon', {
+    radio.trigger('samples:edit:attr', sample.cid, 'taxon', {
       onSuccess: taxon => updateTaxon(sample, taxon),
     });
   }

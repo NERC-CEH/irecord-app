@@ -1,5 +1,12 @@
 @import '../../styles/_variables.scss';
 
+#taxon {
+  z-index: 1000;
+    position: fixed;
+    background-color: white;
+    top: 54px;
+}
+
 #filter-btn {
   width: 50%;
   max-width: 55px;

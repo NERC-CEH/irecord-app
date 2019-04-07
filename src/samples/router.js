@@ -25,7 +25,8 @@ import EditLocationController from '../common/pages/location/controller';
 import Attr from './Attr';
 import AttrHeader from './Attr/Header';
 import ActivitiesController from '../common/pages/activities/controller';
-import TaxonController from '../common/pages/taxon/controller';
+import Taxon from '../common/pages/Taxon';
+import TaxonHeader from '../common/pages/Taxon/Header';
 
 App.samples = {};
 
@@ -293,10 +294,33 @@ function showRecords() {
   radio.trigger('app:footer:hide');
 }
 
+const getUserFavouriteSpecies = () => {
+  const statistics = userModel.get('statistics') || { species: [] };
+  return statistics.species.peek();
+};
+
+const showTaxonSelect = options => {
+  Log('Samples:new: visited.');
+
+  const defaultProps = {
+    showEditButton: false,
+    informalGroups: null,
+    onSuccess: null,
+    favouriteSpecies: getUserFavouriteSpecies(),
+  };
+  const props = { ...defaultProps, ...options };
+
+  radio.trigger(
+    'app:header',
+    <TaxonHeader appModel={appModel} />
+  );
+  radio.trigger('app:main', <Taxon {...props} />);
+  radio.trigger('app:footer:hide');
+};
+
 const Router = Marionette.AppRouter.extend({
   routes: {
     'samples(/)': showRecords,
-    'samples/new(/)': TaxonController.show,
     'samples/:id': showRecord,
     'samples/:id/edit(/)': showEditRecord,
     'samples/:id/edit/location(/)': EditLocationController.show,
@@ -330,7 +354,7 @@ radio.on('samples:edit:attr', (sampleID, attrID, options = {}) => {
       EditLocationController.show(sampleID);
       break;
     case 'taxon':
-      TaxonController.show(options);
+      showTaxonSelect(options);
       break;
     case 'activity':
       ActivitiesController.show(sampleID);
