@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import radio from 'radio';
-import CommonHeader from 'common/components/Header';
+import CommonHeader from 'common/Components/Header';
 import Log from 'helpers/log';
 import { observer } from 'mobx-react';
 import FiltersView from './filters_view';
