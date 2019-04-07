@@ -6,6 +6,7 @@ import radio from 'radio';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import CONFIG from 'config';
+import './styles.scss';
 
 /**
  * Starts an app sign in to the Drupal site process.
@@ -157,11 +158,11 @@ class Component extends React.Component {
           </ion-item>
         </ion-list>
 
-        <ion-button onClick={this.onClick} expand="full" color="primary">
-          {t('Sign in')}
-        </ion-button>
+        <ion-list class="login-buttons">
+          <ion-button onClick={this.onClick} expand="full" color="primary">
+            {t('Sign in')}
+          </ion-button>
 
-        <ion-list>
           <ion-button href="#user/register" expand="full" color="light">
             {t('Register')}
           </ion-button>
