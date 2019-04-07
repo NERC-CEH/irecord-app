@@ -15,6 +15,7 @@
     "build:cordova": "grunt cordova",
     "build:cordova:update": "grunt cordova:update",
     "build:cordova:android": "grunt cordova:android",
+    "build:cordova:android:dev": "grunt exec:cordova_android_build_dev",
     "postinstall": "grunt dev",
     "start": "node other/server.js",
     "start-dev": "webpack-serve --config other/webpack.dev.js --content dist/main --port 8000",

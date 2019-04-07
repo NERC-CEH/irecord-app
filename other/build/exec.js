@@ -4,28 +4,32 @@ module.exports = function(grunt) {
   return {
     ionic_copy: {
       command: 'cp -R node_modules/@ionic dist/main',
-      stdout: true
+      stdout: true,
     },
     cordova_init: {
       command: 'cordova create dist/cordova',
-      stdout: true
+      stdout: true,
     },
     cordova_clean_www: {
       command: 'rm -R -f dist/cordova/www/* && rm -f dist/cordova/config.xml',
-      stdout: true
+      stdout: true,
     },
     cordova_rebuild: {
       command: 'cd dist/cordova/ && cordova prepare ios android',
-      stdout: true
+      stdout: true,
+    },
+    cordova_android_build_dev: {
+      command: 'cd dist/cordova/ && ../../node_modules/.bin/cordova build android',
+      stdout: true,
     },
     cordova_copy_dist: {
       command: 'cp -R dist/main/* dist/cordova/www/',
-      stdout: true
+      stdout: true,
     },
     cordova_add_platforms: {
       // @6.4.0 because of https://github.com/ionic-team/ionic/issues/13857#issuecomment-381744212
       command: 'cd dist/cordova && cordova platforms add ios android@6.4.0',
-      stdout: true
+      stdout: true,
     },
     /**
      * $ANDROID_KEYSTORE must be set up to point to your android certificates keystore
@@ -45,17 +49,17 @@ module.exports = function(grunt) {
       },
 
       stdout: true,
-      stdin: true
+      stdin: true,
     },
 
     cordova_build_ios: {
       command: 'cd dist/cordova && cordova build ios',
-      stdout: true
+      stdout: true,
     },
 
     cordova_build_android: {
       command: 'cd dist/cordova && cordova build android',
-      stdout: true
-    }
+      stdout: true,
+    },
   };
 };
