@@ -69,7 +69,7 @@ class Controller extends React.Component {
   onFocus() {
     this.clearFocusSetUp();
 
-    if (window.cordova ) {
+    if (window.cordova && Device.isAndroid()) {
       window.Keyboard.show();
     }
   }
@@ -86,7 +86,6 @@ class Controller extends React.Component {
 
     this.focus = setInterval(() => {
       this.inputEl.current.setFocus();
-      this.inputEl.current.focus();
     }, 150);
   }
 
