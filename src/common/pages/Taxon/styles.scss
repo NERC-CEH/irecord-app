@@ -2,9 +2,11 @@
 
 #taxon {
   z-index: 1000;
-    position: fixed;
-    background-color: white;
-    top: 54px;
+  position: fixed;
+  background-color: white;
+  top: 54px;
+  padding-right: 14px;
+  padding-left: 0;
 }
 
 #filter-btn {
