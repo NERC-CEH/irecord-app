@@ -295,8 +295,11 @@ function showRecords() {
 }
 
 const getUserFavouriteSpecies = () => {
-  const statistics = userModel.get('statistics') || { species: [] };
-  return statistics.species.peek();
+  const statistics = userModel.get('statistics');
+  if (!statistics || !statistics.species || !statistics.species.length) {
+    return null;
+  }
+  return [...statistics.species];
 };
 
 const showTaxonSelect = options => {
@@ -310,10 +313,7 @@ const showTaxonSelect = options => {
   };
   const props = { ...defaultProps, ...options };
 
-  radio.trigger(
-    'app:header',
-    <TaxonHeader appModel={appModel} />
-  );
+  radio.trigger('app:header', <TaxonHeader appModel={appModel} />);
   radio.trigger('app:main', <Taxon {...props} />);
   radio.trigger('app:footer:hide');
 };
