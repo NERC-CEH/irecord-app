@@ -3,19 +3,19 @@ const WARN = 1;
 const OFF = 0;
 
 module.exports = {
-  "env": {
-    "browser": true,
-    "mocha": true
+  env: {
+    browser: true,
+    mocha: true,
   },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 2016,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
+  parser: 'babel-eslint',
+  parserOptions: {
+    ecmaVersion: 2016,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
-  "extends": ["airbnb", "prettier"],
+  extends: ['airbnb', 'prettier'],
   rules: {
     // rules to fix - delete the line
     'no-unused-vars': WARN,
@@ -65,31 +65,35 @@ module.exports = {
     'no-negated-in-lhs': WARN,
     'linebreak-style': OFF,
     'no-underscore-dangle': OFF,
-    "react/jsx-one-expression-per-line": [WARN, { "allow": "single-child" }],
+    'react/jsx-one-expression-per-line': [WARN, { allow: 'single-child' }],
   },
-  "overrides": [
+  overrides: [
     {
-      "files": ["**/__tests__/*.js"],
-      "rules": {
-        "no-unused-expressions": OFF
-      }
-    }
-  ],
-  "globals": {
-    "t": true,
-    "browser": true,
-    "sinon": true,
-    "expect": true,
-    "cordova": true
-  },
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "other/webpack.common.js"
-      }
+      files: ['**/__tests__/*.js'],
+      rules: {
+        'no-unused-expressions': OFF,
+      },
     },
-     "react": {
-        "version": "16.8"
-      }
-  }
+  ],
+  globals: {
+    __ENV__: true,
+    __DEV__: true,
+    __TEST__: true,
+    __PROD__: true,
+    t: true,
+    browser: true,
+    sinon: true,
+    expect: true,
+    cordova: true,
+  },
+  settings: {
+    'import/resolver': {
+      webpack: {
+        config: 'webpack.config.js',
+      },
+    },
+    react: {
+      version: '16.8',
+    },
+  },
 };

@@ -10,15 +10,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const pkg = require('../package.json');
+const pkg = require('./package.json');
 
-const srcPath = path.resolve(__dirname, '../src');
-
-const ROOT_DIR = path.resolve(__dirname, '../');
+const ROOT_DIR = path.resolve(__dirname, './');
 const DIST_DIR = path.resolve(ROOT_DIR, 'dist/main');
 const SRC_DIR = path.resolve(ROOT_DIR, 'src');
 
 const config = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: [path.join(SRC_DIR, 'main.js'), path.join(SRC_DIR, 'vendor.js')],
   devtool: 'source-map',
   target: 'web',
@@ -29,10 +28,10 @@ const config = {
   },
   resolve: {
     modules: [
-      path.resolve('./dist/_build'),
-      path.resolve('./node_modules/'),
-      path.resolve('./src/'),
-      path.resolve('./src/common/vendor'),
+      path.resolve(ROOT_DIR, './dist/_build'),
+      path.resolve(ROOT_DIR, './node_modules/'),
+      path.resolve(ROOT_DIR, './src/'),
+      path.resolve(ROOT_DIR, './src/common/vendor'),
     ],
     alias: {
       app: 'app',
@@ -86,7 +85,7 @@ const config = {
               },
             },
           },
-          `sass-loader?includePaths[]=${srcPath}`,
+          `sass-loader?includePaths[]=${SRC_DIR}`,
         ],
       },
     ],
@@ -114,6 +113,11 @@ const config = {
   plugins: [
     // Extract environmental variables and replace references with values in the code
     new webpack.DefinePlugin({
+      __ENV__: JSON.stringify(process.env.NODE_ENV || 'development'),
+      __DEV__: process.env.NODE_ENV === 'development',
+      __PROD__: process.env.NODE_ENV === 'production',
+      __TEST__: process.env.NODE_ENV === 'test',
+
       'process.env': {
         // package.json variables
         APP_BUILD: JSON.stringify(process.env.TRAVIS_BUILD_ID || pkg.build || new Date().getTime()),
@@ -132,6 +136,9 @@ const config = {
         APP_EXPERIMENTS: process.env.APP_EXPERIMENTS || false,
         APP_SENTRY_KEY: JSON.stringify(process.env.APP_SENTRY_KEY || ''),
         APP_GA: JSON.stringify(process.env.APP_GA || false),
+        
+        // https://github.com/webpack-contrib/karma-webpack/issues/316
+        SAUCE_LABS: JSON.stringify(process.env.SAUCE_LABS),
       },
     }),
     new MiniCssExtractPlugin({
@@ -144,6 +151,7 @@ const config = {
       chunksSortMode: 'dependency',
     }),
     new webpack.NamedModulesPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
   ],
   stats: {
     children: false,

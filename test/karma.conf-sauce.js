@@ -6,23 +6,15 @@ require('dotenv').config({ silent: true }); // get local environment variables f
 const path = require('path');
 const _ = require('lodash');
 
-const webpack = require('webpack');
+process.env.NODE_ENV = 'test';
+process.env.SAUCE_LABS = true;
 
-const webpackConfigDev = require('../other/webpack.dev');
+const webpackConfigDev = require('../webpack.config');
 
 delete webpackConfigDev.entry; // the entry is the loader
 delete webpackConfigDev.output; // no need to output files
 delete webpackConfigDev.optimization; // no need
-const definePlugin = new webpack.DefinePlugin({
-  'process.env': {
-    NODE_ENV: JSON.stringify('test'),
-    // https://github.com/webpack-contrib/karma-webpack/issues/316
-    SAUCE_LABS: JSON.stringify('true'),
-  },
-});
-webpackConfigDev.plugins = webpackConfigDev.plugins.map(p =>
-  p instanceof webpack.DefinePlugin ? definePlugin : p
-);
+
 webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
 const sauceBrowsers = [
