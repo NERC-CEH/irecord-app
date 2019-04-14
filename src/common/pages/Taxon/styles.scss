@@ -80,12 +80,13 @@
     transform: translateY(-50%);
   }
 
-  h3 {
+  h3.taxon {
     white-space: normal;
     overflow: visible;
     font-weight: normal;
     margin-bottom: 8px;
     margin-top: -2px;
+    line-height: 20px;
   }
 
   span.group {

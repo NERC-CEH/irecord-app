@@ -24,8 +24,20 @@ class Controller extends React.Component {
   }
 
   getDefaultState() {
+    if (!this.props.favouriteSpecies) {
+      return {
+        searchResults: null,
+        searchPhrase: '',
+      };
+    }
+
+    const favouriteSpecies = this.props.favouriteSpecies.map(species => ({
+      ...{ isFavourite: true },
+      ...species,
+    }));
+
     return {
-      searchResults: this.props.favouriteSpecies,
+      searchResults: favouriteSpecies,
       searchPhrase: '',
     };
   }

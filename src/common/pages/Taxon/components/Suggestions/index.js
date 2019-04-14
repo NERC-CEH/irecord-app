@@ -89,7 +89,7 @@ const Suggestions = ({
     const deDuped = deDuplicateSuggestions(searchResults);
 
     suggestionsList = deDuped.map(species => {
-      const key = `${species.warehouse_id}${species[species.found_in_name]}`;
+      const key = `${species.warehouse_id}-${species.found_in_name}-${species.isFavourite}`;
       return (
         <Species
           key={key}
