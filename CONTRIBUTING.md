@@ -148,7 +148,7 @@ npm run build:cordova:android
 # Acceptance tests
  Check that `appium-doctor` shows all green and then:
  
-`mb --configfile test/imposters.json`
+`mb --configfile test/acceptance/imposters.json`
 
 `emulate test`
 

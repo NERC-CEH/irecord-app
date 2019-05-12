@@ -6,7 +6,7 @@ exports.config = {
 
   // How much detail should be logged. The options are:
   // 'silent', 'verbose', 'command', 'data', 'result', 'error'
-  logLevel: 'error',
+  logLevel: 'verbose',
 
   // This defines which kind of device we want to test on, as well as how it should be
   // configured.

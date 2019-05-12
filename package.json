@@ -24,7 +24,7 @@
     "test:watch": "karma start test/karma.conf.js --no-single-run",
     "test:sauce": "karma start test/karma.conf-sauce.js",
     "test:eslint": "mocha test/eslint-test.js",
-    "test:acceptance": "grunt exec:cordova_build_android && ./node_modules/.bin/wdio test/wdio.conf.js",
+    "test:acceptance": "grunt exec:cordova_build_android && ./node_modules/.bin/wdio test/acceptance/wdio.conf.js",
     "clean": "rm -rf node_modules dist yarn.lock package-lock.json",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
@@ -84,7 +84,7 @@
     "babel-loader": "8.0.5",
     "babel-plugin-istanbul": "4.1.4",
     "chai": "4.1.2",
-    "chromedriver": "2.34.1",
+    "chromedriver": "^2.34.1",
     "circular-dependency-plugin": "4.2.0",
     "css-loader": "1.0.0",
     "csv": "1.1.1",
