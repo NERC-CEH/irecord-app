@@ -168,7 +168,7 @@ if (process.env.APP_MANUAL_TESTING) {
 }
 
 if (process.env.APP_SCREENSHOTS) {
-  config.entry.push('../other/cordova/screenshots-setup.js');
+  config.entry.push('./other/cordova/screenshots-setup.js');
 }
 
 module.exports = config;

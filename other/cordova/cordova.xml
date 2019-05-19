@@ -103,17 +103,7 @@
         <icon src="../../other/cordova/images/ios/icon/icon-small@3x.png" width="87" height="87" />
         <icon src="../../other/cordova/images/ios/icon/icon.png" width="57" height="57" />
 
-        <!-- images are determined by width and height. The following are supported -->
-        <splash src="../../other/cordova/images/ios/splash/Default~iphone.png" width="320" height="480"/>
-        <splash src="../../other/cordova/images/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-Landscape~ipad.png" width="1024" height="768"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-568h@2x~iphone.png" width="640" height="1136"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-667h.png" width="750" height="1334"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-736h.png" width="1242" height="2208"/>
-        <splash src="../../other/cordova/images/ios/splash/Default-Landscape-736h.png" width="2208" height="1242"/>
+        <splash src="../../other/cordova/images/ios/splash/Default@2x~universal~anyany.png" />
     </platform>
     <platform name="android">
         <icon src="../../other/cordova/images/android/icon/drawable-ldpi-icon.png" density="ldpi" />
