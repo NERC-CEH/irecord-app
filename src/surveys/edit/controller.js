@@ -185,7 +185,7 @@ const API = {
    * @param reset
    * @returns {Promise.<T>}
    */
-  setLocation(sample, loc, reset) {
+  async setLocation(sample, loc, reset) {
     // 1st validation of location accuracy
     let gridSquareUnit = sample.metadata.gridSquareUnit;
     if (!LocHelp.checkGridType(loc, gridSquareUnit)) {
@@ -214,8 +214,10 @@ const API = {
     }
 
     // save to past locations
-    const locationID = appModel.setLocation(location);
-    location.id = locationID;
+    const savedLocation = await appModel.setLocation(location);
+    if (savedLocation.id) {
+      location.id = savedLocation.id;
+    }
 
     // set the gridSquareUnit so that future changes in the settings don't change that;
     sample.metadata.gridSquareUnit = gridSquareUnit; // eslint-disable-line

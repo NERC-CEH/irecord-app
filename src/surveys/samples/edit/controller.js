@@ -292,7 +292,7 @@ const API = {
    * @param reset
    * @returns {Promise.<T>}
    */
-  setLocation(sample, loc, reset) {
+  async setLocation(sample, loc, reset) {
     // validate this new location
     const valid = API.validateLocation(sample, loc);
     if (!valid) {
@@ -316,8 +316,10 @@ const API = {
     }
 
     // save to past locations
-    const locationID = appModel.setLocation(location);
-    location.id = locationID;
+    const savedLocation = await appModel.setLocation(location);
+    if (savedLocation.id) {
+      location.id = savedLocation.id;
+    }
 
     sample.set('location', location);
     sample.trigger('change:location');

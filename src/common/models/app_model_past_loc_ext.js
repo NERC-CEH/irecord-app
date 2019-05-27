@@ -1,65 +1,59 @@
 /** ****************************************************************************
  * App Model past locations functions.
  **************************************************************************** */
-import _ from 'lodash';
 import UUID from 'helpers/UUID';
 import Log from 'helpers/log';
 import LocHelp from 'helpers/location';
 
-const MAX_SAVED = 100;
+export const MAX_SAVED = 250;
 
 export default {
-  /**
-   * Saves device location.
-   *
-   * @param location
-   */
-  setLocation(origLocation = {}) {
+  async setLocation(origLocation) {
     Log('AppModel:PastLocations: setting.');
-    const location = _.cloneDeep(origLocation);
-    const locations = this.attrs.locations;
-
+    let locations = [...this.attrs.locations];
+    const location = { ...origLocation };
     if (!location.latitude) {
-      return null;
+      throw new Error('invalid location');
+    }
+
+    const duplicate = locations.find(loc => this._isIdentical(loc, location));
+    if (duplicate) {
+      return duplicate;
     }
 
     // update existing
-    const existingLocationIndex = this._locationIndex(location);
+    const existingLocationIndex = locations.findIndex(
+      loc => loc.id === location.id
+    );
     if (existingLocationIndex >= 0) {
-      locations.splice(existingLocationIndex, 1, location);
-      this.save();
-
+      locations[existingLocationIndex] = {
+        ...locations[existingLocationIndex],
+        ...location,
+      };
+      this.attrs.locations.replace(locations);
+      await this.save();
       return location;
-    }
-
-    // check if not duplicating existing location without id
-    let duplication = false;
-    locations.forEach(loc => {
-      if (this._isIdentical(loc, location)) {
-        duplication = true;
-      }
-    });
-    if (duplication) {
-      return null;
     }
 
     // add new one
     location.id = UUID();
     location.date = new Date();
-    locations.splice(0, 0, location);
 
-    // check if not exceeded limits
-    if (locations.length > MAX_SAVED) {
-      locations.pop();
-    } // remove old one
-
-    this.set('locations', locations);
-    this.save();
-
+    if (locations.length >= MAX_SAVED) {
+      const removed = this._removeNonFavouriteBackwards(locations);
+      if (!removed) {
+        return origLocation; // all favourites
+      }
+    }
+    
+    locations = [location, ...locations];
+   
+    this.attrs.locations.replace(locations);
+    await this.save();
     return location;
   },
 
-  removeLocation(locationId) {
+  async removeLocation(locationId) {
     Log('AppModel:PastLocations: removing.');
 
     const locations = this.get('locations');
@@ -70,27 +64,29 @@ export default {
       }
     });
     this.set('locations', locations);
-    this.save();
+    await this.save();
     this.trigger('change:locations');
+  },
+
+  _removeNonFavouriteBackwards(locations) {
+    locations.reverse();
+    const nonFavLocationIndex = locations.findIndex(loc => !loc.favourite);
+    if (nonFavLocationIndex < 0) {
+      return false;
+    }
+
+    locations.splice(nonFavLocationIndex, 1);
+    locations.reverse();
+    return true;
   },
 
   _isIdentical(loc, location) {
     return (
       loc.name === location.name &&
       loc.latitude === location.latitude &&
-      loc.longitude === location.longitude
+      loc.longitude === location.longitude &&
+      loc.favourite === location.favourite
     );
-  },
-
-  _locationIndex(location = {}) {
-    const locations = this.get('locations');
-    let index = -1;
-    locations.forEach((loc, i) => {
-      if (loc.id === location.id) {
-        index = i;
-      }
-    });
-    return index;
   },
 
   printLocation(location) {

@@ -16,19 +16,8 @@ import './styles.scss';
 /**
  * Sort the past locations placing favourites to the top.
  */
-function sortFavLocationsToTop(a, b) {
-  const aFav = a.favourite;
-  const bFav = b.favourite;
-  if (aFav || bFav) {
-    if (aFav && !bFav) {
-      return -1;
-    }
-    if (!aFav && bFav) {
-      return 1;
-    }
-  }
-  return -1;
-}
+const sortFavLocationsToTop = (a, b) =>
+  a.favourite === b.favourite ? 0 : a.favourite ? -1 : 1; // eslint-disable-line
 
 function showEditPopup(location) {
   const locationModel = new Backbone.Model(Object.assign({}, location));

@@ -1,7 +1,6 @@
 /** ****************************************************************************
  * Location controller.
  **************************************************************************** */
-import $ from 'jquery';
 import _ from 'lodash';
 import Backbone from 'backbone';
 import Log from 'helpers/log';
@@ -82,9 +81,7 @@ const API = {
     mainView.on('past:click', () => API.onPastLocationsClick(sample));
 
     // map
-    mainView.on('location:select:map', (loc, createNew) =>
-      API.setLocation(sample, loc, createNew)
-    );
+    mainView.on('location:select:map', loc => API.setLocation(sample, loc));
 
     // gridref
     mainView.on('location:gridref:change', data =>
@@ -115,7 +112,7 @@ const API = {
    * @param loc
    * @param createNew
    */
-  setLocation(sample, loc, reset) {
+  async setLocation(sample, loc) {
     if (typeof loc !== 'object') {
       // jQuery event object bug fix
       // todo clean up if not needed anymore
@@ -125,27 +122,22 @@ const API = {
 
     // check if we need custom location setting functionality
     if (locationSetFunc) {
-      return locationSetFunc(sample, loc, reset);
+      return locationSetFunc(sample, loc);
     }
 
-    let location = loc;
+    const oldLocation = sample.get('location') || {};
+    const location = { ...loc, ...{ name: oldLocation.name } };
+
     // we don't need the GPS running and overwriting the selected location
     if (sample.isGPSRunning()) {
       sample.stopGPS();
     }
 
-    if (!reset) {
-      // extend old location to preserve its previous attributes like name or id
-      let oldLocation = sample.get('location');
-      if (!_.isObject(oldLocation)) {
-        oldLocation = {};
-      } // check for locked true
-      location = $.extend(oldLocation, location);
-    }
-
     // save to past locations
-    const locationID = appModel.setLocation(location);
-    location.id = locationID;
+    const savedLocation = await appModel.setLocation(location);
+    if (savedLocation.id) {
+      location.id = savedLocation.id;
+    }
 
     sample.set('location', location);
     sample.trigger('change:location');
@@ -161,12 +153,14 @@ const API = {
 
     sample
       .save()
-      .then(() => {
+      .then(async () => {
         // save to past locations and update location ID on record
         const location = sample.get('location') || {};
         if (location.latitude) {
-          const locationID = appModel.setLocation(location);
-          location.id = locationID;
+          const savedLocation = await appModel.setLocation(location);
+          if (savedLocation.id) {
+            location.id = savedLocation.id;
+          }
           sample.set('location', location);
         }
 
@@ -325,12 +319,6 @@ const API = {
         if (sample.isGPSRunning()) {
           sample.stopGPS();
         }
-
-        // // check if we need custom location setting functionality
-        // if (locationSetFunc) {
-        //   locationSetFunc(sample, location).then(() => window.history.back());
-        //   return;
-        // }
 
         sample.set('location', location);
         window.history.back();
