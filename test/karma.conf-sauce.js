@@ -26,12 +26,12 @@ const sauceBrowsers = [
 
   /**  Mobile environment */
   ['android', '6'], // latest
-  ['android', '5.1'],
-  ['android', '5'], // bottom support
-  ['Safari', '11.2', 'iOS', 'iPhone 6'], // latest
+  ['Browser', '5.1', 'Android', 'Android Emulator'],
+  // ['Browser', '5', 'Android', 'Android Emulator'], // bottom support - sauce labs missing
+
+  ['Safari', '12.2', 'iOS', 'iPhone 6'], // latest
   ['Safari', '11.1', 'iOS', 'iPhone 6'],
-  ['Safari', '10.3', 'iOS', 'iPhone 6'],
-  ['Safari', '10.2', 'iOS', 'iPhone 6'], // bottom support
+  ['Safari', '10.3', 'iOS', 'iPhone 6'], // bottom support
 ].reduce((memo, platform) => {
   let label = platform[0].split(' ');
   if (label.length > 1) {

@@ -1,5 +1,6 @@
 import { AppModel } from '../app_model';
-import { MAX_SAVED } from '../app_model_past_loc_ext';
+
+const MAX_SAVED = 30; // use small value to speed up tests
 
 const genLocation = favourite => ({
   latitude: Math.random(),
@@ -14,7 +15,10 @@ async function getAppModel() {
   return appModel;
 }
 
-describe('Past locations extension', () => {
+// eslint-disable-next-line
+describe('Past locations extension', function() {
+  this.timeout(5000);
+
   it('has functions', () => {
     const appModel = new AppModel();
     expect(appModel.setLocation).to.be.a('function');
@@ -76,7 +80,7 @@ describe('Past locations extension', () => {
       const location = genLocation();
       const savedLocation = await appModel.setLocation(location);
       savedLocation.name = 'new';
-      
+
       // When
       const newSavedLocation = await appModel.setLocation(savedLocation);
 
@@ -92,7 +96,9 @@ describe('Past locations extension', () => {
 
       // When
       await Promise.all(
-        maxExceedingLocations.map(location => appModel.setLocation(location))
+        maxExceedingLocations.map(location =>
+          appModel.setLocation(location, MAX_SAVED)
+        )
       );
 
       // Then
@@ -106,9 +112,11 @@ describe('Past locations extension', () => {
       const favLocationId = (await appModel.setLocation(genLocation(true))).id;
 
       // When
-      await Promise.all(
-        maxExceedingLocations.map(loc => appModel.setLocation(loc))
-      );
+      // eslint-disable-next-line
+      for (const loc of maxExceedingLocations) {
+        // eslint-disable-next-line
+        await appModel.setLocation(loc, MAX_SAVED);
+      }
 
       // Then
       const savedFavLocation = appModel.get('locations')[MAX_SAVED - 1];
@@ -123,11 +131,16 @@ describe('Past locations extension', () => {
       );
       const favLocation = { ...genLocation(), ...{ favourite: true } };
       await Promise.all(
-        maxExceedingLocations.map(location => appModel.setLocation(location))
+        maxExceedingLocations.map(location =>
+          appModel.setLocation(location, MAX_SAVED)
+        )
       );
 
       // When
-      const savedFavLocation = await appModel.setLocation(favLocation);
+      const savedFavLocation = await appModel.setLocation(
+        favLocation,
+        MAX_SAVED
+      );
 
       // Then
       expect(savedFavLocation).to.eql(favLocation);

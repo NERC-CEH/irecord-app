@@ -8,7 +8,7 @@ import LocHelp from 'helpers/location';
 export const MAX_SAVED = 250;
 
 export default {
-  async setLocation(origLocation) {
+  async setLocation(origLocation, allowedMaxSaved = MAX_SAVED) {
     Log('AppModel:PastLocations: setting.');
     let locations = [...this.attrs.locations];
     const location = { ...origLocation };
@@ -39,7 +39,7 @@ export default {
     location.id = UUID();
     location.date = new Date();
 
-    if (locations.length >= MAX_SAVED) {
+    if (locations.length >= allowedMaxSaved) {
       const removed = this._removeNonFavouriteBackwards(locations);
       if (!removed) {
         return origLocation; // all favourites
