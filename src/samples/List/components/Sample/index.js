@@ -123,7 +123,16 @@ class Component extends React.Component {
       img = media && media.getURL();
     }
 
-    const taxon = specie[specie.found_in_name];
+    let taxon =
+      specie.found_in_name >= 0
+        ? specie.common_names[specie.found_in_name]
+        : specie.scientific_name;
+
+    if (specie.found_in_name === 'common_name') {
+      // This is just to be backwards compatible
+      // TODO: remove in the next update
+      taxon = specie.common_name;
+    }
 
     const activity = sample.get('activity');
 

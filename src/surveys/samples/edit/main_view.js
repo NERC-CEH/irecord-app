@@ -44,7 +44,8 @@ export default Marionette.View.extend({
 
     // taxon
     const scientificName = specie.scientific_name;
-    const commonName = specie.common_name;
+    const commonName =
+      specie.found_in_name >= 0 && specie.common_names[specie.found_in_name];
 
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};

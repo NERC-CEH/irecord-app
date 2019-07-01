@@ -57,7 +57,9 @@ class Component extends React.Component {
 
     // taxon
     const scientificName = StringHelp.limit(specie.scientific_name);
-    const commonName = StringHelp.limit(specie.common_name);
+    const commonName =
+      specie.found_in_name >= 0 &&
+      StringHelp.limit(specie.common_names[specie.found_in_name]);
 
     const attrLocks = {};
     // TODO: don't rely on core attributes list to build this as it could contain

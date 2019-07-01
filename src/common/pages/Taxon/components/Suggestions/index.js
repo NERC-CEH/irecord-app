@@ -9,15 +9,26 @@ import './styles.scss';
  * @param suggestions
  */
 function deDuplicateSuggestions(suggestions) {
-  let previous = {};
+  let previous;
   const results = [];
 
   suggestions.forEach(taxon => {
-    const name = taxon[taxon.found_in_name] || '';
+    const name =
+      taxon.found_in_name >= 0
+        ? taxon.common_names[taxon.found_in_name]
+        : taxon.scientific_name;
+
     const nameNormalized = name.toLocaleLowerCase();
 
-    const previousName = previous[previous.found_in_name] || '';
-    const previousNameNormalized = previousName.toLocaleLowerCase();
+    let previousNameNormalized;
+    if (previous) {
+      const previousName =
+        previous.found_in_name >= 0
+          ? previous.common_names[previous.found_in_name]
+          : previous.scientific_name;
+
+      previousNameNormalized = previousName.toLocaleLowerCase();
+    }
 
     const noCommonNames = !nameNormalized || !previousNameNormalized;
     const isUnique = noCommonNames || nameNormalized !== previousNameNormalized;
@@ -56,8 +67,12 @@ const searchInfo = (
   <p id="taxa-shortcuts-info">
     {t(
       'For quicker searching of the taxa you can use different shortcuts. For example, to find'
-    )}{' '}
-    <i>Puffinus baroli</i> {t('you can type in the search bar')}:
+    )}
+    {' '}
+    <i>Puffinus baroli</i> 
+    {' '}
+    {t('you can type in the search bar')}
+    :
     <br />
     <br />
     <i>puffinus ba</i>
@@ -89,7 +104,9 @@ const Suggestions = ({
     const deDuped = deDuplicateSuggestions(searchResults);
 
     suggestionsList = deDuped.map(species => {
-      const key = `${species.warehouse_id}-${species.found_in_name}-${species.isFavourite}`;
+      const key = `${species.warehouse_id}-${species.found_in_name}-${
+        species.isFavourite
+      }`;
       return (
         <Species
           key={key}

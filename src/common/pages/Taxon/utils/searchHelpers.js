@@ -1,7 +1,12 @@
 /** ****************************************************************************
  *
  **************************************************************************** */
-import _ from 'lodash';
+const _ = require('lodash');
+const {
+  GENUS_SPECIES_INDEX,
+  GENUS_NAMES_INDEX,
+  SPECIES_NAMES_INDEX,
+} = require('../../../data/constants.json');
 
 const SCI_NAME_INDEX = 2; // in genera and above
 
@@ -14,6 +19,23 @@ const helpers = {
 
   removeNonAlphanumerics(phrase) {
     return phrase.replace(/\\[\-\'\"()\\]/g, '.?'); // eslint-disable-line
+  },
+
+  getFirstWordRegex(searchPhrase) {
+    const searchWords = searchPhrase.split(' ');
+    const firstWord = helpers.normalizeFirstWord(searchWords[0]);
+    const firstWordRegexStr = helpers.getFirstWordRegexString(firstWord);
+    const firstWordRegex = new RegExp(firstWordRegexStr, 'i');
+    return { firstWord, firstWordRegexStr, firstWordRegex };
+  },
+
+  getOtherWordsRegex(searchPhrase) {
+    const searchWords = searchPhrase.split(' ');
+    const otherWords = searchWords.splice(1).join(' ');
+    if (!otherWords) {
+      return null;
+    }
+    return new RegExp(helpers.getOtherWordsRegexString(otherWords), 'i');
   },
 
   // TODO: change èéöüáöëïåß -> eeou..
@@ -179,18 +201,19 @@ const helpers = {
 
   /**
    * Return common name from common names array pointer
-   * @param p array pointer
+   * @param p array pointersrc/common/pages/Taxon/utils/searchHelpers.js
    */
-  getCommonName(species, p) {
-    let name;
+  getCommonName(allSpecies, p) {
     if (helpers.isGenusPointer(p)) {
-      // genus common name
-      name = species[p[0]][p[1]];
-    } else {
-      name = species[p[0]][p[1]][p[2]][p[3]];
+      const [genusIndex, nameIndex] = p;
+      return allSpecies[genusIndex][GENUS_NAMES_INDEX][nameIndex].toLowerCase();
     }
-    return name.toLowerCase();
+
+    const [genusIndex, speciesIndex, nameIndex] = p;
+    return allSpecies[genusIndex][GENUS_SPECIES_INDEX][speciesIndex][
+      SPECIES_NAMES_INDEX
+    ][nameIndex].toLowerCase();
   },
 };
 
-export { helpers as default };
+module.exports = helpers;

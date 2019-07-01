@@ -36,15 +36,14 @@ import searchEngine from '../taxon_search_engine';
           const result = results[0];
 
           expect(result).to.be.an('object');
-          expect(result).to.have.all.keys(
+          expect(result).to.have.keys(
             'array_id',
             'species_id',
             'found_in_name',
             'warehouse_id',
             'group',
             'scientific_name',
-            'common_name',
-            'synonym'
+            'common_names',
           );
         }));
 
@@ -106,8 +105,8 @@ import searchEngine from '../taxon_search_engine';
             let found = false;
             results.forEach(result => {
               if (
-                result.common_name === 'Willow' ||
-                result.synonym === 'Willow'
+                result.common_names[0] === 'Willow' ||
+                result.common_names[1] === 'Willow'
               ) {
                 found = true;
               }
@@ -137,7 +136,7 @@ import searchEngine from '../taxon_search_engine';
             const result = results[0];
 
             expect(result.warehouse_id).to.be.equal(208098);
-            expect(result.common_name).to.be.equal('Giant Blackberry');
+            expect(result.common_names[0]).to.be.equal('Giant Blackberry');
             expect(result.scientific_name).to.be.equal('Rubus armeniacus');
           });
 
@@ -155,7 +154,7 @@ import searchEngine from '../taxon_search_engine';
             expect(results).to.not.be.empty;
             let found = false;
             results.forEach(species => {
-              if (species.common_name === 'Heart Cockle') {
+              if (species.common_names[0] === 'Heart Cockle') {
                 found = true;
               }
             });
@@ -168,7 +167,7 @@ import searchEngine from '../taxon_search_engine';
             // eslint-disable-next-line
             let found = false;
             results.forEach(species => {
-              if (species.common_name === 'Blackthorn') {
+              if (species.common_names[0] === 'Blackthorn') {
                 found = true;
               }
             });

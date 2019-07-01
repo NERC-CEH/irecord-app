@@ -71,7 +71,10 @@ export default observer(props => {
   const occ = sample.getOccurrence();
   const specie = occ.get('taxon');
 
-  const { scientific_name: scientificName, common_name: commonName } = specie;
+  const { scientific_name: scientificName } = specie;
+
+  const commonName =
+    specie.found_in_name >= 0 && specie.common_names[specie.found_in_name];
 
   const locationObj = sample.get('location') || {};
 

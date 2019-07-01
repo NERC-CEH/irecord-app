@@ -36,17 +36,7 @@ const API = {
 
   /**
    * Returns an array of species in format
-   {
-     array_id: "Genus array index"
-     species_id: "Species array index"
-     species_name_id: "Species name index" //to know where found
-     warehouse_id: "Warehouse id"
-     group: "Species group"
-     scientific_name: "Scientific name"
-     common_name: "Common name"
-     synonym: "Common name synonym"
-   }
-   */
+  */
   search(searchPhrase, options = {}) {
     // todo Accent Folding: https://alistapart.com/article/accent-folding-for-auto-complete
 

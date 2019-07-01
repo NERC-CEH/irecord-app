@@ -101,8 +101,8 @@ export default {
         SpeciesSearchEngine.search(stat.taxon, options).then(results => {
           const foundedSpecies = results[0];
           if (results.length && foundedSpecies.scientific_name === stat.taxon) {
-            if (foundedSpecies.common_name) {
-              foundedSpecies.found_in_name = 'common_name';
+            if (foundedSpecies.common_names.length) {
+              foundedSpecies.found_in_name = 0;
             }
             species.push(foundedSpecies);
           }

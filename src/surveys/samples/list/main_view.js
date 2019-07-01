@@ -37,8 +37,15 @@ const SampleView = Marionette.View.extend({
 
     // taxon
     const scientificName = specie.scientific_name;
-    const commonName = specie.common_name;
 
+    let commonName =
+      specie.found_in_name >= 0 && specie.common_names[specie.found_in_name];
+
+    if (specie.found_in_name === 'common_name') {
+      // This is just to be backwards compatible
+      // TODO: remove in the next update
+      commonName = specie.common_name;
+    }
     const locationPrint = sample.printLocation();
     const location = sample.get('location') || {};
     const surveylocation = sample.parent.get('location') || {};

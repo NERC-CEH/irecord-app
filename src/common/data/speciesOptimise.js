@@ -1,11 +1,22 @@
 const speciesInformalGroups = require('./informal_groups.data.json');
 const taxonCleaner = require('./speciesClean');
 
-const SYNONYM = 4;
-const COMMON_NAME = 3;
-const TAXON = 2;
-const GROUP = 1;
-const ID = 0;
+const {
+  GENUS_ID_INDEX,
+  GENUS_GROUP_INDEX,
+  GENUS_TAXON_INDEX,
+  GENUS_SPECIES_INDEX,
+  GENUS_NAMES_INDEX,
+  SPECIES_ID_INDEX,
+  SPECIES_TAXON_INDEX,
+  SPECIES_NAMES_INDEX,
+  COMMON_NAMES,
+  TAXON,
+  GROUP,
+  ID,
+} = require('./constants.json');
+
+const enableWelsh = process.env.APP_WELSH;
 
 function normalizeValue(value) {
   // check if int
@@ -28,135 +39,139 @@ function checkAllSpeciesHasInformalGroup(speciesList) {
   });
 }
 
+const flattenSpeciesReport = speciesFromReport =>
+  speciesFromReport.data.map(s => {
+    const flattened = [];
+    flattened[ID] = parseInt(s.id, 10);
+    flattened[GROUP] = parseInt(s.taxon_group, 10);
+    flattened[TAXON] = s.taxon;
+
+    flattened[COMMON_NAMES] = [];
+    // in the order of importance
+    if (s.common_name) {
+      flattened[COMMON_NAMES].push(s.common_name);
+    }
+    if (s.synonym) {
+      flattened[COMMON_NAMES].push(s.synonym);
+    }
+    if (enableWelsh && s.cym) {
+      flattened[COMMON_NAMES].push(s.cym);
+    }
+
+    return flattened;
+  });
+
+function addGenus(optimised, taxa) {
+  const taxon = taxonCleaner(taxa[TAXON], false, true);
+  if (!taxon) {
+    return;
+  }
+
+  const commonNames = taxa[COMMON_NAMES].map(name =>
+    taxonCleaner(name, true, true)
+  );
+
+  const genus = [];
+  genus[GENUS_ID_INDEX] = taxa[ID];
+  genus[GENUS_GROUP_INDEX] = taxa[GROUP];
+  genus[GENUS_TAXON_INDEX] = taxon;
+
+  if (commonNames.length) {
+    genus[GENUS_SPECIES_INDEX] = []; // optimization to not include the array by default
+    genus[GENUS_NAMES_INDEX] = commonNames;
+  }
+
+  optimised.push(genus);
+}
+
+function addSpecies(optimised, taxa, taxaNameSplitted) {
+  // species that needs to be appended to genus
+  const lastGenus = getLastGenus(optimised, taxa, taxaNameSplitted);
+
+  let speciesArray = lastGenus[GENUS_SPECIES_INDEX];
+  if (!speciesArray) {
+    lastGenus[GENUS_SPECIES_INDEX] = [];
+    speciesArray = lastGenus[GENUS_SPECIES_INDEX];
+  }
+
+  const id = normalizeValue(taxa[ID]);
+
+  const taxon = taxaNameSplitted.slice(1).join(' ');
+  const taxonClean = taxonCleaner(taxon, false);
+  if (!taxonClean) {
+    // cleaner might stripped all
+    return;
+  }
+
+  const commonNames = taxa[COMMON_NAMES].map(name =>
+    taxonCleaner(name, true)
+  ).filter(exists => exists);
+
+  const species = [];
+  species[SPECIES_ID_INDEX] = id;
+  species[SPECIES_TAXON_INDEX] = taxonClean;
+
+  if (commonNames.length) {
+    species[SPECIES_NAMES_INDEX] = commonNames;
+  }
+  speciesArray.push(species);
+}
+
+/**
+ * Finds the last genus entered in the optimised list.
+ * Looks for the matching taxa and informal group.
+ * @param taxa
+ * @param taxaNameSplitted
+ * @returns {*}
+ */
+function getLastGenus(optimised, taxa, taxaNameSplitted, index) {
+  const lastEntry = index || optimised.length - 1;
+  let lastGenus = optimised[lastEntry];
+  // no genus with the same name and group was found
+  if (lastGenus[TAXON] !== taxaNameSplitted[0]) {
+    // create a new genus with matching group
+    lastGenus = [0, taxa[GROUP], taxaNameSplitted[0], []];
+    optimised.push(lastGenus);
+    return lastGenus;
+  }
+
+  // if taxa groups don't match then recursively go to check
+  // next entry that matches the taxa and the group
+  if (lastGenus[GROUP] !== taxa[GROUP]) {
+    return getLastGenus(optimised, taxa, taxaNameSplitted, lastEntry - 1);
+  }
+
+  return lastGenus;
+}
+
+function isGenusDuplicate(optimised, taxa, index) {
+  const lastEntry = index || optimised.length - 1;
+  if (lastEntry < 0) {
+    // empty array
+    return false;
+  }
+  const genus = optimised[lastEntry];
+  if (genus[TAXON] !== taxa[TAXON]) {
+    // couldn't find duplicate
+    return false;
+  }
+
+  if (genus[GROUP] !== taxa[GROUP]) {
+    // recursively look for another one down the line
+    return isGenusDuplicate(optimised, taxa, lastEntry - 1);
+  }
+  return true;
+}
+
 /**
  * Optimises the array by grouping species to genus.
  */
 function optimise(speciesFromReport) {
-  const speciesFlattened = speciesFromReport.data.map(s => [
-    parseInt(s.id, 10),
-    parseInt(s.taxon_group, 10),
-    s.taxon,
-    s.common_name,
-    s.synonym,
-  ]);
+  const speciesFlattened = flattenSpeciesReport(speciesFromReport);
 
   checkAllSpeciesHasInformalGroup(speciesFlattened);
 
   const optimised = [];
-
-  function addGenus(taxa) {
-    const taxon = taxonCleaner(taxa[TAXON], false, true);
-    if (!taxon) {
-      return;
-    }
-
-    const genus = [
-      taxa[ID], // id
-      taxa[GROUP], // group
-      taxon, // taxon
-    ];
-
-    const name = taxonCleaner(taxa[COMMON_NAME], true, true);
-    if (name) {
-      genus.push(name);
-    }
-
-    const synonym = taxonCleaner(taxa[SYNONYM], true, true);
-    if (synonym) {
-      genus.push(synonym);
-    }
-
-    optimised.push(genus);
-  }
-
-  /**
-   * Finds the last genus entered in the optimised list.
-   * Looks for the matching taxa and informal group.
-   * @param taxa
-   * @param taxaNameSplitted
-   * @returns {*}
-   */
-  function getLastGenus(taxa, taxaNameSplitted, index) {
-    const lastEntry = index || optimised.length - 1;
-    let lastGenus = optimised[lastEntry];
-    // console.log(`---------`)
-    // console.log(lastGenus)
-    // console.log(taxaNameSplitted)
-    // no genus with the same name and group was found
-    if (lastGenus[TAXON] !== taxaNameSplitted[0]) {
-      // create a new genus with matching group
-      lastGenus = [0, taxa[GROUP], taxaNameSplitted[0], []];
-      optimised.push(lastGenus);
-      return lastGenus;
-    }
-
-    // if taxa groups don't match then recursively go to check
-    // next entry that matches the taxa and the group
-    if (lastGenus[GROUP] !== taxa[GROUP]) {
-      return getLastGenus(taxa, taxaNameSplitted, lastEntry - 1);
-    }
-
-    return lastGenus;
-  }
-
-  function addSpecies(taxa, taxaNameSplitted) {
-    // species that needs to be appended to genus
-    const lastGenus = getLastGenus(taxa, taxaNameSplitted);
-
-    // check genus species array - must be last
-    let speciesArray = lastGenus[lastGenus.length - 1];
-    if (typeof speciesArray !== 'object') {
-      // new one if doesn't exist
-      speciesArray = [];
-      lastGenus.push(speciesArray);
-    }
-
-    const species = [];
-    // id
-    species.push(normalizeValue(taxa[ID]));
-
-    // taxon
-    const taxon = taxaNameSplitted.slice(1).join(' ');
-    const taxonClean = taxonCleaner(taxon, false);
-    if (!taxonClean) {
-      // cleaner might stripped all
-      return;
-    }
-    species.push(taxonClean); // remove genus name
-
-    // common name
-    const commonName = taxonCleaner(taxa[COMMON_NAME], true);
-    if (commonName) {
-      species.push(commonName);
-    }
-
-    // synonym name
-    const synonym = taxonCleaner(taxa[SYNONYM], true);
-    if (synonym) {
-      species.push(synonym);
-    }
-
-    speciesArray.push(species);
-  }
-
-  function isGenusDuplicate(taxa, index) {
-    const lastEntry = index || optimised.length - 1;
-    if (lastEntry < 0) {
-      // empty array
-      return false;
-    }
-    const genus = optimised[lastEntry];
-    if (genus[TAXON] !== taxa[TAXON]) {
-      // couldn't find duplicate
-      return false;
-    }
-
-    if (genus[GROUP] !== taxa[GROUP]) {
-      // recursively look for another one down the line
-      return isGenusDuplicate(taxa, lastEntry - 1);
-    }
-    return true;
-  }
 
   speciesFlattened.forEach(taxa => {
     const taxaName = taxa[TAXON];
@@ -171,14 +186,15 @@ function optimise(speciesFromReport) {
     }
     if (taxaNameSplitted.length === 1) {
       // genus
-      if (isGenusDuplicate(taxa)) {
+      if (isGenusDuplicate(optimised, taxa)) {
         console.warn(`Duplicate genus found: ${taxa.toString()}`);
         return;
       }
-      addGenus(taxa);
-    } else {
-      addSpecies(taxa, taxaNameSplitted);
+      addGenus(optimised, taxa);
+      return;
     }
+
+    addSpecies(optimised, taxa, taxaNameSplitted);
   });
 
   return optimised;
