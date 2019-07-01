@@ -9,8 +9,9 @@ export default () => (
     <li>
       <p>
         <strong>
-          We are very grateful for all the people that helped to create this
-          app:
+          {t(
+            'We are very grateful for all the people that helped to create this app:'
+          )}
         </strong>
       </p>
       <p>
@@ -40,7 +41,7 @@ export default () => (
         </ul>
       </p>
       <p>
-        This app was part-funded by the
+        {t('This app was part-funded by the')}
         {' '}
         <a href="https://www.ceh.ac.uk/">Centre for Ecology & Hydrology</a>
 /
@@ -48,16 +49,17 @@ export default () => (
           Joint Nature Conservation Committee
         </a>
         {' '}
-        partnership supporting BRC.
+        {t('partnership supporting BRC')}
+.
       </p>
       <p>
-        <strong>Welcome screen credits:</strong>
+        <strong>{t('Welcome screen credits:')}</strong>
       </p>
       <ul style={{ listStyleType: 'none' }}>
         <li>David Kitching</li>
         <li>UK Ladybird Survey</li>
         <li>
-          Map and Statistic icons were made by
+          {t('Map and Statistic icons were made by')}
           {' '}
           <a
             href="https://www.flaticon.com/authors/nhor-phai"

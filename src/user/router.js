@@ -24,7 +24,7 @@ function loginController(onSuccess) {
   }
 
   Log('User:Login: visited.');
-  radio.trigger('app:header', <Header>Login</Header>);
+  radio.trigger('app:header', <Header>{t('Login')}</Header>);
   radio.trigger(
     'app:main',
     <Login onSuccess={onSuccess} userModel={userModel} />
@@ -49,13 +49,13 @@ const Router = Marionette.AppRouter.extend({
       }
 
       Log('User:Register: visited.');
-      radio.trigger('app:header', <Header>Register</Header>);
+      radio.trigger('app:header', <Header>{t('Register')}</Header>);
       radio.trigger('app:main', <Register userModel={userModel} />);
       radio.trigger('app:footer:hide');
     },
     'user/reset(/)': () => {
       Log('User:Reset: visited.');
-      radio.trigger('app:header', <Header>Reset</Header>);
+      radio.trigger('app:header', <Header>{t('Reset')}</Header>);
       radio.trigger('app:main', <Reset />);
       radio.trigger('app:footer:hide');
     },

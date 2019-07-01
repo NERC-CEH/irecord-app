@@ -16,7 +16,7 @@ const Component = observer(props => {
     window.history.back();
   }
 
-  const message = 'Please pick your grid square unit.';
+  const message = t('Please pick your grid square unit.');
 
   const selection = Object.keys(LocHelp.gridref_accuracy).map(key => ({
     label: LocHelp.gridref_accuracy[key].label,

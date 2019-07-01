@@ -201,7 +201,7 @@ class Component extends React.Component {
           <span slot="end" className="descript" style={{ width: '25%' }}>
             {gridSquareUnit}
           </span>
-          Grid Square Unit
+          {t('Grid Square Unit')}
         </ion-item>
 
         <ion-item-divider>{t('Application')}</ion-item-divider>

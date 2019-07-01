@@ -44,7 +44,7 @@ const Router = Marionette.AppRouter.extend({
     'info/welcome(/)': showWelcome,
     'info/about(/)': () => {
       Log('Info:About: visited.');
-      radio.trigger('app:header', <Header>About</Header>);
+      radio.trigger('app:header', <Header>{t('About')}</Header>);
       radio.trigger(
         'app:main',
         <About version={CONFIG.version} build={CONFIG.build} />
@@ -52,27 +52,27 @@ const Router = Marionette.AppRouter.extend({
     },
     'info/help(/)': () => {
       Log('Info:Help: visited.');
-      radio.trigger('app:header', <Header>Help</Header>);
+      radio.trigger('app:header', <Header>{t('Help')}</Header>);
       radio.trigger('app:main', <Help />);
     },
     'info/privacy(/)': () => {
       Log('Info:Privacy: visited.');
-      radio.trigger('app:header', <Header>Privacy Policy</Header>);
+      radio.trigger('app:header', <Header>{t('Privacy Policy')}</Header>);
       radio.trigger('app:main', <PrivacyPolicy />);
     },
     'info/terms(/)': () => {
       Log('Info:Terms: visited.');
-      radio.trigger('app:header', <Header>T&Cs</Header>);
+      radio.trigger('app:header', <Header>{t('T&Cs')}</Header>);
       radio.trigger('app:main', <Terms />);
     },
     'info/brc-approved(/)': () => {
       Log('Info:BRCApproved: visited.');
-      radio.trigger('app:header', <Header>BRC Approved</Header>);
+      radio.trigger('app:header', <Header>{t('BRC Approved')}</Header>);
       radio.trigger('app:main', <BRCApproved />);
     },
     'info/credits(/)': () => {
       Log('Info:Credits: visited.');
-      radio.trigger('app:header', <Header>Credits</Header>);
+      radio.trigger('app:header', <Header>{t('Credits')}</Header>);
       radio.trigger('app:main', <Credits />);
     },
     'info/*path': () => {

@@ -3,7 +3,7 @@
     <ion-input
       id="location-name"
       type="text"
-      placeholder="Location Name"
+      placeholder=<%= t('Location Name') %>
       value="<%- obj.name %>"
     />
   </ion-item>

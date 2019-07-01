@@ -51,7 +51,7 @@ class Component extends React.Component {
 
     return (
       <Header rightPanel={lock} onLeave={this.onLeave}>
-        {title}
+        {t(title)}
       </Header>
     );
   }

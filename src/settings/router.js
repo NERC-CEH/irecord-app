@@ -21,7 +21,7 @@ function showLocations(options) {
 
   Log('Settings:Locations: visited.');
   const locations = appModel.get('locations');
-  radio.trigger('app:header', <Header>Past Locations</Header>);
+  radio.trigger('app:header', <Header>{t('Past Locations')}</Header>);
   radio.trigger(
     'app:main',
     <Locations locations={locations} onSelect={options.onSelect} />
@@ -32,7 +32,7 @@ const Router = Marionette.AppRouter.extend({
   routes: {
     'settings(/)': () => {
       Log('Settings:Survey: visited.');
-      radio.trigger('app:header', <Header>Settings</Header>);
+      radio.trigger('app:header', <Header>{t('Settings')}</Header>);
       radio.trigger(
         'app:main',
         <Menu
@@ -46,7 +46,7 @@ const Router = Marionette.AppRouter.extend({
     'settings/locations(/)': showLocations,
     'settings/survey(/)': () => {
       Log('Settings:Survey: visited.');
-      radio.trigger('app:header', <Header>Grid Unit</Header>);
+      radio.trigger('app:header', <Header>{t('Grid Unit')}</Header>);
       radio.trigger('app:main', <Survey appModel={appModel} />);
       radio.trigger('app:footer:hide');
     },
