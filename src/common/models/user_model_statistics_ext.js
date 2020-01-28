@@ -5,7 +5,7 @@ import Indicia from 'indicia';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 import { observable } from 'mobx';
-import SpeciesSearchEngine from '../pages/Taxon/utils/taxon_search_engine';
+import SpeciesSearchEngine from 'Components/TaxonSearch/utils/taxon_search_engine';
 
 export default {
   statisticsExtensionInit() {
@@ -22,17 +22,21 @@ export default {
 
     if ((this.hasLogIn() && this._lastStatsSyncExpired()) || force) {
       // init or refresh
-      const statistics = this.get('statistics');
+      const { statistics } = this.attrs;
 
       this.statistics.synchronizing = this._fetchStatsSpecies()
         .then(stats =>
           this._processStatistics(stats).then(species => {
-            const updatedStatistics = Object.assign({}, statistics, {
-              synced_on: new Date().toString(),
-              species,
-              speciesRaw: stats,
-            });
-            this.set('statistics', updatedStatistics);
+            const updatedStatistics = {
+              ...{},
+              ...statistics,
+              ...{
+                synced_on: new Date().toString(),
+                species,
+                speciesRaw: stats,
+              },
+            };
+            this.attrs.statistics = updatedStatistics;
             this.save();
 
             this.statistics.synchronizing = false;
@@ -123,7 +127,7 @@ export default {
    * @private
    */
   _lastStatsSyncExpired() {
-    const statistics = this.get('statistics');
+    const { statistics } = this.attrs;
 
     if (!statistics.synced_on) {
       return true;

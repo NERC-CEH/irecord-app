@@ -1,45 +1,112 @@
 /** ****************************************************************************
  * App Model activities functions.
  **************************************************************************** */
-import $ from 'jquery';
 import _ from 'lodash';
-import Indicia from 'indicia';
 import Log from 'helpers/log';
-import CONFIG from 'config';
-import { observable } from 'mobx';
+import config from 'config';
+import * as Yup from 'yup';
+import makeRequest from 'common/helpers/makeRequest';
+
+const schemaBackend = Yup.object().shape({
+  data: Yup.array().of(
+    Yup.object()
+      .shape({
+        id: Yup.string(),
+        title: Yup.string(),
+        // description: null
+        // group_type: Yup.string,
+        // group_from_date: null
+        // group_to_date: null
+      })
+      .required()
+  ),
+});
 
 export default {
-  activitiesExtensionInit() {
-    this.activities = observable({ synchronizing: null });
-    this.syncActivities();
-  },
-
-  syncActivities(force) {
+  async syncActivities(force) {
     Log('UserModel:Activities: synchronising.');
 
     if (this.activities.synchronizing) {
-      return this.activities.synchronizing;
+      return;
     }
 
-    if ((this.hasLogIn() && this._lastSyncExpired()) || force) {
-      // init or refresh
-      this.trigger('sync:activities:start');
-
-      this.activities.synchronizing = this.fetchActivities()
-        .then(() => {
-          this.activities.synchronizing = false;
-          this.trigger('sync:activities:end');
-        })
-        .catch(err => {
-          this.activities.synchronizing = false;
-          this.trigger('sync:activities:end');
-          return Promise.reject(err);
-        });
-
-      return this.activities.synchronizing;
+    if (!((this.hasLogIn() && this._lastSyncExpired()) || force)) {
+      this._removeExpired();
+      return;
     }
 
-    // remove expired activities
+    const data = await this._fetchActivities();
+
+    const activities = [];
+    const defaultActivity = {
+      synced_on: new Date().toString(),
+      id: null,
+      title: '',
+      description: '',
+      activity_type: '',
+      activity_from_date: '',
+      activity_to_date: '',
+    };
+
+    data.forEach(activity => {
+      const fullActivity = { ...{}, ...defaultActivity, ...activity };
+      fullActivity.id = parseInt(fullActivity.id, 10);
+
+      // from
+      let date;
+      if (fullActivity.activity_from_date) {
+        date = new Date(fullActivity.activity_from_date);
+        fullActivity.activity_from_date = date.toString();
+      }
+
+      // to
+      if (fullActivity.activity_to_date) {
+        date = new Date(fullActivity.activity_to_date);
+        date.setDate(date.getDate() + 1); // include the last day
+        fullActivity.activity_to_date = date.toString();
+      }
+      activities.push(fullActivity);
+    });
+
+    this.attrs.activities = activities;
+    this.save();
+  },
+
+  async _fetchActivities() {
+    const url = `${config.site_url}api/v1/reports/library/groups/groups_for_app.xml`;
+
+    const { name, password } = this.attrs;
+    const userAuth = btoa(`${name}:${password}`);
+
+    const options = {
+      headers: {
+        authorization: `Basic ${userAuth}`,
+        'x-api-key': config.indicia.api_key,
+      },
+      qs: {
+        path: 'enter-app-record',
+      },
+    };
+
+    let response;
+    try {
+      this.activities.synchronizing = true;
+      response = await makeRequest(url, options, 1000000);
+      const isValidResponse = await schemaBackend.isValid(response);
+
+      if (!isValidResponse) {
+        throw new Error('Invalid server response.');
+      }
+      this.activities.synchronizing = false;
+
+      return response.data;
+    } catch (e) {
+      this.activities.synchronizing = false;
+      throw new Error(e.message);
+    }
+  },
+
+  _removeExpired() {
     const activities = this.attrs.activities || [];
     for (let i = activities.length - 1; i >= 0; i--) {
       const activity = activities[i];
@@ -48,8 +115,6 @@ export default {
         activities.splice(i, 1);
       }
     }
-
-    return Promise.resolve();
   },
 
   hasActivity(activity) {
@@ -57,7 +122,7 @@ export default {
   },
 
   getActivity(id) {
-    const activities = this.get('activities');
+    const { activities } = this.attrs;
     let foundedActivity;
     activities.forEach(activity => {
       if (id === activity.id) {
@@ -102,78 +167,12 @@ export default {
   },
 
   /**
-   * Loads the list of available activities from the warehouse then updates the
-   * collection in the main view.
-   */
-  fetchActivities() {
-    Log('UserModel:Activities: fetching.');
-
-    const report = new Indicia.Report({
-      report: '/library/groups/groups_for_app.xml',
-
-      api_key: CONFIG.indicia.api_key,
-      host_url: CONFIG.indicia.host,
-      user: this.getUser.bind(this),
-      password: this.getPassword.bind(this),
-      params: {
-        path: 'enter-app-record',
-      },
-    });
-
-    const promise = report.run().then(receivedData => {
-      const data = receivedData.data;
-      if (!data || !(data instanceof Array)) {
-        const err = new Error('Error while retrieving activities response.');
-        return Promise.reject(err);
-      }
-
-      const activities = [];
-      const defaultActivity = {
-        synced_on: new Date().toString(),
-        id: null,
-        title: '',
-        description: '',
-        activity_type: '',
-        activity_from_date: '',
-        activity_to_date: '',
-      };
-
-      data.forEach(activity => {
-        const fullActivity = $.extend({}, defaultActivity, activity);
-        fullActivity.id = parseInt(fullActivity.id, 10);
-
-        // from
-        let date;
-        if (fullActivity.activity_from_date) {
-          date = new Date(fullActivity.activity_from_date);
-          fullActivity.activity_from_date = date.toString();
-        }
-
-        // to
-        if (fullActivity.activity_to_date) {
-          date = new Date(fullActivity.activity_to_date);
-          date.setDate(date.getDate() + 1); // include the last day
-          fullActivity.activity_to_date = date.toString();
-        }
-        activities.push(fullActivity);
-      });
-
-      this.set('activities', activities);
-      this.save();
-
-      return null;
-    });
-
-    return promise;
-  },
-
-  /**
    * Checks if the last sync was done too long ago.
    * @returns {boolean}
    * @private
    */
   _lastSyncExpired() {
-    const activities = this.get('activities');
+    const { activities } = this.attrs;
 
     if (!activities.length) {
       return true;

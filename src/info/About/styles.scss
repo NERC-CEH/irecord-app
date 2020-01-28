@@ -1,0 +1,28 @@
+#about {
+  ion-label {
+    white-space: normal;
+  }
+
+  ion-list-header:not(:first-child) {
+    margin-top: 30px;
+  }
+
+  p,
+  ul,
+  li,
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-inline-start: 15px;
+  }
+
+  li {
+    margin-bottom: 8px;
+    b {
+      font-weight: 600;
+    }
+  }
+}

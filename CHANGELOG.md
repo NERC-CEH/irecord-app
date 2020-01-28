@@ -1,3 +1,25 @@
+## 5.0.0
+
+### Features
+
+* General Survey
+* Moth Survey
+* Added Sex attribute
+* Added ability to preserve records when logging out
+* Added +/- buttons to abundance inputs
+
+### Other
+
+* Updated UI
+* Updated the species list
+* Improved species search
+* Added liverwort and moss to Plant Survey 
+
+### Bug Fixes
+
+* Multiple
+
+
 ## 4.0.2
 
 ### Bug Fixes

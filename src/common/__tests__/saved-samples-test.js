@@ -2,7 +2,7 @@ import Indicia from 'indicia';
 import savedSamples from 'saved_samples';
 // import { getRandomSample, generateSampleResponse } from 'test-helpers';
 
-describe('Saved samples', () => {
+describe.skip('Saved samples', () => {
   let server;
 
   before(done => {

@@ -18,7 +18,7 @@ const Component = props => {
 
   function exit() {
     Log('Info:Welcome:Controller: exit.');
-    appModel.set('showWelcome', false);
+    appModel.attrs.showWelcome = false;
     appModel.save();
     radio.trigger('samples:list', { replace: true });
   }

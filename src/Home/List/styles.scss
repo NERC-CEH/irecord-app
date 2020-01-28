@@ -1,0 +1,38 @@
+#surveys-list {
+  ion-segment {
+    padding: 10px 16px;
+    background: white;
+
+    ion-badge {
+      vertical-align: top;
+      margin: 3px;
+      margin-left: 6px;
+    }
+  }
+
+  ion-content {
+    --padding-start: 5px;
+    --padding-end: 5px;
+    --padding-top: 0;
+    --padding-bottom: 0;
+  }
+
+  .empty {
+    width: 80%;
+    max-width: 250px;
+    margin: 100px auto 0;
+    --border-width: 0;
+    --background: var(--ion-color-light);
+    --color: var(--ion-color-light-contrast);
+    span {
+      margin: 0 auto;
+      font-weight: 200;
+      text-align: center;
+    }
+
+    img {
+      display: block;
+      max-width: 100px;
+    }
+  }
+}

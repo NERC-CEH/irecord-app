@@ -45,10 +45,10 @@ export default {
         return origLocation; // all favourites
       }
     }
-    
+
     locations = [location, ...locations];
-   
-    this.attrs.locations.replace(locations);
+
+    this.attrs.locations = locations;
     await this.save();
     return location;
   },
@@ -56,16 +56,10 @@ export default {
   async removeLocation(locationId) {
     Log('AppModel:PastLocations: removing.');
 
-    const locations = this.get('locations');
+    const { locations } = this.attrs;
 
-    locations.forEach((loc, i) => {
-      if (loc.id === locationId) {
-        locations.splice(i, 1);
-      }
-    });
-    this.set('locations', locations);
+    this.attrs.locations = locations.filter(loc => loc.id !== locationId);
     await this.save();
-    this.trigger('change:locations');
   },
 
   _removeNonFavouriteBackwards(locations) {
@@ -90,11 +84,11 @@ export default {
   },
 
   printLocation(location) {
-    const useGridRef = this.get('useGridRef');
+    const { useGridRef } = this.attrs;
 
     if (location.latitude) {
       if (useGridRef || location.source === 'gridref') {
-        let accuracy = location.accuracy;
+        let { accuracy } = location;
 
         // cannot be odd
         if (accuracy % 2 !== 0) {

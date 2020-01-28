@@ -32,28 +32,48 @@ function deleteFile(fileName) {
   });
 }
 
-export default Indicia.Media.extend({
-  destroy(...args) {
+class Media extends Indicia.Media {
+  async destroy(silent) {
     Log('MediaModel: destroying.');
 
     // remove from internal storage
     if (!window.cordova || window.testing) {
-      Indicia.Media.prototype.destroy.apply(this, args);
-      return;
+      if (!this.parent) {
+        return null;
+      }
+
+      this.parent.media.remove(this);
+
+      if (silent) {
+        return null;
+      }
+
+      return this.parent.save();
     }
 
-    let URL = this.get('data');
+    let URL = this.attrs.data;
     URL = fixPreviousVersions(URL);
 
-    deleteFile(URL)
-      .then(() => {
-        Indicia.Media.prototype.destroy.apply(this, args);
-      })
-      .catch(err => Log(err, 'e'));
-  },
+    try {
+      await deleteFile(URL);
+      if (!this.parent) {
+        return null;
+      }
+      this.parent.media.remove(this);
+
+      if (silent) {
+        return null;
+      }
+
+      return this.parent.save();
+    } catch (err) {
+      Log(err, 'e');
+      return null;
+    }
+  }
 
   getURL() {
-    let URL = this.get('data');
+    let URL = this.attrs.data;
 
     if (!window.cordova || window.testing) {
       return URL;
@@ -61,5 +81,12 @@ export default Indicia.Media.extend({
 
     URL = cordova.file.dataDirectory + fixPreviousVersions(URL);
     return window.Ionic.WebView.convertFileSrc(URL);
-  },
-});
+  }
+
+  // eslint-disable-next-line
+  validateRemote() {
+    return null;
+  }
+}
+
+export default Media;

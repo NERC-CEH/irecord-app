@@ -1,0 +1,11 @@
+#feedback-request {
+  text-align: center;
+
+  margin: 0;
+  border-radius: 0;
+  --background: var(--ion-color-light);
+
+  ion-card-title {
+    font-size: 1.2em;
+  }
+}

@@ -1,0 +1,18 @@
+#help {
+  ion-list {
+    padding-top: 0;
+  }
+
+  ion-item-divider {
+    --background: var(--ion-color-light-shade);
+    --color: var(--ion-color-light-contrast);
+  }
+
+  ion-item-divider:not(:first-of-type) {
+    margin-top: 30px;
+  }
+
+  ion-icon {
+    padding: 0 6px;
+  }
+}

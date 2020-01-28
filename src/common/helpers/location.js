@@ -86,10 +86,10 @@ const helpers = {
    * @private
    */
   _doesExceedGridRef(gridCoords, location, normAcc) {
-    const accuracy = location.accuracy;
+    const { accuracy } = location;
 
-    const x = gridCoords.x;
-    const y = gridCoords.y;
+    const { x } = gridCoords;
+    const { y } = gridCoords;
 
     if ((x % normAcc) - accuracy < 0) {
       return true;
@@ -238,7 +238,7 @@ const helpers = {
     }
 
     const gridref = location.gridref || '';
-    let length = helpers.gridref_accuracy[gridRefSize].length;
+    let { length } = helpers.gridref_accuracy[gridRefSize];
 
     if (/^.\d/.test(gridref)) {
       // Irish is 1 char less than others

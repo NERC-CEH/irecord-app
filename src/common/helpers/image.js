@@ -3,7 +3,6 @@
  **************************************************************************** */
 import Indicia from 'indicia';
 import Log from './log';
-import Analytics from './analytics';
 import Device from './device';
 
 export function _onGetImageError(err, resolve, reject) {
@@ -48,7 +47,7 @@ const Image = {
         correctOrientation: true,
       };
 
-      const cameraOptions = Object.assign({}, defaultCameraOptions, options);
+      const cameraOptions = { ...{}, ...defaultCameraOptions, ...options };
 
       if (Device.isAndroid()) {
         // Android bug:
@@ -107,7 +106,6 @@ const Image = {
         err => _onGetImageError(err, resolve, reject),
         cameraOptions
       );
-      Analytics.trackEvent('Image', 'get', cameraOptions.sourceType);
     });
   },
 
@@ -124,10 +122,12 @@ const Image = {
     const success = args => {
       const [data, type, width, height] = args;
       const imageModel = new ImageModel({
-        data,
-        type,
-        width,
-        height,
+        attrs: {
+          data,
+          type,
+          width,
+          height,
+        },
       });
 
       return imageModel.addThumbnail().then(() => imageModel);
@@ -138,13 +138,17 @@ const Image = {
       return Indicia.Media.getDataURI(file).then(success);
     }
 
-    file = window.Ionic.WebView.convertFileSrc(file);
+    file = window.Ionic.WebView.convertFileSrc(file); // eslint-disable-line
     return Indicia.Media.getDataURI(file).then(args => {
       // don't resize, only get width and height
       const [, , width, height] = args;
       const fileName = file.split('/').pop();
       return success([fileName, 'jpeg', width, height]);
     });
+  },
+
+  validateRemote() {
+    // nothing to validate yet
   },
 };
 

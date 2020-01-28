@@ -1,35 +1,8 @@
 .collapse-block {
-  .header {
-    width: 100%;
-    margin-left: -16px;
-    position: absolute;
-    display: block;
-    overflow: hidden;
-    top: 0;
-    padding: 10px;
-
-    &:after {
-      font-size: 20px;
-      margin-right: 10px;
-      font-family: icons;
-      content: '\E804';
-      position: absolute;
-      right: 14px;
-    }
-  }
-
-  .body {
-    margin-top: 50px;
-  }
+  --padding-top: 5px;
+  --padding-bottom: 5px;
 
   &.opened {
-    .header {
-      background-color: #e4e4e4;
-
-      &:after {
-        content: '\E81C';
-        right: 18px;
-      }
-    }
+    --background: var(--ion-color-light-tint);
   }
 }

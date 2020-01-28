@@ -38,7 +38,7 @@ describe('Past locations extension', function() {
       await appModel.setLocation(location);
 
       // Then
-      expect(appModel.get('locations').length).to.be.eql(1);
+      expect(appModel.attrs.locations.length).to.be.eql(1);
     });
 
     it('should remove a location', async () => {
@@ -55,7 +55,7 @@ describe('Past locations extension', function() {
       expect(savedLocation.id).to.be.a('string');
 
       await appModel.removeLocation(savedLocation.id);
-      expect(appModel.get('locations').length).to.be.equal(0);
+      expect(appModel.attrs.locations.length).to.be.equal(0);
     });
 
     it('should not duplicate same location', async () => {
@@ -71,7 +71,7 @@ describe('Past locations extension', function() {
       expect(secondSavedLocation).to.eql(savedLocation);
 
       await appModel.setLocation(location);
-      expect(appModel.get('locations').length).to.be.equal(1);
+      expect(appModel.attrs.locations.length).to.be.equal(1);
     });
 
     it('should update same location', async () => {
@@ -86,7 +86,7 @@ describe('Past locations extension', function() {
 
       // Then
       expect(newSavedLocation.name).to.be.equal('new');
-      expect(appModel.get('locations').length).to.be.equal(1);
+      expect(appModel.attrs.locations.length).to.be.equal(1);
     });
 
     it('should not exceed max saved location limits', async () => {
@@ -102,7 +102,7 @@ describe('Past locations extension', function() {
       );
 
       // Then
-      expect(appModel.get('locations').length).to.be.equal(MAX_SAVED);
+      expect(appModel.attrs.locations.length).to.be.equal(MAX_SAVED);
     });
 
     it('should not remove favorite locations when exceeded', async () => {
@@ -119,7 +119,7 @@ describe('Past locations extension', function() {
       }
 
       // Then
-      const savedFavLocation = appModel.get('locations')[MAX_SAVED - 1];
+      const savedFavLocation = appModel.attrs.locations[MAX_SAVED - 1];
       expect(savedFavLocation.id).to.eql(favLocationId);
     });
 

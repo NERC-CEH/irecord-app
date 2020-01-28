@@ -1,0 +1,118 @@
+ion-slides#welcome {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+
+  --bullet-background-active: white;
+
+  ion-button {
+    position: absolute;
+    bottom: 7%;
+
+    &.skip {
+      left: 9%;
+    }
+    &.next {
+      right: 9%;
+    }
+  }
+
+  .message {
+    position: absolute;
+    width: 80%;
+    padding-left: 10px;
+
+    // Hack around the tablet hidden message issue
+    @media only screen and (min-width: 650px) {
+      margin-left: -325px !important;
+      left: 50% !important;
+    }
+  }
+
+  .message p,
+  .message h2 {
+    padding: 10px;
+    color: var(--ion-color-dark);
+    background-color: white;
+  }
+
+  .message h2 {
+    text-align: center;
+  }
+  .message p {
+    padding: 20px;
+  }
+
+  .swiper-pagination-bullets {
+    bottom: 3%;
+
+    .swiper-pagination-bullet {
+      background: black;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: var(--ion-color-light);
+    }
+  }
+
+  .message p {
+    font-size: 0.9em;
+  }
+
+  $bottom: 16vh;
+
+  ion-slide {
+    ion-button {
+      --ion-color-contrast: var(--ion-color-dark) !important;
+    }
+
+    &.first {
+      background: url('images/welcome_1.jpg') no-repeat;
+      background-position: bottom;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        left: 10vw;
+        top: 20vh;
+      }
+    }
+
+    &.second {
+      background: url('images/welcome_2.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+
+      .message {
+        text-align: left;
+        left: 10vw;
+        top: 10vh;
+      }
+    }
+
+    &.third {
+      background: url('images/welcome_3.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+      .message {
+        text-align: left;
+        right: 10vw;
+        bottom: 22vh;
+      }
+    }
+
+    &.fourth {
+      background: url('images/welcome_4.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+      .message {
+        text-align: left;
+        right: 10vw;
+        bottom: 22vh;
+      }
+    }
+  }
+}

@@ -1,11 +1,11 @@
 /** ********************************************************************
  * Manual testing functions.
  ******************************************************************** */
-import App from 'app';
 import savedRecords from 'saved_samples';
 import Factory from 'common/models/model_factory';
 import Indicia from 'indicia';
 import GPS from 'mock-geolocation';
+import PQueue from 'p-queue';
 import bigu from 'bigu';
 
 const testing = {};
@@ -16,10 +16,6 @@ testing.records = {
    */
   resetRecordsStatus() {
     savedRecords.getAll((getError, recordsCollection) => {
-      if (getError) {
-        App.regions.dialog.error(getError);
-        return;
-      }
       recordsCollection.forEach(record => {
         record.metadata.saved = false;
         record.metadata.server_on = null;
@@ -33,44 +29,62 @@ testing.records = {
   /**
    * Add a Dummy Record.
    */
-  addDummyRecord(count = 1, imageData, testID) {
-    testing.records.generateImage(imageData, testID).then(image => {
-      const sampleTestID = `test ${testID} - ${count}`;
+  async addDummyRecord(count = 1, imageData, testID) {
+    const allWait = [];
+    const queue = new PQueue({ concurrency: 1 });
 
-      const taxon = {
-        array_id: 12186,
-        common_name: 'Tuberous Pea',
-        found_in_name: 'common_name',
-        group: 27,
-        scientific_name: 'Lathyrus tuberosus',
-        species_id: 3,
-        synonym: 'Fyfield Pea',
-        warehouse_id: 113813,
-      };
+    for (let i = 0; i < count; i++) {
+      const wait = queue.add(() => {
+        console.log(`Adding ${i + 1}`);
 
-      Factory.createSample('general', image, taxon).then(sample => {
-        sample.set('location', {
-          accuracy: 1,
-          gridref: 'SD79735954',
-          latitude: 54.0310862,
-          longitude: -2.3106393,
-          name: `${sampleTestID} location`,
-          source: 'map',
-        });
-        sample.getOccurrence().set('comment', sampleTestID);
-
-        sample.save().then(() => {
-          savedRecords.add(sample);
-
-          if (--count) {
-            console.log(`Adding: ${count}`);
-            testing.records.addDummyRecord(count, imageData, testID);
-          } else {
-            console.log('Finished Adding');
-          }
-        });
+        return this._addDummyRecord(1, imageData, testID);
       });
+      allWait.push(wait);
+    }
+
+    return allWait;
+  },
+
+  async _addDummyRecord(count, imageData, testID) {
+    const image = await testing.records.generateImage(imageData, testID);
+
+    const sampleTestID = `test ${testID} - ${count}`;
+
+    const taxon = {
+      array_id: 12186,
+      common_name: 'Tuberous Pea',
+      found_in_name: 'common_name',
+      group: 27,
+      scientific_name: 'Lathyrus tuberosus',
+      species_id: 3,
+      synonym: 'Fyfield Pea',
+      warehouse_id: 113813,
+    };
+
+    const sample = await Factory.createSample({
+      survey: 'general',
+      image,
+      taxon,
     });
+
+    const randDate = new Date();
+    randDate.setDate(Math.floor(Math.random() * 31));
+
+    sample.attrs.date = randDate;
+    sample.attrs.location = {
+      accuracy: 1,
+      gridref: 'SD79735954',
+      latitude: 54.0310862,
+      longitude: -2.3106393,
+      name: `${sampleTestID} location`,
+      source: 'map',
+    };
+
+    sample.occurrences[0].attrs.comment = sampleTestID;
+
+    await sample.save();
+
+    savedRecords.push(sample);
   },
 
   generateImage(imageData, testID) {
@@ -95,8 +109,10 @@ testing.records = {
     }
 
     const image = new Indicia.Media({
-      data: imageData,
-      type: 'image/png',
+      attrs: {
+        data: imageData,
+        type: 'image/png',
+      },
     });
 
     return image.addThumbnail().then(() => image);

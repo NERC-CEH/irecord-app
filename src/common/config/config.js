@@ -23,11 +23,6 @@ const CONFIG = {
   // use prod logging if testing otherwise full log
   log: !__TEST__,
 
-  // google analytics
-  ga: {
-    id: !__TEST__ && process.env.APP_GA,
-  },
-
   // error analytics
   sentry: {
     key: !__TEST__ && process.env.APP_SENTRY_KEY,

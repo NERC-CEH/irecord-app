@@ -2,12 +2,12 @@
  * App update functionality.
  **************************************************************************** */
 
-import radio from 'radio';
 import CONFIG from 'config';
 import savedSamples from 'saved_samples';
 import appModel from 'app_model';
 import userModel from 'user_model';
 import { set as setMobXAttrs } from 'mobx';
+import loader from 'helpers/loader';
 import Log from './log';
 import Analytics from './analytics';
 
@@ -65,10 +65,10 @@ function versionCompare(left, right) {
 
 export function updateSamples(samples, callback) {
   samples.each(sample => {
-    const group = sample.get('group');
+    const { group } = sample.attrs;
     if (group) {
       Log('Update: moving a sample group to activity');
-      sample.set('activity', group);
+      sample.attrs.activity = group;
       sample.unset('group');
       sample.save();
     }
@@ -83,10 +83,10 @@ const API = {
    */
   run(callback, silent = false) {
     appModel._init.then(() => {
-      let currentVersion = appModel.get('appVersion');
+      let currentVersion = appModel.attrs.appVersion;
 
       const newVersion = CONFIG.version;
-      let currentBuild = appModel.get('appBuild');
+      let currentBuild = appModel.attrs.appBuild;
       const newBuild = CONFIG.build;
 
       // part of 4.0.0 update START
@@ -103,12 +103,12 @@ const API = {
 
       // when Beta testing we set training mode
       if (currentVersion !== newVersion || currentBuild !== newBuild) {
-        appModel.set('useTraining', CONFIG.training);
+        appModel.attrs.useTraining = CONFIG.training;
       }
 
       let savePromise = Promise.resolve();
       if (currentBuild !== newBuild) {
-        appModel.set('appBuild', newBuild);
+        appModel.attrs.appBuild = newBuild;
         savePromise = appModel.save();
       }
 
@@ -116,7 +116,7 @@ const API = {
         if (currentVersion !== newVersion) {
           // TODO: check for backward downgrade
           // set new app version
-          appModel.set('appVersion', newVersion);
+          appModel.attrs.appVersion = newVersion;
           appModel.save().then(() => {
             // first install
             if (!currentVersion) {
@@ -221,10 +221,9 @@ const API = {
     }
 
     if (!silent) {
-      radio.trigger('app:dialog:show', {
-        title: 'Updating',
-        body: 'This should take only a moment...',
-        hideAllowed: false,
+      loader.show({
+        header: 'Updating',
+        message: t('This should take only a moment...'),
       });
     }
     const startTime = Date.now();
@@ -233,10 +232,7 @@ const API = {
     return API._applyUpdates(firstUpdate, error => {
       if (error) {
         if (!silent) {
-          radio.trigger(
-            'app:dialog:error',
-            'Sorry, an error has occurred while updating the app'
-          );
+          error('Sorry, an error has occurred while updating the app');
         }
         return null;
       }
@@ -245,13 +241,13 @@ const API = {
       if (timeDiff < MIN_UPDATE_TIME) {
         setTimeout(() => {
           if (!silent) {
-            radio.trigger('app:dialog:hide', true);
+            loader.hide();
           }
           callback();
         }, MIN_UPDATE_TIME - timeDiff);
       } else {
         if (!silent) {
-          radio.trigger('app:dialog:hide', true);
+          loader.hide();
         }
         callback();
       }
@@ -315,7 +311,8 @@ const API = {
         if (!fullRestartRequired) {
           return callback();
         }
-        radio.trigger('app:restart');
+        // TODO:
+        // radio.trigger('app:restart');
         return null;
       }
 

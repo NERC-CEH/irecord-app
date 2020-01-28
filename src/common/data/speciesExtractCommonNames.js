@@ -10,7 +10,7 @@ const {
   SPECIES_NAMES_INDEX,
 } = require('./constants.json');
 
-const { getCommonName } = require('../pages/Taxon/utils/searchHelpers.js');
+const { getCommonName } = require('../Components/TaxonSearch/utils/searchHelpers.js');
 
 /**
  * Splits a word and adds it to common names array

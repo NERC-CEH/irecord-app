@@ -18,13 +18,14 @@ const SRC_DIR = path.resolve(ROOT_DIR, 'src');
 
 const config = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: [path.join(SRC_DIR, 'main.js'), path.join(SRC_DIR, 'vendor.js')],
+  entry: [path.join(SRC_DIR, 'index.js'), path.join(SRC_DIR, 'vendor.js')],
   devtool: 'source-map',
   target: 'web',
 
   output: {
     path: DIST_DIR,
     filename: '[name].js',
+    publicPath: '/',
   },
   resolve: {
     modules: [
@@ -34,29 +35,19 @@ const config = {
       path.resolve(ROOT_DIR, './src/common/vendor'),
     ],
     alias: {
-      app: 'app',
+      Components: 'common/Components',
       config: 'common/config/config',
       helpers: 'common/helpers',
-      radio: 'common/radio',
       saved_samples: 'common/saved_samples',
       sample: 'common/models/sample',
       occurrence: 'common/models/occurrence',
       app_model: 'common/models/app_model',
       user_model: 'common/models/user_model',
       model_factory: 'common/models/model_factory',
-      templates: 'common/templates',
-
-      // vendor
-      typeahead: 'typeahead.js/dist/typeahead.jquery',
-      bootstrap: 'bootstrap/js/bootstrap',
-      ratchet: 'ratchet/dist/js/ratchet',
-      'photoswipe-lib': 'photoswipe/dist/photoswipe',
-      'photoswipe-ui-default': 'photoswipe/dist/photoswipe-ui-default',
     },
   },
   module: {
     rules: [
-      { test: /\.tpl/, loader: 'ejs-loader?variable=obj' },
       {
         test: /^((?!data\.).)*\.js$/,
         exclude: /(node_modules|vendor(?!\.js))/,
@@ -75,6 +66,14 @@ const config = {
         use: [
           'style-loader',
           MiniCssExtractPlugin.loader,
+          {
+            loader: 'string-replace-loader',
+            options: {
+              search: './default-skin.svg',
+              replace: '/images/default-skin.svg',
+              flags: 'g',
+            },
+          },
           'css-loader?-url',
           {
             loader: 'postcss-loader',
@@ -85,7 +84,7 @@ const config = {
               },
             },
           },
-          `sass-loader?includePaths[]=${SRC_DIR}`,
+          `sass-loader`,
         ],
       },
     ],
@@ -146,9 +145,9 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      inject: true,
       sourceMap: true,
-      chunksSortMode: 'dependency',
+      // https://github.com/marcelklehr/toposort/issues/20
+      chunksSortMode: 'none',
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -157,6 +156,9 @@ const config = {
     children: false,
   },
   cache: true,
+  devServer: {
+    historyApiFallback: true,
+  },
 };
 
 if (process.env.NODE_ANALYZE) {

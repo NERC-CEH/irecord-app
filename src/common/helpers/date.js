@@ -12,15 +12,30 @@ export default {
 
   print(date, pretty) {
     const local = new Date(date);
-    const sampleDate = `${local.getDate()}/${local.getMonth() +
+    const dateStr = `${local.getDate()}/${local.getMonth() +
       1}/${local.getFullYear()}`;
 
-    const today = new Date();
-    const todayDateOnly = `${today.getDate()}/${today.getMonth() +
-      1}/${today.getFullYear()}`;
-    const isToday = todayDateOnly === sampleDate;
+    if (pretty) {
+      const today = new Date();
+      const todayStr = `${today.getDate()}/${today.getMonth() +
+        1}/${today.getFullYear()}`;
+      const isToday = todayStr === dateStr;
 
-    return pretty && isToday ? t('Today') : sampleDate;
+      if (isToday) {
+        return t('Today');
+      }
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      const yesterdayStr = `${yesterday.getDate()}/${yesterday.getMonth() +
+        1}/${yesterday.getFullYear()}`;
+      const isYesterday = yesterdayStr === dateStr;
+
+      if (isYesterday) {
+        return t('Yesterday');
+      }
+    }
+    return dateStr;
   },
 
   /**

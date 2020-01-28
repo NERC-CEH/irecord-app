@@ -1,1 +1,0 @@
-<ion-list id="list" />

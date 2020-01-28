@@ -4,7 +4,7 @@ import Image from 'common/models/image';
 import ImageHelp from 'helpers/image';
 import Factory from '../model_factory';
 
-describe('Model Factory', () => {
+describe.skip('Model Factory', () => {
   describe('createSample', () => {
     let _getPlantSampleStub;
     let _getGeneralSampleStub;
@@ -65,7 +65,7 @@ describe('Model Factory', () => {
       const image = new Image();
       Factory._getGeneralSample(image, { group: 1 })
         .then(sample => {
-          expect(sample.getOccurrence().getMedia()).to.eql(image);
+          expect(sample.occurrences[0].getMedia()).to.eql(image);
           done();
         })
         .catch(done);
@@ -78,31 +78,31 @@ describe('Model Factory', () => {
 
     it('should append locks', () => {
       const sample = new Sample();
-      sample.addOccurrence(new Occurrence());
+      sample.occurrences.push(new Occurrence());
 
       const comment = 'my comment';
       Factory._appendAttrLocks(sample, {
         'smp:comment': comment,
         'occ:comment': comment,
       });
-      expect(sample.get('comment')).to.eql(comment);
-      expect(sample.getOccurrence().get('comment')).to.eql(comment);
+      expect(sample.attrs.comment).to.eql(comment);
+      expect(sample.occurrences[0].attrs.comment).to.eql(comment);
     });
 
     it('should not append locks if no value exists', () => {
       const sample = new Sample();
-      sample.addOccurrence(new Occurrence());
+      sample.occurrences.push(new Occurrence());
 
       Factory._appendAttrLocks(sample, { 'smp:comment': null });
-      expect(sample.get('comment')).to.eql(undefined);
+      expect(sample.attrs.comment).to.eql(undefined);
     });
 
     it('should not append locks if value equals temporary "true" flag', () => {
       const sample = new Sample();
-      sample.addOccurrence(new Occurrence());
+      sample.occurrences.push(new Occurrence());
 
       Factory._appendAttrLocks(sample, { 'smp:comment': true });
-      expect(sample.get('comment')).to.eql(undefined);
+      expect(sample.attrs.comment).to.eql(undefined);
     });
   });
   describe('createSampleWithPhoto', () => {

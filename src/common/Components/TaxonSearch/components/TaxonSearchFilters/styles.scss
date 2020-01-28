@@ -1,0 +1,15 @@
+#filters-dialog-form {
+  margin-top: 10px;
+
+  ion-item-divider {
+    z-index: 1;
+  }
+
+  .taxon-groups {
+    margin-top: 20px;
+
+    ion-label {
+      text-transform: capitalize;
+    }
+  }
+}

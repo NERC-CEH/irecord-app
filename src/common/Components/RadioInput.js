@@ -1,5 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  IonItemDivider,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRadioGroup,
+  IonRadio,
+} from '@ionic/react';
 
 class Component extends React.PureComponent {
   onChange = e => {
@@ -16,9 +24,54 @@ class Component extends React.PureComponent {
 
   render() {
     const config = this.props.config || {};
+
+    if (config._values) {
+      const message = this.props.info || config.info;
+
+      const selected = this.props.default || config.default;
+
+      const generateInputs = selection =>
+        selection.reduce((agg, option) => {
+          if (option.values) {
+            const divider = (
+              <IonItemDivider key={option.value}>{t(option.value)}</IonItemDivider>
+            );
+            return [...agg, divider, ...generateInputs(option.values)];
+          }
+          const input = (
+            <IonItem key={option.label || option.value}>
+              <IonLabel class="ion-text-wrap">{t(option.label || option.value)}</IonLabel>
+              <IonRadio
+                value={option.value}
+                checked={option.value === selected}
+                onClick={this.onChange}
+              />
+            </IonItem>
+          );
+
+          return [...agg, input];
+        }, []);
+
+      const inputs = generateInputs(config._values);
+
+      return (
+        <div>
+          {message && (
+            <div className="info-message">
+              <p>{t(message)}</p>
+            </div>
+          )}
+
+          <IonList lines="full">
+            <IonRadioGroup>{inputs}</IonRadioGroup>
+          </IonList>
+        </div>
+      );
+    }
+
     const message = this.props.info || config.info;
 
-    let selection = this.props.selection;
+    let { selection } = this.props;
     if (!selection) {
       selection = Object.keys(config.values).map(key => ({ value: key }));
       // add default
@@ -26,15 +79,15 @@ class Component extends React.PureComponent {
     }
     const selected = this.props.default || config.default;
 
-    const inputs = selection.map((option, i) => (
-      <ion-item key={i}>
-        <ion-label>{t(option.label || option.value)}</ion-label>
-        <ion-radio
+    const inputs = selection.map(option => (
+      <IonItem key={option.label || option.value}>
+        <IonLabel class="ion-text-wrap normal-font-size">{t(option.label || option.value)}</IonLabel>
+        <IonRadio
           value={option.value}
           checked={option.value === selected}
           onClick={this.onChange}
         />
-      </ion-item>
+      </IonItem>
     ));
 
     return (
@@ -45,9 +98,9 @@ class Component extends React.PureComponent {
           </div>
         )}
 
-        <ion-list lines="full">
-          <ion-radio-group>{inputs}</ion-radio-group>
-        </ion-list>
+        <IonList lines="full">
+          <IonRadioGroup>{inputs}</IonRadioGroup>
+        </IonList>
       </div>
     );
   }

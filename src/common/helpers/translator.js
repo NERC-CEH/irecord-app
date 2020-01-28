@@ -9,7 +9,7 @@ function translate(key) {
   return key;
 
   // // eslint-disable-next-line
-  // const language = appModel.get('language');
+  // const language = appModel.attrs['language'];
   // const translations = dictionary[key];
   // if (!translations) {
   //   dictionary[key] = { CK: '' };

@@ -3,85 +3,182 @@ import ImageHelp from 'helpers/image';
 import userModel from 'user_model';
 import appModel from 'app_model';
 import Log from 'helpers/log';
-import { coreAttributes } from 'common/config/surveys/general';
+import complexSurveysConfig from 'common/config/surveys/complex';
+import { coreAttributes } from 'common/config/surveys/default';
 import ImageModel from './image';
 import Sample from './sample';
 import Occurrence from './occurrence';
 
 const Factory = {
-  createSample(survey, image, taxon) {
-    if (!survey) {
-      return Promise.reject(new Error('Survey options are missing.'));
-    }
-
-    // plant survey
-    if (survey === 'plant') {
-      return Factory._getPlantSample(image, taxon);
-    }
-
-    return Factory._getGeneralSample(image, taxon);
-  },
-
-  _getPlantSample(image, taxon) {
-    // add currently logged in user as one of the recorders
-    const recorders = [];
-    if (userModel.hasLogIn()) {
-      recorders.push(
-        `${userModel.get('firstname')} ${userModel.get('secondname')}`
-      );
-    }
-
-    const sample = new Sample(
-      {
-        location_type: 'british',
-        sample_method_id: 7305,
-        recorders,
-      },
-      {
-        metadata: {
-          complex_survey: true,
-          gridSquareUnit: appModel.get('gridSquareUnit'),
-        },
+  async createSample({ complex, survey, image, taxon }) {
+    if (complex) {
+      if (survey === 'plant') {
+        return Factory._getComplexPlantSample();
       }
-    );
+      if (survey === 'moth') {
+        return Factory._getComplexMothSample();
+      }
 
-    // occurrence with image - pic select-first only
-    if (image) {
-      const occurrence = new Occurrence({ taxon });
-      occurrence.addMedia(image);
-      sample.addOccurrence(occurrence);
+      return Factory._getComplexDefaultSample();
     }
 
-    return Promise.resolve(sample);
-  },
-
-  _getGeneralSample(image, taxon) {
-    // general survey
-    const occurrence = new Occurrence();
-    if (image) {
-      occurrence.addMedia(image);
-    }
-
-    const sample = new Sample();
-    sample.addOccurrence(occurrence);
+    const sample = await Factory._getDefaultSample(image, taxon);
 
     // check if location attr is not locked
-    if (!appModel.getAttrLock('smp:location')) {
+    if (!appModel.getAttrLock('smp', 'location')) {
       // no previous location
       sample.startGPS();
     }
 
+    return sample;
+  },
+
+  createPlantSubSample({ taxon }) {
+    const { gridSquareUnit, geolocateSurveyEntries } = appModel.attrs;
+
+    const newSubSample = new Sample({
+      attrs: {
+        location_type: 'british',
+      },
+      metadata: {
+        complex_survey: complexSurveysConfig.plant.name,
+        gridSquareUnit,
+      },
+    });
+
+    if (geolocateSurveyEntries) {
+      newSubSample.startGPS();
+    }
+
+    const occurrence = new Occurrence({ attrs: { taxon } });
+    newSubSample.occurrences.push(occurrence);
+
+    const locks = appModel.attrs.attrLocks.complex.plant || {};
+    Factory._appendAttrLocks(newSubSample, locks);
+
+    return Promise.resolve(newSubSample);
+  },
+
+  createMothOccurrence({ taxon }) {
+    const newOccurrene = new Occurrence({ attrs: { taxon, number: 1 } });
+
+    const locks = appModel.attrs.attrLocks.complex.moth || {};
+    this._appendAttrLocks(newOccurrene, locks);
+    return newOccurrene;
+  },
+
+  async createComplexDefaultSubSample({ taxon }) {
+    const sample = await Factory._getDefaultSample(null, taxon, true);
+
+    if (appModel.attrs.geolocateSurveyEntries) {
+      sample.startGPS();
+    }
+
+    return sample;
+  },
+
+  _getComplexPlantSample() {
+    const { gridSquareUnit, useTraining } = appModel.attrs;
+
+    // add currently logged in user as one of the recorders
+    const recorders = [];
+    if (userModel.hasLogIn()) {
+      recorders.push(
+        `${userModel.attrs.firstname} ${userModel.attrs.secondname}`
+      );
+    }
+
+    const sample = new Sample({
+      attrs: {
+        location_type: 'british',
+        sample_method_id: 7305,
+        recorders,
+      },
+      metadata: {
+        complex_survey: complexSurveysConfig.plant.name,
+        training: useTraining,
+        gridSquareUnit,
+      },
+    });
+
+    return Promise.resolve(sample);
+  },
+
+  _getComplexDefaultSample() {
+    // add currently logged in user as one of the recorders
+    const recorders = [];
+    if (userModel.hasLogIn()) {
+      recorders.push(
+        `${userModel.attrs.firstname} ${userModel.attrs.secondname}`
+      );
+    }
+
+    const sample = new Sample({
+      attrs: {
+        location_type: 'british',
+        recorders,
+      },
+      metadata: {
+        complex_survey: complexSurveysConfig.default.name,
+      },
+    });
+
+    sample.startGPS();
+
+    return Promise.resolve(sample);
+  },
+
+  _getComplexMothSample() {
+    // add currently logged in user as one of the recorders
+    const recorders = [];
+    if (userModel.hasLogIn()) {
+      recorders.push(
+        `${userModel.attrs.firstname} ${userModel.attrs.secondname}`
+      );
+    }
+
+    const sample = new Sample({
+      attrs: {
+        location_type: 'british',
+        recorders,
+      },
+      metadata: {
+        complex_survey: complexSurveysConfig.moth.name,
+      },
+    });
+
+    sample.startGPS();
+
+    return Promise.resolve(sample);
+  },
+
+  _getDefaultSample(image, taxon, skipLocation) {
+    // default survey
+    const occurrence = new Occurrence();
+    if (image) {
+      occurrence.media.push(image);
+    }
+
+    const sample = new Sample({
+      metadata: {
+        training: appModel.attrs.useTraining,
+      },
+    });
+
+    sample.occurrences.push(occurrence);
+
     taxon && sample.setTaxon(taxon);
 
     // append locked attributes
-    const locks = appModel.get('attrLocks');
-    const defaultSurveyLocks = locks.general.default || {};
+    const locks = appModel.attrs.attrLocks;
+    const defaultSurveyLocks = locks.default.default || {};
     const coreLocks = {};
     Object.keys(defaultSurveyLocks)
       .filter(key => coreAttributes.includes(key))
       .forEach(key => {
         coreLocks[key] = defaultSurveyLocks[key];
       });
+
     if (!taxon) {
       // when there is no taxon we don't know the survey yet
       // these are core attributes and safe to reuse in any survey
@@ -91,14 +188,29 @@ const Factory = {
 
     const surveyConfig = sample.getSurvey();
     const surveyName = surveyConfig.name;
-    const surveyLocks = Object.assign({}, coreLocks, locks.general[surveyName]);
-    Factory._appendAttrLocks(sample, surveyLocks);
+    const surveyLocks = { ...{}, ...coreLocks, ...locks.default[surveyName] };
+    Factory._appendAttrLocks(sample, surveyLocks, skipLocation);
 
     return Promise.resolve(sample);
   },
 
-  _appendAttrLocks(sample, locks = {}) {
+  _appendAttrLocks(model, locks = {}, skipLocation) {
     Log('modelFactory: appending attr locks.');
+
+    const isOccurrenceOnly = model instanceof Occurrence;
+
+    function selectModel(attrType) {
+      const isSampleAttr = attrType === 'smp';
+      if (isSampleAttr && isOccurrenceOnly) {
+        throw new Error('Invalid attibute lock configuration');
+      }
+
+      if (isSampleAttr) {
+        return model;
+      }
+
+      return isOccurrenceOnly ? model : model.occurrences[0];
+    }
 
     Object.keys(locks).forEach(attr => {
       const value = locks[attr];
@@ -107,51 +219,51 @@ const Factory = {
         return;
       }
 
+      const attrParts = attr.split(':');
+      const attrType = attrParts[0];
+      const attrName = attrParts[1];
+
+      const selectedModel = selectModel(attrType);
+
       const val = _.cloneDeep(value);
-      let occurrence;
       switch (attr) {
         case 'smp:activity':
           if (!userModel.hasActivityExpired(val)) {
             Log('SampleModel:AttrLocks: appending activity to the sample.');
-            sample.set('activity', val);
+            model.attrs.activity = val;
           } else {
             // unset the activity as it's now expired
             Log('SampleModel:AttrLocks: activity has expired.');
-            appModel.unsetAttrLock('activity');
+            appModel.unsetAttrLock('smp', 'activity');
           }
           break;
         case 'smp:location':
-          let location = sample.get('location');
+          if (skipLocation) {
+            break;
+          }
+          let { location } = selectedModel.attrs;
           val.name = location.name; // don't overwrite old name
-          sample.set('location', val);
+          selectedModel.attrs.location = val;
           break;
         case 'smp:locationName':
-          // insert location name
-          location = sample.get('location');
+          if (skipLocation) {
+            break;
+          }
+          location = selectedModel.attrs.location;
           location.name = val;
-          sample.set('location', location);
+          selectedModel.attrs.location = location;
           break;
         case 'smp:date':
           // parse stringified date
-          sample.set('date', new Date(val));
+          selectedModel.attrs.date = new Date(val);
           break;
         case 'occ:number':
-          occurrence = sample.getOccurrence();
-          const numberAttrName = !Number.isNaN(Number(val))
-            ? 'number'
-            : 'number-ranges';
-          occurrence.set(numberAttrName, val);
-          break;
-        case 'occ:stage':
-          occurrence = sample.getOccurrence();
-          occurrence.set('stage', val);
+          const isValidNumber = !Number.isNaN(Number(val));
+          const numberAttrName = isValidNumber ? 'number' : 'number-ranges';
+          selectedModel.attrs[numberAttrName] = val;
           break;
         default:
-          const attrParts = attr.split(':');
-          const attrType = attrParts[0];
-          const attrName = attrParts[1];
-          const model = attrType === 'smp' ? sample : sample.getOccurrence();
-          model.set(attrName, val);
+          selectedModel.attrs[attrName] = val;
       }
     });
   },
@@ -161,9 +273,9 @@ const Factory = {
    *
    * Empty taxon.
    */
-  createSampleWithPhoto(survey, photo) {
+  createSampleWithPhoto(photo) {
     return ImageHelp.getImageModel(ImageModel, photo).then(image =>
-      Factory.createSample(survey, image)
+      Factory.createSample({ image })
     );
   },
 };

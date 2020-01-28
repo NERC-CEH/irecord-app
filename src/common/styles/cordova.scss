@@ -1,6 +1,0 @@
-//make space for statusbar
-body.ios {
-  .bar-nav ~ .content {
-    padding-top: $header-height;
-  }
-}

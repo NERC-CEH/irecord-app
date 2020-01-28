@@ -1,7 +1,7 @@
 module.exports = grunt => ({
   default: ['init', 'webpack:main'],
 
-  init: ['init:validate', 'copy:main', 'exec:ionic_copy', 'vendor'],
+  init: ['init:validate'],
 
   'init:validate': () => {
     if (process.env.APP_FORCE) {
@@ -28,21 +28,12 @@ module.exports = grunt => ({
       'APP_MAPBOX_MAP_KEY',
       'APP_SENTRY_KEY',
       'APP_INDICIA_API_KEY',
-      'APP_GA',
     ].forEach(setting => {
       if (!process.env[setting]) {
         grunt.warn(`${setting} env variable is missing`);
       }
     });
   },
-
-  vendor: [
-    'replace:leaflet',
-    'replace:ratchet',
-    'replace:ratchet_fonts',
-    'replace:fontello_fonts',
-    'replace:photoswipe',
-  ],
 
   update: ['webpack:main'],
 
@@ -54,12 +45,11 @@ module.exports = grunt => ({
     // init cordova source
     // add www source to cordova
     'exec:cordova_init',
+    'exec:cordova_resources',
 
     'exec:cordova_clean_www',
     'exec:cordova_copy_dist',
     'replace:cordova_config',
-    'replace:cordova_build',
-    'copy:cordova_hooks',
     'exec:cordova_add_platforms',
   ],
 
@@ -70,7 +60,6 @@ module.exports = grunt => ({
     'exec:cordova_clean_www',
     'exec:cordova_copy_dist',
     'replace:cordova_config',
-    'replace:cordova_build',
     'exec:cordova_rebuild',
   ],
 
@@ -83,7 +72,6 @@ module.exports = grunt => ({
     'prompt:keystore',
     'cordova:_prepAndroid',
     'replace:cordova_config',
-    'replace:cordova_build',
     'exec:cordova_android_build',
   ],
 

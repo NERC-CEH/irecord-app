@@ -1,0 +1,233 @@
+/* Ionic Variables and Theming. For more information, please see
+// https://beta.ionicframework.com/docs/theming/
+// The app direction is used to include
+// rtl styles in your app. For more information, please see
+// https://beta.ionicframework.com/docs/layout/rtl
+// $app-direction: ltr;
+// Ionic Colors
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic provides eight layered colors
+// that can be changed to theme an app. Additional colors can be
+// added as well (see below). For more information, please see
+// https://beta.ionicframework.com/docs/theming/advanced
+// To easily create custom color palettes for your app’s UI,
+// check out our color generator:
+// https://beta.ionicframework.com/docs/theming/color-generator
+*/
+:root {
+  --ion-color-primary: #91a71c;
+  --ion-color-primary-rgb: 145, 167, 28;
+  --ion-color-primary-contrast: #fff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #809319;
+  --ion-color-primary-tint: #9cb033;
+
+  --ion-color-secondary: #38c;
+  --ion-color-secondary-rgb: 0, 142, 236;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #007dd0;
+  --ion-color-secondary-tint: #1a99ee;
+
+  --ion-color-tertiary: #7044ff;
+  --ion-color-tertiary-rgb: 112, 68, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #633ce0;
+  --ion-color-tertiary-tint: #7e57ff;
+
+  --ion-color-success: #00bd1a;
+  --ion-color-success-rgb: 0, 189, 26;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #00a617;
+  --ion-color-success-tint: #1ac431;
+
+  --ion-color-warning: #e0b500;
+  --ion-color-warning-rgb: 255, 206, 0;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #c7a100;
+  --ion-color-warning-tint: #ffd31a;
+
+  --ion-color-danger: #f04141;
+  --ion-color-danger-rgb: 245, 61, 61;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #d33939;
+  --ion-color-danger-tint: #f25454;
+
+  --ion-color-dark: #222428;
+  --ion-color-dark-rgb: 34, 34, 34;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1e2023;
+  --ion-color-dark-tint: #383a3e;
+
+  --ion-color-medium: #989aa2;
+  --ion-color-medium-rgb: 152, 154, 162;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #86888f;
+  --ion-color-medium-tint: #a2a4ab;
+
+  --ion-color-light: #f4f5f8;
+  --ion-color-light-rgb: 244, 244, 244;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9;
+
+  --custom-color-complex-survey: #a77d11;
+  --custom-color-complex-survey-shade: #6d520c;
+  --custom-color-complex-survey-tint: #b98b14;
+}
+
+/* Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the CSS variables found in Ionic's source files.
+// To view all the possible Ionic variables, see:
+// https://beta.ionicframework.com/docs/theming/css-variables#ionic-variables
+*/
+
+:root {
+  --ion-headings-font-weight: 300;
+  // --ion-item-border-color: red;
+  --ion-item-border-color: rgb(0, 0, 0, 0.2);
+}
+
+.ios,
+.md {
+  --ion-toolbar-background: var(--ion-color-primary);
+  --ion-toolbar-color: #fff;
+  --ion-toolbar-color-activated: #fff;
+}
+
+ion-toolbar {
+  --min-height: 54px;
+}
+
+.sc-ion-back-button-ios-h {
+  --color: var(--ion-toolbar-color);
+}
+
+ion-icon[faint] {
+  opacity: 0.6;
+}
+
+.info-message,
+.success-message,
+.warning-message {
+  font-size: 13px;
+  font-weight: normal;
+  border-radius: 0;
+  padding: 3px 15px 3px 42px;
+  line-height: 1.4em;
+  text-shadow: none;
+  text-align: center;
+}
+
+.info-message p,
+.success-message p,
+.warning-message p {
+  margin: 13px 22px 13px 0;
+  color: var(--ion-color-light);
+
+  a {
+    color: var(--ion-color-light);
+    font-weight: bold;
+  }
+
+  ion-button {
+    display: block;
+  }
+}
+
+.info-message {
+  color: var(--ion-color-light);
+  background: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22iso-8859-1%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20%20width%3D%2214px%22%20height%3D%2214px%22%20viewBox%3D%220%200%2014%2014%22%20style%3D%22enable-background%3Anew%200%200%2014%2014%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23FFF%22%20d%3D%22M7%2C0C3.134%2C0%2C0%2C3.134%2C0%2C7s3.134%2C7%2C7%2C7s7-3.134%2C7-7S10.866%2C0%2C7%2C0z%20M7%2C2c0.552%2C0%2C1%2C0.447%2C1%2C1S7.552%2C4%2C7%2C4S6%2C3.553%2C6%2C3%20S6.448%2C2%2C7%2C2z%20M9%2C11H5v-1h1V6H5V5h3v5h1V11z%22%2F%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3Cg%3E%3C%2Fg%3E%3C%2Fsvg%3E')
+    10px center/22px auto no-repeat var(--ion-color-secondary);
+}
+
+.warning-message {
+  color: var(--ion-color-light);
+  background: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22iso-8859-1%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20%20width%3D%2214px%22%20height%3D%2214px%22%20viewBox%3D%220%200%2014%2014%22%20style%3D%22enable-background%3Anew%200%200%2014%2014%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20style%3D%22fill%3A%23FFFFFF%3B%22%20d%3D%22M7%2C0L0%2C12h14L7%2C0z%20M7%2C11c-0.553%2C0-1-0.447-1-1s0.447-1%2C1-1c0.553%2C0%2C1%2C0.447%2C1%2C1S7.553%2C11%2C7%2C11z%20M7%2C8%20C6.447%2C8%2C6%2C7.553%2C6%2C7V5c0-0.553%2C0.447-1%2C1-1c0.553%2C0%2C1%2C0.447%2C1%2C1v2C8%2C7.553%2C7.553%2C8%2C7%2C8z%22%2F%3E%3C%2Fsvg%3E')
+    10px center/22px auto no-repeat var(--ion-color-warning-tint);
+}
+
+.success-message {
+  color: var(--ion-color-light);
+  background: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22iso-8859-1%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20%20width%3D%2214px%22%20height%3D%2214px%22%20viewBox%3D%220%200%2014%2014%22%20style%3D%22enable-background%3Anew%200%200%2014%2014%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20style%3D%22fill%3A%23FFFFFF%3B%22%20points%3D%2214%2C4%2011%2C1%205.003%2C6.997%203%2C5%200%2C8%204.966%2C13%204.983%2C12.982%205%2C13%20%22%2F%3E%3C%2Fsvg%3E')
+    10px center/22px auto no-repeat var(--ion-color-success-tint);
+}
+
+ion-label[slot='end'] {
+  text-align: right;
+  opacity: 0.5;
+}
+
+button.alert-button.secondary {
+  font-weight: normal !important;
+}
+button.alert-button.primary {
+  font-weight: 700;
+}
+
+button.alert-button.danger {
+  color: var(--ion-color-danger) !important;
+  font-weight: normal !important;
+}
+
+ion-label {
+  &.warn {
+    color: var(--ion-color-warning) !important;
+    opacity: 1;
+  }
+  &.error {
+    color: var(--ion-color-danger) !important;
+    opacity: 1;
+  }
+}
+
+html[mode='ios'] ion-toolbar {
+  ion-button {
+    color: var(--ion-color-primary-contrast);
+  }
+}
+
+html[mode='ios'] ion-input,
+html[mode='ios'] ion-textarea {
+  --padding-start: 7px;
+}
+
+html[mode='ios'] .tabs-inner {
+  margin-top: var(--ion-safe-area-top);
+}
+
+html[mode='md'] .action-sheet-group-cancel button {
+  font-weight: bold;
+}
+
+html[mode='md'] ion-item ion-label[slot='end'] {
+  margin-right: 5px;
+}
+
+ion-label.ion-text-wrap.normal-font-size {
+  font-size: inherit;
+}
+
+ion-button[type='submit'] {
+  width: 40%;
+  margin: 20px auto 40px;
+}
+
+ion-alert {
+  ion-list,
+  ion-item {
+    background: none;
+    --background: none;
+  }
+}

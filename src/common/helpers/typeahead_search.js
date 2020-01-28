@@ -24,7 +24,7 @@ export default function(strs = [], max = 30, strProcessor) {
     // iterate through the pool of strings and for any string that
     // contains the substring `q`, add it to the `matches` array
     for (
-      let length = strs.length, i = 0;
+      let { length } = strs, i = 0;
       i < length && matches.length < max;
       i++
     ) {

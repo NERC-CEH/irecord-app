@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "user_model": ["src/common/models/user_model"],
+      "app_model": ["src/common/models/app_model"],
+      "occurrence": ["src/common/models/occurrence"],
+      "sample": ["src/common/models/sample"],
+      "saved_samples": ["src/common/saved_samples"],
+      "common/*": ["src/common/*"],
+      "helpers/*": ["src/common/helpers/*"],
+      "Components/*": ["src/common/Components/*"],
+    }
+  },
+  "include": ["./src/**/*"]
+}

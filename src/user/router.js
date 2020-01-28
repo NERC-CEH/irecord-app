@@ -23,7 +23,6 @@ function loginController(onSuccess) {
     window.history.back();
   }
 
-  Log('User:Login: visited.');
   radio.trigger('app:header', <Header>{t('Login')}</Header>);
   radio.trigger(
     'app:main',

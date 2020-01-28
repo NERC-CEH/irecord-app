@@ -6,17 +6,9 @@
 import 'core-js/features/map';
 import 'core-js/features/set';
 
-import 'jquery';
-import 'lodash';
-import 'typeahead'; // eslint-disable-line
-import 'underscore'; // eslint-disable-line
-import 'backbone';
-import 'backbone.localstorage';
 import 'react';
 import 'react-dom';
-import 'backbone.marionette';
-import 'backbone.collectionsubset';
+import 'lodash';
 import 'indicia';
-import 'photoswipe-lib';
-import 'photoswipe-ui-default';
+import 'leaflet/dist/leaflet.css';
 import 'bigu';

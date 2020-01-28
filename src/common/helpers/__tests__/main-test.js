@@ -46,7 +46,7 @@ describe('Validate', function() {
 //   });
 //   //
 //   // it('should store and send an offline exception', () => {
-//   //   expect(appModel.get('exceptions')).to.be.an('array');
+//   //   expect(appModel.attrs['exceptions')).to.be.an('array'];
 //   //
 //   //   isOnline.returns(false);
 //   //   analytics.trackException({

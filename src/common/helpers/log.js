@@ -12,7 +12,7 @@
  *
  * Levels values defined in core app module.
  **************************************************************************** */
-import Raven from 'raven-js';
+import * as Sentry from '@sentry/browser';
 import CONFIG from 'config';
 
 const ERROR = 'e';
@@ -36,21 +36,21 @@ function _removeUUID(string) {
  * @private
  */
 function error(err = {}) {
-  if (typeof err === 'string' || err instanceof String) {
-    err = {
-      // eslint-disable-line
+  const isString = typeof err === 'string' || err instanceof String;
+  const e = isString
+    ? {
       message: err,
-    };
-  }
-
-  if (Raven) {
-    if (typeof err.stack === 'string') {
-      err.stack = _removeUUID(err.stack);
     }
-    Raven.captureException(err, { culprit: null }); // culprit=null to remove UUIDS from iOS files
+    : err;
+
+  if (Sentry) {
+    if (typeof e.stack === 'string') {
+      e.stack = _removeUUID(e.stack);
+    }
+    Sentry.captureException(e);
   }
 
-  console.error(err.message, err.url, err.line, err.column, err.obj);
+  console.error(e.message, e.url, e.line, e.column, e.obj);
 }
 
 function log(message, type = DEBUG) {

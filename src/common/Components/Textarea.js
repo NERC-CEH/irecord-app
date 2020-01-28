@@ -2,6 +2,7 @@ import Device from 'helpers/device';
 import StringHelp from 'helpers/string';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { IonTextarea } from '@ionic/react';
 
 class Component extends React.Component {
   constructor(props) {
@@ -10,15 +11,13 @@ class Component extends React.Component {
     this.state = { value: this.props.default || this.props.config.default };
   }
 
-  onChange = e => {
-    e.persist();
-    this.setState({ value: e.target.value });
-    const value = StringHelp.escape(e.target.value);
+  onChange = val => {
+    this.setState({ value: val });
+    const value = val && StringHelp.escape(val);
     this.props.onChange(value);
   };
 
   componentDidMount() {
-    this.input.current.focus();
     if (window.cordova && Device.isAndroid()) {
       window.Keyboard.show();
       this.input.current.onfocusout = () => {
@@ -32,23 +31,22 @@ class Component extends React.Component {
     const message = this.props.info || config.info;
 
     return (
-      <div>
+      <>
         {message && (
           <div className="info-message">
             <p>{t(message)}</p>
           </div>
         )}
-        <div className="input-group">
-          <textarea
-            ref={this.input}
-            value={this.state.value}
-            cols="80"
-            rows="5"
-            onChange={this.onChange}
-            autoFocus
-          />
-        </div>
-      </div>
+        <IonTextarea
+          placeholder={t('Enter more information here...')}
+          value={this.state.value}
+          onIonChange={e => this.onChange(e.target.value)}
+          debounce={200}
+          rows={8}
+          autofocus
+          ref={this.input}
+        />
+      </>
     );
   }
 }

@@ -3,26 +3,53 @@
  **************************************************************************** */
 import _ from 'lodash';
 import Log from 'helpers/log';
-import Analytics from 'helpers/analytics';
-import { coreAttributes } from 'common/config/surveys/general';
+import { coreAttributes } from 'common/config/surveys/default';
 import userModel from 'user_model';
 import Indicia from 'indicia';
 import { observable, extendObservable, observe } from 'mobx';
 
+function getSurveyConfig(model, attrName) {
+  let attrType = model;
+  let surveyConfig = { name: 'default', complex: false };
+
+  if (typeof model !== 'string') {
+    attrType = model instanceof Indicia.Sample ? `smp` : `occ`;
+
+    const getTopParent = m => (m.parent ? getTopParent(m.parent) : m);
+    const surveyModel = getTopParent(model);
+
+    surveyConfig = surveyModel.getSurvey();
+    const isDefaultComplex =
+      surveyConfig.complex && surveyConfig.name === 'default';
+    if (isDefaultComplex) {
+      // use non-complex default namespace
+      surveyConfig = model.getSurvey();
+    }
+  }
+  const fullAttrName = `${attrType}:${attrName}`;
+
+  const surveyType = surveyConfig.complex ? 'complex' : 'default';
+  const isCoreAttr = coreAttributes.includes(fullAttrName);
+  const isCoreDefault = !surveyConfig.complex && isCoreAttr;
+  const surveyName = isCoreDefault ? 'default' : surveyConfig.name;
+
+  return [fullAttrName, surveyType, surveyName];
+}
+
 export default {
   attrLocksExtensionInit() {
-    const activity = this.getAttrLock('smp:activity');
+    const activity = this.getAttrLock('smp', 'activity');
     if (activity) {
       if (userModel.hasActivityExpired(activity)) {
         Log('AppModel:AttrLocks: currently locked activity has expired.');
-        this.unsetAttrLock('smp:activity');
+        this.unsetAttrLock('smp', 'activity');
       }
     }
 
     function onLogout(change) {
       if (change.newValue === false) {
         Log('AppModel:AttrLocks: removing currently locked activity.');
-        this.unsetAttrLock('smp:activity');
+        this.unsetAttrLock('smp', 'activity');
       }
     }
 
@@ -30,7 +57,7 @@ export default {
   },
 
   _getRawLocks(surveyType, surveyName) {
-    const locks = this.get('attrLocks');
+    const locks = this.attrs.attrLocks;
 
     if (!locks[surveyType] || !locks[surveyType][surveyName]) {
       if (!locks[surveyType]) {
@@ -41,88 +68,50 @@ export default {
       extendObservable(locks[surveyType], {
         [surveyName]: {},
       });
-      this.set('attrLocks', locks);
+      this.attrs.attrLocks = locks;
       this.save();
     }
 
     return locks;
   },
 
-  _extractTypeName(surveyConfig) {
-    surveyConfig = surveyConfig || {};
-    const surveyType = surveyConfig.complex ? 'complex' : 'general';
-    const surveyName = surveyConfig.name || 'default';
-    return { surveyType, surveyName };
-  },
+  setAttrLock(model, attr, value) {
+    const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
 
-  /**
-   *
-   * @param attr in format modelType:attrName
-   * @param value
-   * @param surveyConfig
-   */
-  setAttrLock(attr, value, surveyConfig) {
     const val = _.cloneDeep(value);
-    const { surveyType, surveyName } = this._extractTypeName(surveyConfig);
     const locks = this._getRawLocks(surveyType, surveyName);
 
-    locks[surveyType][surveyName] = Object.assign(
-      {},
-      locks[surveyType][surveyName],
-      { [attr]: val }
-    );
-    this.set('attrLocks', observable(locks));
+    locks[surveyType][surveyName] = {
+      ...locks[surveyType][surveyName],
+      [fullAttrName]: val,
+    };
+    this.attrs.attrLocks = observable(locks);
     this.save();
-    this.trigger('change:attrLocks');
-
-    if (value) {
-      Analytics.trackEvent('Lock', attr);
-    }
   },
 
-  /**
-   *
-   * @param attr in format modelType:attrName
-   * @param surveyConfig
-   */
-  unsetAttrLock(attr, surveyConfig) {
-    const { surveyType, surveyName } = this._extractTypeName(surveyConfig);
+  unsetAttrLock(model, attr) {
+    const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
+
     const locks = this._getRawLocks(surveyType, surveyName);
 
-    delete locks[surveyType][surveyName][attr];
-    this.set('attrLocks', observable(locks));
+    delete locks[surveyType][surveyName][fullAttrName];
+    this.attrs.attrLocks = observable(locks);
     this.save();
-    this.trigger('change:attrLocks');
   },
 
-  /**
-   *
-   * @param attr in format modelType:attrName
-   * @param surveyConfig
-   * @returns {*}
-   */
-  getAttrLock(attr, surveyConfig) {
-    const { surveyType, surveyName } = this._extractTypeName(surveyConfig);
+  getAttrLock(model, attr) {
+    const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
+
     const locks = this._getRawLocks(surveyType, surveyName);
 
-    return locks[surveyType][surveyName][attr];
+    return locks[surveyType][surveyName][fullAttrName];
   },
 
-  /**
-   *
-   * @param model
-   * @param attr no modelType required only attrName
-   * @returns {boolean}
-   */
-  isAttrLocked(model, attr, noSurveyExists) {
-    const fullAttrName =
-      model instanceof Indicia.Sample ? `smp:${attr}` : `occ:${attr}`;
-    const isCoreAttr = coreAttributes.includes(fullAttrName);
-    const surveyConfig =
-      isCoreAttr || noSurveyExists ? null : model.getSurvey();
+  isAttrLocked(model, attr) {
+    const [fullAttrName] = getSurveyConfig(model, attr);
 
     let value;
-    let lockedVal = this.getAttrLock(fullAttrName, surveyConfig);
+    let lockedVal = this.getAttrLock(model, attr);
     if (!lockedVal) {
       // has not been locked
       return false;
@@ -134,13 +123,13 @@ export default {
 
     switch (fullAttrName) {
       case 'smp:activity':
-        value = model.get(attr) || {};
+        value = model.attrs[attr] || {};
         return lockedVal.id === value.id;
       case 'smp:location':
         if (!lockedVal) {
           return false;
         }
-        value = model.get(attr);
+        value = model.attrs[attr];
         // map or gridref
         return (
           lockedVal.latitude === value.latitude &&
@@ -150,16 +139,16 @@ export default {
         if (!lockedVal) {
           return false;
         }
-        value = model.get('location');
+        value = model.attrs.location;
         return lockedVal === value.name;
       case 'occ:number':
-        value = model.get(attr);
+        value = model.attrs[attr];
         return (
-          lockedVal === model.get(attr) ||
-          lockedVal === model.get('number-ranges')
+          lockedVal === model.attrs[attr] ||
+          lockedVal === model.attrs['number-ranges']
         );
       case 'smp:date':
-        value = model.get(attr);
+        value = model.attrs[attr];
         if (
           Number.isNaN(Date.parse(value)) ||
           Number.isNaN(Date.parse(lockedVal))
@@ -171,8 +160,8 @@ export default {
         const currentValue = new Date(value);
         return lockedVal.getTime() === currentValue.getTime();
       default:
-        value = model.get(attr);
-        return value === lockedVal;
+        value = model.attrs[attr];
+        return JSON.stringify(value) === JSON.stringify(lockedVal);
     }
   },
 };
