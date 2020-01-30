@@ -59,6 +59,10 @@ class Component extends React.Component {
     const { savedSamples } = this.props;
     savedSamples.forEach(sample => {
       const { latitude, longitude } = sample.attrs.location;
+      if (!latitude) {
+        return;
+      }
+
       const survey = sample.getSurvey();
 
       const marker = L.circleMarker([latitude, longitude], {
@@ -113,10 +117,18 @@ class Component extends React.Component {
 
   zoomToRecords() {
     const { savedSamples } = this.props;
-    const positions = savedSamples.map(sample => {
+    
+    const positions = savedSamples.reduce((agg, sample) => {
       const { latitude, longitude } = sample.attrs.location;
-      return [latitude, longitude];
-    });
+      if (!latitude) {
+        return agg;
+      }
+      return [...agg, [latitude, longitude]];
+    }, []);
+
+    if (!positions.length) {
+      return;
+    }
 
     this.map.fitBounds(positions);
   }
