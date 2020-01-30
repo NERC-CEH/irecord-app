@@ -60,39 +60,51 @@ export default {
     const locks = this.attrs.attrLocks;
 
     if (!locks[surveyType] || !locks[surveyType][surveyName]) {
-      if (!locks[surveyType]) {
-        extendObservable(locks, {
-          [surveyType]: {},
-        });
-      }
-      extendObservable(locks[surveyType], {
-        [surveyName]: {},
-      });
-      this.attrs.attrLocks = locks;
-      this.save();
+      return null;
     }
 
     return locks;
   },
 
-  setAttrLock(model, attr, value) {
+  _initRawLocks(surveyType, surveyName) {
+    const locks = this.attrs.attrLocks;
+
+    if (!locks[surveyType]) {
+      extendObservable(locks, {
+        [surveyType]: {},
+      });
+    }
+    extendObservable(locks[surveyType], {
+      [surveyName]: {},
+    });
+    this.attrs.attrLocks = locks;
+    return this.attrs.attrLocks;
+  },
+
+  async setAttrLock(model, attr, value) {
     const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
 
     const val = _.cloneDeep(value);
-    const locks = this._getRawLocks(surveyType, surveyName);
+    let locks = this._getRawLocks(surveyType, surveyName);
+    if (!locks) {
+      locks = this._initRawLocks(surveyType, surveyName);
+    }
 
     locks[surveyType][surveyName] = {
       ...locks[surveyType][surveyName],
       [fullAttrName]: val,
     };
     this.attrs.attrLocks = observable(locks);
-    this.save();
+    await this.save();
   },
 
   unsetAttrLock(model, attr) {
     const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
 
     const locks = this._getRawLocks(surveyType, surveyName);
+    if (!locks) {
+      return;
+    }
 
     delete locks[surveyType][surveyName][fullAttrName];
     this.attrs.attrLocks = observable(locks);
@@ -103,6 +115,9 @@ export default {
     const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
 
     const locks = this._getRawLocks(surveyType, surveyName);
+    if (!locks) {
+      return null;
+    }
 
     return locks[surveyType][surveyName][fullAttrName];
   },
@@ -113,12 +128,7 @@ export default {
     let value;
     let lockedVal = this.getAttrLock(model, attr);
     if (!lockedVal) {
-      // has not been locked
       return false;
-    }
-    if (lockedVal === true) {
-      // has been locked
-      return true;
     }
 
     switch (fullAttrName) {
