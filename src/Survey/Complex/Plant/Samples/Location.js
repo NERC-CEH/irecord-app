@@ -55,7 +55,6 @@ class Container extends React.Component {
    * @returns {Promise.<T>}
    */
   setLocation = async (loc, reset) => {
-    const { appModel } = this.props;
     const { sample } = this.state;
 
     // validate this new location
@@ -78,12 +77,6 @@ class Container extends React.Component {
         oldLocation = {};
       } // check for locked true
       location = { ...oldLocation, ...location };
-    }
-
-    // save to past locations
-    const savedLocation = await appModel.setLocation(location);
-    if (savedLocation.id) {
-      location.id = savedLocation.id;
     }
 
     sample.attrs.location = location;

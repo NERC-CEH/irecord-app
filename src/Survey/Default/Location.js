@@ -30,9 +30,15 @@ class Container extends React.Component {
     };
 
     this.onManualGridrefChange = onManualGridrefChange.bind(this);
-    this.onLocationNameChange = onLocationNameChange.bind(this);
     this.onGPSClick = onGPSClick.bind(this);
   }
+
+  onLocationNameChange = (...args) => {
+    const { appModel } = this.props;
+
+    onLocationNameChange.apply(this, args);
+    appModel.setLocation(this.state.sample.attrs.location);
+  };
 
   updateLocationLock = (location, locationWasLocked) => {
     const { appModel } = this.props;
@@ -69,7 +75,7 @@ class Container extends React.Component {
     Log('Location:Controller: executing onLocationLockClick.');
     const { appModel } = this.props;
     const { sample } = this.state;
-    
+
     const isLocked = appModel.getAttrLock('smp', 'location');
     if (isLocked) {
       appModel.unsetAttrLock('smp', 'location');
@@ -127,12 +133,10 @@ class Container extends React.Component {
       sample.stopGPS();
     }
 
-    // save to past locations
-    const savedLocation = await appModel.setLocation(location);
-    if (savedLocation.id) {
-      location.id = savedLocation.id;
+    if (location.latitude) {
+      await appModel.setLocation(location);
     }
-
+    
     sample.attrs.location = location;
 
     return sample.save().catch(error => {

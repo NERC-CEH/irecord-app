@@ -16,33 +16,30 @@
   }
 
   .location {
-    .location-date {
-      color: var(--ion-color-medium);
+    .details {
+      ion-label {
+        margin-bottom: 5px;
+      }
+      .location-raw {
+        color: var(--ion-color-medium);
+        font-size: 0.85em;
+      }
     }
 
-    .location-source {
-      position: absolute;
-      right: 10px;
-      bottom: 0;
-      font-weight: 200;
+    .details + ion-label {
+      max-width: 80px;
+
+      .location-source {
+        position: absolute;
+        right: 10px;
+        bottom: 0;
+        font-weight: 200;
+      }
     }
 
-    .location-favourite {
-      position: absolute;
-      top: 10px;
-      right: 0px;
-      color: white;
-
-      &.on {
-        color: var(--ion-color-warning);
-        &:before {
-          text-shadow: none;
-        }
-      }
-
-      &:before {
-        text-shadow: 0px 0px 1px black;
-      }
+    .location-favourite.on {
+      --detail-icon-color: var(--ion-color-warning);
+      --detail-icon-opacity: 1;
     }
   }
 }

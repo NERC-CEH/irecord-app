@@ -99,12 +99,6 @@ class Container extends React.Component {
       location = { ...oldLocation, ...location };
     }
 
-    // save to past locations
-    const savedLocation = await appModel.setLocation(location);
-    if (savedLocation.id) {
-      location.id = savedLocation.id;
-    }
-
     // set the gridSquareUnit so that future changes in the settings don't change that;
     sample.metadata.gridSquareUnit = gridSquareUnit; // eslint-disable-line
 

@@ -1,9 +1,23 @@
 /** ****************************************************************************
  * App Model past locations functions.
  **************************************************************************** */
-import UUID from 'helpers/UUID';
 import Log from 'helpers/log';
 import LocHelp from 'helpers/location';
+
+/* eslint-disable */
+function hashCode(str) {
+  let hash = 0;
+  let i;
+  let chr;
+  if (str.length === 0) return hash;
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+/* eslint-enable */
 
 export const MAX_SAVED = 250;
 
@@ -11,38 +25,34 @@ export default {
   async setLocation(origLocation, allowedMaxSaved = MAX_SAVED) {
     Log('AppModel:PastLocations: setting.');
     let locations = [...this.attrs.locations];
-    const location = { ...origLocation };
+    const location = JSON.parse(JSON.stringify(origLocation));
+
     if (!location.latitude) {
       throw new Error('invalid location');
     }
 
-    const duplicate = locations.find(loc => this._isIdentical(loc, location));
-    if (duplicate) {
-      return duplicate;
+    if (!location.name) {
+      return;
     }
 
-    // update existing
-    const existingLocationIndex = locations.findIndex(
-      loc => loc.id === location.id
-    );
-    if (existingLocationIndex >= 0) {
-      locations[existingLocationIndex] = {
-        ...locations[existingLocationIndex],
-        ...location,
-      };
-      this.attrs.locations.replace(locations);
+    const hash = this._getLocationHash(location);
+    
+    const existingLocation = locations.find(({ id }) => id === hash);
+    if (existingLocation) {
+      existingLocation.name = location.name;
+      existingLocation.favourite = location.favourite;
       await this.save();
-      return location;
+      return;
     }
 
     // add new one
-    location.id = UUID();
+    location.id = hash;
     location.date = new Date();
 
     if (locations.length >= allowedMaxSaved) {
       const removed = this._removeNonFavouriteBackwards(locations);
       if (!removed) {
-        return origLocation; // all favourites
+        return; // all favourites
       }
     }
 
@@ -50,7 +60,6 @@ export default {
 
     this.attrs.locations = locations;
     await this.save();
-    return location;
   },
 
   async removeLocation(locationId) {
@@ -74,13 +83,9 @@ export default {
     return true;
   },
 
-  _isIdentical(loc, location) {
-    return (
-      loc.name === location.name &&
-      loc.latitude === location.latitude &&
-      loc.longitude === location.longitude &&
-      loc.favourite === location.favourite
-    );
+  _getLocationHash({ latitude, longitude, gridref }) {
+    const str = gridref || JSON.stringify({ latitude, longitude });
+    return hashCode(str);
   },
 
   printLocation(location) {

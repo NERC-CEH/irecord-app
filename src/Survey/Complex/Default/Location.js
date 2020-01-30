@@ -104,7 +104,6 @@ class Container extends React.Component {
   };
 
   setLocation = async loc => {
-    const { appModel } = this.props;
     const { sample } = this.state;
 
     if (typeof loc !== 'object') {
@@ -125,12 +124,6 @@ class Container extends React.Component {
     // we don't need the GPS running and overwriting the selected location
     if (sample.isGPSRunning()) {
       sample.stopGPS();
-    }
-
-    // save to past locations
-    const savedLocation = await appModel.setLocation(location);
-    if (savedLocation.id) {
-      location.id = savedLocation.id;
     }
 
     sample.attrs.location = location;

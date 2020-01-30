@@ -85,13 +85,6 @@ export function onLocationNameChange(e) {
   const location = sample.attrs.location || {};
   location.name = escapedName;
 
-  // TODO:
-  // // check if we need custom location setting functionality
-  // if (locationSetFunc) {
-  //   locationSetFunc(sample, location);
-  //   return;
-  // }
-
   sample.attrs.location = location;
   sample.save();
 }

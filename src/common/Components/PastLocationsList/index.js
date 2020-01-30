@@ -11,9 +11,9 @@ import {
 import { star, starOutline } from 'ionicons/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
-import DateHelp from 'helpers/date';
-import StringHelp from 'helpers/string';
 import alert from 'common/helpers/alert';
+import StringHelp from 'helpers/string';
+import EditModal from './components/EditModal';
 import './styles.scss';
 
 /**
@@ -21,53 +21,6 @@ import './styles.scss';
  */
 const sortFavLocationsToTop = (a, b) =>
   a.favourite === b.favourite ? 0 : a.favourite ? -1 : 1; // eslint-disable-line
-
-function showEditPopup(location, onSave) {
-  const { name, favourite } = location;
-
-  alert({
-    header: t('Edit'),
-    message: `
-    <ion-list lines="full">
-      <ion-item>
-        <ion-label>${t('Name')}</ion-label>
-        <ion-input
-          id="location-name"
-          type="text"
-          placeholder="${t('Name')}"
-          value="${name}"
-          defaultValue="123"
-          value="123"
-        />
-      </ion-item>
-      <ion-item>
-        <ion-label>${t('Favourite')}</ion-label>
-        <ion-toggle slot="end" id="favourite-btn" ${
-  favourite ? 'checked' : ''
-} />
-      </ion-item>
-    </ion-list>
-    `,
-
-    buttons: [
-      {
-        text: t('Cancel'),
-        role: 'cancel',
-        cssClass: 'primary',
-      },
-      {
-        text: t('Save'),
-        cssClass: 'danger',
-        handler: () => {
-          const newName = document.getElementById('location-name').value;
-          const isFavourite = document.getElementById('favourite-btn').checked;
-
-          onSave(StringHelp.escape(newName), isFavourite);
-        },
-      },
-    ],
-  });
-}
 
 function showDeletePopup(onDelete) {
   alert({
@@ -94,29 +47,14 @@ class Component extends React.Component {
     onSelect: PropTypes.func,
   };
 
-  state = { locations: [...this.props.appModel.attrs.locations] };
+  state = {
+    locations: [...this.props.appModel.attrs.locations],
+    editLocation: false,
+  };
 
   constructor(props) {
     super(props);
     this.listRef = React.createRef();
-  }
-
-  editLocation(locationId) {
-    const updatedLocation = {
-      ...{},
-      ...this.state.locations.find(({ id }) => id === locationId),
-    };
-
-    const onEdit = (newName, isFavourite) => {
-      updatedLocation.name = StringHelp.escape(newName);
-      updatedLocation.favourite = isFavourite;
-      appModel.setLocation(updatedLocation);
-
-      this.setState({ locations: this.props.appModel.attrs.locations });
-      this.listRef.current && this.listRef.current.closeSlidingItems();
-    };
-
-    showEditPopup(updatedLocation, onEdit);
   }
 
   deleteLocation(locationId) {
@@ -125,6 +63,7 @@ class Component extends React.Component {
       this.setState({ locations: this.props.appModel.attrs.locations });
       this.listRef.current.closeSlidingItems();
     };
+
     showDeletePopup(onDelete);
   }
 
@@ -140,11 +79,32 @@ class Component extends React.Component {
     this.props.onSelect(locationCopy);
   }
 
-  componentWillUnmount() {
-    if (this.listRef.current) {
-      this.listRef.current.closeSlidingItems();
+  editLocation = locationId => {
+    this.listRef.current.closeSlidingItems();
+
+    const location = this.state.locations.find(({ id }) => id === locationId);
+    const editLocation = { ...{}, ...location };
+    this.setState({ editLocation });
+  };
+
+  editLocationSave = (name, favourite) => {
+    if (!name) {
+      this.setState({ editLocation: false });
+      return;
     }
-  }
+
+    const updatedLocation = { ...this.state.editLocation };
+    updatedLocation.name = StringHelp.escape(name);
+    updatedLocation.favourite = favourite;
+
+    appModel.setLocation(updatedLocation);
+
+    this.setState({
+      locations: this.props.appModel.attrs.locations,
+      editLocation: false,
+    });
+    this.listRef.current && this.listRef.current.closeSlidingItems();
+  };
 
   getPastLocations = () => {
     if (!this.state.locations || !this.state.locations.length) {
@@ -161,32 +121,29 @@ class Component extends React.Component {
 
     function getPastLocation(location) {
       const locationStr = appModel.printLocation(location);
-      const { id, name, favourite, source, date } = location;
-      const dateStr = date ? DateHelp.print(date, true) : '';
+      const { id, name, favourite, source, latitude, longitude } = location;
 
+      const lat = latitude.toFixed(3);
+      const lon = longitude.toFixed(3);
       return (
         <IonItemSliding className="location" key={id}>
           <IonItem
             detail
             detailIcon={favourite ? star : starOutline}
+            className={`location-favourite ${favourite ? 'on' : ''}`}
             onClick={() => this.selectLocation(id)}
           >
-            <IonLabel position="stacked">
+            <IonLabel className="details" position="stacked" mode="ios">
               <IonLabel slot="start">
                 {name ? <strong>{name}</strong> : ''}
               </IonLabel>
               <IonLabel slot="start">{locationStr}</IonLabel>
-              <IonLabel slot="start">
-                <span className="location-date">{dateStr}</span>
+              <IonLabel slot="start" className="location-raw">
+                {`${lat}, ${lon}`}
               </IonLabel>
             </IonLabel>
 
-            <IonLabel slot="end" position="stacked">
-              <span
-                className={`location-favourite icon icon-star ${
-                  favourite ? 'on' : ''
-                }`}
-              />
+            <IonLabel slot="end" position="stacked" mode="ios">
               <span className="location-source">
                 {`${t('source')}: ${t(source)}`}
               </span>
@@ -221,6 +178,12 @@ class Component extends React.Component {
   render() {
     return (
       <>
+        {this.state.editLocation && (
+          <EditModal
+            location={this.state.editLocation}
+            onLocationSave={this.editLocationSave}
+          />
+        )}
         <div className="info-message" id="previous-location-message">
           <p>
             {t('Here you can select or swipe to edit your previous locations')}
