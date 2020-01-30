@@ -162,25 +162,30 @@ class Component extends React.Component {
 
     const { history } = this.props;
     const fab = new Hammer(this.fabRef.current);
-    fab.on('press click touch tap', ev => {
-      if (!['ion-fab-button', 'ion-icon'].includes(ev.target.localName)) {
-        return;
-      }
-      ev.preventDefault();
+    fab.on(
+      'press click touch tap touchend pressup tapstart ionBlur ionFocus',
+      ev => {
+        if (!['ion-fab-button', 'ion-icon'].includes(ev.target.localName)) {
+          return;
+        }
+        ev.preventDefault();
 
-      if (ev.type === 'tap') {
-        this.fabRef.current.close();
-
-        if (this.fabRef.current.activated) {
+        if (ev.type === 'press') {
+          this.fabRef.current.click();
           return;
         }
 
-        history.push(`/survey/default/new`);
-        return;
-      }
+        if (ev.type === 'tap') {
+          this.fabRef.current.close();
 
-      this.fabRef.current.click();
-    });
+          if (this.fabRef.current.activated) {
+            return;
+          }
+
+          history.push(`/survey/default/new`);
+        }
+      }
+    );
   }
 
   render() {
