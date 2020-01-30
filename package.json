@@ -12,7 +12,7 @@
     "build:dev": "grunt",
     "build:species": "cd src/common/data && node species.js",
     "build:dev:update": "grunt update",
-    "build:cordova": "grunt cordova",
+    "build:cordova": "NODE_ENV=production grunt cordova",
     "build:cordova:update": "grunt cordova:update",
     "build:cordova:android": "grunt cordova:android",
     "build:cordova:android:dev": "grunt exec:cordova_android_build_dev",
