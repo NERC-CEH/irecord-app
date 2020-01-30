@@ -7,7 +7,7 @@ import Device from 'helpers/device';
 import StringHelp from 'helpers/string';
 import PropTypes from 'prop-types';
 import React from 'react';
-import AutoSuggestInput from './components/AutoSuggestInput';
+import AutoSuggestInput from './AutoSuggestInput';
 
 class Component extends React.Component {
   constructor(props) {
@@ -93,7 +93,14 @@ class Component extends React.Component {
     const type = this.props.type || config.type || 'text';
 
     if (config.lookup) {
-      return <AutoSuggestInput {...this.props} />;
+      const { onChange, ...props } = this.props;
+      const onSuggestionSelected = onChange;
+      return (
+        <AutoSuggestInput
+          onSuggestionSelected={onSuggestionSelected}
+          {...props}
+        />
+      );
     }
 
     if (type === 'date') {

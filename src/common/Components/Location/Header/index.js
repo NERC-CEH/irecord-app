@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {
   IonHeader,
@@ -11,189 +12,145 @@ import {
 } from '@ionic/react';
 import { lock, unlock, business, pin } from 'ionicons/icons';
 import { observer } from 'mobx-react';
+import AutoSuggestInput from 'Components/AutoSuggestInput';
 import './styles.scss';
-
-// onLocationChange() {
-//   Log('Location:Controller:MainViewHeader: on location change.');
-//   const location = this._getCurrentLocation();
-
-//   if (location.source !== 'gridref') {
-//     this.render();
-//     return;
-//   }
-
-//   this.updateLocks();
-//   this._clearGrTimeout();
-//   this._refreshGrErrorState(false);
-//   this._refreshGridRefElement(location);
-// },
-
-// /**
-//  * Attaches suggestions to the location name search.
-//  */
-// onAttach() {
-//   const appModel = this.model.get('appModel');
-//   const strs = appModel.get('locations');
-
-//   this.$el.find('.typeahead').typeahead(
-//     {
-//       hint: false,
-//       highlight: false,
-//       minLength: 0,
-//     },
-//     {
-//       limit: 3,
-//       name: 'names',
-//       source: typeaheadSearchFn(strs, 3, a => a.name),
-//     }
-//   );
-// },
-
-// changeName(e) {
-//   this.triggerMethod('name:change', $(e.target).val());
-// },
-
-// blurInput() {
-//   this.triggerMethod('input:blur');
-// },
-
-// /**
-//  * after delay, if gridref is valid then apply change
-//  */
-
-// /**
-//  * stop any delayed gridref refresh
-//  */
-// _clearGrTimeout() {
-//   Log('Location:MainView:Header: executing _clearGrTimeout.');
-
-//   if (this.grRefreshTimeout) {
-//     clearTimeout(this.grRefreshTimeout);
-//     this.grRefreshTimeout = null;
-//   }
-// },
-
-// changeGridRef(e) {
-//   Log('Location:MainView:Header: executing changeGridRef.');
-
-//   this._clearGrTimeout();
-//   this.triggerMethod('gridref:change', $(e.target).val());
-// },
-
-// _refreshGrErrorState(isError) {
-//   const grInputEl = document.getElementById('location-gridref');
-//   if (grInputEl) {
-//     if (isError) {
-//       grInputEl.setAttribute('data-gr-error', 'error');
-//       // this._removeMapMarker();
-//     } else {
-//       grInputEl.removeAttribute('data-gr-error');
-//     }
-//   }
-// },
-
-// updateLocks() {
-//   Log('Location:MainView:Header: updating the locks.');
-
-//   const appModel = this.model.get('appModel');
-//   const sample = this.model.get('sample');
-//   const location = sample.attrs.location || {};
-
-//   // location lock
-//   const $locationLockBtn = this.$el.find('#location-lock-btn');
-
-//   const disableLocationLock = location.source === 'gps';
-//   const locationLocked = this.isLocationLocked(disableLocationLock);
 
 function isLocationLocked(appModel, disableLocationLock = false) {
   const currentLock = appModel.getAttrLock('smp', 'location');
   return !disableLocationLock && currentLock;
 }
-const Header = observer(
-  ({
-    sample,
-    appModel,
-    location,
-    onManualGridrefChange,
-    onNameLockClick,
-    onLocationLockClick,
-    onLocationNameChange,
-  }) => {
-    // this.locationInitiallyLocked = appModel.isAttrLocked(
-    //   sample,
-    //   'location',
-    //   null,
-    //   sample.getSurvey()
-    // );
+
+@observer
+class Header extends React.Component {
+  suggestionsRef = React.createRef();
+
+  constructor(props) {
+    super(props);
+
+    const uniqueLocations = [
+      ...new Set(this.props.appModel.attrs.locations.map(loc => loc.name)),
+    ];
+    this.lookup = uniqueLocations.map(val => ({ name: val }));
+  }
+
+  getLocationInput = () => {
+    const {
+      onManualGridrefChange,
+      onLocationLockClick,
+      location,
+      appModel,
+    } = this.props;
+
+    const disableLocationLock = location.source === 'gps';
+
+    const locationLocked = isLocationLocked(appModel, disableLocationLock);
 
     let value = location.gridref;
-    const { name } = location;
 
     // avoid testing location.longitude as this can validly be zero within the UK
     if ((!appModel.attrs.useGridRef || !value) && location.latitude) {
       value = `${location.latitude}, ${location.longitude}`;
     }
 
-    const disableLocationLock = location.source === 'gps';
+    return (
+      <IonToolbar>
+        <IonButtons slot="start">
+          <IonBackButton text={t('')} defaultHref="/" />
+        </IonButtons>
+        <IonInput
+          placeholder={t('Grid Reference')}
+          slot="start"
+          debounce={300}
+          value={value}
+          onInput={onManualGridrefChange}
+        >
+          <IonIcon icon={pin} />
+        </IonInput>
+        {onLocationLockClick && (
+          <IonButton fill="clear" slot="end" onClick={onLocationLockClick}>
+            <IonIcon
+              icon={locationLocked ? lock : unlock}
+              className={locationLocked ? 'locked' : ''}
+            />
+          </IonButton>
+        )}
+      </IonToolbar>
+    );
+  };
 
-    const locationLocked = isLocationLocked(appModel, disableLocationLock);
+  renderSuggestionsContainer = ({ containerProps, children }) => {
+    if (!this.suggestionsRef.current) {
+      return null;
+    }
+
+    return ReactDOM.createPortal(
+      <div {...containerProps}>{children}</div>,
+      this.suggestionsRef.current
+    );
+  };
+
+  getLocationNameInput = () => {
+    const {
+      onLocationNameChange,
+      onNameLockClick,
+      appModel,
+      sample,
+      location,
+    } = this.props;
+
+    if (!onLocationNameChange) {
+      return null;
+    }
+
+    const { name } = location;
+
     const nameLocked = appModel.isAttrLocked(sample, 'locationName');
 
-    const showLocationNameToolbar = !!onLocationNameChange;
-
     return (
-      <IonHeader
-        id="location-page-header"
-        className={!showLocationNameToolbar ? 'slim' : ''}
-      >
+      <>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton text={t('')} defaultHref="/" />
-          </IonButtons>
-          <IonInput
-            placeholder={t('Grid Reference')}
+          <AutoSuggestInput
+            placeholder={t('Nearest named place (e.g town, park)')}
             slot="start"
             debounce={300}
-            value={value}
-            onInput={onManualGridrefChange}
+            default={{ name }}
+            autocapitalize
+            renderSuggestionsContainer={this.renderSuggestionsContainer}
+            onChange={e => onLocationNameChange({ target: { value: e.name } })}
+            onSuggestionSelected={e =>
+              onLocationNameChange({ target: { value: e.name } })}
+            config={{ lookup: this.lookup }}
           >
-            <IonIcon icon={pin} />
-          </IonInput>
-          {onLocationLockClick && (
-            <IonButton fill="clear" slot="end" onClick={onLocationLockClick}>
+            <IonIcon icon={business} />
+          </AutoSuggestInput>
+          {onNameLockClick && (
+            <IonButton fill="clear" slot="end" onClick={onNameLockClick}>
               <IonIcon
-                icon={locationLocked ? lock : unlock}
-                className={locationLocked ? 'locked' : ''}
+                icon={nameLocked ? lock : unlock}
+                className={nameLocked ? 'locked' : ''}
               />
             </IonButton>
           )}
         </IonToolbar>
-        {showLocationNameToolbar && (
-          <IonToolbar>
-            <IonInput
-              placeholder={t('Nearest named place (e.g town, park)')}
-              slot="start"
-              debounce={300}
-              value={name}
-              autocapitalize
-              onIonChange={onLocationNameChange}
-            >
-              <IonIcon icon={business} />
-            </IonInput>
-            {onNameLockClick && (
-              <IonButton fill="clear" slot="end" onClick={onNameLockClick}>
-                <IonIcon
-                  icon={nameLocked ? lock : unlock}
-                  className={nameLocked ? 'locked' : ''}
-                />
-              </IonButton>
-            )}
-          </IonToolbar>
-        )}
+        <div ref={this.suggestionsRef} />
+      </>
+    );
+  };
+
+  render() {
+    const { onLocationNameChange } = this.props;
+
+    const showLocationNameToolbar = !!onLocationNameChange;
+    const headerClass = !showLocationNameToolbar ? 'slim' : '';
+
+    return (
+      <IonHeader id="location-page-header" className={headerClass}>
+        {this.getLocationInput()}
+        {this.getLocationNameInput()}
       </IonHeader>
     );
   }
-);
+}
 
 Header.propTypes = {
   sample: PropTypes.object.isRequired,

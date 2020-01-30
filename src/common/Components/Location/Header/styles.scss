@@ -21,7 +21,7 @@
       color: var(--ion-color-dark);
       min-width: calc(100% - 58.8px);
       text-overflow: ellipsis;
-      
+
       ion-icon {
         margin: 0 10px;
       }
@@ -52,5 +52,10 @@
     input#location-gridref[data-gr-error='error'] {
       color: var(--ion-color-warning);
     }
+  }
+
+  .react-autosuggest__suggestions-list {
+    z-index: 10000000;
+    margin-left: 50px;
   }
 }

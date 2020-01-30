@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import Autosuggest from 'react-autosuggest';
 import { IonItem, IonLabel, IonInput } from '@ionic/react';
 import './styles.scss';
@@ -32,15 +33,19 @@ function renderSuggestion(suggestion) {
   );
 }
 
-export default class AutoSuggestInput extends Component {
+@observer
+class AutoSuggestInput extends Component {
   static propTypes = {
     default: PropTypes.any,
     config: PropTypes.any.isRequired,
     lookup: PropTypes.array,
     info: PropTypes.string,
     placeholder: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    onSuggestionSelected: PropTypes.func,
     validate: PropTypes.func,
+    renderSuggestionsContainer: PropTypes.func,
+    children: PropTypes.any,
   };
 
   constructor(props) {
@@ -55,6 +60,7 @@ export default class AutoSuggestInput extends Component {
 
   onChange = (_, { newValue }) => {
     this.setState({ value: newValue });
+    this.props.onChange && this.props.onChange({ name: newValue });
   };
 
   onSuggestionSelected = (_, { suggestion, suggestionValue: value }) => {
@@ -62,7 +68,8 @@ export default class AutoSuggestInput extends Component {
       value,
     });
 
-    this.props.onChange(suggestion);
+    this.props.onSuggestionSelected &&
+      this.props.onSuggestionSelected(suggestion);
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -80,6 +87,16 @@ export default class AutoSuggestInput extends Component {
     });
   };
 
+  componentDidUpdate(prevProps) {
+    const prevPropsInitialValue =
+      prevProps.default || prevProps.config.default || {};
+    const initialValue = this.props.default || this.props.config.default || {};
+
+    if (prevPropsInitialValue.name !== initialValue.name) {
+      this.setState({ value: initialValue.name || '' }); // eslint-disable-line react/no-did-update-set-state
+    }
+  }
+
   render() {
     const { value, suggestions } = this.state;
 
@@ -89,20 +106,25 @@ export default class AutoSuggestInput extends Component {
     const message = this.props.info || config.info;
     const placeholder = this.props.placeholder || config.placeholder;
 
-    const renderInputComponent = inputProps => (
-      <IonInput
-        ref={this.input}
-        onIonChange={inputProps.onChange}
-        type={type}
-        inputmode={type}
-        value={inputProps.value}
-        debounce={200}
-        placeholder={inputProps.placeholder}
-        autofocus
-        clearInput
-        {...inputProps}
-      />
-    );
+    const renderInputComponent = inputProps => {
+      return (
+        <IonInput
+          ref={this.input}
+          onIonChange={inputProps.onChange}
+          type={type}
+          inputmode={type}
+          value={inputProps.value}
+          debounce={300}
+          placeholder={inputProps.placeholder}
+          autofocus
+          autocapitalize
+          clearInput
+          {...inputProps}
+        >
+          {this.props.children}
+        </IonInput>
+      );
+    };
 
     const inputProps = {
       placeholder,
@@ -122,6 +144,9 @@ export default class AutoSuggestInput extends Component {
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
+          renderSuggestionsContainer={
+            this.props.renderSuggestionsContainer || undefined
+          }
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
           onSuggestionSelected={this.onSuggestionSelected}
@@ -131,3 +156,5 @@ export default class AutoSuggestInput extends Component {
     );
   }
 }
+
+export default AutoSuggestInput;
