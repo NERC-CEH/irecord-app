@@ -129,7 +129,8 @@ class Controller extends React.Component {
   componentDidMount() {
     const { appModel, useLocks } = this.props;
 
-    if (useLocks && !appModel.attrs.shownLockingTip) {
+    const isRadioAttr = this.attrConfig.type === 'radio';
+    if (useLocks && !appModel.attrs.shownLockingTip && isRadioAttr) {
       alert({
         header: 'Tip: Locking Attributes',
         message:
