@@ -175,6 +175,7 @@ const Header = observer(
               slot="start"
               debounce={300}
               value={name}
+              autocapitalize
               onIonChange={onLocationNameChange}
             >
               <IonIcon icon={business} />

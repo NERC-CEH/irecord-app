@@ -44,6 +44,7 @@ class Component extends React.Component {
           debounce={200}
           rows={8}
           autofocus
+          autocapitalize
           ref={this.input}
         />
       </>
