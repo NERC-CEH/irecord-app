@@ -13,6 +13,7 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import AppMain from 'Components/Main';
 import VirtualList from './components/VirtualList';
+import UserFeedbackRequest from './components/UserFeedbackRequest';
 import './styles.scss';
 import './empty-samples-list-icon.svg';
 
@@ -26,6 +27,7 @@ function byDate(smp1, smp2) {
 class Component extends React.Component {
   static propTypes = {
     savedSamples: PropTypes.array.isRequired,
+    appModel: PropTypes.object.isRequired,
   };
 
   state = {
@@ -73,9 +75,6 @@ class Component extends React.Component {
 
       return (
         <IonList lines="full">
-          {/* <IonItem>
-            <img src="/images/empty-samples-list-icon.svg" />
-          </IonItem> */}
           <IonItem className="empty">
             <span>{t(message)}</span>
           </IonItem>
@@ -84,10 +83,16 @@ class Component extends React.Component {
     }
 
     return (
-      <VirtualList
-        surveys={filteredSurveys}
-        listHeight={this.state.listHeight}
-      />
+      <>
+        <UserFeedbackRequest
+          samplesLength={filteredSurveys.length}
+          appModel={this.props.appModel}
+        />
+        <VirtualList
+          surveys={filteredSurveys}
+          listHeight={this.state.listHeight}
+        />
+      </>
     );
   };
 
@@ -97,12 +102,6 @@ class Component extends React.Component {
 
     const pendingSurveys = this.getSamplesList();
     const uploadedSurveys = this.getSamplesList(true);
-
-    // TODO:
-    //   <UserFeedbackRequest
-    //   samplesLength={samples.length}
-    //   appModel={this.props.appModel}
-    // />
 
     return (
       <IonPage id="surveys-list">
