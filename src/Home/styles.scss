@@ -29,6 +29,12 @@
     contain: size layout style;
   }
 
+  ion-fab,
+  ion-fab-list {
+    // padding needed for iOS with no toolbar
+    padding-bottom: var(--ion-safe-area-bottom, 0);
+  }
+
   ion-fab-button:not(.fab-button-label) {
     --box-shadow: 1px 2px 8px 0px rgba(0, 0, 0, 0.75);
   }
