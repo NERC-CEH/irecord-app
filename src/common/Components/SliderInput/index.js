@@ -67,6 +67,8 @@ class Component extends React.Component {
     };
   }
 
+  onChangeInputE = e => this.onChangeInput(e.target.value);
+
   onChangeInput = val => {
     let value = parseInt(val, 10);
     if (Number.isNaN(value)) {
@@ -99,9 +101,7 @@ class Component extends React.Component {
 
   componentDidMount() {
     this.sliderRef.current.addEventListener('ionChange', this.onChangeSlider);
-    this.inputRef.current.addEventListener('ionChange', e =>
-      this.onChangeInput(e.target.value)
-    );
+    this.inputRef.current.addEventListener('ionChange', this.onChangeInputE);
   }
 
   componentWillUnmount() {
@@ -109,7 +109,7 @@ class Component extends React.Component {
       'ionChange',
       this.onChangeSlider
     );
-    this.inputRef.current.removeEventListener('ionChange', this.onChangeInput);
+    this.inputRef.current.removeEventListener('ionChange', this.onChangeInputE);
   }
 
   increaseCount = () => {
@@ -156,7 +156,7 @@ class Component extends React.Component {
           <input
             ref={this.inputRef}
             type="number"
-            onChange={this.onChangeInput}
+            onChange={this.onChangeInputE}
             value={this.state.value || ''}
           />
           <IonButton
