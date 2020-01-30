@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { observer } from 'mobx-react';
 import {
   IonItemOption,
   IonItemOptions,
   IonItem,
+  IonIcon,
   IonItemSliding,
   IonButton,
 } from '@ionic/react';
+import { alert } from 'ionicons/icons';
 import './styles.scss';
 
 @observer
@@ -42,6 +45,9 @@ class index extends Component {
 
   render() {
     const { occ, onDelete, url } = this.props;
+    const survey = occ.getSurvey();
+    const invalids = survey.verify(occ.attrs);
+    const isValid = _.isEmpty(invalids);
 
     const specie = occ.attrs.taxon || {};
     const scientificName = specie.scientific_name;
@@ -74,6 +80,7 @@ class index extends Component {
               </div>
             )}
           </div>
+          {!isValid && <IonIcon icon={alert} color="danger" slot="end" />}
         </IonItem>
         <IonItemOptions side="end">
           <IonItemOption color="danger" onClick={onDelete}>

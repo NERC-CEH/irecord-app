@@ -24,22 +24,6 @@
       --inner-padding-bottom: 4px;
       --inner-padding-top: 6px;
 
-      .photo {
-        margin: 0 8px 2px 0;
-        height: 60px;
-        min-width: 60px;
-        max-width: 60px;
-        background-color: #e5eacd;
-        border-radius: 5px;
-        overflow: hidden;
-
-        img {
-          object-fit: cover;
-          width: 100%;
-          height: 100%;
-        }
-      }
-
       .species {
         font-weight: bold;
       }
@@ -58,6 +42,10 @@
 
       .location .warn {
         color: var(--ion-color-warning);
+      }
+
+      ion-icon {
+        opacity: 0.8;
       }
     }
   }
