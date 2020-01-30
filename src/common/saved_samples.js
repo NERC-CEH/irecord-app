@@ -46,10 +46,13 @@ export async function setAllToSend() {
   for (let index = 0; index < savedSamples.length; index++) {
     const sample = savedSamples[index];
     
-    const invalids = await sample.setToSend(); // eslint-disable-line
-    if (!invalids) {
-      affectedRecordsCount++;
-      sample.saveRemote();
+    const isAlreadyUploaded = !!sample.id;
+    if (!isAlreadyUploaded) {
+      const invalids = await sample.setToSend(); // eslint-disable-line
+      if (!invalids) {
+        affectedRecordsCount++;
+        sample.saveRemote();
+      }
     }
   }
 
