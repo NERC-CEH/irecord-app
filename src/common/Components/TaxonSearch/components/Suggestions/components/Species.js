@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import { IonItem, IonButton, IonIcon } from '@ionic/react';
 import { create } from 'ionicons/icons';
 import informalGroups from 'common/data/informal_groups.data';
-import Log from 'helpers/log';
 import './styles.scss';
 
 const onClick = (e, species, onSelect) => {
-  Log('taxon: selected.', 'd');
-  const edit = e.target.tagName === 'ION-BUTTON';
-
-  onSelect(species, edit);
+  const pressedEditShortcut = e.target.tagName === 'ION-BUTTON';
+  onSelect(species, pressedEditShortcut);
 };
 
 /**
