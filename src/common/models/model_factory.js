@@ -170,14 +170,14 @@ const Factory = {
     taxon && sample.setTaxon(taxon);
 
     // append locked attributes
-    const locks = appModel.attrs.attrLocks;
-    const defaultSurveyLocks = locks.default.default || {};
-    const coreLocks = {};
-    Object.keys(defaultSurveyLocks)
-      .filter(key => coreAttributes.includes(key))
-      .forEach(key => {
-        coreLocks[key] = defaultSurveyLocks[key];
-      });
+    const defaultSurveyLocks = appModel.attrs.attrLocks.default || {};
+    const locks = defaultSurveyLocks.default || {};
+    const coreLocks = Object.keys(locks).reduce((agg, key) => {
+      if (coreAttributes.includes(key)) {
+        agg[key] = locks[key];
+      }
+      return agg;
+    }, {});
 
     if (!taxon) {
       // when there is no taxon we don't know the survey yet
@@ -188,7 +188,11 @@ const Factory = {
 
     const surveyConfig = sample.getSurvey();
     const surveyName = surveyConfig.name;
-    const surveyLocks = { ...{}, ...coreLocks, ...locks.default[surveyName] };
+    const surveyLocks = {
+      ...{},
+      ...coreLocks,
+      ...defaultSurveyLocks[surveyName],
+    };
     Factory._appendAttrLocks(sample, surveyLocks, skipLocation);
 
     return Promise.resolve(sample);
