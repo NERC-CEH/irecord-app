@@ -88,7 +88,11 @@ const Survey = observer(({ sample, style }) => {
 
   function getSampleInfo() {
     if (survey.complex) {
-      const speciesCount = sample.samples.length;
+      let speciesCount = sample.samples.length;
+      if (survey.name === 'moth') {
+        speciesCount = sample.occurrences.length;
+      }
+
       return (
         <>
           <div className="photo">
@@ -142,7 +146,7 @@ const Survey = observer(({ sample, style }) => {
     const isDefaultSurvey = occ.attrs.taxon && survey.name === 'default'; // photo-first sample check
 
     img = img ? <img src={img} onClick={e => showGallery(e, occ.media)} /> : '';
-    
+
     return (
       <>
         <div className="photo">
