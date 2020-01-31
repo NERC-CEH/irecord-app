@@ -231,3 +231,9 @@ ion-alert {
     --background: none;
   }
 }
+
+ion-item.locked {
+  ion-label[slot='end'] {
+    color: var(--ion-color-secondary);
+  }
+}

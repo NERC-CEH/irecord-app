@@ -7,11 +7,5 @@
 
   ion-item {
     --background: transparent;
-
-    &.locked {
-      ion-label[slot='end'] {
-        color: var(--ion-color-secondary);
-      }
-    }
   }
 }
