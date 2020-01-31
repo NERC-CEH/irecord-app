@@ -123,8 +123,8 @@ class Component extends React.Component {
       const locationStr = appModel.printLocation(location);
       const { id, name, favourite, source, latitude, longitude } = location;
 
-      const lat = latitude.toFixed(3);
-      const lon = longitude.toFixed(3);
+      const lat = parseFloat(latitude).toFixed(3);
+      const lon = parseFloat(longitude).toFixed(3);
       return (
         <IonItemSliding className="location" key={id}>
           <IonItem
