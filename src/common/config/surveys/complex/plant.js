@@ -4,13 +4,16 @@
 import DateHelp from 'helpers/date';
 import VCs from 'common/data/vice_counties.data';
 
-function verify(attrs) {
+function verify(attrs, subSample) {
   const attributes = {};
 
   // location
   const location = attrs.location || {};
   if (!location.latitude) {
     attributes.location = 'missing';
+  }
+  if (!subSample && !location.name) {
+    attributes.name = 'missing';
   }
 
   // date
@@ -43,6 +46,7 @@ const sharedSmpAttrs = {
 
   location: {
     id: 'entered_sref',
+    required: true,
     label: 'Square',
     values(location, submission) {
       const attributes = {};
@@ -197,7 +201,7 @@ const survey = {
       type: 'text',
     },
   },
-  
+
   smp: {
     editForm: [
       'occ:taxon',
@@ -217,6 +221,7 @@ const survey = {
         id: 'entered_sref',
         label: 'Location',
         hideName: true,
+        required: true,
         values(location, submission) {
           const attributes = {};
           attributes.location_name = location.name; // this is a native indicia attr
@@ -311,7 +316,7 @@ const survey = {
       },
     },
 
-    verify,
+    verify: attrs => verify(attrs, true),
   },
   verify,
 };

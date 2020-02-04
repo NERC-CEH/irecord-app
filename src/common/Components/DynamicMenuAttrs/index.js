@@ -174,7 +174,11 @@ class Component extends React.Component {
         <IonItem key={element} routerLink={routerLink} detail>
           <IonIcon icon={pin} slot="start" />
           <IonLabel text-wrap>
-            <LocationLabel sample={model} hideName={attr.hideName} />
+            <LocationLabel
+              sample={model}
+              hideName={attr.hideName}
+              required={required}
+            />
           </IonLabel>
           <IonLabel slot="start" className="location-label">
             {t(attr.label || 'Location')}

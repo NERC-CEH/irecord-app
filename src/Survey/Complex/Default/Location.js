@@ -121,21 +121,6 @@ class Container extends React.Component {
       sample.stopGPS();
     }
 
-    const updateSubSampleLocation = subSample => {
-      const surveyLocation = oldLocation;
-      const subSampleLocation = subSample.attrs.location || {};
-      const isCustomLocation =
-        subSampleLocation.gridref !== surveyLocation.gridref;
-      if (!isCustomLocation) {
-        if (subSample.isGPSRunning()) {
-          subSample.stopGPS();
-        }
-        const { name, ...newSubSampleLocation } = newLocation;
-        subSample.attrs.location = newSubSampleLocation; // eslint-disable-line
-      }
-    };
-    sample.samples.forEach(updateSubSampleLocation);
-
     sample.attrs.location = newLocation;
 
     return sample.save().catch(error => {

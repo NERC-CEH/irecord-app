@@ -67,25 +67,12 @@ const Factory = {
     return newOccurrene;
   },
 
-  async createComplexDefaultSubSample(surveySample, { taxon }) {
+  async createComplexDefaultSubSample({ taxon }) {
     const sample = await Factory._getDefaultSample(null, taxon, true);
 
     const survey = sample.getSurvey();
     if (survey.occ.attrs.number && survey.occ.attrs.number.incrementShortcut) {
       sample.occurrences[0].attrs.number = 1;
-    }
-
-    // set sample location to survey's location which
-    // can be corrected by GPS or user later on
-    // TODO: listen for surveySample attribute changes
-    const surveyLocationIsSet = !!surveySample.attrs.location.latitude;
-    if (surveyLocationIsSet) {
-      const surveyLocation = JSON.parse(
-        JSON.stringify(surveySample.attrs.location)
-      );
-      delete surveyLocation.name;
-
-      sample.attrs.location = surveyLocation;
     }
 
     if (appModel.attrs.geolocateSurveyEntries) {
@@ -132,10 +119,7 @@ const Factory = {
     }
 
     const sample = new Sample({
-      attrs: {
-        location_type: 'british',
-        recorders,
-      },
+      attrs: { recorders },
       metadata: {
         complex_survey: complexSurveysConfig.default.name,
       },
@@ -156,10 +140,7 @@ const Factory = {
     }
 
     const sample = new Sample({
-      attrs: {
-        location_type: 'british',
-        recorders,
-      },
+      attrs: { recorders },
       metadata: {
         complex_survey: complexSurveysConfig.moth.name,
       },

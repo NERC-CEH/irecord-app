@@ -45,9 +45,13 @@ const survey = {
         // add other location related attributes
         submission.fields = { ...submission.fields, ...locationAttributes };
 
-        return `${parseFloat(location.latitude).toFixed(7)}, ${parseFloat(
-          location.longitude
-        ).toFixed(7)}`;
+        const lat = parseFloat(location.latitude);
+        const lon = parseFloat(location.longitude);
+        if (Number.isNaN(lat) || Number.isNaN(lat)) {
+          return null;
+        }
+
+        return `${lat.toFixed(7)}, ${lon.toFixed(7)}`;
       },
     },
     location_accuracy: { id: 282 },

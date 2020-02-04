@@ -33,12 +33,9 @@ class Controller extends React.Component {
   }
 
   getNewSample = async taxon => {
-    const newSubSample = await modelFactory.createComplexDefaultSubSample(
-      this.surveySample,
-      {
-        taxon,
-      }
-    );
+    const newSubSample = await modelFactory.createComplexDefaultSubSample({
+      taxon,
+    });
 
     this.surveySample.samples.push(newSubSample);
     await this.surveySample.save();

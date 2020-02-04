@@ -62,7 +62,7 @@ export default class Occurrence extends Indicia.Occurrence {
       throw new Error('No parent exists to get keys');
     }
 
-    return this.parent.getSurvey().occ.attrs;
+    return { ...Indicia.Occurrence.keys, ...this.parent.getSurvey().occ.attrs };
   };
 
   getSurvey() {

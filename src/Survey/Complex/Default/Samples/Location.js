@@ -94,12 +94,15 @@ class Container extends React.Component {
     }
 
     const parentGridref = sample.parent.attrs.location.gridref;
-    const parentParsedRef = bigu.GridRefParser.factory(parentGridref);
+    if (!parentGridref) {
+      return false;
+    }
 
     if (location.gridref.length < parentGridref.length) {
       return false;
     }
 
+    const parentParsedRef = bigu.GridRefParser.factory(parentGridref);
     return gridCoords.to_gridref(parentParsedRef.length) === parentGridref;
   };
 

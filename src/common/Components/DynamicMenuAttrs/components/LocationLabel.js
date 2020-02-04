@@ -22,7 +22,7 @@ function getLocationName(sample) {
   );
 }
 
-function getLocation(sample) {
+function getLocation(sample, required) {
   const locationPretty = sample.printLocation();
   const isLocating = sample.isGPSRunning();
   if (isLocating) {
@@ -34,7 +34,7 @@ function getLocation(sample) {
     );
   }
 
-  if (!locationPretty) {
+  if (required && !locationPretty) {
     return (
       <IonLabel slot="end" className="long error">
         {t('Location missing')}
@@ -49,10 +49,10 @@ function getLocation(sample) {
   );
 }
 
-function LocationLabel({ sample, hideName }) {
+function LocationLabel({ sample, hideName, required }) {
   return (
     <>
-      {getLocation(sample)}
+      {getLocation(sample, required)}
       {!hideName && getLocationName(sample)}
     </>
   );
@@ -61,5 +61,6 @@ function LocationLabel({ sample, hideName }) {
 LocationLabel.propTypes = {
   sample: PropTypes.object.isRequired,
   hideName: PropTypes.bool,
+  required: PropTypes.bool,
 };
 export default observer(LocationLabel);

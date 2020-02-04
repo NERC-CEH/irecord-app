@@ -74,7 +74,7 @@ class Sample extends Indicia.Sample {
 
   // warehouse attribute keys
   keys = () => {
-    return this.getSurvey().attrs;
+    return { ...Indicia.Sample.keys, ...this.getSurvey().attrs };
   };
 
   validateRemote() {
@@ -117,43 +117,81 @@ class Sample extends Indicia.Sample {
     return toJS(super.toJSON(), { recurseEverything: true });
   }
 
-  /**
-   * Changes the plain survey key to survey specific metadata
-   */
-  onSend(submission, media) {
+  _attachTopSampleSubmission(updatedSubmission) {
+    const isTopSample = !this.parent;
+    if (!isTopSample) {
+      return;
+    }
+
+    const keys = this.keys();
+
+    const appAndDeviceFields = {
+      [keys.device.id]: keys.device.values[Device.getPlatform()],
+      [keys.device_version.id]: Device.getVersion(),
+      [keys.app_version.id]: `${CONFIG.version}.${CONFIG.build}`,
+    };
+    updatedSubmission.fields = {
+      ...updatedSubmission.fields,
+      ...appAndDeviceFields,
+    };
+  }
+
+  _attachSubSampleSubmission(updatedSubmission) {
+    const isTopSample = !this.parent;
+    if (isTopSample) {
+      return;
+    }
+
+    const keys = this.keys();
+
+    const parentSurvey = this.parent.getSurvey();
+    updatedSubmission.survey_id = parentSurvey.id;
+
+    const parentAttrs = this.parent.attrs;
+
+    const location = updatedSubmission.fields[keys.location.id];
+    if (!location) {
+      const parentLocation = keys.location.values(
+        parentAttrs.location,
+        updatedSubmission
+      );
+      updatedSubmission.fields[keys.location.id] = parentLocation;
+
+      let locationType = keys.location_type.values[parentAttrs.location_type];
+      if (locationType === 'OSGB') {
+        locationType = 4326; // TODO: backwards comp, remove when v5 Beta testing finished
+      }
+
+      updatedSubmission.fields[keys.location_type.id] = locationType;
+    }
+  }
+
+  // eslint-disable-next-line
+  _attachOnSendSubmission(surveyConfig, updatedSubmission) {
+    const hasSurveySpecificSubmission = surveyConfig.onSend;
+    if (hasSurveySpecificSubmission) {
+      updatedSubmission.fields = {
+        ...updatedSubmission.fields,
+        ...surveyConfig.onSend(),
+      };
+    }
+  }
+
+  getSubmission(...args) {
+    const [submission, media] = super.getSubmission(...args);
     const surveyConfig = this.getSurvey();
 
     const newAttrs = {
       survey_id: surveyConfig.id,
       input_form: surveyConfig.webForm,
     };
-
-    let newSurveyFields;
-    if (surveyConfig.onSend) {
-      newSurveyFields = surveyConfig.onSend(submission, media);
-    }
-
-    const smpAttrs = surveyConfig.attrs;
     const updatedSubmission = { ...submission, ...newAttrs };
-    updatedSubmission.fields = {
-      ...updatedSubmission.fields,
 
-      [smpAttrs.device.id]: smpAttrs.device.values[Device.getPlatform()],
-      [smpAttrs.device_version.id]: Device.getVersion(),
-      [smpAttrs.app_version.id]: `${CONFIG.version}.${CONFIG.build}`,
+    this._attachTopSampleSubmission(updatedSubmission);
+    this._attachSubSampleSubmission(updatedSubmission);
+    this._attachOnSendSubmission(surveyConfig, updatedSubmission);
 
-      ...newSurveyFields,
-    };
-
-    // add the survey_id to subsamples too
-    if (this.metadata.complex_survey) {
-      updatedSubmission.samples.forEach(subSample => {
-        subSample.survey_id = surveyConfig.id; // eslint-disable-line
-        subSample.input_form = surveyConfig.webForm; // eslint-disable-line
-      });
-    }
-
-    return Promise.resolve([updatedSubmission, media]);
+    return [updatedSubmission, media];
   }
 
   async setToSend() {
