@@ -70,12 +70,12 @@ class Component extends React.Component {
   onChangeInputE = e => this.onChangeInput(e.target.value);
 
   onChangeInput = val => {
-    let value = parseInt(val, 10);
-    if (Number.isNaN(value)) {
-      value = null;
+    const value = parseInt(val, 10);
+    let position = null;
+    if (!Number.isNaN(value)) {
+      position = value >= 0 ? this.logsl.position(value) : null;
     }
 
-    const position = value >= 0 ? this.logsl.position(value) : null;
     if (this.state.sliderUpdating) {
       this.setState({ value, sliderUpdating: false });
     } else {
