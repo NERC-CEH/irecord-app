@@ -118,31 +118,35 @@ const helpers = {
   getSquareBounds(location) {
     if (location.latitude) {
       const gridRefString = helpers.locationToGrid(location);
-      const parsedRef = bigu.GridRefParser.factory(gridRefString);
-
-      if (parsedRef) {
-        const nationalGridRefSW = parsedRef.osRef;
-        const a = new parsedRef.NationalRef(
-          nationalGridRefSW.x + parsedRef.length,
-          nationalGridRefSW.y
-        ); // eslint-disable-line
-        const b = new parsedRef.NationalRef(
-          nationalGridRefSW.x + parsedRef.length,
-          nationalGridRefSW.y + parsedRef.length
-        ); // eslint-disable-line
-        const c = new parsedRef.NationalRef(
-          nationalGridRefSW.x,
-          nationalGridRefSW.y + parsedRef.length
-        ); // eslint-disable-line
-        return [
-          nationalGridRefSW.to_latLng(),
-          a.to_latLng(),
-          b.to_latLng(),
-          c.to_latLng(),
-        ];
+      if (!gridRefString) {
+        return null;
       }
 
-      return null;
+      const parsedRef = bigu.GridRefParser.factory(gridRefString);
+      if (!parsedRef) {
+        return null;
+      }
+
+      const nationalGridRefSW = parsedRef.osRef;
+      const a = new parsedRef.NationalRef(
+        nationalGridRefSW.x + parsedRef.length,
+        nationalGridRefSW.y
+      );
+      const b = new parsedRef.NationalRef(
+        nationalGridRefSW.x + parsedRef.length,
+        nationalGridRefSW.y + parsedRef.length
+      );
+      const c = new parsedRef.NationalRef(
+        nationalGridRefSW.x,
+        nationalGridRefSW.y + parsedRef.length
+      );
+
+      return [
+        nationalGridRefSW.to_latLng(),
+        a.to_latLng(),
+        b.to_latLng(),
+        c.to_latLng(),
+      ];
     }
 
     return null;
