@@ -69,6 +69,7 @@ function setContext() {
     'app.taxonGroupFilters',
     appModel.attrs.taxonGroupFilters.length
   );
+  Sentry.setTag('app.build', CONFIG.build);
 }
 
 const API = {
