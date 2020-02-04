@@ -8,33 +8,6 @@ import { IonPage, NavContext } from '@ionic/react';
 import AppMain from 'Components/Main';
 import { success } from 'helpers/toast';
 
-/**
- * Configures survey subsample with default attrs and sets it
- * to the parent survey sample.
- * @param surveySample
- * @param sample
- * @param taxon
- * @returns {*}
- */
-function configNewSample(surveySample, subSample) {
-  // set sample location to survey's location which
-  // can be corrected by GPS or user later on
-  // TODO: listen for surveySample attribute changes
-  const surveyLocationIsSet = !!surveySample.attrs.location.latitude;
-  if (surveyLocationIsSet) {
-    const surveyLocation = JSON.parse(
-      JSON.stringify(surveySample.attrs.location)
-    );
-    delete surveyLocation.name;
-
-    subSample.attrs.location = surveyLocation;
-
-    subSample.startGPS();
-  }
-
-  surveySample.samples.push(subSample);
-}
-
 @observer
 class Controller extends React.Component {
   static propTypes = {
@@ -60,16 +33,14 @@ class Controller extends React.Component {
   }
 
   getNewSample = async taxon => {
-    const newSubSample = await modelFactory.createComplexDefaultSubSample({
-      taxon,
-    });
+    const newSubSample = await modelFactory.createComplexDefaultSubSample(
+      this.surveySample,
+      {
+        taxon,
+      }
+    );
 
-    const survey = newSubSample.getSurvey();
-    if (survey.occ.attrs.number && survey.occ.attrs.number.incrementShortcut) {
-      newSubSample.occurrences[0].attrs.number = 1;
-    }
-
-    configNewSample(this.surveySample, newSubSample);
+    this.surveySample.samples.push(newSubSample);
     await this.surveySample.save();
 
     return newSubSample;
