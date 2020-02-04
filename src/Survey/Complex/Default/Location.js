@@ -113,20 +113,30 @@ class Container extends React.Component {
       return Promise.reject(new Error('Invalid location'));
     }
 
-    // // check if we need custom location setting functionality
-    // if (locationSetFunc) {
-    //   return locationSetFunc(sample, loc);
-    // }
-
     const oldLocation = sample.attrs.location || {};
-    const location = { ...loc, ...{ name: oldLocation.name } };
+    const newLocation = { ...loc, ...{ name: oldLocation.name } };
 
     // we don't need the GPS running and overwriting the selected location
     if (sample.isGPSRunning()) {
       sample.stopGPS();
     }
 
-    sample.attrs.location = location;
+    const updateSubSampleLocation = subSample => {
+      const surveyLocation = oldLocation;
+      const subSampleLocation = subSample.attrs.location || {};
+      const isCustomLocation =
+        subSampleLocation.gridref !== surveyLocation.gridref;
+      if (!isCustomLocation) {
+        if (subSample.isGPSRunning()) {
+          subSample.stopGPS();
+        }
+        const { name, ...newSubSampleLocation } = newLocation;
+        subSample.attrs.location = newSubSampleLocation; // eslint-disable-line
+      }
+    };
+    sample.samples.forEach(updateSubSampleLocation);
+
+    sample.attrs.location = newLocation;
 
     return sample.save().catch(error => {
       Log(error, 'e');

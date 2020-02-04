@@ -25,16 +25,12 @@ class index extends Component {
     const location = subSample.attrs.location || {};
     const surveylocation = subSample.parent.attrs.location || {};
     const isLocating = subSample.isGPSRunning();
-    const locationName = location.name;
     const isCustomLocation = surveylocation.gridref !== location.gridref;
+
     const locationString = isCustomLocation ? subSample.printLocation() : '';
     let locationComponent;
     if (locationString) {
-      if (locationName) {
-        locationComponent = <span>{locationName}</span>;
-      } else {
-        locationComponent = <span>{locationString}</span>;
-      }
+      locationComponent = <span>{locationString}</span>;
     } else if (isLocating) {
       locationComponent = <span className=" warn">Locating...</span>;
     } else {
