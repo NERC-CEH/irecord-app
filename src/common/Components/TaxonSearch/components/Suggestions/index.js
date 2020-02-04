@@ -1,6 +1,7 @@
 import React from 'react';
 import { IonList, IonItem } from '@ionic/react';
 import PropTypes from 'prop-types';
+import { hashCode } from 'helpers/UUID';
 import Species from './components/Species';
 
 /**
@@ -72,21 +73,31 @@ const getSearchInfo = () => (
         )}
         <br />
         <br />
-        For 
+        For
         {' '}
-        <b><i>Turdus merula</i></b>
-:
+        <b>
+          <i>Turdus merula</i>
+        </b>
+        :
         <br />
         <br />
-        <b><i>turdus me</i></b>
+        <b>
+          <i>turdus me</i>
+        </b>
         <br />
-        <b><i>turdus .la</i></b>
+        <b>
+          <i>turdus .la</i>
+        </b>
         <br />
-        <b><i>turme</i></b>
+        <b>
+          <i>turme</i>
+        </b>
         {' '}
-(3+2 characters)
+        (3+2 characters)
         <br />
-        <b><i>merula</i></b> 
+        <b>
+          <i>merula</i>
+        </b>
       </p>
     </span>
   </IonItem>
@@ -115,9 +126,10 @@ const Suggestions = ({
     );
   } else {
     const deDuped = deDuplicateSuggestions(searchResults);
+    console.log(deDuped);
 
     suggestionsList = deDuped.map(species => {
-      const key = `${species.warehouse_id}-${species.found_in_name}-${species.isFavourite}`;
+      const key = hashCode(JSON.stringify(species));
       return (
         <Species
           key={key}

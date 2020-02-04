@@ -41,7 +41,7 @@ export default class Header extends Component {
     // showFilterDialog(filters, selectedFilters, searchNamesOnly)}
 
     const filtersList = filters.map((_, i) => (
-      <IonItem>
+      <IonItem key={filters[i].id}>
         <IonLabel class="filter-label">{t(filters[i].label)}</IonLabel>
         <IonCheckbox
           value={filters[i].id}

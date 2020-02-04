@@ -162,22 +162,29 @@ function search(
   return results;
 }
 
-function searchMulti(
+function searchSciNames(
   genera,
   searchPhrase,
-  results = [],
   maxResults,
   hybridRun,
   informalGroups = []
 ) {
-  search(genera, searchPhrase, results, maxResults, hybridRun, informalGroups);
+  const results = search(
+    genera,
+    searchPhrase,
+    [],
+    maxResults,
+    hybridRun,
+    informalGroups
+  );
 
   const is5CharacterShortcut = searchPhrase.length === 5;
-  if (is5CharacterShortcut && results.length < maxResults) {
-    const searchPhraseShortcut = `${searchPhrase.substr(
-      0,
-      3
-    )} ${searchPhrase.substr(3, 4)}`;
+  const exceededMaxResults = results.length >= maxResults;
+  if (is5CharacterShortcut && !exceededMaxResults) {
+    const genus = searchPhrase.substr(0, 3);
+    const name = searchPhrase.substr(3, 4);
+    const searchPhraseShortcut = `${genus} ${name}`;
+
     search(
       genera,
       searchPhraseShortcut,
@@ -187,6 +194,17 @@ function searchMulti(
       informalGroups
     );
   }
+
+  const uniqueIds = [];
+  const deDupedResults = results.filter(sp => {
+    if (!uniqueIds.includes(sp.warehouse_id)) {
+      uniqueIds.push(sp.warehouse_id);
+      return true;
+    }
+    return false;
+  });
+
+  return deDupedResults;
 }
 
-export { searchMulti as default };
+export { searchSciNames as default };

@@ -29,8 +29,6 @@ export default class index extends Component {
   constructor(props) {
     super(props);
 
-    SpeciesSearchEngine.init();
-
     this.inputEl = React.createRef();
     this.onInputKeystroke = this.onInputKeystroke.bind(this);
     this.onInputClear = this.onInputClear.bind(this);

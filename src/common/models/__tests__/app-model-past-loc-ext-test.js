@@ -47,8 +47,6 @@ describe('Past locations extension', function() {
       expect(savedLocation).to.be.an('object');
       expect(savedLocation.latitude).to.be.equal(location.latitude);
       expect(savedLocation.id).to.be.a('number');
-      console.log('xxx');
-      console.log(savedLocation.id);
 
       await appModel.removeLocation(savedLocation.id);
       expect(appModel.attrs.locations.length).to.be.equal(0);

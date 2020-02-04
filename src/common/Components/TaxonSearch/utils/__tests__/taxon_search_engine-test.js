@@ -3,21 +3,6 @@ import searchEngine from '../taxon_search_engine';
 (process.env.SAUCE_LABS ? describe.skip : describe)(
   'Taxon Search Engine',
   () => {
-    before(function _(done) {
-      this.timeout(20000);
-      // TODO: remove this as the engine should work without it!
-      searchEngine
-        .init()
-        .then(done)
-        .catch(done);
-    });
-
-    it('should be an API object with search function', () => {
-      expect(searchEngine).to.be.an('object');
-      expect(searchEngine.search).to.exist;
-      expect(searchEngine.search).to.be.a('function');
-    });
-
     describe('search', () => {
       it('should return a Promise', () => {
         const promise = searchEngine.search('blackbird');
@@ -212,7 +197,7 @@ import searchEngine from '../taxon_search_engine';
       describe('genus', () => {
         it('should add all species belonging to it', () =>
           searchEngine.search('Puffinus').then(results => {
-            expect(results.length).to.be.equal(10); // 10th for duplicate of Puffinus puffinus
+            expect(results.length).to.be.equal(9);
             const genus = results[0];
             expect(genus.warehouse_id).to.be.equal(141974);
             expect(genus.scientific_name).to.be.equal('Puffinus');
