@@ -63,6 +63,7 @@ export default class index extends Component {
               model={sample}
               surveyConfig={surveyConfig}
               noWrapper
+              useLocks
               url={url}
             />
           </IonList>
