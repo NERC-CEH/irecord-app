@@ -238,7 +238,7 @@ const survey = {
 
   async createWithPhoto(Sample, Occurrence, photo) {
     const image = await ImageHelp.getImageModel(ImageModel, photo);
-    survey.create(Sample, Occurrence, image);
+    return survey.create(Sample, Occurrence, image);
   },
 };
 
