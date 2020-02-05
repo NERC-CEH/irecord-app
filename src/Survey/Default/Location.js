@@ -37,7 +37,12 @@ class Container extends React.Component {
     const { appModel } = this.props;
 
     onLocationNameChange.apply(this, args);
-    appModel.setLocation(this.state.sample.attrs.location);
+
+    const { location } = this.state.sample.attrs;
+    if (!location.latitude) {
+      return;
+    }
+    appModel.setLocation(location);
   };
 
   updateLocationLock = (location, locationWasLocked) => {
@@ -136,7 +141,7 @@ class Container extends React.Component {
     if (location.latitude) {
       await appModel.setLocation(location);
     }
-    
+
     sample.attrs.location = location;
 
     return sample.save().catch(error => {
