@@ -24,7 +24,13 @@ function getSurveyConfig(model, attrName) {
       surveyConfig.complex && surveyConfig.name === 'default';
     if (isDefaultComplex) {
       // use non-complex default namespace
-      surveyConfig = model.getSurvey();
+      const isSample = model instanceof Indicia.Sample;
+      const isOccurrenceWithoutParent = !isSample && !model.parent;
+      if (isOccurrenceWithoutParent) {
+        Log('Survey lock occurrence without sample parent', 'e');
+      } else {
+        surveyConfig = isSample ? model.getSurvey() : model.parent.getSurvey();
+      }
     }
   }
   const fullAttrName = `${attrType}:${attrName}`;
