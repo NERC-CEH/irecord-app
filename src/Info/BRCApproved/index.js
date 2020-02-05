@@ -40,7 +40,7 @@ export default () => (
         <IonItem>
           <IonLabel class="ion-text-wrap">
             {t(
-              'Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Gateway'
+              'Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Atlas'
             )}
             .
           </IonLabel>
