@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import AppHeader from 'Components/Header';
 import TaxonSearch from 'Components/TaxonSearch';
-import modelFactory from 'model_factory';
 import LocHelp from 'helpers/location';
 import AppMain from 'Components/Main';
 import { IonPage, NavContext } from '@ionic/react';
 import { success } from 'helpers/toast';
+import plantSurvey from 'common/config/surveys/complex/plant';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
 
 function isSurveyLocationSet(surveySample) {
   const { location } = surveySample.attrs;
@@ -68,9 +70,11 @@ class Controller extends React.Component {
   }
 
   getNewSample = async (taxon, editButtonClicked) => {
-    const newSubSample = await modelFactory.createPlantSubSample({
-      taxon,
-    });
+    const newSubSample = await plantSurvey.smp.create(
+      Sample,
+      Occurrence,
+      taxon
+    );
 
     configNewSample(this.surveySample, newSubSample);
     await this.surveySample.save();
@@ -98,7 +102,7 @@ class Controller extends React.Component {
           history.replace(`${url}/${newSubSample.cid}`);
           return;
         }
-        
+
         let name = taxon.scientific_name;
         if (taxon.found_in_name >= 0) {
           name = taxon.common_names[taxon.found_in_name];

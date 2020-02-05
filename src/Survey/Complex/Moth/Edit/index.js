@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { IonPage, IonButton } from '@ionic/react';
-import Factory from 'model_factory';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import AppHeader, { AppHeaderBand } from 'Components/Header';
 import { warn } from 'helpers/toast';
+import mothSurvey from 'common/config/surveys/complex/moth';
+import Sample from 'sample';
 import showInvalidsMessage from 'helpers/invalidsMessage';
 import Main from './Main';
 
@@ -67,10 +68,7 @@ class Controller extends React.Component {
   async getNewSample() {
     Log('Creating new survey');
     const { savedSamples } = this.props;
-    const sample = await Factory.createSample({
-      complex: true,
-      survey: 'moth',
-    });
+    const sample = await mothSurvey.create(Sample);
     sample.save();
     savedSamples.push(sample);
     return sample;

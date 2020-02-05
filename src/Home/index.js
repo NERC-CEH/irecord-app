@@ -22,8 +22,10 @@ import userModel from 'user_model';
 import actionSheet from 'helpers/actionSheet';
 import ImageHelp from 'helpers/image';
 import Log from 'helpers/log';
-import Factory from 'model_factory';
+import defaultSurvey from 'common/config/surveys/default';
 import PrivateRoute from 'Components/PrivateRoute';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
 import SurveysList from './List';
 import SurveysMap from './Map';
 import Activities from './Activities';
@@ -35,7 +37,11 @@ import './styles.scss';
 // const activityTitle = activity ? activity.title : null;
 
 async function createNewSampleWithPhoto(...args) {
-  const sample = await Factory.createSampleWithPhoto(...args);
+  const sample = await defaultSurvey.createWithPhoto(
+    Sample,
+    Occurrence,
+    ...args
+  );
   await sample.save();
   // add to main collection
   savedSamples.push(sample);

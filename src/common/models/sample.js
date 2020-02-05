@@ -6,10 +6,13 @@ import Indicia from 'indicia';
 import { observable, intercept, toJS } from 'mobx';
 import CONFIG from 'config';
 import userModel from 'user_model';
+import appModel from 'app_model';
 import Log from 'helpers/log';
-import getSurvey from 'common/config/surveys/utils';
-import { coreAttributes } from 'common/config/surveys/default';
 import Device from 'helpers/device';
+import complexSurvey from 'common/config/surveys/complex';
+import defaultSurvey from 'common/config/surveys/default';
+import coreAttributes from 'common/config/surveys';
+import taxonGroupSurveys from 'common/config/surveys/taxon-groups';
 import Occurrence from './occurrence';
 import Media from './image';
 import { modelStore } from '../store';
@@ -26,18 +29,16 @@ class Sample extends Indicia.Sample {
     super(...args);
 
     this.attrs = observable({
-      ...{
-        date: new Date(),
-        location_type: 'latlon',
-        location: {
-          accuracy: null,
-          altitude: null,
-          gridref: null,
-          latitude: null,
-          longitude: null,
-          name: null,
-          source: null,
-        },
+      date: new Date(),
+      location_type: 'latlon',
+      location: {
+        accuracy: null,
+        altitude: null,
+        gridref: null,
+        latitude: null,
+        longitude: null,
+        name: null,
+        source: null,
       },
       ...this.attrs,
     });
@@ -49,7 +50,8 @@ class Sample extends Indicia.Sample {
       password: userModel.getPassword.bind(userModel),
       synchronising: false,
     });
-    this.metadata = observable(this.metadata);
+    const { useTraining } = appModel.attrs;
+    this.metadata = observable({ training: useTraining, ...this.metadata });
     this.samples = observable(this.samples);
     this.occurrences = observable(this.occurrences);
     this.media = observable(this.media);
@@ -150,6 +152,7 @@ class Sample extends Indicia.Sample {
     const parentAttrs = this.parent.attrs;
 
     const location = updatedSubmission.fields[keys.location.id];
+
     if (!location) {
       const parentLocation = keys.location.values(
         parentAttrs.location,
@@ -210,11 +213,12 @@ class Sample extends Indicia.Sample {
       return invalids;
     }
 
-    if (!this.metadata.saved) {
-      this.metadata.saved = true;
-      await this.save();
+    if (this.metadata.saved) {
+      return null;
     }
 
+    this.metadata.saved = true;
+    await this.save();
     return null;
   }
 
@@ -271,15 +275,14 @@ class Sample extends Indicia.Sample {
 
   // TODO: remove this once clear why the resubmission occurs
   // https://www.brc.ac.uk/irecord/node/7194
-  async saveRemote(...args) {
-    const { remote } = args[2] || {};
-
-    if (remote && (this.id || this.metadata.server_on)) {
+  async saveRemote() {
+    if (this.id || this.metadata.server_on) {
       // an error, this should never happen
       Log('SampleModel: trying to send a record that is already sent!', 'w');
       return Promise.resolve({ data: {} });
     }
-    await super.saveRemote(...args);
+
+    await super.saveRemote();
     return this.save();
   }
 
@@ -304,61 +307,21 @@ class Sample extends Indicia.Sample {
     }
   }
 
-  setTaxon(taxon = {}) {
-    return new Promise((resolve, reject) => {
-      if (!taxon.group) {
-        return reject(new Error('New taxon must have a group'));
-      }
-
-      if (this.metadata.complex_survey) {
-        return reject(
-          new Error('Only default survey samples can use setTaxon method')
-        );
-      }
-
-      const occ = this.occurrences[0];
-      if (!occ) {
-        return reject(new Error('No occurrence present to set taxon'));
-      }
-
-      if (occ.attrs.taxon) {
-        const survey = this.getSurvey();
-        const newSurvey = getSurvey(taxon.group);
-        if (survey.name !== newSurvey.name) {
-          // remove non-core attributes for survey switch
-          Object.keys(this.attrs).forEach(key => {
-            if (!coreAttributes.includes(`smp:${key}`)) {
-              delete this.attrs[key];
-            }
-          });
-          Object.keys(occ.attrs).forEach(key => {
-            if (!coreAttributes.includes(`occ:${key}`)) {
-              delete occ.attrs[key];
-            }
-          });
-        }
-      }
-
-      occ.attrs.taxon = taxon;
-      return resolve(this);
-    });
-  }
-
   getSurvey() {
     const getTaxaSpecifigConfig = complex => {
       if (!this.occurrences.length) {
-        return getSurvey(null, complex);
+        return Sample.getSurvey(null, complex);
       }
 
       const [occ] = this.occurrences;
 
       const taxon = occ.attrs.taxon || {};
 
-      return getSurvey(taxon.group, complex);
+      return Sample.getSurvey(taxon.group, complex);
     };
 
-    const complexSurvey = this.metadata.complex_survey;
-    if (!complexSurvey) {
+    const complexSurveyName = this.metadata.complex_survey;
+    if (!complexSurveyName) {
       if (this.parent) {
         // part of default complex survey
         const taxaSurvey = { ...getTaxaSpecifigConfig() };
@@ -369,21 +332,80 @@ class Sample extends Indicia.Sample {
       return getTaxaSpecifigConfig();
     }
 
-    const isDefault = complexSurvey === 'default';
+    const isDefault = complexSurveyName === 'default';
     if (isDefault) {
-      const survey = getSurvey(null, complexSurvey);
+      const survey = Sample.getSurvey(null, complexSurveyName);
 
       return survey;
       // throw 'TODO: we need to get children sample taxon specific configs as well';
     }
 
-    const survey = getSurvey(null, complexSurvey);
+    const survey = Sample.getSurvey(null, complexSurveyName);
     const returnSubSampleSurvey = this.parent;
     if (returnSubSampleSurvey) {
       return survey.smp;
     }
 
     return survey;
+  }
+
+  static getSurvey(taxonGroup, complexSurveyName) {
+    if (complexSurveyName) {
+      // backwards compatibility
+      // TODO: remove in the future
+      const complexSurveyConfig =
+        complexSurveyName === true
+          ? complexSurvey.plant
+          : complexSurvey[complexSurveyName];
+
+      return { ...complexSurveyConfig };
+    }
+
+    if (!taxonGroup) {
+      return { ...defaultSurvey };
+    }
+
+    let matchedSurvey = {};
+    Object.keys(taxonGroupSurveys).forEach(surveyKey => {
+      const survey = taxonGroupSurveys[surveyKey];
+      if (survey.taxonGroups.includes(taxonGroup)) {
+        matchedSurvey = survey;
+      }
+    });
+
+    function skipAttributes(__, srcValue) {
+      if (_.isObject(srcValue) && srcValue.id) {
+        return srcValue;
+      }
+      return undefined;
+    }
+
+    const mergedDefaultSurvey = _.mergeWith(
+      {},
+      defaultSurvey,
+      matchedSurvey,
+      skipAttributes
+    );
+
+    return mergedDefaultSurvey;
+  }
+
+  removeOldTaxonAttributes(occ, taxon) {
+    const survey = this.getSurvey();
+    const newSurvey = Sample.getSurvey(taxon.group);
+    if (survey.name !== newSurvey.name) {
+      // remove non-core attributes for survey switch
+      Object.keys(this.attrs).forEach(key => {
+        if (!coreAttributes.includes(`smp:${key}`)) {
+          delete this.attrs[key];
+        }
+      });
+      Object.keys(occ.attrs).forEach(key => {
+        if (!coreAttributes.includes(`occ:${key}`)) {
+          delete occ.attrs[key];
+        }
+      });
+    }
   }
 }
 

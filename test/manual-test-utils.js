@@ -2,9 +2,11 @@
  * Manual testing functions.
  ******************************************************************** */
 import savedRecords from 'saved_samples';
-import Factory from 'common/models/model_factory';
 import Indicia from 'indicia';
 import GPS from 'mock-geolocation';
+import defaultSurvey from 'common/config/surveys/default';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
 import PQueue from 'p-queue';
 import bigu from 'bigu';
 
@@ -61,11 +63,7 @@ testing.records = {
       warehouse_id: 113813,
     };
 
-    const sample = await Factory.createSample({
-      survey: 'general',
-      image,
-      taxon,
-    });
+    const sample = await defaultSurvey.create(Sample, Occurrence, image, taxon);
 
     const randDate = new Date();
     randDate.setDate(Math.floor(Math.random() * 31));

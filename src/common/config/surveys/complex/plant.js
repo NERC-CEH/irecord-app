@@ -3,6 +3,8 @@
  **************************************************************************** */
 import DateHelp from 'helpers/date';
 import VCs from 'common/data/vice_counties.data';
+import userModel from 'user_model';
+import appModel from 'app_model';
 
 function verify(attrs, subSample) {
   const attributes = {};
@@ -317,8 +319,60 @@ const survey = {
     },
 
     verify: attrs => verify(attrs, true),
+
+    create(Sample, Occurrence, taxon) {
+      const { gridSquareUnit, geolocateSurveyEntries } = appModel.attrs;
+
+      const newSubSample = new Sample({
+        attrs: {
+          location_type: 'british',
+        },
+        metadata: {
+          complex_survey: survey.name,
+          gridSquareUnit,
+        },
+      });
+
+      if (geolocateSurveyEntries) {
+        newSubSample.startGPS();
+      }
+
+      const occurrence = new Occurrence({ attrs: { taxon } });
+      newSubSample.occurrences.push(occurrence);
+
+      const locks = appModel.attrs.attrLocks.complex.plant || {};
+      appModel.appendAttrLocks(newSubSample, locks);
+
+      return Promise.resolve(newSubSample);
+    },
   },
   verify,
+
+  create(Sample) {
+    const { gridSquareUnit } = appModel.attrs;
+
+    // add currently logged in user as one of the recorders
+    const recorders = [];
+    if (userModel.hasLogIn()) {
+      recorders.push(
+        `${userModel.attrs.firstname} ${userModel.attrs.secondname}`
+      );
+    }
+
+    const sample = new Sample({
+      attrs: {
+        location_type: 'british',
+        sample_method_id: 7305,
+        recorders,
+      },
+      metadata: {
+        complex_survey: survey.name,
+        gridSquareUnit,
+      },
+    });
+
+    return Promise.resolve(sample);
+  },
 };
 
 export default survey;

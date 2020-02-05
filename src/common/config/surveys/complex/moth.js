@@ -3,6 +3,7 @@
  **************************************************************************** */
 import DateHelp from 'helpers/date';
 import userModel from 'user_model';
+import appModel from 'app_model';
 
 const sex = {
   Male: 1947,
@@ -42,12 +43,33 @@ const survey = {
       id: 'entered_sref',
       icon: 'pin',
       values(location, submission) {
-        const attributes = {};
-        attributes.location_name = location.name; // this is a native indicia attr
+        // convert accuracy for map and gridref sources
+        const { accuracy, source, gridref, altitude, name } = location;
+        const keys = survey.attrs;
+
+        const locationAttributes = {
+          location_name: name, // location_name is a native indicia attr
+          [keys.location_source.id]: source,
+          [keys.location_gridref.id]: gridref,
+          [keys.location_altitude.id]: altitude,
+          [keys.location_altitude_accuracy.id]: location.altitudeAccuracy,
+          [keys.location_accuracy.id]: accuracy,
+        };
 
         // add other location related attributes
-        submission.fields = { ...submission.fields, ...attributes };
-        return location.gridref;
+        submission.fields = { ...submission.fields, ...locationAttributes };
+
+        if (submission.fields.entered_sref_system === 'OSGB') {
+          return gridref; // TODO: backwards comp, remove when v5 Beta testing finished
+        }
+
+        const lat = parseFloat(location.latitude);
+        const lon = parseFloat(location.longitude);
+        if (Number.isNaN(lat) || Number.isNaN(lat)) {
+          return null;
+        }
+
+        return `${lat.toFixed(7)}, ${lon.toFixed(7)}`;
       },
     },
     location_accuracy: { id: 282 },
@@ -189,6 +211,14 @@ const survey = {
       }
       return null;
     },
+
+    create(Occurrence, taxon) {
+      const newOccurrene = new Occurrence({ attrs: { taxon, number: 1 } });
+
+      const locks = appModel.attrs.attrLocks.complex.moth || {};
+      appModel.appendAttrLocks(newOccurrene, locks);
+      return newOccurrene;
+    },
   },
 
   verify(attrs) {
@@ -227,6 +257,27 @@ const survey = {
     return {
       8: userModel.attrs.email,
     };
+  },
+
+  create(Sample) {
+    // add currently logged in user as one of the recorders
+    const recorders = [];
+    if (userModel.hasLogIn()) {
+      recorders.push(
+        `${userModel.attrs.firstname} ${userModel.attrs.secondname}`
+      );
+    }
+
+    const sample = new Sample({
+      attrs: { recorders },
+      metadata: {
+        complex_survey: survey.name,
+      },
+    });
+
+    sample.startGPS();
+
+    return Promise.resolve(sample);
   },
 };
 

@@ -126,7 +126,6 @@ const Suggestions = ({
     );
   } else {
     const deDuped = deDuplicateSuggestions(searchResults);
-    console.log(deDuped);
 
     suggestionsList = deDuped.map(species => {
       const key = hashCode(JSON.stringify(species));

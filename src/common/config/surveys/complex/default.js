@@ -2,6 +2,9 @@
  * Plant survey configuration file.
  **************************************************************************** */
 import DateHelp from 'helpers/date';
+import appModel from 'app_model';
+import userModel from 'user_model';
+import defaultSurvey from '../default';
 
 const survey = {
   name: 'default',
@@ -90,6 +93,33 @@ const survey = {
     },
   },
 
+  smp: {
+    async create(Sample, Occurrence, taxon) {
+      const sample = await defaultSurvey.create(
+        Sample,
+        Occurrence,
+        null,
+        taxon,
+        true,
+        true
+      );
+
+      const sampleSurvey = sample.getSurvey();
+      if (
+        sampleSurvey.occ.attrs.number &&
+        sampleSurvey.occ.attrs.number.incrementShortcut
+      ) {
+        sample.occurrences[0].attrs.number = 1;
+      }
+
+      if (appModel.attrs.geolocateSurveyEntries) {
+        sample.startGPS();
+      }
+
+      return sample;
+    },
+  },
+
   verify(attrs) {
     const attributes = {};
 
@@ -123,6 +153,27 @@ const survey = {
     }
 
     return attributes;
+  },
+
+  create(Sample) {
+    // add currently logged in user as one of the recorders
+    const recorders = [];
+    if (userModel.hasLogIn()) {
+      recorders.push(
+        `${userModel.attrs.firstname} ${userModel.attrs.secondname}`
+      );
+    }
+
+    const sample = new Sample({
+      attrs: { recorders },
+      metadata: {
+        complex_survey: survey.name,
+      },
+    });
+
+    sample.startGPS();
+
+    return Promise.resolve(sample);
   },
 };
 

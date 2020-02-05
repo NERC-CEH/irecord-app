@@ -4,7 +4,7 @@ import { IonItem, IonLabel, IonIcon, IonList } from '@ionic/react';
 import AppMain from 'Components/Main';
 import { lock, pin, calendar, clipboard, people } from 'ionicons/icons';
 import DateHelp from 'helpers/date';
-import { coreAttributes } from 'common/config/surveys/default';
+import coreAttributes from 'common/config/surveys';
 import PropTypes from 'prop-types';
 import DynamicMenuAttrs from 'Components/DynamicMenuAttrs';
 import LocationLabel from './components/LocationLabel';

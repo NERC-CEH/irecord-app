@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import AppHeader from 'Components/Header';
 import TaxonSearch, { TaxonSearchFilters } from 'Components/TaxonSearch';
-import modelFactory from 'model_factory';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import surveyConfig from 'common/config/surveys/default';
 import { IonPage, NavContext } from '@ionic/react';
 import AppMain from 'Components/Main';
 
@@ -27,55 +29,52 @@ class Controller extends React.Component {
 
   async getNewSample(taxon) {
     const { savedSamples } = this.props;
-    const sample = await modelFactory.createSample({
-      taxon,
-    });
+    const sample = await surveyConfig.create(Sample, Occurrence, null, taxon);
     sample.save();
     savedSamples.push(sample);
     return sample;
   }
 
-  render() {
-    const { match, history, userModel, appModel } = this.props;
+  onSpeciesSelected = async (taxon, editBtnClicked) => {
+    const { match, history } = this.props;
     const { sample } = this.state;
-
-    const getUserFavouriteSpecies = () => {
-      const { statistics } = userModel.attrs;
-      if (!statistics || !statistics.species || !statistics.species.length) {
-        return null;
-      }
-      return [...statistics.species];
-    };
-
-    const occID = match.params.occId;
-
     const isNew = !sample;
 
-    const onSpeciesSelected = async (taxon, editBtnClicked) => {
-      if (isNew) {
-        const newSample = await this.getNewSample(taxon);
-        if (editBtnClicked) {
-          const url = match.url.replace('/new', '');
-          history.replace(`${url}/${newSample.cid}/edit`);
-          return;
-        }
-        window.history.back();
+    if (isNew) {
+      const newSample = await this.getNewSample(taxon);
+      if (editBtnClicked) {
+        const url = match.url.replace('/new', '');
+        history.replace(`${url}/${newSample.cid}/edit`);
         return;
       }
+      window.history.back();
+      return;
+    }
 
-      if (occID) {
-        const occurrence = sample.occurrences.find(occ => occ.cid === occID);
-        occurrence.attrs.taxon = taxon;
-      } else {
-        const [occ] = sample.occurrences;
-        occ.attrs.taxon = taxon;
-        await occ.save();
-      }
+    const [occ] = sample.occurrences;
+    sample.removeOldTaxonAttributes(occ, taxon);
 
-      this.context.goBack();
-    };
+    occ.attrs.taxon = taxon;
+    await occ.save();
 
-    const favouriteSpecies = getUserFavouriteSpecies();
+    this.context.goBack();
+  };
+
+  getUserFavouriteSpecies = () => {
+    const { userModel } = this.props;
+
+    const { statistics } = userModel.attrs;
+    if (!statistics || !statistics.species || !statistics.species.length) {
+      return null;
+    }
+    return [...statistics.species];
+  };
+
+  render() {
+    const { appModel } = this.props;
+    const { sample } = this.state;
+
+    const isNew = !sample;
 
     const searchNamesOnly = appModel.get('searchNamesOnly');
     const selectedFilters = appModel.get('taxonGroupFilters');
@@ -88,9 +87,9 @@ class Controller extends React.Component {
         />
         <AppMain>
           <TaxonSearch
-            onSpeciesSelected={onSpeciesSelected}
+            onSpeciesSelected={this.onSpeciesSelected}
             showEditButton={isNew}
-            favouriteSpecies={favouriteSpecies}
+            favouriteSpecies={this.getUserFavouriteSpecies()}
             namesFilter={searchNamesOnly}
             informalGroups={selectedFilters}
           />

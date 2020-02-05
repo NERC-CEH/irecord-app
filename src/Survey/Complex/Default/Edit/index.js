@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { IonPage, IonButton } from '@ionic/react';
-import Factory from 'model_factory';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import surveyConfig from 'common/config/surveys/complex/default';
 import Log from 'helpers/log';
 import Device from 'helpers/device';
 import AppHeader, { AppHeaderBand } from 'Components/Header';
@@ -67,9 +69,7 @@ class Controller extends React.Component {
   async getNewSample() {
     Log('Creating new survey');
     const { savedSamples } = this.props;
-    const sample = await Factory.createSample({
-      complex: true,
-    });
+    const sample = await surveyConfig.create(Sample, Occurrence);
     sample.save();
     savedSamples.push(sample);
     return sample;

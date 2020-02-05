@@ -3,10 +3,11 @@
  **************************************************************************** */
 import _ from 'lodash';
 import Log from 'helpers/log';
-import { coreAttributes } from 'common/config/surveys/default';
+import coreAttributes from 'common/config/surveys/index';
 import userModel from 'user_model';
 import Indicia from 'indicia';
 import { observable, extendObservable, observe } from 'mobx';
+import Occurrence from './occurrence';
 
 function getSurveyConfig(model, attrName) {
   let attrType = model;
@@ -173,5 +174,79 @@ export default {
         value = model.attrs[attr];
         return JSON.stringify(value) === JSON.stringify(lockedVal);
     }
+  },
+
+  appendAttrLocks(model, locks = {}, skipLocation) {
+    Log('appModel: appending attr locks.');
+
+    const isOccurrenceOnly = model instanceof Occurrence;
+
+    function selectModel(attrType) {
+      const isSampleAttr = attrType === 'smp';
+      if (isSampleAttr && isOccurrenceOnly) {
+        throw new Error('Invalid attibute lock configuration');
+      }
+
+      if (isSampleAttr) {
+        return model;
+      }
+
+      return isOccurrenceOnly ? model : model.occurrences[0];
+    }
+
+    Object.keys(locks).forEach(attr => {
+      const value = locks[attr];
+      // false or undefined or temp 'true' flag
+      if (!value || value === true) {
+        return;
+      }
+
+      const attrParts = attr.split(':');
+      const attrType = attrParts[0];
+      const attrName = attrParts[1];
+
+      const selectedModel = selectModel(attrType);
+
+      const val = _.cloneDeep(value);
+      switch (attr) {
+        case 'smp:activity':
+          if (!userModel.hasActivityExpired(val)) {
+            Log('SampleModel:AttrLocks: appending activity to the sample.');
+            model.attrs.activity = val;
+          } else {
+            // unset the activity as it's now expired
+            Log('SampleModel:AttrLocks: activity has expired.');
+            this.unsetAttrLock('smp', 'activity');
+          }
+          break;
+        case 'smp:location':
+          if (skipLocation) {
+            break;
+          }
+          let { location } = selectedModel.attrs;
+          val.name = location.name; // don't overwrite old name
+          selectedModel.attrs.location = val;
+          break;
+        case 'smp:locationName':
+          if (skipLocation) {
+            break;
+          }
+          location = selectedModel.attrs.location;
+          location.name = val;
+          selectedModel.attrs.location = location;
+          break;
+        case 'smp:date':
+          // parse stringified date
+          selectedModel.attrs.date = new Date(val);
+          break;
+        case 'occ:number':
+          const isValidNumber = !Number.isNaN(Number(val));
+          const numberAttrName = isValidNumber ? 'number' : 'number-ranges';
+          selectedModel.attrs[numberAttrName] = val;
+          break;
+        default:
+          selectedModel.attrs[attrName] = val;
+      }
+    });
   },
 };

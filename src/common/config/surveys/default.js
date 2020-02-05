@@ -2,18 +2,10 @@
  * General survey configuration file.
  **************************************************************************** */
 import DateHelp from 'helpers/date';
-
-/**
- * All attributes that can be transferred from one general survey to another.
- */
-export const coreAttributes = [
-  'smp:location',
-  'smp:locationName',
-  'smp:location_type',
-  'smp:date',
-  'occ:comment',
-  'smp:activity',
-];
+import appModel from 'app_model';
+import ImageModel from 'common/models/image';
+import ImageHelp from 'helpers/image';
+import coreAttributes from './index';
 
 const survey = {
   name: 'default',
@@ -197,6 +189,56 @@ const survey = {
       }
       return null;
     },
+  },
+
+  create(Sample, Occurrence, image, taxon, skipLocation, skipGPS) {
+    // default survey
+    const occurrence = new Occurrence({ attrs: { taxon } });
+    if (image) {
+      occurrence.media.push(image);
+    }
+
+    const sample = new Sample();
+    sample.occurrences.push(occurrence);
+
+    // append locked attributes
+    const defaultSurveyLocks = appModel.attrs.attrLocks.default || {};
+    const locks = defaultSurveyLocks.default || {};
+    const coreLocks = Object.keys(locks).reduce((agg, key) => {
+      if (coreAttributes.includes(key)) {
+        agg[key] = locks[key];
+      }
+      return agg;
+    }, {});
+
+    if (!taxon) {
+      // when there is no taxon we don't know the survey yet
+      // these are core attributes and safe to reuse in any survey
+      appModel.appendAttrLocks(sample, coreLocks);
+      return Promise.resolve(sample);
+    }
+
+    const surveyConfig = sample.getSurvey();
+    const surveyName = surveyConfig.name;
+    const surveyLocks = {
+      ...{},
+      ...coreLocks,
+      ...defaultSurveyLocks[surveyName],
+    };
+    appModel.appendAttrLocks(sample, surveyLocks, skipLocation);
+
+    // check if location attr is not locked
+    if (!appModel.getAttrLock('smp', 'location') && !skipGPS) {
+      // no previous location
+      sample.startGPS();
+    }
+
+    return Promise.resolve(sample);
+  },
+
+  async createWithPhoto(Sample, Occurrence, photo) {
+    const image = await ImageHelp.getImageModel(ImageModel, photo);
+    survey.create(Sample, Occurrence, image);
   },
 };
 

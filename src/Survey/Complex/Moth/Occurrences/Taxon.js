@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import AppHeader from 'Components/Header';
 import TaxonSearch, { TaxonSearchFilters } from 'Components/TaxonSearch';
-import modelFactory from 'model_factory';
+import mothSurvey from 'common/config/surveys/complex/moth';
+import Occurrence from 'occurrence';
 import { IonPage, NavContext } from '@ionic/react';
 import AppMain from 'Components/Main';
 import { success } from 'helpers/toast';
@@ -33,7 +34,7 @@ class Controller extends React.Component {
   }
 
   getNewOccurrence = async taxon => {
-    const newOccurrene = await modelFactory.createMothOccurrence({ taxon });
+    const newOccurrene = await mothSurvey.occ.create(Occurrence, taxon);
 
     this.surveySample.occurrences.push(newOccurrene);
     await this.surveySample.save();

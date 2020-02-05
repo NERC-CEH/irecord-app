@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import AppHeader from 'Components/Header';
 import TaxonSearch, { TaxonSearchFilters } from 'Components/TaxonSearch';
-import modelFactory from 'model_factory';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
+import surveyConfig from 'common/config/surveys/complex/default';
 import { IonPage, NavContext } from '@ionic/react';
 import AppMain from 'Components/Main';
 import { success } from 'helpers/toast';
@@ -33,9 +35,11 @@ class Controller extends React.Component {
   }
 
   getNewSample = async taxon => {
-    const newSubSample = await modelFactory.createComplexDefaultSubSample({
-      taxon,
-    });
+    const newSubSample = await surveyConfig.smp.create(
+      Sample,
+      Occurrence,
+      taxon
+    );
 
     this.surveySample.samples.push(newSubSample);
     await this.surveySample.save();
@@ -43,43 +47,50 @@ class Controller extends React.Component {
     return newSubSample;
   };
 
-  render() {
-    const { match, history, appModel } = this.props;
+  onSpeciesSelected = async (taxon, editBtnClicked) => {
+    const { match, history } = this.props;
     const { subSample } = this.state;
+    const isNew = !subSample;
 
     const occID = match.params.occId;
 
-    const isNew = !subSample;
-
-    const onSpeciesSelected = async (taxon, editBtnClicked) => {
-      if (isNew) {
-        const newSubSample = await this.getNewSample(taxon);
-        if (editBtnClicked) {
-          const url = match.url.replace('/new', '');
-          history.replace(`${url}/${newSubSample.cid}`);
-          return;
-        }
-
-        let name = taxon.scientific_name;
-        if (taxon.found_in_name >= 0) {
-          name = taxon.common_names[taxon.found_in_name];
-        }
-
-        success(`${t('Added')} ${name}`, 500);
+    if (isNew) {
+      const newSubSample = await this.getNewSample(taxon);
+      if (editBtnClicked) {
+        const url = match.url.replace('/new', '');
+        history.replace(`${url}/${newSubSample.cid}`);
         return;
       }
 
-      if (occID) {
-        const occurrence = subSample.occurrences.find(occ => occ.cid === occID);
-        occurrence.attrs.taxon = taxon;
-      } else {
-        const [occ] = subSample.occurrences;
-        occ.attrs.taxon = taxon;
-        await occ.save();
+      let name = taxon.scientific_name;
+      if (taxon.found_in_name >= 0) {
+        name = taxon.common_names[taxon.found_in_name];
       }
 
-      this.context.goBack();
-    };
+      success(`${t('Added')} ${name}`, 500);
+      return;
+    }
+
+    if (occID) {
+      const occ = subSample.occurrences.find(({ cid }) => cid === occID);
+      subSample.removeOldTaxonAttributes(occ, taxon);
+      occ.attrs.taxon = taxon;
+    } else {
+      const [occ] = subSample.occurrences;
+      subSample.removeOldTaxonAttributes(occ, taxon);
+
+      occ.attrs.taxon = taxon;
+      await occ.save();
+    }
+
+    this.context.goBack();
+  };
+
+  render() {
+    const { appModel } = this.props;
+    const { subSample } = this.state;
+
+    const isNew = !subSample;
 
     const searchNamesOnly = appModel.get('searchNamesOnly');
     const selectedFilters = appModel.get('taxonGroupFilters');
@@ -92,7 +103,7 @@ class Controller extends React.Component {
         />
         <AppMain>
           <TaxonSearch
-            onSpeciesSelected={onSpeciesSelected}
+            onSpeciesSelected={this.onSpeciesSelected}
             showEditButton={isNew}
             informalGroups={selectedFilters}
             namesFilter={searchNamesOnly}
