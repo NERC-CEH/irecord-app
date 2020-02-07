@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Main app configuration file.
  **************************************************************************** */
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 
 const HOST =
   process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';

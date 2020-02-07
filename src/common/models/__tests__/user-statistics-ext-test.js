@@ -1,4 +1,4 @@
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import { UserModel } from '../user_model';
 import ext from '../user_model_statistics_ext';
 

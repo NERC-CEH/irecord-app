@@ -9,6 +9,6 @@ import 'core-js/features/set';
 import 'react';
 import 'react-dom';
 import 'lodash';
-import 'indicia';
+import '@indicia-js/core';
 import 'leaflet/dist/leaflet.css';
 import 'bigu';

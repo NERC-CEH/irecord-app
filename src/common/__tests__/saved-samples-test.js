@@ -1,4 +1,4 @@
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import savedSamples from 'saved_samples';
 // import { getRandomSample, generateSampleResponse } from 'test-helpers';
 

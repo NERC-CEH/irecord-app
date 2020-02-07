@@ -2,7 +2,7 @@
  * Print App information for debugging, BRC ACII art and a link to BRC website.
  **************************************************************************** */
 
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import CONFIG from 'config';
 import Log from './log';
 

@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * Functions to work with media.
  **************************************************************************** */
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import Log from './log';
 import Device from './device';
 

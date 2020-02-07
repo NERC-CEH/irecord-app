@@ -2,7 +2,7 @@
  * Manual testing functions.
  ******************************************************************** */
 import savedRecords from 'saved_samples';
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import GPS from 'mock-geolocation';
 import defaultSurvey from 'common/config/surveys/default';
 import Sample from 'sample';

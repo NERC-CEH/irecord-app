@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
+    "@indicia-js/core": "^5.0.0",
     "@ionic/core": "4.11.0",
     "@ionic/react": "4.11.0",
     "@ionic/react-router": "4.11.0",
@@ -43,7 +44,6 @@
     "formik": "^2.1.1",
     "hammerjs": "^2.0.8",
     "html-webpack-plugin": "3.2.0",
-    "indicia": "git://github.com/Indicia-Team/indicia-js.git#03a40e3c36657dae2e536838270721e45cf8b62d",
     "ionicons": "4.6.3",
     "leaflet": "0.7.7",
     "leaflet.gridref": "kazlauskis/Leaflet.GridRef#v1.0.3",

@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Log from 'helpers/log';
 import coreAttributes from 'common/config/surveys/index';
 import userModel from 'user_model';
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import { observable, extendObservable, observe } from 'mobx';
 import Occurrence from './occurrence';
 

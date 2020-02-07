@@ -1,4 +1,4 @@
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import _ from 'lodash';
 import { observable, observe, toJS } from 'mobx';
 import Media from './image';

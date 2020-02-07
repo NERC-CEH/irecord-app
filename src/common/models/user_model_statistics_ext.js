@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * App Model statistics functions.
  **************************************************************************** */
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import Log from 'helpers/log';
 import CONFIG from 'config';
 import { observable } from 'mobx';

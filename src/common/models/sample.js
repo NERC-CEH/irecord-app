@@ -2,7 +2,7 @@
  * Indicia Sample.
  **************************************************************************** */
 import _ from 'lodash';
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import { observable, intercept, toJS } from 'mobx';
 import CONFIG from 'config';
 import userModel from 'user_model';

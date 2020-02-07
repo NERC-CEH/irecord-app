@@ -1,4 +1,4 @@
-import Indicia from 'indicia';
+import Indicia from '@indicia-js/core';
 import Log from 'helpers/log';
 
 function fixPreviousVersions(URL) {
