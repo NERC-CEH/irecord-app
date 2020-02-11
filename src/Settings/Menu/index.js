@@ -5,7 +5,7 @@ import Log from 'helpers/log';
 import { observer } from 'mobx-react';
 import { resetDefaults, removeAllSynced, setAllToSend } from 'saved_samples';
 import AppHeader from 'Components/Header';
-import { success, error } from 'helpers/toast';
+import { success, warn, error } from 'helpers/toast';
 import Main from './Main';
 
 async function resetApp(appModel, userModel) {
@@ -33,8 +33,13 @@ async function deleteAllSamples() {
   }
 }
 
-async function sendAllSamples() {
+async function sendAllSamples(userModel) {
   Log('Settings:Menu:Controller: sending all samples.');
+ 
+  if (!userModel.hasLogIn()) {
+    warn(t('Please log in first to upload the records.'));
+    return;
+  }
 
   try {
     const affectedRecordsCount = await setAllToSend();
@@ -94,7 +99,7 @@ const Container = observer(({ appModel, userModel }) => {
         gridSquareUnit={gridSquareUnit}
         geolocateSurveyEntries={geolocateSurveyEntries}
         resetApp={() => resetApp(appModel, userModel)}
-        sendAllSamples={() => sendAllSamples()}
+        sendAllSamples={() => sendAllSamples(userModel)}
         deleteAllSamples={() => deleteAllSamples()}
         onToggle={(setting, checked) => onToggle(appModel, setting, checked)}
       />
