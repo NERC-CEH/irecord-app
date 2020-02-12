@@ -1,0 +1,56 @@
+{
+  "default": {
+    "title": {
+      "fonts": [
+        {
+          "font": "./SF-UI-Display-Thin.otf",
+          "supported": [
+            "en-GB"
+          ]
+        }
+      ],
+      "color": "#fff"
+    },
+    "show_complete_frame": false,
+    "background": "./background.jpg",
+    "padding": 50
+  },
+  "data": [
+    {
+      "filter": "map",
+      "title": {
+        "text": "Use GPS or find on a map"
+      }
+    },
+    {
+      "filter": "list",
+      "title": {
+        "text": "Record wildlife"
+      }
+    },
+    {
+      "filter": "record",
+      "title": {
+        "text": "Add details"
+      }
+    },
+    {
+      "filter": "edit",
+      "title": {
+        "text": "Species tailored attributes"
+      }
+    },
+    {
+      "filter": "survey",
+      "title": {
+        "text": "Capture species lists"
+      }
+    },
+    {
+      "filter": "surveys",
+      "title": {
+        "text": "Multiple surveys"
+      }
+    }
+  ]
+}

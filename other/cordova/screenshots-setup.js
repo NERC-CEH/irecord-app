@@ -1,6 +1,9 @@
 import savedRecords from 'saved_samples';
-import Factory from 'model_factory';
-import Image from 'common/models/Image';
+import defaultConfig from 'common/config/surveys/default';
+import defaultComplexConfig from 'common/config/surveys/complex/default';
+import Image from 'common/models/image';
+import Sample from 'sample';
+import Occurrence from 'occurrence';
 import images from './images.json';
 
 const location = {
@@ -13,7 +16,12 @@ const location = {
 };
 
 async function makeSample(taxon, img) {
-  const sample = await Factory.createSample({ taxon });
+  const sample = await defaultConfig.create(
+    Sample,
+    Occurrence,
+    null,
+    taxon
+  );
 
   sample.stopGPS();
   sample.attrs.location = { ...location };
@@ -57,7 +65,7 @@ async function createSamples() {
     images.ladybird
   );
 
-  let sample = await Factory.createSample({ complex: true });
+  let sample = await defaultComplexConfig.create(Sample, Occurrence);
   sample.stopGPS();
   sample.attrs.location = {
     accuracy: 500,
@@ -67,31 +75,27 @@ async function createSamples() {
     source: 'map',
     name: 'Cappleside',
   };
-  let subSample = await Factory.createSample({
-    taxon: {
-      array_id: 12186,
-      common_name: 'Wild Cherry',
-      found_in_name: 'common_name',
-      group: 27,
-      scientific_name: 'Volucella inanis',
-      species_id: 3,
-      warehouse_id: 113813,
-    },
+  let subSample = await defaultConfig.create(Sample, Occurrence, null, {
+    array_id: 12186,
+    common_name: 'Wild Cherry',
+    found_in_name: 'common_name',
+    group: 27,
+    scientific_name: 'Volucella inanis',
+    species_id: 3,
+    warehouse_id: 113813,
   });
   subSample.stopGPS();
   subSample.occurrences[0].attrs.number = 1;
   sample.samples.push(subSample);
 
-  subSample = await Factory.createSample({
-    taxon: {
-      array_id: 12186,
-      common_name: 'Grey Squirrel',
-      found_in_name: 'common_name',
-      group: 27,
-      scientific_name: 'Sciurus carolinensis',
-      species_id: 3,
-      warehouse_id: 113813,
-    },
+  subSample = await defaultConfig.create(Sample, Occurrence, null, {
+    array_id: 12186,
+    common_name: 'Grey Squirrel',
+    found_in_name: 'common_name',
+    group: 27,
+    scientific_name: 'Sciurus carolinensis',
+    species_id: 3,
+    warehouse_id: 113813,
   });
   subSample.stopGPS();
   subSample.occurrences[0].attrs.number = 15;
@@ -196,4 +200,4 @@ window.screenshotsPopulate = async () => {
   createSamples(savedRecords);
 };
 
-window.screenshotsPopulate()
+window.screenshotsPopulate();
