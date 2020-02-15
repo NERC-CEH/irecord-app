@@ -4,8 +4,8 @@
 
 * General Survey
 * Moth Survey
-* Added Sex attribute
-* Added ability to preserve records when logging out
+* Added more taxon specific attributes
+* Added ability to preserve local records when logging out
 * Added +/- buttons to abundance inputs
 
 ### Other
