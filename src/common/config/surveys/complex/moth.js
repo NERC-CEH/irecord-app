@@ -12,6 +12,7 @@ const sex = {
 };
 
 const stage = {
+  'Not recorded': 10647,
   Adult: 2189,
   Larva: 2190,
   'Larval web': 2191,
@@ -19,7 +20,7 @@ const stage = {
   Mine: 2193,
   Egg: 2194,
   'Egg batch': 2195,
-  'Not recorded': 10647,
+  Pupa: 17556,
 };
 
 const survey = {
@@ -172,7 +173,6 @@ const survey = {
         icon: 'stage',
         required: true,
         info: 'Please indicate the stage of the organism.',
-        default: 'Not Recorded',
         values: stage,
       },
       sex: {
