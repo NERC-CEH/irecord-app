@@ -51,6 +51,13 @@ class Component extends React.Component {
     noWrapper: PropTypes.bool,
   };
 
+  constructor(props) {
+    super(props);
+
+    const { model, surveyConfig } = this.props;
+    this.surveyConfig = surveyConfig || model.getSurvey();
+  }
+
   getLock = (model, attrName) => {
     const { appModel, useLocks } = this.props;
 
@@ -66,28 +73,83 @@ class Component extends React.Component {
     };
   };
 
-  // eslint-disable-next-line complexity
-  getMenuAttr = (element, surveyConfig) => {
-    const { model, onAttrToggle, url } = this.props;
+  getTaxonAttr = (element, occ, url) => {
+    const specie = occ.attrs.taxon || {};
+    // taxon
+    const scientificName = specie.scientific_name;
+    const commonName =
+      specie.found_in_name >= 0 && specie.common_names[specie.found_in_name];
 
-    const isOccurrenceOnly = model instanceof Occurrence;
-    const occ = isOccurrenceOnly ? model : model.occurrences[0];
+    return (
+      <IonItem key={element} detail routerLink={`${url}/taxon`}>
+        <IonLabel text-wrap>
+          {commonName && (
+            <IonLabel className="long" slot="end">
+              {commonName}
+            </IonLabel>
+          )}
+          <IonLabel className="long" slot="end">
+            <i>{scientificName}</i>
+          </IonLabel>
+        </IonLabel>
+      </IonItem>
+    );
+  };
 
-    const attrParts = element.split(':');
-    const [attrType, attrName] = attrParts;
+  getAttr = element => {
+    const { model } = this.props;
+
+    const [attrType, attrName] = this.getAttrParts(element);
 
     const isSampleAttr = attrType === 'smp';
+
+    const isOccurrenceOnly = model instanceof Occurrence;
+
     const isOccAttr = !isSampleAttr;
-    if (isSampleAttr && isOccurrenceOnly) {
-      throw new Error('Invalid attibute configuration');
+    const useOccurrenceWithinSample = !isOccurrenceOnly && isOccAttr;
+
+    return useOccurrenceWithinSample
+      ? this.surveyConfig.occ.attrs[attrName]
+      : this.surveyConfig.attrs[attrName];
+  };
+
+  getAttrParts = element => {
+    return element.split(':');
+  };
+
+  getIcon = attr => {
+    return icons[attr.icon] || icons.generic;
+  };
+
+  getLabel = (attr, attrName) => {
+    return attr.label || attrName.slice(0, 1).toUpperCase() + attrName.slice(1);
+  };
+
+  getToggleAttr = (element, currentVal, attr, attrName) => {
+    const { onAttrToggle } = this.props;
+    if (!onAttrToggle) {
+      throw new Error(`onAttrToggle is missing for ${element}`);
     }
 
-    const selectedModel = isSampleAttr ? model : occ;
+    const icon = this.getIcon(attr);
+    const label = this.getLabel(attr, attrName);
 
-    const useOccurrenceWithinSample = !isOccurrenceOnly && isOccAttr;
-    const attr = useOccurrenceWithinSample
-      ? surveyConfig.occ.attrs[attrName]
-      : surveyConfig.attrs[attrName];
+    return (
+      <IonItem key={element}>
+        <IonLabel>{t(label)}</IonLabel>
+        <Toggle
+          slot="end"
+          onToggle={checked => onAttrToggle(element, checked)}
+          checked={!!currentVal}
+        />
+        {icon}
+      </IonItem>
+    );
+  };
+
+  getCurrentValue = (element, occ, selectedModel) => {
+    const attr = this.getAttr(element);
+    const [, attrName] = this.getAttrParts(element);
 
     let currentVal;
     switch (element) {
@@ -117,75 +179,85 @@ class Component extends React.Component {
       }
     }
 
+    return currentVal;
+  };
+
+  getLocationAttr = (element, model, occ) => {
+    const attr = this.getAttr(element);
+
     const { required } = attr;
-    const missingRequired = required && !currentVal;
 
-    const label =
-      attr.label || attrName.slice(0, 1).toUpperCase() + attrName.slice(1);
+    const [attrType, attrName] = this.getAttrParts(element);
+    const routerLink = this.getRouterLink(attrType, occ, attrName);
 
-    const icon = icons[attr.icon] || icons.generic;
-
-    if (attr.type === 'toggle') {
-      if (!onAttrToggle) {
-        throw new Error(`onAttrToggle is missing for ${element}`);
-      }
-      return (
-        <IonItem key={element}>
-          <IonLabel>{t(label)}</IonLabel>
-          <Toggle
-            slot="end"
-            onToggle={checked => onAttrToggle(element, checked)}
-            checked={!!currentVal}
+    return (
+      <IonItem key={element} routerLink={routerLink} detail>
+        <IonIcon icon={pin} slot="start" />
+        <IonLabel text-wrap>
+          <LocationLabel
+            sample={model}
+            hideName={attr.hideName}
+            required={required}
           />
-          {icon}
-        </IonItem>
-      );
+        </IonLabel>
+        <IonLabel slot="start" className="location-label">
+          {t(attr.label || 'Location')}
+        </IonLabel>
+      </IonItem>
+    );
+  };
+
+  getRouterLink = (attrType, occ, attrName) => {
+    const { model, url } = this.props;
+    const isOccurrenceOnly = model instanceof Occurrence;
+
+    return attrType === 'occ' && !isOccurrenceOnly
+      ? `${url}/occ/${occ.cid}/${attrName}`
+      : `${url}/${attrName}`;
+  };
+
+  getMenuAttr = element => {
+    if (typeof element !== 'string') {
+      if (!element.page) {
+        throw new Error('No page description found when rendering menu item.');
+      }
+
+      return null;
     }
+
+    const { model, url } = this.props;
+
+    const isOccurrenceOnly = model instanceof Occurrence;
+    const occ = isOccurrenceOnly ? model : model.occurrences[0];
+
+    const [attrType, attrName] = this.getAttrParts(element);
+
+    const isSampleAttr = attrType === 'smp';
+    if (isSampleAttr && isOccurrenceOnly) {
+      throw new Error('Invalid attibute configuration');
+    }
+
+    const selectedModel = isSampleAttr ? model : occ;
+
+    const attr = this.getAttr(element);
     if (attr.type === 'taxon') {
-      const specie = occ.attrs.taxon || {};
-      // taxon
-      const scientificName = specie.scientific_name;
-      const commonName =
-        specie.found_in_name >= 0 && specie.common_names[specie.found_in_name];
-
-      return (
-        <IonItem key={element} detail routerLink={`${url}/taxon`}>
-          <IonLabel text-wrap>
-            {commonName && (
-              <IonLabel className="long" slot="end">
-                {commonName}
-              </IonLabel>
-            )}
-            <IonLabel className="long" slot="end">
-              <i>{scientificName}</i>
-            </IonLabel>
-          </IonLabel>
-        </IonItem>
-      );
+      return this.getTaxonAttr(element, occ, url);
     }
-
-    const routerLink =
-      attrType === 'occ' && !isOccurrenceOnly
-        ? `${url}/occ/${occ.cid}/${attrName}`
-        : `${url}/${attrName}`;
 
     if (attrName === 'location') {
-      return (
-        <IonItem key={element} routerLink={routerLink} detail>
-          <IonIcon icon={pin} slot="start" />
-          <IonLabel text-wrap>
-            <LocationLabel
-              sample={model}
-              hideName={attr.hideName}
-              required={required}
-            />
-          </IonLabel>
-          <IonLabel slot="start" className="location-label">
-            {t(attr.label || 'Location')}
-          </IonLabel>
-        </IonItem>
-      );
+      return this.getLocationAttr(element, model, occ);
     }
+
+    const currentVal = this.getCurrentValue(element, occ, selectedModel);
+
+    if (attr.type === 'toggle') {
+      return this.getToggleAttr(element, currentVal, attr, attrName);
+    }
+
+    const label = this.getLabel(attr, attrName);
+    const routerLink = this.getRouterLink(attrType, occ, attrName);
+    const isMissingRequired = attr.required && !currentVal;
+    const icon = this.getIcon(attr);
 
     return (
       <IonItem
@@ -196,8 +268,8 @@ class Component extends React.Component {
         {...this.getLock(selectedModel, attrName)}
       >
         {icon}
-        <IonLabel slot="end" className={missingRequired ? 'error' : ''}>
-          {missingRequired ? t('Required') : t(currentVal)}
+        <IonLabel slot="end" className={isMissingRequired ? 'error' : ''}>
+          {isMissingRequired ? t('Required') : t(currentVal)}
         </IonLabel>
         {t(label)}
       </IonItem>
@@ -205,14 +277,14 @@ class Component extends React.Component {
   };
 
   render() {
-    const { model, noWrapper, surveyConfig } = this.props;
-    const config = surveyConfig || model.getSurvey(); // eslint-disable-line
-    const { render } = config;
+    const { noWrapper } = this.props;
+
+    const { render } = this.surveyConfig;
     if (!render) {
       throw new Error('No render found');
     }
 
-    const attributes = render.map(attr => this.getMenuAttr(attr, config));
+    const attributes = render.map(this.getMenuAttr);
 
     if (noWrapper) {
       return attributes;
