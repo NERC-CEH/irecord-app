@@ -50,7 +50,7 @@ export default class index extends Component {
     const sample = this.state.subSample;
 
     const surveyConfig = { ...sample.getSurvey() };
-    surveyConfig.editForm = ['occ:taxon', 'smp:location', 'occ:comment'];
+    surveyConfig.render = ['occ:taxon', 'smp:location', 'occ:comment'];
 
     return (
       <IonPage id="survey-default-edit">

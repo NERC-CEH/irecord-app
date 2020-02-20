@@ -14,7 +14,7 @@ const survey = {
 
   taxonGroups: [], // all
 
-  editForm: ['occ:number', 'occ:stage', 'occ:sex', 'occ:identifiers'],
+  render: ['occ:number', 'occ:stage', 'occ:sex', 'occ:identifiers'],
 
   attrs: {
     location: {

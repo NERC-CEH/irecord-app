@@ -31,7 +31,7 @@ const survey = {
 
   webForm: 'enter-moth-sightings',
 
-  editForm: [
+  render: [
     'smp:location',
     'smp:date',
     'smp:recorders',
@@ -143,7 +143,7 @@ const survey = {
     },
   },
   occ: {
-    editForm: [
+    render: [
       'occ:taxon',
       'occ:number',
       'occ:stage',

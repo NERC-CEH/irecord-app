@@ -75,7 +75,7 @@ const survey = {
 
   taxonGroups: [89, 78, 87, 99, 81, 148, 133, 129],
 
-  editForm: [
+  render: [
     'smp:location',
     'smp:vice-county',
     'smp:date',
@@ -205,7 +205,7 @@ const survey = {
   },
 
   smp: {
-    editForm: [
+    render: [
       'occ:taxon',
       'smp:location',
       'occ:status',

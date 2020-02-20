@@ -207,12 +207,12 @@ class Component extends React.Component {
   render() {
     const { model, noWrapper, surveyConfig } = this.props;
     const config = surveyConfig || model.getSurvey(); // eslint-disable-line
-    const { editForm } = config;
-    if (!editForm) {
-      throw new Error('No editForm found');
+    const { render } = config;
+    if (!render) {
+      throw new Error('No render found');
     }
 
-    const attributes = editForm.map(attr => this.getMenuAttr(attr, config));
+    const attributes = render.map(attr => this.getMenuAttr(attr, config));
 
     if (noWrapper) {
       return attributes;

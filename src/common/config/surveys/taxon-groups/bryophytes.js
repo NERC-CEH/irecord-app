@@ -1,7 +1,7 @@
 export default {
   name: 'bryophytes',
   taxonGroups: [133, 129],
-  editForm: [
+  render: [
     'smp:habitat',
     'occ:microscopicallyChecked',
     'occ:fruit',

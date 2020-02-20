@@ -14,7 +14,7 @@ const survey = {
 
   webForm: 'enter-app-record-list',
 
-  editForm: ['smp:location', 'smp:date', 'smp:recorders', 'smp:comment'],
+  render: ['smp:location', 'smp:date', 'smp:recorders', 'smp:comment'],
 
   attrs: {
     location: {

@@ -23,7 +23,7 @@ const count = {
 export default {
   name: 'butterflies',
   taxonGroups: [104],
-  editForm: ['occ:number', 'occ:stage', 'occ:sex'],
+  render: ['occ:number', 'occ:stage', 'occ:sex'],
 
   attrs: {},
   occ: {

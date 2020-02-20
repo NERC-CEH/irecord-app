@@ -12,7 +12,7 @@ export default {
   name: 'dragonflies',
   taxonGroups: [107],
   
-  editForm: [
+  render: [
     'smp:site',
     'occ:adCount',
     'occ:coCount',
