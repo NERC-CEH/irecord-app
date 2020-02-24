@@ -23,7 +23,16 @@ const count = {
 export default {
   name: 'butterflies',
   taxonGroups: [104],
-  render: ['occ:number', 'occ:stage', 'occ:sex'],
+  render: [
+    {
+      id: 'occ:number',
+      label: 'Abundance',
+      icon: 'number',
+      group: ['occ:number', 'occ:number-ranges'],
+    },
+    'occ:stage',
+    'occ:sex',
+  ],
 
   attrs: {},
   occ: {
@@ -51,6 +60,7 @@ export default {
         info: 'How many individuals of this type?',
         label: 'Abundance',
         icon: 'number',
+        type: 'slider',
         incrementShortcut: true,
       },
       'number-ranges': {
