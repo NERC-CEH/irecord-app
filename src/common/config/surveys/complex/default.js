@@ -5,6 +5,7 @@ import DateHelp from 'helpers/date';
 import appModel from 'app_model';
 import userModel from 'user_model';
 import defaultSurvey from '../default';
+import plantsFungiSurvey from '../taxon-groups/plantsFungi';
 
 const survey = {
   name: 'default',
@@ -106,9 +107,13 @@ const survey = {
 
       const sampleSurvey = sample.getSurvey();
       const [occ] = sample.occurrences;
-      const isNumberLocked = appModel.getAttrLock(occ, 'number');
       const numberAttrConfig = sampleSurvey.occ.attrs.number || {};
-      if (!isNumberLocked && numberAttrConfig.incrementShortcut) {
+      const shouldIncrement = numberAttrConfig.incrementShortcut;
+      const isNumberLocked = appModel.getAttrLock(occ, 'number');
+      const isPlantOrFungi = plantsFungiSurvey.taxonGroups.includes(
+        taxon.group
+      );
+      if (shouldIncrement && !isNumberLocked && !isPlantOrFungi) {
         sample.occurrences[0].attrs.number = 1;
       }
 
