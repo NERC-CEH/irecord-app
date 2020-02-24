@@ -5,10 +5,26 @@ import { IonPage, NavContext, IonButton, IonIcon } from '@ionic/react';
 import Log from 'helpers/log';
 import { warn } from 'helpers/toast';
 import alert from 'helpers/alert';
-import Attr, { getModel } from 'Components/Attr';
 import { lock, unlock } from 'ionicons/icons';
 import AppHeader from 'Components/Header';
 import AppMain from 'Components/Main';
+import Attr, { getModel } from './components/Attr';
+import ComplexAttr from './components/ComplexAttr';
+
+function getRenderConfig(model, configId) {
+  let survey = model.getSurvey();
+  let config;
+  if (survey.render) {
+    config = survey.render.find(e => e === configId || e.id === configId);
+  }
+
+  if (!config) {
+    survey = model.parent.getSurvey();
+    config = survey.render.find(e => e === configId || e.id === configId);
+  }
+
+  return config;
+}
 
 @observer
 class Controller extends React.Component {
@@ -28,33 +44,36 @@ class Controller extends React.Component {
 
     const model = getModel(savedSamples, match);
 
-    const { attr } = match.params;
-    this.attrType = match.params.occId ? 'occ' : 'smp';
+    const { occId, attr } = match.params;
+    this.attrType = occId ? 'occ' : 'smp';
     this.attrName = attr;
 
-    this.survey = model.getSurvey();
     const locked = appModel.isAttrLocked(model, this.attrName);
     this.initiallyLocked = locked;
 
     this.state = { model, locked };
-    const surveyAttrs = this.survey.attrs;
 
-    this.attrConfig = surveyAttrs[this.attrName];
+    this.survey = model.getSurvey();
 
-    this.isMultiChoiceNumber =
-      this.attrName === 'number' && this.attrConfig.type !== 'slider';
+    const id = `${this.attrType}:${this.attrName}`;
+    const renderConfig = getRenderConfig(model, id);
+    if (typeof renderConfig !== 'string') {
+      this.complexAttr = true;
+      this.attrConfig = renderConfig;
 
-    if (this.isMultiChoiceNumber) {
-      this.attrConfig = surveyAttrs['number-ranges'];
+      this.attrConfig.groupConfig = [];
+      this.initialVal = [];
+
+      this.attrConfig.group.forEach(fullAttrName => {
+        const [, attrName] = fullAttrName.split(':');
+        this.attrConfig.groupConfig.push(this.survey.attrs[attrName]);
+        this.initialVal[attrName] = this.state.model.attrs[attrName];
+      });
+    } else {
+      this.attrConfig = this.survey.attrs[this.attrName];
+      this.initialVal = this.state.model.attrs[this.attrName];
     }
 
-    this.initialVal = this.state.model.attrs[this.attrName];
-    if (this.isMultiChoiceNumber) {
-      this.initialVal = [
-        this.state.model.attrs['number-ranges'],
-        this.state.model.attrs.number,
-      ];
-    }
     this.latestVal = this.initialVal;
   }
 
@@ -80,21 +99,16 @@ class Controller extends React.Component {
     const values = this.latestVal;
     let newVal = values;
 
-    if (this.isMultiChoiceNumber) {
-      const [rangesValue, sliderValue] = values;
-
-      // todo: validate before setting up
-      if (sliderValue) {
-        // specific number
-        newVal = sliderValue;
-        model.attrs.number = sliderValue;
-        delete model.attrs['number-ranges'];
-      } else {
-        // number ranges
-        newVal = rangesValue;
-        model.attrs['number-ranges'] = rangesValue;
-        delete model.attrs.number;
-      }
+    if (this.complexAttr) {
+      Object.entries(values).forEach(([key, value]) => {
+        // todo: validate before setting up
+        if (!value) {
+          delete model.attrs[key];
+          return;
+        }
+        newVal = value;
+        model.attrs[key] = value;
+      });
     } else {
       // validate before setting up
       if (this.attrConfig.isValid) {
@@ -148,12 +162,29 @@ class Controller extends React.Component {
     }
   }
 
+  getAttr = () => {
+    if (this.complexAttr) {
+      return (
+        <ComplexAttr
+          attrConfig={this.attrConfig}
+          onValueChange={this.onValueChange}
+          initialVal={this.initialVal}
+        />
+      );
+    }
+
+    return (
+      <Attr
+        attrConfig={this.attrConfig}
+        onValueChange={this.onValueChange}
+        initialVal={this.initialVal}
+      />
+    );
+  };
+
   render() {
     const { useLocks } = this.props;
-    const { model, locked } = this.state;
-    const rangesValues = this.isMultiChoiceNumber
-      ? model.attrs['number-ranges']
-      : null;
+    const { locked } = this.state;
 
     const lockBtn = useLocks ? (
       <IonButton id="lock-btn" onClick={this.onLockClick}>
@@ -169,15 +200,7 @@ class Controller extends React.Component {
           onLeave={this.onExit}
           rightSlot={lockBtn}
         />
-        <AppMain>
-          <Attr
-            rangesValues={rangesValues}
-            attrConfig={this.attrConfig}
-            onValueChange={this.onValueChange}
-            isMultiChoiceNumber={this.isMultiChoiceNumber}
-            initialVal={this.initialVal}
-          />
-        </AppMain>
+        <AppMain>{this.getAttr()}</AppMain>
       </IonPage>
     );
   }

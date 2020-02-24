@@ -6,25 +6,11 @@ import Log from 'helpers/log';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import NumberAttr from './components/NumberAttr';
 import InputList from './components/InputList';
 
 @observer
 class Component extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const { isMultiChoiceNumber, initialVal } = props;
-    let currentVal = initialVal;
-    if (isMultiChoiceNumber) {
-      const [, sliderValue] = initialVal;
-      currentVal = sliderValue;
-    }
-
-    this.state = {
-      currentVal,
-    };
-  }
+  state = { currentVal: this.props.initialVal };
 
   componentDidMount() {
     this._ismounted = true;
@@ -41,20 +27,18 @@ class Component extends React.Component {
     this.props.onValueChange(val, radioWasClicked);
   };
 
-  getInputs = () => {
-    const { attrConfig, rangesValues, isMultiChoiceNumber } = this.props;
-
-    if (isMultiChoiceNumber) {
-      return (
-        <NumberAttr
-          config={attrConfig}
-          rangesValue={rangesValues}
-          sliderValue={this.state.currentVal}
-          onChange={(val, radioWasClicked) =>
-            this.onValueChanged(val, radioWasClicked)}
-        />
-      );
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.controlled &&
+      prevProps.initialVal !== this.props.initialVal
+    ) {
+      // eslint-disable-next-line
+      this.setState({ currentVal: this.props.initialVal });
     }
+  }
+
+  render() {
+    const { attrConfig } = this.props;
 
     switch (attrConfig.type) {
       case 'date':
@@ -110,19 +94,14 @@ class Component extends React.Component {
     }
 
     return null;
-  };
-
-  render() {
-    return this.getInputs();
   }
 }
 
 Component.propTypes = {
-  rangesValues: PropTypes.any,
   attrConfig: PropTypes.object.isRequired,
-  isMultiChoiceNumber: PropTypes.bool,
   onValueChange: PropTypes.func.isRequired,
   initialVal: PropTypes.any,
+  controlled: PropTypes.bool,
 };
 
 export default Component;

@@ -74,6 +74,9 @@ class Component extends React.Component {
   };
 
   getTaxonAttr = (element, occ, url) => {
+    if (!(occ instanceof Occurrence)) {
+      throw new Error('Invalid taxon attr configuration');
+    }
     const specie = occ.attrs.taxon || {};
     // taxon
     const scientificName = specie.scientific_name;
@@ -147,24 +150,28 @@ class Component extends React.Component {
     );
   };
 
-  getCurrentValue = (element, occ, selectedModel) => {
-    const attr = this.getAttr(element);
+  getCurrentValue = (attr, element, selectedModel, isComplex) => {
+    if (isComplex) {
+      let value;
+      attr.group.forEach(nestedElement => {
+        const [, attrName] = this.getAttrParts(nestedElement);
+
+        if (!selectedModel.attrs[attrName]) {
+          return;
+        }
+        value = selectedModel.attrs[attrName];
+      });
+
+      return value;
+    }
+
     const [, attrName] = this.getAttrParts(element);
 
     let currentVal;
-    switch (element) {
-      case 'occ:number':
-        currentVal = occ.attrs.number;
-        if (!currentVal) {
-          currentVal = occ.attrs['number-ranges'];
-        }
-        break;
-      default:
-        if (attr.metadata) {
-          currentVal = selectedModel.metadata[attrName];
-        } else {
-          currentVal = selectedModel.attrs[attrName];
-        }
+    if (attr.metadata) {
+      currentVal = selectedModel.metadata[attrName];
+    } else {
+      currentVal = selectedModel.attrs[attrName];
     }
 
     if (currentVal) {
@@ -182,20 +189,16 @@ class Component extends React.Component {
     return currentVal;
   };
 
-  getLocationAttr = (element, model, occ) => {
-    const attr = this.getAttr(element);
-
-    const { required } = attr;
-
-    const [attrType, attrName] = this.getAttrParts(element);
-    const routerLink = this.getRouterLink(attrType, occ, attrName);
+  getLocationAttr = (attr, element, selectedModel) => {
+    const { required } = this.getAttr(element);
+    const routerLink = this.getRouterLink(element, selectedModel);
 
     return (
       <IonItem key={element} routerLink={routerLink} detail>
         <IonIcon icon={pin} slot="start" />
         <IonLabel text-wrap>
           <LocationLabel
-            sample={model}
+            sample={selectedModel}
             hideName={attr.hideName}
             required={required}
           />
@@ -207,55 +210,70 @@ class Component extends React.Component {
     );
   };
 
-  getRouterLink = (attrType, occ, attrName) => {
+  getRouterLink = (element, selectedModel) => {
     const { model, url } = this.props;
     const isOccurrenceOnly = model instanceof Occurrence;
 
+    const [attrType, attrName] = this.getAttrParts(element);
+
     return attrType === 'occ' && !isOccurrenceOnly
-      ? `${url}/occ/${occ.cid}/${attrName}`
+      ? `${url}/occ/${selectedModel.cid}/${attrName}`
       : `${url}/${attrName}`;
   };
 
   getMenuAttr = element => {
-    if (typeof element !== 'string') {
-      if (!element.page) {
+    let complexElement;
+    const isComplex = typeof element !== 'string';
+    if (isComplex) {
+      if (!element.group) {
         throw new Error('No page description found when rendering menu item.');
       }
-
-      return null;
+      complexElement = element;
+      element = complexElement.id; // eslint-disable-line
     }
+
+    const [attrType, attrName] = this.getAttrParts(element);
 
     const { model, url } = this.props;
 
     const isOccurrenceOnly = model instanceof Occurrence;
-    const occ = isOccurrenceOnly ? model : model.occurrences[0];
-
-    const [attrType, attrName] = this.getAttrParts(element);
 
     const isSampleAttr = attrType === 'smp';
     if (isSampleAttr && isOccurrenceOnly) {
       throw new Error('Invalid attibute configuration');
     }
 
-    const selectedModel = isSampleAttr ? model : occ;
+    const selectedModel =
+      isSampleAttr || isOccurrenceOnly ? model : model.occurrences[0];
 
-    const attr = this.getAttr(element);
+    let attr;
+    if (isComplex) {
+      attr = complexElement;
+    } else {
+      attr = this.getAttr(element);
+    }
+
     if (attr.type === 'taxon') {
-      return this.getTaxonAttr(element, occ, url);
+      return this.getTaxonAttr(element, selectedModel, url);
     }
 
     if (attrName === 'location') {
-      return this.getLocationAttr(element, model, occ);
+      return this.getLocationAttr(attr, element, selectedModel);
     }
 
-    const currentVal = this.getCurrentValue(element, occ, selectedModel);
+    const currentVal = this.getCurrentValue(
+      attr,
+      element,
+      selectedModel,
+      isComplex
+    );
 
     if (attr.type === 'toggle') {
       return this.getToggleAttr(element, currentVal, attr, attrName);
     }
 
     const label = this.getLabel(attr, attrName);
-    const routerLink = this.getRouterLink(attrType, occ, attrName);
+    const routerLink = this.getRouterLink(element, selectedModel);
     const isMissingRequired = attr.required && !currentVal;
     const icon = this.getIcon(attr);
 

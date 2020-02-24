@@ -105,10 +105,10 @@ const survey = {
       );
 
       const sampleSurvey = sample.getSurvey();
-      if (
-        sampleSurvey.occ.attrs.number &&
-        sampleSurvey.occ.attrs.number.incrementShortcut
-      ) {
+      const [occ] = sample.occurrences;
+      const isNumberLocked = appModel.getAttrLock(occ, 'number');
+      const numberAttrConfig = sampleSurvey.occ.attrs.number || {};
+      if (!isNumberLocked && numberAttrConfig.incrementShortcut) {
         sample.occurrences[0].attrs.number = 1;
       }
 

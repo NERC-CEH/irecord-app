@@ -14,7 +14,18 @@ const survey = {
 
   taxonGroups: [], // all
 
-  render: ['occ:number', 'occ:stage', 'occ:sex', 'occ:identifiers'],
+  render: [
+    {
+      id: 'occ:number',
+      label: 'Abundance',
+      icon: 'number',
+      group: ['occ:number', 'occ:number-ranges'],
+    },
+
+    'occ:stage',
+    'occ:sex',
+    'occ:identifiers',
+  ],
 
   attrs: {
     location: {
@@ -123,11 +134,13 @@ const survey = {
         info: 'How many individuals of this type?',
         label: 'Abundance',
         icon: 'number',
+        type: 'slider',
         incrementShortcut: true,
       },
       'number-ranges': {
         id: 523,
         default: 'Present',
+        type: 'radio',
         values: {
           1: 665,
           '2-5': 666,
@@ -220,16 +233,12 @@ const survey = {
 
     const surveyConfig = sample.getSurvey();
     const surveyName = surveyConfig.name;
-    const surveyLocks = {
-      ...{},
-      ...coreLocks,
-      ...defaultSurveyLocks[surveyName],
-    };
-    appModel.appendAttrLocks(sample, surveyLocks, skipLocation);
+    const surveyLocks = defaultSurveyLocks[surveyName];
+    const fullSurveyLocks = { ...coreLocks, ...surveyLocks };
+    appModel.appendAttrLocks(sample, fullSurveyLocks, skipLocation);
 
-    // check if location attr is not locked
-    if (!appModel.getAttrLock('smp', 'location') && !skipGPS) {
-      // no previous location
+    const isLocationLocked = appModel.getAttrLock('smp', 'location');
+    if (!isLocationLocked && !skipGPS) {
       sample.startGPS();
     }
 

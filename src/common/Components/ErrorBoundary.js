@@ -31,7 +31,7 @@ export default class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      console.log(this.state.eventId);
+      console.error(this.state.eventId);
       // TODO: show an error message
       return null;
     }
