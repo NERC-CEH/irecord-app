@@ -91,7 +91,8 @@ const extension = {
   },
 
   _setGPSlocationSetter() {
-    if (!this.metadata.complex_survey) {
+    const isNotPlantSurvey = this.metadata.complex_survey !== 'plant';
+    if (isNotPlantSurvey) {
       return;
     }
 
