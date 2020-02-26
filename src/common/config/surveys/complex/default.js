@@ -4,8 +4,38 @@
 import DateHelp from 'helpers/date';
 import appModel from 'app_model';
 import userModel from 'user_model';
-import defaultSurvey from '../default';
-import plantsFungiSurvey from '../taxon-groups/plantsFungi';
+import coreAttributes from '../index';
+import plantFungiSurvey from '../taxon-groups/plantFungi';
+
+function appendLockedAttrs(sample) {
+  const defaultSurveyLocks = appModel.attrs.attrLocks.complex || {};
+  const locks = defaultSurveyLocks['default-default'] || {}; // bypassing the API here!
+  const coreLocks = Object.keys(locks).reduce((agg, key) => {
+    if (coreAttributes.includes(key)) {
+      agg[key] = locks[key];
+    }
+    return agg;
+  }, {});
+  
+  const surveyLocks = appModel.getAllLocks(sample);
+
+  const fullSurveyLocks = { ...coreLocks, ...surveyLocks };
+
+  appModel.appendAttrLocks(sample, fullSurveyLocks, true);
+}
+
+function autoIncrementAbundance(sample) {
+  const sampleSurvey = sample.getSurvey();
+  const numberAttrConfig = sampleSurvey.occ.attrs.number || {};
+  const shouldIncrement = numberAttrConfig.incrementShortcut;
+  const { taxon } = sample.occurrences[0].attrs;
+  const isPlantOrFungi = plantFungiSurvey.taxonGroups.includes(taxon.group);
+  const locks = appModel.getAllLocks(sample);
+  const isNumberLocked = locks['occ:number'];
+  if (shouldIncrement && !isNumberLocked && !isPlantOrFungi) {
+    sample.occurrences[0].attrs.number = 1;
+  }
+}
 
 const survey = {
   name: 'default',
@@ -95,31 +125,20 @@ const survey = {
   },
 
   smp: {
-    async create(Sample, Occurrence, taxon) {
-      const sample = await defaultSurvey.create(
-        Sample,
-        Occurrence,
-        null,
-        taxon,
-        true,
-        true
-      );
+    async create(Sample, Occurrence, taxon, surveySample) {
+      const occurrence = new Occurrence({ attrs: { taxon } });
+      const sample = new Sample();
+      sample.occurrences.push(occurrence);
+      surveySample.samples.push(sample);
 
-      const sampleSurvey = sample.getSurvey();
-      const [occ] = sample.occurrences;
-      const numberAttrConfig = sampleSurvey.occ.attrs.number || {};
-      const shouldIncrement = numberAttrConfig.incrementShortcut;
-      const isNumberLocked = appModel.getAttrLock(occ, 'number');
-      const isPlantOrFungi = plantsFungiSurvey.taxonGroups.includes(
-        taxon.group
-      );
-      if (shouldIncrement && !isNumberLocked && !isPlantOrFungi) {
-        sample.occurrences[0].attrs.number = 1;
-      }
+      appendLockedAttrs(sample);
+      autoIncrementAbundance(sample);
 
       if (appModel.attrs.geolocateSurveyEntries) {
         sample.startGPS();
       }
+
+      await surveySample.save();
 
       return sample;
     },

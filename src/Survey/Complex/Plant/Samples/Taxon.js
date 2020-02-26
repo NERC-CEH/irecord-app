@@ -3,48 +3,12 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import AppHeader from 'Components/Header';
 import TaxonSearch from 'Components/TaxonSearch';
-import LocHelp from 'helpers/location';
 import AppMain from 'Components/Main';
 import { IonPage, NavContext } from '@ionic/react';
 import { success } from 'helpers/toast';
 import plantSurvey from 'common/config/surveys/complex/plant';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
-
-function isSurveyLocationSet(surveySample) {
-  const { location } = surveySample.attrs;
-  const accurateEnough = LocHelp.checkGridType(
-    location,
-    surveySample.metadata.gridSquareUnit
-  );
-  return accurateEnough && location.name;
-}
-
-/**
- * Configures survey subsample with default attrs and sets it
- * to the parent survey sample.
- * @param surveySample
- * @param sample
- * @param taxon
- * @returns {*}
- */
-function configNewSample(surveySample, subSample) {
-  // set sample location to survey's location which
-  // can be corrected by GPS or user later on
-  // TODO: listen for surveySample attribute changes
-  if (isSurveyLocationSet(surveySample)) {
-    const surveyLocation = JSON.parse(
-      JSON.stringify(surveySample.attrs.location)
-    );
-    delete surveyLocation.name;
-
-    subSample.attrs.location = surveyLocation;
-
-    subSample.startGPS();
-  }
-
-  surveySample.samples.push(subSample);
-}
 
 @observer
 class Controller extends React.Component {
@@ -69,22 +33,8 @@ class Controller extends React.Component {
     };
   }
 
-  getNewSample = async (taxon, editButtonClicked) => {
-    const newSubSample = await plantSurvey.smp.create(
-      Sample,
-      Occurrence,
-      taxon
-    );
-
-    configNewSample(this.surveySample, newSubSample);
-    await this.surveySample.save();
-
-    if (editButtonClicked) {
-      return newSubSample;
-    }
-
-    return newSubSample;
-  };
+  getNewSample = async taxon =>
+    plantSurvey.smp.create(Sample, Occurrence, taxon, this.surveySample);
 
   render() {
     const { match, history } = this.props;

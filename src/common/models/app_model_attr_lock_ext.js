@@ -1,46 +1,63 @@
 /** ****************************************************************************
  * App Model attribute lock functions.
  **************************************************************************** */
-import _ from 'lodash';
 import Log from 'helpers/log';
 import coreAttributes from 'common/config/surveys/index';
 import userModel from 'user_model';
 import Indicia from '@indicia-js/core';
-import { observable, extendObservable, observe } from 'mobx';
+import { extendObservable, observe } from 'mobx';
 import Occurrence from './occurrence';
 
-function getSurveyConfig(model, attrName) {
+function getFullAttrName(model, attrName) {
   let attrType = model;
-  let surveyConfig = { name: 'default', complex: false };
 
   if (typeof model !== 'string') {
     attrType = model instanceof Indicia.Sample ? `smp` : `occ`;
+  }
 
+  return `${attrType}:${attrName}`;
+}
+
+function getDefaultComplexSurveyConfig(model, fullAttrName) {
+  const isSample = model instanceof Indicia.Sample;
+  const isOccurrenceWithoutParent = !isSample && !model.parent;
+  if (isOccurrenceWithoutParent) {
+    Log('Survey lock occurrence without sample parent', 'e');
+    return null;
+  }
+
+  const surveyConfig = isSample ? model.getSurvey() : model.parent.getSurvey();
+
+  const isCoreAttr = coreAttributes.includes(fullAttrName);
+  const surveyName = isCoreAttr ? 'default' : surveyConfig.name;
+
+  return ['complex', `default-${surveyName}`];
+}
+
+function getSurveyConfig(model, fullAttrName) {
+  let surveyConfig = { name: 'default', complex: false };
+
+  if (typeof model !== 'string') {
     const getTopParent = m => (m.parent ? getTopParent(m.parent) : m);
     const surveyModel = getTopParent(model);
 
     surveyConfig = surveyModel.getSurvey();
-    const isDefaultComplex =
-      surveyConfig.complex && surveyConfig.name === 'default';
-    if (isDefaultComplex) {
-      // use non-complex default namespace
-      const isSample = model instanceof Indicia.Sample;
-      const isOccurrenceWithoutParent = !isSample && !model.parent;
-      if (isOccurrenceWithoutParent) {
-        Log('Survey lock occurrence without sample parent', 'e');
-      } else {
-        surveyConfig = isSample ? model.getSurvey() : model.parent.getSurvey();
-      }
-    }
   }
-  const fullAttrName = `${attrType}:${attrName}`;
 
-  const surveyType = surveyConfig.complex ? 'complex' : 'default';
+  const isComplex = surveyConfig.complex;
+  if (isComplex) {
+    const isDefaultComplex = isComplex && surveyConfig.name === 'default';
+    if (isDefaultComplex) {
+      return getDefaultComplexSurveyConfig(model, fullAttrName);
+    }
+
+    return ['complex', surveyConfig.name];
+  }
+
   const isCoreAttr = coreAttributes.includes(fullAttrName);
-  const isCoreDefault = !surveyConfig.complex && isCoreAttr;
-  const surveyName = isCoreDefault ? 'default' : surveyConfig.name;
+  const surveyName = isCoreAttr ? 'default' : surveyConfig.name;
 
-  return [fullAttrName, surveyType, surveyName];
+  return ['default', surveyName];
 }
 
 export default {
@@ -63,74 +80,59 @@ export default {
     observe(userModel.attrs, 'isLoggedIn', onLogout.bind(this));
   },
 
-  _getRawLocks(surveyType, surveyName) {
-    const locks = this.attrs.attrLocks;
+  getAllLocks(model, fullAttrName = '') {
+    const [surveyType, surveyName] = getSurveyConfig(model, fullAttrName);
 
-    if (!locks[surveyType] || !locks[surveyType][surveyName]) {
-      return null;
+    const { attrLocks } = this.attrs;
+    if (!attrLocks[surveyType] || !attrLocks[surveyType][surveyName]) {
+      return {};
     }
 
-    return locks;
-  },
-
-  _initRawLocks(surveyType, surveyName) {
-    const locks = this.attrs.attrLocks;
-
-    if (!locks[surveyType]) {
-      extendObservable(locks, {
-        [surveyType]: {},
-      });
-    }
-    extendObservable(locks[surveyType], {
-      [surveyName]: {},
-    });
-    this.attrs.attrLocks = locks;
-    return this.attrs.attrLocks;
+    return attrLocks[surveyType][surveyName];
   },
 
   async setAttrLock(model, attr, value) {
-    const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
+    const fullAttrName = getFullAttrName(model, attr);
+    const [surveyType, surveyName] = getSurveyConfig(model, fullAttrName);
+    const { attrLocks } = this.attrs;
 
-    const val = _.cloneDeep(value);
-    let locks = this._getRawLocks(surveyType, surveyName);
-    if (!locks) {
-      locks = this._initRawLocks(surveyType, surveyName);
+    if (!attrLocks[surveyType]) {
+      extendObservable(attrLocks, {
+        [surveyType]: {},
+      });
     }
 
-    locks[surveyType][surveyName] = {
-      ...locks[surveyType][surveyName],
-      [fullAttrName]: val,
-    };
-    this.attrs.attrLocks = observable(locks);
+    if (!attrLocks[surveyType][surveyName]) {
+      extendObservable(attrLocks[surveyType], {
+        [surveyName]: {},
+      });
+    }
+
+    this.attrs.attrLocks = attrLocks;
+
+    const val = JSON.parse(JSON.stringify(value));
+    this.attrs.attrLocks[surveyType][surveyName][fullAttrName] = val;
+
     await this.save();
   },
 
-  unsetAttrLock(model, attr) {
-    const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
+  async unsetAttrLock(model, attr) {
+    const fullAttrName = getFullAttrName(model, attr);
+    const locks = this.getAllLocks(model, fullAttrName);
 
-    const locks = this._getRawLocks(surveyType, surveyName);
-    if (!locks) {
-      return;
-    }
-
-    delete locks[surveyType][surveyName][fullAttrName];
-    this.attrs.attrLocks = observable(locks);
-    this.save();
+    delete locks[fullAttrName];
+    await this.save();
   },
 
   getAttrLock(model, attr) {
-    const [fullAttrName, surveyType, surveyName] = getSurveyConfig(model, attr);
+    const fullAttrName = getFullAttrName(model, attr);
+    const locks = this.getAllLocks(model, fullAttrName);
 
-    const locks = this._getRawLocks(surveyType, surveyName);
-    if (!locks) {
-      return null;
-    }
-
-    return locks[surveyType][surveyName][fullAttrName];
+    return locks[fullAttrName];
   },
 
   isAttrLocked(model, attr) {
-    const [fullAttrName] = getSurveyConfig(model, attr);
+    const fullAttrName = getFullAttrName(model, attr);
 
     let value;
     let lockedVal = this.getAttrLock(model, attr);
@@ -138,6 +140,7 @@ export default {
       return false;
     }
 
+    // TODO: clean this mess by splitting and moving to surveys attrs
     switch (fullAttrName) {
       case 'smp:activity':
         value = model.attrs[attr] || {};
@@ -160,9 +163,11 @@ export default {
         return lockedVal === value.name;
       case 'occ:number':
         value = model.attrs[attr];
+
         return (
           lockedVal === model.attrs[attr] ||
-          lockedVal === model.attrs['number-ranges']
+          lockedVal === model.attrs['number-ranges'] ||
+          lockedVal === model.attrs.numberDAFOR
         );
       case 'smp:date':
         value = model.attrs[attr];
@@ -213,7 +218,7 @@ export default {
 
       const selectedModel = selectModel(attrType);
 
-      const val = _.cloneDeep(value);
+      const val = JSON.parse(JSON.stringify(value));
       switch (attr) {
         case 'smp:activity':
           if (!userModel.hasActivityExpired(val)) {
@@ -247,6 +252,19 @@ export default {
           break;
         case 'occ:number':
           const isValidNumber = !Number.isNaN(Number(val));
+
+          const isDAFOR = [
+            'Dominant',
+            'Abundant',
+            'Frequent',
+            'Occasional',
+            'Rare',
+          ].includes(val);
+
+          if (!isValidNumber && isDAFOR) {
+            selectedModel.attrs.numberDAFOR = val;
+            break;
+          }
           const numberAttrName = isValidNumber ? 'number' : 'number-ranges';
           selectedModel.attrs[numberAttrName] = val;
           break;

@@ -15,12 +15,17 @@ function getRenderConfig(model, configId) {
   let survey = model.getSurvey();
   let config;
   if (survey.render) {
-    config = survey.render.find(e => e === configId || e.id === configId);
+    let { render } = survey;
+    render = typeof render === 'function' ? render(model) : render;
+    config = render.find(e => e === configId || e.id === configId);
   }
 
-  if (!config) {
+  const searchParent = !config;
+  if (searchParent) {
     survey = model.parent.getSurvey();
-    config = survey.render.find(e => e === configId || e.id === configId);
+    let { render } = survey;
+    render = typeof render === 'function' ? render(model) : render;
+    config = render.find(e => e === configId || e.id === configId);
   }
 
   return config;
@@ -57,7 +62,7 @@ class Controller extends React.Component {
 
     const id = `${this.attrType}:${this.attrName}`;
     const renderConfig = getRenderConfig(model, id);
-    if (typeof renderConfig !== 'string') {
+    if (renderConfig && typeof renderConfig !== 'string') {
       this.complexAttr = true;
       this.attrConfig = renderConfig;
 
@@ -100,6 +105,7 @@ class Controller extends React.Component {
     let newVal = values;
 
     if (this.complexAttr) {
+      newVal = null; // in case no values selected
       Object.entries(values).forEach(([key, value]) => {
         // todo: validate before setting up
         if (!value) {

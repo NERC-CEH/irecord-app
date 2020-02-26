@@ -2,6 +2,7 @@
  * Plant survey configuration file.
  **************************************************************************** */
 import DateHelp from 'helpers/date';
+import LocHelp from 'helpers/location';
 import VCs from 'common/data/vice_counties.data';
 import userModel from 'user_model';
 import appModel from 'app_model';
@@ -34,6 +35,15 @@ function verify(attrs, subSample) {
   }
 
   return attributes;
+}
+
+function isSurveyLocationSet(surveySample) {
+  const { location } = surveySample.attrs;
+  const accurateEnough = LocHelp.checkGridType(
+    location,
+    surveySample.metadata.gridSquareUnit
+  );
+  return accurateEnough && location.name;
 }
 
 const sharedSmpAttrs = {
@@ -320,10 +330,10 @@ const survey = {
 
     verify: attrs => verify(attrs, true),
 
-    create(Sample, Occurrence, taxon) {
+    async create(Sample, Occurrence, taxon, surveySample) {
       const { gridSquareUnit, geolocateSurveyEntries } = appModel.attrs;
 
-      const newSubSample = new Sample({
+      const sample = new Sample({
         attrs: {
           location_type: 'british',
         },
@@ -334,16 +344,33 @@ const survey = {
       });
 
       if (geolocateSurveyEntries) {
-        newSubSample.startGPS();
+        sample.startGPS();
       }
 
       const occurrence = new Occurrence({ attrs: { taxon } });
-      newSubSample.occurrences.push(occurrence);
+      sample.occurrences.push(occurrence);
 
       const locks = appModel.attrs.attrLocks.complex.plant || {};
-      appModel.appendAttrLocks(newSubSample, locks);
+      appModel.appendAttrLocks(sample, locks);
 
-      return Promise.resolve(newSubSample);
+      // set sample location to survey's location which
+      // can be corrected by GPS or user later on
+      // TODO: listen for surveySample attribute changes
+      if (isSurveyLocationSet(surveySample)) {
+        const surveyLocation = JSON.parse(
+          JSON.stringify(surveySample.attrs.location)
+        );
+        delete surveyLocation.name;
+
+        sample.attrs.location = surveyLocation;
+
+        sample.startGPS();
+      }
+
+      surveySample.samples.push(sample);
+      await surveySample.save();
+      
+      return sample;
     },
   },
   verify,

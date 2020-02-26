@@ -21,7 +21,6 @@ function Component({ surveys, listHeight }) {
   [...surveys].forEach(survey => {
     const date = roundDate(new Date(survey.attrs.date)).toString();
     if (!dates.includes(date)) {
-      // debugger
       dates.push(date);
       dateIndices.push(groupedSurveys.length);
       counter = { date, count: 0 };

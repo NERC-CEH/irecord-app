@@ -22,13 +22,15 @@ class Component extends React.Component {
 
   render() {
     const { attrConfig } = this.props;
+    const hasValue = Object.values(this.state.initialVal).find(val => val);
 
-    return attrConfig.groupConfig.map((config, index) => {
+    const attr = attrConfig.groupConfig.map((config, index) => {
       const [, attrName] = attrConfig.group[index].split(':');
+      const fullConfig = { ...config, ...{ dontAutoSetDefault: hasValue } };
       return (
         <Attr
           key={attrName}
-          attrConfig={config}
+          attrConfig={fullConfig}
           controlled
           onValueChange={(newValue, exit) =>
             this.onValueChange({ [attrName]: newValue }, exit)}
@@ -36,6 +38,18 @@ class Component extends React.Component {
         />
       );
     });
+
+    const message = attrConfig.info;
+    return (
+      <>
+        {message && (
+          <div className="info-message">
+            <p>{t(message)}</p>
+          </div>
+        )}
+        {attr}
+      </>
+    );
   }
 }
 

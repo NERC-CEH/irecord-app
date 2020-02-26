@@ -1,4 +1,5 @@
 import { AppModel } from 'app_model';
+import stringify from 'json-stable-stringify';
 
 describe('App Model attr locks extension', () => {
   let localStorageStub;
@@ -7,6 +8,21 @@ describe('App Model attr locks extension', () => {
   });
   after(() => {
     localStorageStub.restore();
+  });
+
+  describe('getAllLocks', () => {
+    it('should return all locks', () => {
+      // Given
+      const appModel = new AppModel();
+      appModel.setAttrLock('smp', 'a', 1);
+      appModel.setAttrLock('occ', 'b', 2);
+
+      // When
+      const locks = appModel.getAllLocks('smp');
+
+      // Then
+      expect(stringify(locks)).to.eql(stringify({ 'occ:b': 2, 'smp:a': 1 }));
+    });
   });
 
   describe('setAttrLock', () => {
@@ -35,18 +51,18 @@ describe('App Model attr locks extension', () => {
       expect(lockedVal).to.eql(1);
     });
 
-    it('should return null if container or lock doesn\'t exist', () => {
+    it("should return empty if container or lock doesn't exist", () => {
       // Given
       const appModel = new AppModel();
       appModel.attrs.attrLocks = { A: {} };
 
       // When
-      const lock = appModel.getAttrLock('smp', 'A', 'b')
-      const lock2 = appModel.getAttrLock('smp', 'B', 'c')
-    
+      const lock = appModel.getAttrLock('smp', 'A', 'b');
+      const lock2 = appModel.getAttrLock('smp', 'B', 'c');
+
       // Then
-      expect(lock).to.be.equal(null);
-      expect(lock2).to.be.equal(null);
+      expect(lock).to.be.equal(undefined);
+      expect(lock2).to.be.equal(undefined);
     });
   });
 

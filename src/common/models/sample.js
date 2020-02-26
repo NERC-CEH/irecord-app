@@ -314,26 +314,27 @@ class Sample extends Indicia.Sample {
       }
 
       const [occ] = this.occurrences;
-
       const taxon = occ.attrs.taxon || {};
 
       return Sample.getSurvey(taxon.group, complex);
     };
 
     const complexSurveyName = this.metadata.complex_survey;
-    if (!complexSurveyName) {
-      if (this.parent) {
-        // part of default complex survey
-        const taxaSurvey = { ...getTaxaSpecifigConfig() };
-        delete taxaSurvey.verify;
-        return taxaSurvey;
-      }
-
+    const isGeneralSurvey = !complexSurveyName && !this.parent;
+    if (isGeneralSurvey) {
       return getTaxaSpecifigConfig();
     }
 
-    const isDefault = complexSurveyName === 'default';
-    if (isDefault) {
+    const isDefaultComplexSubSampleSurvey = !complexSurveyName && this.parent;
+    if (isDefaultComplexSubSampleSurvey) {
+      // part of default complex survey
+      const taxaSurvey = { ...getTaxaSpecifigConfig() };
+      delete taxaSurvey.verify;
+      return taxaSurvey;
+    }
+
+    const isDefaultComplexSurvey = complexSurveyName === 'default';
+    if (isDefaultComplexSurvey) {
       const survey = Sample.getSurvey(null, complexSurveyName);
 
       return survey;

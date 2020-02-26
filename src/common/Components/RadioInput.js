@@ -25,50 +25,6 @@ class Component extends React.PureComponent {
   render() {
     const config = this.props.config || {};
 
-    if (config._values) {
-      const message = this.props.info || config.info;
-
-      const selected = this.props.default || config.default;
-
-      const generateInputs = selection =>
-        selection.reduce((agg, option) => {
-          if (option.values) {
-            const divider = (
-              <IonItemDivider key={option.value}>{t(option.value)}</IonItemDivider>
-            );
-            return [...agg, divider, ...generateInputs(option.values)];
-          }
-          const input = (
-            <IonItem key={option.label || option.value}>
-              <IonLabel class="ion-text-wrap">{t(option.label || option.value)}</IonLabel>
-              <IonRadio
-                value={option.value}
-                checked={option.value === selected}
-                onClick={this.onChange}
-              />
-            </IonItem>
-          );
-
-          return [...agg, input];
-        }, []);
-
-      const inputs = generateInputs(config._values);
-
-      return (
-        <div>
-          {message && (
-            <div className="info-message">
-              <p>{t(message)}</p>
-            </div>
-          )}
-
-          <IonList lines="full">
-            <IonRadioGroup>{inputs}</IonRadioGroup>
-          </IonList>
-        </div>
-      );
-    }
-
     const message = this.props.info || config.info;
 
     let { selection } = this.props;
@@ -77,11 +33,16 @@ class Component extends React.PureComponent {
       // add default
       config.default && selection.unshift({ value: config.default });
     }
-    const selected = this.props.default || config.default;
+    let selected = this.props.default;
+    if (!selected && !config.dontAutoSetDefault) {
+      selected = config.default;
+    }
 
     const inputs = selection.map(option => (
       <IonItem key={option.label || option.value}>
-        <IonLabel class="ion-text-wrap normal-font-size">{t(option.label || option.value)}</IonLabel>
+        <IonLabel class="ion-text-wrap normal-font-size">
+          {t(option.label || option.value)}
+        </IonLabel>
         <IonRadio
           value={option.value}
           checked={option.value === selected}

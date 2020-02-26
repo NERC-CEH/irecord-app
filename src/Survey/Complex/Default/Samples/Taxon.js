@@ -34,18 +34,8 @@ class Controller extends React.Component {
     };
   }
 
-  getNewSample = async taxon => {
-    const newSubSample = await surveyConfig.smp.create(
-      Sample,
-      Occurrence,
-      taxon
-    );
-
-    this.surveySample.samples.push(newSubSample);
-    await this.surveySample.save();
-
-    return newSubSample;
-  };
+  getNewSample = async taxon =>
+    surveyConfig.smp.create(Sample, Occurrence, taxon, this.surveySample);
 
   onSpeciesSelected = async (taxon, editBtnClicked) => {
     const { match, history } = this.props;

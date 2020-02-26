@@ -55,7 +55,7 @@ class Component extends React.Component {
     super(props);
 
     const { model, surveyConfig } = this.props;
-    this.surveyConfig = surveyConfig || model.getSurvey();
+    this.state = { surveyConfig: surveyConfig || model.getSurvey() };
   }
 
   getLock = (model, attrName) => {
@@ -112,8 +112,8 @@ class Component extends React.Component {
     const useOccurrenceWithinSample = !isOccurrenceOnly && isOccAttr;
 
     return useOccurrenceWithinSample
-      ? this.surveyConfig.occ.attrs[attrName]
-      : this.surveyConfig.attrs[attrName];
+      ? this.state.surveyConfig.occ.attrs[attrName]
+      : this.state.surveyConfig.attrs[attrName];
   };
 
   getAttrParts = element => {
@@ -150,19 +150,24 @@ class Component extends React.Component {
     );
   };
 
+  getCurrentComplexValue(attr, selectedModel) {
+    let value;
+    attr.group.forEach(nestedElement => {
+      const [, attrName] = this.getAttrParts(nestedElement);
+
+      if (!selectedModel.attrs[attrName]) {
+        return;
+      }
+
+      value = selectedModel.attrs[attrName];
+    });
+
+    return value;
+  }
+
   getCurrentValue = (attr, element, selectedModel, isComplex) => {
     if (isComplex) {
-      let value;
-      attr.group.forEach(nestedElement => {
-        const [, attrName] = this.getAttrParts(nestedElement);
-
-        if (!selectedModel.attrs[attrName]) {
-          return;
-        }
-        value = selectedModel.attrs[attrName];
-      });
-
-      return value;
+      return this.getCurrentComplexValue(attr, selectedModel);
     }
 
     const [, attrName] = this.getAttrParts(element);
@@ -294,13 +299,27 @@ class Component extends React.Component {
     );
   };
 
-  render() {
-    const { noWrapper } = this.props;
+  componentDidUpdate() {
+    const { model, surveyConfig } = this.props;
+    if (surveyConfig) {
+      return;
+    }
 
-    const { render } = this.surveyConfig;
+    const newSurveyConfig = model.getSurvey();
+    if (this.state.surveyConfig.name !== newSurveyConfig.name) {
+      this.setState({ surveyConfig: newSurveyConfig }); // eslint-disable-line
+    }
+  }
+
+  render() {
+    const { noWrapper, model } = this.props;
+
+    let { render } = this.state.surveyConfig;
     if (!render) {
       throw new Error('No render found');
     }
+
+    render = typeof render === 'function' ? render(model) : render;
 
     const attributes = render.map(this.getMenuAttr);
 

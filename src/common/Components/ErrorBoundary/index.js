@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as Sentry from '@sentry/browser';
+import ErrorMessage from './components/ErrorMessage';
 
 export default class ErrorBoundary extends React.Component {
   static propTypes = {
@@ -31,9 +32,9 @@ export default class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      console.error(this.state.eventId);
-      // TODO: show an error message
-      return null;
+      const { eventId } = this.state;
+      console.error(eventId);
+      return <ErrorMessage eventId={eventId} />;
     }
 
     return this.props.children;
