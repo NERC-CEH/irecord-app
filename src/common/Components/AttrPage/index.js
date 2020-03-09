@@ -20,7 +20,7 @@ function getRenderConfig(model, configId) {
     config = render.find(e => e === configId || e.id === configId);
   }
 
-  const searchParent = !config;
+  const searchParent = !config && model.parent;
   if (searchParent) {
     survey = model.parent.getSurvey();
     let { render } = survey;
