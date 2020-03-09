@@ -123,7 +123,7 @@ export default {
 
   getActivity(id) {
     const { activities } = this.attrs;
-    let foundedActivity;
+    let foundedActivity = null;
     activities.forEach(activity => {
       if (id === activity.id) {
         foundedActivity = activity;
