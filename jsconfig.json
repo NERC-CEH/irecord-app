@@ -10,6 +10,7 @@
       "common/*": ["src/common/*"],
       "helpers/*": ["src/common/helpers/*"],
       "Components/*": ["src/common/Components/*"],
+      "Lib/*": ["src/common/Lib/*"],
     }
   },
   "include": ["./src/**/*"]

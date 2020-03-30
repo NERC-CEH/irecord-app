@@ -35,6 +35,7 @@ const config = {
       path.resolve(ROOT_DIR, './src/common/vendor'),
     ],
     alias: {
+      Lib: 'common/Lib',
       Components: 'common/Components',
       config: 'common/config/config',
       helpers: 'common/helpers',
