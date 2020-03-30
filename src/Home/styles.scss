@@ -35,6 +35,16 @@
     padding-bottom: var(--ion-safe-area-bottom, 0);
   }
 
+  .long-press-surveys-label {
+    width: 240px;
+    margin-left: -78%;
+    background: #424242;
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+    color: white;
+  }
+
   ion-fab-button:not(.fab-button-label) {
     --box-shadow: 1px 2px 8px 0px rgba(0, 0, 0, 0.75);
   }

@@ -233,6 +233,10 @@ class Component extends React.Component {
             >
               <IonLabel>{t('General Survey')}</IonLabel>
             </IonFabButton>
+
+            <div className="long-press-surveys-label">
+              {t('Other recording options')}
+            </div>
           </IonFabList>
         </IonFab>
 
