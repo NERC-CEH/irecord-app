@@ -83,7 +83,7 @@ class UserModel {
   });
 
   constructor() {
-    Log('AppModel: initializing');
+    Log('UserModel: initializing');
     this._init = store.find('user').then(user => {
       if (typeof user === 'string') {
         // backwards compatibility
