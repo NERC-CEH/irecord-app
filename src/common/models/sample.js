@@ -366,13 +366,17 @@ class Sample extends Indicia.Sample {
       return { ...defaultSurvey };
     }
 
-    let matchedSurvey = {};
+    let matchedSurvey;
     Object.keys(taxonGroupSurveys).forEach(surveyKey => {
       const survey = taxonGroupSurveys[surveyKey];
       if (survey.taxonGroups.includes(taxonGroup)) {
         matchedSurvey = survey;
       }
     });
+
+    if (!matchedSurvey) {
+      return defaultSurvey;
+    }
 
     function skipAttributes(__, srcValue) {
       if (_.isObject(srcValue) && srcValue.id) {
@@ -381,9 +385,9 @@ class Sample extends Indicia.Sample {
       return undefined;
     }
 
+    const { render, taxonGroups, ...defaultSurveyCopy } = defaultSurvey;
     const mergedDefaultSurvey = _.mergeWith(
-      {},
-      defaultSurvey,
+      defaultSurveyCopy,
       matchedSurvey,
       skipAttributes
     );

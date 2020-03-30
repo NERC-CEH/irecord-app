@@ -32,6 +32,7 @@ export default {
     },
     'occ:stage',
     'occ:sex',
+    'occ:identifiers',
   ],
 
   attrs: {},
