@@ -1,3 +1,10 @@
+## 5.1.0
+
+### Features
+
+* Added bird breeding specific attributes
+
+
 ## 5.0.0
 
 ### Features
