@@ -3,8 +3,8 @@
   "id": "uk.ac.ceh.ir",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "5.0.0",
-  "build": "6",
+  "version": "5.1.0",
+  "build": "1",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "build": "NODE_ENV=production grunt",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
-    "@indicia-js/core": "^5.1.0",
+    "@indicia-js/core": "^5.1.1",
     "@ionic/core": "4.11.0",
     "@ionic/react": "4.11.0",
     "@ionic/react-router": "4.11.0",

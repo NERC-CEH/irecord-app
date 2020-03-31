@@ -20,34 +20,55 @@ class Component extends React.Component {
     onValueChange(fullValue, exit);
   };
 
-  render() {
+  getMessage = () => {
+    const { info } = this.props.attrConfig;
+    if (!info) {
+      return null;
+    }
+
+    return (
+      <div className="info-message">
+        <p>{t(info)}</p>
+      </div>
+    );
+  };
+
+  getAttribute = (config, index) => {
     const { attrConfig } = this.props;
+
     const hasValue = Object.values(this.state.initialVal).find(val => val);
 
-    const attr = attrConfig.groupConfig.map((config, index) => {
-      const [, attrName] = attrConfig.group[index].split(':');
-      const fullConfig = { ...config, ...{ dontAutoSetDefault: hasValue } };
-      return (
-        <Attr
-          key={attrName}
-          attrConfig={fullConfig}
-          controlled
-          onValueChange={(newValue, exit) =>
-            this.onValueChange({ [attrName]: newValue }, exit)}
-          initialVal={this.state.initialVal[attrName]}
-        />
-      );
-    });
+    const [, attrName] = attrConfig.group[index].split(':');
 
-    const message = attrConfig.info;
+    let cleanConfig = config
+    const disallowDefault = config.values instanceof Array && hasValue;
+    if (disallowDefault) {
+      cleanConfig = JSON.parse(JSON.stringify(config))
+      const defaultVal = cleanConfig.values.find(({ isDefault }) => isDefault);
+      defaultVal.preventDefaultAutoSelect = true
+    }
+
+    return (
+      <Attr
+        key={attrName}
+        attrConfig={cleanConfig}
+        controlled
+        onValueChange={(newValue, exit) =>
+          this.onValueChange({ [attrName]: newValue }, exit)}
+        initialVal={this.state.initialVal[attrName]}
+      />
+    );
+  };
+
+  render() {
+    const { attrConfig } = this.props;
+
+    const attributesList = attrConfig.groupConfig.map(this.getAttribute);
+
     return (
       <>
-        {message && (
-          <div className="info-message">
-            <p>{t(message)}</p>
-          </div>
-        )}
-        {attr}
+        {this.getMessage()}
+        {attributesList}
       </>
     );
   }

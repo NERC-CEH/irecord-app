@@ -12,14 +12,6 @@ const stage = {
   'Larval webs': 14079,
 };
 
-const count = {
-  '1': 2402,
-  '2-9': 2404,
-  '10-29': 2406,
-  '30-99': 2408,
-  '100+': 2410,
-};
-
 export default {
   name: 'butterflies',
   taxonGroups: [104],
@@ -69,8 +61,14 @@ export default {
         id: 203,
         label: 'Abundance',
         icon: 'number',
-        default: 'Not Recorded',
-        values: count,
+        values: [
+          { value: null, isDefault: true, label: 'Not Recorded' },
+          { value: '1', id: 2402 },
+          { value: '2-9', id: 2404 },
+          { value: '10-29', id: 2406 },
+          { value: '30-99', id: 2408 },
+          { value: '100+', id: 2410 },
+        ],
       },
     },
     verify(attrs) {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { IonPage, NavContext } from '@ionic/react';
 import LocHelp from 'helpers/location';
 import Log from 'helpers/log';
-import RadioInput from 'Components/RadioInput';
+import RadioInput from 'Lib/RadioInput';
 import AppHeader from 'Components/Header';
 import AppMain from 'Components/Main';
 import './styles.scss';
@@ -38,8 +38,6 @@ class Component extends React.Component {
       value: key,
     }));
 
-    const config = { default: appModel.attrs.gridSquareUnit };
-
     return (
       <IonPage>
         <AppHeader title={t('Grid Unit')} />
@@ -47,8 +45,8 @@ class Component extends React.Component {
           <RadioInput
             info={message}
             selection={selection}
-            config={config}
             onChange={onChange}
+            defaultValue={appModel.attrs.gridSquareUnit}
           />
         </AppMain>
       </IonPage>

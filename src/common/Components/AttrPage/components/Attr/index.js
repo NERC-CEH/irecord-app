@@ -1,5 +1,5 @@
 import Input from 'Components/Input';
-import RadioInput from 'Components/RadioInput';
+import RadioInput from 'Lib/RadioInput';
 import Textarea from 'Components/Textarea';
 import SliderInput from 'Components/SliderInput';
 import Log from 'helpers/log';
@@ -61,15 +61,33 @@ class Component extends React.Component {
           />
         );
 
-      case 'radio':
+      case 'radio': {
+        let { values } = attrConfig;
+        if (!Array.isArray(values)) {
+          // backwards compatible
+          values = Object.keys(attrConfig.values).map(key => ({
+            value: key,
+          }));
+        }
+
+        if (attrConfig.default) {
+          // backwards compatible
+          values.unshift({
+            label: attrConfig.default,
+            value: null,
+            isDefault: true,
+          });
+        }
+
         return (
           <RadioInput
-            config={attrConfig}
-            default={this.state.currentVal}
+            values={values}
             onChange={val => this.onValueChanged(val, true)}
+            currentValue={this.state.currentVal}
+            info={attrConfig.info}
           />
         );
-
+      }
       case 'text':
         return (
           <Textarea
