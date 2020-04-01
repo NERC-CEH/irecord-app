@@ -1,3 +1,10 @@
+## 5.1.1
+
+### Bug Fixes
+
+* Fixed photo-first recording auto geolocation
+
+
 ## 5.1.0
 
 ### Features

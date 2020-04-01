@@ -228,6 +228,7 @@ const survey = {
       // when there is no taxon we don't know the survey yet
       // these are core attributes and safe to reuse in any survey
       appModel.appendAttrLocks(sample, coreLocks);
+      sample.startGPS();
       return Promise.resolve(sample);
     }
 
