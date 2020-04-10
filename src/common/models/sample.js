@@ -387,6 +387,7 @@ class Sample extends Indicia.Sample {
 
     const { render, taxonGroups, ...defaultSurveyCopy } = defaultSurvey;
     const mergedDefaultSurvey = _.mergeWith(
+      {},
       defaultSurveyCopy,
       matchedSurvey,
       skipAttributes

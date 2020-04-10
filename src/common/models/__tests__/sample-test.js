@@ -5,9 +5,10 @@ import userModel from 'user_model';
 import appModel from 'app_model';
 import Device from 'helpers/device';
 import coreAttributes from 'common/config/surveys';
+import defaultSurvey from 'common/config/surveys/default';
 import bryophytesSyrvey from 'common/config/surveys/taxon-groups/bryophytes';
 import dragonfliesSyrvey from 'common/config/surveys/taxon-groups/dragonflies';
-import savedSamples from '../../saved_samples';
+import stringify from 'json-stable-stringify';
 
 /* eslint-disable no-unused-expressions */
 const validTaxon = { warehouse_id: 1, group: 1 };
@@ -314,6 +315,28 @@ describe('Sample', () => {
       expect(submission.fields[locationKey]).to.eql(
         submission.samples[0].fields[locationKey]
       );
+    });
+  });
+
+  describe('getSurvey', () => {
+    it('should return default survey config', () => {
+      // Given
+      const sample = getRandomSample();
+
+      // When
+      const survey = sample.getSurvey();
+
+      // Then
+      console.log(defaultSurvey.occ);
+
+      expect(survey.name).to.be.equal('default');
+      expect(survey.taxonGroups.length).to.be.equal(0);
+      expect(survey.webForm).to.be.equal('enter-app-record');
+      expect(stringify(survey.attrs)).to.be.equal(
+        stringify(defaultSurvey.attrs)
+      );
+      expect(stringify(survey.occ)).to.be.equal(stringify(defaultSurvey.occ));
+      expect(survey.occ.attrs.microscopicallyChecked).to.be.equal(undefined);
     });
   });
 });
