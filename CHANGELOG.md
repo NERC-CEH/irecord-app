@@ -1,3 +1,10 @@
+## 5.1.2
+
+### Bug Fixes
+
+Fixed plant survey settings page
+Fixed bird survey number attribute
+
 ## 5.1.1
 
 ### Bug Fixes
