@@ -33,7 +33,7 @@ class Component extends React.Component {
 
     const message = t('Please pick your grid square unit.');
 
-    const selection = Object.keys(LocHelp.gridref_accuracy).map(key => ({
+    const values = Object.keys(LocHelp.gridref_accuracy).map(key => ({
       label: LocHelp.gridref_accuracy[key].label,
       value: key,
     }));
@@ -43,10 +43,10 @@ class Component extends React.Component {
         <AppHeader title={t('Grid Unit')} />
         <AppMain>
           <RadioInput
-            info={message}
-            selection={selection}
+            values={values}
             onChange={onChange}
-            defaultValue={appModel.attrs.gridSquareUnit}
+            currentValue={appModel.attrs.gridSquareUnit}
+            info={message}
           />
         </AppMain>
       </IonPage>
