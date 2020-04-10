@@ -180,7 +180,7 @@ class Component extends React.Component {
     }
 
     if (currentVal) {
-      if (attr.type === 'inputList') {
+      if (attr.type === 'inputList' && currentVal instanceof Array) {
         currentVal = currentVal.join(', ');
       } else if (attr.type === 'date') {
         currentVal = DateHelp.print(currentVal, true);
