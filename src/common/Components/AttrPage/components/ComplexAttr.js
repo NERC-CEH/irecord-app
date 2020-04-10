@@ -40,12 +40,12 @@ class Component extends React.Component {
 
     const [, attrName] = attrConfig.group[index].split(':');
 
-    let cleanConfig = config
-    const disallowDefault = config.values instanceof Array && hasValue;
+    // TODO: we need to make sure that the config exists, empty shouldn't be allowed
+    const cleanConfig = JSON.parse(JSON.stringify(config || {}));
+    const disallowDefault = cleanConfig.values instanceof Array && hasValue;
     if (disallowDefault) {
-      cleanConfig = JSON.parse(JSON.stringify(config))
       const defaultVal = cleanConfig.values.find(({ isDefault }) => isDefault);
-      defaultVal.preventDefaultAutoSelect = true
+      defaultVal.preventDefaultAutoSelect = true;
     }
 
     return (
