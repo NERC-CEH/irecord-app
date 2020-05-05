@@ -1,3 +1,9 @@
+## 5.1.3
+
+### Bug Fixes
+
+Fixed vice county selection
+
 ## 5.1.2
 
 ### Bug Fixes

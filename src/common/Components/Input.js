@@ -74,6 +74,11 @@ class Component extends React.Component {
   componentDidMount() {
     const config = this.props.config || {};
     const type = this.props.type || config.type;
+    if (!this.input.current){
+      // AutoSuggestInput has its own one
+      return;
+    }
+
     if (type === 'date') {
       this.input.current.open();
       return;
