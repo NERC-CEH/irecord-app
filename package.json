@@ -7,24 +7,17 @@
   "build": "1",
   "homepage": "https://irecord.org.uk",
   "scripts": {
-    "build": "NODE_ENV=production grunt",
-    "build:update": "NODE_ENV=production grunt udpate",
-    "build:dev": "grunt",
-    "build:species": "cd src/common/data && node species.js",
-    "build:dev:update": "grunt update",
-    "build:cordova": "npm run build && grunt cordova",
-    "build:cordova:update": "grunt cordova:update",
-    "build:cordova:android": "grunt cordova:android",
-    "build:cordova:android:dev": "grunt exec:cordova_android_build_dev",
-    "postinstall": "grunt",
-    "start": "node other/server.js",
-    "start-dev": "webpack-dev-server --config webpack.config.js --content-base dist/main --port 8000",
+    "start": "webpack-dev-server --config webpack.config.js --content-base build --port 8000",
+    "build": "webpack --display minimal",
+    "build:production": "grunt",
     "test": "karma start test/karma.conf.js",
     "test:coverage": "karma start test/karma.conf.js --reporters mocha,coverage",
     "test:watch": "karma start test/karma.conf.js --no-single-run",
     "test:sauce": "karma start test/karma.conf-sauce.js",
     "test:eslint": "mocha test/eslint-test.js",
-    "test:acceptance": "grunt exec:cordova_build_android && ./node_modules/.bin/wdio test/acceptance/wdio.conf.js"
+    "test:acceptance": "grunt exec:cordova_build_android && ./node_modules/.bin/wdio test/acceptance/wdio.conf.js",
+    "make:species": "cd src/common/data && node species.js",
+    "clean": "rm -rf cordova build resources"
   },
   "husky": {
     "hooks": {
@@ -77,6 +70,7 @@
     "@babel/plugin-transform-exponentiation-operator": "^7.7.4",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
+    "@flumens/has-env": "^1.0.0",
     "appium": "^1.16.0",
     "autoprefixer": "^9.7.3",
     "babel-eslint": "10.0.3",

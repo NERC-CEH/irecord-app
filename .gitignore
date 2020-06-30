@@ -10,3 +10,10 @@ yarn.lock
 coverage
 .vscode
 .bit
+.nowbuild
+.now
+.vercel
+resources
+cordova
+build
+components

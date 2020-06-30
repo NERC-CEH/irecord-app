@@ -35,7 +35,7 @@ exports.config = {
       // Where to find the .apk or .ipa file to install on the device. The exact location
       // of the file may change depending on your Cordova version.
       app:
-        './dist/cordova/platforms/android/build/outputs/apk/debug/android-debug.apk',
+        './cordova/platforms/android/build/outputs/apk/debug/android-debug.apk',
 
       // By default, Appium runs tests in the native context. By setting autoWebview to
       // true, it runs our tests in the Cordova context.
