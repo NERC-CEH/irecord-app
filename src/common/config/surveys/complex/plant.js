@@ -170,7 +170,8 @@ const survey = {
       values(val, submission) {
         const attributes = {};
 
-        const name = `smpAttr:${this.id}:name`;
+        const { id } = survey.attrs['vice-county'];
+        const name = `smpAttr:${id}:name`;
         const nameVal = val.name;
         attributes[name] = nameVal;
 
@@ -369,7 +370,7 @@ const survey = {
 
       surveySample.samples.push(sample);
       await surveySample.save();
-      
+
       return sample;
     },
   },
