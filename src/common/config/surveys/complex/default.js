@@ -16,7 +16,7 @@ function appendLockedAttrs(sample) {
     }
     return agg;
   }, {});
-  
+
   const surveyLocks = appModel.getAllLocks(sample);
 
   const fullSurveyLocks = { ...coreLocks, ...surveyLocks };
@@ -115,6 +115,9 @@ const survey = {
       required: true,
       info:
         'If anyone helped with documenting the record please enter their name here.',
+      values(val) {
+        return val.join(', ');
+      },
     },
 
     comment: {
