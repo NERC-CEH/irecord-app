@@ -33,16 +33,17 @@ class Component extends React.Component {
     this.map.setView(DEFAULT_CENTER, MIN_WGS84_ZOOM);
 
     const layer = L.tileLayer(
-      'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+      'https://api.mapbox.com/styles/v1/{id}/tiles/256/{z}/{x}/{y}?access_token={accessToken}',
       {
         attribution:
-          "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+          '<a href="http://mapbox.com/about/maps" class="mapbox-wordmark" target="_blank">Mapbox</a> © <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="https://www.maxar.com/">Maxar</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
         id: CONFIG.map.mapbox_satellite_id,
         accessToken: CONFIG.map.mapbox_api_key,
         tileSize: 256, // specify as, OS layer overwites this with 200 otherwise,
         minZoom: MIN_WGS84_ZOOM,
       }
     );
+    this.map.attributionControl.setPrefix('');
 
     layer.addTo(this.map);
     this.addRecords();
@@ -117,7 +118,7 @@ class Component extends React.Component {
 
   zoomToRecords() {
     const { savedSamples } = this.props;
-    
+
     const positions = savedSamples.reduce((agg, sample) => {
       const { latitude, longitude } = sample.attrs.location;
       if (!latitude) {
