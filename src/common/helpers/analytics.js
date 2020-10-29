@@ -48,10 +48,10 @@ export function beforeBreadcrumb(crumb) {
 
 function setContext() {
   Sentry.setUser({ id: userModel.attrs.drupalID });
-  Sentry.setTag('user.activities', userModel.attrs.activities.length);
-  Sentry.setTag('app.records', savedSamples.length);
-  Sentry.setTag('app.locations', appModel.attrs.locations.length);
-  Sentry.setTag('app.language', appModel.attrs.language);
+  Sentry.setTag('user.activities', userModel.attrs.activities.length || 0);
+  Sentry.setTag('app.records', savedSamples.length || 0);
+  Sentry.setTag('app.locations', appModel.attrs.locations.length || 0);
+  Sentry.setTag('app.language', appModel.attrs.language || '');
   Sentry.setTag('app.autosync', appModel.attrs.autosync || false);
   Sentry.setTag('app.useGridRef', appModel.attrs.useGridRef || false);
   Sentry.setTag('app.useGridMap', appModel.attrs.useGridMap || false);
@@ -61,15 +61,15 @@ function setContext() {
     'app.useGridNotifications',
     appModel.attrs.useGridNotifications || false
   );
-  Sentry.setTag('app.gridSquareUnit', appModel.attrs.gridSquareUnit);
+  Sentry.setTag('app.gridSquareUnit', appModel.attrs.gridSquareUnit || '');
   Sentry.setTag('app.feedbackGiven', appModel.attrs.feedbackGiven || false);
-  Sentry.setTag('app.searchNamesOnly', appModel.attrs.searchNamesOnly);
-  Sentry.setTag('app.appSession', appModel.attrs.appSession);
+  Sentry.setTag('app.searchNamesOnly', appModel.attrs.searchNamesOnly || false);
+  Sentry.setTag('app.appSession', appModel.attrs.appSession || 0);
   Sentry.setTag(
     'app.taxonGroupFilters',
-    appModel.attrs.taxonGroupFilters.length
+    appModel.attrs.taxonGroupFilters.length || 0
   );
-  Sentry.setTag('app.build', CONFIG.build);
+  Sentry.setTag('app.build', CONFIG.build || 0);
 }
 
 const API = {
