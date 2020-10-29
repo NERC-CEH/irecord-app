@@ -53,6 +53,14 @@ const sharedSmpAttrs = {
     },
     isValid: val => val && val.toString() !== 'Invalid Date',
     type: 'date',
+    set: (value, sample) => {
+      sample.attrs.date = value;
+
+      const setDate = smp => {
+        smp.attrs.date = value;
+      };
+      sample.samples.forEach(setDate);
+    },
     max: () => new Date(),
   },
 
@@ -337,6 +345,7 @@ const survey = {
       const sample = new Sample({
         attrs: {
           location_type: 'british',
+          date: surveySample.attrs.date,
         },
         metadata: {
           complex_survey: survey.name,

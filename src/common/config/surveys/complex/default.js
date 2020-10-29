@@ -105,6 +105,14 @@ const survey = {
       isValid: val => val && val.toString() !== 'Invalid Date',
       type: 'date',
       icon: 'calendar',
+      set: (value, sample) => {
+        sample.attrs.date = value;
+
+        const setDate = smp => {
+          smp.attrs.date = value;
+        };
+        sample.samples.forEach(setDate);
+      },
       max: () => new Date(),
     },
     recorders: {
@@ -130,7 +138,9 @@ const survey = {
   smp: {
     async create(Sample, Occurrence, taxon, surveySample) {
       const occurrence = new Occurrence({ attrs: { taxon } });
-      const sample = new Sample();
+      const sample = new Sample({
+        attrs: { date: surveySample.attrs.date },
+      });
       sample.occurrences.push(occurrence);
       surveySample.samples.push(sample);
 

@@ -125,7 +125,11 @@ class Controller extends React.Component {
         }
       }
 
-      model.attrs[this.attrName] = values;
+      if (this.attrConfig.set) {
+        this.attrConfig.set(values, model);
+      } else {
+        model.attrs[this.attrName] = values;
+      }
     }
 
     try {
