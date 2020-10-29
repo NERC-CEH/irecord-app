@@ -1,3 +1,10 @@
+## 5.1.4
+
+Fixed Satellite map layer display
+Fixed Plant Survey vice county setting
+Fixed General and Plant Survey date settings
+Fixed multiple recorder name upload for General Survey
+
 ## 5.1.3
 
 ### Bug Fixes
