@@ -68,7 +68,7 @@ class Component extends React.Component {
 
       const marker = L.circleMarker([latitude, longitude], {
         color: 'white',
-        fillColor: survey.complex ? '#a77d11' : '#91a71c',
+        fillColor: survey.complex ? '#a77d11' : '#ada400',
         fillOpacity: 1,
         weight: 4,
       });
