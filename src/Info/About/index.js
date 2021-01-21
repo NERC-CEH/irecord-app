@@ -76,8 +76,8 @@ const Component = () => (
         </IonItem>
         <IonItem>
           <IonLabel>
-            - Add species sightings by going to the "+" icon at the bottom of
-            the app
+            - Add species sightings by going to the &#34;+&#34; icon at the
+            bottom of the app
           </IonLabel>
         </IonItem>
         <IonItem>
@@ -90,8 +90,8 @@ const Component = () => (
         <IonItem>
           <IonLabel>
             - Once your record is correct and you have added all the details you
-            want it is ready to submit; click on the "UPLOAD" button to submit
-            it to the ORKS website.
+            want it is ready to submit; click on the &#34;UPLOAD&#34; button to
+            submit it to the ORKS website.
           </IonLabel>
         </IonItem>
       </IonList>
