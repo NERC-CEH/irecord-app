@@ -76,23 +76,22 @@ const Component = () => (
         </IonItem>
         <IonItem>
           <IonLabel>
-            <ul>
-              <li>
-                - Add species sightings by going to the '+' icon at the bottom
-                of the app
-              </li>
-              <li>
-                - Add all the details for the sightings, and photos from your
-                device camera or gallery. The location of your sightings is
-                obtained through your phone GPS but can be updated using the
-                map.
-              </li>
-              <li>
-                - Once your record is correct and you've added all the details
-                you want it is ready to submit; click on the 'UPLOAD' button to
-                submit it to the ORKS website.
-              </li>
-            </ul>
+            - Add species sightings by going to the '+' icon at the bottom of
+            the app
+          </IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>
+            - Add all the details for the sightings, and photos from your device
+            camera or gallery. The location of your sightings is obtained
+            through your phone GPS but can be updated using the map.
+          </IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>
+            - Once your record is correct and you've added all the details you
+            want it is ready to submit; click on the 'UPLOAD' button to submit
+            it to the ORKS website.
           </IonLabel>
         </IonItem>
       </IonList>
