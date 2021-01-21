@@ -31,9 +31,7 @@ const Component = observer(({ isLoggedIn, user, logOut, appModel }) => {
             <IonIcon icon={exit} size="small" slot="start" />
             {t('Logout')}
             {': '}
-            {user.firstname} 
-            {' '}
-            {user.secondname}
+            {user.firstname} {user.secondname}
           </IonItem>
         )}
         {/* {isLoggedIn && (
@@ -84,7 +82,7 @@ const Component = observer(({ isLoggedIn, user, logOut, appModel }) => {
         </IonItem>
 
         <IonItem
-          href={`${config.site_url}/privacy-notice?lang=${lang}`}
+          href={`${config.site_url}/AboutUs/Policies`}
           target="_blank"
           detail
         >
