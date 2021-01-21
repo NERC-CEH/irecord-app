@@ -76,7 +76,7 @@ const Component = () => (
         </IonItem>
         <IonItem>
           <IonLabel>
-            - Add species sightings by going to the '+' icon at the bottom of
+            - Add species sightings by going to the "+" icon at the bottom of
             the app
           </IonLabel>
         </IonItem>
@@ -89,8 +89,8 @@ const Component = () => (
         </IonItem>
         <IonItem>
           <IonLabel>
-            - Once your record is correct and you've added all the details you
-            want it is ready to submit; click on the 'UPLOAD' button to submit
+            - Once your record is correct and you have added all the details you
+            want it is ready to submit; click on the "UPLOAD" button to submit
             it to the ORKS website.
           </IonLabel>
         </IonItem>
@@ -111,7 +111,7 @@ const Component = () => (
         <IonItem>
           <IonLabel>
             If you have any suggestions of feedback please contact{' '}
-            <a href="mailto:erccis@cornwallwildlifetrust.org.uk?subject=ORKS%20App%20Support%20%26%20Feedback">
+            <a href="mailto:erccis%40cornwallwildlifetrust.org.uk?subject=ORKS%20App%20Support%20%26%20Feedback">
               ERCCIS
             </a>
             .
