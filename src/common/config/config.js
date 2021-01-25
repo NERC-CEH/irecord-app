@@ -3,8 +3,7 @@
  **************************************************************************** */
 import Indicia from '@indicia-js/core';
 
-const HOST =
-  process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
+const HOST = process.env.APP_INDICIA_API_HOST || 'https://www.orks.org.uk/';
 
 const CONFIG = {
   // variables replaced on build
