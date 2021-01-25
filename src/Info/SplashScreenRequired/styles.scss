@@ -35,8 +35,8 @@ ion-slides#welcome {
   .message p,
   .message h2 {
     padding: 10px;
-    color: var(--ion-color-dark);
-    background-color: white;
+    color: var(--ion-color-light);
+    background-color: rgba(173, 164, 0, 0.9);
   }
 
   .message h2 {
@@ -44,6 +44,15 @@ ion-slides#welcome {
   }
   .message p {
     padding: 20px;
+  }
+
+  .message .credit p {
+    background: none;
+    text-align: right;
+    padding: 0;
+    font-size: 12px;
+    margin: 0;
+    font-weight: bold;
   }
 
   .swiper-pagination-bullets {
@@ -66,7 +75,8 @@ ion-slides#welcome {
 
   ion-slide {
     ion-button {
-      --ion-color-contrast: var(--ion-color-dark) !important;
+      --ion-color-contrast: var(--ion-color-light) !important;
+      --ion-color-base: #008c95 !important;
     }
 
     &.first {
@@ -77,7 +87,7 @@ ion-slides#welcome {
       .message {
         text-align: left;
         left: 10vw;
-        top: 20vh;
+        top: 2vh;
       }
     }
 
@@ -100,7 +110,7 @@ ion-slides#welcome {
       .message {
         text-align: left;
         right: 10vw;
-        bottom: 22vh;
+        top: 10vh;
       }
     }
 
@@ -111,7 +121,7 @@ ion-slides#welcome {
       .message {
         text-align: left;
         right: 10vw;
-        bottom: 22vh;
+        bottom: 20vh;
       }
     }
   }

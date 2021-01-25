@@ -37,13 +37,14 @@ const SplashScreen = () => {
           {t('Next')}
         </IonButton>
         <div className="message">
-          <h2>Welcome</h2>
+          <h2>Lets Get Started!</h2>
           <p>
-            <b>iRecord</b>
-            {' '}
-is a platform for management and sharing of your
-            wildlife observations.
+            Login or register to start recording your sightings. Your login
+            details can be used on both the app and the ORKS website.
           </p>
+          <div class="credit">
+            <p>Photo by Tamara Weeks</p>
+          </div>
         </div>
       </IonSlide>
 
@@ -61,15 +62,14 @@ is a platform for management and sharing of your
         </IonButton>
 
         <div className="message">
-          <h2>Record</h2>
+          <h2>Informing</h2>
           <p>
-            Record all the wildlife you see. Over 
-            {' '}
-            <b>100,000 taxa</b>
-            {' '}
-to choose
-            from.
+            The wildlife sightings you record on the ORKS App provide vital
+            information for research and conservation.
           </p>
+          <div class="credit">
+            <p>Photo by Ross Wheeler</p>
+          </div>
         </div>
       </IonSlide>
 
@@ -86,29 +86,27 @@ to choose
           {t('Next')}
         </IonButton>
         <div className="message">
-          <h2>Accuracy</h2>
+          <h2>Mapping</h2>
           <p>
-            Benefit from your 
-            {' '}
-            <b>GPS and rich mapping choices</b>
-, further
-            automatic 
-            {' '}
-            <b>data checks</b>
-            {' '}
-and review by experts.
+            This app uses your phones GPS capability to get your location, which
+            you can easily update to ensure your records are highly accurate.
           </p>
+          <div class="credit">
+            <p>Photo by Steve Martin</p>
+          </div>
         </div>
       </IonSlide>
       <IonSlide class="fourth">
         <div className="message">
-          <h2>Science</h2>
+          <h2>Recording</h2>
           <p>
-            Become a citizen scientist and contribute your sightings to
-            {' '}
-            <b>research and conservation</b>
-.
+            Simply enter the species you've seen into the app and add details
+            and photos. When you're ready you can upload you app records to the
+            ORKS website.
           </p>
+          <div class="credit">
+            <p>Photo by Terry Dunstan</p>
+          </div>
         </div>
         <IonButton color="light" strong="true" onClick={exit}>
           {t('Get Started')}
