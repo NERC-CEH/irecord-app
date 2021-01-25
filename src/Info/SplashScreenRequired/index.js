@@ -100,9 +100,9 @@ const SplashScreen = () => {
         <div className="message">
           <h2>Recording</h2>
           <p>
-            Simply enter the species you've seen into the app and add details
-            and photos. When you're ready you can upload you app records to the
-            ORKS website.
+            Simply enter the species you&#39;ve seen into the app and add
+            details and photos. When you&#39;re ready you can upload you app
+            records to the ORKS website.
           </p>
           <div className="credit">
             <p>Photo by Terry Dunstan</p>
