@@ -42,7 +42,7 @@ const SplashScreen = () => {
             Login or register to start recording your sightings. Your login
             details can be used on both the app and the ORKS website.
           </p>
-          <div class="credit">
+          <div className="credit">
             <p>Photo by Tamara Weeks</p>
           </div>
         </div>
@@ -67,7 +67,7 @@ const SplashScreen = () => {
             The wildlife sightings you record on the ORKS App provide vital
             information for research and conservation.
           </p>
-          <div class="credit">
+          <div className="credit">
             <p>Photo by Ross Wheeler</p>
           </div>
         </div>
@@ -91,7 +91,7 @@ const SplashScreen = () => {
             This app uses your phones GPS capability to get your location, which
             you can easily update to ensure your records are highly accurate.
           </p>
-          <div class="credit">
+          <div className="credit">
             <p>Photo by Steve Martin</p>
           </div>
         </div>
@@ -104,7 +104,7 @@ const SplashScreen = () => {
             and photos. When you're ready you can upload you app records to the
             ORKS website.
           </p>
-          <div class="credit">
+          <div className="credit">
             <p>Photo by Terry Dunstan</p>
           </div>
         </div>
