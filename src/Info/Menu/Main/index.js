@@ -16,14 +16,14 @@ import {
 import AppMain from 'Components/Main';
 import config from 'config';
 import './styles.scss';
-import './logo.svg';
+import './logo.png';
 
 const Component = observer(({ isLoggedIn, user, logOut, appModel }) => {
   const lang = appModel.attrs.language;
 
   return (
     <AppMain class="app-menu">
-      <img src="/images/logo.svg" alt="app logo" />
+      <img src="/images/logo.png" alt="app logo" />
 
       <IonList lines="full">
         {isLoggedIn && (
