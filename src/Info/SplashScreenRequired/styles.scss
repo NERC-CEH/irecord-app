@@ -124,5 +124,16 @@ ion-slides#welcome {
         bottom: 20vh;
       }
     }
+
+    &.fifth {
+      background: url('images/welcome_5.jpg') no-repeat;
+      background-position: left;
+      background-size: cover;
+      .message {
+        text-align: left;
+        right: 10vw;
+        bottom: 20vh;
+      }
+    }
   }
 }

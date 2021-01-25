@@ -8,6 +8,7 @@ import './images/welcome_1.jpg';
 import './images/welcome_2.jpg';
 import './images/welcome_3.jpg';
 import './images/welcome_4.jpg';
+import './images/welcome_5.jpg';
 
 function next(sliderRef) {
   sliderRef.current.slideNext();
@@ -97,6 +98,17 @@ const SplashScreen = () => {
         </div>
       </IonSlide>
       <IonSlide class="fourth">
+        <IonButton class="skip" color="light" strong="true" onClick={exit}>
+          {t('Skip')}
+        </IonButton>
+        <IonButton
+          class="next"
+          color="light"
+          strong="true"
+          onClick={() => next(sliderRef)}
+        >
+          {t('Next')}
+        </IonButton>
         <div className="message">
           <h2>Recording</h2>
           <p>
@@ -106,6 +118,19 @@ const SplashScreen = () => {
           </p>
           <div className="credit">
             <p>Photo by Terry Dunstan</p>
+          </div>
+        </div>
+      </IonSlide>
+      <IonSlide class="fifth">
+        <div className="message">
+          <h2>Welcome to the ORKS App</h2>
+          <p>
+            Online Recording Kernow and Scilly (ORKS) is designed to make it as
+            quick and easy as possible for you to submit, store and share your
+            wildlife records.
+          </p>
+          <div className="credit">
+            <p>Photo by Niki Clear</p>
           </div>
         </div>
         <IonButton color="light" strong="true" onClick={exit}>
