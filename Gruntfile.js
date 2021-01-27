@@ -53,8 +53,8 @@ const exec = grunt => ({
   android_build: {
     command() {
       const pass = grunt.config('keystore-password');
-      return `cd cordova && 
-              cordova --release build android && 
+      return `cd cordova &&
+              cordova --release build android &&
               cd platforms/android/app/build/outputs/apk/release/ &&
               jarsigner -keystore ${process.env.KEYSTORE}
                 -storepass ${pass} app-release-unsigned.apk irecord &&
@@ -84,7 +84,7 @@ const replace = grunt => ({
     replacements: [
       {
         from: /\{ID\}/g, // string replacement
-        to: () => (grunt.option('android') ? 'uk.ac.ceh.irecord' : pkg.id),
+        to: () => (grunt.option('android') ? 'uk.org.orks.app' : pkg.id),
       },
       {
         from: /\{APP_VER\}/g, // string replacement

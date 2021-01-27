@@ -24,7 +24,7 @@ class Component extends React.Component {
     return (
       <AppMain id="login-page">
         <div className="info-message">
-          <p>{t('Please sign in with your eBMS account or register.')}</p>
+          <p>{t('Please sign in with your ORKS account or register.')}</p>
         </div>
         <Formik
           validationSchema={schema}
