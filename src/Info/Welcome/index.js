@@ -49,9 +49,7 @@ const Component = props => {
         <div className="message">
           <h2>Welcome</h2>
           <p>
-            <b>iRecord</b>
-            {' '}
-is a platform for management and sharing of your
+            <b>ORKS</b> is a platform for management and sharing of your
             wildlife observations. Learn more by swiping left.
           </p>
         </div>
@@ -80,11 +78,7 @@ is a platform for management and sharing of your
         <div className="message">
           <h2>Record</h2>
           <p>
-            Record all the wildlife you see. Over 
-            {' '}
-            <b>100,000 taxa</b>
-            {' '}
-to choose
+            Record all the wildlife you see. Over <b>100,000 taxa</b> to choose
             from.
           </p>
         </div>
@@ -113,15 +107,8 @@ to choose
         <div className="message">
           <h2>Accuracy</h2>
           <p>
-            Benefit from your 
-            {' '}
-            <b>GPS and rich mapping choices</b>
-, further
-            automatic 
-            {' '}
-            <b>data checks</b>
-            {' '}
-and review by experts.
+            Benefit from your <b>GPS and rich mapping choices</b>, further
+            automatic <b>data checks</b> and review by experts.
           </p>
         </div>
       </ion-slide>
@@ -149,10 +136,8 @@ and review by experts.
         <div className="message">
           <h2>Science</h2>
           <p>
-            Become a citizen scientist and contribute your sightings to
-            {' '}
-            <b>research and conservation</b>
-.
+            Become a citizen scientist and contribute your sightings to{' '}
+            <b>research and conservation</b>.
           </p>
         </div>
       </ion-slide>
@@ -161,17 +146,13 @@ and review by experts.
         <div className="message">
           <h2>Lets start!</h2>
           <p>
-            All that’s left to do is to click on the
-            {' '}
-            <b style={{ whiteSpace: 'nowrap' }}>Get Started</b>
-            {' '}
-button below.
+            All that’s left to do is to click on the{' '}
+            <b style={{ whiteSpace: 'nowrap' }}>Get Started</b> button below.
           </p>
         </div>
         <ion-button color="light" strong="true" onClick={exit}>
           {' '}
-          {t('Get Started')}
-          {' '}
+          {t('Get Started')}{' '}
         </ion-button>
       </ion-slide>
     </ion-slides>

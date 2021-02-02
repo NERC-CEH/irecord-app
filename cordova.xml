@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="{ID}" version="{APP_VER}" android-versionCode="{ANDROID_BUNDLE_VER}2021" ios-CFBundleVersion="{BUNDLE_VER}"
+<widget id="{ID}" version="{APP_VER}" android-versionCode="2021{ANDROID_BUNDLE_VER}" ios-CFBundleVersion="{BUNDLE_VER}"
   xmlns="http://www.w3.org/ns/widgets"
   xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
   <name>{APP_TITLE}</name>
   <description>{APP_DESCRIPTION}</description>
-  <author email="karolis@flumens.io" href="https://flumens.io">
-        Karolis Kazlauskis
+
+  <author email="erccis@cornwallwildlifetrust.org.uk" href="http://orks.org.uk">
+    ORKS App Development Team
   </author>
 
   <content src="index.html" />

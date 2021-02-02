@@ -90,14 +90,14 @@ const API = {
       const newBuild = CONFIG.build;
 
       // part of 4.0.0 update START
-      const oldStr = localStorage.getItem('irecord-app-app');
+      const oldStr = localStorage.getItem('orks-app-app');
       const old = JSON.parse(oldStr);
       if (old && typeof old === 'object' && old.appVersion) {
         currentVersion = old.appVersion;
         currentBuild = old.appBuild;
         delete old.appVersion;
         delete old.appBuild;
-        localStorage.setItem('irecord-app-app', JSON.stringify(old));
+        localStorage.setItem('orks-app-app', JSON.stringify(old));
       }
       // part of 4.0.0 update END
 
@@ -179,12 +179,12 @@ const API = {
       }
 
       const userModelPromise = new Promise(resolve => {
-        const oldStr = localStorage.getItem('irecord-app-user');
+        const oldStr = localStorage.getItem('orks-app-user');
         const old = JSON.parse(oldStr);
         if (old && typeof old === 'object') {
           Log('Update: updating userModel.', 'i');
           setMobXAttrs(userModel.attrs, old);
-          localStorage.removeItem('irecord-app-user');
+          localStorage.removeItem('orks-app-user');
           userModel.save().then(resolve);
           return;
         }
@@ -192,12 +192,12 @@ const API = {
       });
 
       const appModelPromise = new Promise(resolve => {
-        const oldStr = localStorage.getItem('irecord-app-app');
+        const oldStr = localStorage.getItem('orks-app-app');
         const old = JSON.parse(oldStr);
         if (old && typeof old === 'object') {
           Log('Update: updating appModel.', 'i');
           setMobXAttrs(appModel.attrs, old);
-          localStorage.removeItem('irecord-app-app');
+          localStorage.removeItem('orks-app-app');
           appModel.save().then(resolve);
           return;
         }

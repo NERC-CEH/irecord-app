@@ -149,17 +149,14 @@ class Component extends React.Component {
   };
 
   render() {
-
     return (
       <>
         <div className="info-message">
           <p>
             {t(
               'Click on the activity below which you would like to participate in. Any records you add from now on will be submitted to the chosen activity. You can join in with more activities by logging in to'
-            )}
-            {' '}
-            <a href={CONFIG.site_url}>iRecord</a>
-            {' '}
+            )}{' '}
+            <a href={CONFIG.site_url}>ORKS</a>{' '}
             {t(`and visiting the Record > Activities page`)}
             .
             <br />

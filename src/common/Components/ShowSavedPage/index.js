@@ -71,12 +71,7 @@ function getDefaultInfoMessage() {
 
   return (
     <p>
-      {t('Go to the')} 
-      {' '}
-      <a href={siteUrl}>{t('iRecord website')}</a>
-      {' '}
-      {t('to edit')}
-.
+      {t('Go to the')} <a href={siteUrl}>{t('ORKS website')}</a> {t('to edit')}.
     </p>
   );
 }
@@ -183,7 +178,7 @@ export default observer(props => {
       color="light"
       href={`${siteUrl}record-details?occurrence_id=${id}`}
     >
-      {t('View on iRecord')}
+      {t('View on ORKS')}
     </IonButton>
   ) : (
     getDefaultInfoMessage(siteUrl)

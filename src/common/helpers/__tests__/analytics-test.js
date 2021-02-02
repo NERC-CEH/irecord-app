@@ -61,12 +61,12 @@ describe('Helpers Analytics', () => {
         category: 'xhr',
         data: {
           method: 'GET',
-          url: 'file:///data/user/0/uk.ac.ceh.irecord/files/1471447312788.jpeg',
+          url: 'file:///data/user/0/uk.org.orks.app/files/1471447312788.jpeg',
         },
       };
       const resultCrumb = beforeBreadcrumb(crumb);
       expect(resultCrumb.data.url).to.be.eql(
-        'file:///data/user/0/uk.ac.ceh.irecord/files/FILENAME.jpeg'
+        'file:///data/user/0/uk.org.orks.app/files/FILENAME.jpeg'
       );
     });
   });
