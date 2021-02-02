@@ -15,7 +15,6 @@ const survey = {
 
     'occ:stage',
     'occ:breeding',
-    'occ:sex',
     'occ:identifiers',
   ],
 
