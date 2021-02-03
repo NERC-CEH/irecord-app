@@ -20,7 +20,7 @@ export default () => (
           <IonLabel>
             <b>
               {t(
-                'We are very grateful for all the people that helped to create this app:'
+                'We are very grateful for all the people that have helped to develop and test the ORKS App:'
               )}
             </b>
           </IonLabel>
@@ -28,90 +28,25 @@ export default () => (
 
         <IonItem>
           <IonLabel>
-            <b>David Roy</b>
-            {' '}
-(UK Centre for Ecology & Hydrology)
+            <b>Richard Frost</b>
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Karolis Kazlauskis</b>
-            {' '}
-(Flumens)
+            <b>ERCCIS Staff (past and present!)</b>
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>John van Breda</b>
-            {' '}
-(Biodiverse IT)
+            <b>ERCCIS Volunteers (past and present!)</b>
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Tom Humphrey</b>
-            {' '}
-(BSBI)
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Martin Harvey</b>
-            {' '}
-(CEH)
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Sally Rankin</b>
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Colin Harrower</b>
-            {' '}
-(CEH)
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Tom August</b>
-            {' '}
-(CEH)
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Chris Raper</b>
-            {' '}
-(NHM)
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Charles Roper</b>
-            {' '}
-(FSC)
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Matt Smith</b>
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Alan Rowland</b>
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>David Genney</b>
-          </IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonLabel>
-            <b>Graham Checkley</b>
+            <b>
+              A special thank you to Niki, Laura 1, Laura 2, Amity, Josh, Nic,
+              Gary, John, Jenny, Alan and Stuart.
+            </b>
           </IonLabel>
         </IonItem>
       </IonList>
@@ -119,49 +54,14 @@ export default () => (
       <IonList>
         <IonItem lines="none">
           <IonLabel>
-            {t('This app was part-funded by the')}
-            {' '}
-            <a href="https://www.ceh.ac.uk/">Centre for Ecology & Hydrology</a>
-/
-            <a href="http://jncc.defra.gov.uk/">
-              Joint Nature Conservation Committee
-            </a>
-            {' '}
-            {t('partnership supporting BRC')}
-          </IonLabel>
-        </IonItem>
-      </IonList>
-      <IonList lines="none">
-        <IonItem lines="inset">
-          <IonLabel>
-            <b>{t('Welcome screen credits:')}</b>
-          </IonLabel>
-        </IonItem>
-        <IonItem>David Kitching</IonItem>
-        <IonItem>UK Ladybird Survey</IonItem>
-      </IonList>
-      <IonList>
-        <IonItem lines="none">
-          <IonLabel>
-            {t('Icons were made by')}
-            {' '}
-            <a
-              href="https://www.flaticon.com/authors/nhor-phai"
-              title="Nhor Phai"
-            >
-              Nhor Phai
-            </a>
-            ,
-            {' '}
-            <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
-              Freepik
-            </a>
-            {' '}
-            from
-            {' '}
-            <a href="https://www.flaticon.com/" title="Flaticon">
-              www.flaticon.com
-            </a>
+            {t(
+              'This app was funded by ERCCIS and the Alexanda Fund for Recorders.'
+            )}{' '}
+            <a href="https://www.erccis.org.uk/">ERCCIS</a>{' '}
+            {t('and the Alexanda Fund for Recorders.')}
+            {t(
+              'Many thanks to the photographers for the use of their images in the welcome screen gallery.'
+            )}
           </IonLabel>
         </IonItem>
       </IonList>
