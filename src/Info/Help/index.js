@@ -270,7 +270,7 @@ export default () => (
           </p>
           <p>
             Or drop us an{' '}
-            <a href="mailto:erccis%40cornwallwildlifetrust.gov.uk">email</a>.
+            <a href="mailto:orks%40cornwallwildlifetrust.gov.uk">email</a>.
           </p>
         </IonItem>
       </IonList>

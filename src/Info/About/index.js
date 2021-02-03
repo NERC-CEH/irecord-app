@@ -111,7 +111,7 @@ const Component = () => (
         <IonItem>
           <IonLabel>
             If you have any suggestions of feedback please contact{' '}
-            <a href="mailto:erccis%40cornwallwildlifetrust.org.uk?subject=ORKS%20App%20Support%20%26%20Feedback">
+            <a href="mailto:orks%40cornwallwildlifetrust.org.uk?subject=ORKS%20App%20Support%20%26%20Feedback">
               ERCCIS
             </a>
             .
