@@ -57,8 +57,10 @@ class Component extends React.Component {
   };
 
   validate(value) {
-    if (this.props.validate) {
-      const valid = this.props.validate(value);
+    const config = this.props.config || {};
+    const validate = this.props.validate || config.validate;
+    if (validate) {
+      const valid = validate(value);
       if (!valid) {
         return false;
       }
@@ -74,7 +76,7 @@ class Component extends React.Component {
   componentDidMount() {
     const config = this.props.config || {};
     const type = this.props.type || config.type;
-    if (!this.input.current){
+    if (!this.input.current) {
       // AutoSuggestInput has its own one
       return;
     }
