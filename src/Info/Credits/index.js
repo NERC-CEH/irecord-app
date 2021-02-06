@@ -28,37 +28,27 @@ export default () => (
 
         <IonItem>
           <IonLabel>
-            <b>David Roy</b>
-            {' '}
-(UK Centre for Ecology & Hydrology)
+            <b>David Roy</b> (UKCEH)
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Karolis Kazlauskis</b>
-            {' '}
-(Flumens)
+            <b>Karolis Kazlauskis</b> (Flumens)
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>John van Breda</b>
-            {' '}
-(Biodiverse IT)
+            <b>John van Breda</b> (Biodiverse IT)
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Tom Humphrey</b>
-            {' '}
-(BSBI)
+            <b>Tom Humphrey</b> (BSBI)
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Martin Harvey</b>
-            {' '}
-(CEH)
+            <b>Martin Harvey</b> (UKCEH)
           </IonLabel>
         </IonItem>
         <IonItem>
@@ -68,30 +58,22 @@ export default () => (
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Colin Harrower</b>
-            {' '}
-(CEH)
+            <b>Colin Harrower</b> (UKCEH)
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Tom August</b>
-            {' '}
-(CEH)
+            <b>Tom August</b> (UKCEH)
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Chris Raper</b>
-            {' '}
-(NHM)
+            <b>Chris Raper</b> (NHM)
           </IonLabel>
         </IonItem>
         <IonItem>
           <IonLabel>
-            <b>Charles Roper</b>
-            {' '}
-(FSC)
+            <b>Charles Roper</b> (FSC)
           </IonLabel>
         </IonItem>
         <IonItem>
@@ -119,14 +101,14 @@ export default () => (
       <IonList>
         <IonItem lines="none">
           <IonLabel>
-            {t('This app was part-funded by the')}
-            {' '}
-            <a href="https://www.ceh.ac.uk/">Centre for Ecology & Hydrology</a>
-/
+            {t('This app was part-funded by the')}{' '}
+            <a href="https://www.ceh.ac.uk/">
+              UK Centre for Ecology & Hydrology
+            </a>
+            /
             <a href="http://jncc.defra.gov.uk/">
               Joint Nature Conservation Committee
-            </a>
-            {' '}
+            </a>{' '}
             {t('partnership supporting BRC')}
           </IonLabel>
         </IonItem>
@@ -143,22 +125,18 @@ export default () => (
       <IonList>
         <IonItem lines="none">
           <IonLabel>
-            {t('Icons were made by')}
-            {' '}
+            {t('Icons were made by')}{' '}
             <a
               href="https://www.flaticon.com/authors/nhor-phai"
               title="Nhor Phai"
             >
               Nhor Phai
             </a>
-            ,
-            {' '}
+            ,{' '}
             <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
               Freepik
-            </a>
-            {' '}
-            from
-            {' '}
+            </a>{' '}
+            from{' '}
             <a href="https://www.flaticon.com/" title="Flaticon">
               www.flaticon.com
             </a>
