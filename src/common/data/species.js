@@ -14,6 +14,14 @@ function fetch() {
       new Error('Requires a website indicia-api key set as APP_INDICIA_API_KEY')
     );
   }
+
+  const basicAuth = process.env.APP_INDICIA_BASIC_AUTH;
+  if (!basicAuth) {
+    return Promise.reject(
+      new Error('Requires a user basic auth key set as APP_INDICIA_BASIC_AUTH')
+    );
+  }
+
   return new Promise(resolve => {
     const options = {
       method: 'GET',
@@ -22,7 +30,7 @@ function fetch() {
         '/irecord/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=15',
       headers: {
         'x-api-key': apiKey,
-        Authorization: 'Basic dGVzdDp0ZXN0=',
+        Authorization: `Basic ${basicAuth}`,
         'Cache-Control': 'no-cache',
       },
     };
@@ -37,7 +45,6 @@ function fetch() {
       res.on('end', () => {
         const body = Buffer.concat(chunks);
         const json = JSON.parse(body.toString());
-
         console.log(`Pulled ${json.data.length} species`);
         resolve(json);
       });
