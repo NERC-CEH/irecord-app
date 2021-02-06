@@ -11,12 +11,13 @@ const numRanges = {
 export default {
   name: 'dragonflies',
   taxonGroups: [107],
-  
+
   render: [
     'smp:site',
     'occ:adCount',
     'occ:coCount',
     'occ:ovCount',
+    'occ:scCount',
     'occ:laCount',
     'occ:exCount',
     'occ:emCount',
@@ -78,6 +79,15 @@ export default {
         label: 'Ovip. females',
         icon: 'number',
         info: 'How many individuals of this type?',
+        default: '',
+        values: numRanges,
+      },
+      scCount: {
+        type: 'radio',
+        id: 842,
+        label: 'Ovip. scars',
+        icon: 'number',
+        info: 'This attribute should be recorded for Willow Emerald only.',
         default: '',
         values: numRanges,
       },
