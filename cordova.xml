@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="{ID}" version="{APP_VER}" android-versionCode="2019{ANDROID_BUNDLE_VER}" ios-CFBundleVersion="{BUNDLE_VER}" 
-  xmlns="http://www.w3.org/ns/widgets" 
+<widget id="{ID}" version="{APP_VER}" android-versionCode="2019{ANDROID_BUNDLE_VER}" ios-CFBundleVersion="{BUNDLE_VER}"
+  xmlns="http://www.w3.org/ns/widgets"
   xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
   <name>{APP_TITLE}</name>
@@ -47,6 +47,7 @@
   <allow-intent href="geo:*" />
 
   <preference name="android-minSdkVersion" value="22" />
+  <preference name="android-targetSdkVersion" value="29"/>
   <preference name="orientation" value="portrait" />
   <preference name="iosPersistentFileLocation" value="Library" />
   <preference name="webviewbounce" value="false"/>
