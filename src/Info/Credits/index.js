@@ -16,7 +16,7 @@ export default () => (
       </IonList>
 
       <IonList lines="none">
-        <IonItem lines="inset">
+        <IonItem>
           <IonLabel>
             <b>
               {t(
@@ -41,7 +41,7 @@ export default () => (
             <b>ERCCIS Volunteers (past and present!)</b>
           </IonLabel>
         </IonItem>
-        <IonItem>
+        <IonItem lines="inset">
           <IonLabel>
             <b>
               A special thank you to Niki, Laura 1, Laura 2, Amity, Josh, Nic,
@@ -52,13 +52,15 @@ export default () => (
       </IonList>
 
       <IonList>
-        <IonItem lines="none">
+        <IonItem lines="inset">
           <IonLabel>
-            {t(
-              'This app was funded by ERCCIS and the Alexanda Fund for Recorders.'
-            )}{' '}
+            {t('This app was funded by ')}
             <a href="https://www.erccis.org.uk/">ERCCIS</a>{' '}
             {t('and the Alexanda Fund for Recorders.')}
+          </IonLabel>
+        </IonItem>
+        <IonItem lines="none">
+          <IonLabel>
             {t(
               'Many thanks to the photographers for the use of their images in the welcome screen gallery.'
             )}
