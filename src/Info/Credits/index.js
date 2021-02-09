@@ -2,7 +2,7 @@ import React from 'react';
 import { IonList, IonItem, IonLabel, IonPage } from '@ionic/react';
 import AppMain from 'Components/Main';
 import AppHeader from 'Components/Header';
-import './sponsors.svg';
+import './cwt-erccis.png';
 import './styles.scss';
 
 export default () => (
@@ -11,7 +11,7 @@ export default () => (
     <AppMain id="credits" class="ion-padding">
       <IonList lines="none">
         <IonItem>
-          <img src="/images/sponsors.svg" alt="" />
+          <img src="/images/cwt-erccis.png" alt="" />
         </IonItem>
       </IonList>
 
