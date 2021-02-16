@@ -282,7 +282,10 @@ class Sample extends Indicia.Sample {
       return Promise.resolve({ data: {} });
     }
 
-    await super.saveRemote();
+    try {
+      await super.saveRemote();
+    } catch (e) {}
+
     return this.save();
   }
 

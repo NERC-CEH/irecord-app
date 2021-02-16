@@ -10,7 +10,7 @@ import AppHeader from 'Components/Header';
 import Main from './Main';
 
 async function onRegister(userModel, details, lang, onSuccess) {
-  const { email, password, firstname, secondname } = details;
+  const { email, username, password, firstname, secondname } = details;
   if (!Device.isOnline()) {
     warn(t("Sorry, looks like you're offline."));
     return;
@@ -22,6 +22,7 @@ async function onRegister(userModel, details, lang, onSuccess) {
   const registrationDetails = {
     type: 'users',
     email: email.trim(),
+    username: username.trim(),
     firstname: firstname.trim(),
     secondname: secondname.trim(),
     password,

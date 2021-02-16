@@ -7,8 +7,8 @@ import { store } from 'common/store';
 import makeRequest from 'common/helpers/makeRequest';
 import * as Yup from 'yup';
 import CONFIG from 'config';
-import activitiesExtension from './user_model_activities_ext';
-import statisticsExtension from './user_model_statistics_ext';
+// import activitiesExtension from './user_model_activities_ext';
+// import statisticsExtension from './user_model_statistics_ext';
 
 const getDefaultAttrs = () => ({
   isLoggedIn: false,
@@ -63,6 +63,7 @@ class UserModel {
     email: Yup.string()
       .email('email is not valid')
       .required(),
+    username: Yup.string().required(),
     firstname: Yup.string().required(),
     secondname: Yup.string().required(),
     password: Yup.string().required(),
@@ -170,7 +171,9 @@ class UserModel {
     let res;
     try {
       res = await makeRequest(CONFIG.users.url, options, CONFIG.users.timeout);
-      const isValidResponse = await this.registerSchemaBackend.isValid(res.data);
+      const isValidResponse = await this.registerSchemaBackend.isValid(
+        res.data
+      );
       if (!isValidResponse) {
         throw new Error('Invalid backend response.');
       }
@@ -224,7 +227,7 @@ class UserModel {
     this.attrs.secondname = user.secondname || '';
     this.attrs.isLoggedIn = true;
 
-    this.syncActivities();
+    //this.syncActivities();
     // TODO:
     // this.syncStats();
 
@@ -252,7 +255,7 @@ class UserModel {
 }
 
 // add activities management
-UserModel.prototype = Object.assign(UserModel.prototype, activitiesExtension);
+// UserModel.prototype = Object.assign(UserModel.prototype, activitiesExtension);
 
 // add statistics management
 // UserModel.prototype = Object.assign(UserModel.prototype, statisticsExtension);

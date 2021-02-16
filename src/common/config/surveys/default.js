@@ -129,7 +129,7 @@ const survey = {
         },
       },
       number: {
-        id: 16,
+        id: 93,
         info: 'How many individuals of this type?',
         label: 'Abundance',
         icon: 'number',

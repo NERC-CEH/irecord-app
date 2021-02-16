@@ -12,23 +12,20 @@ import {
   IonFabButton,
   IonFabList,
 } from '@ionic/react';
-import { people, camera, add, menu, home, map } from 'ionicons/icons';
+import { camera, add, menu, home, map } from 'ionicons/icons';
 import Hammer from 'hammerjs';
 import savedSamples from 'saved_samples';
 import appModel from 'app_model';
 import alert from 'helpers/alert';
 import { error, warn } from 'helpers/toast';
-import userModel from 'user_model';
 import actionSheet from 'helpers/actionSheet';
 import ImageHelp from 'helpers/image';
 import Log from 'helpers/log';
 import defaultSurvey from 'common/config/surveys/default';
-import PrivateRoute from 'Components/PrivateRoute';
 import Sample from 'sample';
 import Occurrence from 'occurrence';
 import SurveysList from './List';
 import SurveysMap from './Map';
-import Activities from './Activities';
 import './styles.scss';
 
 // const activity = this.props.appModel.getAttrLock('smp', 'activity');
@@ -195,7 +192,7 @@ class Component extends React.Component {
   }
 
   render() {
-    const activitiesOn = !!appModel.getAttrLock('smp', 'activity');
+    //const activitiesOn = !!appModel.getAttrLock('smp', 'activity');
     const { useExperiments } = appModel.attrs;
 
     return (
@@ -253,18 +250,7 @@ class Component extends React.Component {
               )}
               exact
             />
-            <PrivateRoute
-              path="/home/activities"
-              component={props => (
-                <Activities
-                  userModel={userModel}
-                  appModel={appModel}
-                  savedSamples={savedSamples}
-                  {...props}
-                />
-              )}
-              exact
-            />
+
             <Route
               path="/home/map"
               render={props => (
@@ -285,12 +271,13 @@ class Component extends React.Component {
             </IonTabButton>
 
             <IonTabButton
-              className={activitiesOn ? 'activities-button-on' : ''}
+              // className={activitiesOn ? 'activities-button-on' : ''}
               tab="home/activities"
               href="/home/activities"
             >
-              <IonIcon icon={people} />
-              <IonLabel>{t('Activities')}</IonLabel>
+              {/* <IonIcon icon={people} />
+              <IonLabel>{t('Activities')}</IonLabel> */}
+
               {/* TODO: */}
               {/* className={`icon icon-users ${activityTitle ? 'on' : ''}`} */}
             </IonTabButton>

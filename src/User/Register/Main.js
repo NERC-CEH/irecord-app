@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { IonIcon, IonButton, IonList } from '@ionic/react';
 import AppMain from 'Components/Main';
-import { person, mail, key, lock, eye, eyeOff } from 'ionicons/icons';
+import { person, mail, key, lock, eye, eyeOff, walk } from 'ionicons/icons';
 import { Formik, Form } from 'formik';
 import InputWithValidation from 'Components/InputWithValidation';
 import ToggleWithValidation from 'Components/ToggleWithValidation';
@@ -25,6 +25,13 @@ class Component extends React.Component {
 
     return (
       <AppMain id="register-page">
+        <div className="info-message">
+          <p>
+            {t(
+              'An activation email will be sent to your email address after registering, please check this and follow the link to activate your account before submitting records.'
+            )}
+          </p>
+        </div>
         <Formik
           validationSchema={schema}
           onSubmit={onSubmit}
@@ -40,15 +47,22 @@ class Component extends React.Component {
                   {...props}
                 />
                 <InputWithValidation
+                  name="username"
+                  placeholder={t('Username')}
+                  icon={walk}
+                  type="text"
+                  {...props}
+                />
+                <InputWithValidation
                   name="firstname"
-                  placeholder={t('First Name')}
+                  placeholder={t('First name')}
                   icon={person}
                   type="text"
                   {...props}
                 />
                 <InputWithValidation
                   name="secondname"
-                  placeholder={t('Surname')}
+                  placeholder={t('Last name')}
                   icon={person}
                   type="text"
                   {...props}
@@ -74,15 +88,14 @@ class Component extends React.Component {
                 </InputWithValidation>
                 <ToggleWithValidation
                   name="terms"
-                  label={(
+                  label={
                     <>
-                      {t('I agree to')}
-                      {' '}
+                      {t('I agree to')}{' '}
                       <a href={`${config.site_url}/terms_of_use?lang=${lang}`}>
                         {t('Terms and Conditions')}
                       </a>
                     </>
-                  )}
+                  }
                   icon={lock}
                   type="terms"
                   {...props}

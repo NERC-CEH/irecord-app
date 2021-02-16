@@ -6,7 +6,7 @@ import Log from 'helpers/log';
 import Device from 'helpers/device';
 import Footer from 'Components/PhotoPickerFooter';
 import AppHeader, { AppHeaderBand } from 'Components/Header';
-import { warn } from 'helpers/toast';
+import { error, warn } from 'helpers/toast';
 import showInvalidsMessage from 'helpers/invalidsMessage';
 import Main from './Main';
 
@@ -50,9 +50,18 @@ class Controller extends React.Component {
       warn(t('Please log in first to upload the records.'));
       return;
     }
+    const saved = await sample.saveRemote();
 
-    sample.saveRemote();
-    history.replace('/'); // go back doesn't work, not sure why?
+    // If no ID, then we assume the sample has not been saved to the backend
+    if (!saved.id) {
+      error(
+        t(
+          'Any issue occurred uploading, please try again. If the problem persists please contact ORKS.'
+        )
+      );
+    } else {
+      history.replace('/'); // go back doesn't work, not sure why?
+    }
   };
 
   onAttrToggle = (attr, checked) => {
