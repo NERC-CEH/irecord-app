@@ -50,18 +50,9 @@ class Controller extends React.Component {
       warn(t('Please log in first to upload the records.'));
       return;
     }
-    const saved = await sample.saveRemote();
 
-    // If no ID, then we assume the sample has not been saved to the backend
-    if (!saved.id) {
-      error(
-        t(
-          'Any issue occurred uploading, please try again. If the problem persists please contact ORKS.'
-        )
-      );
-    } else {
-      history.replace('/'); // go back doesn't work, not sure why?
-    }
+    sample.saveRemote();
+    history.replace('/'); // go back doesn't work, not sure why?
   };
 
   onAttrToggle = (attr, checked) => {
