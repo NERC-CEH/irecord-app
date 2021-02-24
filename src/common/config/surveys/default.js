@@ -23,6 +23,7 @@ const survey = {
     },
 
     'occ:stage',
+    'occ:type',
     'occ:identifiers',
   ],
 
@@ -193,7 +194,7 @@ const survey = {
           'Camera trap': 5870,
           'Other (please add to comments)': 3393,
         },
-        icon: 'camera',
+        icon: 'stage',
         type: 'radio',
       },
       identifiers: {

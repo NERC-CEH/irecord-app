@@ -168,7 +168,7 @@ export default observer(props => {
   const { cid, id, media } = occ;
   const { useExperiments } = appModel.attrs;
 
-  const { stage, identifiers, comment } = occ.attrs;
+  const { stage, type, identifiers, comment } = occ.attrs;
   const activityTitle = activity ? activity.title : null;
 
   const siteUrl = CONFIG.site_url;
@@ -230,6 +230,13 @@ export default observer(props => {
               <IonIcon src="/images/progress-circles.svg" slot="start" />
               <IonLabel slot="end">{stage}</IonLabel>
               {t('Stage')}
+            </IonItem>
+          )}
+          {type && (
+            <IonItem>
+              <IonIcon src="/images/progress-circles.svg" slot="start" />
+              <IonLabel slot="end">{type}</IonLabel>
+              {t('Type')}
             </IonItem>
           )}
           {comment && (

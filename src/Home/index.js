@@ -145,7 +145,7 @@ class Component extends React.Component {
       alert({
         header: 'Tip: Adding Observations',
         message:
-          'Tap on the <ion-icon class="tip-icon" src="/images/ios-add.svg"></ion-icon> button to capture a new record. <br/><br/>Long-press <ion-icon class="tip-icon" src="/images/ios-add.svg"></ion-icon> button to see some more advanced options.',
+          'Tap on the <ion-icon class="tip-icon" src="/images/ios-add.svg"></ion-icon> button to capture a new record.',
         buttons: [
           {
             text: t('OK, got it'),
@@ -203,38 +203,9 @@ class Component extends React.Component {
           horizontal="center"
           slot="fixed"
         >
-          <IonFabList side="top">
-            <div className="fab-backdrop" />
-          </IonFabList>
-
           <IonFabButton>
             <IonIcon icon={add} />
           </IonFabButton>
-
-          <IonFabList side="top">
-            <IonFabButton
-              class="fab-button-label"
-              routerLink="/survey/complex/plant/new"
-            >
-              <IonLabel>{t('Plant Survey')}</IonLabel>
-            </IonFabButton>
-            <IonFabButton
-              class="fab-button-label"
-              routerLink="/survey/complex/moth/new"
-            >
-              <IonLabel>{t('Moth Survey')}</IonLabel>
-            </IonFabButton>
-            <IonFabButton
-              class="fab-button-label"
-              routerLink="/survey/complex/default/new"
-            >
-              <IonLabel>{t('General Survey')}</IonLabel>
-            </IonFabButton>
-
-            <div className="long-press-surveys-label">
-              {t('Other recording options')}
-            </div>
-          </IonFabList>
         </IonFab>
 
         <IonTabs>
