@@ -128,7 +128,9 @@ class Component extends React.Component {
               cancelText={t('Cancel')}
               doneText={t('OK')}
               displayFormat="DD/MM/YYYY"
-              value={DateHelp.toDateInputValue(this.state.value)}
+              value={
+                this.state.value && DateHelp.toDateInputValue(this.state.value)
+              }
               onIonChange={val => {
                 const dateStr = val.detail.value.split('T')[0];
                 this.onChange({ target: { value: dateStr } });

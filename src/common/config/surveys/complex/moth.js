@@ -94,7 +94,6 @@ const survey = {
       values(date) {
         return DateHelp.print(date);
       },
-      isValid: val => val && val.toString() !== 'Invalid Date',
       type: 'date',
       icon: 'calendar',
       info:
@@ -272,7 +271,10 @@ const survey = {
     }
 
     const sample = new Sample({
-      attrs: { recorders },
+      attrs: {
+        date: '', // user should specify the trap time
+        recorders,
+      },
       metadata: {
         complex_survey: survey.name,
       },
