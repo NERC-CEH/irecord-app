@@ -188,7 +188,7 @@ import searchEngine from '../taxon_search_engine';
           }));
 
       it('should allow searching Recorder style (5 characters) ', () =>
-        searchEngine.search('pufpu').then(results => {
+        searchEngine.search('pupuf').then(results => {
           const containsPuffinus = results.find(
             res => res.scientific_name === 'Puffinus puffinus'
           );

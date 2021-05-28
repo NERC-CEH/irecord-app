@@ -181,8 +181,8 @@ function searchSciNames(
   const is5CharacterShortcut = searchPhrase.length === 5;
   const exceededMaxResults = results.length >= maxResults;
   if (is5CharacterShortcut && !exceededMaxResults) {
-    const genus = searchPhrase.substr(0, 3);
-    const name = searchPhrase.substr(3, 4);
+    const genus = searchPhrase.substr(0, 2);
+    const name = searchPhrase.substr(2, 4);
     const searchPhraseShortcut = `${genus} ${name}`;
 
     search(
