@@ -97,6 +97,8 @@ const survey = {
       isValid: val => val && val.toString() !== 'Invalid Date',
       type: 'date',
       icon: 'calendar',
+      info:
+        'If trapping overnight please enter the date for the evening on which the trap was put out.',
       max: () => new Date(),
     },
 

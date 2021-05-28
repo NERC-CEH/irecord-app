@@ -99,6 +99,9 @@ class Component extends React.Component {
     const config = this.props.config || {};
     const type = this.props.type || config.type || 'text';
 
+    const message = this.props.info || config.info;
+    const placeholder = this.props.placeholder || config.placeholder;
+
     if (config.lookup) {
       const { onChange, ...props } = this.props;
       const onSuggestionSelected = onChange;
@@ -112,20 +115,27 @@ class Component extends React.Component {
 
     if (type === 'date') {
       return (
-        <IonItem>
-          <IonLabel>DD/MM/YYYY</IonLabel>
-          <IonDatetime
-            ref={this.input}
-            cancelText={t('Cancel')}
-            doneText={t('OK')}
-            displayFormat="DD/MM/YYYY"
-            value={DateHelp.toDateInputValue(this.state.value)}
-            onIonChange={val => {
-              const dateStr = val.detail.value.split('T')[0];
-              this.onChange({ target: { value: dateStr } });
-            }}
-          />
-        </IonItem>
+        <div>
+          {message && (
+            <div className="info-message">
+              <p>{t(message)}</p>
+            </div>
+          )}
+          <IonItem>
+            <IonLabel>DD/MM/YYYY</IonLabel>
+            <IonDatetime
+              ref={this.input}
+              cancelText={t('Cancel')}
+              doneText={t('OK')}
+              displayFormat="DD/MM/YYYY"
+              value={DateHelp.toDateInputValue(this.state.value)}
+              onIonChange={val => {
+                const dateStr = val.detail.value.split('T')[0];
+                this.onChange({ target: { value: dateStr } });
+              }}
+            />
+          </IonItem>
+        </div>
       );
     }
 
@@ -155,8 +165,6 @@ class Component extends React.Component {
         [max] = max.toJSON().split('T');
       }
     }
-    const message = this.props.info || config.info;
-    const placeholder = this.props.placeholder || config.placeholder;
 
     return (
       <div>
