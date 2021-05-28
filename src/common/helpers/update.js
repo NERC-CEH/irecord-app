@@ -9,7 +9,6 @@ import userModel from 'user_model';
 import { set as setMobXAttrs } from 'mobx';
 import loader from 'helpers/loader';
 import Log from './log';
-import Analytics from './analytics';
 
 const MIN_UPDATE_TIME = 5000; // show updating dialog for minimum seconds
 
@@ -252,7 +251,6 @@ const API = {
         callback();
       }
 
-      Analytics.trackEvent('App', 'updated');
       return null;
     });
   },

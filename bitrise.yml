@@ -1,0 +1,103 @@
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+app:
+  envs:
+    - BITRISE_PROJECT_PATH: cordova/platforms/ios/iRecord App.xcodeproj
+      opts:
+        is_expand: false
+    - BITRISE_SCHEME: iRecord App
+      opts:
+        is_expand: false
+    - BITRISE_EXPORT_METHOD: app-store
+      opts:
+        is_expand: false
+trigger_map:
+  - push_branch: '*'
+    workflow: ci
+workflows:
+  android:
+    steps:
+      - sign-apk@1:
+          inputs:
+            - debuggable_permitted: 'false'
+            - verbose_log: 'true'
+            - android_app: $BITRISE_SOURCE_DIR/cordova/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+  ci:
+    before_run:
+      - web
+      - android
+      - ios
+    after_run:
+      - deploy
+  deploy:
+    steps:
+      - npm@1:
+          title: Deploy to demo site
+          inputs:
+            - command: run deploy
+      - deploy-to-bitrise-io@1:
+          title: Create www artifact
+          inputs:
+            - notify_user_groups: none
+            - deploy_path: $BITRISE_SOURCE_DIR/build
+            - is_compress: 'true'
+      - deploy-to-bitrise-io@1:
+          title: Create apk artifact
+          inputs:
+            - notify_user_groups: none
+            - deploy_path: $BITRISE_SIGNED_APK_PATH
+      - deploy-to-bitrise-io@1:
+          title: Create app artifact
+          inputs:
+            - notify_user_groups: none
+      - deploy-to-itunesconnect-application-loader@0:
+          inputs:
+            - password: $ITUNES_CONNECT_PASS
+            - app_password: $ITUNES_CONNECT_APP_PASS
+            - itunescon_user: $ITUNES_CONNECT_USER
+      - git-tag-project-version-and-build-number@1:
+          inputs:
+            - bitrise_tag_format: v_VERSION_-_BUILD_
+            - use_lightweight_tag: 'yes'
+            - bitrise_tag_info_plist_path: $BITRISE_SOURCE_DIR/cordova/platforms/ios/iRecord App/iRecord App-Info.plist
+  ios:
+    steps:
+      - certificate-and-profile-installer@1: {}
+      - recreate-user-schemes@1:
+          inputs:
+            - project_path: $BITRISE_PROJECT_PATH
+      - code-signing-setting-patch@1:
+          inputs:
+            - project_target: $BITRISE_SCHEME
+            - debug_code_sign_identity: iPhone Distribution
+            - debug_provisioning_profile_specifier: uk.ac.ceh.ir
+            - release_code_sign_identity: iPhone Distribution
+            - release_provisioning_profile_specifier: uk.ac.ceh.ir
+            - debug_development_team: X4GARM6E7K
+            - release_development_team: X4GARM6E7K
+            - code_sign_style: Manual
+            - xcode_xcodeproj_file: $BITRISE_PROJECT_PATH
+      - xcode-archive@3:
+          inputs:
+            - export_method: app-store
+  web:
+    steps:
+      - get-npm-package-version@1: {}
+      - npm@1:
+          title: Config Bit.dev
+          inputs:
+            - command: config set @bit:registry https://node.bit.dev
+      - npm@1:
+          title: Install
+          timeout: 360
+          inputs:
+            - command: install
+      - npm@1:
+          title: Test Eslint
+          inputs:
+            - command: run test:eslint
+      - npm@1:
+          title: Build
+          inputs:
+            - command: run build:production

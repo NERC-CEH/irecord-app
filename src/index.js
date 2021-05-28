@@ -8,7 +8,8 @@ import { setupConfig } from '@ionic/react';
 import appModel from 'app_model';
 import userModel from 'user_model';
 import savedSamples from 'saved_samples';
-import Analytics from 'helpers/analytics';
+import { initAnalytics } from '@flumens';
+import config from 'config';
 import App from './App';
 
 // START Android back button disable
@@ -31,7 +32,18 @@ async function init() {
   await appModel._init;
   await userModel._init;
   await savedSamples._init;
-  Analytics.init();
+
+  appModel.attrs.sendAnalytics &&
+    initAnalytics({
+      dsn: config.sentryDNS,
+      environment: config.environment,
+      build: config.build,
+      release: config.version,
+      userId: userModel.attrs.drupalID,
+      tags: {
+        'app.appSession': appModel.attrs.appSession,
+      },
+    });
 
   if (window.cordova) {
     document.addEventListener(
@@ -48,7 +60,7 @@ async function init() {
   }
 
   appModel.attrs.appSession += 1;
-  appModel.save()
+  appModel.save();
 
   ReactDOM.render(<App />, document.getElementById('root'));
 }

@@ -3,18 +3,18 @@
   "id": "uk.ac.ceh.ir",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "5.2.0",
-  "build": "2",
+  "version": "5.3.0",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.js --content-base build --port 8000",
     "build": "webpack --display minimal",
     "build:production": "grunt",
+    "deploy": "vercel --prod -A other/now.json -t $VERCEL_TOKEN --confirm",
     "test": "karma start test/karma.conf.js",
     "test:coverage": "karma start test/karma.conf.js --reporters mocha,coverage",
     "test:watch": "karma start test/karma.conf.js --no-single-run",
     "test:sauce": "karma start test/karma.conf-sauce.js",
-    "test:eslint": "mocha test/eslint-test.js",
+    "test:eslint": "eslint src --quiet --ext .jsx --ext .ts --ext .tsx --ext .js && echo '\\033[37;42;1m PASS \\033[00m'",
     "test:acceptance": "grunt exec:cordova_build_android && ./node_modules/.bin/wdio test/acceptance/wdio.conf.js",
     "make:species": "cd src/common/data && node species.js",
     "clean": "rm -rf cordova build resources"
@@ -25,77 +25,76 @@
     }
   },
   "dependencies": {
-    "@babel/polyfill": "^7.7.0",
-    "@indicia-js/core": "^5.1.1",
+    "@babel/polyfill": "7.7.0",
+    "@bit/flumens.apps.utils.analytics": "^0.2.0",
+    "@indicia-js/core": "5.1.1",
     "@ionic/core": "4.11.0",
     "@ionic/react": "4.11.0",
     "@ionic/react-router": "4.11.0",
-    "@sentry/browser": "^5.11.1",
+    "@sentry/browser": "5.11.1",
     "bigu": "kazlauskis/bigu#v0.2.2",
-    "cordova": "9.0.0",
-    "core-js": "^3.6.2",
-    "formik": "^2.1.1",
-    "hammerjs": "^2.0.8",
-    "html-webpack-plugin": "3.2.0",
-    "i18next": "^19.3.4",
+    "core-js": "3.6.2",
+    "formik": "2.1.1",
+    "hammerjs": "2.0.8",
+    "i18next": "19.3.4",
     "ionicons": "4.6.3",
     "leaflet": "0.7.7",
     "leaflet.gridref": "kazlauskis/Leaflet.GridRef#v1.0.3",
     "localforage": "1.7.3",
     "localforage-cordovasqlitedriver": "1.8.0",
-    "lodash": "^4.17.15",
-    "mobx": "^5.15.1",
-    "mobx-react": "^6.1.4",
+    "lodash": "4.17.15",
+    "mobx": "5.15.1",
+    "mobx-react": "6.1.4",
     "mobx-react-devtools": "6.1.1",
     "os-leaflet": "0.2.1",
     "photoswipe": "4.1.3",
     "proj4": "2.3.15",
     "proj4leaflet": "kartena/Proj4Leaflet#0.7.2",
     "prop-types": "15.7.2",
-    "react": "^16.12.0",
-    "react-autosuggest": "^9.4.3",
-    "react-dom": "^16.12.0",
-    "react-i18next": "^11.3.4",
-    "react-photoswipe": "^1.3.0",
-    "react-router": "^5.1.0",
+    "react": "16.12.0",
+    "react-autosuggest": "9.4.3",
+    "react-dom": "16.12.0",
+    "react-i18next": "11.3.4",
+    "react-photoswipe": "1.3.0",
+    "react-router": "5.1.0",
     "react-router-dom": "5.1.2",
-    "react-tiny-virtual-list": "^2.2.0",
-    "yup": "^0.28.0"
+    "react-tiny-virtual-list": "2.2.0",
+    "yup": "0.28.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-proposal-decorators": "^7.7.4",
-    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
-    "@babel/plugin-transform-exponentiation-operator": "^7.7.4",
-    "@babel/preset-env": "^7.7.7",
-    "@babel/preset-react": "^7.7.4",
-    "@flumens/has-env": "^1.0.0",
-    "appium": "^1.16.0",
-    "autoprefixer": "^9.7.3",
+    "@babel/core": "7.7.7",
+    "@babel/plugin-proposal-class-properties": "7.7.4",
+    "@babel/plugin-proposal-decorators": "7.7.4",
+    "@babel/plugin-syntax-dynamic-import": "7.7.4",
+    "@babel/plugin-transform-exponentiation-operator": "7.7.4",
+    "@babel/preset-env": "7.7.7",
+    "@babel/preset-react": "7.7.4",
+    "@flumens/has-env": "1.0.0",
+    "autoprefixer": "9.7.3",
     "babel-eslint": "10.0.3",
     "babel-loader": "8.0.6",
-    "babel-plugin-istanbul": "^6.0.0",
+    "babel-plugin-istanbul": "6.0.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "chai": "4.2.0",
-    "chromedriver": "^79.0.0",
     "circular-dependency-plugin": "5.2.0",
-    "cordova-res": "^0.8.1",
-    "css-loader": "^3.4.1",
-    "csv": "^5.3.1",
-    "deep-diff": "^1.0.2",
-    "dotenv": "^8.2.0",
-    "ejs-loader": "^0.3.5",
-    "eslint": "^6.8.0",
+    "cordova": "10.0.0",
+    "cordova-res": "0.8.1",
+    "css-loader": "3.4.1",
+    "csv": "5.3.1",
+    "deep-diff": "1.0.2",
+    "dotenv": "8.2.0",
+    "ejs-loader": "0.3.5",
+    "eslint": "6.8.0",
     "eslint-config-airbnb": "18.0.1",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-import-resolver-webpack": "^0.12.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.17.0",
+    "eslint-config-prettier": "6.9.0",
+    "eslint-import-resolver-webpack": "0.12.0",
+    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.17.0",
     "express": "4.17.1",
     "express-history-api-fallback": "2.2.1",
     "extract-text-webpack-plugin": "3.0.2",
-    "file-loader": "^5.0.2",
+    "file-loader": "5.0.2",
     "grunt": "1.0.4",
     "grunt-cli": "1.3.2",
     "grunt-contrib-clean": "2.0.0",
@@ -104,9 +103,10 @@
     "grunt-prompt": "1.3.3",
     "grunt-text-replace": "0.4.0",
     "grunt-webpack": "3.1.3",
-    "husky": "^4.0.3",
-    "json-stable-stringify": "^1.0.1",
-    "karma": "^4.4.1",
+    "html-webpack-plugin": "3.2.0",
+    "husky": "4.0.3",
+    "json-stable-stringify": "1.0.1",
+    "karma": "4.4.1",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "3.1.0",
     "karma-coverage": "2.0.1",
@@ -117,41 +117,262 @@
     "karma-webpack": "4.0.2",
     "load-grunt-config": "3.0.1",
     "load-grunt-tasks": "5.1.0",
-    "mini-css-extract-plugin": "^0.9.0",
-    "mocha": "^7.0.0",
+    "mini-css-extract-plugin": "0.9.0",
+    "mocha": "7.0.0",
     "mock-geolocation": "1.0.11",
-    "mountebank": "^2.1.2",
-    "node-sass": "^4.13.0",
-    "p-queue": "^6.2.1",
+    "mountebank": "2.1.2",
+    "node-sass": "4.13.0",
+    "p-queue": "6.2.1",
     "postcss-loader": "3.0.0",
     "prettier-eslint": "9.0.1",
     "prettier-eslint-cli": "5.0.0",
+    "puppeteer": "^9.1.1",
     "sass-loader": "8.0.0",
-    "sharp-cli": "^1.11.0",
-    "sinon": "^8.0.4",
-    "string-replace-loader": "^2.1.1",
-    "style-loader": "^1.1.2",
+    "sharp-cli": "1.11.0",
+    "sinon": "8.0.4",
+    "string-replace-loader": "2.1.1",
+    "style-loader": "1.1.2",
     "time-grunt": "2.0.0",
-    "url-loader": "^3.0.0",
-    "wdio": "^4.0.0",
-    "wdio-appium-service": "0.2.3",
-    "wdio-mocha-framework": "0.6.4",
-    "wdio-spec-reporter": "0.1.5",
-    "webdriverio": "^5.18.4",
-    "webpack": "^4.41.5",
-    "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1",
+    "url-loader": "3.0.0",
+    "vercel": "^23.0.0",
+    "webdriverio": "5.18.4",
+    "webpack": "4.41.5",
+    "webpack-bundle-analyzer": "3.6.0",
+    "webpack-cli": "3.3.10",
+    "webpack-dev-server": "3.10.1",
     "webpack-merge": "4.2.2"
   },
   "engines": {
-    "node": "10",
-    "npm": "6"
+    "node": ">=10",
+    "npm": ">=6"
   },
   "author": {
     "name": "Karolis Kazlauskis",
     "email": "karolis@kazlauskis.com",
     "url": "https://kazlauskis.com"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react",
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "android": "5.1",
+            "ios": "10.2"
+          },
+          "modules": "commonjs",
+          "corejs": "3.0.0",
+          "useBuiltIns": "usage"
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ],
+          "alias": {
+            "@flumens": "./src/common/flumens"
+          }
+        }
+      ],
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      "@babel/plugin-transform-exponentiation-operator",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-syntax-dynamic-import"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          [
+            "istanbul",
+            {
+              "exclude": [
+                "src/**/*tests*",
+                "src/**/*_view*",
+                "src/app.js",
+                "dist",
+                "test"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "mocha": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 2016,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "extends": [
+      "airbnb",
+      "prettier"
+    ],
+    "rules": {
+      "no-unused-vars": 1,
+      "prefer-destructuring": 1,
+      "no-use-before-define": 1,
+      "no-param-reassign": 1,
+      "import/extensions": 1,
+      "react/no-array-index-key": 1,
+      "react/no-access-state-in-setstate": 1,
+      "import/no-unresolved": 1,
+      "no-plusplus": 0,
+      "react/forbid-prop-types": 0,
+      "jsx-a11y/anchor-is-valid": 1,
+      "jsx-a11y/click-events-have-key-events": 1,
+      "jsx-a11y/no-static-element-interactions": 1,
+      "jsx-a11y/no-noninteractive-element-interactions": 1,
+      "jsx-a11y/no-autofocus": 0,
+      "jsx-a11y/alt-text": 1,
+      "import/no-mutable-exports": 1,
+      "no-case-declarations": 1,
+      "jsx-a11y/anchor-has-content": 1,
+      "react/no-this-in-sfc": 1,
+      "react/jsx-filename-extension": 0,
+      "react/require-default-props": 0,
+      "react/sort-comp": 0,
+      "react/destructuring-assignment": 0,
+      "react/button-has-type": 0,
+      "no-unused-expressions": [
+        2,
+        {
+          "allowShortCircuit": true,
+          "allowTernary": true
+        }
+      ],
+      "complexity": [
+        1,
+        20
+      ],
+      "eqeqeq": [
+        1,
+        "smart"
+      ],
+      "guard-for-in": 1,
+      "no-constant-condition": 2,
+      "no-console": 1,
+      "no-redeclare": [
+        2,
+        {
+          "builtinGlobals": true
+        }
+      ],
+      "object-curly-spacing": [
+        2,
+        "always"
+      ],
+      "indent": [
+        "error",
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "comma-dangle": [
+        2,
+        "always-multiline"
+      ],
+      "key-spacing": [
+        2,
+        {
+          "afterColon": true,
+          "mode": "minimum"
+        }
+      ],
+      "no-multiple-empty-lines": [
+        2,
+        {
+          "max": 2
+        }
+      ],
+      "no-mixed-spaces-and-tabs": [
+        2,
+        "smart-tabs"
+      ],
+      "max-nested-callbacks": [
+        1,
+        10
+      ],
+      "consistent-this": [
+        1,
+        "self"
+      ],
+      "no-unexpected-multiline": 1,
+      "no-extra-semi": 1,
+      "no-negated-in-lhs": 1,
+      "linebreak-style": 0,
+      "no-underscore-dangle": 0,
+      "react/jsx-props-no-spreading": 0,
+      "react/state-in-constructor": 0,
+      "react/static-property-placement": 0,
+      "react/jsx-one-expression-per-line": [
+        1,
+        {
+          "allow": "single-child"
+        }
+      ]
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.js"
+        ],
+        "rules": {
+          "no-unused-expressions": 0
+        }
+      }
+    ],
+    "globals": {
+      "__ENV__": true,
+      "__DEV__": true,
+      "__TEST__": true,
+      "__PROD__": true,
+      "t": true,
+      "browser": true,
+      "sinon": true,
+      "expect": true,
+      "cordova": true
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {},
+        "webpack": {
+          "config": "webpack.config.js"
+        }
+      },
+      "react": {
+        "version": "16.8"
+      }
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "singleQuote": true,
+    "jsxBracketSameLine": false,
+    "trailingComma": "es5"
   },
   "repository": {
     "type": "git",
