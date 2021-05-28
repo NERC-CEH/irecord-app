@@ -174,7 +174,8 @@ const survey = {
         label: 'Stage',
         icon: 'stage',
         required: true,
-        info: 'Please indicate the stage of the organism.',
+        info:
+          'Please indicate the stage of the organism. If you are recording larvae, cases or leaf-mines please add the foodplant in to the comments field, as this is often needed to verify the records.',
         values: stage,
       },
       sex: {
