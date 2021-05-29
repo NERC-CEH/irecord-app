@@ -1,5 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="{ID}" version="{APP_VER}" android-versionCode="2019{ANDROID_BUNDLE_VER}" ios-CFBundleVersion="{BUNDLE_VER}"
+<widget  
+  android-packageName="uk.ac.ceh.irecord"
+  ios-CFBundleIdentifier="uk.ac.ceh.ir" 
+  version="{APP_VER}" android-versionCode="2019{ANDROID_BUNDLE_VER}" ios-CFBundleVersion="{BUNDLE_VER}"
   xmlns="http://www.w3.org/ns/widgets"
   xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
@@ -16,12 +19,12 @@
   <plugin name="cordova-plugin-statusbar" spec="2.4.3" />
   <plugin name="cordova-plugin-device" spec="2.0.3" />
   <plugin name="cordova-plugin-whitelist" spec="1.3.4" />
-  <plugin name="cordova-plugin-splashscreen" spec="5.0.3" />
+  <plugin name="cordova-plugin-splashscreen" spec="6.0.0" />
   <plugin name="cordova-plugin-file" spec="6.0.2" />
   <plugin name="cordova-plugin-network-information" spec="2.0.2" />
   <plugin name="cordova-sqlite-storage" spec="3.4.0" />
-  <plugin name="cordova-plugin-camera" spec="4.1.0" />
-  <plugin name="cordova-launch-review" spec="3.1.1" />
+  <plugin name="cordova-plugin-camera" spec="5.0.2" />
+  <plugin name="cordova-launch-review" spec="4.0.1" />
   <plugin name="cordova-plugin-ionic-webview" spec="5.0.0" />
   <plugin name="cordova-plugin-save-image" spec="0.3.0" />
 

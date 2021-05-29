@@ -4,15 +4,11 @@ const pkg = require('./package.json');
 const build = process.env.BITRISE_BUILD_NUMBER || pkg.build;
 const OFFSET = 300000000;
 
-const replace = grunt => ({
+const replace = {
   config: {
     src: ['cordova.xml'],
     dest: 'cordova/config.xml',
     replacements: [
-      {
-        from: /\{ID\}/g, // string replacement
-        to: () => (grunt.option('android') ? 'uk.ac.ceh.irecord' : pkg.id),
-      },
       {
         from: /\{APP_VER\}/g, // string replacement
         to: () => pkg.version,
@@ -35,7 +31,7 @@ const replace = grunt => ({
       },
     ],
   },
-});
+};
 
 const exec = () => ({
   build: {
@@ -89,7 +85,7 @@ function init(grunt) {
 
   grunt.initConfig({
     exec: exec(grunt),
-    replace: replace(grunt),
+    replace,
   });
 }
 
@@ -108,16 +104,6 @@ module.exports = grunt => {
     'exec:add_platforms',
 
     'exec:build_ios',
-
-    'cordova_prepAndroid',
-    'replace:config',
     'exec:android_build',
   ]);
-
-  /**
-   * Sets up the right SDK version and package ID for the config generator
-   */
-  grunt.registerTask('cordova_prepAndroid', () => {
-    grunt.option('android', true);
-  });
 };
