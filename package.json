@@ -3,8 +3,8 @@
   "id": "uk.org.orks.app",
   "title": "ORKS App",
   "description": "ORKs mobile application.",
-  "version": "5.1.4",
-  "build": "3",
+  "version": "5.2.0",
+  "build": "1",
   "homepage": "https://orks.org.uk",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.js --content-base build --port 8000",
