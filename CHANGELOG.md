@@ -1,6 +1,9 @@
 ## 5.3.0
 
-WIP
+Fixed android camera issue when using external storage
+Improved moth survey info help
+Fixed 5 character shortcut
+Fixed a login screen typo
 
 ## 5.2.0
 
