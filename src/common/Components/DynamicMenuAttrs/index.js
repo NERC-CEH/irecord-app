@@ -12,6 +12,7 @@ import {
   pin,
   eyeOff,
   business,
+  disc,
 } from 'ionicons/icons';
 import Toggle from 'Components/Toggle';
 import Occurrence from 'occurrence';
@@ -35,6 +36,7 @@ const icons = {
   pin: <IonIcon icon={pin} slot="start" />,
   business: <IonIcon icon={business} slot="start" />,
   eyeOff: <IonIcon icon={eyeOff} slot="start" />,
+  disc: <IonIcon icon={disc} slot="start" />,
 
   generic: <IonIcon icon={create} slot="start" />,
 };

@@ -25,6 +25,7 @@ const survey = {
     'occ:stage',
     'occ:type',
     'occ:identifiers',
+    'occ:sensitivity_precision',
   ],
 
   attrs: {
@@ -212,6 +213,21 @@ const survey = {
 
           return val.join(', ');
         },
+      },
+      sensitivity_precision: {
+        label: 'Sensitivity',
+        placeholder: 'Not sensitive',
+        info:
+          'This is the precision that the record will be shown at for public viewing.',
+        default: 'Not Sensitive',
+        values: {
+          'Blur to 1km': 1000,
+          'Blur to 2km': 2000,
+          'Blur to 10km': 10000,
+          'Blur to 100km': 100000,
+        },
+        icon: 'disc',
+        type: 'radio',
       },
       comment: {
         info: 'Please add any extra info about this record.',

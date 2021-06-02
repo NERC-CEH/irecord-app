@@ -8,7 +8,15 @@ import {
   IonIcon,
   IonLabel,
 } from '@ionic/react';
-import { personAdd, pin, calendar, clipboard, people } from 'ionicons/icons';
+import {
+  personAdd,
+  pin,
+  calendar,
+  clipboard,
+  people,
+  paperPlane,
+  disc,
+} from 'ionicons/icons';
 import AppHeader from 'Components/Header';
 import AppMain from 'Components/Main';
 import DateHelp from 'helpers/date';
@@ -168,7 +176,13 @@ export default observer(props => {
   const { cid, id, media } = occ;
   const { useExperiments } = appModel.attrs;
 
-  const { stage, type, identifiers, comment } = occ.attrs;
+  const {
+    stage,
+    type,
+    identifiers,
+    comment,
+    sensitivity_precision,
+  } = occ.attrs;
   const activityTitle = activity ? activity.title : null;
 
   const siteUrl = CONFIG.site_url;
@@ -199,7 +213,9 @@ export default observer(props => {
 
         <IonList lines="full">
           <IonItem>
-            <IonLabel position="stacked">
+            <IonIcon icon={paperPlane} slot="start" />
+            <IonLabel slot="start">{t('Species')}</IonLabel>
+            <IonLabel>
               {commonName && <IonLabel slot="end">{commonName}</IonLabel>}
               <IonLabel slot="end">
                 <i>{scientificName}</i>
@@ -209,9 +225,8 @@ export default observer(props => {
           <IonItem>
             <IonIcon icon={pin} slot="start" />
             <IonLabel slot="start">{t('Location')}</IonLabel>
-            <IonLabel position="stacked">
-              <IonLabel slot="end">{locationName}</IonLabel>
-            </IonLabel>
+
+            <IonLabel slot="end">{locationName}</IonLabel>
           </IonItem>
           <IonItem>
             <IonIcon icon={calendar} slot="start" />
@@ -251,6 +266,13 @@ export default observer(props => {
               <IonIcon icon={personAdd} slot="start" />
               <IonLabel slot="end">{identifiers}</IonLabel>
               {t('Identifiers')}
+            </IonItem>
+          )}
+          {sensitivity_precision && (
+            <IonItem>
+              <IonIcon icon={disc} slot="start" />
+              <IonLabel slot="end">{sensitivity_precision}</IonLabel>
+              {t('Sensitivity')}
             </IonItem>
           )}
           {activityTitle && (
