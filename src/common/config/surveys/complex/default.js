@@ -133,13 +133,20 @@ const survey = {
       icon: 'comment',
       type: 'text',
     },
+
+    activity: {
+      id: 'group_id',
+      values: activity => activity.id,
+      type: 'input',
+    },
   },
 
-  smp: {
+  smp: {  
     async create(Sample, Occurrence, taxon, surveySample) {
       const occurrence = new Occurrence({ attrs: { taxon } });
+      const { activity } = surveySample.attrs;
       const sample = new Sample({
-        attrs: { date: surveySample.attrs.date },
+        attrs: { date: surveySample.attrs.date, activity },
       });
       sample.occurrences.push(occurrence);
       surveySample.samples.push(sample);
@@ -201,8 +208,10 @@ const survey = {
       );
     }
 
+    const activity = appModel.getAttrLock('smp', 'activity');
+
     const sample = new Sample({
-      attrs: { recorders },
+      attrs: { recorders, activity },
       metadata: {
         complex_survey: survey.name,
       },

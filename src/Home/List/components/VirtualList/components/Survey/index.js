@@ -93,10 +93,13 @@ const Survey = observer(({ sample, style }) => {
         speciesCount = sample.occurrences.length;
       }
 
+      const { activity } = sample.attrs;
+
       return (
         <>
           <div className="photo">
             <div className="complex-survey-band" />
+            {activity && <div className="activity-band" />}
           </div>
 
           <OnlineStatus sample={sample} />

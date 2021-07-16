@@ -9,7 +9,7 @@ import Edit from './Edit';
 import Taxon from './Taxon';
 import Location from './Location';
 import PastLocations from './PastLocations';
-import Activity from './Activity';
+import Activity from '../common/Activity';
 
 @observer
 class Routes extends React.Component {

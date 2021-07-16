@@ -1,3 +1,7 @@
+## 5.4.0
+
+Add activities to General Survey.
+
 ## 5.3.0
 
 Fixed android camera issue when using external storage

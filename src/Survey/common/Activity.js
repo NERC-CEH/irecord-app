@@ -28,7 +28,11 @@ class Container extends React.Component {
     const { sample } = this.state;
 
     const onSelect = async activityID => {
-      sample.attrs.activity = userModel.getActivity(activityID);
+      const activity = userModel.getActivity(activityID);
+      sample.attrs.activity = activity;
+      sample.samples.forEach(subSample => {
+        subSample.attrs.activity = activity; // eslint-disable-line
+      })
       await sample.save();
       this.context.goBack();
     };
