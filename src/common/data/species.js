@@ -1,11 +1,14 @@
 // get local environment variables from .env
 require('dotenv').config({ silent: true, path: '../../../.env' }); // eslint-disable-line
 const fs = require('fs');
-const http = require('https');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const axios = require('axios');
 const makeCommonNameMap = require('./speciesExtractCommonNames');
 const optimise = require('./speciesOptimise');
 
-function fetch() {
+const FETCH_LIMIT = 50000;
+
+async function fetch() {
   console.log('Pulling all the species from remote report.');
 
   const apiKey = process.env.APP_INDICIA_API_KEY;
@@ -22,12 +25,13 @@ function fetch() {
     );
   }
 
-  return new Promise(resolve => {
+  const data = [];
+  let offset = 0;
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
     const options = {
-      method: 'GET',
-      hostname: 'www.brc.ac.uk',
-      path:
-        '/irecord/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=15',
+      url: `https://www.brc.ac.uk/irecord/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=15&limit=${FETCH_LIMIT}&offset=${offset}`,
       headers: {
         'x-api-key': apiKey,
         Authorization: `Basic ${basicAuth}`,
@@ -35,23 +39,19 @@ function fetch() {
       },
     };
 
-    const req = http.request(options, res => {
-      const chunks = [];
+    // eslint-disable-next-line no-await-in-loop
+    const res = await axios(options);
 
-      res.on('data', chunk => {
-        chunks.push(chunk);
-      });
+    if (!res.data.data?.length) break;
 
-      res.on('end', () => {
-        const body = Buffer.concat(chunks);
-        const json = JSON.parse(body.toString());
-        console.log(`Pulled ${json.data.length} species`);
-        resolve(json);
-      });
-    });
+    data.push(...res.data.data);
 
-    req.end();
-  });
+    offset += FETCH_LIMIT;
+  }
+
+  console.log(`Pulled ${data.length} species`);
+
+  return { data };
 }
 
 function saveSpeciesToFile(species) {

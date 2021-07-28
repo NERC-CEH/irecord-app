@@ -66,6 +66,7 @@
     "@babel/preset-react": "7.7.4",
     "@flumens/has-env": "1.0.0",
     "autoprefixer": "9.7.3",
+    "axios": "^0.21.1",
     "babel-eslint": "10.0.3",
     "babel-loader": "8.0.6",
     "babel-plugin-istanbul": "6.0.0",
