@@ -27,7 +27,7 @@
     "@ionic/react": "4.11.0",
     "@ionic/react-router": "4.11.0",
     "@sentry/browser": "5.11.1",
-    "bigu": "kazlauskis/bigu#v0.2.2",
+    "bigu": "FlumensIO/bigu#v0.2.2",
     "core-js": "3.6.2",
     "formik": "2.1.1",
     "hammerjs": "2.0.8",
