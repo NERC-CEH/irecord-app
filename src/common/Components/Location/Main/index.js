@@ -56,12 +56,8 @@ class AreaAttr extends Component {
     const isGPSTracking = this.props.sample.isGPSRunning();
 
     return (
-      <AppMain>
-        <div
-          id="location-page-content"
-          className={isGPSTracking ? 'gps-running' : ''}
-          ref={this.mapContainer}
-        />
+      <AppMain className={isGPSTracking ? 'gps-running' : ''}>
+        <div id="location-page-content" ref={this.mapContainer} />
       </AppMain>
     );
   }
