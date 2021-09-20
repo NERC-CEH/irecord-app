@@ -3,7 +3,7 @@
   "id": "uk.org.orks.app",
   "title": "ORKS App",
   "description": "ORKs mobile application.",
-  "version": "5.2.1",
+  "version": "5.3.0",
   "build": "1",
   "homepage": "https://orks.org.uk",
   "scripts": {
