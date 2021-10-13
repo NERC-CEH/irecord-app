@@ -4,6 +4,8 @@ const pkg = require('./package.json');
 const build = process.env.BITRISE_BUILD_NUMBER || pkg.build;
 const OFFSET = 300000000;
 
+if (!build) throw new Error('BITRISE_BUILD_NUMBER env key is missing')
+
 const replace = {
   config: {
     src: ['cordova.xml'],
@@ -63,18 +65,14 @@ const exec = () => ({
   /**
    * $ANDROID_KEYSTORE must be set up to point to your android certificates keystore
    */
-  android_build: {
+  build_android: {
     command:
-      'cd cordova && mkdir -p dist && npx cordova --release build android',
+      'cd cordova && mkdir -p dist && npx cordova --release build android && npx cordova --debug build android',
+    stdout: true,
   },
 
   build_ios: {
     command: 'cd cordova && npx cordova build ios',
-    stdout: true,
-  },
-
-  build_android: {
-    command: 'cd cordova && npx cordova build android',
     stdout: true,
   },
 });
@@ -104,6 +102,6 @@ module.exports = grunt => {
     'exec:add_platforms',
 
     'exec:build_ios',
-    'exec:android_build',
+    'exec:build_android',
   ]);
 };

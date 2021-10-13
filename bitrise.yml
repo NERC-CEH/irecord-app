@@ -33,6 +33,7 @@ workflows:
   deploy:
     steps:
       - npm@1:
+          run_if: enveq "BUILD_ONLY" ""
           title: Deploy to demo site
           inputs:
             - command: run deploy
@@ -48,10 +49,16 @@ workflows:
             - notify_user_groups: none
             - deploy_path: $BITRISE_SIGNED_APK_PATH
       - deploy-to-bitrise-io@1:
+          title: Create debug apk artifact
+          inputs:
+            - notify_user_groups: none
+            - deploy_path: $BITRISE_SOURCE_DIR/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+      - deploy-to-bitrise-io@1:
           title: Create app artifact
           inputs:
             - notify_user_groups: none
       - deploy-to-itunesconnect-application-loader@0:
+          run_if: enveq "BUILD_ONLY" ""
           inputs:
             - password: $ITUNES_CONNECT_PASS
             - app_password: $ITUNES_CONNECT_APP_PASS
