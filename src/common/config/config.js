@@ -4,7 +4,7 @@
 import Indicia from '@indicia-js/core';
 
 const HOST =
-  process.env.APP_INDICIA_API_HOST || 'https://www.brc.ac.uk/irecord/';
+  process.env.APP_INDICIA_API_HOST || 'https://irecord.org.uk/';
 
 const isTestEnv = process.env.NODE_ENV === 'test';
 
