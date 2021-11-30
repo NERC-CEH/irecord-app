@@ -1,3 +1,7 @@
+## 5.4.3
+
+Fixed Android 11+ app freeze issue.
+
 ## 5.4.2
 
 Fixed the communication with the new iRecord site.
