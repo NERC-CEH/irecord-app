@@ -1,3 +1,7 @@
+## 5.4.4
+
+Fixed reports redirect.
+
 ## 5.4.3
 
 Fixed Android 11+ app freeze issue.

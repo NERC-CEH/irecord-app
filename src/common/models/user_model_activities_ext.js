@@ -73,7 +73,7 @@ export default {
   },
 
   async _fetchActivities() {
-    const url = `${config.site_url}api/v1/reports/library/groups/groups_for_app.xml`;
+    const url = `${config.site_url}api/v1/reports/library:groups:groups_for_app.xml`;
 
     const { name, password } = this.attrs;
     const userAuth = btoa(`${name}:${password}`);
