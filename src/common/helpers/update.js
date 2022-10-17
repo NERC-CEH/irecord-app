@@ -2,13 +2,12 @@
  * App update functionality.
  **************************************************************************** */
 
-import CONFIG from 'config';
-import savedSamples from 'saved_samples';
-import appModel from 'app_model';
-import userModel from 'user_model';
+import CONFIG from 'common/config';
+import savedSamples from 'models/savedSamples';
+import appModel from 'models/app';
+import userModel from 'models/user';
 import { set as setMobXAttrs } from 'mobx';
-import loader from 'helpers/loader';
-import Log from './log';
+import { loader } from '@flumens';
 
 const MIN_UPDATE_TIME = 5000; // show updating dialog for minimum seconds
 
@@ -66,7 +65,8 @@ export function updateSamples(samples, callback) {
   samples.each(sample => {
     const { group } = sample.attrs;
     if (group) {
-      Log('Update: moving a sample group to activity');
+      console.log('Update: moving a sample group to activity');
+      // eslint-disable-next-line no-param-reassign
       sample.attrs.activity = group;
       sample.unset('group');
       sample.save();
@@ -81,7 +81,7 @@ const API = {
    * Main update function.
    */
   run(callback, silent = false) {
-    appModel._init.then(() => {
+    appModel.ready.then(() => {
       let currentVersion = appModel.attrs.appVersion;
 
       const newVersion = CONFIG.version;
@@ -145,15 +145,15 @@ const API = {
    */
   updates: {
     '3.0.0': callback => {
-      Log('Update: version 3.0.0', 'i');
+      console.log('Update: version 3.0.0');
 
       function onFinish() {
-        Log('Update: finished.', 'i');
+        console.log('Update: finished.');
         callback();
       }
 
       if (savedSamples.fetching) {
-        Log('Update: waiting for samples collection to be ready', 'i');
+        console.log('Update: waiting for samples collection to be ready');
         savedSamples.once('fetching:done', () =>
           updateSamples(savedSamples, onFinish)
         );
@@ -165,15 +165,15 @@ const API = {
     },
 
     '4.0.0': callback => {
-      Log('Update: version 4.0.0', 'i');
+      console.log('Update: version 4.0.0');
 
       function onFinish() {
-        Log('Update: finished.', 'i');
+        console.log('Update: finished.');
         callback();
       }
 
       function onError() {
-        Log('Update: errored.', 'e');
+        console.error('Update: errored.');
         callback();
       }
 
@@ -181,7 +181,7 @@ const API = {
         const oldStr = localStorage.getItem('irecord-app-user');
         const old = JSON.parse(oldStr);
         if (old && typeof old === 'object') {
-          Log('Update: updating userModel.', 'i');
+          console.log('Update: updating userModel.');
           setMobXAttrs(userModel.attrs, old);
           localStorage.removeItem('irecord-app-user');
           userModel.save().then(resolve);
@@ -194,7 +194,7 @@ const API = {
         const oldStr = localStorage.getItem('irecord-app-app');
         const old = JSON.parse(oldStr);
         if (old && typeof old === 'object') {
-          Log('Update: updating appModel.', 'i');
+          console.log('Update: updating appModel.');
           setMobXAttrs(appModel.attrs, old);
           localStorage.removeItem('irecord-app-app');
           appModel.save().then(resolve);
@@ -289,7 +289,7 @@ const API = {
     const update = API.updates[API.updatesSeq[updateIndex]];
 
     if (typeof update !== 'function') {
-      Log('Update: error with update function.', 'e');
+      console.error('Update: error with update function.');
       return callback();
     }
 

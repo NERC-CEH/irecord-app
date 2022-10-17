@@ -1,0 +1,49 @@
+#species-list-sort {
+  text-align: end;
+  ion-button {
+    margin-right: 5px;
+  }
+}
+
+#list {
+  font-weight: bold;
+
+  .species-list-header {
+    background: #e6e6e6 !important;
+    color: #252525;
+
+    padding-left: 7px;
+    --inner-padding-end: 0;
+
+    &.ios {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    ion-label {
+      width: 100%;
+      text-align: center;
+      font-family: 'Museo300';
+      font-weight: normal;
+      margin-left: 0;
+
+      &:nth-of-type(2) {
+        padding-left: 16px;
+        text-align: left;
+      }
+      &:first-of-type {
+        max-width: 54px;
+      }
+      &:last-of-type.md {
+        max-width: 56px;
+      }
+      &:last-of-type.ios {
+        max-width: 40px;
+      }
+    }
+  }
+
+  ion-label {
+    margin-left: 8px;
+  }
+}

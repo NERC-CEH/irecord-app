@@ -1,0 +1,15 @@
+.attributes-list {
+  background-color: transparent;
+  margin-top: 2px;
+  // height: calc(100vh - 80px - 220px - 15px - 36px);
+  overflow: auto;
+  border-bottom: none;
+
+  ion-item {
+    --background: var(--ion-color-light);
+  }
+
+  ion-toggle {
+    padding-right: 0;
+  }
+}

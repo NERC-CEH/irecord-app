@@ -1,118 +1,167 @@
-ion-slides#welcome {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: white;
+@mixin slide {
+  flex-direction: column;
 
-  --bullet-background-active: white;
-
-  ion-button {
+  .slide-header {
+    background-size: cover;
+    height: 100%;
+    width: 100%;
     position: absolute;
-    bottom: 7%;
+    top: 0;
+  }
+}
 
-    &.skip {
-      left: 9%;
+#welcome-page {
+  .swiper {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+
+    .message {
+      max-width: 100%;
+      position: absolute;
+      background: white;
+      background-color: #ffffffe3;
+      max-width: 90%;
+      margin: 0 auto;
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgb(255, 255, 255);
+      background: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.85) 0%,
+        white 68%
+      );
+      p {
+        text-align: left;
+        font-size: 1.1em;
+        margin-bottom: 5px;
+        color: var(--ion-color-dark);
+        padding: 10px 20px 15px 20px;
+        margin: 0;
+        line-height: 1.5em;
+      }
     }
-    &.next {
-      right: 9%;
+
+    .first .message,
+    .second .message {
+      top: 10%;
+    }
+
+    .third .message,
+    .fourth .message {
+      bottom: 15%;
+    }
+
+    h2 {
+      letter-spacing: 2px;
+      font-size: 1.3rem;
+      margin: 0;
+      text-align: center;
+      color: var(--ion-color-light);
+      padding: 15px;
+      font-weight: bold;
+      color: var(--ion-color-primary);
+    }
+
+    .swiper-pagination-bullets {
+      bottom: 2%;
+
+      .swiper-pagination-bullet {
+        opacity: 1;
+      }
+
+      .swiper-pagination-bullet-active {
+        opacity: 0.8;
+        background: var(--ion-color-primary);
+      }
     }
   }
 
-  .message {
-    position: absolute;
-    width: 80%;
-    padding-left: 10px;
-
-    // Hack around the tablet hidden message issue
-    @media only screen and (min-width: 650px) {
-      margin-left: -325px !important;
-      left: 50% !important;
-    }
-  }
-
-  .message p,
-  .message h2 {
-    padding: 10px;
-    color: var(--ion-color-dark);
-    background-color: white;
-  }
-
-  .message h2 {
+  .app-name {
+    font-family: 'Museo300';
+    font-size: 25px;
+    font-weight: 400;
     text-align: center;
-  }
-  .message p {
-    padding: 20px;
-  }
+    color: black;
 
-  .swiper-pagination-bullets {
-    bottom: 3%;
-
-    .swiper-pagination-bullet {
-      background: black;
+    &.md {
+      padding: 0;
     }
 
-    .swiper-pagination-bullet-active {
-      background: var(--ion-color-light);
+    b {
+      font-family: 'Museo700';
+      color: var(--ion-color-primary);
+    }
+
+    position: absolute;
+    top: -16px;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
+    background: white;
+    padding: 10px;
+    padding-top: calc(var(--ion-safe-area-top, 0) + 10px);
+  }
+
+  .swiper-slide {
+    @include slide;
+    background-size: cover;
+    background-position: center;
+
+    .app-logo-wrapper {
+      background-color: #ffffff47;
+      position: absolute;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
+
+      img {
+        display: block;
+        padding: 30px;
+        max-width: 90%;
+        margin: 0 auto;
+      }
+    }
+
+    .slide-header {
+      max-width: 90%;
+      background-position: center;
+      padding-top: calc(var(--ion-safe-area-top, 0) + 10px);
+    }
+
+    .message-container {
+      position: absolute;
+      bottom: 100px;
+      width: 100%;
+      background-color: #ffffffad;
+      max-width: 90%;
+      margin: 0 auto;
+      backdrop-filter: blur(5px);
+      border-radius: 10px;
     }
   }
 
-  .message p {
-    font-size: 0.9em;
+  .swiper-slide.record .message-container {
+    bottom: 150px;
   }
 
-  $bottom: 16vh;
+  ion-footer ion-toolbar {
+    --background: transparent;
+    --border-color: transparent;
+    position: absolute;
+    bottom: 0;
 
-  ion-slide {
     ion-button {
-      --ion-color-contrast: var(--ion-color-dark) !important;
-    }
-
-    &.first {
-      background: url('images/welcome_1.jpg') no-repeat;
-      background-position: bottom;
-      background-size: cover;
-
-      .message {
-        text-align: left;
-        left: 10vw;
-        top: 20vh;
-      }
-    }
-
-    &.second {
-      background: url('images/welcome_2.jpg') no-repeat;
-      background-position: left;
-      background-size: cover;
-
-      .message {
-        text-align: left;
-        left: 10vw;
-        top: 10vh;
-      }
-    }
-
-    &.third {
-      background: url('images/welcome_3.jpg') no-repeat;
-      background-position: left;
-      background-size: cover;
-      .message {
-        text-align: left;
-        right: 10vw;
-        bottom: 22vh;
-      }
-    }
-
-    &.fourth {
-      background: url('images/welcome_4.jpg') no-repeat;
-      background-position: left;
-      background-size: cover;
-      .message {
-        text-align: left;
-        right: 10vw;
-        bottom: 22vh;
-      }
+      height: 50px;
+      width: 50px;
+      margin: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 15px #00000099;
     }
   }
 }

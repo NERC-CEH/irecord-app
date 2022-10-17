@@ -1,0 +1,22 @@
+.menu-attr-item-location-with-lock {
+  ion-item.locked {
+    --detail-icon-color: var(--custom-color-lock);
+    --detail-icon-opacity: 0.55;
+  }
+
+  .location-value-locked .location-value,
+  .location-name-value-locked .location-name-value {
+    color: var(--ion-color-secondary);
+  }
+
+  .label-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    ion-label {
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+  }
+}

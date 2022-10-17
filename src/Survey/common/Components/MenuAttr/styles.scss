@@ -1,0 +1,24 @@
+.attr-wrapper {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --border-style: none;
+
+  .attr-date {
+    width: 100%;
+
+    .ion-accordion-toggle-icon {
+      display: block;
+      margin: 0;
+      font-size: 20px;
+      opacity: 0.5;
+
+      &.ios {
+        opacity: 0.3;
+      }
+    }
+
+    .accordion-disabled .ion-accordion-toggle-icon {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+.app-header-band {
+  --min-height: 30px;
+  --background: rgba(var(--custom-color-complex-survey-rgb), 0.2);
+
+  ion-back-button {
+    visibility: hidden;
+  }
+
+  ion-title {
+    color: var(--custom-color-complex-survey-dark) !important;
+    font-weight: bold;
+    font-size: 0.9em;
+
+    &.md {
+      margin-right: -150px;
+    }
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  &.activity {
+    --background: rgba(var(--ion-color-secondary-rgb), 0.2);
+
+    ion-title {
+      color: var(--ion-color-secondary-dark) !important;
+    }
+  }
+
+  &.training {
+    --background: var(--ion-color-dark);
+
+    ion-title {
+      color: white !important;
+    }
+  }
+}

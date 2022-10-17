@@ -1,373 +1,123 @@
 {
   "name": "irecord-app",
-  "id": "uk.ac.ceh.ir",
+  "id": "uk.ac.ceh.irecord",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "5.4.4",
+  "version": "6.0.0",
   "homepage": "https://irecord.org.uk",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.js --content-base build --port 8000",
-    "build": "webpack --display minimal",
-    "build:production": "grunt",
-    "deploy": "vercel --prod -A other/now.json -t $VERCEL_TOKEN --confirm",
-    "test": "karma start test/karma.conf.js",
-    "test:coverage": "karma start test/karma.conf.js --reporters mocha,coverage",
-    "test:watch": "karma start test/karma.conf.js --no-single-run",
-    "test:sauce": "karma start test/karma.conf-sauce.js",
+    "start": "webpack serve --progress --port 8000",
+    "build": "NODE_ENV=production webpack",
+    "build:production": "npm run clean && npm run build && npx cap sync && sed -i '' 's/uk.ac.ceh.irecord/uk.ac.ceh.ir/g' ios/App/App/capacitor.config.json && npm run build:resources",
+    "build:resources": "mkdir -p resources && cp -R other/designs/android resources && cp -R other/designs/*.png resources && npx cordova-res ios --skip-config --resources resources --copy && npx cordova-res android --skip-config --resources resources --copy",
+    "deploy": "cp other/demo.html build/ && URL=$(vercel --prod -t $VERCEL_TOKEN --confirm ./build) && CLEAN_URL=$(echo $URL | sed -r \"s/https:\\/\\/(.*)$/\\1/g\") && DEMO_URL=$(echo $CLEAN_URL | sed -r \"s/(.*\\-)[a-z0-9]+\\-flumens(\\.vercel\\.app)$/\\1${BITRISE_BUILD_NUMBER}\\2/g\") && vercel alias set $CLEAN_URL $DEMO_URL -t $VERCEL_TOKEN && envman add --key DEMO_URL --value \"https://$DEMO_URL\"",
+    "deploy:production": "bitrise ci",
+    "clean": "rm -rf build resources",
+    "test": "jest --silent --passWithNoTests",
+    "test:watch": "jest --watchAll",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --watch test",
     "test:eslint": "eslint src --quiet --ext .jsx --ext .ts --ext .tsx --ext .js && echo '\\033[37;42;1m PASS \\033[00m'",
-    "test:acceptance": "grunt exec:cordova_build_android && ./node_modules/.bin/wdio test/acceptance/wdio.conf.js",
-    "make:species": "cd src/common/data && node species.js",
-    "clean": "rm -rf cordova build resources"
+    "make:species": "cd src/common/data && node make.js"
   },
   "dependencies": {
-    "@babel/polyfill": "7.7.0",
-    "@bit/flumens.apps.utils.analytics": "^0.2.0",
-    "@indicia-js/core": "5.1.1",
-    "@ionic/core": "4.11.0",
-    "@ionic/react": "4.11.0",
-    "@ionic/react-router": "4.11.0",
-    "@sentry/browser": "5.11.1",
-    "bigu": "FlumensIO/bigu#v0.2.2",
-    "core-js": "3.6.2",
-    "formik": "2.1.1",
-    "hammerjs": "2.0.8",
-    "i18next": "19.3.4",
-    "ionicons": "4.6.3",
+    "@capacitor/android": "^3.5.1",
+    "@capacitor/app": "^1.1.1",
+    "@capacitor/camera": "^1.3.1",
+    "@capacitor/core": "^3.5.1",
+    "@capacitor/filesystem": "^1.1.0",
+    "@capacitor/device": "^1.1.2",
+    "@capacitor/geolocation": "^1.3.1",
+    "@capacitor/haptics": "^1.1.4",
+    "@capacitor/ios": "^3.5.1",
+    "@capacitor/keyboard": "^1.2.2",
+    "@capacitor/network": "^1.0.7",
+    "@capacitor/splash-screen": "^1.2.2",
+    "@capacitor/status-bar": "^1.0.8",
+    "@flumens/bigu": "^0.4.0",
+    "@flumens/ionic": "1.14.0",
+    "@ionic-native/core": "5.36.0",
+    "@ionic-native/launch-review": "^5.29.0",
+    "@ionic/core": "^6.2.6",
+    "@ionic/react": "^6.2.6",
+    "@ionic/react-router": "^6.2.6",
+    "@sentry/browser": "^6.19.7",
+    "@sentry/integrations": "^6.19.7",
+    "axios": "^0.27.2",
+    "clsx": "^1.1.1",
+    "cordova-sqlite-storage": "6.0.0",
+    "deep-diff": "^1.0.2",
+    "formik": "2.2.9",
+    "i18next": "^21.8.9",
+    "ionicons": "^6.0.2",
+    "json-stable-stringify": "^1.0.1",
+    "jwt-decode": "^3",
     "leaflet": "1.7.1",
-    "leaflet.gridref": "kazlauskis/Leaflet.GridRef#v1.0.3",
-    "localforage": "1.7.3",
     "localforage-cordovasqlitedriver": "1.8.0",
-    "lodash": "4.17.15",
-    "mobx": "5.15.1",
-    "mobx-react": "6.1.4",
-    "mobx-react-devtools": "6.1.1",
-    "photoswipe": "4.1.3",
-    "proj4": "2.7.4",
-    "proj4leaflet": "1.0.2",
-    "prop-types": "15.7.2",
-    "react": "16.12.0",
-    "react-autosuggest": "9.4.3",
-    "react-dom": "16.12.0",
-    "react-i18next": "11.3.4",
-    "react-photoswipe": "1.3.0",
-    "react-router": "5.1.0",
-    "react-router-dom": "5.1.2",
-    "react-tiny-virtual-list": "2.2.0",
-    "yup": "0.28.0"
+    "lodash.mergewith": "^4.6.2",
+    "mobx": "^6.6.0",
+    "mobx-react": "^7.5.0",
+    "mobx-utils": ">=6",
+    "mock-geolocation": "1.0.11",
+    "proj4": "^2",
+    "proj4leaflet": "^1",
+    "prop-types": "15.8.1",
+    "prop-types-exact": "1.2.0",
+    "react": "^17.0.2",
+    "react-autosuggest": "^10",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.17.1",
+    "react-leaflet": "3.2.5",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-window": "^1.8.7",
+    "swiper": "^8.2.2",
+    "yup": "0.32.11"
   },
   "devDependencies": {
-    "@babel/core": "7.7.7",
-    "@babel/plugin-proposal-class-properties": "7.7.4",
-    "@babel/plugin-proposal-decorators": "7.7.4",
-    "@babel/plugin-syntax-dynamic-import": "7.7.4",
-    "@babel/plugin-transform-exponentiation-operator": "7.7.4",
-    "@babel/preset-env": "7.7.7",
-    "@babel/preset-react": "7.7.4",
-    "@flumens/has-env": "1.0.0",
-    "autoprefixer": "9.7.3",
-    "axios": "^0.21.1",
-    "babel-eslint": "10.0.3",
-    "babel-loader": "8.0.6",
-    "babel-plugin-istanbul": "6.0.0",
-    "babel-plugin-module-resolver": "^4.1.0",
-    "chai": "4.2.0",
-    "circular-dependency-plugin": "5.2.0",
-    "cordova": "10.0.0",
-    "cordova-res": "0.8.1",
-    "css-loader": "3.4.1",
-    "csv": "5.3.1",
-    "deep-diff": "1.0.2",
-    "dotenv": "8.2.0",
-    "ejs-loader": "0.3.5",
-    "eslint": "6.8.0",
-    "eslint-config-airbnb": "18.0.1",
-    "eslint-config-prettier": "6.9.0",
-    "eslint-import-resolver-webpack": "0.12.0",
-    "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.17.0",
-    "express": "4.17.1",
-    "express-history-api-fallback": "2.2.1",
-    "extract-text-webpack-plugin": "3.0.2",
-    "file-loader": "5.0.2",
-    "grunt": "1.0.4",
-    "grunt-cli": "1.3.2",
-    "grunt-contrib-clean": "2.0.0",
-    "grunt-contrib-copy": "1.0.0",
-    "grunt-exec": "3.0.0",
-    "grunt-prompt": "1.3.3",
-    "grunt-text-replace": "0.4.0",
-    "grunt-webpack": "3.1.3",
-    "html-webpack-plugin": "3.2.0",
-    "husky": "^6.0.0",
-    "json-stable-stringify": "1.0.1",
-    "karma": "4.4.1",
-    "karma-chai": "0.1.0",
-    "karma-chrome-launcher": "3.1.0",
-    "karma-coverage": "2.0.1",
-    "karma-mocha": "1.3.0",
-    "karma-mocha-reporter": "2.2.5",
-    "karma-sauce-launcher": "2.0.2",
-    "karma-sinon": "1.0.5",
-    "karma-webpack": "4.0.2",
-    "load-grunt-config": "3.0.1",
-    "load-grunt-tasks": "5.1.0",
-    "mini-css-extract-plugin": "0.9.0",
-    "mocha": "7.0.0",
-    "mock-geolocation": "1.0.11",
-    "mountebank": "2.1.2",
-    "node-sass": "4.13.0",
-    "p-queue": "6.2.1",
-    "postcss-loader": "3.0.0",
-    "prettier-eslint": "9.0.1",
-    "prettier-eslint-cli": "5.0.0",
-    "puppeteer": "^9.1.1",
-    "sass-loader": "8.0.0",
-    "sharp-cli": "1.11.0",
-    "sinon": "8.0.4",
-    "string-replace-loader": "2.1.1",
-    "style-loader": "1.1.2",
-    "time-grunt": "2.0.0",
-    "url-loader": "3.0.0",
-    "vercel": "^23.0.0",
-    "webdriverio": "5.18.4",
-    "webpack": "4.41.5",
-    "webpack-bundle-analyzer": "3.6.0",
-    "webpack-cli": "3.3.10",
-    "webpack-dev-server": "3.10.1",
-    "webpack-merge": "4.2.2"
+    "@babel/core": "^7.17.10",
+    "@babel/plugin-syntax-dynamic-import": "7.8.3",
+    "@babel/plugin-transform-exponentiation-operator": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@capacitor/cli": "^3.5.1",
+    "@flumens/eslint-config": "^2.0.1",
+    "@flumens/webpack-config": "^4.1.2",
+    "@types/jest": "^27.5.1",
+    "@types/leaflet": "^1.7.10",
+    "@types/lodash.mergewith": "^4.6.7",
+    "@types/react": "17.0.24",
+    "@types/react-dom": "17.0.9",
+    "@types/react-router": "^5.1.18",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-window": "^1.8.5",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "^28.1.0",
+    "babel-plugin-module-resolver": "4.1.0",
+    "cordova-res": "^0.15.4",
+    "dotenv": "^16.0.1",
+    "eslint": "^8.15.0",
+    "husky": "^8.0.1",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
+    "jest-transform-stub": "2.0.0",
+    "sinon": "^8.0.4",
+    "tslib": "^2.4.0",
+    "typescript": "^4.6.4",
+    "vercel": "^24.2.3",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0"
   },
   "engines": {
-    "node": ">=10",
+    "node": ">=12",
     "npm": ">=6"
   },
   "author": {
-    "name": "Karolis Kazlauskis",
-    "email": "karolis@kazlauskis.com",
-    "url": "https://kazlauskis.com"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-react",
-      [
-        "@babel/env",
-        {
-          "targets": {
-            "android": "5.1",
-            "ios": "10.2"
-          },
-          "modules": "commonjs",
-          "corejs": "3.0.0",
-          "useBuiltIns": "usage"
-        }
-      ]
-    ],
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./src"
-          ],
-          "alias": {
-            "@flumens": "./src/common/flumens"
-          }
-        }
-      ],
-      [
-        "@babel/plugin-proposal-decorators",
-        {
-          "legacy": true
-        }
-      ],
-      "@babel/plugin-transform-exponentiation-operator",
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
-      ],
-      "@babel/plugin-syntax-dynamic-import"
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          [
-            "istanbul",
-            {
-              "exclude": [
-                "src/**/*tests*",
-                "src/**/*_view*",
-                "src/app.js",
-                "dist",
-                "test"
-              ]
-            }
-          ]
-        ]
-      }
-    }
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "mocha": true
-    },
-    "parser": "babel-eslint",
-    "parserOptions": {
-      "ecmaVersion": 2016,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
-    "extends": [
-      "airbnb",
-      "prettier"
-    ],
-    "rules": {
-      "no-unused-vars": 1,
-      "prefer-destructuring": 1,
-      "no-use-before-define": 1,
-      "no-param-reassign": 1,
-      "import/extensions": 1,
-      "react/no-array-index-key": 1,
-      "react/no-access-state-in-setstate": 1,
-      "import/no-unresolved": 1,
-      "no-plusplus": 0,
-      "react/forbid-prop-types": 0,
-      "jsx-a11y/anchor-is-valid": 1,
-      "jsx-a11y/click-events-have-key-events": 1,
-      "jsx-a11y/no-static-element-interactions": 1,
-      "jsx-a11y/no-noninteractive-element-interactions": 1,
-      "jsx-a11y/no-autofocus": 0,
-      "jsx-a11y/alt-text": 1,
-      "import/no-mutable-exports": 1,
-      "no-case-declarations": 1,
-      "jsx-a11y/anchor-has-content": 1,
-      "react/no-this-in-sfc": 1,
-      "react/jsx-filename-extension": 0,
-      "react/require-default-props": 0,
-      "react/sort-comp": 0,
-      "react/destructuring-assignment": 0,
-      "react/button-has-type": 0,
-      "no-unused-expressions": [
-        2,
-        {
-          "allowShortCircuit": true,
-          "allowTernary": true
-        }
-      ],
-      "complexity": [
-        1,
-        20
-      ],
-      "eqeqeq": [
-        1,
-        "smart"
-      ],
-      "guard-for-in": 1,
-      "no-constant-condition": 2,
-      "no-console": 1,
-      "no-redeclare": [
-        2,
-        {
-          "builtinGlobals": true
-        }
-      ],
-      "object-curly-spacing": [
-        2,
-        "always"
-      ],
-      "indent": [
-        "error",
-        2,
-        {
-          "SwitchCase": 1
-        }
-      ],
-      "comma-dangle": [
-        2,
-        "always-multiline"
-      ],
-      "key-spacing": [
-        2,
-        {
-          "afterColon": true,
-          "mode": "minimum"
-        }
-      ],
-      "no-multiple-empty-lines": [
-        2,
-        {
-          "max": 2
-        }
-      ],
-      "no-mixed-spaces-and-tabs": [
-        2,
-        "smart-tabs"
-      ],
-      "max-nested-callbacks": [
-        1,
-        10
-      ],
-      "consistent-this": [
-        1,
-        "self"
-      ],
-      "no-unexpected-multiline": 1,
-      "no-extra-semi": 1,
-      "no-negated-in-lhs": 1,
-      "linebreak-style": 0,
-      "no-underscore-dangle": 0,
-      "react/jsx-props-no-spreading": 0,
-      "react/state-in-constructor": 0,
-      "react/static-property-placement": 0,
-      "react/jsx-one-expression-per-line": [
-        1,
-        {
-          "allow": "single-child"
-        }
-      ]
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.js"
-        ],
-        "rules": {
-          "no-unused-expressions": 0
-        }
-      }
-    ],
-    "globals": {
-      "__ENV__": true,
-      "__DEV__": true,
-      "__TEST__": true,
-      "__PROD__": true,
-      "t": true,
-      "browser": true,
-      "sinon": true,
-      "expect": true,
-      "cordova": true
-    },
-    "settings": {
-      "import/resolver": {
-        "node": {},
-        "webpack": {
-          "config": "webpack.config.js"
-        }
-      },
-      "react": {
-        "version": "16.8"
-      }
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "singleQuote": true,
-    "jsxBracketSameLine": false,
-    "trailingComma": "es5"
+    "name": "Flumens",
+    "email": "enquiries@flumens.io",
+    "url": "https://flumens.io"
   },
   "repository": {
     "type": "git",
@@ -392,9 +142,149 @@
     "ceh",
     "brc"
   ],
-  "bit": {
-    "env": {},
-    "componentsDefaultDirectory": "src/common/Lib/{name}",
-    "packageManager": "npm"
+  "browserslist": [
+    "Android >= 5.1",
+    "iOS >= 10"
+  ],
+  "babel": {
+    "assumptions": {
+      "setPublicClassFields": true
+    },
+    "presets": [
+      [
+        "@babel/react",
+        {
+          "runtime": "automatic"
+        }
+      ],
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "android": "5.1",
+            "ios": "10.2"
+          },
+          "loose": true,
+          "modules": "commonjs",
+          "corejs": "3.0.0",
+          "useBuiltIns": "usage"
+        }
+      ],
+      [
+        "@babel/typescript",
+        {
+          "allowDeclareFields": true
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "@babel/transform-runtime",
+        {
+          "regenerator": true
+        }
+      ],
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ],
+          "alias": {
+            "@flumens$": "./src/common/flumens",
+            "common": "./src/common",
+            "helpers": "./src/common/helpers",
+            "models": "./src/common/models",
+            "Components": "./src/common/Components"
+          }
+        }
+      ],
+      [
+        "@babel/proposal-private-property-in-object",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/transform-exponentiation-operator",
+      "@babel/syntax-dynamic-import"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "@flumens",
+      "plugin:react/jsx-runtime"
+    ],
+    "rules": {
+      "react/function-component-definition": 0,
+      "arrow-body-style": 0,
+      "camelcase": 0,
+      "jsx-a11y/no-noninteractive-element-interactions": 0,
+      "prefer-arrow-callback": 0,
+      "react/no-unused-class-component-methods": 0,
+      "sort-class-members/sort-class-members": 0,
+      "react/prop-types": 0,
+      "react/jsx-no-useless-fragment": 0,
+      "@typescript-eslint/no-empty-function": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "react/jsx-no-bind": 0,
+      "class-methods-use-this": 0,
+      "@typescript-eslint/no-var-requires": 0,
+      "no-restricted-exports": 0,
+      "default-param-last": 0,
+      "@typescript-eslint/no-this-alias": 0,
+      "jest/valid-expect": 0,
+      "jest/expect-expect": 0,
+      "jest/no-done-callback": 0,
+      "jest/no-conditional-expect": 0,
+      "@getify/proper-arrows/name": 0
+    },
+    "globals": {
+      "t": "readonly"
+    },
+    "ignorePatterns": [
+      "**/*test.js"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "singleQuote": true,
+    "jsxBracketSameLine": false,
+    "trailingComma": "es5",
+    "arrowParens": "avoid"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.(t|j)sx?$": [
+        "babel-jest",
+        {
+          "presets": [
+            [
+              "@babel/env",
+              {
+                "loose": true
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "testRegex": "src.*((\\.|/*.)(test))\\.(t|j)s?$",
+    "moduleNameMapper": {
+      "^.+.(css|style|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
+      "ionic-native": "jest-transform-stub",
+      "swiper": "jest-transform-stub"
+    },
+    "moduleDirectories": [
+      "node_modules",
+      "components",
+      "src"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setupTests.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!@ionic|@stencil|ionicons)"
+    ]
   }
 }

@@ -1,0 +1,28 @@
+.menu-attr-item-location {
+  --border-style: solid !important;
+
+  .location-label {
+    max-width: 80px;
+  }
+
+  ion-label[slot='end'] {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    ion-badge[color='warning'] {
+      font-size: 1em;
+      font-weight: normal;
+      width: -webkit-fit-content;
+      width: fit-content;
+      background-color: rgba(var(--ion-color-warning-rgb), 0.15);
+      color: var(--ion-color-warning-shade);
+
+      // only to the name
+      &:nth-child(2) {
+        margin-top: 5px;
+      }
+    }
+  }
+}

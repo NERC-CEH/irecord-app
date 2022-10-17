@@ -1,6 +1,6 @@
-#help {
-  ion-list {
-    padding-top: 0;
+#faq {
+  ion-label {
+    font-weight: 500;
   }
 
   ion-item-divider {
@@ -12,7 +12,11 @@
     margin-top: 30px;
   }
 
-  ion-icon {
-    padding: 0 6px;
+  .long-tap-tip-message-icon {
+    background: var(--ion-color-primary);
+    border-radius: 3px;
+    padding: 3px;
+    margin-bottom: -4px;
+    color: white;
   }
 }

@@ -1,3 +1,7 @@
+## 6.0.0
+
+Major upgrade.
+
 ## 5.4.4
 
 Fixed reports redirect.
@@ -9,6 +13,8 @@ Fixed Android 11+ app freeze issue.
 ## 5.4.2
 
 Fixed the communication with the new iRecord site.
+Removed 20 picture upload limit.
+Bug fixes.
 
 ## 5.4.1
 

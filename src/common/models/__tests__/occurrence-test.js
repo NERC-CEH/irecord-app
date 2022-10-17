@@ -1,17 +1,16 @@
-import Sample from 'sample';
-import Occurrence from 'occurrence';
+import Sample from 'models/sample';
+import Occurrence from 'models/occurrence';
 /* eslint-disable no-unused-expressions */
+import sinon from 'sinon';
 
 describe('Occurrence', () => {
   it.skip('should validate', () => {
     const occurrence = new Occurrence();
-    expect(occurrence.validate).to.be.a('function');
+    expect(occurrence.validate).toBeInstanceOf(Function);
     occurrence.clear();
 
     const invalids = occurrence.validate(null, { remote: true });
-    expect(invalids.attributes)
-      .to.be.an('object')
-      .and.have.property('taxon');
+    expect(invalids.attributes).to.be.an('object').toHaveProperty('taxon');
   });
 
   describe.skip('getSurvey', () => {
@@ -26,7 +25,7 @@ describe('Occurrence', () => {
 
     it('should exist', () => {
       const occurrence = new Occurrence();
-      expect(occurrence.getSurvey).to.be.a('function');
+      expect(occurrence.getSurvey).toBeInstanceOf(Function);
     });
 
     it('should call parent getSurvey', () => {
@@ -36,12 +35,12 @@ describe('Occurrence', () => {
       sample.occurrences.push(occurrence);
 
       occurrence.getSurvey();
-      expect(sampleGetSurveySpy.calledOnce).to.be.equal(true);
+      expect(sampleGetSurveySpy.toBeCalledTimes(1)).toBe(true);
     });
 
     it('should throw an error if no parent sample', () => {
       const occurrence = new Occurrence({ attrs: { taxon: { group: 1 } } });
-      expect(occurrence.getSurvey.bind(occurrence)).to.throw(
+      expect(occurrence.getSurvey.bind(occurrence)).toThrowError(
         'No parent exists to get survey'
       );
     });

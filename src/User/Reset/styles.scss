@@ -1,0 +1,34 @@
+#user-reset {
+  ion-toolbar {
+    position: fixed;
+    --background: transparent;
+
+    ion-back-button {
+      color: var(--ion-color-light-contrast);
+    }
+  }
+
+  ion-content {
+    --padding-top: 40px; // header
+  }
+
+  ion-content {
+    h2 {
+      text-align: center;
+      font-size: 1em;
+      font-weight: 400;
+      padding: 20px 20px 40px;
+    }
+
+    ion-button[type='submit'] {
+      margin: 15px auto;
+      width: calc(100% - 30px);
+      max-width: 200px;
+      margin-bottom: 60px;
+    }
+  }
+
+  input {
+    background: transparent;
+  }
+}

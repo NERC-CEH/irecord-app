@@ -1,25 +1,23 @@
 #user-locations {
-  padding: 0;
-
-  .empty {
-    width: 80%;
-    max-width: 250px;
-    margin: 100px auto 0;
-    --border-width: 0;
-    --background: var(--ion-color-light);
-    --color: var(--ion-color-light-contrast);
-
-    span {
-      margin: 0 auto;
-      font-weight: 200;
-    }
-  }
-
   .location {
+    border-radius: var(--theme-border-radius);
+    margin: 6px auto;
+    max-width: 600px;
+
+    ion-item {
+      --border-style: none;
+      --padding-top: 10px;
+    }
+
+    ion-label {
+      margin: 0;
+    }
+
     .details {
       ion-label {
         margin-bottom: 5px;
       }
+
       .location-raw {
         color: var(--ion-color-medium);
         font-size: 0.85em;
@@ -37,9 +35,17 @@
       }
     }
 
-    .location-favourite.on {
-      --detail-icon-color: var(--ion-color-warning);
+    &.favourite ion-item {
+      --detail-icon-color: var(--ion-color-primary);
       --detail-icon-opacity: 1;
     }
+
+    &.favourite ion-item[slot='detail-icon'] {
+      margin-top: 10px;
+    }
   }
+}
+
+.location-edit-form {
+  margin-top: 10px;
 }

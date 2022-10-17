@@ -1,0 +1,178 @@
+ion-item-sliding.survey-list-item {
+  --survey-item-height: 73px;
+  border-radius: var(--theme-border-radius);
+  background: white;
+  max-width: 600px;
+
+  & > ion-item {
+    --border-style: none;
+    --min-height: var(--survey-item-height);
+    --padding-start: 0;
+    --inner-padding-end: 6px;
+
+    .survey-info-container {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+
+      .photo {
+        flex: none;
+        position: relative;
+        margin: 0 10px 0 0;
+        height: var(--survey-item-height);
+        min-width: var(--survey-item-height);
+        max-width: var(--survey-item-height);
+        background-color: #e5eacd;
+        overflow: hidden;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .count {
+        flex: none;
+        width: var(--survey-item-height);
+        min-width: var(--survey-item-height);
+        margin: 0 10px 0 0;
+        z-index: 1000;
+
+        .count-wrapper {
+          box-shadow: 0 0 0 6px white;
+          background: white;
+          width: fit-content;
+          margin: 0 auto;
+          border-radius: var(--theme-border-radius);
+        }
+
+        .number {
+          background: #edeced;
+          border-radius: 50%;
+          height: 40px;
+          width: 40px;
+          text-align: center;
+          line-height: 40px;
+          margin: 0 auto;
+          border-radius: var(--theme-border-radius);
+        }
+
+        .label {
+          font-size: 0.6em;
+          text-align: center;
+        }
+      }
+
+      .survey-info {
+        display: flex;
+        flex: auto;
+        width: 100%;
+
+        white-space: nowrap;
+        min-width: 10px;
+        overflow: hidden;
+
+        h3:not(:first-of-type) {
+          margin-bottom: 10px;
+        }
+
+        .details {
+          width: 100%;
+
+          .species {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .survey-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--ion-color-dark);
+            text-transform: capitalize;
+          }
+          .species-count {
+            font-size: 12px;
+          }
+          .core {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            span {
+              font-weight: 500;
+              color: var(--ion-color-dark);
+              &.warning {
+                color: var(--ion-color-warning);
+              }
+            }
+          }
+          .attributes {
+            display: flex;
+            flex-wrap: nowrap;
+
+            *:not(:empty) {
+              margin-right: 14px;
+            }
+
+            .stage,
+            .number {
+              font-size: 12px;
+            }
+            .comment {
+              width: 80px;
+              font-size: 12px;
+              margin-right: 10px;
+              overflow: hidden;
+              word-wrap: normal;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              color: var(--ion-color-medium-dark);
+            }
+          }
+
+          span.locked,
+          div.locked {
+            color: var(--ion-color-secondary);
+          }
+        }
+      }
+    }
+
+    ion-badge[color='warning'] {
+      &:not(:last-of-type) {
+        margin-bottom: 5px;
+      }
+
+      font-size: 1em;
+      font-weight: normal;
+      width: -webkit-fit-content;
+      width: fit-content;
+      background-color: rgba(var(--ion-color-warning-rgb), 0.15);
+      color: var(--ion-color-warning-shade);
+    }
+
+    .training-band {
+      position: absolute;
+      width: 7px;
+      height: 100%;
+      background-color: black;
+      z-index: 1000;
+    }
+    .activity-band {
+      position: absolute;
+      width: 7px;
+      height: 100%;
+      background-color: var(--ion-color-secondary);
+      z-index: 1000;
+    }
+    .activity-band + .training-band {
+      left: 7px;
+      top: 0;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+#user-register {
+  ion-toolbar {
+    position: fixed;
+    --background: transparent;
+
+    ion-back-button {
+      color: var(--ion-color-light-contrast);
+    }
+  }
+
+  ion-content {
+    --padding-top: 40px; // header
+  }
+
+  ion-content {
+    ion-button ion-icon {
+      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.4em;
+      font-weight: 500;
+      margin-bottom: 50px;
+    }
+
+    .terms-info-text {
+      display: block;
+      padding: 20px 20px 10px;
+      text-align: center;
+      font-size: 0.85em;
+      color: var(--ion-color-dark);
+    }
+
+    ion-icon.faint {
+      opacity: 0.6;
+    }
+
+    ion-button[type='submit'] {
+      margin: 15px auto;
+      width: calc(100% - 30px);
+      max-width: 200px;
+      margin-bottom: 60px;
+    }
+  }
+
+  input {
+    background: transparent;
+  }
+}

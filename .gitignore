@@ -16,5 +16,5 @@ coverage
 resources
 cordova
 build
-components
+/components
 backend

@@ -1,0 +1,33 @@
+#filters-dialog-form {
+  margin-top: 10px;
+
+  ion-item-divider {
+    z-index: 1;
+  }
+
+  .taxon-groups {
+    margin-top: 20px;
+
+    ion-item {
+      margin: 10px;
+      border-radius: var(--theme-border-radius);
+      --border-style: none;
+
+      ion-label {
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+ion-button.filter-button {
+  --padding-end: 20px;
+  --padding-start: 20px;
+  --border-radius: var(--theme-border-radius) !important;
+
+  b {
+    margin-left: 10px;
+    margin-right: -10px;
+    letter-spacing: 2px;
+  }
+}

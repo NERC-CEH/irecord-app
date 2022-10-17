@@ -1,0 +1,58 @@
+.menu-attr-item-lock {
+  &.locked {
+    ion-item {
+      --detail-icon-color: var(--custom-color-lock);
+      --detail-icon-opacity: 0.55;
+    }
+
+    ion-datetime,
+    ion-label[slot='end'] {
+      color: var(--custom-color-lock);
+    }
+
+    ion-toggle {
+      --background-checked: var(--custom-color-lock-tint);
+      &.md {
+        --handle-background-checked: var(--custom-color-lock);
+      }
+    }
+
+    ion-accordion-group {
+      .accordion-collapsed > [slot='header'] .ion-accordion-toggle-icon,
+      .accordion-collapsing > [slot='header'] .ion-accordion-toggle-icon {
+        color: var(--custom-color-lock);
+
+        opacity: 0.55;
+      }
+      .accordion-expanding > [slot='header'] .ion-accordion-toggle-icon {
+        transform: rotate(40deg);
+        color: var(--custom-color-lock);
+        opacity: 0.55;
+      }
+      .accordion-expanded > [slot='header'] .ion-accordion-toggle-icon {
+        transform: rotate(0deg);
+        color: var(--custom-color-lock);
+        opacity: 0.55;
+      }
+
+      ion-datetime {
+        color: black;
+      }
+    }
+  }
+
+  ion-item-option.lock {
+    min-width: 70px;
+  }
+}
+
+// Fix last item border in rounded blocks
+div.rounded {
+  > ion-item:not(.counter-input-attr-item):last-of-type:not(:last-child) {
+    --border-style: solid;
+  }
+
+  > .menu-attr-item-lock:last-child ion-item {
+    --border-style: none !important;
+  }
+}

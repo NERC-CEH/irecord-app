@@ -1,14 +1,9 @@
-/** ********************************************************************
- * Manual testing functions.
- ******************************************************************** */
-import savedRecords from 'saved_samples';
-import Indicia from '@indicia-js/core';
+import savedRecords from 'models/savedSamples';
 import GPS from 'mock-geolocation';
-import defaultSurvey from 'common/config/surveys/default';
-import Sample from 'sample';
-import Occurrence from 'occurrence';
-import PQueue from 'p-queue';
-import bigu from 'bigu';
+import defaultSurvey from 'Survey/Default/config';
+import Sample from 'models/sample';
+import Occurrence from 'models/occurrence';
+import Media from 'models/media';
 
 const testing = {};
 
@@ -33,15 +28,12 @@ testing.records = {
    */
   async addDummyRecord(count = 1, imageData, testID) {
     const allWait = [];
-    const queue = new PQueue({ concurrency: 1 });
 
     for (let i = 0; i < count; i++) {
-      const wait = queue.add(() => {
-        console.log(`Adding ${i + 1}`);
+      console.log(`Adding ${i + 1}`);
 
-        return this._addDummyRecord(1, imageData, testID);
-      });
-      allWait.push(wait);
+      // eslint-disable-next-line no-await-in-loop
+      await this._addDummyRecord(1, imageData, testID);
     }
 
     return allWait;
@@ -106,7 +98,7 @@ testing.records = {
       testID = (Math.random() * 10).toFixed(0);
     }
 
-    const image = new Indicia.Media({
+    const image = new Media({
       attrs: {
         data: imageData,
         type: 'image/png',
@@ -121,40 +113,40 @@ testing.GPS = {
   mock: GPS.use,
 
   /**
-   * GPS.update({ gridRef: 'TQ1212', xCorrect: -19, yCorrect: 12 })
    * GPS.update({ latitude: 1, longitude: -1, accuracy: 12 })
    *
    * @param options
    * @returns {*}
    */
-  update(options) {
-    let location = options;
-    if (options.gridRef) {
-      // Grid References
-      const parsedRef = bigu.GridRefParser.factory(options.gridRef);
+  update(location) {
+    GPS.change(location);
+  },
 
-      // center
-      parsedRef.osRef.x += parsedRef.length / 2;
-      parsedRef.osRef.y += parsedRef.length / 2;
+  async simulate() {
+    console.log('⌖ GPS track simulation start');
 
-      // allow manual corrections for grid reference square center
-      if (options.xCorrect) {
-        parsedRef.osRef.x += options.xCorrect;
+    this.mock();
+
+    const onlyLines = feat => feat.geometry.type === 'LineString';
+    const lines = track.features.filter(onlyLines);
+
+    for (let lineId = 0; lineId < lines.length; lineId++) {
+      const coords = lines[lineId].geometry.coordinates;
+      for (let i = 0; i < coords.length; i++) {
+        const [longitude, latitude] = coords[i];
+
+        this.update({ latitude, longitude, accuracy: 1 });
+        await new Promise(r => setTimeout(r, 1000)); //eslint-disable-line
       }
-      if (options.yCorrect) {
-        parsedRef.osRef.y += options.yCorrect;
-      }
-
-      const latLng = parsedRef.osRef.to_latLng();
-      location = {
-        latitude: latLng.lat,
-        longitude: latLng.lng,
-        accuracy: options.accuracy || parsedRef.length / 2,
-      };
     }
 
-    console.log(location);
-    return GPS.change(location);
+    console.log('⌖ GPS track simulation complete');
+  },
+
+  stop() {
+    if (this.interval || this.interval === 0) {
+      clearInterval(this.interval);
+    }
   },
 };
 

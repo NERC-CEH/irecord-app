@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 // # Transforms a CSV file into a JSON file
 // # eg.
 // # A, B, C[], C[], C[], D[], E{A}, E{B}, F{P{L[]}}

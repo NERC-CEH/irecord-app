@@ -1,0 +1,1498 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: temp\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"X-Generator: POEditor.com\n"
+
+msgid "Location"
+msgstr "Location"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "App"
+msgstr "App"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "About"
+msgstr "About"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+msgid "BRC Approved"
+msgstr "BRC Approved"
+
+msgid "Credits"
+msgstr "Credits"
+
+
+msgid "Please sign in with your iRecord account or register."
+msgstr "Please sign in with your iRecord account or register."
+
+msgid "Sign in"
+msgstr "Sign in"
+
+msgid "Request a new password"
+msgstr "Request a new password"
+
+msgid "I agree to"
+msgstr "I agree to"
+
+msgid "Terms and Conditions"
+msgstr "Terms and Conditions"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Enter your username or email address to request a password reset"
+msgstr "Enter your username or email address to request a password reset"
+
+msgid "Request"
+msgstr "Request"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Records"
+msgstr "Records"
+
+msgid "Submit All"
+msgstr "Submit All"
+
+msgid "Remove All Saved"
+msgstr "Remove All Saved"
+
+msgid "Training Mode"
+msgstr "Training Mode"
+
+msgid "Use Grid Ref"
+msgstr "Use Grid Ref"
+
+msgid "Show Map Grid"
+msgstr "Show Map Grid"
+
+msgid "Manage Saved"
+msgstr "Manage Saved"
+
+msgid "Grid Square Unit"
+msgstr "Grid Square Unit"
+
+msgid "Application"
+msgstr "Application"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Experimental Features"
+msgstr "Experimental Features"
+
+msgid "Here you can select or swipe to edit your previous locations"
+msgstr "Here you can select or swipe to edit your previous locations"
+
+msgid "source"
+msgstr "source"
+
+msgid "map"
+msgstr "map"
+
+msgid "Past Locations"
+msgstr "Past Locations"
+
+msgid "Favourite"
+msgstr "Favourite"
+
+msgid "Please pick your grid square unit."
+msgstr "Please pick your grid square unit."
+
+msgid "Tetrad (2km square)"
+msgstr "Tetrad (2km square)"
+
+msgid "Monad (1km square)"
+msgstr "Monad (1km square)"
+
+msgid "Locations"
+msgstr "Locations"
+
+msgid "Who can use the app?"
+msgstr "Who can use the app?"
+
+msgid "App Development"
+msgstr "App Development"
+
+msgid "contact us"
+msgstr "contact us"
+
+msgid "How to make a new record"
+msgstr "How to make a new record"
+
+msgid "There are two ways to start a record"
+msgstr "There are two ways to start a record"
+
+msgid "Taking a photo"
+msgstr "Taking a photo"
+
+msgid "Press the camera button"
+msgstr "Press the camera button"
+
+msgid "in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it. Clicking on the newly created record will open the taxa search page."
+msgstr "in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it. Clicking on the newly created record will open the taxa search page."
+
+msgid "Selecting species"
+msgstr "Selecting species"
+
+msgid "Please press the plus"
+msgstr "Please press the plus"
+
+msgid "button in the home page header. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button"
+msgstr "button in the home page header. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button"
+
+msgid "beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc"
+msgstr "beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc"
+
+msgid "When finished, set for submission by pressing the paper plane"
+msgstr "When finished, set for submission by pressing the paper plane"
+
+msgid "button"
+msgstr "button"
+
+msgid "Searching for species"
+msgstr "Searching for species"
+
+msgid "The application holds all of the UK’s species (70000+) and all the associated taxonomy ranks. For quicker searching of the taxa you can use different shortcuts. For example, to find"
+msgstr "The application holds all of the UK’s species (70000+) and all the associated taxonomy ranks. For quicker searching of the taxa you can use different shortcuts. For example, to find"
+
+msgid "you can type in the search bar"
+msgstr "you can type in the search bar"
+
+msgid "Sync. with iRecord"
+msgstr "Sync. with iRecord"
+
+msgid "All your saved records will be shown on the home page. By default a record is in"
+msgstr "All your saved records will be shown on the home page. By default a record is in"
+
+msgid "draft"
+msgstr "draft"
+
+msgid "mode until it is set for submission. While it is in"
+msgstr "mode until it is set for submission. While it is in"
+
+msgid "mode the application will not synchronise your record with the database. To set it for sending, open the record and press the"
+msgstr "mode the application will not synchronise your record with the database. To set it for sending, open the record and press the"
+
+msgid "button in the header. The application will try to submit your record once there is a good network connection"
+msgstr "button in the header. The application will try to submit your record once there is a good network connection"
+
+msgid "If the record has reached the database a red"
+msgstr "If the record has reached the database a red"
+
+msgid "set for submission & saved locally"
+msgstr "set for submission & saved locally"
+
+msgid "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the"
+msgstr "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the"
+
+msgid "iRecord Website"
+msgstr "iRecord Website"
+
+msgid "Note"
+msgstr "Note"
+
+msgid "you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background"
+msgstr "you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background"
+
+msgid "Send all records"
+msgstr "Send all records"
+
+msgid "You can set all your draft records for submission. To do that go to the settings page"
+msgstr "You can set all your draft records for submission. To do that go to the settings page"
+
+msgid "and click Submit All"
+msgstr "and click Submit All"
+
+msgid "This will try to send all the valid records"
+msgstr "This will try to send all the valid records"
+
+msgid "Delete a record"
+msgstr "Delete a record"
+
+msgid "To delete a record, swipe it left in the home-list page and click the delete"
+msgstr "To delete a record, swipe it left in the home-list page and click the delete"
+
+msgid "You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page"
+msgstr "You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page"
+
+msgid "and click"
+msgstr "and click"
+
+msgid "Lock an attribute"
+msgstr "Lock an attribute"
+
+msgid "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records"
+msgstr "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records"
+
+msgid "To lock an attribute click on the lock"
+msgstr "To lock an attribute click on the lock"
+
+msgid "button in the attribute edit page header. This will change the symbol to locked"
+msgstr "button in the attribute edit page header. This will change the symbol to locked"
+
+msgid "both on the button and next to the attribute"
+msgstr "both on the button and next to the attribute"
+
+msgid "For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within an named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually"
+msgstr "For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within an named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually"
+
+msgid "User"
+msgstr "User"
+
+msgid "Sign in/out or register"
+msgstr "Sign in/out or register"
+
+msgid "To login, open the main menu page"
+msgstr "To login, open the main menu page"
+
+msgid "click Login"
+msgstr "click Login"
+
+msgid "or Register"
+msgstr "or Register"
+
+msgid "buttons and follow the instructions"
+msgstr "buttons and follow the instructions"
+
+msgid "To logout, visit the main menu page"
+msgstr "To logout, visit the main menu page"
+
+msgid "and click the logout"
+msgstr "and click the logout"
+
+msgid "after registering a new account you must verify your email address by clicking on a verification link sent to your email"
+msgstr "after registering a new account you must verify your email address by clicking on a verification link sent to your email"
+
+msgid "Activities"
+msgstr "Activities"
+
+msgid "To send records to a specific activity you can select it in the Activities"
+msgstr "To send records to a specific activity you can select it in the Activities"
+
+msgid "page"
+msgstr "page"
+
+msgid "only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select"
+msgstr "only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select"
+
+# Part of activities page 
+msgid "Pull to refresh the list."
+msgstr "Pull to refresh the list."
+
+# Part of activities page 
+msgid "Sorry, no activities data is available at the moment."
+msgstr "Sorry, no activities data is available at the moment."
+
+msgid "Other"
+msgstr "Other"
+
+msgid "Manage saved locations"
+msgstr "Manage saved locations"
+
+msgid "You can manage your saved locations both on any record's location page and from the settings page"
+msgstr "You can manage your saved locations both on any record's location page and from the settings page"
+
+msgid "Swipe a location left and click edit"
+msgstr "Swipe a location left and click edit"
+
+msgid "or delete"
+msgstr "or delete"
+
+msgid "buttons"
+msgstr "buttons"
+
+msgid "You can make your location stick to the top of the locations list by clicking the Favourite toggle"
+msgstr "You can make your location stick to the top of the locations list by clicking the Favourite toggle"
+
+msgid "Reset the application"
+msgstr "Reset the application"
+
+msgid "Go to the application settings page"
+msgstr "Go to the application settings page"
+
+msgid "and click on the Reset"
+msgstr "and click on the Reset"
+
+msgid "For more help please visit the iRecord"
+msgstr "For more help please visit the iRecord"
+
+msgid "forum"
+msgstr "forum"
+
+msgid "Wherever you see this logo on a biological recording app you can be assured that the data you submit will be: made available to experts for quality assurance; made available for conservation and research and preserved for long-term use."
+msgstr "Wherever you see this logo on a biological recording app you can be assured that the data you submit will be: made available to experts for quality assurance; made available for conservation and research and preserved for long-term use."
+
+msgid "This logo indicates that your data is"
+msgstr "This logo indicates that your data is"
+
+msgid "Sent to the Biological Record Centre’s data warehouse linked to the iRecord system where it accessible to you as the recorder, to an expert community of verifiers and other users of iRecord"
+msgstr "Sent to the Biological Record Centre’s data warehouse linked to the iRecord system where it accessible to you as the recorder, to an expert community of verifiers and other users of iRecord"
+
+msgid "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Gateway"
+msgstr "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Gateway"
+
+msgid "About BRC"
+msgstr "About BRC"
+
+msgid "established in 1964, is a national focus in the UK for terrestrial and freshwater species recording. BRC works closely with the voluntary recording community, principally through support of national recording schemes and societies. BRC is supported by the Joint Nature Conservation Committee (JNCC) and the Centre for Ecology & Hydrology (CEH) within the Natural Environment Research Council (NERC). The work of BRC is a major component of the National Biodiversity Network (NBN)"
+msgstr "established in 1964, is a national focus in the UK for terrestrial and freshwater species recording. BRC works closely with the voluntary recording community, principally through support of national recording schemes and societies. BRC is supported by the Joint Nature Conservation Committee (JNCC) and the Centre for Ecology & Hydrology (CEH) within the Natural Environment Research Council (NERC). The work of BRC is a major component of the National Biodiversity Network (NBN)"
+
+msgid "Which app should I use?"
+msgstr "Which app should I use?"
+
+msgid "You might have noticed that several of"
+msgstr "You might have noticed that several of"
+
+msgid "BRC apps"
+msgstr "BRC apps"
+
+msgid "feature some of the same species?  We have introduced the BRC Approved logo to signify that data from our apps all go to the same place. Therefore, you are free to choose which app you use to record a given species. All records will be sent to the same place, treated in the same way and will meet the established standards required by the Biological Record Centre"
+msgstr "feature some of the same species?  We have introduced the BRC Approved logo to signify that data from our apps all go to the same place. Therefore, you are free to choose which app you use to record a given species. All records will be sent to the same place, treated in the same way and will meet the established standards required by the Biological Record Centre"
+
+msgid "This app was funded by the"
+msgstr "This app was funded by the"
+
+msgid "Welcome screen credits"
+msgstr "Welcome screen credits"
+
+msgid "For quicker searching of the taxa you can use different shortcuts. For example, to find"
+msgstr "For quicker searching of the taxa you can use different shortcuts. For example, to find"
+
+msgid "Species"
+msgstr "Species"
+
+msgid "date"
+msgstr "date"
+
+msgid "Unlocked"
+msgstr "Unlocked"
+
+msgid "Please add any extra info about this record."
+msgstr "Please add any extra info about this record."
+
+msgid "comment"
+msgstr "comment"
+
+msgid "Please pick the life stage."
+msgstr "Please pick the life stage."
+
+msgid "Not Recorded"
+msgstr "Not Recorded"
+
+msgid "Adult"
+msgstr "Adult"
+
+msgid "Pre-adult"
+msgstr "Pre-adult"
+
+msgid "stage"
+msgstr "stage"
+
+msgid "If anyone helped with the identification please enter their name here."
+msgstr "If anyone helped with the identification please enter their name here."
+
+msgid "identifiers"
+msgstr "identifiers"
+
+msgid "Abundance"
+msgstr "Abundance"
+
+msgid "Stage"
+msgstr "Stage"
+
+msgid "Identifiers"
+msgstr "Identifiers"
+
+msgid "Present"
+msgstr "Present"
+
+msgid "Username or email"
+msgstr "Username or email"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "First Name"
+msgstr "First Name"
+
+msgid "Surname"
+msgstr "Surname"
+
+msgid "Confirm password"
+msgstr "Confirm password"
+
+msgid "No photo has been added.<br/>Press <3></3> to add."
+msgstr "No photo has been added.<br/>Press <3></3> to add."
+
+msgid "acarine"
+msgstr "acarine"
+
+msgid "acorn worm"
+msgstr "acorn worm"
+
+msgid "alderfly"
+msgstr "alderfly"
+
+msgid "alga"
+msgstr "alga"
+
+msgid "amphibian"
+msgstr "amphibian"
+
+msgid "annelid"
+msgstr "annelid"
+
+msgid "arrow worm"
+msgstr "arrow worm"
+
+msgid "bacterium"
+msgstr "bacterium"
+
+msgid "beardworm"
+msgstr "beardworm"
+
+msgid "beetle"
+msgstr "beetle"
+
+msgid "bird"
+msgstr "bird"
+
+msgid "bony fish"
+msgstr "bony fish"
+
+msgid "booklouse"
+msgstr "booklouse"
+
+msgid "bristletail"
+msgstr "bristletail"
+
+msgid "bryozoan"
+msgstr "bryozoan"
+
+msgid "butterfly"
+msgstr "butterfly"
+
+msgid "caddis fly"
+msgstr "caddis fly"
+
+msgid "cartilagenous fish"
+msgstr "cartilagenous fish"
+
+msgid "centipede"
+msgstr "centipede"
+
+msgid "chromist"
+msgstr "chromist"
+
+msgid "clubmoss"
+msgstr "clubmoss"
+
+msgid "cockroach"
+msgstr "cockroach"
+
+msgid "coelenterate"
+msgstr "coelenterate"
+
+msgid "comb jelly"
+msgstr "comb jelly"
+
+msgid "conifer"
+msgstr "conifer"
+
+msgid "crustacean"
+msgstr "crustacean"
+
+msgid "cycliophoran"
+msgstr "cycliophoran"
+
+msgid "diatom"
+msgstr "diatom"
+
+msgid "dragonfly"
+msgstr "dragonfly"
+
+msgid "earwig"
+msgstr "earwig"
+
+msgid "echinoderm"
+msgstr "echinoderm"
+
+msgid "entoproct"
+msgstr "entoproct"
+
+msgid "false scorpion"
+msgstr "false scorpion"
+
+msgid "fern"
+msgstr "fern"
+
+msgid "flatworm"
+msgstr "flatworm"
+
+msgid "flea"
+msgstr "flea"
+
+msgid "flower. plant"
+msgstr "flower. plant"
+
+msgid "foraminiferan"
+msgstr "foraminiferan"
+
+msgid "fungoid"
+msgstr "fungoid"
+
+msgid "fungus"
+msgstr "fungus"
+
+msgid "gastrotrich"
+msgstr "gastrotrich"
+
+msgid "ginkgo"
+msgstr "ginkgo"
+
+msgid "gnathostomulid"
+msgstr "gnathostomulid"
+
+msgid "hairworm"
+msgstr "hairworm"
+
+msgid "harvestman"
+msgstr "harvestman"
+
+msgid "hornwort"
+msgstr "hornwort"
+
+msgid "horseshoe worm"
+msgstr "horseshoe worm"
+
+msgid "horsetail"
+msgstr "horsetail"
+
+msgid "hymenopteran"
+msgstr "hymenopteran"
+
+msgid "jawless fish"
+msgstr "jawless fish"
+
+msgid "lacewing"
+msgstr "lacewing"
+
+msgid "lampshell"
+msgstr "lampshell"
+
+msgid "lancelet"
+msgstr "lancelet"
+
+msgid "lichen"
+msgstr "lichen"
+
+msgid "liverwort"
+msgstr "liverwort"
+
+msgid "loriciferan"
+msgstr "loriciferan"
+
+msgid "louse"
+msgstr "louse"
+
+msgid "mammal"
+msgstr "mammal"
+
+msgid "mantis"
+msgstr "mantis"
+
+msgid "marine mammal"
+msgstr "marine mammal"
+
+msgid "mayfly"
+msgstr "mayfly"
+
+msgid "mesozoan"
+msgstr "mesozoan"
+
+msgid "millipede"
+msgstr "millipede"
+
+msgid "mollusc"
+msgstr "mollusc"
+
+msgid "monogenean"
+msgstr "monogenean"
+
+msgid "moss"
+msgstr "moss"
+
+msgid "moth"
+msgstr "moth"
+
+msgid "mud dragon"
+msgstr "mud dragon"
+
+msgid "orthopteran"
+msgstr "orthopteran"
+
+msgid "pauropod"
+msgstr "pauropod"
+
+msgid "peanut worm"
+msgstr "peanut worm"
+
+msgid "priapulid"
+msgstr "priapulid"
+
+msgid "protozoan"
+msgstr "protozoan"
+
+msgid "proturan"
+msgstr "proturan"
+
+msgid "quillwort"
+msgstr "quillwort"
+
+msgid "reptile"
+msgstr "reptile"
+
+msgid "ribbon worm"
+msgstr "ribbon worm"
+
+msgid "rotifer"
+msgstr "rotifer"
+
+msgid "roundworm"
+msgstr "roundworm"
+
+msgid "scorpion"
+msgstr "scorpion"
+
+msgid "scorpion fly"
+msgstr "scorpion fly"
+
+msgid "sea spider"
+msgstr "sea spider"
+
+msgid "silverfish"
+msgstr "silverfish"
+
+msgid "slime mould"
+msgstr "slime mould"
+
+msgid "snakefly"
+msgstr "snakefly"
+
+msgid "spider"
+msgstr "spider"
+
+msgid "sponge"
+msgstr "sponge"
+
+msgid "spoon worm"
+msgstr "spoon worm"
+
+msgid "springtail"
+msgstr "springtail"
+
+msgid "stick insect"
+msgstr "stick insect"
+
+msgid "stonefly"
+msgstr "stonefly"
+
+msgid "stonewort"
+msgstr "stonewort"
+
+msgid "stylops"
+msgstr "stylops"
+
+msgid "symphylan"
+msgstr "symphylan"
+
+msgid "tapeworm"
+msgstr "tapeworm"
+
+msgid "thorny-headed worm"
+msgstr "thorny-headed worm"
+
+msgid "thrips"
+msgstr "thrips"
+
+msgid "trematode"
+msgstr "trematode"
+
+msgid "true bug"
+msgstr "true bug"
+
+msgid "true fly"
+msgstr "true fly"
+
+msgid "tunicate"
+msgstr "tunicate"
+
+msgid "two-tailed bristletail"
+msgstr "two-tailed bristletail"
+
+msgid "unassigned"
+msgstr "unassigned"
+
+msgid "undetermined"
+msgstr "undetermined"
+
+msgid "waterbear"
+msgstr "waterbear"
+
+msgid "Comment"
+msgstr "Comment"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Filters"
+msgstr "Filters"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "How many individuals of this type?"
+msgstr "How many individuals of this type?"
+
+msgid "Yikes!"
+msgstr "Yikes!"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Edit Location"
+msgstr "Edit Location"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "This record hasn't been saved to iRecord yet, are you sure you want to remove it from your device?"
+msgstr "This record hasn't been saved to iRecord yet, are you sure you want to remove it from your device?"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Information"
+msgstr "Information"
+
+msgid "Refresh"
+msgstr "Refresh"
+
+msgid "Click on the activity below which you would like to participate in. Any records you add from now on will be submitted to the chosen activity. You can join in with more activities by logging in to"
+msgstr "Click on the activity below which you would like to participate in. Any records you add from now on will be submitted to the chosen activity. You can join in with more activities by logging in to"
+
+msgid "and visiting the Record > Activities page"
+msgstr "and visiting the Record > Activities page"
+
+msgid "Are you sure you want to reset the application to its initial state?"
+msgstr "Are you sure you want to reset the application to its initial state?"
+
+msgid "This will wipe all the locally stored app data!"
+msgstr "This will wipe all the locally stored app data!"
+
+msgid "Submit"
+msgstr "Submit"
+
+msgid "Remove All"
+msgstr "Remove All"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "No previous locations"
+msgstr "No previous locations"
+
+msgid "Are you sure you want to set all valid records for submission?"
+msgstr "Are you sure you want to set all valid records for submission?"
+
+msgid "Are you sure you want to remove all successfully synchronised local records?"
+msgstr "Are you sure you want to remove all successfully synchronised local records?"
+
+msgid "records on the server will not be touched."
+msgstr "records on the server will not be touched."
+
+msgid "Training"
+msgstr "Training"
+
+msgid "No location name"
+msgstr "No location name"
+
+msgid "Name missing"
+msgstr "Name missing"
+
+msgid "Please log in to the app before selecting an alternative activity for your records."
+msgstr "Please log in to the app before selecting an alternative activity for your records."
+
+msgid "Let's add one!"
+msgstr "Let's add one!"
+
+msgid "Species name"
+msgstr "Species name"
+
+msgid "Page not found :("
+msgstr "Page not found :("
+
+msgid "No location"
+msgstr "No location"
+
+msgid "Location missing"
+msgstr "Location missing"
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Welcome"
+msgstr "Welcome"
+
+msgid "Welcome aboard!"
+msgstr "Welcome aboard!"
+
+msgid "OK, got it"
+msgstr "OK, got it"
+
+msgid "helps you with management and sharing of your wildlife observations"
+msgstr "helps you with management and sharing of your wildlife observations"
+
+msgid "Get Started"
+msgstr "Get Started"
+
+msgid "T&Cs"
+msgstr "T&Cs"
+
+msgid "Species missing"
+msgstr "Species missing"
+
+msgid "Locating"
+msgstr "Locating"
+
+msgid "will become green"
+msgstr "will become green"
+
+msgid "synced to the database"
+msgstr "synced to the database"
+
+msgid "Looks like you are offline!"
+msgstr "Looks like you are offline!"
+
+msgid "Today"
+msgstr "Today"
+
+msgid "Locked"
+msgstr "Locked"
+
+msgid "Grid reference"
+msgstr "Grid reference"
+
+msgid "Nearest named place"
+msgstr "Nearest named place"
+
+msgid "Default"
+msgstr "Default"
+
+msgid "Site type"
+msgstr "Site type"
+
+msgid "Adults"
+msgstr "Adults"
+
+msgid "Cop. pairs"
+msgstr "Cop. pairs"
+
+msgid "Ovip. females"
+msgstr "Ovip. females"
+
+msgid "Larvae"
+msgstr "Larvae"
+
+msgid "Exuviae"
+msgstr "Exuviae"
+
+msgid "Emergents"
+msgstr "Emergents"
+
+msgid "Lake"
+msgstr "Lake"
+
+msgid "Reservoir"
+msgstr "Reservoir"
+
+msgid "Mill lodge"
+msgstr "Mill lodge"
+
+msgid "Large pond"
+msgstr "Large pond"
+
+msgid "Small pond"
+msgstr "Small pond"
+
+msgid "Garden pond"
+msgstr "Garden pond"
+
+msgid "River"
+msgstr "River"
+
+msgid "Stream"
+msgstr "Stream"
+
+msgid "Ditch"
+msgstr "Ditch"
+
+msgid "Canal"
+msgstr "Canal"
+
+msgid "Other (please specify in comments)"
+msgstr "Other (please specify in comments)"
+
+msgid "Habitat"
+msgstr "Habitat"
+
+msgid "Microscopically Checked"
+msgstr "Microscopically Checked"
+
+msgid "Fruit"
+msgstr "Fruit"
+
+msgid "Male"
+msgstr "Male"
+
+msgid "Female"
+msgstr "Female"
+
+msgid "Bulbils"
+msgstr "Bulbils"
+
+msgid "Gemmae"
+msgstr "Gemmae"
+
+msgid "Tubers"
+msgstr "Tubers"
+
+msgid "Arable land, gardens or parks"
+msgstr "Arable land, gardens or parks"
+
+msgid "Bogs and fens"
+msgstr "Bogs and fens"
+
+msgid "Coast"
+msgstr "Coast"
+
+msgid "Grassland"
+msgstr "Grassland"
+
+msgid "Heathland, scrub, hedges"
+msgstr "Heathland, scrub, hedges"
+
+msgid "Industrial and urban"
+msgstr "Industrial and urban"
+
+msgid "Inland water"
+msgstr "Inland water"
+
+msgid "Mixed habitats"
+msgstr "Mixed habitats"
+
+msgid "Unvegetated or sparsely vegetated habitats"
+msgstr "Unvegetated or sparsely vegetated habitats"
+
+msgid "Woodland"
+msgstr "Woodland"
+
+msgid "missing"
+msgstr "missing"
+
+msgid "Are you sure you want to remove this photo from the sample?"
+msgstr "Are you sure you want to remove this photo from the sample?"
+
+msgid "</br><i><b>Note:</b> it will remain in the gallery.</i>"
+msgstr "</br><i><b>Note:</b> it will remain in the gallery.</i>"
+
+msgid "Choose a method to upload a photo"
+msgstr "Choose a method to upload a photo"
+
+msgid "Camera"
+msgstr "Camera"
+
+msgid "Gallery"
+msgstr "Gallery"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Statistics"
+msgstr "Statistics"
+
+msgid "Top species"
+msgstr "Top species"
+
+msgid "Activity"
+msgstr "Activity"
+
+msgid "location name"
+msgstr "location name"
+
+msgid "location"
+msgstr "location"
+
+msgid "Record"
+msgstr "Record"
+
+msgid "can't be blank"
+msgstr "can't be blank"
+
+msgid "you must agree to the terms"
+msgstr "you must agree to the terms"
+
+msgid "passwords are not equal"
+msgstr "passwords are not equal"
+
+msgid "is too short"
+msgstr "is too short"
+
+msgid "invalid"
+msgstr "invalid"
+
+msgid "View on iRecord"
+msgstr "View on iRecord"
+
+msgid "This record has been submitted and cannot be edited within this App."
+msgstr "This record has been submitted and cannot be edited within this App."
+
+msgid "No species found with this name"
+msgstr "No species found with this name"
+
+msgid "Sorry, we have encountered a problem while sending the record."
+msgstr "Sorry, we have encountered a problem while sending the record."
+
+msgid "Success"
+msgstr "Success"
+
+msgid "Further instructions have been sent to your e-mail address."
+msgstr "Further instructions have been sent to your e-mail address."
+
+msgid "Before submitting any records please check your email and click on the verification link."
+msgstr "Before submitting any records please check your email and click on the verification link."
+
+msgid "Are you sure you want to logout?"
+msgstr "Are you sure you want to logout?"
+
+msgid "Incorrect password or email."
+msgstr "Incorrect password or email."
+
+msgid "Invalid date selected"
+msgstr "Invalid date selected"
+
+msgid "Are you sure you want to remove this record from your device?</br><i><b>Note:</b> it will remain on the server.</i>"
+msgstr "Are you sure you want to remove this record from your device?</br><i><b>Note:</b> it will remain on the server.</i>"
+
+msgid "The development was led by SEWBReC, and was jointly funded by BIS, WWBIC and Cofnod."
+msgstr "The development was led by SEWBReC, and was jointly funded by BIS, WWBIC and Cofnod."
+
+msgid "Enjoying the app?"
+msgstr "Enjoying the app?"
+
+msgid "Not really"
+msgstr "Not really"
+
+msgid "Yes!"
+msgstr "Yes!"
+
+msgid "Would you mind giving us some feedback?"
+msgstr "Would you mind giving us some feedback?"
+
+msgid "No, thanks"
+msgstr "No, thanks"
+
+msgid "OK, sure"
+msgstr "OK, sure"
+
+msgid "How about a rating on the App Store then?"
+msgstr "How about a rating on the App Store then?"
+
+msgid "How about a rating on the Play Store then?"
+msgstr "How about a rating on the Play Store then?"
+
+msgid "You have no records"
+msgstr "You have no records"
+
+msgid "Forgot password?"
+msgstr "Forgot password?"
+
+msgid "We are very grateful for all the people that helped to create this app:"
+msgstr "We are very grateful for all the people that helped to create this app:"
+
+msgid "This app was developed by"
+msgstr "This app was developed by"
+
+msgid "Names:"
+msgstr "Names:"
+
+msgid "Common only"
+msgstr "Common only"
+
+msgid "Scientific only"
+msgstr "Scientific only"
+
+msgid "Taxon groups:"
+msgstr "Taxon groups:"
+
+msgid "You have no previous locations."
+msgstr "You have no previous locations."
+
+msgid "Sex"
+msgstr "Sex"
+
+msgid "Mixed"
+msgstr "Mixed"
+
+msgid "Please indicate the sex of the organism."
+msgstr "Please indicate the sex of the organism."
+
+msgid "Eggs"
+msgstr "Eggs"
+
+msgid "Pupae"
+msgstr "Pupae"
+
+msgid "Larval webs"
+msgstr "Larval webs"
+
+msgid "Not selected"
+msgstr "Not selected"
+
+msgid "Send"
+msgstr "Send"
+
+msgid "Share App Analytics"
+msgstr "Share App Analytics"
+
+msgid "Delete all the locally stored app data."
+msgstr "Delete all the locally stored app data."
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Photo"
+msgstr "Photo"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Tip: Adding Observations"
+msgstr "Tip: Adding Observations"
+
+msgid "Tap on the <ion-icon class=\"tip-icon\" src=\"/images/ios-add.svg\"></ion-icon> button to capture a new record."
+msgstr "Tap on the <ion-icon class=\"tip-icon\" src=\"/images/ios-add.svg\"></ion-icon> button to capture a new record."
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Uploaded"
+msgstr "Uploaded"
+
+msgid "No finished pending records"
+msgstr "No finished pending records"
+
+msgid "No uploaded surveys"
+msgstr "No uploaded surveys"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "cyanobacterium"
+msgstr "cyanobacterium"
+
+msgid "web-spinner"
+msgstr "web-spinner"
+
+msgid "For quicker searching of the taxa you can use different shortcuts."
+msgstr "For quicker searching of the taxa you can use different shortcuts."
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Grid Reference"
+msgstr "Grid Reference"
+
+msgid "Nearest named place (e.g town, park)"
+msgstr "Nearest named place (e.g town, park)"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Your location name"
+msgstr "Your location name"
+
+msgid "Enter more information here..."
+msgstr "Enter more information here..."
+
+msgid "Breeding"
+msgstr "Breeding"
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid "This record hasn't been uploaded to the database yet. Are you sure you want to remove it from your device?"
+msgstr "This record hasn't been uploaded to the database yet. Are you sure you want to remove it from your device?"
+
+msgid "Enter your username or email address to request a password reset."
+msgstr "Enter your username or email address to request a password reset."
+
+msgid "Locations should be represented as UK Grid Reference instead of Latitude and Longitude."
+msgstr "Locations should be represented as UK Grid Reference instead of Latitude and Longitude."
+
+msgid "Show UK Grid Reference over the map."
+msgstr "Show UK Grid Reference over the map."
+
+msgid "Mark any new records as 'training' and exclude from all reports."
+msgstr "Mark any new records as 'training' and exclude from all reports."
+
+msgid "Share app crash data so we can make the app more reliable."
+msgstr "Share app crash data so we can make the app more reliable."
+
+msgid "A technical consultancy that excels at building bespoke environmental science and community focussed solutions."
+msgstr "A technical consultancy that excels at building bespoke environmental science and community focussed solutions."
+
+msgid "For suggestions and feedback please do not hesitate to"
+msgstr "For suggestions and feedback please do not hesitate to"
+
+msgid "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Atlas"
+msgstr "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Atlas"
+
+msgid "number"
+msgstr "number"
+
+msgid "Are you sure you want to remove this photo?"
+msgstr "Are you sure you want to remove this photo?"
+
+msgid "Note: it will remain in the gallery."
+msgstr "Note: it will remain in the gallery."
+
+msgid "sex"
+msgstr "sex"
+
+msgid "Tip: Locking Attributes"
+msgstr "Tip: Locking Attributes"
+
+msgid "You can preserve your current attribute value for the subsequently added records by locking it. Click on the <ion-icon src=\"/images/ios-lock.svg\"></ion-icon> button."
+msgstr "You can preserve your current attribute value for the subsequently added records by locking it. Click on the <ion-icon src=\"/images/ios-lock.svg\"></ion-icon> button."
+
+# Surveys list header
+msgid "Other recording options"
+msgstr "Other recording options"
+
+# Survey label
+msgid "Plant Survey"
+msgstr "Plant Survey"
+
+# Survey label
+msgid "Moth Survey"
+msgstr "Moth Survey"
+
+# Survey label
+msgid "General Survey"
+msgstr "General Survey"
+
+msgid "Map"
+msgstr "Map"
+
+# Popup close button
+msgid "Hide"
+msgstr "Hide"
+
+# Info popup message
+msgid "To delete any surveys swipe it to the left."
+msgstr "To delete any surveys swipe it to the left."
+
+# Part of Help page 
+msgid "Press the camera button<1></1>in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
+msgstr "Press the camera button<1></1>in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
+
+# Part of Help page 
+msgid "Please press the plus<1></1>button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button<3></3>beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc.<br/><br/>When finished, press the Upload button in the record's page header."
+msgstr "Please press the plus<1></1>button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button<3></3>beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc.<br/><br/>When finished, press the Upload button in the record's page header."
+
+# Part of Help page 
+msgid "All your saved records will be shown on the home page. By default a record is in <i>draft</i> mode until it is set for upload. While it is in <i>draft</i> mode the application will not synchronise your record with the database.<br/><br/>To set it for upload, open the record and press the Upload button in the header. The application will try to submit your record once there is a good network connection. If the record has reached the database, it will be moved to the Uploaded list in the Home page (see Uploaded tab).<br/><br/>Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <16>iRecord website</16>.<br/><br/><20>Note:</20> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background .<br/>"
+msgstr "All your saved records will be shown on the home page. By default a record is in <i>draft</i> mode until it is set for upload. While it is in <i>draft</i> mode the application will not synchronise your record with the database.<br/><br/>To set it for upload, open the record and press the Upload button in the header. The application will try to submit your record once there is a good network connection. If the record has reached the database, it will be moved to the Uploaded list in the Home page (see Uploaded tab).<br/><br/>Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <16>iRecord website</16>.<br/><br/><20>Note:</20> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background .<br/>"
+
+# Part of Help page 
+msgid "To delete a record, swipe it left in the Home page and click the delete<1></1>button.<3></3><br/><br/>You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page<7></7>and click <i>Remove All Saved</i><11></11>button."
+msgstr "To delete a record, swipe it left in the Home page and click the delete<1></1>button.<3></3><br/><br/>You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page<7></7>and click <i>Remove All Saved</i><11></11>button."
+
+# Part of Help page 
+msgid "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records.<br/><br/>To lock an attribute click on the lock<4></4>button in the attribute edit page header. This will change the symbol to locked<6></6>both on the button and next to the attribute.<br/><br/><10>Note:</10> For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within a named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually."
+msgstr "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records.<br/><br/>To lock an attribute click on the lock<4></4>button in the attribute edit page header. This will change the symbol to locked<6></6>both on the button and next to the attribute.<br/><br/><10>Note:</10> For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within a named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually."
+
+# Part of Help page 
+msgid "To send records to a specific activity you can select it in the Activities page.<1></1><br/><br/><4>Note:</4> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
+msgstr "To send records to a specific activity you can select it in the Activities page.<1></1><br/><br/><4>Note:</4> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
+
+# Part of Help page 
+msgid "You can manage your saved locations both on any record's location page and from the settings page.<1></1>Swipe a location left and click edit<3></3>or delete<5></5>buttons.<br/><br/><9></9> You can make your location stick to the top of the locations list by clicking the Favourite toggle ."
+msgstr "You can manage your saved locations both on any record's location page and from the settings page.<1></1>Swipe a location left and click edit<3></3>or delete<5></5>buttons.<br/><br/><9></9> You can make your location stick to the top of the locations list by clicking the Favourite toggle ."
+
+# Part of Help page 
+msgid "For quicker searching of the taxa you can use different shortcuts.<br/><br/>For <5><i>Turdus merula</i></5>:<br/><br/><9><i>turdus me</i></9><br/><11><i>turdus .la</i></11><br/><13><i>tumer</i></13> (2+3 characters)<br/><17><i>merula</i></17>"
+msgstr "For quicker searching of the taxa you can use different shortcuts.<br/><br/>For <5><i>Turdus merula</i></5>:<br/><br/><9><i>turdus me</i></9><br/><11><i>turdus .la</i></11><br/><13><i>tumer</i></13> (2+3 characters)<br/><17><i>merula</i></17>"
+
+# Bird survey breeding attribute
+msgid "breeding"
+msgstr "breeding"
+
+# Bird survey breeding attribute
+msgid "Non-breeding"
+msgstr "Non-breeding"
+
+# Bird survey breeding attribute
+msgid "Possible breeding"
+msgstr "Possible breeding"
+
+# Bird survey breeding attribute
+msgid "Probable breeding"
+msgstr "Probable breeding"
+
+# Bird survey breeding attribute
+msgid "Confirmed breeding"
+msgstr "Confirmed breeding"
+
+# Bird survey breeding attribute
+msgid "Please pick the breeding details for this record."
+msgstr "Please pick the breeding details for this record."
+
+# Bird survey breeding attribute
+msgid "Not recorded"
+msgstr "Not recorded"
+
+# Bird survey breeding attribute
+msgid "00: Migration, Flying or Summering (M/F/U)"
+msgstr "00: Migration, Flying or Summering (M/F/U)"
+
+# Bird survey breeding attribute
+msgid "01: Nesting habitat (H)"
+msgstr "01: Nesting habitat (H)"
+
+# Bird survey breeding attribute
+msgid "02: Singing male (S)"
+msgstr "02: Singing male (S)"
+
+# Bird survey breeding attribute
+msgid "03: Pair in suitable habitat (P)"
+msgstr "03: Pair in suitable habitat (P)"
+
+# Bird survey breeding attribute
+msgid "04: Permanent territory (T)"
+msgstr "04: Permanent territory (T)"
+
+# Bird survey breeding attribute
+msgid "05: Courtship and display (D)"
+msgstr "05: Courtship and display (D)"
+
+# Bird survey breeding attribute
+msgid "06: Visiting probable nest site (N)"
+msgstr "06: Visiting probable nest site (N)"
+
+# Bird survey breeding attribute
+msgid "07: Agitated behaviour (A)"
+msgstr "07: Agitated behaviour (A)"
+
+# Bird survey breeding attribute
+msgid "08: Brood patch on incubating adult (I)"
+msgstr "08: Brood patch on incubating adult (I)"
+
+# Bird survey breeding attribute
+msgid "09: Nest building (B)"
+msgstr "09: Nest building (B)"
+
+# Bird survey breeding attribute
+msgid "10: Distraction display (DD)"
+msgstr "10: Distraction display (DD)"
+
+# Bird survey breeding attribute
+msgid "11: Used nest or eggshells (UN)"
+msgstr "11: Used nest or eggshells (UN)"
+
+# Bird survey breeding attribute
+msgid "12: Recently fledged (FL)"
+msgstr "12: Recently fledged (FL)"
+
+# Bird survey breeding attribute
+msgid "13: Occupied nest (ON)"
+msgstr "13: Occupied nest (ON)"
+
+# Bird survey breeding attribute
+msgid "14: Faecal sac or food (FF)"
+msgstr "14: Faecal sac or food (FF)"
+
+# Bird survey breeding attribute
+msgid "15: Nest with eggs (NE)"
+msgstr "15: Nest with eggs (NE)"
+
+# Bird survey breeding attribute
+msgid "16: Nest with young (NY)"
+msgstr "16: Nest with young (NY)"
+
+# Record upload alert
+msgid "Please log in first to upload the records."
+msgstr "Please log in first to upload the records."
+
+# Part of user account registration page
+msgid "I agree to <2>Terms and Conditions</2> and <6>Privacy Policy</6>"
+msgstr "I agree to <2>Terms and Conditions</2> and <6>Privacy Policy</6>"
+
+# Part of user account registration page
+msgid "Please wait..."
+msgstr "Please wait..."
+
+# as in letters and symbols
+msgid "characters"
+msgstr "characters"
+
+# Odonata attribute name 
+msgid "Ovip. scars"
+msgstr "Ovip. scars"
+
+# Odonata attribute info message 
+msgid "This attribute should be recorded for Willow Emerald only."
+msgstr "This attribute should be recorded for Willow Emerald only."
+
+# Success toast message
+msgid "Done"
+msgstr "Done"
+
+# Logout alert message
+msgid "Discard local data"
+msgstr "Discard local data"

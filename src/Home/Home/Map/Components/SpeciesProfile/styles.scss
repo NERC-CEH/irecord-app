@@ -1,0 +1,101 @@
+#home-user-surveys .custom-alert {
+  ion-backdrop {
+    z-index: 1000;
+  }
+
+  .message {
+    padding: 0;
+    max-height: 480px;
+    max-width: 300px;
+
+    .alert-species-profile {
+      border-radius: var(--theme-border-radius);
+      overflow: hidden;
+
+      .swiper {
+        max-height: 150px;
+        background: #808080;
+        overflow: visible;
+
+        &.paginated {
+          margin-bottom: 15px;
+        }
+
+        .swiper-pagination {
+          position: absolute;
+          bottom: -20px;
+
+          .swiper-pagination-bullet {
+            background: #000000;
+          }
+        }
+
+        .image-with-background {
+          max-height: 150px;
+          overflow: hidden;
+        }
+      }
+
+      ion-card-header {
+        display: flex;
+        padding: 10px;
+
+        .title {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          margin-left: 21px;
+          text-align: left;
+
+          h1 {
+            font-size: 1.2rem;
+            margin: 0 !important;
+          }
+          h3 {
+            font-size: 1rem;
+            margin: 0 !important;
+            color: var(--ion-color-dark);
+          }
+        }
+
+        .verification-status {
+          align-self: center;
+          display: flex;
+          font-size: 2em;
+
+          ion-icon {
+            &.id-green {
+              color: var(--ion-verification-success);
+            }
+
+            &.id-amber {
+              color: var(--ion-verification-plausible);
+            }
+
+            &.id-red {
+              color: var(--ion-verification-rejected);
+            }
+          }
+        }
+      }
+
+      ion-card-content {
+        background-color: #efefef;
+        padding: 8px 20px;
+        color: black;
+
+        .record-attribute {
+          color: var(--ion-color-primary);
+          min-width: 75px;
+          display: inline-block;
+          min-width: 100px;
+        }
+      }
+    }
+  }
+
+  .button-wrapper {
+    margin: 15px;
+  }
+}

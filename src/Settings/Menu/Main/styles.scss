@@ -1,7 +1,46 @@
-.app-settings {
+#settings {
+  ion-content {
+    --padding-top: 10px;
+
+    .menu-attr-toggle {
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+
+    ion-item ion-toggle {
+      padding-right: 0;
+    }
+
+    .rounded {
+      .menu-attr-toggle:first-of-type {
+        --border-radius: 15px 15px 0 0;
+      }
+    }
+
+    .destructive-item {
+      ion-item ion-icon,
+      ion-item:not(.info-message) ion-label {
+        color: var(--ion-color-danger);
+      }
+    }
+  }
+
   .app-version {
     margin: 0 10px 10px;
     opacity: 0.7;
     float: right;
+  }
+}
+
+ion-alert .info-message.destructive-warning {
+  margin: 10px 0 !important;
+
+  ion-label {
+    margin-right: 0;
+  }
+
+  ion-icon {
+    padding: 0px 12px 0px 12px;
   }
 }

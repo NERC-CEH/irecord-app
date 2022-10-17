@@ -1,0 +1,317 @@
+import {
+  calendarOutline,
+  peopleOutline,
+  clipboardOutline,
+} from 'ionicons/icons';
+import * as Yup from 'yup';
+import { date as DateHelp, device, PageProps, RemoteConfig } from '@flumens';
+import { Config as MenuProps } from 'Survey/common/Components/MenuAttr';
+import Occurrence, { Taxon } from 'models/occurrence';
+import Sample from 'models/sample';
+import Media from 'models/media';
+import config from 'common/config';
+import dragonfliesSurvey from './dragonflies';
+import bryophytesSurvey from './bryophytes';
+import butterfliesSurvey from './butterflies';
+import plantFungiSurvey from './plantFungi';
+import birdsSurvey from './birds';
+
+const fixedLocationSchema = Yup.object().shape({
+  latitude: Yup.number().required(),
+  longitude: Yup.number().required(),
+  name: Yup.string().required(),
+});
+
+const validateLocation = (val: any) => {
+  try {
+    fixedLocationSchema.validateSync(val);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const verifyLocationSchema = Yup.mixed().test(
+  'location',
+  'Please enter location and its name.',
+  validateLocation
+);
+
+// eslint-disable-next-line import/prefer-default-export
+export const dateAttr = {
+  menuProps: {
+    icon: calendarOutline,
+    attrProps: {
+      input: 'date',
+      inputProps: {
+        max: () => new Date(),
+        label: 'Date',
+        icon: calendarOutline,
+        autoFocus: false,
+        usePrettyDates: true,
+        presentation: 'date',
+      },
+    },
+  },
+
+  values: (date: any) => DateHelp.print(date, false),
+};
+
+export const commentAttr = {
+  menuProps: { icon: clipboardOutline },
+  pageProps: {
+    attrProps: {
+      input: 'textarea',
+      info: 'Please add any extra info about this record.',
+    },
+  },
+};
+
+export const activityAttr = {
+  menuProps: {
+    icon: peopleOutline,
+    parse: (value: any) => value?.title,
+  },
+  remote: { id: 'group_id', values: (activity: any) => activity.id },
+};
+
+export const recordersAttr = {
+  menuProps: { icon: peopleOutline },
+  pageProps: {
+    attrProps: {
+      input: 'inputList',
+      info: 'If anyone helped with documenting the record please enter their name here.',
+      inputProps: { placeholder: 'Recorder name' },
+    },
+  },
+
+  required: true,
+  remote: { id: 127 },
+};
+
+export const identifiersAttr = {
+  menuProps: { icon: peopleOutline },
+  pageProps: {
+    attrProps: {
+      input: 'inputList',
+      info: 'If anyone helped with the identification please enter their name here.',
+      inputProps: {
+        placeholder: 'Name',
+      },
+    },
+  },
+  remote: { id: 18 },
+};
+
+export const coreAttributes = [
+  'smp:location',
+  'smp:locationName',
+  'smp:location_type',
+  'smp:date',
+  'occ:comment',
+  'smp:activity',
+];
+
+export const taxonGroupSurveys = {
+  [dragonfliesSurvey.group]: dragonfliesSurvey,
+  [bryophytesSurvey.group]: bryophytesSurvey,
+  [butterfliesSurvey.group]: butterfliesSurvey,
+  [plantFungiSurvey.group]: plantFungiSurvey,
+  [birdsSurvey.group]: birdsSurvey,
+};
+
+export const taxonAttr = {
+  remote: {
+    id: 'taxa_taxon_list_id',
+    values(taxon: any) {
+      return taxon.warehouse_id;
+    },
+  },
+};
+
+export const systemAttrs = {
+  device: {
+    remote: {
+      id: 273,
+      values: {
+        ios: 2398,
+        android: 2399,
+        // backwards compatible
+        iOS: 2398,
+        Android: 2399,
+      },
+    },
+  },
+
+  device_version: { remote: { id: 759 } },
+  app_version: { remote: { id: 1139 } },
+};
+
+export const getSystemAttrs = () => {
+  const platform = (systemAttrs.device.remote.values as any)[
+    device.info?.platform as any
+  ];
+
+  return {
+    [`smpAttr:${systemAttrs.device.remote.id}`]: platform,
+    [`smpAttr:${systemAttrs.device_version.remote.id}`]: device.info?.osVersion,
+    [`smpAttr:${systemAttrs.app_version.remote.id}`]: config.version,
+  };
+};
+
+export const makeSubmissionBackwardsCompatible = (
+  submission: any,
+  surveyConfig: Survey
+) => {
+  if (!submission.values.survey_id) {
+    submission.values.survey_id = surveyConfig.id; //eslint-disable-line
+  }
+
+  if (!submission.values.input_form) {
+    submission.values.input_form = surveyConfig.webForm; //eslint-disable-line
+  }
+};
+
+export const assignParentLocationIfMissing = (
+  submission: any,
+  sample: Sample
+) => {
+  if (!sample.parent) return;
+
+  const keys: any = (sample.parent.keys as any)();
+  const parentAttrs = sample.parent.attrs;
+  const location = submission.values[keys.location.id];
+  if (!location) {
+    const parentLocation = keys.location.values(
+      parentAttrs.location,
+      submission
+    );
+    // eslint-disable-next-line no-param-reassign
+    submission.values[keys.location.id] = parentLocation;
+
+    const locationType = keys.location_type.values[parentAttrs.location_type];
+
+    // eslint-disable-next-line no-param-reassign
+    submission.values[keys.location_type.id] = locationType;
+  }
+};
+
+export const locationAttr = {
+  remote: {
+    id: 'entered_sref',
+    values(location: any, submission: any) {
+      // convert accuracy for map and gridref sources
+      const { accuracy, source, gridref, altitude, name, altitudeAccuracy } =
+        location;
+
+      // add other location related attributes
+      // eslint-disable-next-line
+      submission.values = { ...submission.values };
+
+      submission.values['smpAttr:760'] = source; // eslint-disable-line
+      submission.values['smpAttr:335'] = gridref; // eslint-disable-line
+      submission.values['smpAttr:282'] = accuracy; // eslint-disable-line
+      submission.values['smpAttr:283'] = altitude; // eslint-disable-line
+      submission.values['smpAttr:284'] = altitudeAccuracy; // eslint-disable-line
+      submission.values['location_name'] = name; // eslint-disable-line
+
+      const lat = parseFloat(location.latitude);
+      const lon = parseFloat(location.longitude);
+      if (Number.isNaN(lat) || Number.isNaN(lat)) return null;
+
+      return `${lat.toFixed(7)}, ${lon.toFixed(7)}`;
+    },
+  },
+};
+
+export type AttrConfig = {
+  menuProps?: MenuProps;
+  pageProps?: Omit<PageProps, 'attr' | 'model'>;
+  remote?: RemoteConfig;
+};
+
+interface Attrs {
+  [key: string]: AttrConfig;
+}
+
+type OccurrenceConfig = {
+  render?: any[] | ((model: Occurrence) => any[]);
+  attrs: Attrs;
+  create?: (
+    Occ: typeof Occurrence,
+    options: {
+      taxon: Taxon;
+      identifier?: string;
+      photo?: any;
+    }
+  ) => Occurrence;
+  verify?: (attrs: any) => any;
+  modifySubmission?: (submission: any, model: any) => any;
+  /**
+   * Set to true if multi-species surveys shouldn't auto-increment it to 1 when adding to lists.
+   */
+  skipAutoIncrement?: boolean;
+};
+
+export type SampleConfig = {
+  render?: any[] | ((model: Sample) => any[]);
+  attrs?: Attrs;
+  create?: (
+    Smp: typeof Sample,
+    Occ: typeof Occurrence,
+    options: {
+      taxon: Taxon;
+      surveySample: Sample;
+      skipGPS?: boolean;
+    }
+  ) => Promise<Sample>;
+  verify?: (attrs: any) => any;
+  modifySubmission?: (submission: any, model: any) => any;
+  smp?: SampleConfig;
+  occ?: OccurrenceConfig;
+};
+
+export interface Survey extends SampleConfig {
+  /**
+   * Remote warehouse survey ID.
+   */
+  id: number;
+  /**
+   * In-App survey code name.
+   */
+  name: string;
+  /**
+   * Pretty survey name to show in the UI.
+   */
+  label?: string;
+  /**
+   * Remote website survey edit page path.
+   */
+  webForm?: string;
+  /**
+   * Informal taxon groups to use for the survey.
+   */
+  taxonGroups?: number[];
+  /**
+   * Which species group this config belongs to. Allows to link multiple taxon groups together under a common name.
+   */
+  group?: string;
+  create: (
+    Smp: typeof Sample,
+    Occ: typeof Occurrence,
+    options: {
+      taxon?: Taxon;
+      image?: Media | null;
+      skipLocation?: boolean;
+      skipGPS?: boolean;
+    }
+  ) => Promise<Sample>;
+
+  createWithPhoto?: (
+    Smp: typeof Sample,
+    Occ: typeof Occurrence,
+    options: {
+      image: string;
+    }
+  ) => Promise<Sample>;
+}

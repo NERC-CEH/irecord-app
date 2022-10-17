@@ -1,25 +1,25 @@
-import appModel from 'app_model';
-import CONFIG from 'config';
-import Sample from 'sample';
-import Occurrence from 'occurrence';
+import CONFIG from 'common/config';
+import appModel from 'models/app';
+import Sample from 'models/sample';
+import Occurrence from 'models/occurrence';
+import savedSamples from 'models/savedSamples';
 import Update, { updateSamples } from '../update';
-import savedSamples from '../../saved_samples';
 
 /* eslint-disable */
 
 Update.updatesSeq = ['3.0.0', '3.1.2', '3.2.0', '4.0.0'];
 
 Update.updates = {
-  '3.0.0': function(callback) {
+  '3.0.0': function (callback) {
     callback();
   },
-  '3.1.2': function(callback) {
+  '3.1.2': function (callback) {
     callback();
   },
-  '3.2.0': function(callback) {
+  '3.2.0': function (callback) {
     callback();
   },
-  '4.0.0': function(callback) {
+  '4.0.0': function (callback) {
     callback();
   },
 };
@@ -48,7 +48,7 @@ describe.skip('Update', () => {
   it('should find first update in chain', () => {
     const currentVersion = '3.1.2'; // this update has been applied so next is 3.2.0
     const firstUpdate = Update._findFirst(Update.updatesSeq, currentVersion);
-    expect(firstUpdate).to.be.equal(2);
+    expect(firstUpdate).toBe(2);
   });
 
   // it('should update app version', (done) => {
@@ -81,10 +81,10 @@ describe.skip('Update', () => {
   // });
 
   it('should not call any update if no update with new version', done => {
-    appModel.set('appVersion', '4.0.0');
+    appModel.attrs.appVersion = '4.0.0';
     CONFIG.version = '4.1.0';
     Update.run(() => {
-      expect(applyUpdatesSpy.called).to.be.false;
+      expect(applyUpdatesSpy.called).toBe(false);
       done();
     });
   });
