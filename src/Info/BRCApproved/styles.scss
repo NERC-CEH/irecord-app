@@ -1,3 +1,6 @@
 .brc-approved-logo {
-  width: 100%;
+  width: calc(100% - 20px);
+  margin: 9px auto;
+  display: block;
+  border-radius: var(--theme-border-radius);
 }

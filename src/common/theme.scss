@@ -194,7 +194,7 @@ a {
 
   ion-note {
     color: var(--ion-color-secondary-dark);
-    font-size: 1em;
+    font-size: 1.2em;
   }
 
   ion-icon {
@@ -250,8 +250,12 @@ ion-item-divider {
     --ionicon-stroke-width: 24px;
   }
   ion-label[slot='end'] {
-    opacity: 0.8 !important;
-    font-size: 0.9em;
+    opacity: 1 !important;
+    color: #000000b3;
+
+    &.ios {
+      font-size: 0.9em;
+    }
   }
 }
 
@@ -283,4 +287,21 @@ ion-button[expand='block'] {
 
 ion-list + ion-list > .rounded {
   margin-top: 0 !important;
+}
+
+.search-result:nth-child(odd),
+.survey-list-item,
+.slider-input-attr,
+.input-list-attr .input-list-attr-item,
+.radio-input-attr ion-item,
+#suggestions .empty,
+.taxa-filter-edit-dialog-form ion-item,
+.rounded {
+  border: 1px solid #ecebebe3;
+  border-radius: var(--theme-border-radius);
+}
+
+.radio-input-attr ion-radio-group > ion-item.radio-input-default-option {
+  opacity: 1 !important;
+  --background: #ffffff78;
 }

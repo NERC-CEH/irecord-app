@@ -38,6 +38,7 @@ const sexOptions = [
 ];
 
 const numberOptions = [
+  { isPlaceholder: true, label: 'Ranges' },
   { value: null, isDefault: true, label: 'Present' },
   { value: 1, id: 665 },
   { value: '2-5', id: 666 },

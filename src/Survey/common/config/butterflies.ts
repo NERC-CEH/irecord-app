@@ -22,6 +22,7 @@ const stage = [
 ];
 
 const numberOptions = [
+  { isPlaceholder: true, label: 'Ranges' },
   { value: null, isDefault: true, label: 'Not Recorded' },
   { value: '1', id: 2402 },
   { value: '2-9', id: 2404 },

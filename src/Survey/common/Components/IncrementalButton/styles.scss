@@ -9,14 +9,20 @@
   --border-radius: 0;
 
   .empty {
-    font-size: 0.85em;
+    font-size: 1.1em;
 
     width: 100%;
     height: 100%;
     justify-content: center;
     align-items: center;
-    color: #1c1c1c;
+    color: black;
     display: flex;
+    background: #f8f8f8;
+    white-space: normal;
+  }
+
+  &.md .empty {
+    font-size: 1.3em;
   }
 
   div.label-divider {
