@@ -147,6 +147,7 @@ ion-item {
 }
 // FONTS END
 
+// header colours
 .apps-section .apps-section-h,
 h1,
 h2,
@@ -194,7 +195,12 @@ a {
 
   ion-note {
     color: var(--ion-color-secondary-dark);
-    font-size: 1.2em;
+    &.ios {
+      font-size: 1.2em;
+    }
+    &.md {
+      font-size: 1em;
+    }
   }
 
   ion-icon {
@@ -206,12 +212,11 @@ a {
     --border-color: var(--ion-color-secondary-dark) !important;
   }
 }
-
 ion-list .info-message {
   --background: #fafafa;
 }
 
-// accessibility improvements
+// ACCESSIBILITY IMPROVEMENTS START
 ion-button:not(.button-has-icon-only),
 ion-item {
   font-size: 1em;
@@ -219,31 +224,46 @@ ion-item {
     font-size: 0.9em;
   }
 }
-
-#img-array .empty {
-  font-size: 0.9em !important;
+// clearer image picker empty message
+.photo-picker {
+  &.ios .empty {
+    font-size: 0.9em !important;
+  }
+  &.md .empty {
+    font-size: 1em !important;
+  }
 }
 
+// brighter and bigger divider
 ion-item-divider {
   font-size: 0.9em;
   color: var(--ion-text-color);
   padding: 0 5px 7px 5px;
 }
 
+// brighter attribute page divider
 .attr-page ion-item-divider ion-label {
   font-family: 'Quicksand Bold' !important;
   margin-top: 10px;
   margin-left: 10px;
 }
 
-.collapse-block ion-label.ion-text-wrap {
-  font-size: 0.9em;
+// brighter default radio option
+.radio-input-attr ion-radio-group > ion-item.radio-input-default-option {
+  opacity: 1 !important;
+  --background: #ffffff78;
 }
 
-.radio-input-attr ion-item ion-label {
-  font-size: 0.9em !important;
+// clearer date picker
+.date-input-attr ion-label[slot='end'] {
+  font-size: 1em;
+
+  &.ios {
+    font-size: 0.9em;
+  }
 }
 
+// clearer menu items
 .menu-attr-item,
 .attr-wrapper {
   ion-icon[slot='start'] {
@@ -259,36 +279,35 @@ ion-item-divider {
   }
 }
 
-.date-input-attr ion-label[slot='end'] {
-  font-size: 1em;
-
-  &.ios {
-    font-size: 0.9em;
-  }
+// larger collapse headers
+.collapse-block ion-label.ion-text-wrap {
+  font-size: 0.9em;
 }
 
-.counter-input-attr-item ion-button,
-.counter-input-attr-item input {
-  opacity: 0.8 !important;
+// larger radio inputs
+.radio-input-attr ion-item ion-label.ios {
+  font-size: 0.9em !important;
 }
+// ACCESSIBILITY IMPROVEMENTS END
 
+// overwrite required item colours
 .menu-attr-item.required.empty > ion-icon:first-of-type {
   color: black;
 }
 
-ion-radio-group .item-radio-checked:not(.radio-input-default-option) {
-  border: 1px #dce0d5 solid;
-}
-
+// prettier main buttons
 ion-button[type='submit'],
 ion-button[expand='block'] {
   max-height: 40px;
+  --border-radius: var(--theme-border-radius);
 }
 
+// reduce distance between two rounded lists
 ion-list + ion-list > .rounded {
   margin-top: 0 !important;
 }
 
+// subtle borders around rounded items
 .search-result:nth-child(odd),
 .survey-list-item,
 .slider-input-attr,
@@ -301,7 +320,29 @@ ion-list + ion-list > .rounded {
   border-radius: var(--theme-border-radius);
 }
 
-.radio-input-attr ion-radio-group > ion-item.radio-input-default-option {
-  opacity: 1 !important;
-  --background: #ffffff78;
+// subtle borders around rounded radio items
+ion-radio-group .item-radio-checked:not(.radio-input-default-option) {
+  border: 1px #dce0d5 solid;
+}
+
+// improved location page name picker
+ion-toolbar.location-input-attr:not(:only-of-type) {
+  border-bottom: 1px solid #f1f1f1;
+}
+ion-toolbar.location-name-attr .auto-suggest-input-attr {
+  .react-autosuggest__container {
+    height: 100%;
+  }
+
+  ion-input {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    height: 100%;
+
+    input:placeholder-shown {
+      font-size: 0.8em;
+    }
+  }
 }
