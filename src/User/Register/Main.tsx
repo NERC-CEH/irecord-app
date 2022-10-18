@@ -76,7 +76,7 @@ const RegisterMain: FC<Props> = ({ onSubmit, schema }) => {
               Privacy Policy
             </IonRouterLink>{' '}
             and{' '}
-            <IonRouterLink href={`${config.backend.url}/terms-of-use`}>
+            <IonRouterLink href={`${config.backend.url}/terms_of_use`}>
               Terms and Conditions
             </IonRouterLink>
           </T>
