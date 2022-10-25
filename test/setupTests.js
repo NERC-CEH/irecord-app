@@ -16,6 +16,11 @@ Object.defineProperty(window, 'matchMedia', {
   value: jest.fn().mockImplementation(mock),
 });
 
+Object.defineProperty(window.URL, 'createObjectURL', {
+  writable: true,
+  value: jest.fn(),
+});
+
 const localStorageMock = (function () {
   let store = {};
   return {
