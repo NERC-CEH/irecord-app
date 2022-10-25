@@ -16,10 +16,15 @@
   margin-bottom: -5px;
 }
 
+.leaflet-top {
+  // fix opening the layers overlap with the past locations button
+  top: 59px;
+}
+
 .past-locations-control {
   position: absolute;
   right: 10px;
-  top: 128px;
+  top: 10px;
 
   ion-button {
     width: 100%;

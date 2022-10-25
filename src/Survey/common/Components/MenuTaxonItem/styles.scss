@@ -11,4 +11,9 @@
     background-color: rgba(var(--ion-color-warning-rgb), 0.15);
     color: var(--ion-color-warning-shade);
   }
+
+  ion-label:last-child {
+    // extra padding for italics
+    padding-right: 4px;
+  }
 }

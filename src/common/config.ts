@@ -20,8 +20,6 @@ const config = {
 
   map: {
     mapboxApiKey: process.env.APP_MAPBOX_MAP_KEY as string,
-    mapboxSatelliteId: 'cehapps/cipqvo0c0000jcknge1z28ejp',
-    mapboxOsmId: 'cehapps/ckghr3uxz01xb19udplq7wi6x',
     osApiKey: process.env.APP_OS_MAP_KEY as string,
   },
 
