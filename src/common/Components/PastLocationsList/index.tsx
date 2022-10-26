@@ -167,7 +167,7 @@ const PastLocations: FC<Props> = ({ onSelect }) => {
   };
 
   return (
-    <>
+    <div className="past-locations">
       <EditModal location={editLocation} onLocationSave={onSave} />
 
       <InfoMessage className="blue" icon={informationCircleOutline}>
@@ -175,7 +175,7 @@ const PastLocations: FC<Props> = ({ onSelect }) => {
       </InfoMessage>
 
       {getPastLocations()}
-    </>
+    </div>
   );
 };
 
