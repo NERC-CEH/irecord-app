@@ -9,6 +9,7 @@ import {
   IonRouterOutlet,
   IonFabButton,
   NavContext,
+  useIonRouter,
 } from '@ionic/react';
 import { observer } from 'mobx-react';
 import {
@@ -18,6 +19,7 @@ import {
   homeOutline,
   addOutline,
 } from 'ionicons/icons';
+import { App as AppPlugin } from '@capacitor/app';
 import savedSamples from 'models/savedSamples';
 import appModel from 'models/app';
 import userModel from 'models/user';
@@ -77,9 +79,25 @@ function useLongPressTip() {
 }
 
 const HomeController: FC = () => {
+  const ionRouter = useIonRouter();
+
   const { navigate } = useContext(NavContext);
 
   useLongPressTip();
+
+  const exitApp = () => {
+    const onExitApp = () => !ionRouter.canGoBack() && AppPlugin.exitApp();
+
+    // eslint-disable-next-line @getify/proper-arrows/name
+    document.addEventListener('ionBackButton', (ev: any) =>
+      ev.detail.register(-1, onExitApp)
+    );
+
+    const removeEventListener = () =>
+      document.addEventListener('ionBackButton', onExitApp);
+    return removeEventListener;
+  };
+  useEffect(exitApp, []);
 
   async function startDefaultSurveyWithImage() {
     const [image] = await captureImage({ camera: true });

@@ -8,6 +8,20 @@ import savedSamples from 'models/savedSamples';
 import { Survey } from 'Survey/common/config';
 import { useRouteMatch } from 'react-router';
 
+const useDisableBackButton = () => {
+  const disableBackButton = () => {
+    const disableHardwareBackButton = (event: any) =>
+      event.detail.register(100, () => null);
+
+    document.addEventListener('ionBackButton', disableHardwareBackButton);
+
+    const removeEventListener = () =>
+      document.removeEventListener('ionBackButton', disableHardwareBackButton);
+    return removeEventListener;
+  };
+  useEffect(disableBackButton, []);
+};
+
 async function showDraftAlert(alert: any) {
   const showDraftDialog = (resolve: any) => {
     alert({
@@ -74,6 +88,8 @@ function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
   const [showSurveyCreatePage, setShowSurveyCreatePage] = useState(false);
   const alert = useAlert();
   const match = useRouteMatch();
+
+  useDisableBackButton();
 
   const draftIdKey = `draftId:${survey.name}` as keyof SurveyDraftKeys;
 

@@ -13,7 +13,7 @@ import {
   IonInput,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Main } from '@flumens';
+import { Main, useOnHideModal } from '@flumens';
 
 type Location = any;
 
@@ -29,6 +29,8 @@ const EditModal: FC<Props> = ({ location, onLocationSave }) => {
   const toggleRef = createRef<any>();
 
   const closeModal = () => onLocationSave();
+
+  useOnHideModal(onLocationSave);
 
   const save = () =>
     onLocationSave(inputRef.current.value, toggleRef.current.checked);

@@ -60,6 +60,11 @@ export {
   Attrs as DrupalUserModelAttrs,
 } from '@flumens/ionic/dist/models/DrupalUserModel';
 export { default as InputWithValidation } from '@flumens/ionic/dist/components/InputWithValidation';
+export {
+  useDisableBackButton,
+  useOnBackButton,
+  useOnHideModal,
+} from '@flumens/ionic/dist/hooks/navigation';
 export * from '@flumens/ionic/dist/utils/location';
 export * from '@flumens/ionic/dist/utils/validation';
 export * from '@flumens/ionic/dist/utils/image';
