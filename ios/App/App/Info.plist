@@ -24,11 +24,6 @@
     <false/>
     <key>LSRequiresIPhoneOS</key>
     <true/>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <true/>
-    </dict>
     <key>NSCameraUsageDescription</key>
     <string>Allow camera access to attach photos to your records.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
