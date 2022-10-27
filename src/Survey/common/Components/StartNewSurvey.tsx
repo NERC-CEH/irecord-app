@@ -6,62 +6,13 @@ import Sample from 'models/sample';
 import Occurrence from 'models/occurrence';
 import savedSamples from 'models/savedSamples';
 import { Survey } from 'Survey/common/config';
-import { useRouteMatch } from 'react-router';
 
-const useDisableBackButton = () => {
-  const disableBackButton = () => {
-    const disableHardwareBackButton = (event: any) =>
-      event.detail.register(100, () => null);
-
-    document.addEventListener('ionBackButton', disableHardwareBackButton);
-
-    const removeEventListener = () =>
-      document.removeEventListener('ionBackButton', disableHardwareBackButton);
-    return removeEventListener;
-  };
-  useEffect(disableBackButton, []);
-};
-
-async function showDraftAlert(alert: any) {
-  const showDraftDialog = (resolve: any) => {
-    alert({
-      header: 'Unfinished record',
-      message:
-        'You have an incomplete record that needs to be saved before starting another one. Would you like to continue it?',
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: 'Discard',
-          role: 'destructive',
-          handler: () => {
-            resolve(false);
-          },
-        },
-        {
-          text: 'Continue',
-          handler: () => {
-            resolve(true);
-          },
-        },
-      ],
-    });
-  };
-  return new Promise(showDraftDialog);
-}
-
-async function getDraft(draftIdKey: keyof SurveyDraftKeys, alert: any) {
+async function getDraft(draftIdKey: keyof SurveyDraftKeys) {
   const draftID = appModel.attrs[draftIdKey];
   if (draftID) {
     const draftById = ({ cid }: Sample) => cid === draftID;
     const draftSample = savedSamples.find(draftById);
-    if (draftSample && !draftSample.isDisabled()) {
-      const continueDraftRecord = await showDraftAlert(alert);
-      if (continueDraftRecord) {
-        return draftSample;
-      }
-
-      draftSample.destroy();
-    }
+    if (draftSample && !draftSample.isDisabled()) return draftSample;
   }
 
   return null;
@@ -87,15 +38,13 @@ function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
   const context = useContext(NavContext);
   const [showSurveyCreatePage, setShowSurveyCreatePage] = useState(false);
   const alert = useAlert();
-  const match = useRouteMatch();
-
-  useDisableBackButton();
 
   const draftIdKey = `draftId:${survey.name}` as keyof SurveyDraftKeys;
 
   const pickDraftOrCreateSampleWrap = () => {
     const pickDraftOrCreateSample = async () => {
-      let sample = await getDraft(draftIdKey, alert);
+      let sample = await getDraft(draftIdKey);
+
       if (!sample) {
         if (SurveyCreatePage) {
           console.log('no sample', draftIdKey);
@@ -103,11 +52,40 @@ function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
 
           return;
         }
-
-        sample = await getNewSample(survey, draftIdKey);
       }
 
-      context.navigate(`${match.url}/${sample.cid}`, 'none', 'replace');
+      await alert({
+        header: 'Unfinished record',
+        message:
+          'You have an incomplete record that needs to be saved before starting another one. Would you like to continue it?',
+
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              context.navigate(
+                `/survey/default/${sample.cid}`,
+                'none',
+                'replace'
+              );
+            },
+          },
+          {
+            text: 'Delete',
+            role: 'destructive',
+            handler: async () => {
+              sample.destroy();
+              sample = await getNewSample(survey, draftIdKey);
+              context.navigate(
+                `/survey/default/${sample.cid}`,
+                'none',
+                'replace'
+              );
+            },
+          },
+        ],
+      });
     };
 
     pickDraftOrCreateSample();
