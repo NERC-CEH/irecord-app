@@ -73,6 +73,7 @@ const survey: Partial<Survey> & { group: string } = {
       adCount: {
         menuProps: { icon: numberIcon, label: 'Adults' },
         pageProps: {
+          headerProps: { title: 'Adults' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
@@ -84,6 +85,7 @@ const survey: Partial<Survey> & { group: string } = {
       coCount: {
         menuProps: { icon: numberIcon, label: 'Cop. pairs' },
         pageProps: {
+          headerProps: { title: 'Cop. pairs' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
@@ -95,6 +97,7 @@ const survey: Partial<Survey> & { group: string } = {
       ovCount: {
         menuProps: { icon: numberIcon, label: 'Ovip. females' },
         pageProps: {
+          headerProps: { title: 'Ovip. females' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
@@ -106,6 +109,7 @@ const survey: Partial<Survey> & { group: string } = {
       scCount: {
         menuProps: { icon: numberIcon, label: 'Ovip. scars' },
         pageProps: {
+          headerProps: { title: 'Ovip. scars' },
           attrProps: {
             input: 'radio',
             info: 'This attribute should be recorded for Willow Emerald only.',
@@ -117,6 +121,7 @@ const survey: Partial<Survey> & { group: string } = {
       laCount: {
         menuProps: { icon: numberIcon, label: 'Larvae' },
         pageProps: {
+          headerProps: { title: 'Larvae' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
@@ -128,6 +133,7 @@ const survey: Partial<Survey> & { group: string } = {
       exCount: {
         menuProps: { icon: numberIcon, label: 'Exuviae' },
         pageProps: {
+          headerProps: { title: 'Exuviae' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
@@ -139,6 +145,7 @@ const survey: Partial<Survey> & { group: string } = {
       emCount: {
         menuProps: { icon: numberIcon, label: 'Emergents' },
         pageProps: {
+          headerProps: { title: 'Emergents' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
