@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Survey } from './';
 
 const numRanges = [
+  { value: null, isDefault: true, label: 'Not selected' },
   { value: 1, id: 665 },
   { value: '2-5', id: 666 },
   { value: '6-20', id: 667 },
