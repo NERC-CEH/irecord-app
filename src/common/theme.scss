@@ -341,8 +341,13 @@ ion-toolbar.location-name-attr .auto-suggest-input-attr {
     --padding-bottom: 0;
     height: 100%;
 
-    input:placeholder-shown {
-      font-size: 0.8em;
+    input {
+      border-radius: 0;
+
+      &:placeholder-shown {
+        font-size: 0.8em;
+        line-height: 2em; // increase caret size
+      }
     }
   }
 }
