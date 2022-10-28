@@ -6,8 +6,8 @@ require('dotenv').config({ silent: true, path: '../../../.env' }); // eslint-dis
 const fs = require('fs');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const axios = require('axios');
-const makeCommonNameMap = require('./speciesExtractCommonNames');
-const optimise = require('./speciesOptimise');
+const makeCommonNameMap = require('./extractCommonNames');
+const optimise = require('./optimise');
 
 const FETCH_LIMIT = 50000;
 

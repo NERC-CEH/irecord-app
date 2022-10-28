@@ -6,7 +6,7 @@ const {
   GENUS_SPECIES_INDEX,
   GENUS_NAMES_INDEX,
   SPECIES_NAMES_INDEX,
-} = require('common/data/constants.json');
+} = require('../../../../../common/data/constants.json');
 
 const SCI_NAME_INDEX = 2; // in genera and above
 

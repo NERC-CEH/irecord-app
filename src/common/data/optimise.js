@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const speciesInformalGroups = require('./informal_groups.data.json');
-const taxonCleaner = require('./makeClean');
+const taxonCleaner = require('./clean');
 
 const {
   GENUS_ID_INDEX,
