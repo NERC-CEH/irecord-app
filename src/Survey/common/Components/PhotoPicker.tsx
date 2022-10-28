@@ -34,9 +34,7 @@ const AppPhotoPicker: FC<Props> = ({ model }) => {
       model.media.push(...imageModels);
       model.save();
     } catch (e: any) {
-      console.log('errrrrrr');
-      //
-      // toast.error(e);
+      toast.error(e);
     }
   }
 
