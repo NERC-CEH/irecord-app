@@ -34,7 +34,7 @@
     "@capacitor/splash-screen": "^4.1.1",
     "@capacitor/status-bar": "^4.0.1",
     "@flumens/bigu": "^0.4.0",
-    "@flumens/ionic": "1.15.4",
+    "@flumens/ionic": "1.15.5",
     "@ionic-native/core": "5.36.0",
     "@ionic-native/launch-review": "^5.29.0",
     "@ionic/core": "^6.2.6",

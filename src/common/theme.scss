@@ -171,8 +171,8 @@ ion-header ion-toolbar {
 
   ion-input,
   ion-icon {
-    color: var(--ion-color-dark);
-    --placeholder-color: var(--ion-color-dark);
+    color: var(--ion-color-dark) !important;
+    --placeholder-color: var(--ion-color-dark) !important;
   }
 
   ion-back-button {
@@ -323,31 +323,4 @@ ion-list + ion-list > .rounded {
 // subtle borders around rounded radio items
 ion-radio-group .item-radio-checked:not(.radio-input-default-option) {
   border: 1px #dce0d5 solid;
-}
-
-// improved location page name picker
-ion-toolbar.location-input-attr:not(:only-of-type) {
-  border-bottom: 1px solid #f1f1f1;
-}
-ion-toolbar.location-name-attr .auto-suggest-input-attr {
-  .react-autosuggest__container {
-    height: 100%;
-  }
-
-  ion-input {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    --padding-top: 0;
-    --padding-bottom: 0;
-    height: 100%;
-
-    input {
-      border-radius: 0;
-
-      &:placeholder-shown {
-        font-size: 0.8em;
-        line-height: 2em; // increase caret size
-      }
-    }
-  }
 }

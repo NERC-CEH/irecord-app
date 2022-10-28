@@ -42,10 +42,8 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
 
   const setLocation = async (loc: any, reset = false) => {
     let location = loc;
-    // we don't need the GPS running and overwriting the selected location
-    if (model.isGPSRunning()) {
-      model.stopGPS();
-    }
+
+    if (model.isGPSRunning()) model.stopGPS(); // we don't need the GPS running and overwriting the selected location
 
     if (!reset) {
       // extend old location to preserve its previous attributes like name or id
@@ -56,9 +54,7 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
     // eslint-disable-next-line no-param-reassign
     model.attrs.location = location;
 
-    if (location.latitude) {
-      appModel.setLocation(location);
-    }
+    if (location.latitude) appModel.setLocation(location);
 
     const onError = (error: any) => console.log(error);
     return model.save().catch(onError);
