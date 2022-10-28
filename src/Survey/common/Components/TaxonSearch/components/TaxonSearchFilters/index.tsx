@@ -13,8 +13,6 @@ import {
   IonItem,
   IonRadioGroup,
   NavContext,
-  AnimationBuilder,
-  RouteInfo,
 } from '@ionic/react';
 import { Main } from '@flumens';
 import appModel from 'models/app';
@@ -29,14 +27,9 @@ type Props = {
   showModal: boolean;
 };
 
-const useDisableBackButton = (
-  toggleModal: () => void,
-  showModal: boolean,
-  goBack: (
-    route?: string | RouteInfo<any> | undefined,
-    animationBuilder?: AnimationBuilder | undefined
-  ) => void
-) => {
+const useDisableBackButton = (toggleModal: () => void, showModal: boolean) => {
+  const { goBack } = useContext(NavContext);
+
   const disableBackButton = () => {
     const disableHardwareBackButton = (event: any) =>
       event.detail.register(100, () => {
@@ -66,9 +59,7 @@ const FiltersModal: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { goBack } = useContext(NavContext);
-
-  useDisableBackButton(toggleModal, showModal, goBack);
+  useDisableBackButton(toggleModal, showModal);
 
   const filters = Object.keys(informalGroups)
     .sort((a: string, b: string) =>
