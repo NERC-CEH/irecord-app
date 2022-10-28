@@ -35,8 +35,11 @@ const LIST_PADDING = 90 + SAFE_AREA_TOP;
 const LIST_ITEM_HEIGHT = 75 + 10; // 10px for padding
 const LIST_ITEM_DIVIDER_HEIGHT = 38;
 
-function byCreateTime(sample1: Sample, sample2: Sample) {
+function bySurveyDate(sample1: Sample, sample2: Sample) {
   const date1 = new Date(sample1.attrs.date);
+  const moveToTop = !date1 || date1.toString() === 'Invalid Date';
+  if (moveToTop) return -1;
+
   const date2 = new Date(sample2.attrs.date);
   return date2.getTime() - date1.getTime();
 }
@@ -52,18 +55,18 @@ const getSurveys = (surveys: Sample[], showUploadAll?: boolean) => {
   const dateIndices: any = [];
 
   const groupedSurveys: any = [];
-  let counter: any;
+  let counter: any = {};
 
   [...surveys].forEach(survey => {
     const date = roundDate(new Date(survey.attrs.date).getTime()).toString();
-    if (!dates.includes(date)) {
+    if (!dates.includes(date) && date !== 'Invalid Date') {
       dates.push(date);
       dateIndices.push(groupedSurveys.length);
       counter = { date, count: 0 };
       groupedSurveys.push(counter);
     }
 
-    counter.count++;
+    counter.count += 1;
     groupedSurveys.push(survey);
   });
 
@@ -120,7 +123,7 @@ const UserSurveyComponent: FC = () => {
     const byUploadStatus = (sample: Sample) =>
       uploaded ? sample.metadata.syncedOn : !sample.metadata.syncedOn;
 
-    return savedSamples.filter(byUploadStatus).sort(byCreateTime);
+    return savedSamples.filter(byUploadStatus).sort(bySurveyDate);
   };
 
   const onUploadAll = () => {
