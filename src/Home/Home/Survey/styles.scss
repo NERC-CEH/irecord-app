@@ -9,6 +9,7 @@ ion-item-sliding.survey-list-item {
     --min-height: var(--survey-item-height);
     --padding-start: 0;
     --inner-padding-end: 6px;
+    --border-radius: var(--theme-border-radius);
 
     .survey-info-container {
       display: flex;
@@ -26,6 +27,8 @@ ion-item-sliding.survey-list-item {
         max-width: var(--survey-item-height);
         background-color: #e5eacd;
         overflow: hidden;
+        border-radius: 10px 0 0 10px;
+
         img {
           height: 100%;
           width: 100%;
@@ -103,10 +106,13 @@ ion-item-sliding.survey-list-item {
             overflow: hidden;
             text-overflow: ellipsis;
             font-size: 12px;
+
             span {
               font-weight: 500;
               color: var(--ion-color-dark);
+
               &.warning {
+                margin: 1px 0;
                 color: var(--ion-color-warning);
               }
             }
@@ -144,6 +150,8 @@ ion-item-sliding.survey-list-item {
     }
 
     ion-badge[color='warning'] {
+      margin: 1px 0;
+
       &:not(:last-of-type) {
         margin-bottom: 5px;
       }

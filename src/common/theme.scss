@@ -155,6 +155,11 @@ h3 {
   color: var(--ion-color-primary);
 }
 
+// move south from status-bar
+.ion-page ion-content:only-child {
+  --padding-top: 20px !important;
+}
+
 // make the toolbar white
 ion-header ion-toolbar {
   --background: white;
