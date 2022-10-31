@@ -1,26 +1,21 @@
 import { useState } from 'react';
-import {
-  IonCardHeader,
-  IonCardContent,
-  IonButton,
-  IonIcon,
-} from '@ionic/react';
+import { IonCardHeader, IonCardContent, IonIcon } from '@ionic/react';
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import '@ionic/react/css/ionic-swiper.css';
 import clsx from 'clsx';
-import { closeCircle, checkmarkCircle } from 'ionicons/icons';
+import { closeCircle, checkmarkCircle, cameraOutline } from 'ionicons/icons';
 import { Gallery } from '@flumens';
 import config from 'common/config';
-import CustomAlert from './CustomAlert';
+import MultiPageCustomAlert from './MultiPageCustomAlert';
 import ImageWithBackground from './ImageWithBackground';
 import { Record, Media } from '../../esResponse.d';
 import './styles.scss';
 
 type Props = {
-  record: Record;
+  records: Record[];
   onClose: any;
 };
 
@@ -32,49 +27,16 @@ const statuses = {
 // Verification status 1: Accepted, Rejected or Unconfirmed
 // Verification status 2: Correct, Considered correct, Unable to verify, Incorrect, Not reviewed, or Plausible
 
-export default function SpeciesProfile({ record, onClose }: Props) {
+const Profile = (record: Record) => {
   const [showGallery, setShowGallery] = useState<number>();
 
-  const date = record.metadata.created_on.split(' ')[0];
-  const formattedDate = new Date(date).toLocaleString('en-GB').split(',')[0];
-
-  const status = record.identification.verification_status;
-  const statusText = statuses[status];
-
-  const commonName = record.taxon.vernacular_name;
-  const scientificName = record.taxon.accepted_name;
-
-  const gridRef = record.location.output_sref;
-
-  const count = record.occurrence.individual_count;
-  const stage = record.occurrence.life_stage;
-
-  const getFullScreenPhotoViewer = () => {
-    const initialSlide = showGallery;
-
-    const getImageSource = ({ path }: Media) => {
-      const imageURL = `${config.backend.mediaUrl}${path}`;
-
-      return { src: imageURL };
-    };
-
-    const items = record.occurrence.media?.map(getImageSource) || [];
-
-    const isOpen = Number.isFinite(showGallery);
-
-    return (
-      <Gallery
-        isOpen={isOpen}
-        items={items}
-        initialSlide={initialSlide}
-        onClose={setShowGallery}
-        mode="md"
-      />
-    );
-  };
-
   const getSlides = (media?: Media[]) => {
-    if (!media?.length) return null;
+    if (!media?.length)
+      return (
+        <div className="empty">
+          <IonIcon icon={cameraOutline} />
+        </div>
+      );
 
     const slideOpts = {
       initialSlide: 0,
@@ -113,6 +75,44 @@ export default function SpeciesProfile({ record, onClose }: Props) {
     );
   };
 
+  const getFullScreenPhotoViewer = () => {
+    const initialSlide = showGallery;
+
+    const getImageSource = ({ path }: Media) => {
+      const imageURL = `${config.backend.mediaUrl}${path}`;
+
+      return { src: imageURL };
+    };
+
+    const items = record.occurrence.media?.map(getImageSource) || [];
+
+    const isOpen = Number.isFinite(showGallery);
+
+    return (
+      <Gallery
+        isOpen={isOpen}
+        items={items}
+        initialSlide={initialSlide}
+        onClose={setShowGallery}
+        mode="md"
+      />
+    );
+  };
+
+  const date = record.metadata.created_on.split(' ')[0];
+  const formattedDate = new Date(date).toLocaleString('en-GB').split(',')[0];
+
+  const status = record.identification.verification_status;
+  const statusText = statuses[status];
+
+  const commonName = record.taxon.vernacular_name;
+  const scientificName = record.taxon.accepted_name;
+
+  const gridRef = record.location.output_sref;
+
+  const count = record.occurrence.individual_count;
+  const stage = record.occurrence.life_stage;
+
   let statusIcon;
   if (status) {
     if (status === 'V') {
@@ -126,7 +126,7 @@ export default function SpeciesProfile({ record, onClose }: Props) {
   }
 
   return (
-    <CustomAlert>
+    <SwiperSlide key={record.id}>
       <div className="alert-species-profile">
         <div className="gallery">{getSlides(record.occurrence.media)}</div>
 
@@ -142,39 +142,39 @@ export default function SpeciesProfile({ record, onClose }: Props) {
         </IonCardHeader>
 
         <IonCardContent>
-          <div>
-            <span className="record-attribute">Status:</span> {statusText}
+          <div className="record-attribute">
+            <span>Status:</span> {statusText}
           </div>
-          <div>
-            <span className="record-attribute">Date:</span> {formattedDate}
+          <div className="record-attribute">
+            <span>Date:</span> {formattedDate}
           </div>
-          <div>
-            <span className="record-attribute">Location:</span> {gridRef}
+          <div className="record-attribute">
+            <span>Location:</span> {gridRef}
           </div>
           {count && (
-            <div>
-              <span className="record-attribute">Count:</span> {count}
+            <div className="record-attribute">
+              <span>Count:</span> {count}
             </div>
           )}
           {stage && (
-            <div>
-              <span className="record-attribute">Stage:</span> {stage}
+            <div className="record-attribute">
+              <span>Stage:</span> {stage}
             </div>
           )}
         </IonCardContent>
 
         {getFullScreenPhotoViewer()}
       </div>
-      <div className="button-wrapper">
-        <IonButton
-          color="primary"
-          type="submit"
-          expand="block"
-          onClick={onClose}
-        >
-          Close
-        </IonButton>
-      </div>
-    </CustomAlert>
+    </SwiperSlide>
+  );
+};
+
+export default function RecordProfiles({ records, onClose }: Props) {
+  if (!records?.length) return null;
+
+  return (
+    <MultiPageCustomAlert onClose={onClose}>
+      {records.map(Profile)}
+    </MultiPageCustomAlert>
   );
 }

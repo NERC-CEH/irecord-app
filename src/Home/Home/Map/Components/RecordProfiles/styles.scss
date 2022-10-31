@@ -7,38 +7,55 @@
     padding: 0;
     max-height: 480px;
     max-width: 300px;
+    border-radius: var(--theme-border-radius);
+    overflow: hidden;
 
     .alert-species-profile {
-      border-radius: var(--theme-border-radius);
       overflow: hidden;
+      width: 100%;
 
-      .swiper {
-        max-height: 150px;
+      .gallery {
         background: #808080;
-        overflow: visible;
 
-        &.paginated {
-          margin-bottom: 15px;
-        }
+        .empty {
+          height: 150px;
+          display: flex;
+          justify-content: center;
 
-        .swiper-pagination {
-          position: absolute;
-          bottom: -20px;
-
-          .swiper-pagination-bullet {
-            background: #000000;
+          ion-icon {
+            height: 100%;
+            width: 57px;
+            --ionicon-stroke-width: 15px;
+            color: #afafaf;
           }
         }
 
-        .image-with-background {
-          max-height: 150px;
-          overflow: hidden;
+        .swiper {
+          overflow: visible;
+
+          &.paginated {
+            margin-bottom: 15px;
+          }
+
+          .swiper-pagination {
+            position: absolute;
+            bottom: -20px;
+
+            .swiper-pagination-bullet {
+              background: #000000;
+            }
+          }
+
+          .image-with-background {
+            max-height: 150px;
+            overflow: hidden;
+          }
         }
       }
 
       ion-card-header {
         display: flex;
-        padding: 10px;
+        padding: 15px 10px 10px;
 
         .title {
           display: flex;
@@ -82,14 +99,23 @@
 
       ion-card-content {
         background-color: #efefef;
-        padding: 8px 20px;
+        padding: 8px;
+        margin: 10px 8px;
         color: black;
+        border-radius: var(--theme-border-radius);
 
         .record-attribute {
-          color: var(--ion-color-primary);
-          min-width: 75px;
-          display: inline-block;
-          min-width: 100px;
+          display: flex;
+          line-height: 2em;
+          font-size: 17px;
+          text-align: left;
+
+          span {
+            font-weight: bolder;
+            display: inline-block;
+            min-width: 100px;
+            text-align: left;
+          }
         }
       }
     }

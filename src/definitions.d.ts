@@ -12,3 +12,7 @@ declare module '*.png' {
   const content: any;
   export default content;
 }
+
+declare module '@changey/react-leaflet-markercluster' {
+  export default any;
+}

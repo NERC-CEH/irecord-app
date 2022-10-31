@@ -1,0 +1,32 @@
+.custom-alert {
+  ion-button.close {
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    --padding-end: 0;
+    --padding-start: 0;
+  }
+
+  .multi-page-alert-footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 22px 10px;
+
+    &.hidden {
+      display: none;
+    }
+
+    > * {
+      width: 30%;
+    }
+
+    .multi-page-alert-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

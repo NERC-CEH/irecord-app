@@ -1,11 +1,13 @@
 import { FC } from 'react';
-import { CircleMarker } from 'react-leaflet';
+import { CircleMarker, CircleMarkerProps } from 'react-leaflet';
 import { Record } from '../esResponse.d';
 
 interface Props {
   record: Record;
   onClick: any;
 }
+
+const RecordMarker: FC<CircleMarkerProps & { record: Record }> = CircleMarker;
 
 const Marker: FC<Props> = ({ record, onClick }) => {
   const location = record.location.point.split(',');
@@ -20,10 +22,10 @@ const Marker: FC<Props> = ({ record, onClick }) => {
     fillColor = 'var(--ion-verification-rejected)';
   }
 
-  const onClickWrap = () => onClick(record);
+  const onClickWrap = () => onClick([record]);
 
   return (
-    <CircleMarker
+    <RecordMarker
       center={[latitude, longititude]}
       radius={10}
       className="record-marker"
@@ -31,6 +33,7 @@ const Marker: FC<Props> = ({ record, onClick }) => {
       fillColor={fillColor}
       fillOpacity={1}
       eventHandlers={{ click: onClickWrap }}
+      record={record}
     />
   );
 };

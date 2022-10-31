@@ -159,3 +159,14 @@
     background-size: 65px 20px;
   }
 }
+
+.leaflet-marker-icon.marker-cluster {
+  background-color: rgba(51, 136, 255, 0.6);
+  color: white;
+  font-weight: bolder;
+
+  div {
+    background-color: rgba(51, 136, 255, 0.6);
+    font-weight: 700;
+  }
+}

@@ -17,7 +17,6 @@ import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Page, Main, date as DateHelp } from '@flumens';
 import userModel from 'models/user';
-import appModel from 'models/app';
 import { Trans as T } from 'react-i18next';
 import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
 import savedSamples from 'models/savedSamples';
@@ -220,8 +219,6 @@ const UserSurveyComponent: FC = () => {
   const showingUploaded = segment === 'uploaded';
   const showingMap = segment === 'map';
 
-  const { useExperiments } = appModel.attrs;
-
   return (
     <Page id="home-user-surveys">
       <IonHeader className="ion-no-border">
@@ -241,13 +238,11 @@ const UserSurveyComponent: FC = () => {
               </IonLabel>
             </IonSegmentButton>
 
-            {useExperiments && (
-              <IonSegmentButton value="map">
-                <IonLabel className="ion-text-wrap">
-                  <T>Map</T>
-                </IonLabel>
-              </IonSegmentButton>
-            )}
+            <IonSegmentButton value="map">
+              <IonLabel className="ion-text-wrap">
+                <T>Map</T>
+              </IonLabel>
+            </IonSegmentButton>
           </IonSegment>
         </IonToolbar>
       </IonHeader>
