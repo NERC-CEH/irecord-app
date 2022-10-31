@@ -1,5 +1,5 @@
 {
-	"appId": "uk.ac.ceh.ir",
+	"appId": "uk.ac.ceh.irecord",
 	"appName": "iRecord App",
 	"bundledWebRuntime": false,
 	"webDir": "build",

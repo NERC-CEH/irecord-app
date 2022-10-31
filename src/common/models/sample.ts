@@ -10,7 +10,7 @@ import {
   locationToGrid,
 } from '@flumens';
 import userModel from 'models/user';
-import appModel, { SurveyDraftKeys } from 'models/app';
+import appModel from 'models/app';
 import config from 'common/config';
 import defaultSurvey from 'Survey/Default/config';
 import listSurvey from 'Survey/List/config';
@@ -267,14 +267,6 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       };
       Object.keys(occ.attrs).forEach(removeOccNonCoreAttr);
     }
-  }
-
-  removeDraftKey() {
-    const surveyName = this.getSurvey().name;
-
-    const draftIdKey = `draftId:${surveyName}` as keyof SurveyDraftKeys;
-    appModel.attrs[draftIdKey] = null;
-    appModel.save();
   }
 
   /**

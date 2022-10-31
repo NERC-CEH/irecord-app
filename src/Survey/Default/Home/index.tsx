@@ -33,8 +33,6 @@ const DefaultHome: FC<Props> = ({ sample }) => {
     const isValid = checkSampleStatus();
     if (!isValid) return;
 
-    sample.removeDraftKey();
-
     // eslint-disable-next-line no-param-reassign
     sample.metadata.saved = true;
     sample.save();

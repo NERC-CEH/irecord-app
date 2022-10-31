@@ -3,13 +3,6 @@ import { genericStore } from 'models/store';
 import AttributeLockExtension from './attrLockExt';
 import PastLocationsExtension from './pastLocExt';
 
-export type SurveyDraftKeys = {
-  'draftId:default'?: null | string;
-  'draftId:list'?: null | string;
-  'draftId:moth'?: null | string;
-  'draftId:plant'?: null | string;
-};
-
 export type Attrs = ModelAttrs & {
   showWelcome: boolean;
   language: string;
@@ -35,7 +28,7 @@ export type Attrs = ModelAttrs & {
   searchNamesOnly: null;
   sendAnalytics: boolean;
   appSession: number;
-} & SurveyDraftKeys;
+};
 
 export const defaults: Attrs = {
   showWelcome: true,
@@ -53,12 +46,6 @@ export const defaults: Attrs = {
   gridSquareUnit: 'monad',
   speciesListSortedByTime: false,
   geolocateSurveyEntries: true,
-
-  // draft survey pointers
-  'draftId:default': null,
-  'draftId:list': null,
-  'draftId:moth': null,
-  'draftId:plant': null,
 
   showSurveysDeleteTip: true,
   shownLongPressTip: false,

@@ -6,7 +6,7 @@ import TaxonSearch, {
 } from 'Survey/common/Components/TaxonSearch';
 import Sample from 'models/sample';
 import userModel from 'models/user';
-import appModel, { SurveyDraftKeys } from 'models/app';
+import appModel from 'models/app';
 import savedSamples from 'models/savedSamples';
 import Occurrence from 'models/occurrence';
 import { useRouteMatch } from 'react-router';
@@ -33,10 +33,6 @@ const Taxon: FC<Props> = ({ sample }) => {
 
     if (isNew) {
       const newSample = await getNewSample(taxon);
-      const survey = newSample.getSurvey();
-      const draftIdKey = `draftId:${survey.name}` as keyof SurveyDraftKeys;
-      appModel.attrs[draftIdKey] = newSample.cid;
-
       const url = match.url.replace('/new', '');
       navigate(`${url}/${newSample.cid}`, undefined, 'replace');
 
