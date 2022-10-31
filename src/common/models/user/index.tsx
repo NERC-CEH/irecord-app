@@ -76,7 +76,9 @@ export class UserModel extends DrupalUserModel {
         this.refreshProfile();
       }
     };
-    this.ready?.then(checkForValidation);
+    this.ready
+      ?.then(() => this.attrs.password && this._migrateAuth())
+      .then(checkForValidation);
   }
 
   getPrettyName() {
