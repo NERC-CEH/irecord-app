@@ -145,7 +145,7 @@ export class UserModel extends DrupalUserModel {
       if (e.message === 'Incorrect password or email') {
         console.log('Removing invalid old user credentials');
         delete this.attrs.password;
-        this.logOut();
+        return this.logOut();
       }
       console.error(e);
       throw e;
