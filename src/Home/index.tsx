@@ -148,6 +148,7 @@ const HomeController: FC = () => {
             <LongPressFabButton
               onClick={navigateToPrimarySurvey}
               icon={addOutline}
+              buttonProps={{ longClickDuration: 500 }}
             >
               <div className="long-press-surveys-label">
                 <T>Other recording options</T>
