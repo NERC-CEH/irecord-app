@@ -15,7 +15,7 @@ async function resetApp(toast: any) {
     await userModel.resetDefaults();
     await savedSamples.resetDefaults();
 
-    toast.success('Done');
+    toast.success('Done', { position: 'bottom' });
   } catch (e: any) {
     toast.error(`${e.message}`);
   }
@@ -26,7 +26,7 @@ async function deleteAllSamples(toast: any) {
 
   try {
     await removeAllSynced();
-    toast.success('Done');
+    toast.success('Done', { position: 'bottom' });
   } catch (e: any) {
     toast.error(`${e.message}`);
   }
@@ -45,7 +45,7 @@ const useDeleteUser = () => {
     try {
       await userModel.delete();
       goBack();
-      toast.success('Done');
+      toast.success('Done', { position: 'bottom' });
     } catch (err: any) {
       toast.error(err);
     }
