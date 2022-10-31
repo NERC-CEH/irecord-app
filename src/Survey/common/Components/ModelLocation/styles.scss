@@ -3,6 +3,19 @@
   top: 59px;
 }
 
+#bottom-sheet {
+  --height: 95vh;
+
+  &::part(handle) {
+    margin-top: 10px;
+  }
+
+  ion-toolbar {
+    --background: var(--ion-page-background);
+    --min-height: 35px;
+  }
+}
+
 .past-locations-control {
   position: absolute;
   right: 10px;

@@ -6,6 +6,8 @@ import {
   IonContent,
   useIonViewDidEnter,
   useIonViewWillLeave,
+  IonHeader,
+  IonToolbar,
 } from '@ionic/react';
 import { ModelLocation as ModelLocationOrig } from '@flumens';
 import savedSamples from 'models/savedSamples';
@@ -116,8 +118,10 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
             setShowPastLocations(false);
           }}
         >
+          <IonHeader class="ion-no-border">
+            <IonToolbar />
+          </IonHeader>
           <IonContent>
-            <br />
             <PastLocationsList onSelect={onSelectPastLoaction} />
           </IonContent>
         </IonModal>
