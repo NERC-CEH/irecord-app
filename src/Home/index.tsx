@@ -35,7 +35,7 @@ import Menu from './Menu';
 import './styles.scss';
 
 async function createDefaultSurvey(image: string) {
-  if (!defaultSurveyConfig.createWithPhoto) return; // to bypass TS
+  if (!defaultSurveyConfig.createWithPhoto) return null; // to bypass TS
 
   const sample = await defaultSurveyConfig.createWithPhoto(Sample, Occurrence, {
     image,
@@ -45,6 +45,8 @@ async function createDefaultSurvey(image: string) {
 
   // add to main collection
   savedSamples.push(sample);
+
+  return sample;
 }
 
 function useLongPressTip() {
@@ -103,7 +105,9 @@ const HomeController: FC = () => {
     const [image] = await captureImage({ camera: true });
     if (!image) return;
 
-    createDefaultSurvey(image);
+    const sample = await createDefaultSurvey(image);
+
+    navigate(`/survey/default/${sample?.cid}`);
   }
 
   const navigateToPrimarySurvey = () => navigate(`/survey/default`);
