@@ -84,6 +84,11 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
         onGPSClick={ModelLocationOrig.utils.onGPSClick}
         backButtonProps={{ text: 'Back' }}
         setLocation={setLocation}
+        geocodingParams={{
+          access_token: config.map.mapboxApiKey,
+          types: 'locality,place,district,neighborhood,region,postcode',
+          country: 'GB',
+        }}
         {...otherProps}
       >
         <div className="leaflet-control-button leaflet-control past-locations-control">
