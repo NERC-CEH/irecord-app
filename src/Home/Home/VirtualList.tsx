@@ -15,12 +15,19 @@ const VirtualList: FC<any> = ({
   const [listHeight, setListHeight] = useState<number>(1); // some positive number
 
   const setCurrentContentHeight = () => {
-    if (listHeight <= 1 && contentRef?.current?.clientHeight) {
+    if (contentRef?.current?.clientHeight) {
       setListHeight(contentRef.current.clientHeight);
     }
   };
   useIonViewDidEnter(setCurrentContentHeight); // before mounting the first time list has no height
   useEffect(setCurrentContentHeight, [contentRef.current]);
+  const refreshMapOnResize = () => {
+    window.addEventListener('ionKeyboardDidHide', setCurrentContentHeight);
+    return () => {
+      window.removeEventListener('ionKeyboardDidHide', setCurrentContentHeight);
+    };
+  };
+  useEffect(refreshMapOnResize);
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const ItemWithPadding = ({ style, ...itemProps }: any) => (
