@@ -14,6 +14,7 @@ type Attrs = OccurrenceAttrs & {
   taxon?: Taxon;
   'number-ranges'?: string;
   number?: any;
+  abundance?: any;
   comment?: string;
   stage?: string;
 };

@@ -43,6 +43,10 @@
 
   ion-item-option.lock {
     min-width: 70px;
+
+    &.locked {
+      background-color: var(--ion-color-secondary-shade);
+    }
   }
 }
 

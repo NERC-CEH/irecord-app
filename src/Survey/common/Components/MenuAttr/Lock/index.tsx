@@ -80,7 +80,7 @@ const Lock: FC<Props> = ({ model, attr, children }) => {
 
       <IonItemOptions side="end">
         <IonItemOption
-          className="lock"
+          className={clsx('lock', isLocked && 'locked')}
           color="secondary"
           onClick={toggleLockWrap}
         >

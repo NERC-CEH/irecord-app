@@ -10,7 +10,6 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { ModelLocation as ModelLocationOrig } from '@flumens';
-import savedSamples from 'models/savedSamples';
 import Sample from 'models/sample';
 import appModel from 'models/app';
 import { starOutline } from 'ionicons/icons';
@@ -18,8 +17,6 @@ import L from 'leaflet';
 import config from 'common/config';
 import PastLocationsList from 'Components/PastLocationsList';
 import './styles.scss';
-
-const getLocation = (sample: Sample) => sample.attrs.location || {};
 
 type Props = {
   sample: Sample;
@@ -78,7 +75,7 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
         mapProviderOptions={config.map}
         useGridRef
         useGridMap
-        suggestLocations={savedSamples.map(getLocation)}
+        suggestLocations={appModel.attrs.locations || []}
         onLocationNameChange={ModelLocationOrig.utils.onLocationNameChange}
         namePlaceholder="Site name eg nearby village"
         onGPSClick={ModelLocationOrig.utils.onGPSClick}
@@ -89,6 +86,7 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
           types: 'locality,place,district,neighborhood,region,postcode',
           country: 'GB',
         }}
+        className="with-past-locations"
         {...otherProps}
       >
         <div className="leaflet-control-button leaflet-control past-locations-control">

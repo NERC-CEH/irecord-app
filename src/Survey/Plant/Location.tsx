@@ -64,9 +64,7 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
       model.attrs.location = { ...oldLocation, ...newLocation };
 
       updateChildrenLocations(model);
-    }
-
-    if (newLocation.name) {
+    } else if (typeof newLocation.name === 'string') {
       Object.assign(model.attrs.location, { name: newLocation.name });
     }
 

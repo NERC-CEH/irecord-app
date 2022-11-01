@@ -93,34 +93,32 @@ const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
       <IonItemOptions side="end">
         {canLockLocation && (
           <IonItemOption
-            className="lock"
+            className={clsx('lock', isLocationLocked && 'locked')}
             color="secondary"
             onClick={toggleLocationLockWrap}
           >
             <div className="label-wrap">
               <IonIcon
-                slot="start"
                 icon={isLocationLocked ? lockOpenOutline : lockClosedOutline}
               />
-              <IonLabel position="stacked">Location</IonLabel>
+              <IonLabel>Location</IonLabel>
             </div>
           </IonItemOption>
         )}
 
         {canLockName && (
           <IonItemOption
-            className="lock"
+            className={clsx('lock', isLocationNameLocked && 'locked')}
             color="secondary"
             onClick={toggleNameLockWrap}
           >
             <div className="label-wrap">
               <IonIcon
-                slot="start"
                 icon={
                   isLocationNameLocked ? lockOpenOutline : lockClosedOutline
                 }
               />
-              <IonLabel position="stacked">Name</IonLabel>
+              <IonLabel>Name</IonLabel>
             </div>
           </IonItemOption>
         )}

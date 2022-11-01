@@ -9,6 +9,20 @@
     color: var(--ion-color-secondary);
   }
 
+  ion-item-option {
+    &:not(:last-child) {
+      border-right: 1px solid var(--ion-color-secondary-shade);
+    }
+
+    &.locked {
+      background-color: var(--ion-color-secondary-shade);
+
+      & + ion-item-option.locked {
+        border-left: 1px solid var(--ion-color-secondary);
+      }
+    }
+  }
+
   .label-wrap {
     display: flex;
     flex-direction: column;

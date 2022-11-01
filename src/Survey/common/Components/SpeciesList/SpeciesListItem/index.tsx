@@ -86,7 +86,8 @@ const SpeciesListItem: FC<Props> = ({
     const increaseCountWrap = () => increaseCount(occ);
     const increase5xCountWrap = () => increaseCount(occ, true);
 
-    const value = occ.attrs.number || occ.attrs['number-ranges'];
+    const value =
+      occ.attrs.number || occ.attrs['number-ranges'] || occ.attrs.abundance;
 
     return (
       <IncrementalButton
