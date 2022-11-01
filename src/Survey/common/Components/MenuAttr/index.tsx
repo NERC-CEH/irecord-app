@@ -137,6 +137,8 @@ const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
     );
   }
 
+  if (isDisabled && !value) return null;
+
   return (
     <MenuAttrItem
       routerLink={link}

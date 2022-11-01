@@ -38,12 +38,11 @@ const AppPhotoPicker: FC<Props> = ({ model }) => {
     }
   }
 
+  const isDisabled = model.isDisabled();
+  if (isDisabled && !model.media.length) return null;
+
   return (
-    <PhotoPicker
-      onAddNew={onAddNew}
-      model={model}
-      isDisabled={model.isDisabled()}
-    />
+    <PhotoPicker onAddNew={onAddNew} model={model} isDisabled={isDisabled} />
   );
 };
 

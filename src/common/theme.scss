@@ -1,21 +1,22 @@
 @import '@flumens/ionic/dist/themes/rounded.css';
 
 :root {
+  // using shades from https://color.adobe.com/create/color-wheel
   --ion-color-primary: #91a71c;
   --ion-color-primary-rgb: 145, 167, 28;
   --ion-color-primary-contrast: #fff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #809319;
-  --ion-color-primary-tint: #9cb033;
-  --ion-color-primary-dark: #131600;
+  --ion-color-primary-shade: #6b7a15;
+  --ion-color-primary-tint: #c4e026;
+  --ion-color-primary-dark: #333b0a;
 
   --ion-color-secondary: #0057af;
   --ion-color-secondary-rgb: 0, 142, 236;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #00468c;
-  --ion-color-secondary-tint: #0065cb;
-  --ion-color-secondary-dark: #000a14;
+  --ion-color-secondary-shade: #003d7a;
+  --ion-color-secondary-tint: #007dfa;
+  --ion-color-secondary-dark: #001d3b;
 
   --ion-color-tertiary: #7044ff;
   --ion-color-tertiary-rgb: 112, 68, 255;
@@ -37,11 +38,9 @@
   --ion-color-warning-rgb: 209, 116, 30;
   --ion-color-warning-contrast: #ffffff;
   --ion-color-warning-contrast-rgb: 255, 255, 255;
-  --ion-color-warning-shade: #341400;
+  --ion-color-warning-shade: #7a2f00;
   --ion-color-warning-tint: #ad4200;
-  --ion-color-warning-light: #ff7926;
-  --ion-color-warning-dark: #301200;
-  --ion-color-warning-background: #fffbf8;
+  --ion-color-warning-dark: #3b1600;
 
   --ion-color-danger: #f04141;
   --ion-color-danger-rgb: 240, 65, 65;
@@ -320,7 +319,7 @@ ion-list + ion-list > .rounded {
 .radio-input-attr ion-item,
 #suggestions .empty,
 .taxa-filter-edit-dialog-form ion-item,
-.rounded {
+.rounded:not(:empty) {
   border: 1px solid #ecebebe3;
   border-radius: var(--theme-border-radius);
 }
@@ -328,4 +327,11 @@ ion-list + ion-list > .rounded {
 // subtle borders around rounded radio items
 ion-radio-group .item-radio-checked:not(.radio-input-default-option) {
   border: 1px #dce0d5 solid;
+}
+
+
+// Fix last date input in the list
+ion-list .rounded > *:last-child.menu-attr-item,
+ion-list .rounded > *:last-child .date-input-attr ion-item[slot='header'] {
+  --border-style: none !important;
 }
