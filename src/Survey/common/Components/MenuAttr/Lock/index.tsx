@@ -5,6 +5,7 @@ import {
   IonItemOptions,
   IonItemOption,
   IonIcon,
+  isPlatform,
 } from '@ionic/react';
 import Sample from 'models/sample';
 import Occurrence from 'models/occurrence';
@@ -17,6 +18,7 @@ import {
   chevronDownOutline,
 } from 'ionicons/icons';
 import clsx from 'clsx';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import MenuAttr from '..';
 
 import './styles.scss';
@@ -47,6 +49,8 @@ const Lock: FC<Props> = ({ model, attr, children }) => {
     if (!isOpen) return;
 
     sliderRef.current.close(); // needs to be after the openness check
+
+    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
     if (isLocked) {
       appModel.unsetAttrLock(model, attr);

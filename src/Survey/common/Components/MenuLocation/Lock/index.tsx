@@ -6,9 +6,12 @@ import {
   IonItemSliding,
   IonItemOption,
   IonItemOptions,
+  isPlatform,
 } from '@ionic/react';
 import Sample from 'models/sample';
 import appModel from 'models/app';
+import { useToast } from '@flumens';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import {
   lockOpenOutline,
   lockClosedOutline,
@@ -26,6 +29,7 @@ export interface Props {
 
 const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
   const sliderRef = useRef<any>();
+  const toast = useToast();
 
   const isLocationLocked = appModel.isAttrLocked(sample, 'location');
   const isLocationNameLocked = appModel.isAttrLocked(sample, 'locationName');
@@ -38,6 +42,8 @@ const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
 
   const toggleLocationLockWrap = () => {
     sliderRef.current.close();
+
+    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
     const isLocked = appModel.getAttrLock(sample, 'location');
     if (isLocked) {
@@ -52,11 +58,21 @@ const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
     // remove location name as it is locked separately
     delete clonedLocation.name;
 
+    toast.success(
+      'The attribute value was locked and will be pre-filled for subsequent records.',
+      {
+        color: 'secondary',
+        position: 'bottom',
+      }
+    );
+
     appModel.setAttrLock(sample, 'location', clonedLocation);
   };
 
   const toggleNameLockWrap = () => {
     sliderRef.current.close();
+
+    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
     if (isLocationNameLocked) {
       appModel.unsetAttrLock(sample, 'locationName');
@@ -65,6 +81,14 @@ const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
 
     const name = sample.attrs.location?.name;
     if (!name) return;
+
+    toast.success(
+      'The attribute value was locked and will be pre-filled for subsequent records.',
+      {
+        color: 'secondary',
+        position: 'bottom',
+      }
+    );
 
     appModel.setAttrLock(sample, 'locationName', name);
   };

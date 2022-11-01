@@ -4,6 +4,8 @@ import {
   useToast,
   locationToGrid,
 } from '@flumens';
+import { isPlatform } from '@ionic/react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import savedSamples from 'models/savedSamples';
 import Sample from 'models/sample';
 import config from 'common/config';
@@ -41,6 +43,8 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
     if (model.isGPSRunning()) {
       model.stopGPS();
     }
+
+    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
     const oldLocation = sample.attrs.location || {};
     model.attrs.location = { ...oldLocation, ...newLocation };

@@ -5,6 +5,8 @@ import {
   checkGridType,
   gridrefAccuracy,
 } from '@flumens';
+import { isPlatform } from '@ionic/react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import savedSamples from 'models/savedSamples';
 import Sample from 'models/sample';
 import appModel from 'models/app';
@@ -57,6 +59,8 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
       if (model.isGPSRunning()) {
         model.stopGPS();
       }
+
+      isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
       // extend old location to preserve its previous attributes like name or id
       const oldLocation = model.attrs.location || {};

@@ -10,6 +10,7 @@ import {
   IonFabButton,
   NavContext,
   useIonRouter,
+  isPlatform,
 } from '@ionic/react';
 import { observer } from 'mobx-react';
 import {
@@ -19,6 +20,7 @@ import {
   homeOutline,
   addOutline,
 } from 'ionicons/icons';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { App as AppPlugin } from '@capacitor/app';
 import savedSamples from 'models/savedSamples';
 import appModel from 'models/app';
@@ -77,6 +79,9 @@ function useLongPressTip() {
 
   useEffect(showLongPressTip, []);
 }
+
+const vibrate = () =>
+  isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
 const HomeController: FC = () => {
   const ionRouter = useIonRouter();
@@ -143,6 +148,7 @@ const HomeController: FC = () => {
           <IonTabButton>
             <LongPressFabButton
               onClick={navigateToPrimarySurvey}
+              onLongClick={vibrate}
               icon={addOutline}
               buttonProps={{ longClickDuration: 500 }}
             >

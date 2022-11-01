@@ -8,10 +8,12 @@ import {
   useIonViewWillLeave,
   IonHeader,
   IonToolbar,
+  isPlatform,
 } from '@ionic/react';
 import { ModelLocation as ModelLocationOrig } from '@flumens';
 import Sample from 'models/sample';
 import appModel from 'models/app';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { starOutline } from 'ionicons/icons';
 import L from 'leaflet';
 import config from 'common/config';
@@ -50,6 +52,8 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
       location = { ...oldLocation, ...location };
     }
 
+    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
+
     // eslint-disable-next-line no-param-reassign
     model.attrs.location = location;
 
@@ -62,6 +66,8 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
   const onSelectPastLoaction = (location: any) => {
     if (sample.isGPSRunning()) sample.stopGPS();
     setShowPastLocations(false);
+
+    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
     // eslint-disable-next-line no-param-reassign
     model.attrs.location = location;
