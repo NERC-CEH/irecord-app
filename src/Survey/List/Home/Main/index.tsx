@@ -30,7 +30,7 @@ const HomeMain: FC<Props> = ({ sample, onDelete }) => {
   });
 
   // show activity title.
-  const activity = sample.attrs.activity || {};
+  const { activity } = sample.attrs;
 
   const isDisabled = sample.isDisabled();
 
