@@ -3,3 +3,17 @@
     margin-bottom: 80px; // to account the floating photo picker for scrolling
   }
 }
+
+.attr-lock-tip {
+  ion-icon {
+    background-color: var(--custom-color-lock);
+    padding: 5px;
+    color: white;
+    border-radius: 3px;
+    margin-bottom: -5px;
+  }
+
+  img {
+    margin-top: 5px;
+  }
+}

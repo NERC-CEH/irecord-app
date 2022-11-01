@@ -22,7 +22,7 @@ export type Attrs = ModelAttrs & {
 
   showSurveysDeleteTip: boolean;
   shownLongPressTip: boolean;
-  shownLockingTip: boolean;
+  shownLockingSwipeTip: boolean;
   feedbackGiven: boolean;
   taxonGroupFilters: any[];
   searchNamesOnly: null;
@@ -49,7 +49,7 @@ export const defaults: Attrs = {
 
   showSurveysDeleteTip: true,
   shownLongPressTip: false,
-  shownLockingTip: false,
+  shownLockingSwipeTip: false,
   feedbackGiven: false,
   taxonGroupFilters: [],
   searchNamesOnly: null,

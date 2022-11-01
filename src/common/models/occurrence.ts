@@ -17,6 +17,7 @@ type Attrs = OccurrenceAttrs & {
   abundance?: any;
   comment?: string;
   stage?: string;
+  sex?: any;
 };
 
 export default class Occurrence extends OccurrenceOriginal<Attrs> {
