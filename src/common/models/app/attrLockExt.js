@@ -160,7 +160,7 @@ export default {
     const fullAttrName = getFullAttrName(model, attr);
 
     let value;
-    let lockedVal = this.getAttrLock(model, attr);
+    const lockedVal = this.getAttrLock(model, attr);
     if (!lockedVal) return false;
 
     // TODO: clean this mess by splitting and moving to surveys attrs
@@ -182,18 +182,6 @@ export default {
         value = model.attrs.location;
         return lockedVal === value.name;
 
-      case 'smp:date':
-        value = model.attrs[attr];
-        if (
-          Number.isNaN(Date.parse(value)) ||
-          Number.isNaN(Date.parse(lockedVal))
-        ) {
-          return false;
-        }
-
-        lockedVal = new Date(lockedVal);
-        const currentValue = new Date(value);
-        return lockedVal.getTime() === currentValue.getTime();
       default:
         value = model.attrs[attr];
         return JSON.stringify(value) === JSON.stringify(lockedVal);
@@ -259,10 +247,6 @@ export default {
           location = selectedModel.attrs.location;
           location.name = val;
           selectedModel.attrs.location = location;
-          break;
-        case 'smp:date':
-          // parse stringified date
-          selectedModel.attrs.date = new Date(val);
           break;
         case 'occ:number':
           const isValidNumber = !Number.isNaN(Number(val));
