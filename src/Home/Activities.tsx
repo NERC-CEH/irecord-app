@@ -11,7 +11,10 @@ const Container: FC = () => {
   const onSelect = (activityID: string) => {
     activityID &&
       toast.success(
-        'Any records you add from now on will be submitted to the chosen activity.'
+        'Any records you add from now on will be submitted to the chosen activity.',
+        {
+          color: 'secondary',
+        }
       );
 
     appModel.setAttrLock('smp', 'activity', userModel.getActivity(activityID));
