@@ -267,6 +267,8 @@ const survey = {
           icon: 'number',
           info: 'Abundance (DAFOR, LA, LF or count).',
           type: 'input',
+          values: value =>
+            typeof value === 'string' ? value.toUpperCase() : value, // fixes lowercase values
           validate(value) {
             const re = /^(\d+|[DAFOR]|LA|LF)$/;
             return re.test(value);

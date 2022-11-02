@@ -49,6 +49,7 @@ class Component extends React.Component {
             config={attrConfig}
             default={this.state.currentVal}
             onChange={this.onValueChanged}
+            info={attrConfig.info}
           />
         );
       case 'inputList':

@@ -64,6 +64,21 @@ export default () => (
             {t(
               'Many thanks to the photographers for the use of their images in the welcome screen gallery.'
             )}
+            {t('Icons were made by')}{' '}
+            <a
+              href="https://www.flaticon.com/authors/nhor-phai"
+              title="Nhor Phai"
+            >
+              Nhor Phai
+            </a>
+            ,{' '}
+            <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
+              Freepik
+            </a>{' '}
+            from{' '}
+            <a href="https://www.flaticon.com/" title="Flaticon">
+              www.flaticon.com
+            </a>
           </IonLabel>
         </IonItem>
       </IonList>

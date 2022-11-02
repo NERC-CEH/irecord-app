@@ -6,23 +6,24 @@
       --inner-padding-bottom: 4px;
       --inner-padding-top: 6px;
     }
-
+    .complex-survey-band {
+      width: 7px;
+      height: 100%;
+      background-color: var(--custom-color-complex-survey);
+    }
     .activity-band {
       position: absolute;
       width: 7px;
       height: 100%;
       background-color: var(--ion-color-secondary);
     }
-    .complex-survey-band {
-      width: 7px;
-      height: 100%;
-      background-color: var(--custom-color-complex-survey);
+    .complex-survey-band + .activity-band {
+      left: 7px;
+      top: 0;
     }
-
     h3:not(:first-of-type) {
       margin-bottom: 10px;
     }
-
     .photo {
       position: relative;
       margin: 0 8px 2px 0;
@@ -32,96 +33,77 @@
       background-color: #e5eacd;
       border-radius: 5px;
       overflow: hidden;
-
       img {
         height: 100%;
         width: 100%;
         object-fit: cover;
       }
     }
-
     .details {
       max-width: 75%;
-
       .species {
         display: block;
         font-size: 15px;
         font-weight: 700;
         color: var(--ion-color-dark);
-
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-
         &.error {
           color: var(--ion-color-danger);
         }
       }
-
       .survey-name {
         font-size: 15px;
         font-weight: 700;
         color: var(--ion-color-dark);
         text-transform: capitalize;
       }
-
       .species-count {
         font-size: 12px;
       }
-
       .core {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         font-size: 12px;
-
         span {
           font-weight: 500;
           color: var(--ion-color-dark);
           &.error {
             color: var(--ion-color-danger);
           }
-
           &.warn {
             color: var(--ion-color-warning);
           }
         }
       }
-
       .attributes {
         clear: both;
-
         .icon {
           float: right;
-
           &:before {
             font-size: 14px;
           }
         }
       }
-
       div.stage,
       div.number {
         float: left;
         font-size: 12px;
         margin-right: 10px;
       }
-
       div.comment {
         float: left;
         width: 80px;
-
         font-size: 12px;
         margin-right: 10px;
         overflow: hidden;
-
         word-wrap: normal;
         white-space: nowrap;
         text-overflow: ellipsis;
-
         color: var(--ion-color-medium);
       }
-
       span.locked,
       div.locked {
         color: var(--ion-color-secondary);

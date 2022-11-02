@@ -101,13 +101,24 @@ class Controller extends React.Component {
       <IonButton onClick={this.onUpload}>{t('Upload')}</IonButton>
     );
 
+    const { activity } = surveySample.attrs;
+
+    const activitySubheader = activity && (
+      <AppHeaderBand title={`${t(activity.title)} Activity`} activity />
+    );
+
     return (
       <IonPage id="survey-complex-default-edit">
         <AppHeader
           title={survey.label}
           rightSlot={uploadButton}
           defaultHref="/home/surveys"
-          subheader={<AppHeaderBand title={t('Survey')} />}
+          subheader={(
+            <>
+              <AppHeaderBand title={t('Survey')} />
+              {activitySubheader}
+            </>
+          )}
         />
         <Main
           surveySample={surveySample}

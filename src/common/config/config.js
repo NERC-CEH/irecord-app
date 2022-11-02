@@ -5,15 +5,15 @@ import Indicia from '@indicia-js/core';
 
 const HOST = process.env.APP_INDICIA_API_HOST || 'https://erccis.org.uk/';
 
+const isTestEnv = process.env.NODE_ENV === 'test';
+
 const CONFIG = {
   // variables replaced on build
   version: process.env.APP_VERSION,
   build: process.env.APP_BUILD,
   name: process.env.APP_NAME,
 
-  environment: __ENV__,
-  experiments: process.env.APP_EXPERIMENTS,
-  training: process.env.APP_TRAINING,
+  environment: process.env.NODE_ENV,
 
   gps_accuracy_limit: 100,
 
@@ -23,10 +23,7 @@ const CONFIG = {
   log: !__TEST__,
 
   // error analytics
-  sentry: {
-    key: !__TEST__ && process.env.APP_SENTRY_KEY,
-    project: '128357',
-  },
+  sentryDNS: !isTestEnv && process.env.APP_SENTRY_KEY,
 
   users: {
     url: `${HOST + Indicia.API_BASE + Indicia.API_VER}/users/`,

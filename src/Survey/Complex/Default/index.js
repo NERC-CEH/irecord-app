@@ -10,6 +10,7 @@ import SamplesEdit from './Samples/Edit';
 import SamplesEditTaxon from './Samples/Taxon';
 import SamplesEditLocation from './Samples/Location';
 import Location from './Location';
+import Activity from '../../common/Activity';
 
 @observer
 class Routes extends React.Component {
@@ -94,6 +95,18 @@ class Routes extends React.Component {
           exact
           render={props => (
             <SamplesEditLocation
+              savedSamples={savedSamples}
+              appModel={appModel}
+              userModel={userModel}
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path={`${match.url}/:id/edit/activity`}
+          exact
+          render={props => (
+            <Activity
               savedSamples={savedSamples}
               appModel={appModel}
               userModel={userModel}

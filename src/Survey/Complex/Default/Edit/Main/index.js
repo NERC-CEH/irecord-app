@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { IonButton, IonLabel, IonList } from '@ionic/react';
+import { IonButton, IonLabel, IonList, IonIcon, IonItem } from '@ionic/react';
 import AppMain from 'Components/Main';
 import DynamicMenuAttrs from 'Components/DynamicMenuAttrs';
 import PropTypes from 'prop-types';
+import { lock, people } from 'ionicons/icons';
 import SpeciesList from './components/SpeciesList';
 import './styles.scss';
 
@@ -40,6 +41,12 @@ class Component extends React.Component {
       }
     });
 
+    // show activity title.
+    const  activity  = surveySample.attrs.activity || {};
+    const activityTitle = activity ? activity.title : null;
+    const lockedaAtivity = appModel.getAttrLock('smp', 'activity') || {};
+    const isActivityLocked = activity.id === lockedaAtivity.id;
+
     return (
       <AppMain>
         <IonList lines="full" class="core inputs">
@@ -49,6 +56,18 @@ class Component extends React.Component {
             noWrapper
             url={url}
           />
+          {activityTitle && (
+            <IonItem
+              routerLink={`${url}/activity`}
+              detail
+              detailIcon={isActivityLocked ? lock : 'ios-arrow-forward'}
+              className={isActivityLocked ? 'locked' : ''}
+            >
+              <IonIcon icon={people} slot="start" />
+              <IonLabel slot="end">{activityTitle}</IonLabel>
+              {t('Activity')}
+            </IonItem>
+          )}
         </IonList>
 
         <IonButton

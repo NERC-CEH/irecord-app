@@ -11,16 +11,11 @@ delete webpackConfigDev.optimization; // no need
 
 webpackConfigDev.resolve.modules.push(path.resolve('./test/'));
 
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+
 module.exports = config => {
   config.set({
-    browsers: ['ChromeCustom'],
-
-    customLaunchers: {
-      ChromeCustom: {
-        base: 'ChromiumHeadless',
-        flags: ['--no-sandbox'],
-      },
-    },
+    browsers: ['ChromeHeadless'],
 
     frameworks: ['mocha', 'chai', 'sinon'],
 

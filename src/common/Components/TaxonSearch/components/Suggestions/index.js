@@ -73,8 +73,7 @@ const getSearchInfo = () => (
         )}
         <br />
         <br />
-        For
-        {' '}
+        For{' '}
         <b>
           <i>Turdus merula</i>
         </b>
@@ -90,10 +89,9 @@ const getSearchInfo = () => (
         </b>
         <br />
         <b>
-          <i>turme</i>
-        </b>
-        {' '}
-        (3+2 characters)
+          <i>tumer</i>
+        </b>{' '}
+        (2+3 characters)
         <br />
         <b>
           <i>merula</i>

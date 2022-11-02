@@ -59,7 +59,7 @@ export default () => (
             </a>{' '}
             (BRC),{' '}
             {t(
-              'established in 1964, is a national focus in the UK for terrestrial and freshwater species recording. BRC works closely with the voluntary recording community, principally through support of national recording schemes and societies. BRC is supported by the Joint Nature Conservation Committee (JNCC) and the Centre for Ecology & Hydrology (CEH) within the Natural Environment Research Council (NERC). The work of BRC is a major component of the National Biodiversity Network (NBN)'
+              'established in 1964, is a national focus in the UK for terrestrial and freshwater species recording. BRC works closely with the voluntary recording community, principally through support of national recording schemes and societies. BRC is supported by the Joint Nature Conservation Committee (JNCC) and the UK Centre for Ecology & Hydrology (UKCEH). The work of BRC is a major component of the National Biodiversity Network (NBN)'
             )}
             .
           </IonLabel>

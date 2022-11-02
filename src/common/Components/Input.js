@@ -57,8 +57,10 @@ class Component extends React.Component {
   };
 
   validate(value) {
-    if (this.props.validate) {
-      const valid = this.props.validate(value);
+    const config = this.props.config || {};
+    const validate = this.props.validate || config.validate;
+    if (validate) {
+      const valid = validate(value);
       if (!valid) {
         return false;
       }
@@ -74,7 +76,7 @@ class Component extends React.Component {
   componentDidMount() {
     const config = this.props.config || {};
     const type = this.props.type || config.type;
-    if (!this.input.current){
+    if (!this.input.current) {
       // AutoSuggestInput has its own one
       return;
     }
@@ -97,6 +99,9 @@ class Component extends React.Component {
     const config = this.props.config || {};
     const type = this.props.type || config.type || 'text';
 
+    const message = this.props.info || config.info;
+    const placeholder = this.props.placeholder || config.placeholder;
+
     if (config.lookup) {
       const { onChange, ...props } = this.props;
       const onSuggestionSelected = onChange;
@@ -110,20 +115,29 @@ class Component extends React.Component {
 
     if (type === 'date') {
       return (
-        <IonItem>
-          <IonLabel>DD/MM/YYYY</IonLabel>
-          <IonDatetime
-            ref={this.input}
-            cancelText={t('Cancel')}
-            doneText={t('OK')}
-            displayFormat="DD/MM/YYYY"
-            value={DateHelp.toDateInputValue(this.state.value)}
-            onIonChange={val => {
-              const dateStr = val.detail.value.split('T')[0];
-              this.onChange({ target: { value: dateStr } });
-            }}
-          />
-        </IonItem>
+        <div>
+          {message && (
+            <div className="info-message">
+              <p>{t(message)}</p>
+            </div>
+          )}
+          <IonItem>
+            <IonLabel>DD/MM/YYYY</IonLabel>
+            <IonDatetime
+              ref={this.input}
+              cancelText={t('Cancel')}
+              doneText={t('OK')}
+              displayFormat="DD/MM/YYYY"
+              value={
+                this.state.value && DateHelp.toDateInputValue(this.state.value)
+              }
+              onIonChange={val => {
+                const dateStr = val.detail.value.split('T')[0];
+                this.onChange({ target: { value: dateStr } });
+              }}
+            />
+          </IonItem>
+        </div>
       );
     }
 
@@ -153,8 +167,6 @@ class Component extends React.Component {
         [max] = max.toJSON().split('T');
       }
     }
-    const message = this.props.info || config.info;
-    const placeholder = this.props.placeholder || config.placeholder;
 
     return (
       <div>

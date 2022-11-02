@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@flumens": ["src/common/flumens"],
       "user_model": ["src/common/models/user_model"],
       "app_model": ["src/common/models/app_model"],
       "occurrence": ["src/common/models/occurrence"],
@@ -10,7 +11,7 @@
       "common/*": ["src/common/*"],
       "helpers/*": ["src/common/helpers/*"],
       "Components/*": ["src/common/Components/*"],
-      "Lib/*": ["src/common/Lib/*"],
+      "Lib/*": ["src/common/Lib/*"]
     }
   },
   "include": ["./src/**/*"]

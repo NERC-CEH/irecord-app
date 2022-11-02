@@ -10,22 +10,24 @@
     "start": "webpack-dev-server --config webpack.config.js --content-base build --port 8000",
     "build": "webpack --display minimal",
     "build:production": "grunt",
+    "deploy": "vercel --prod -A other/now.json -t $VERCEL_TOKEN --confirm",
     "test": "karma start test/karma.conf.js",
     "test:coverage": "karma start test/karma.conf.js --reporters mocha,coverage",
     "test:watch": "karma start test/karma.conf.js --no-single-run",
     "test:sauce": "karma start test/karma.conf-sauce.js",
-    "test:eslint": "mocha test/eslint-test.js",
+    "test:eslint": "eslint src --quiet --ext .jsx --ext .ts --ext .tsx --ext .js && echo '\\033[37;42;1m PASS \\033[00m'",
     "test:acceptance": "grunt exec:cordova_build_android && ./node_modules/.bin/wdio test/acceptance/wdio.conf.js",
     "make:species": "cd src/common/data && node species.js",
     "clean": "rm -rf cordova build resources"
   },
   "dependencies": {
     "@babel/polyfill": "7.7.0",
+    "@bit/flumens.apps.utils.analytics": "^0.2.0",
     "@indicia-js/core": "5.1.1",
     "@ionic/core": "4.11.0",
     "@ionic/react": "4.11.0",
     "@ionic/react-router": "4.11.0",
-    "@sentry/browser": "^5.11.1",
+    "@sentry/browser": "5.11.1",
     "bigu": "FlumensIO/bigu#v0.2.2",
     "core-js": "3.6.2",
     "formik": "2.1.1",
@@ -144,6 +146,229 @@
     "name": "Richard Frost",
     "email": "richard@ipponsolutions.co.uk",
     "url": "http://ipponsolutions.co.uk"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react",
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "android": "5.1",
+            "ios": "10.2"
+          },
+          "modules": "commonjs",
+          "corejs": "3.0.0",
+          "useBuiltIns": "usage"
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ],
+          "alias": {
+            "@flumens": "./src/common/flumens"
+          }
+        }
+      ],
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      "@babel/plugin-transform-exponentiation-operator",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-syntax-dynamic-import"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          [
+            "istanbul",
+            {
+              "exclude": [
+                "src/**/*tests*",
+                "src/**/*_view*",
+                "src/app.js",
+                "dist",
+                "test"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "mocha": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 2016,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "extends": [
+      "airbnb",
+      "prettier"
+    ],
+    "rules": {
+      "no-unused-vars": 1,
+      "prefer-destructuring": 1,
+      "no-use-before-define": 1,
+      "no-param-reassign": 1,
+      "import/extensions": 1,
+      "react/no-array-index-key": 1,
+      "react/no-access-state-in-setstate": 1,
+      "import/no-unresolved": 1,
+      "no-plusplus": 0,
+      "react/forbid-prop-types": 0,
+      "jsx-a11y/anchor-is-valid": 1,
+      "jsx-a11y/click-events-have-key-events": 1,
+      "jsx-a11y/no-static-element-interactions": 1,
+      "jsx-a11y/no-noninteractive-element-interactions": 1,
+      "jsx-a11y/no-autofocus": 0,
+      "jsx-a11y/alt-text": 1,
+      "import/no-mutable-exports": 1,
+      "no-case-declarations": 1,
+      "jsx-a11y/anchor-has-content": 1,
+      "react/no-this-in-sfc": 1,
+      "react/jsx-filename-extension": 0,
+      "react/require-default-props": 0,
+      "react/sort-comp": 0,
+      "react/destructuring-assignment": 0,
+      "react/button-has-type": 0,
+      "no-unused-expressions": [
+        2,
+        {
+          "allowShortCircuit": true,
+          "allowTernary": true
+        }
+      ],
+      "complexity": [
+        1,
+        20
+      ],
+      "eqeqeq": [
+        1,
+        "smart"
+      ],
+      "guard-for-in": 1,
+      "no-constant-condition": 2,
+      "no-console": 1,
+      "no-redeclare": [
+        2,
+        {
+          "builtinGlobals": true
+        }
+      ],
+      "object-curly-spacing": [
+        2,
+        "always"
+      ],
+      "indent": [
+        "error",
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "comma-dangle": [
+        2,
+        "always-multiline"
+      ],
+      "key-spacing": [
+        2,
+        {
+          "afterColon": true,
+          "mode": "minimum"
+        }
+      ],
+      "no-multiple-empty-lines": [
+        2,
+        {
+          "max": 2
+        }
+      ],
+      "no-mixed-spaces-and-tabs": [
+        2,
+        "smart-tabs"
+      ],
+      "max-nested-callbacks": [
+        1,
+        10
+      ],
+      "consistent-this": [
+        1,
+        "self"
+      ],
+      "no-unexpected-multiline": 1,
+      "no-extra-semi": 1,
+      "no-negated-in-lhs": 1,
+      "linebreak-style": 0,
+      "no-underscore-dangle": 0,
+      "react/jsx-props-no-spreading": 0,
+      "react/state-in-constructor": 0,
+      "react/static-property-placement": 0,
+      "react/jsx-one-expression-per-line": [
+        1,
+        {
+          "allow": "single-child"
+        }
+      ]
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.js"
+        ],
+        "rules": {
+          "no-unused-expressions": 0
+        }
+      }
+    ],
+    "globals": {
+      "__ENV__": true,
+      "__DEV__": true,
+      "__TEST__": true,
+      "__PROD__": true,
+      "t": true,
+      "browser": true,
+      "sinon": true,
+      "expect": true,
+      "cordova": true
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {},
+        "webpack": {
+          "config": "webpack.config.js"
+        }
+      },
+      "react": {
+        "version": "16.8"
+      }
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "singleQuote": true,
+    "jsxBracketSameLine": false,
+    "trailingComma": "es5"
   },
   "repository": {
     "type": "git",

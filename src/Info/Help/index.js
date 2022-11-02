@@ -90,7 +90,7 @@ export default () => (
             <br />
             <i>puffinus .oli</i>
             <br />
-            <i>pufba</i> (3+2 characters)
+            <i>pubar</i> (2+3 characters)
             <br />
             <i>baroli</i>
           </p>
