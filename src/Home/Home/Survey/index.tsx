@@ -168,7 +168,7 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
 
   return (
     <IonItemSliding className="survey-list-item" style={style}>
-      <IonItem routerLink={href} detail>
+      <IonItem routerLink={href} detail={false}>
         <div className="survey-info-container">
           {activity && <div className="activity-band" />}
           {training && <div className="training-band" />}

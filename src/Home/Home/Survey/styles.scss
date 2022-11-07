@@ -8,7 +8,7 @@ ion-item-sliding.survey-list-item {
     --border-style: none;
     --min-height: var(--survey-item-height);
     --padding-start: 0;
-    --inner-padding-end: 6px;
+    --inner-padding-end: 5px;
     --border-radius: var(--theme-border-radius);
 
     .survey-info-container {
@@ -63,7 +63,7 @@ ion-item-sliding.survey-list-item {
         }
 
         .label {
-          font-size: 0.6em;
+          font-size: 0.75em;
           text-align: center;
         }
       }
@@ -99,13 +99,13 @@ ion-item-sliding.survey-list-item {
             text-transform: capitalize;
           }
           .species-count {
-            font-size: 12px;
+            font-size: 14px;
           }
           .core {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-size: 12px;
+            font-size: 14px;
 
             span {
               font-weight: 500;
@@ -127,11 +127,11 @@ ion-item-sliding.survey-list-item {
 
             .stage,
             .number {
-              font-size: 12px;
+              font-size: 14px;
             }
             .comment {
-              width: 80px;
-              font-size: 12px;
+              width: 100%;
+              font-size: 14px;
               margin-right: 10px;
               overflow: hidden;
               word-wrap: normal;
@@ -161,7 +161,7 @@ ion-item-sliding.survey-list-item {
       width: -webkit-fit-content;
       width: fit-content;
       background-color: rgba(var(--ion-color-warning-rgb), 0.15);
-      color: var(--ion-color-warning-shade);
+      color: var(--ion-color-warning-dark);
     }
 
     .training-band {
