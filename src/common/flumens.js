@@ -53,6 +53,7 @@ export {
 export {
   default as Occurrence,
   Attrs as OccurrenceAttrs,
+  Metadata as OccurrenceMetadata,
   Options as OccurrenceOptions,
 } from '@flumens/ionic/dist/models/Indicia/Occurrence';
 export {

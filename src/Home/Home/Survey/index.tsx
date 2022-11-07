@@ -12,6 +12,8 @@ import {
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
 import { useTranslation, Trans as T } from 'react-i18next';
+import VerificationStatus from 'common/Components/VerificationStatus';
+import VerificationListStatus from 'common/Components/VerificationListStatus';
 import OnlineStatus from './components/OnlineStatus';
 import Attributes from './components/Attributes';
 import Location from './components/Location';
@@ -166,6 +168,13 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
 
   const { activity, training } = sample.attrs;
 
+  const verificationStatus =
+    survey.name === 'default' ? (
+      <VerificationStatus occ={sample.occurrences[0]} />
+    ) : (
+      <VerificationListStatus sample={sample} />
+    );
+
   return (
     <IonItemSliding className="survey-list-item" style={style}>
       <IonItem routerLink={href} detail={false}>
@@ -182,6 +191,8 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
             onUpload={onUpload}
             uploadIsPrimary={uploadIsPrimary}
           />
+
+          {verificationStatus}
         </div>
       </IonItem>
       <IonItemOptions side="end">

@@ -1,0 +1,34 @@
+ion-label.verification-list-status[slot='end'] {
+  font-size: 0.8em;
+  max-width: max-content !important;
+  border-radius: 5px;
+  display: flex !important;
+  flex-direction: row !important;
+  margin-left: 0 !important;
+  opacity: 1 !important;
+  margin: 0;
+  margin-right: 3px;
+
+  span {
+    width: 25px;
+    max-width: 25px;
+    color: white;
+    margin: 0;
+    text-align: center;
+    margin-left: 0;
+    opacity: 1;
+    font-weight: 500;
+  }
+
+  .id-green {
+    background: var(--verification-success) !important;
+  }
+
+  .id-amber {
+    background: var(--verification-plausible) !important;
+  }
+
+  .id-red {
+    background: var(--verification-rejected) !important;
+  }
+}

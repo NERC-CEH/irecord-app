@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { observer } from 'mobx-react';
+import UpdatedRecordsAlert from 'common/Components/UpdatedRecordsAlert';
 import Home from './Home';
 import User from './User/router';
 import Info from './Info/router';
@@ -17,6 +18,7 @@ const App: FC = () => (
   <IonApp>
     <SplashScreenRequired>
       <IonReactRouter>
+        <UpdatedRecordsAlert />
         <IonRouterOutlet id="main">
           <Route exact path="/" component={HomeRedirect} />
           <Route path="/home" component={Home} />

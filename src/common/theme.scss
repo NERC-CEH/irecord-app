@@ -83,6 +83,18 @@
   --custom-color-lock: var(--ion-color-secondary);
   --custom-color-lock-tint: var(--ion-color-secondary-tint);
 
+  --verification-success: var(--ion-color-primary);
+  --verification-success-rgb: var(--ion-color-primary-rgb);
+  --verification-success-dark: var(--ion-color-primary-dark);
+
+  --verification-plausible: #fcb500;
+  --verification-plausible-rgb: 252, 181, 0;
+  --verification-plausible-dark: #3b2a00;
+
+  --verification-rejected: var(--ion-color-danger);
+  --verification-rejected-rgb: var(--ion-color-danger-rgb);
+  --verification-rejected-dark: var(--ion-color-danger-dark);
+
   --ion-page-background: #f0f3f0;
   --ion-headings-font-weight: 300;
   // --ion-item-border-color: red;
@@ -325,6 +337,9 @@ ion-radio-group .item-radio-checked:not(.radio-input-default-option) {
   border: 1px #dce0d5 solid;
 }
 
+ion-list .rounded > .info-message {
+  margin: 0;
+}
 
 // Fix last date input in the list
 ion-list .rounded > *:last-child.menu-attr-item,

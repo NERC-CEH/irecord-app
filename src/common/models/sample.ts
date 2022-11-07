@@ -297,6 +297,32 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     this.attrs.location = location;
     return this.save();
   };
+
+  hasOccurrencesBeenVerified() {
+    const hasBeenVerified = (occ: Occurrence) => {
+      const isRecordInReview =
+        occ.metadata?.verification?.verification_status === 'C' &&
+        occ.metadata?.verification?.verification_substatus !== '3';
+
+      return occ.metadata?.verification && !isRecordInReview;
+    };
+
+    const hasSubSample = this.samples.length;
+    if (hasSubSample) {
+      let status;
+
+      const getSamples = (subSample: Sample) => {
+        status =
+          this.isUploaded() && !!subSample.occurrences.some(hasBeenVerified);
+        return status;
+      };
+
+      this.samples.some(getSamples);
+      return this.isUploaded() && !!status;
+    }
+
+    return this.isUploaded() && !!this.occurrences.some(hasBeenVerified);
+  }
 }
 
 export const useValidateCheck = (sample: Sample) => {

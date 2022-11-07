@@ -13,6 +13,7 @@ import Sample from 'models/sample';
 import Occurrence from 'models/occurrence';
 import { Trans as T } from 'react-i18next';
 import { alertOutline } from 'ionicons/icons';
+import VerificationStatus from 'common/Components/VerificationStatus';
 import IncrementalButton from 'Survey/common/Components/IncrementalButton';
 import './styles.scss';
 
@@ -112,7 +113,10 @@ const SpeciesListItem: FC<Props> = ({
       className="species-list-item"
       disabled={isDisabled}
     >
-      <IonItem routerLink={`${url}/${modelPath}/${model.cid}`} detail>
+      <IonItem
+        routerLink={`${url}/${modelPath}/${model.cid}`}
+        detail={!occ.hasOccurrenceBeenVerified()}
+      >
         {getIncrementButton()}
 
         <div className="details">
@@ -127,6 +131,8 @@ const SpeciesListItem: FC<Props> = ({
             className="species-entry-incomplete-warning"
           />
         )}
+
+        <VerificationStatus occ={occ} />
       </IonItem>
 
       <IonItemOptions side="end">

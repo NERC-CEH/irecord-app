@@ -5,6 +5,7 @@ import PhotoPicker from 'Survey/common/Components/PhotoPicker';
 import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
+import VerificationMessage from 'Survey/common/Components/VerificationMessage';
 import Sample from 'models/sample';
 import { observer } from 'mobx-react';
 
@@ -14,6 +15,7 @@ type Props = {
 
 const PlantOccurrenceHome: FC<Props> = ({ subSample: sample }) => {
   const [occ] = sample.occurrences;
+  const isDisabled = sample.isDisabled();
 
   return (
     <Page id="survey-default-edit">
@@ -21,6 +23,12 @@ const PlantOccurrenceHome: FC<Props> = ({ subSample: sample }) => {
 
       <Main>
         <IonList lines="full">
+          {isDisabled && (
+            <div className="rounded">
+              <VerificationMessage occurrence={occ} />
+            </div>
+          )}
+
           <div className="rounded">
             <PhotoPicker model={occ} />
           </div>

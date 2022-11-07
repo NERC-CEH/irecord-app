@@ -1,0 +1,25 @@
+.updated-records-dialog {
+  .verified-count {
+    display: flex;
+    align-items: center;
+    margin-top: 7px;
+
+    ion-icon {
+      margin-right: 5px;
+    }
+  }
+
+  ion-item {
+    margin: 20px 3px -10px;
+    --padding-start: 0;
+    --background: transparent;
+
+    ion-checkbox {
+      margin-right: 10px;
+    }
+
+    ion-label.md {
+      --color: var(--ion-color-step-550, #737373);
+    }
+  }
+}

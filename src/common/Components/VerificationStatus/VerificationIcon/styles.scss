@@ -1,0 +1,22 @@
+ion-icon[slot='end'].verification-icon {
+  border-radius: 5px !important;
+  --ionicon-stroke-width: 2em;
+  font-size: 1.6em;
+  margin: 0;
+  margin-right: 3px;
+  margin-left: 5px;
+}
+
+.verification-icon {
+  &.id-green {
+    color: var(--verification-success) !important;
+  }
+
+  &.id-amber {
+    color: var(--verification-plausible) !important;
+  }
+
+  &.id-red {
+    color: var(--verification-rejected) !important;
+  }
+}

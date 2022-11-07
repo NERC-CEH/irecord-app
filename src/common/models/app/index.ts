@@ -28,6 +28,9 @@ export type Attrs = ModelAttrs & {
   searchNamesOnly: null;
   sendAnalytics: boolean;
   appSession: number;
+
+  showVerifiedRecordsNotification: boolean;
+  verifiedRecordsTimestamp: null | number;
 };
 
 export const defaults: Attrs = {
@@ -55,6 +58,9 @@ export const defaults: Attrs = {
   searchNamesOnly: null,
   sendAnalytics: true,
   appSession: 0,
+
+  showVerifiedRecordsNotification: true,
+  verifiedRecordsTimestamp: null,
 };
 
 export class AppModel extends Model {

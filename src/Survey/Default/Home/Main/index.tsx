@@ -12,6 +12,7 @@ import MenuLocation from 'Survey/common/Components/MenuLocation';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
+import VerificationMessage from 'Survey/common/Components/VerificationMessage';
 import lockScreenshot from './lock.png';
 
 import './styles.scss';
@@ -69,6 +70,12 @@ const EditMain: FC<Props> = ({ sample }) => {
   return (
     <Main>
       <IonList lines="full">
+        {isDisabled && (
+          <div className="rounded">
+            <VerificationMessage occurrence={occ} />
+          </div>
+        )}
+
         {isDisabled && (
           <div className="rounded">
             <DisabledRecordMessage sample={sample} />

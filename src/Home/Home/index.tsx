@@ -19,7 +19,7 @@ import { Page, Main, date as DateHelp } from '@flumens';
 import userModel from 'models/user';
 import { Trans as T } from 'react-i18next';
 import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
-import savedSamples from 'models/savedSamples';
+import savedSamples, { uploadAllSamples } from 'models/savedSamples';
 import { addOutline } from 'ionicons/icons';
 import VirtualList from './VirtualList';
 import Survey from './Survey';
@@ -144,7 +144,7 @@ const UserSurveyComponent: FC = () => {
       return null;
     }
 
-    return savedSamples.uploadAll();
+    return uploadAllSamples();
   };
 
   const getUploadedSurveys = () => {
