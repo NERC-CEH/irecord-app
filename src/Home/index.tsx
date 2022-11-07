@@ -120,7 +120,7 @@ const HomeController: FC = () => {
       <IonTabs>
         <IonRouterOutlet>
           <Redirect exact path="/home" to="/home/surveys" />
-          <Route path="/home/surveys" component={Home} exact />
+          <Route path="/home/surveys/:id?" component={Home} exact />
           <Route path="/home/activities" component={Activities} exact />
           <Route path="/home/menu" component={Menu} exact />
         </IonRouterOutlet>

@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useState, useContext, useEffect } from 'react';
 import Sample from 'models/sample';
 import {
   IonHeader,
@@ -13,7 +13,7 @@ import {
   IonButton,
   IonItemDivider,
 } from '@ionic/react';
-import { useParams } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Page, Main, date as DateHelp } from '@flumens';
 import userModel from 'models/user';
@@ -112,11 +112,23 @@ const getSurveys = (surveys: Sample[], showUploadAll?: boolean) => {
 const UserSurveyComponent: FC = () => {
   const { navigate } = useContext(NavContext);
 
-  const param: any = useParams();
-  const initSegment = param?.id || 'pending';
+  const match = useRouteMatch<{ id?: string }>();
+
+  const initSegment = 'pending';
   const [segment, setSegment] = useState(initSegment);
 
-  const onSegmentClick = (e: any) => setSegment(e.detail.value);
+  useEffect(() => {
+    match.params?.id && setSegment(match.params?.id);
+  }, [match.params?.id]);
+
+  const onSegmentClick = (e: any) => {
+    const newSegment = e.detail.value;
+    setSegment(newSegment);
+
+    const basePath = match.path.split('/:id?')[0];
+    const path = `${basePath}/${newSegment}`;
+    window.history.replaceState(null, '', path); // https://stackoverflow.com/questions/57101831/react-router-how-do-i-update-the-url-without-causing-a-navigation-reload
+  };
 
   const getSamplesList = (uploaded?: boolean) => {
     const byUploadStatus = (sample: Sample) =>
