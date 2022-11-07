@@ -4,6 +4,7 @@ import { InfoMessage } from '@flumens';
 import { IonButton } from '@ionic/react';
 import { Trans as T } from 'react-i18next';
 import config from 'common/config';
+import './styles.scss';
 
 interface Props {
   sample: Sample;
@@ -13,7 +14,7 @@ const DisabledRecordMessage: FC<Props> = ({ sample }) => {
   const [occ] = sample.occurrences;
 
   return (
-    <InfoMessage color="dark">
+    <InfoMessage color="dark" className="disabled-record-message">
       This record has been submitted and cannot be edited within this App.
       <IonButton
         expand="block"

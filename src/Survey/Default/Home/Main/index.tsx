@@ -68,18 +68,20 @@ const EditMain: FC<Props> = ({ sample }) => {
 
   return (
     <Main>
-      {isDisabled && <DisabledRecordMessage sample={sample} />}
+      <IonList lines="full">
+        {isDisabled && (
+          <div className="rounded">
+            <DisabledRecordMessage sample={sample} />
+          </div>
+        )}
 
-      {/* Only showing if pre-selected */}
-      {activity && (
-        <IonList lines="full">
+        {/* Only showing if pre-selected */}
+        {activity && (
           <div className="rounded">
             <MenuAttr.WithLock model={sample} attr="activity" />
           </div>
-        </IonList>
-      )}
+        )}
 
-      <IonList lines="full">
         <div className="rounded">
           <PhotoPicker model={occ} />
         </div>

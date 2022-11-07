@@ -25,9 +25,13 @@ const MothHomeMain: FC<Props> = ({ sample, onDelete }) => {
 
   return (
     <Main>
-      {isDisabled && <DisabledRecordMessage sample={sample} />}
-
       <IonList lines="full">
+        {isDisabled && (
+          <div className="rounded">
+            <DisabledRecordMessage sample={sample} />
+          </div>
+        )}
+
         <div className="rounded">
           <MenuLocation sample={sample} />
           <MenuAttr model={sample} attr="date" />

@@ -87,6 +87,8 @@ const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
 
   const label = labelProp || capitalize(attr);
 
+  if (isDisabled && !value) return null;
+
   if (type === 'toggle') {
     const onAttrToggle = (checked: boolean) => {
       if (set) {
@@ -136,8 +138,6 @@ const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
       </Wrapper>
     );
   }
-
-  if (isDisabled && !value) return null;
 
   return (
     <MenuAttrItem

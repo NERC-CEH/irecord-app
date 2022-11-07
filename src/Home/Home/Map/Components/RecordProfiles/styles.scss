@@ -83,15 +83,15 @@
 
           ion-icon {
             &.id-green {
-              color: var(--ion-verification-success);
+              color: var(--verification-success);
             }
 
             &.id-amber {
-              color: var(--ion-verification-plausible);
+              color: var(--verification-plausible);
             }
 
             &.id-red {
-              color: var(--ion-verification-rejected);
+              color: var(--verification-rejected);
             }
           }
         }

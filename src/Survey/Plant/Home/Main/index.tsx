@@ -22,9 +22,13 @@ const PlantHomeMain: FC<Props> = ({ sample, onDelete }) => {
 
   return (
     <Main>
-      {isDisabled && <DisabledRecordMessage sample={sample} />}
-
       <IonList lines="full">
+        {isDisabled && (
+          <div className="rounded">
+            <DisabledRecordMessage sample={sample} />
+          </div>
+        )}
+
         <div className="rounded">
           <MenuDynamicAttrs model={sample} />
         </div>

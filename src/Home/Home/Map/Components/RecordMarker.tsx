@@ -14,12 +14,12 @@ const Marker: FC<Props> = ({ record, onClick }) => {
   const latitude = parseFloat(location[0]);
   const longititude = parseFloat(location[1]);
 
-  let fillColor = 'var(--ion-verification-plausible)';
+  let fillColor = 'var(--verification-plausible)';
   const status = record.identification.verification_status;
   if (status === 'V') {
-    fillColor = 'var(--ion-verification-success)';
+    fillColor = 'var(--verification-success)';
   } else if (status === 'R') {
-    fillColor = 'var(--ion-verification-rejected)';
+    fillColor = 'var(--verification-rejected)';
   }
 
   const onClickWrap = () => onClick([record]);
