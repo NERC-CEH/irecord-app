@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.7.0",
-    "@bit/flumens.apps.utils.analytics": "^0.2.0",
     "@indicia-js/core": "5.1.1",
     "@ionic/core": "4.11.0",
     "@ionic/react": "4.11.0",
