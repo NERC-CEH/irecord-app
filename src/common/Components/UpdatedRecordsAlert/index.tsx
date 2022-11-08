@@ -39,34 +39,33 @@ const UpdatedRecordsDialog: FC = () => {
     const message = (
       <>
         <p>
-          Some of your records have been verified. You can find those in your
-          Uploaded records list.
+          Some of your records have been verified. You can find those in your{' '}
+          <b>Uploaded</b> records list.
         </p>
 
-        {!!verified && (
-          <div className="verified-count">
-            <VerificationIcon status="verified" />
-            <span>
-              Accepted: <b>{verified}</b>
-            </span>
-          </div>
-        )}
-        {!!plausible && (
-          <div className="verified-count">
-            <VerificationIcon status="plausible" />
-            <span>
-              Plausible: <b>{plausible}</b>
-            </span>
-          </div>
-        )}
-        {!!rejected && (
-          <div className="verified-count">
-            <VerificationIcon status="rejected" />
-            <span>
-              Rejected: <b>{rejected}</b>
-            </span>
-          </div>
-        )}
+        <div className="counts">
+          {!!verified && (
+            <div className="verified-count">
+              <VerificationIcon status="verified" />
+              <span>Accepted:</span>
+              <b>{verified}</b>
+            </div>
+          )}
+          {!!plausible && (
+            <div className="verified-count">
+              <VerificationIcon status="plausible" />
+              <span>Plausible:</span>
+              <b>{plausible}</b>
+            </div>
+          )}
+          {!!rejected && (
+            <div className="verified-count">
+              <VerificationIcon status="rejected" />
+              <span>Rejected:</span>
+              <b>{rejected}</b>
+            </div>
+          )}
+        </div>
 
         <IonItem lines="none">
           <IonCheckbox

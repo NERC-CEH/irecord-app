@@ -300,6 +300,12 @@ ion-item-divider {
 .radio-input-attr ion-item ion-label.ios {
   font-size: 0.9em !important;
 }
+
+// clearer alert messages
+.alert-message.sc-ion-alert-md {
+  color: black;
+}
+
 // ACCESSIBILITY IMPROVEMENTS END
 
 // overwrite required item colours

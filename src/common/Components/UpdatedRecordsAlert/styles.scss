@@ -1,25 +1,47 @@
 .updated-records-dialog {
-  .verified-count {
-    display: flex;
-    align-items: center;
-    margin-top: 7px;
+  .counts {
+    background-color: var(--ion-page-background);
+    margin: 0 -24px;
+    padding: 1px 10px;
 
-    ion-icon {
-      margin-right: 5px;
+    .verified-count {
+      display: flex;
+      align-items: center;
+      margin: 14px 0;
+
+      ion-icon {
+        margin-right: 10px;
+      }
+
+      span {
+        width: 50%;
+      }
+      b {
+        width: 33%;
+        text-align: center;
+        font-size: 1.2em;
+      }
     }
   }
 
+  &.ios .counts {
+    margin: 0 -16px;
+  }
+
   ion-item {
-    margin: 20px 3px -10px;
+    margin: 0 -10px;
+
+    &.ios {
+      margin-left: -2px;
+    }
+
     --padding-start: 0;
     --background: transparent;
 
+    font-size: 16px !important;
+
     ion-checkbox {
       margin-right: 10px;
-    }
-
-    ion-label.md {
-      --color: var(--ion-color-step-550, #737373);
     }
   }
 }
