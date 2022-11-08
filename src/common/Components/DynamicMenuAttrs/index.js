@@ -13,6 +13,7 @@ import {
   eyeOff,
   business,
   disc,
+  fingerPrint,
 } from 'ionicons/icons';
 import Toggle from 'Components/Toggle';
 import Occurrence from 'occurrence';
@@ -26,7 +27,7 @@ import './styles.scss';
 
 const icons = {
   number: <IonIcon src="/images/number.svg" slot="start" />,
-  stage: <IonIcon src="/images/progress-circles.svg" slot="start" />,
+  stage: <IonIcon icon={fingerPrint} slot="start" />,
   gender: <IonIcon src="/images/gender.svg" slot="start" />,
   land: <IonIcon src="/images/land.svg" slot="start" />,
   'user-plus': <IonIcon icon={personAdd} slot="start" />,
@@ -37,7 +38,7 @@ const icons = {
   business: <IonIcon icon={business} slot="start" />,
   eyeOff: <IonIcon icon={eyeOff} slot="start" />,
   disc: <IonIcon icon={disc} slot="start" />,
-
+  type: <IonIcon src="/images/progress-circles.svg" slot="start" />,
   generic: <IonIcon icon={create} slot="start" />,
 };
 

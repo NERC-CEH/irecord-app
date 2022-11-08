@@ -195,7 +195,7 @@ const survey = {
           'Camera trap': 5870,
           'Other (please add to comments)': 3393,
         },
-        icon: 'stage',
+        icon: 'type',
         type: 'radio',
       },
       identifiers: {
