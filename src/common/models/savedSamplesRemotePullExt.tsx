@@ -9,6 +9,7 @@ import { UserModel } from 'models/user';
 import Sample from 'models/sample';
 import { device } from '@flumens';
 import CONFIG from 'common/config';
+import { Survey } from 'Survey/common/config';
 import defaultSurvey from 'Survey/Default/config';
 import listSurvey from 'Survey/List/config';
 import mothSurvey from 'Survey/Moth/config';
@@ -74,6 +75,12 @@ const getRecordsQuery = (timestamp: any) => {
   const time = timeFormat.format(lastFetchTime);
   const formattedTimestamp = `${date} ${time}`;
 
+  const getSurveyQuery = ({ id }: Survey) => ({
+    match: {
+      'metadata.survey.id': id,
+    },
+  });
+
   return JSON.stringify({
     size: 1000, // fetch only 1k of the last created. Note, not updated_on, since we mostly care for any last user uploaded records.
     query: {
@@ -81,28 +88,9 @@ const getRecordsQuery = (timestamp: any) => {
         must: [
           {
             bool: {
-              should: [
-                {
-                  match: {
-                    'metadata.survey.id': defaultSurvey.id,
-                  },
-                },
-                {
-                  match: {
-                    'metadata.survey.id': listSurvey.id,
-                  },
-                },
-                {
-                  match: {
-                    'metadata.survey.id': mothSurvey.id,
-                  },
-                },
-                {
-                  match: {
-                    'metadata.survey.id': plantSurvey.id,
-                  },
-                },
-              ],
+              should: [defaultSurvey, listSurvey, mothSurvey, plantSurvey].map(
+                getSurveyQuery
+              ),
             },
           },
 

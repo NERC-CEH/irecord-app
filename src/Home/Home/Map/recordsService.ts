@@ -2,11 +2,18 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { LatLng } from 'leaflet';
 import userModel from 'models/user';
 import CONFIG from 'common/config';
+import { Survey } from 'Survey/common/config';
 import defaultSurvey from 'Survey/Default/config';
 import listSurvey from 'Survey/List/config';
 import mothSurvey from 'Survey/Moth/config';
 import plantSurvey from 'Survey/Plant/config';
 import { Hit, Bucket, Record, Square } from './esResponse.d';
+
+const getSurveyQuery = ({ id }: Survey) => ({
+  match: {
+    'metadata.survey.id': id,
+  },
+});
 
 const getRecordsQuery = (northWest: LatLng, southEast: LatLng) =>
   JSON.stringify({
@@ -16,28 +23,9 @@ const getRecordsQuery = (northWest: LatLng, southEast: LatLng) =>
         must: [
           {
             bool: {
-              should: [
-                {
-                  match: {
-                    'metadata.survey.id': defaultSurvey.id,
-                  },
-                },
-                {
-                  match: {
-                    'metadata.survey.id': listSurvey.id,
-                  },
-                },
-                {
-                  match: {
-                    'metadata.survey.id': mothSurvey.id,
-                  },
-                },
-                {
-                  match: {
-                    'metadata.survey.id': plantSurvey.id,
-                  },
-                },
-              ],
+              should: [defaultSurvey, listSurvey, mothSurvey, plantSurvey].map(
+                getSurveyQuery
+              ),
             },
           },
         ],
@@ -113,18 +101,9 @@ const getSquaresQuery = (
         must: [
           {
             bool: {
-              should: [
-                {
-                  match: {
-                    'metadata.survey.id': defaultSurvey.id,
-                  },
-                },
-                {
-                  match: {
-                    'metadata.survey.id': listSurvey.id,
-                  },
-                },
-              ],
+              should: [defaultSurvey, listSurvey, mothSurvey, plantSurvey].map(
+                getSurveyQuery
+              ),
             },
           },
         ],
