@@ -5,7 +5,6 @@ import TaxonSearch, {
   TaxonSearchFilters,
 } from 'Survey/common/Components/TaxonSearch';
 import Sample from 'models/sample';
-import userModel from 'models/user';
 import appModel from 'models/app';
 import savedSamples from 'models/savedSamples';
 import Occurrence from 'models/occurrence';
@@ -48,14 +47,6 @@ const Taxon: FC<Props> = ({ sample }) => {
     goBack();
   };
 
-  const getUserFavouriteSpecies = () => {
-    const { statistics } = userModel.attrs;
-    if (!statistics || !statistics.species || !statistics.species.length) {
-      return null;
-    }
-    return [...statistics.species];
-  };
-
   const { searchNamesOnly, taxonGroupFilters: selectedFilters } =
     appModel.attrs;
 
@@ -65,7 +56,6 @@ const Taxon: FC<Props> = ({ sample }) => {
       <Main>
         <TaxonSearch
           onSpeciesSelected={onSpeciesSelected}
-          favouriteSpecies={getUserFavouriteSpecies()}
           namesFilter={searchNamesOnly}
           informalGroups={selectedFilters}
         />

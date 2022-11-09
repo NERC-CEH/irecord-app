@@ -1,91 +1,81 @@
-import searchEngine from '../taxon_search_engine';
+import search from '..';
 
 (process.env.SAUCE_LABS ? describe.skip : describe)(
   'Taxon Search Engine',
   () => {
     describe('search', () => {
       it('should return a Promise', () => {
-        const promise = searchEngine.search('blackbird');
+        const promise = search('blackbird');
         expect(promise).toBeInstanceOf(Promise);
         return promise;
       });
 
       it('should resolve to an array', () =>
-        searchEngine.search('blackbird').then(results => {
+        search('blackbird').then(results => {
           expect(Array.isArray(results)).toBe(true);
           expect(results.length).toBe(8);
         }));
 
       it('should include full species description', () =>
-        searchEngine.search('blackbird').then(results => {
+        search('blackbird').then(results => {
           const result = results[0];
 
           expect(result).toBeInstanceOf(Object);
-          expect(Object.keys(result)).toEqual(expect.arrayContaining([
-            'array_id',
-            'species_id',
-            'found_in_name',
-            'warehouse_id',
-            'group',
-            'scientific_name',
-            'common_names'
-          ]));
+          expect(Object.keys(result)).toEqual(
+            expect.arrayContaining([
+              'array_id',
+              'species_id',
+              'found_in_name',
+              'warehouse_id',
+              'group',
+              'scientific_name',
+              'common_names',
+            ])
+          );
         }));
 
       it('should accept both capitalized and lowercase strings', () =>
-        searchEngine
-          .search('blackbird')
-          .then(results =>
-            searchEngine
-              .search('Blackbird')
-              .then(results2 => expect(results).toEqual(results2))
-          ));
+        search('blackbird').then(results =>
+          search('Blackbird').then(results2 =>
+            expect(results).toEqual(results2)
+          )
+        ));
 
       // TODO: fix
       it.skip('should treat non alpha numeric characters as spaces', () => {
         // TODO: check "Wakely's Dowd"
         const searchNonAlpha1 = () =>
-          searchEngine
-            .search('Isle-of-Man Cabbage')
-            .then(results =>
-              searchEngine
-                .search('Isle of Man Cabbage')
-                .then(resultsDash => expect(results).toEqual(resultsDash))
-            );
+          search('Isle-of-Man Cabbage').then(results =>
+            search
+              .search('Isle of Man Cabbage')
+              .then(resultsDash => expect(results).toEqual(resultsDash))
+          );
 
         const searchNonAlpha2 = () =>
-          searchEngine
-            .search('Perfoliate (Cotswold) Pennycress')
-            .then(results =>
-              searchEngine
-                .search('Perfoliate Cotswold Pennycress')
-                .then(resultsBracket =>
-                  expect(results).toEqual(resultsBracket)
-                )
-            );
+          search('Perfoliate (Cotswold) Pennycress').then(results =>
+            search
+              .search('Perfoliate Cotswold Pennycress')
+              .then(resultsBracket => expect(results).toEqual(resultsBracket))
+          );
 
         return searchNonAlpha1().then(searchNonAlpha2);
       });
 
       it('should accept hybrids', () =>
-        searchEngine
-          .search('Caryopteris incana x mongholica =')
+        search('Caryopteris incana x mongholica =')
           .then(results => {
             expect(Array.isArray(results)).toBe(true);
             expect(results.length).toBe(1);
           })
           .then(() =>
-            searchEngine
-              .search('X Cupressocyparis')
-              .then(cupressocyparisResults => {
-                expect(Array.isArray(cupressocyparisResults)).toBe(true);
-                expect(cupressocyparisResults.length).toBe(1);
-              })
+            search('X Cupressocyparis').then(cupressocyparisResults => {
+              expect(Array.isArray(cupressocyparisResults)).toBe(true);
+              expect(cupressocyparisResults.length).toBe(1);
+            })
           ));
 
       it('should find genus common names', () =>
-        searchEngine
-          .search('Willow')
+        search('Willow')
           .then(results => {
             expect(Array.isArray(results)).toBe(true);
             let found = false;
@@ -100,7 +90,7 @@ import searchEngine from '../taxon_search_engine';
             expect(found).toBe(true);
           })
           .then(() =>
-            searchEngine.search('Jumping spiders').then(spidersResults => {
+            search('Jumping spiders').then(spidersResults => {
               expect(Array.isArray(spidersResults)).toBe(true);
               expect(spidersResults.length).toBe(1);
             })
@@ -108,7 +98,7 @@ import searchEngine from '../taxon_search_engine';
 
       it('should work with selected taxa', () => {
         const searchLatin = () =>
-          searchEngine.search('Phytomyza ilicis').then(results => {
+          search('Phytomyza ilicis').then(results => {
             expect(Object.keys(results)).not.toHaveLength(0);
             const result = results[0];
 
@@ -117,7 +107,7 @@ import searchEngine from '../taxon_search_engine';
           });
 
         const searchCommonName = () =>
-          searchEngine.search('Giant Blackberry').then(results => {
+          search('Giant Blackberry').then(results => {
             expect(Object.keys(results)).not.toHaveLength(0);
             const result = results[0];
 
@@ -127,7 +117,7 @@ import searchEngine from '../taxon_search_engine';
           });
 
         const searchGenus = () =>
-          searchEngine.search('Rotaliella').then(results => {
+          search('Rotaliella').then(results => {
             expect(Object.keys(results)).not.toHaveLength(0);
             const result = results[0];
 
@@ -136,7 +126,7 @@ import searchEngine from '../taxon_search_engine';
           });
 
         const searchSpecCase1 = () =>
-          searchEngine.search('cockle').then(results => {
+          search('cockle').then(results => {
             expect(Object.keys(results)).not.toHaveLength(0);
             let found = false;
             results.forEach(species => {
@@ -148,7 +138,7 @@ import searchEngine from '../taxon_search_engine';
           });
 
         const searchSpecCase2 = () =>
-          searchEngine.search('blackthorn').then(results => {
+          search('blackthorn').then(results => {
             expect(Object.keys(results)).not.toHaveLength(0);
             // eslint-disable-next-line
             let found = false;
@@ -168,27 +158,23 @@ import searchEngine from '../taxon_search_engine';
       });
 
       it('should allow searching only common names', () =>
-        searchEngine
-          .search('puffin', { namesFilter: 'common' })
-          .then(results => {
-            const containsPuffinus = results.find(
-              res => res.scientific_name === 'Puffinus'
-            );
-            expect(containsPuffinus).toBeUndefined();
-          }));
+        search('puffin', { namesFilter: 'common' }).then(results => {
+          const containsPuffinus = results.find(
+            res => res.scientific_name === 'Puffinus'
+          );
+          expect(containsPuffinus).toBeUndefined();
+        }));
 
       it('should allow searching only scientific names', () =>
-        searchEngine
-          .search('puffin', { namesFilter: 'scientific' })
-          .then(results => {
-            const containsPuffinus = results.find(
-              res => res.common_name === 'Tufted Puffin'
-            );
-            expect(containsPuffinus).toBeUndefined();
-          }));
+        search('puffin', { namesFilter: 'scientific' }).then(results => {
+          const containsPuffinus = results.find(
+            res => res.common_name === 'Tufted Puffin'
+          );
+          expect(containsPuffinus).toBeUndefined();
+        }));
 
       it('should allow searching Recorder style (5 characters) ', () =>
-        searchEngine.search('pupuf').then(results => {
+        search('pupuf').then(results => {
           const containsPuffinus = results.find(
             res => res.scientific_name === 'Puffinus puffinus'
           );
@@ -197,7 +183,7 @@ import searchEngine from '../taxon_search_engine';
 
       describe('genus', () => {
         it('should add all species belonging to it', () =>
-          searchEngine.search('Puffinus').then(results => {
+          search('Puffinus').then(results => {
             expect(results.length).toBe(6);
             const genus = results[0];
             expect(genus.warehouse_id).toBe(141974);
@@ -211,7 +197,7 @@ import searchEngine from '../taxon_search_engine';
 
       describe('common names', () => {
         it('should look into middle names', () =>
-          searchEngine.search('woodpecker').then(results => {
+          search('woodpecker').then(results => {
             expect(Array.isArray(results)).toBe(true);
             expect(results.length > 0).toBe(true);
           }));

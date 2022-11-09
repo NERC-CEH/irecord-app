@@ -159,7 +159,7 @@ function search(
   return results;
 }
 
-function searchSciNames(
+export default function searchSciNames(
   genera,
   searchPhrase,
   maxResults,
@@ -203,5 +203,3 @@ function searchSciNames(
 
   return deDupedResults;
 }
-
-export { searchSciNames as default };
