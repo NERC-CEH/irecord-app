@@ -302,8 +302,9 @@ ion-item-divider {
 }
 
 // clearer alert messages
-.alert-message.sc-ion-alert-md {
+ion-alert div.alert-message.sc-ion-alert-md {
   color: black;
+  font-size: 1.1em;
 }
 
 // ACCESSIBILITY IMPROVEMENTS END
