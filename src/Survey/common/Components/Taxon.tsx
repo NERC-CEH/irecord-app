@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { Page, Header, Main, useToast } from '@flumens';
 import Sample from 'models/sample';
 import appModel from 'models/app';
-import Occurrence from 'models/occurrence';
+import Occurrence, { Taxon as TaxonI } from 'models/occurrence';
 import { useRouteMatch } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { NavContext } from '@ionic/react';
@@ -34,7 +34,7 @@ const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
     return newOccurrence;
   };
 
-  const createNewSampleModel = async (taxon: unknown) => {
+  const createNewSampleModel = async (taxon: TaxonI) => {
     const newSample = (await surveyConfig.smp?.create?.(Sample, Occurrence, {
       taxon,
       surveySample: sample,
@@ -87,13 +87,17 @@ const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
   const { searchNamesOnly, taxonGroupFilters: selectedFilters } =
     appModel.attrs;
 
-  const isSpeciesRestrictedSurvey = surveyConfig.taxonGroups;
+  const isSpeciesRestrictedSurvey =
+    surveyConfig.name !== 'default' && surveyConfig.taxonGroups;
   const rightSlot = !isSpeciesRestrictedSurvey && <TaxonSearchFilters />;
 
   const informalGroups = isSpeciesRestrictedSurvey
     ? surveyConfig.taxonGroups
     : selectedFilters;
   const namesFilter = isSpeciesRestrictedSurvey ? undefined : searchNamesOnly;
+
+  const suggestedSpecies = occurrence?.getSuggestions();
+  const suggestionsAreLoading = occurrence?.isIdentifying();
 
   return (
     <Page id="taxon">
@@ -105,6 +109,8 @@ const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
           showEditButton={!editingExisting}
           informalGroups={informalGroups}
           namesFilter={namesFilter}
+          suggestedSpecies={suggestedSpecies}
+          suggestionsAreLoading={suggestionsAreLoading}
         />
       </Main>
     </Page>

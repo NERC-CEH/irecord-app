@@ -24,8 +24,8 @@ const HomeMain: FC<Props> = ({ sample, onDelete }) => {
   sample.samples.forEach(childSample => {
     const [occ] = childSample.occurrences;
     if (occ) {
-      const taxon = occ.attrs.taxon || {};
-      uniqueTaxa[taxon.warehouse_id] = true;
+      const { taxon } = occ.attrs;
+      uniqueTaxa[taxon?.warehouse_id as any] = true;
     }
   });
 

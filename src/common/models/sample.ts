@@ -29,6 +29,17 @@ import { modelStore } from './store';
 import Occurrence from './occurrence';
 import Media from './media';
 
+const ATTRS_TO_LEAVE = [
+  ...coreAttributes,
+
+  // TODO: make this better so that below are not hardcoded
+  'smp:surveyId',
+  'smp:deleted',
+  'occ:deleted',
+  'smp:training',
+  'occ:training',
+];
+
 const surveyConfigs = {
   default: defaultSurvey,
   list: listSurvey,
@@ -147,9 +158,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       if (!this.occurrences.length) return this.survey;
 
       const [occ] = this.occurrences;
-      const taxon = occ.attrs.taxon || {};
-
-      return Sample.getSurvey(taxon.group);
+      return Sample.getSurvey(occ.attrs.taxon?.group);
     };
 
     const isDefaultSurvey = this.metadata.survey === 'default';
@@ -249,7 +258,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     if (survey.group !== newSurvey.group) {
       // remove non-core attributes for survey switch
       const removeSmpNonCoreAttr = (key: any) => {
-        if (!coreAttributes.includes(`smp:${key}`)) {
+        if (!ATTRS_TO_LEAVE.includes(`smp:${key}`)) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           delete this.attrs[key];
@@ -258,7 +267,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       Object.keys(this.attrs).forEach(removeSmpNonCoreAttr);
 
       const removeOccNonCoreAttr = (key: any) => {
-        if (!coreAttributes.includes(`occ:${key}`)) {
+        if (!ATTRS_TO_LEAVE.includes(`occ:${key}`)) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           // eslint-disable-next-line no-param-reassign

@@ -15,20 +15,8 @@ import appModel from 'models/app';
 import SpeciesListItem from './SpeciesListItem';
 import './styles.scss';
 
-const speciesNameSort = (occ1: Occurrence, occ2: Occurrence) => {
-  const taxon1 = occ1.attrs.taxon;
-  const taxon2 = occ2.attrs.taxon;
-
-  const name1 =
-    taxon1.found_in_name >= 0
-      ? taxon1.common_names[taxon1.found_in_name]
-      : taxon1.scientific_name;
-  const name2 =
-    taxon2.found_in_name >= 0
-      ? taxon2.common_names[taxon2.found_in_name]
-      : taxon2.scientific_name;
-  return name1.localeCompare(name2);
-};
+const speciesNameSort = (occ1: Occurrence, occ2: Occurrence) =>
+  occ1.getPrettyName().localeCompare(occ2.getPrettyName());
 
 const speciesNameSortForSamples = (smp1: Sample, smp2: Sample) =>
   speciesNameSort(smp1.occurrences[0], smp2.occurrences[0]);

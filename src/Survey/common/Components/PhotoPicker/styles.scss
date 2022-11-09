@@ -1,0 +1,5 @@
+div.rounded ion-item.photo-picker.with-cropper {
+  --border-style: none !important;
+  --border-radius: var(--theme-border-radius);
+  border-radius: var(--theme-border-radius);
+}

@@ -29,6 +29,8 @@ export type Attrs = ModelAttrs & {
   sendAnalytics: boolean;
   appSession: number;
 
+  useSpeciesImageClassifier: boolean;
+
   showVerifiedRecordsNotification: boolean;
   verifiedRecordsTimestamp: null | number;
 };
@@ -58,6 +60,8 @@ export const defaults: Attrs = {
   searchNamesOnly: null,
   sendAnalytics: true,
   appSession: 0,
+
+  useSpeciesImageClassifier: true,
 
   showVerifiedRecordsNotification: true,
   verifiedRecordsTimestamp: null,

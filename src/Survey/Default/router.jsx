@@ -3,8 +3,9 @@ import savedSamples from 'models/savedSamples';
 import ModelLocation from 'Survey/common/Components/ModelLocation';
 import StartNewSurvey from 'Survey/common/Components/StartNewSurvey';
 import Activity from 'Survey/common/Components/Activity';
+import Taxon from 'Survey/common/Components/Taxon';
 import DefaultHome from './Home';
-import Taxon from './Taxon';
+import NewSurveyTaxon from './Taxon';
 import survey from './config';
 
 const { AttrPageFromRoute } = AttrPage;
@@ -12,7 +13,7 @@ const { AttrPageFromRoute } = AttrPage;
 const baseURL = `/survey/${survey.name}`;
 
 const routes = [
-  [`${baseURL}`, StartNewSurvey.with(survey, Taxon), true],
+  [`${baseURL}`, StartNewSurvey.with(survey, NewSurveyTaxon), true],
   [`${baseURL}/:smpId`, DefaultHome],
   [`${baseURL}/:smpId/:attr`, AttrPageFromRoute],
   [`${baseURL}/:smpId/location`, ModelLocation],

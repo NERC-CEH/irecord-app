@@ -30,7 +30,7 @@ const PlantOccurrenceHome: FC<Props> = ({ subSample: sample }) => {
           )}
 
           <div className="rounded">
-            <PhotoPicker model={occ} />
+            <PhotoPicker model={occ} disableClassifier />
           </div>
 
           <div className="rounded">

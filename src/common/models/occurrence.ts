@@ -6,12 +6,50 @@ import {
 } from '@flumens';
 import { IObservableArray } from 'mobx';
 import { Survey } from 'Survey/common/config';
-import Media from './media';
+import Media, { ClassifierResult, ClassifierSuggestion } from './media';
 import Sample from './sample';
 
-export type Taxon = any;
+export enum MachineInvolvement {
+  /**
+   * No involvement.
+   */
+  NONE = 0,
+  /**
+   * Human determined, machine suggestions were ignored.
+   */
+  HUMAN = 1,
+  /**
+   * Human chose a machine suggestion given a very low probability.
+   */
+  HUMAN_ACCEPTED_LESS_PREFERRED_LOW = 2,
+  /**
+   * Human chose a machine suggestion that was less-preferred.
+   */
+  HUMAN_ACCEPTED_LESS_PREFERRED = 3,
+  /**
+   * Human chose a machine suggestion that was the preferred choice.
+   */
+  HUMAN_ACCEPTED_PREFERRED = 4,
+  /**
+   * Machine determined with no human involvement.
+   */
+  MACHINE = 5,
+}
 
-type Attrs = OccurrenceAttrs & {
+export type Taxon = {
+  warehouse_id: number;
+  group: number;
+  scientific_name: string;
+  common_names: string[];
+  array_id?: number;
+  species_id?: number;
+  found_in_name?: number; // which common_names array index to use if any
+
+  probability?: number;
+  machineInvolvement?: MachineInvolvement;
+} & Partial<ClassifierResult>;
+
+type Attrs = Omit<OccurrenceAttrs, 'taxon'> & {
   taxon?: Taxon;
   'number-ranges'?: string;
   number?: any;
@@ -44,12 +82,13 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
   validateRemote = validateRemoteModel;
 
   getPrettyName() {
-    const specie = this.attrs.taxon || {};
-    const scientificName = specie.scientific_name;
-    const commonName =
-      specie.found_in_name >= 0 && specie.common_names[specie.found_in_name];
+    const { taxon } = this.attrs;
+    if (!taxon) return '';
 
-    return commonName || scientificName;
+    if (Number.isFinite(taxon.found_in_name))
+      return taxon.common_names[taxon.found_in_name as number];
+
+    return taxon.scientific_name;
   }
 
   getVerificationStatus() {
@@ -98,5 +137,18 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
     const statusWithSubstatus = `${this.metadata?.verification?.verification_status}${this.metadata?.verification?.verification_substatus}`;
 
     return codes[statusWithSubstatus];
+  }
+
+  isIdentifying = () => this.media.some(m => m.isIdentifying());
+
+  getSuggestions() {
+    const getSuggestions = (m: Media) => m.getSuggestions();
+
+    const byProbability = (
+      suggestion1: ClassifierSuggestion,
+      suggestion2: ClassifierSuggestion
+    ) => suggestion2.probability - suggestion1.probability;
+
+    return this.media.flatMap(getSuggestions).sort(byProbability);
   }
 }

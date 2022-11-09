@@ -4,8 +4,6 @@ import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import AppOccurrence from 'models/occurrence';
-import Media from 'models/media';
-import { isPlatform } from '@ionic/react';
 import * as Yup from 'yup';
 import {
   coreAttributes,
@@ -20,8 +18,6 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
 } from 'Survey/common/config';
-import { Capacitor } from '@capacitor/core';
-import config from 'common/config';
 
 const stageOptions = [
   { label: 'Not Recorded', value: '', isDefault: true },
@@ -243,14 +239,8 @@ const survey: Survey = {
     return sample;
   },
 
-  async createWithPhoto(Sample, Occurrence, options) {
-    const { image } = options;
-
-    const imageModel = await Media.getImageModel(
-      isPlatform('hybrid') ? Capacitor.convertFileSrc(image) : image,
-      config.dataPath
-    );
-    return survey.create(Sample, Occurrence, { image: imageModel as Media });
+  async createWithPhoto(Sample, Occurrence, { image }) {
+    return survey.create(Sample, Occurrence, { image });
   },
 
   modifySubmission(submission) {

@@ -97,7 +97,7 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
 
     const taxon = occ.getPrettyName();
 
-    const isDefaultSurvey = occ.attrs.taxon && survey.name === 'default'; // photo-first sample check
+    const isDefaultSurvey = !!occ.attrs.taxon && survey.name === 'default'; // photo-first sample check
 
     return (
       <div className="survey-info">

@@ -1,0 +1,36 @@
+.photo-picker .img {
+  .badge {
+    position: absolute;
+    left: 2px;
+    bottom: 2px;
+    padding: 3px;
+  }
+
+  .warning-icon {
+    position: absolute;
+    left: 2px;
+    bottom: 2px;
+    background: var(--classifier-unlikely-background);
+    color: var(--classifier-unlikely);
+    border-radius: 100%;
+  }
+
+  .success-icon {
+    position: absolute;
+    left: 2px;
+    bottom: 2px;
+    background: var(--classifier-success-background);
+    color: var(--classifier-success);
+    border-radius: 100%;
+  }
+
+  ion-spinner {
+    position: absolute;
+    left: 2px;
+    bottom: 2px;
+    background: #ffffff94;
+    border-radius: 50%;
+    height: 1.1em;
+    width: 1.1em;
+  }
+}

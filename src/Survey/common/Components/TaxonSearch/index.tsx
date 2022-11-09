@@ -1,9 +1,9 @@
 import { useRef, FC, useState } from 'react';
 import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { Taxon } from 'models/occurrence';
 import searchSpecies from './utils';
 import Suggestions from './components/Suggestions';
-// import { Taxon } from 'models/occurrence';
 import './styles.scss';
 
 export { default as TaxonSearchFilters } from './components/TaxonSearchFilters';
@@ -17,7 +17,8 @@ type Props = {
   namesFilter?: string | null;
   resetOnSelect?: boolean;
   showEditButton?: boolean;
-  // suggestedSpecies?: Taxon[];
+  suggestedSpecies?: Taxon[];
+  suggestionsAreLoading?: boolean;
 };
 
 const TaxonSearch: FC<Props> = ({
@@ -27,13 +28,14 @@ const TaxonSearch: FC<Props> = ({
   namesFilter,
   resetOnSelect,
   showEditButton,
-  // suggestedSpecies,
+  suggestedSpecies,
+  suggestionsAreLoading,
 }) => {
   const { t } = useTranslation();
 
   const inputEl = useRef<any>();
 
-  const [searchResults, setSearchResults] = useState(null);
+  const [searchResults, setSearchResults] = useState<Taxon[]>();
   const [searchPhrase, setSearchPrase] = useState('');
 
   const annotateRecordedTaxa = (newSearchResults: any) =>
@@ -50,7 +52,7 @@ const TaxonSearch: FC<Props> = ({
       typeof newSearchPhrase === 'string' &&
       newSearchPhrase.length >= MIN_SEARCH_LENGTH;
     if (!isValidSearch) {
-      setSearchResults(null);
+      setSearchResults(undefined);
       setSearchPrase('');
       return;
     }
@@ -69,14 +71,14 @@ const TaxonSearch: FC<Props> = ({
   };
 
   const onInputClear = () => {
-    setSearchResults(null);
+    setSearchResults(undefined);
     setSearchPrase('');
   };
 
   const onSpeciesSelectedWrap = (species: any, editButtonPressed?: boolean) => {
     onSpeciesSelected(species, editButtonPressed);
     if (resetOnSelect && !editButtonPressed) {
-      setSearchResults(null);
+      setSearchResults(undefined);
       setSearchPrase('');
       inputEl.current.value = '';
       inputEl.current.setFocus();
@@ -103,6 +105,8 @@ const TaxonSearch: FC<Props> = ({
 
       <Suggestions
         searchResults={searchResults}
+        suggestedSpecies={suggestedSpecies}
+        suggestionsAreLoading={suggestionsAreLoading}
         searchPhrase={searchPhrase}
         onSpeciesSelected={onSpeciesSelectedWrap}
         showEditButton={!!showEditButton}

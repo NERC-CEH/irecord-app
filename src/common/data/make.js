@@ -9,6 +9,8 @@ const axios = require('axios');
 const makeCommonNameMap = require('./extractCommonNames');
 const optimise = require('./optimise');
 
+const UKSIListID = 15;
+
 const FETCH_LIMIT = 50000;
 
 async function fetch() {
@@ -34,7 +36,7 @@ async function fetch() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const options = {
-      url: `https://irecord.org.uk/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=15&limit=${FETCH_LIMIT}&offset=${offset}`,
+      url: `https://irecord.org.uk/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=${UKSIListID}&limit=${FETCH_LIMIT}&offset=${offset}`,
       headers: {
         'x-api-key': apiKey,
         Authorization: `Basic ${basicAuth}`,

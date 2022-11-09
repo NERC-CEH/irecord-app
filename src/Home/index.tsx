@@ -15,7 +15,6 @@ import {
 import { observer } from 'mobx-react';
 import {
   peopleOutline,
-  cameraOutline,
   menuOutline,
   homeOutline,
   addOutline,
@@ -26,28 +25,13 @@ import savedSamples from 'models/savedSamples';
 import appModel from 'models/app';
 import userModel from 'models/user';
 import { Trans as T } from 'react-i18next';
-import { useAlert, captureImage, LongPressFabButton } from '@flumens';
-import defaultSurveyConfig from 'Survey/Default/config';
+import { useAlert, LongPressFabButton } from '@flumens';
 import PendingSurveysBadge from 'Components/PendingSurveysBadge';
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
 import Home from './Home';
 import Activities from './Activities';
 import Menu from './Menu';
+import DefaultCameraSurveyButton from './DefaultCameraSurveyButton';
 import './styles.scss';
-
-async function createDefaultSurvey(image: string) {
-  if (!defaultSurveyConfig.createWithPhoto) return;
-
-  const sample = await defaultSurveyConfig.createWithPhoto(Sample, Occurrence, {
-    image,
-  });
-
-  await sample.save();
-
-  // add to main collection
-  savedSamples.push(sample);
-}
 
 function useLongPressTip() {
   const alert = useAlert();
@@ -103,13 +87,6 @@ const HomeController: FC = () => {
     return removeEventListener;
   };
   useEffect(exitApp, []);
-
-  async function startDefaultSurveyWithImage() {
-    const [image] = await captureImage({ camera: true });
-    if (!image) return;
-
-    createDefaultSurvey(image);
-  }
 
   const navigateToPrimarySurvey = () => navigate(`/survey/default`);
 
@@ -184,16 +161,7 @@ const HomeController: FC = () => {
           </IonTabButton>
 
           <IonTabButton>
-            {/* https://github.com/ionic-team/ionic-framework/issues/22511 */}
-            <div
-              className="on-click-container"
-              onClick={startDefaultSurveyWithImage}
-            >
-              <IonIcon icon={cameraOutline} />
-              <IonLabel>
-                <T>Photo</T>
-              </IonLabel>
-            </div>
+            <DefaultCameraSurveyButton />
           </IonTabButton>
 
           <IonTabButton tab="menu" href="/home/menu">

@@ -20,6 +20,7 @@
     "make:species": "cd src/common/data && node make.js"
   },
   "dependencies": {
+    "@capacitor-community/camera-preview": "^3.1.1",
     "@capacitor/android": "^4.4.0",
     "@capacitor/app": "^4.1.0",
     "@capacitor/camera": "^4.1.3",

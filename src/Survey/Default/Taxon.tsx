@@ -12,39 +12,21 @@ import { useRouteMatch } from 'react-router';
 import surveyConfig from 'Survey/Default/config';
 import { NavContext } from '@ionic/react';
 
-type Props = {
-  sample?: Sample;
+const getNewSample = async (taxon: any) => {
+  const newSample = await surveyConfig.create(Sample, Occurrence, { taxon });
+  newSample.save();
+  savedSamples.push(newSample);
+  return newSample;
 };
 
-const Taxon: FC<Props> = ({ sample }) => {
-  const { navigate, goBack } = useContext(NavContext);
+const Taxon: FC = () => {
+  const { navigate } = useContext(NavContext);
   const match = useRouteMatch();
 
-  const getNewSample = async (taxon: any) => {
-    const newSample = await surveyConfig.create(Sample, Occurrence, { taxon });
-    newSample.save();
-    savedSamples.push(newSample);
-    return newSample;
-  };
-
   const onSpeciesSelected = async (taxon: any) => {
-    const isNew = !sample;
-
-    if (isNew) {
-      const newSample = await getNewSample(taxon);
-      const url = match.url.replace('/new', '');
-      navigate(`${url}/${newSample.cid}`, undefined, 'replace');
-
-      return;
-    }
-
-    const [occ] = sample.occurrences;
-    sample.removeOldTaxonAttributes(occ, taxon);
-
-    occ.attrs.taxon = taxon;
-    await occ.save();
-
-    goBack();
+    const newSample = await getNewSample(taxon);
+    const url = match.url.replace('/new', '');
+    navigate(`${url}/${newSample.cid}`, undefined, 'replace');
   };
 
   const { searchNamesOnly, taxonGroupFilters: selectedFilters } =

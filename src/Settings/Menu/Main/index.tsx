@@ -18,6 +18,7 @@ import {
   locationOutline,
   warningOutline,
   personRemoveOutline,
+  cameraOutline,
 } from 'ionicons/icons';
 import { Main, useAlert, InfoMessage, MenuAttrToggle } from '@flumens';
 import config from 'common/config';
@@ -134,6 +135,7 @@ type Props = {
   onToggle: any;
   sendAnalytics?: boolean;
   useExperiments?: boolean;
+  useSpeciesImageClassifier: boolean;
 };
 
 const MenuMain: FC<Props> = ({
@@ -149,6 +151,7 @@ const MenuMain: FC<Props> = ({
   geolocateSurveyEntries,
   useGridMap,
   gridSquareUnit,
+  useSpeciesImageClassifier,
 }) => {
   const showUserDeleteDialog = useUserDeleteDialog(deleteUser);
   const showResetDialog = useResetDialog(resetApp);
@@ -165,6 +168,8 @@ const MenuMain: FC<Props> = ({
     onToggle('geolocateSurveyEntries', checked);
   const onUseExperiments = (checked: boolean) =>
     onToggle('useExperiments', checked);
+  const onUseImageClassifier = (checked: boolean) =>
+    onToggle('useSpeciesImageClassifier', checked);
 
   return (
     <Main>
@@ -222,6 +227,15 @@ const MenuMain: FC<Props> = ({
           <T>Application</T>
         </IonItemDivider>
         <div className="rounded">
+          <MenuAttrToggle
+            icon={cameraOutline}
+            label="Suggest species"
+            value={useSpeciesImageClassifier}
+            onChange={onUseImageClassifier}
+          />
+          <InfoMessage color="medium">
+            Use image recognition to identify species from your photos.
+          </InfoMessage>
           {/* <IonItem routerLink="/settings/language">
             <IonLabel>{t('Language')}</IonLabel>
             <IonIcon icon={flag} size="small" slot="start" />

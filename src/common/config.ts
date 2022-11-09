@@ -18,6 +18,9 @@ const config = {
 
   sentryDNS: process.env.APP_SENTRY_KEY as string,
 
+  POSITIVE_THRESHOLD: 0.7,
+  POSSIBLE_THRESHOLD: 0.2,
+
   map: {
     mapboxApiKey: process.env.APP_MAPBOX_MAP_KEY as string,
     osApiKey: process.env.APP_OS_MAP_KEY as string,

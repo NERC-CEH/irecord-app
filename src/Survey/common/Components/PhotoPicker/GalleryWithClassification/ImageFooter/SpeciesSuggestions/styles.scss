@@ -1,0 +1,208 @@
+.gallery-modal ion-content .swiper .footer-container {
+  h3 {
+    font-size: 1em;
+    font-weight: 600;
+    color: #fff;
+    text-align: left;
+    margin: 8px 0 13px 5px;
+  }
+
+  .id-loading {
+    display: flex;
+    align-self: center;
+    color: white;
+    margin: 30px auto;
+    font-size: 0.8em;
+
+    ion-spinner {
+      margin-left: 10px;
+      height: 1.2em;
+      color: white;
+    }
+  }
+
+  .re-identify-button {
+    width: fit-content;
+    margin: 10px auto 0;
+  }
+
+  .species-array-wrapper {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+
+    .species-array {
+      width: 100%;
+      overflow: auto;
+      display: flex;
+      flex: 1;
+      height: 70%;
+
+      .species-tile {
+        padding: 10px 8px 0px 0;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        max-width: 90%;
+        border-radius: 10px;
+        overflow: hidden;
+        min-width: 31%;
+
+        &:first-of-type {
+          margin-left: 10px;
+        }
+
+        &:last-of-type {
+          margin-right: 10px;
+        }
+
+        .score {
+          width: 2.4em;
+          height: 2.4em;
+          background: #fff;
+          position: absolute;
+          z-index: 99;
+          border-radius: 50%;
+          top: 1px;
+          right: 1px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &.success {
+            color: var(--ion-color-primary);
+            border: 2px solid var(--ion-color-primary);
+          }
+
+          &.warning {
+            color: var(--ion-color-warning);
+            border: 2px solid var(--ion-color-warning);
+          }
+
+          &.danger {
+            color: var(--ion-color-danger);
+            border: 2px solid var(--ion-color-danger);
+          }
+
+          ion-label {
+            font-size: 0.7em;
+            font-weight: 600;
+          }
+        }
+
+        .container {
+          position: relative;
+          background: white;
+          display: flex;
+          flex-direction: column;
+          border-radius: 10px;
+          width: 100%;
+          align-items: center;
+
+          ion-icon {
+            // TODO: remove once real pics are available
+            width: 100%;
+            height: 100%;
+            --ionicon-stroke-width: 5px;
+            z-index: 1;
+
+            svg path {
+              fill: white !important;
+            }
+          }
+
+          ion-label {
+            padding: 0 2px;
+            flex: 1;
+            text-align: center;
+            z-index: 10;
+            color: #121414;
+            font-weight: 500;
+            max-width: 95%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-size: 0.9em;
+            font-weight: bolder;
+
+            &.scientific {
+              font-style: italic;
+              font-weight: normal;
+            }
+          }
+
+          overflow: hidden;
+
+          .species-thumbnail {
+            z-index: 10;
+            padding: -20px 0 0 0;
+            margin-top: -5px;
+            margin: -5px -3% -10%;
+            max-height: 90%;
+          }
+          img.species-thumbnail-background {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+          }
+          div.species-thumbnail-background {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 40%;
+
+            img {
+              position: absolute;
+              filter: blur(30px);
+              transform: scale(2.5);
+              height: 100%;
+              width: 100%;
+            }
+          }
+
+          .info-box {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background: #fffffff0;
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+            box-shadow: 0 0 15px 5px #e6e6e6;
+            z-index: 100;
+
+            ion-icon {
+              width: 30%;
+              height: 50%;
+              --ionicon-stroke-width: 20;
+              position: absolute;
+              bottom: 4%;
+              left: 16%;
+            }
+          }
+        }
+      }
+      .species-tile.tablet {
+        min-width: 20%;
+      }
+
+      .img-placeholder {
+        background: #262626e3;
+        border-radius: 11px;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-self: stretch;
+        margin: 10px 5px 0px 5px;
+      }
+    }
+  }
+}

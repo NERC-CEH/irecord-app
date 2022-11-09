@@ -1,14 +1,11 @@
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 import { IonItem, IonButton, IonIcon } from '@ionic/react';
 import { createOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import informalGroups from 'common/data/informal_groups.data.json';
+import { Taxon } from 'models/occurrence';
+import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 import './styles.scss';
-
-const onClick = (e, species, onSelect) => {
-  const pressedEditShortcut = e.target.tagName === 'ION-BUTTON';
-  onSelect(species, pressedEditShortcut);
-};
 
 /**
  * Highlight the searched parts of taxa names.
@@ -17,16 +14,21 @@ const onClick = (e, species, onSelect) => {
  * @returns {*}
  * @private
  */
-function prettifyName(species, searchPhrase) {
-  const name =
-    species.found_in_name >= 0
-      ? species.common_names[species.found_in_name]
-      : species.scientific_name;
+function prettifyName(
+  species: Taxon & { _dedupedScientificName?: string },
+  searchPhrase?: string
+) {
+  const name = Number.isFinite(species.found_in_name)
+    ? species.common_names[species.found_in_name as number]
+    : species.scientific_name;
+
+  if (!searchPhrase) return name;
 
   const searchPos = name.toLowerCase().indexOf(searchPhrase);
   if (!(searchPos >= 0)) {
     return name;
   }
+
   let deDupedName;
   if (species._dedupedScientificName) {
     deDupedName = (
@@ -35,6 +37,7 @@ function prettifyName(species, searchPhrase) {
       </small>
     );
   }
+
   return (
     <>
       <span>
@@ -42,24 +45,49 @@ function prettifyName(species, searchPhrase) {
         <b>{name.slice(searchPos, searchPos + searchPhrase.length)}</b>
         {name.slice(searchPos + searchPhrase.length)}
       </span>
+
       {deDupedName}
     </>
   );
 }
 
-const Species = ({ species, searchPhrase, showEditButton, onSelect }) => {
+type Props = {
+  species: Taxon;
+  searchPhrase?: string;
+  onSelect: any;
+  showEditButton?: boolean;
+};
+
+const Species: FC<Props> = ({
+  species,
+  searchPhrase,
+  showEditButton,
+  onSelect,
+}) => {
   const prettyName = prettifyName(species, searchPhrase);
-  const group = informalGroups[species.group];
+  const group = (informalGroups as any)[species.group];
+
+  const onClickWrap = (e: any) => {
+    const pressedEditShortcut = e.target.tagName === 'ION-BUTTON';
+    onSelect(species, pressedEditShortcut);
+  };
+
+  const { probability } = species;
 
   return (
-    <IonItem
-      className="search-result"
-      onClick={e => onClick(e, species, onSelect)}
-    >
+    <IonItem className="search-result" onClick={onClickWrap}>
+      {probability && (
+        <div className="probability">
+          <ProbabilityBadge probability={probability} />
+        </div>
+      )}
+
       <div className="taxon">{prettyName}</div>
+
       <span className={`group ${!showEditButton ? 'right' : ''} `}>
         <T>{group}</T>
       </span>
+
       {showEditButton && (
         <IonButton
           className="edit-shortcut"
@@ -72,13 +100,6 @@ const Species = ({ species, searchPhrase, showEditButton, onSelect }) => {
       )}
     </IonItem>
   );
-};
-
-Species.propTypes = {
-  species: PropTypes.object.isRequired,
-  searchPhrase: PropTypes.string.isRequired,
-  showEditButton: PropTypes.bool,
-  onSelect: PropTypes.func.isRequired,
 };
 
 export default Species;

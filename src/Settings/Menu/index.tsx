@@ -97,6 +97,7 @@ const Container = () => {
     useExperiments,
     gridSquareUnit,
     geolocateSurveyEntries,
+    useSpeciesImageClassifier,
   } = appModel.attrs;
 
   const toast = useToast();
@@ -114,6 +115,7 @@ const Container = () => {
         useExperiments={useExperiments}
         gridSquareUnit={gridSquareUnit}
         geolocateSurveyEntries={geolocateSurveyEntries}
+        useSpeciesImageClassifier={useSpeciesImageClassifier}
         resetApp={() => resetApp(toast)}
         deleteAllSamples={() => deleteAllSamples(toast)}
         onToggle={(setting: any, checked: any) => onToggle(setting, checked)}

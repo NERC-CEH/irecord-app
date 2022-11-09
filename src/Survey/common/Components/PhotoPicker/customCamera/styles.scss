@@ -1,0 +1,55 @@
+// the background camera must see through it all
+body {
+  background-color: transparent !important;
+}
+
+#camera-container {
+  position: absolute;
+  background: black; // helps to prevent a white background flash while the camera is loading
+  height: 100vh;
+  width: 100vw;
+  border-bottom: 80px solid black;
+
+  #camera-focus-frame {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(to right, black 4px, transparent 4px) 0 0,
+      linear-gradient(to right, black 4px, transparent 4px) 0 100%,
+      linear-gradient(to left, black 4px, transparent 4px) 100% 0,
+      linear-gradient(to left, black 4px, transparent 4px) 100% 100%,
+      linear-gradient(to bottom, black 4px, transparent 4px) 0 0,
+      linear-gradient(to bottom, black 4px, transparent 4px) 100% 0,
+      linear-gradient(to top, black 4px, transparent 4px) 0 100%,
+      linear-gradient(to top, black 4px, transparent 4px) 100% 100%;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cancel-button {
+    position: absolute;
+    bottom: -55px;
+    left: 11px;
+    background: transparent;
+    color: white;
+    height: 32px;
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  .camera-button {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    bottom: -64px;
+    left: 50vw;
+    transform: translateX(-50%);
+    background: white;
+    border: 2px #cdcdcd solid;
+    padding: 10px;
+  }
+}

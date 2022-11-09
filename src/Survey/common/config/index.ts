@@ -311,7 +311,7 @@ export interface Survey extends SampleConfig {
     Smp: typeof Sample,
     Occ: typeof Occurrence,
     options: {
-      image: string;
+      image: Media;
     }
   ) => Promise<Sample>;
 }
