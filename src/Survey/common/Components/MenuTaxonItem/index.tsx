@@ -4,6 +4,7 @@ import { Trans as T } from 'react-i18next';
 import Occurrence from 'models/occurrence';
 import { useRouteMatch } from 'react-router';
 import clsx from 'clsx';
+import { observer } from 'mobx-react';
 import './styles.scss';
 
 interface Props {
@@ -14,12 +15,13 @@ const MenuTaxonItem: FC<Props> = ({ occ }) => {
   const isDisabled = occ.isDisabled();
   const { url } = useRouteMatch();
 
-  const species = occ.attrs.taxon || {};
+  const { taxon } = occ.attrs;
 
-  // taxon
-  const scientificName = species.scientific_name;
+  const scientificName = taxon?.scientific_name;
   const commonName =
-    species.found_in_name >= 0 && species.common_names[species.found_in_name];
+    taxon && Number.isFinite(taxon.found_in_name)
+      ? taxon.common_names[taxon.found_in_name as number]
+      : '';
 
   const empty = !commonName && !scientificName;
 
@@ -48,4 +50,4 @@ const MenuTaxonItem: FC<Props> = ({ occ }) => {
   );
 };
 
-export default MenuTaxonItem;
+export default observer(MenuTaxonItem);
