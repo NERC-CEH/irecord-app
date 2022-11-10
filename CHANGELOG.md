@@ -15,6 +15,7 @@
 - Added user account delete option.
 - Added an option to resend verification emails.
 - Unified attribute locking mechanism for all types of inputs. Enabled locking of toggle-type attributes.
+- Reintroduced plant survey survey square change alert.
 - Improved interface accessibility. Increased font sizes and contrast.
 - Bug fixes and other improvements.
 

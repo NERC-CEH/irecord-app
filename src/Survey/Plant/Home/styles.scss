@@ -1,0 +1,26 @@
+.grid-alert-toggle {
+  border-top: 1px solid
+    var(
+      --ion-toolbar-border-color,
+      var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.2)))
+    );
+
+  ion-button.info-button {
+    float: left;
+    margin: 9px;
+    font-size: 1.2em !important;
+    height: 30px;
+    width: 41px;
+  }
+
+  .menu-attr-toggle {
+    max-width: fit-content;
+    --background: transparent;
+    --border-style: none;
+    float: right;
+  }
+}
+
+.grid-square-alert h1 {
+  text-align: center;
+}
