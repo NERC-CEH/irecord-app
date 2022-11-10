@@ -139,14 +139,13 @@ const Suggestions: FC<Props> = ({
     const deDuped = deDuplicateSuggestions(species);
 
     return (
-      <div>
+      <>
         <h3>
           <T>Suggestions</T>:
         </h3>
-        <IonList id="suggestions" lines="none">
-          {deDuped.map(getSuggestion)}
-        </IonList>
-      </div>
+
+        {deDuped.map(getSuggestion)}
+      </>
     );
   };
 
@@ -157,18 +156,12 @@ const Suggestions: FC<Props> = ({
 
       if (suggestionsAreLoading)
         return (
-          <div>
-            <h3>
-              <T>Suggestions loading</T>... <IonSpinner />
-            </h3>
-          </div>
+          <h3>
+            <T>Loading suggestions</T>... <IonSpinner />
+          </h3>
         );
 
-      return (
-        <IonList id="suggestions" lines="none">
-          {getSearchInfo(t)}
-        </IonList>
-      );
+      return getSearchInfo(t);
     }
 
     const noSpeciesFound = searchResults.length === 0;

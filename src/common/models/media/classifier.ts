@@ -35,7 +35,7 @@ async function getCommonNames(sp: AISuggestion) {
   });
 
   const commonNames = taxa?.[0]?.common_names;
-  if (!commonNames.length) return { common_names: [] };
+  if (!commonNames?.length) return { common_names: [] };
 
   return { common_names: commonNames, found_in_name: 0 };
 }
