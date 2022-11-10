@@ -68,10 +68,9 @@ export default async function identify(url: string): Promise<Result> {
     ...(await getCommonNames(sp)),
   });
 
+  const aiSuggestions = response.data.suggestions || [];
   const suggestions = await Promise.all(
-    (response.data.suggestions.filter(withValidData) as AISuggestion[]).map(
-      transformToTaxon
-    )
+    aiSuggestions.filter(withValidData).map(transformToTaxon)
   );
 
   return {

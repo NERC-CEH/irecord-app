@@ -36,7 +36,7 @@
     "@capacitor/status-bar": "^4.0.1",
     "@changey/react-leaflet-markercluster": "^4.0.0-rc1",
     "@flumens/bigu": "^0.4.0",
-    "@flumens/ionic": "1.18.2",
+    "@flumens/ionic": "1.18.3",
     "@ionic-native/core": "5.36.0",
     "@ionic-native/launch-review": "^5.29.0",
     "@ionic/core": "^6.2.6",
