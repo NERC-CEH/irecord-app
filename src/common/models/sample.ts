@@ -66,7 +66,7 @@ type Metadata = SampleMetadata & {
    * @deprecated
    */
   complex_survey?: string;
-  gridSquareUnit?: string;
+  gridSquareUnit?: 'monad' | 'tetrad';
   saved?: boolean;
 };
 
