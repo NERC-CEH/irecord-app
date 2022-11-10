@@ -2,7 +2,7 @@ require('dotenv').config({ silent: true }); // get local environment variables f
 const pkg = require('./package.json');
 
 const build = process.env.BITRISE_BUILD_NUMBER || pkg.build;
-const OFFSET = 300000000;
+const OFFSET = 10;
 
 if (!build) throw new Error('BITRISE_BUILD_NUMBER env key is missing');
 
