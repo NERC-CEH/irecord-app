@@ -64,6 +64,10 @@ export default () => (
             {t(
               'Many thanks to the photographers for the use of their images in the welcome screen gallery.'
             )}
+          </IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>
             {t('Icons were made by')}{' '}
             <a
               href="https://www.flaticon.com/authors/nhor-phai"
