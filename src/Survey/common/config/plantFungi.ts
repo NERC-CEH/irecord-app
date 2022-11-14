@@ -1,6 +1,7 @@
 import numberIcon from 'common/images/number.svg';
 import Sample from 'models/sample';
 import appModel from 'models/app';
+import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from './';
 
 const numberOptions = [
@@ -25,16 +26,17 @@ const numberDAFOROptions = [
 const survey: Partial<Survey> & { group: string } = {
   group: 'plants-fungi',
   taxonGroups: [
-    89,
-    78,
-    87,
-    99,
-    81,
-    148,
-    // 133,
-    // 129,
+    groups['flower. plant'],
+    groups.clubmoss,
+    groups.fern,
+    groups.horsetail,
+    groups.conifer,
+    groups.stonewort,
+    groups.fungus,
 
-    92, // fungi
+    // disabled because there is a bryophytes config
+    // groups.moss,
+    // groups.liverwort
   ],
 
   render(model: Sample) {

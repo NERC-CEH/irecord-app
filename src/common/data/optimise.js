@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const speciesInformalGroups = require('./informal_groups.data.json');
+const speciesInformalGroups = require('./informalGroups');
 const taxonCleaner = require('./clean');
 
 const {

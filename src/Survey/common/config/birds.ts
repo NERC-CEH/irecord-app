@@ -1,4 +1,5 @@
 import { clipboardOutline } from 'ionicons/icons';
+import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from './';
 
 const breedingOptions = [
@@ -32,7 +33,7 @@ const breedingOptions = [
 
 const survey: Partial<Survey> & { group: string } = {
   group: 'birds',
-  taxonGroups: [73],
+  taxonGroups: [groups.bird],
 
   render: [
     {

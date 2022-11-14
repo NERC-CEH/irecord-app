@@ -1,8 +1,8 @@
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
-import * as Yup from 'yup';
 import appModel from 'models/app';
+import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from './';
 
 const sex = [
@@ -33,20 +33,8 @@ const numberOptions = [
 
 const survey: Partial<Survey> & { group: string } = {
   group: 'butterflies',
-  taxonGroups: [104],
-  render: [
-    {
-      id: 'occ:number',
-      label: 'Abundance',
-      icon: 'number',
-      group: ['occ:number', 'occ:number-ranges'],
-    },
-    'occ:stage',
-    'occ:sex',
-    'occ:identifiers',
-  ],
+  taxonGroups: [groups.butterfly],
 
-  attrs: {},
   occ: {
     attrs: {
       sex: {
@@ -132,20 +120,6 @@ const survey: Partial<Survey> & { group: string } = {
       },
 
       'number-ranges': { remote: { id: 203, values: numberOptions } },
-    },
-
-    verify(attrs) {
-      try {
-        Yup.object()
-          .shape({
-            taxon: Yup.object().nullable().required('Species is missing.'),
-          })
-          .validateSync(attrs, { abortEarly: false });
-      } catch (attrError) {
-        return attrError;
-      }
-
-      return null;
     },
   },
 };

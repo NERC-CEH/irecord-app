@@ -1,6 +1,6 @@
 import numberIcon from 'common/images/number.svg';
 import landIcon from 'common/images/land.svg';
-import * as Yup from 'yup';
+import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from './';
 
 const numRanges = [
@@ -31,7 +31,7 @@ const siteTypeOptions = [
 
 const survey: Partial<Survey> & { group: string } = {
   group: 'dragonflies',
-  taxonGroups: [107],
+  taxonGroups: [groups.dragonfly],
 
   render: [
     'smp:site',
@@ -154,20 +154,6 @@ const survey: Partial<Survey> & { group: string } = {
         },
         remote: { id: 39, values: numRanges },
       },
-    },
-
-    verify(attrs) {
-      try {
-        Yup.object()
-          .shape({
-            taxon: Yup.object().nullable().required('Species is missing.'),
-          })
-          .validateSync(attrs, { abortEarly: false });
-      } catch (attrError) {
-        return attrError;
-      }
-
-      return null;
     },
   },
 };

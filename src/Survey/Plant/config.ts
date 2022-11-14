@@ -22,6 +22,7 @@ import { checkGridType } from '@flumens';
 import userModel from 'models/user';
 import appModel from 'models/app';
 import * as Yup from 'yup';
+import { groupsReverse as groups } from 'common/data/informalGroups';
 
 const stageOptions = [
   { label: 'Not Recorded', value: '', isDefault: true },
@@ -51,7 +52,16 @@ const survey: Survey = {
   id: 325,
   webForm: 'enter-vascular-plants',
 
-  taxonGroups: [89, 78, 87, 99, 81, 148, 133, 129],
+  taxonGroups: [
+    groups['flower. plant'],
+    groups.clubmoss,
+    groups.fern,
+    groups.horsetail,
+    groups.conifer,
+    groups.stonewort,
+    groups.moss,
+    groups.liverwort,
+  ],
 
   render: [
     'smp:location',

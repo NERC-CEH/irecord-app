@@ -16,6 +16,7 @@ import genderIcon from 'common/images/gender.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import numberIcon from 'common/images/number.svg';
 import * as Yup from 'yup';
+import { groupsReverse as groups } from 'common/data/informalGroups';
 
 const sex = [
   { value: 'Male', id: 1947 },
@@ -56,7 +57,7 @@ const survey: Survey = {
   label: 'Moth',
   id: 90,
 
-  taxonGroups: [114],
+  taxonGroups: [groups.moth],
 
   webForm: 'enter-moth-sightings',
 

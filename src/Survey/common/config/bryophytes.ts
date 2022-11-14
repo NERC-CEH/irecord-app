@@ -1,7 +1,7 @@
 import { clipboardOutline } from 'ionicons/icons';
 import landIcon from 'common/images/land.svg';
 import genderIcon from 'common/images/gender.svg';
-import * as Yup from 'yup';
+import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from './';
 
 const habitatOptions = [
@@ -20,7 +20,7 @@ const habitatOptions = [
 
 const survey: Partial<Survey> & { group: string } = {
   group: 'bryophytes',
-  taxonGroups: [133, 129],
+  taxonGroups: [groups.moss, groups.liverwort],
   render: [
     'smp:habitat',
     'occ:microscopicallyChecked',
@@ -94,20 +94,6 @@ const survey: Partial<Survey> & { group: string } = {
         remote: { id: 474 },
         menuProps: { icon: clipboardOutline, type: 'toggle' },
       },
-    },
-
-    verify(attrs: any) {
-      try {
-        Yup.object()
-          .shape({
-            taxon: Yup.object().nullable().required('Species is missing.'),
-          })
-          .validateSync(attrs, { abortEarly: false });
-      } catch (attrError) {
-        return attrError;
-      }
-
-      return null;
     },
   },
 };
