@@ -130,7 +130,7 @@ const survey: Survey = {
               get: (model: AppOccurrence) => model.attrs.number,
               input: 'slider',
               info: 'How many individuals of this type?',
-              inputProps: { min: 1, max: 500 },
+              inputProps: { max: 500 },
             },
             {
               set: (value: string, model: AppOccurrence) =>

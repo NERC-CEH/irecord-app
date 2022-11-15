@@ -103,7 +103,7 @@ const survey: Survey = {
             input: 'slider',
             info: 'How many individuals of this type?',
             inputProps: {
-              inputProps: { min: 1, max: 500 },
+              inputProps: { max: 500 },
             },
           },
         },
