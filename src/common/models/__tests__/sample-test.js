@@ -88,7 +88,7 @@ describe('Sample', () => {
   describe('removeOldTaxonAttributes', () => {
     it('should remove all non core attributes on survey change', async () => {
       // Given
-      const dragonfly = { group: dragonfliesSyrvey.taxonGroups[0] };
+      const dragonfly = { group: dragonfliesSyrvey.taxaGroups[0] };
       const sample = await getDefaultSample(dragonfly);
       const [occ] = sample.occurrences;
 
@@ -96,7 +96,7 @@ describe('Sample', () => {
       occ.attrs.non_core_attr = 1;
 
       // When
-      const bryophyte = { group: bryophytesSurvey.taxonGroups[0] };
+      const bryophyte = { group: bryophytesSurvey.taxaGroups[0] };
       sample.removeOldTaxonAttributes(occ, bryophyte);
 
       // Then
@@ -106,7 +106,7 @@ describe('Sample', () => {
 
     it('should retain all core attributes on survey change', async () => {
       // Given
-      const dragonfly = { group: dragonfliesSyrvey.taxonGroups[0] };
+      const dragonfly = { group: dragonfliesSyrvey.taxaGroups[0] };
       const sample = await getDefaultSample(dragonfly);
       const [occ] = sample.occurrences;
 
@@ -129,7 +129,7 @@ describe('Sample', () => {
       });
 
       // When
-      const bryophyte = { group: bryophytesSurvey.taxonGroups[0] };
+      const bryophyte = { group: bryophytesSurvey.taxaGroups[0] };
       sample.removeOldTaxonAttributes(occ, bryophyte);
 
       // Then
@@ -257,7 +257,7 @@ describe('Sample', () => {
       // Given
       const sample = await listSurvey.create(Sample, { skipGPS: true });
       sample.attrs.location = { name: 'location' };
-      const bird = { group: birdsSurvey.taxonGroups[0] };
+      const bird = { group: birdsSurvey.taxaGroups[0] };
       const subSample = await listSurvey.smp.create(Sample, Occurrence, {
         taxon: bird,
         surveySample: sample,
@@ -284,7 +284,7 @@ describe('Sample', () => {
 
       // Then
       expect(survey.name).toBe('default');
-      expect(survey.taxonGroups.length).toBe(0);
+      expect(survey.taxaGroups.length).toBe(0);
       expect(survey.webForm).toBe('enter-app-record');
       expect(stringify(survey.attrs)).toBe(stringify(defaultSurvey.attrs));
       expect(stringify(survey.occ)).toBe(stringify(defaultSurvey.occ));
@@ -293,7 +293,7 @@ describe('Sample', () => {
 
     it('should match default species specific', async () => {
       // Given
-      const bird = { group: birdsSurvey.taxonGroups[0] };
+      const bird = { group: birdsSurvey.taxaGroups[0] };
       const sample = await getDefaultSample(bird);
 
       // When
@@ -301,8 +301,8 @@ describe('Sample', () => {
 
       // Then
       expect(survey.name).toBe('default');
-      expect(survey.group).toBe('birds');
-      expect(survey.taxonGroups).toStrictEqual(birdsSurvey.taxonGroups);
+      expect(survey.taxa).toBe('birds');
+      expect(survey.taxaGroups).toStrictEqual(birdsSurvey.taxaGroups);
       expect(survey.render).toStrictEqual(birdsSurvey.render);
       expect(survey.attrs).toStrictEqual(defaultSurvey.attrs);
       // merged attrs
@@ -323,7 +323,7 @@ describe('Sample', () => {
 
       // Then
       expect(survey.name).toBe(plantsSurvey.name);
-      expect(survey.taxonGroups).toStrictEqual(plantsSurvey.taxonGroups);
+      expect(survey.taxaGroups).toStrictEqual(plantsSurvey.taxaGroups);
       expect(survey.attrs).toStrictEqual(plantsSurvey.attrs);
     });
   });

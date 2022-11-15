@@ -49,7 +49,7 @@ const survey: Survey = {
   id: 374,
   webForm: 'enter-app-record',
 
-  taxonGroups: [], // all
+  taxaGroups: [], // all // TODO: remove?
 
   render: [
     {
@@ -226,7 +226,7 @@ const survey: Survey = {
     }
 
     const surveyConfig = sample.getSurvey();
-    const speciesGroup = surveyConfig.group || 'default';
+    const speciesGroup = surveyConfig.taxa || 'default';
     const surveyLocks = defaultSurveyLocks[speciesGroup];
     const fullSurveyLocks = { ...coreLocks, ...surveyLocks };
     appModel.appendAttrLocks(sample, fullSurveyLocks, skipLocation);

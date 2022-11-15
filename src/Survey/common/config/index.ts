@@ -113,11 +113,11 @@ export const coreAttributes = [
 ];
 
 export const taxonGroupSurveys = {
-  [dragonfliesSurvey.group]: dragonfliesSurvey,
-  [bryophytesSurvey.group]: bryophytesSurvey,
-  [butterfliesSurvey.group]: butterfliesSurvey,
-  [plantFungiSurvey.group]: plantFungiSurvey,
-  [birdsSurvey.group]: birdsSurvey,
+  [dragonfliesSurvey.taxa]: dragonfliesSurvey,
+  [bryophytesSurvey.taxa]: bryophytesSurvey,
+  [butterfliesSurvey.taxa]: butterfliesSurvey,
+  [plantFungiSurvey.taxa]: plantFungiSurvey,
+  [birdsSurvey.taxa]: birdsSurvey,
 };
 
 export const taxonAttr = {
@@ -289,13 +289,14 @@ export interface Survey extends SampleConfig {
    */
   webForm?: string;
   /**
-   * Informal taxon groups to use for the survey.
-   */
-  taxonGroups?: number[];
-  /**
    * Which species group this config belongs to. Allows to link multiple taxon groups together under a common name.
    */
-  group?: string;
+  taxa?: string;
+  /**
+   * Informal taxon groups to use for the survey.
+   */
+  taxaGroups?: number[];
+
   create: (
     Smp: typeof Sample,
     Occ: typeof Occurrence,

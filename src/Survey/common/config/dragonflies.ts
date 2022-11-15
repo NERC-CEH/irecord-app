@@ -29,9 +29,9 @@ const siteTypeOptions = [
   { value: 'Other (please specify in comments)', id: 682 },
 ];
 
-const survey: Partial<Survey> & { group: string } = {
-  group: 'dragonflies',
-  taxonGroups: [groups.dragonfly],
+const survey: Partial<Survey> & { taxa: string } = {
+  taxa: 'dragonflies',
+  taxaGroups: [groups.dragonfly],
 
   render: [
     'smp:site',

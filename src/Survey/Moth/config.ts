@@ -57,7 +57,7 @@ const survey: Survey = {
   label: 'Moth',
   id: 90,
 
-  taxonGroups: [groups.moth],
+  taxaGroups: [groups.moth],
 
   webForm: 'enter-moth-sightings',
 

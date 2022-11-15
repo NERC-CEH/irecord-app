@@ -31,9 +31,9 @@ const numberOptions = [
   { value: '100+', id: 2410 },
 ];
 
-const survey: Partial<Survey> & { group: string } = {
-  group: 'butterflies',
-  taxonGroups: [groups.butterfly],
+const survey: Partial<Survey> & { taxa: string } = {
+  taxa: 'butterflies',
+  taxaGroups: [groups.butterfly],
 
   occ: {
     attrs: {

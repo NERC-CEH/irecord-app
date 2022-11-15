@@ -17,7 +17,7 @@ import {
 import { Main } from '@flumens';
 import appModel from 'models/app';
 import { Trans as T, useTranslation } from 'react-i18next';
-import informalGroups from 'common/data/informal_groups.data.json';
+import informalGroups from 'common/data/informalGroups';
 import './styles.scss';
 
 type Props = {

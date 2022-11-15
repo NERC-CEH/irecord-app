@@ -31,9 +31,9 @@ const breedingOptions = [
   { value: '16: Nest with young (NY)', id: 17604 },
 ];
 
-const survey: Partial<Survey> & { group: string } = {
-  group: 'birds',
-  taxonGroups: [groups.bird],
+const survey: Partial<Survey> & { taxa: string } = {
+  taxa: 'birds',
+  taxaGroups: [groups.bird],
 
   render: [
     {

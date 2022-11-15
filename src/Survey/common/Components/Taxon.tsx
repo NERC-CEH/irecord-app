@@ -88,11 +88,11 @@ const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
     appModel.attrs;
 
   const isSpeciesRestrictedSurvey =
-    surveyConfig.name !== 'default' && surveyConfig.taxonGroups;
+    surveyConfig.name !== 'default' && surveyConfig.taxaGroups;
   const rightSlot = !isSpeciesRestrictedSurvey && <TaxonSearchFilters />;
 
   const informalGroups = isSpeciesRestrictedSurvey
-    ? surveyConfig.taxonGroups
+    ? surveyConfig.taxaGroups
     : selectedFilters;
   const namesFilter = isSpeciesRestrictedSurvey ? undefined : searchNamesOnly;
 

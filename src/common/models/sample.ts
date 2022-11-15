@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import {
   Sample as SampleOriginal,
   SampleAttrs,
@@ -28,6 +27,44 @@ import GPSExtension from './sampleGPSExt';
 import { modelStore } from './store';
 import Occurrence from './occurrence';
 import Media from './media';
+
+export function getSpeciesGroupSurvey(taxonGroup: any): Survey {
+  if (!taxonGroup) return { ...defaultSurvey };
+
+  const matchesGroup = (survey: Pick<Survey, 'taxaGroups'>) =>
+    survey.taxaGroups?.includes(taxonGroup);
+  const matchedSurvey =
+    Object.values<Pick<Survey, 'taxaGroups'>>(taxonGroupSurveys).find(
+      matchesGroup
+    );
+
+  if (!matchedSurvey) return defaultSurvey;
+
+  function skipAttributes(__: any, srcValue: any) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const isObject = typeof srcValue === 'object' && srcValue !== null;
+    if (isObject && srcValue.remote) {
+      return srcValue;
+    }
+    return undefined;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { render, taxaGroups, ...defaultSurveyCopy } = defaultSurvey;
+  const mergedDefaultSurvey: Survey = mergeWith(
+    {},
+    defaultSurveyCopy,
+    matchedSurvey,
+    skipAttributes
+  );
+
+  if (!mergedDefaultSurvey.render) {
+    mergedDefaultSurvey.render = render;
+  }
+
+  return mergedDefaultSurvey;
+}
 
 const ATTRS_TO_LEAVE = [
   ...coreAttributes,
@@ -82,6 +119,8 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
   declare media: IObservableArray<Media>;
 
   declare parent?: Sample;
+
+  declare survey: Survey;
 
   _store = modelStore;
 
@@ -154,108 +193,44 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
   }
 
   getSurvey(): Survey {
+    if (!this.survey) return this._getLegacySurvey();
+
+    const isDefaultSurvey = this.survey.name === 'default';
+    if (isDefaultSurvey) return this.getDefaultSurvey();
+
+    const isSubSample = this.parent;
+    if (isSubSample) return (this.survey.smp || {}) as Survey;
+
+    return this.survey as Survey;
+  }
+
+  private getDefaultSurvey() {
     const getTaxaSpecifigConfig = () => {
       if (!this.occurrences.length) return this.survey;
 
-      const [occ] = this.occurrences;
-      return Sample.getSurvey(occ.attrs.taxon?.group);
+      return getSpeciesGroupSurvey(
+        (this.occurrences as any)[0].attrs.taxon.group
+      );
     };
 
-    const isDefaultSurvey = this.metadata.survey === 'default';
-    if (isDefaultSurvey) {
-      const isListSurveySubSample = !!this.parent;
-      if (isListSurveySubSample) {
-        const taxaSurvey = {
-          ...getTaxaSpecifigConfig(),
-          ...this.parent?.getSurvey()?.smp, // survey subsample config takes precedence
-        };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        delete taxaSurvey.verify;
-        return taxaSurvey;
-      }
-
-      return getTaxaSpecifigConfig();
+    const isSubSample = this.parent;
+    if (isSubSample) {
+      const taxaSurvey: any = {
+        ...getTaxaSpecifigConfig(),
+        ...this.parent?.getSurvey()?.smp, // survey subsample config takes precedence
+      };
+      delete taxaSurvey.verify;
+      return taxaSurvey;
     }
 
-    const { survey } = this;
-    if (!survey) {
-      // legacy surveys
-      if (
-        this.metadata.complex_survey === 'plant' ||
-        this.metadata.gridSquareUnit
-      ) {
-        console.log(`Found legacy survey. Setting ${this.cid} to plant.`);
-        this.metadata.survey = 'plant';
-        this.survey = plantSurvey;
-        this.save();
-        return this.getSurvey();
-      }
-
-      if (this.metadata.complex_survey === 'moth') {
-        console.log(`Found legacy survey. Setting ${this.cid} to moth.`);
-        this.metadata.survey = 'moth';
-        this.survey = mothSurvey;
-        this.save();
-        return this.getSurvey();
-      }
-
-      if (this.metadata.complex_survey === 'default') {
-        console.log(`Found legacy survey. Setting ${this.cid} to list.`);
-        this.metadata.survey = 'list';
-        this.survey = listSurvey;
-        this.save();
-        return this.getSurvey();
-      }
-
-      console.log(`Found legacy survey. Setting ${this.cid} to default.`);
-      this.metadata.survey = 'default';
-      this.survey = defaultSurvey;
-      this.save();
-      return this.getSurvey();
-    }
-
-    const returnSubSampleSurvey = this.parent;
-    if (returnSubSampleSurvey) return (survey.smp || {}) as Survey;
-
-    return survey as Survey;
-  }
-
-  static getSurvey(taxonGroup: any): any {
-    if (!taxonGroup) return { ...defaultSurvey };
-
-    const matchesGroup = (survey: any) =>
-      survey.taxonGroups.includes(taxonGroup);
-    const matchedSurvey = Object.values(taxonGroupSurveys).find(matchesGroup);
-    if (!matchedSurvey) return defaultSurvey;
-
-    function skipAttributes(__: any, srcValue: any) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const isObject = typeof srcValue === 'object' && srcValue !== null;
-      if (isObject && srcValue.remote) {
-        return srcValue;
-      }
-      return undefined;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { render, taxonGroups, ...defaultSurveyCopy } = defaultSurvey;
-    const mergedDefaultSurvey = mergeWith(
-      {},
-      defaultSurveyCopy,
-      matchedSurvey,
-      skipAttributes
-    );
-
-    return mergedDefaultSurvey;
+    return getTaxaSpecifigConfig();
   }
 
   removeOldTaxonAttributes(occ: Occurrence, taxon: any) {
     const survey = this.getSurvey();
-    const newSurvey = Sample.getSurvey(taxon.group);
+    const newSurvey = getSpeciesGroupSurvey(taxon.group);
 
-    if (survey.group !== newSurvey.group) {
+    if (survey.taxa !== newSurvey.taxa) {
       // remove non-core attributes for survey switch
       const removeSmpNonCoreAttr = (key: any) => {
         if (!ATTRS_TO_LEAVE.includes(`smp:${key}`)) {
@@ -276,6 +251,41 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       };
       Object.keys(occ.attrs).forEach(removeOccNonCoreAttr);
     }
+  }
+
+  private _getLegacySurvey() {
+    if (
+      this.metadata.complex_survey === 'plant' ||
+      this.metadata.gridSquareUnit
+    ) {
+      console.log(`Found legacy survey. Setting ${this.cid} to plant.`);
+      this.metadata.survey = 'plant';
+      this.survey = plantSurvey;
+      this.save();
+      return this.getSurvey();
+    }
+
+    if (this.metadata.complex_survey === 'moth') {
+      console.log(`Found legacy survey. Setting ${this.cid} to moth.`);
+      this.metadata.survey = 'moth';
+      this.survey = mothSurvey;
+      this.save();
+      return this.getSurvey();
+    }
+
+    if (this.metadata.complex_survey === 'default') {
+      console.log(`Found legacy survey. Setting ${this.cid} to list.`);
+      this.metadata.survey = 'list';
+      this.survey = listSurvey;
+      this.save();
+      return this.getSurvey();
+    }
+
+    console.log(`Found legacy survey. Setting ${this.cid} to default.`);
+    this.metadata.survey = 'default';
+    this.survey = defaultSurvey;
+    this.save();
+    return this.getSurvey();
   }
 
   /**
@@ -301,6 +311,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     if (!gridCoords) return null;
 
     location.source = 'gridref'; // eslint-disable-line
+    // eslint-disable-next-line no-param-reassign
     location.accuracy = gridSquareUnit !== 'monad' ? 500 : 1000; // tetrad otherwise
 
     this.attrs.location = location;

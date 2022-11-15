@@ -23,9 +23,9 @@ const numberDAFOROptions = [
   { value: 'Rare', id: 5 },
 ];
 
-const survey: Partial<Survey> & { group: string } = {
-  group: 'plants-fungi',
-  taxonGroups: [
+const survey: Partial<Survey> & { taxa: string } = {
+  taxa: 'plants-fungi',
+  taxaGroups: [
     groups['flower. plant'],
     groups.clubmoss,
     groups.fern,

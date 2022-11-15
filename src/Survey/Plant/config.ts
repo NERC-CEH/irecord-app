@@ -52,7 +52,7 @@ const survey: Survey = {
   id: 325,
   webForm: 'enter-vascular-plants',
 
-  taxonGroups: [
+  taxaGroups: [
     groups['flower. plant'],
     groups.clubmoss,
     groups.fern,

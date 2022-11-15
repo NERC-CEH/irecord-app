@@ -18,9 +18,10 @@ const habitatOptions = [
   { value: 'Woodland', id: 1574 },
 ];
 
-const survey: Partial<Survey> & { group: string } = {
-  group: 'bryophytes',
-  taxonGroups: [groups.moss, groups.liverwort],
+const survey: Partial<Survey> & { taxa: string } = {
+  taxa: 'bryophytes',
+  taxaGroups: [groups.moss, groups.liverwort],
+
   render: [
     'smp:habitat',
     'occ:microscopicallyChecked',
