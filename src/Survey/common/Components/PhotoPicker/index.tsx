@@ -149,11 +149,7 @@ const AppPhotoPicker: FC<Props> = ({
 
   useOnBackButton(onCancelEdit, editImage);
 
-  const onSpeciesSelect = (taxon: any) => {
-    // eslint-disable-next-line no-param-reassign
-    (model as Occurrence).attrs.taxon = taxon;
-    model.save(); // for some reason needs manual save here.
-  };
+  const onSpeciesSelect = (taxon: any) => model.setTaxon(taxon);
 
   const isDisabled = model.isDisabled();
   if (isDisabled && !model.media.length) return null;

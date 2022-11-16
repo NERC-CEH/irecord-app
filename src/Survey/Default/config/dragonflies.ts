@@ -1,7 +1,7 @@
 import numberIcon from 'common/images/number.svg';
 import landIcon from 'common/images/land.svg';
 import { groupsReverse as groups } from 'common/data/informalGroups';
-import { Survey } from './';
+import { Survey } from 'Survey/common/config';
 
 const numRanges = [
   { value: null, isDefault: true, label: 'Not selected' },
@@ -31,6 +31,7 @@ const siteTypeOptions = [
 
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'dragonflies',
+  taxaPriority: 2, // must be higher than arthropods
   taxaGroups: [groups.dragonfly],
 
   render: [

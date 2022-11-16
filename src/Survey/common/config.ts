@@ -10,11 +10,7 @@ import Occurrence, { Taxon } from 'models/occurrence';
 import Sample from 'models/sample';
 import Media from 'models/media';
 import config from 'common/config';
-import dragonfliesSurvey from './dragonflies';
-import bryophytesSurvey from './bryophytes';
-import butterfliesSurvey from './butterflies';
-import plantFungiSurvey from './plantFungi';
-import birdsSurvey from './birds';
+import progressIcon from 'common/images/progress-circles.svg';
 
 const fixedLocationSchema = Yup.object().shape({
   latitude: Yup.number().required(),
@@ -111,14 +107,6 @@ export const coreAttributes = [
   'occ:comment',
   'smp:activity',
 ];
-
-export const taxonGroupSurveys = {
-  [dragonfliesSurvey.taxa]: dragonfliesSurvey,
-  [bryophytesSurvey.taxa]: bryophytesSurvey,
-  [butterfliesSurvey.taxa]: butterfliesSurvey,
-  [plantFungiSurvey.taxa]: plantFungiSurvey,
-  [birdsSurvey.taxa]: birdsSurvey,
-};
 
 export const taxonAttr = {
   remote: {
@@ -224,6 +212,30 @@ export const locationAttr = {
   },
 };
 
+const mothStages = [
+  { value: 'Not recorded', id: 10647 },
+  { value: 'Adult', id: 2189 },
+  { value: 'Larva', id: 2190 },
+  { value: 'Larval web', id: 2191 },
+  { value: 'Larval case', id: 2192 },
+  { value: 'Mine', id: 2193 },
+  { value: 'Egg', id: 2194 },
+  { value: 'Egg batch', id: 2195 },
+  { value: 'Pupa', id: 17556 },
+];
+
+export const mothStageAttr = {
+  menuProps: { icon: progressIcon, required: true },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please indicate the stage of the organism. If you are recording larvae, cases or leaf-mines please add the foodplant in to the comments field, as this is often needed to verify the records.',
+      inputProps: { options: mothStages },
+    },
+  },
+  remote: { id: 130, values: mothStages },
+};
+
 export type AttrConfig = {
   menuProps?: MenuProps;
   pageProps?: Omit<PageProps, 'attr' | 'model'>;
@@ -273,6 +285,10 @@ export type SampleConfig = {
 
 export interface Survey extends SampleConfig {
   /**
+   * Survey version.
+   */
+  version?: number;
+  /**
    * Remote warehouse survey ID.
    */
   id: number;
@@ -293,9 +309,17 @@ export interface Survey extends SampleConfig {
    */
   taxa?: string;
   /**
+   * Survey priority to take over other survey configs for the same species group.
+   */
+  taxaPriority?: number;
+  /**
    * Informal taxon groups to use for the survey.
    */
   taxaGroups?: number[];
+  /**
+   * Custom survey getter. Processes the survey config.
+   */
+  get?: (sample: Sample) => Survey;
 
   create: (
     Smp: typeof Sample,

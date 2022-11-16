@@ -91,7 +91,7 @@ const survey: Survey = {
     async create(Sample, Occurrence, options) {
       const { taxon, surveySample, skipGPS = false } = options;
 
-      const occurrence = new Occurrence({ attrs: { taxon } });
+      const occurrence = new Occurrence();
       const { activity } = surveySample.attrs;
       const sample = new Sample({
         metadata: {
@@ -105,6 +105,8 @@ const survey: Survey = {
         },
       });
       sample.occurrences.push(occurrence);
+
+      sample.setTaxon(taxon);
 
       appendLockedAttrs(sample);
       autoIncrementAbundance(sample);

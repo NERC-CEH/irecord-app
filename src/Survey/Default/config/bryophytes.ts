@@ -2,7 +2,7 @@ import { clipboardOutline } from 'ionicons/icons';
 import landIcon from 'common/images/land.svg';
 import genderIcon from 'common/images/gender.svg';
 import { groupsReverse as groups } from 'common/data/informalGroups';
-import { Survey } from './';
+import { Survey } from 'Survey/common/config';
 
 const habitatOptions = [
   { value: null, isDefault: true, label: 'Not selected' },

@@ -61,7 +61,7 @@ function getSurveyConfig(model, fullAttrName) {
   const isCoreAttr = coreAttributes.includes(fullAttrName);
   const surveyName = isCoreAttr
     ? 'default'
-    : surveyConfig.group || surveyConfig.name;
+    : surveyConfig.taxa || surveyConfig.name;
 
   return ['default', surveyName];
 }

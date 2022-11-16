@@ -4,10 +4,7 @@ import Occurrence from 'models/occurrence';
 import userModel from 'models/user';
 import appModel from 'models/app';
 import { coreAttributes, systemAttrs } from 'Survey/common/config';
-import defaultSurvey from 'Survey/Default/config';
-import birdsSurvey from 'Survey/common/config/birds';
-import bryophytesSurvey from 'Survey/common/config/bryophytes';
-import dragonfliesSyrvey from 'Survey/common/config/dragonflies';
+import defaultSurvey, { taxonGroupSurveys } from 'Survey/Default/config';
 import listSurvey from 'Survey/List/config';
 import plantsSurvey from 'Survey/Plant/config';
 import stringify from 'json-stable-stringify';
@@ -88,7 +85,7 @@ describe('Sample', () => {
   describe('removeOldTaxonAttributes', () => {
     it('should remove all non core attributes on survey change', async () => {
       // Given
-      const dragonfly = { group: dragonfliesSyrvey.taxaGroups[0] };
+      const dragonfly = { group: taxonGroupSurveys.dragonflies.taxaGroups[0] };
       const sample = await getDefaultSample(dragonfly);
       const [occ] = sample.occurrences;
 
@@ -96,7 +93,7 @@ describe('Sample', () => {
       occ.attrs.non_core_attr = 1;
 
       // When
-      const bryophyte = { group: bryophytesSurvey.taxaGroups[0] };
+      const bryophyte = { group: taxonGroupSurveys.bryophytes.taxaGroups[0] };
       sample.removeOldTaxonAttributes(occ, bryophyte);
 
       // Then
@@ -106,7 +103,7 @@ describe('Sample', () => {
 
     it('should retain all core attributes on survey change', async () => {
       // Given
-      const dragonfly = { group: dragonfliesSyrvey.taxaGroups[0] };
+      const dragonfly = { group: taxonGroupSurveys.dragonflies.taxaGroups[0] };
       const sample = await getDefaultSample(dragonfly);
       const [occ] = sample.occurrences;
 
@@ -129,7 +126,7 @@ describe('Sample', () => {
       });
 
       // When
-      const bryophyte = { group: bryophytesSurvey.taxaGroups[0] };
+      const bryophyte = { group: taxonGroupSurveys.bryophytes.taxaGroups[0] };
       sample.removeOldTaxonAttributes(occ, bryophyte);
 
       // Then
@@ -257,7 +254,7 @@ describe('Sample', () => {
       // Given
       const sample = await listSurvey.create(Sample, { skipGPS: true });
       sample.attrs.location = { name: 'location' };
-      const bird = { group: birdsSurvey.taxaGroups[0] };
+      const bird = { group: taxonGroupSurveys.birds.taxaGroups[0] };
       const subSample = await listSurvey.smp.create(Sample, Occurrence, {
         taxon: bird,
         surveySample: sample,
@@ -293,7 +290,7 @@ describe('Sample', () => {
 
     it('should match default species specific', async () => {
       // Given
-      const bird = { group: birdsSurvey.taxaGroups[0] };
+      const bird = { group: taxonGroupSurveys.birds.taxaGroups[0] };
       const sample = await getDefaultSample(bird);
 
       // When
@@ -302,12 +299,14 @@ describe('Sample', () => {
       // Then
       expect(survey.name).toBe('default');
       expect(survey.taxa).toBe('birds');
-      expect(survey.taxaGroups).toStrictEqual(birdsSurvey.taxaGroups);
-      expect(survey.render).toStrictEqual(birdsSurvey.render);
+      expect(survey.taxaGroups).toStrictEqual(
+        taxonGroupSurveys.birds.taxaGroups
+      );
+      expect(survey.render).toStrictEqual(taxonGroupSurveys.birds.render);
       expect(survey.attrs).toStrictEqual(defaultSurvey.attrs);
       // merged attrs
       expect(survey.occ.attrs.breeding).toStrictEqual(
-        birdsSurvey.occ.attrs.breeding
+        taxonGroupSurveys.birds.occ.attrs.breeding
       );
       expect(survey.occ.attrs.comment).toStrictEqual(
         defaultSurvey.occ.attrs.comment
@@ -325,6 +324,32 @@ describe('Sample', () => {
       expect(survey.name).toBe(plantsSurvey.name);
       expect(survey.taxaGroups).toStrictEqual(plantsSurvey.taxaGroups);
       expect(survey.attrs).toStrictEqual(plantsSurvey.attrs);
+    });
+  });
+
+  describe('setTaxon', () => {
+    it('should set taxon', async () => {
+      // Given
+      const sample = await getDefaultSample();
+      const newTaxon = { group: taxonGroupSurveys.birds.taxaGroups[0] };
+
+      // When
+      sample.setTaxon(newTaxon);
+
+      // Then
+      expect(sample.occurrences[0].attrs.taxon).toEqual(newTaxon);
+    });
+
+    it('should set taxon group in sample metadata', async () => {
+      // Given
+      const sample = await getDefaultSample();
+      const newTaxon = { group: taxonGroupSurveys.birds.taxaGroups[0] };
+
+      // When
+      sample.setTaxon(newTaxon);
+
+      // Then
+      expect(sample.metadata.taxa).toEqual('birds');
     });
   });
 });

@@ -10,10 +10,10 @@ import {
   taxonAttr,
   commentAttr,
   identifiersAttr,
+  mothStageAttr,
   makeSubmissionBackwardsCompatible,
 } from 'Survey/common/config';
 import genderIcon from 'common/images/gender.svg';
-import progressIcon from 'common/images/progress-circles.svg';
 import numberIcon from 'common/images/number.svg';
 import * as Yup from 'yup';
 import { groupsReverse as groups } from 'common/data/informalGroups';
@@ -22,18 +22,6 @@ const sex = [
   { value: 'Male', id: 1947 },
   { value: 'Female', id: 1948 },
   { value: 'Mixed', id: 3482 },
-];
-
-const stage = [
-  { value: 'Not recorded', id: 10647 },
-  { value: 'Adult', id: 2189 },
-  { value: 'Larva', id: 2190 },
-  { value: 'Larval web', id: 2191 },
-  { value: 'Larval case', id: 2192 },
-  { value: 'Mine', id: 2193 },
-  { value: 'Egg', id: 2194 },
-  { value: 'Egg batch', id: 2195 },
-  { value: 'Pupa', id: 17556 },
 ];
 
 const methodOptions = [
@@ -110,17 +98,7 @@ const survey: Survey = {
 
         remote: { id: 133 },
       },
-      stage: {
-        menuProps: { icon: progressIcon, required: true },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            info: 'Please indicate the stage of the organism. If you are recording larvae, cases or leaf-mines please add the foodplant in to the comments field, as this is often needed to verify the records.',
-            inputProps: { options: stage },
-          },
-        },
-        remote: { id: 130, values: stage },
-      },
+      stage: mothStageAttr,
       sex: {
         menuProps: { icon: genderIcon },
         pageProps: {

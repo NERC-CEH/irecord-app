@@ -2,7 +2,7 @@ import numberIcon from 'common/images/number.svg';
 import Sample from 'models/sample';
 import appModel from 'models/app';
 import { groupsReverse as groups } from 'common/data/informalGroups';
-import { Survey } from './';
+import { Survey } from 'Survey/common/config';
 
 const numberOptions = [
   { isPlaceholder: true, label: 'Ranges' },

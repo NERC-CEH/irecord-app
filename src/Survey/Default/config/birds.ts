@@ -1,6 +1,6 @@
 import { clipboardOutline } from 'ionicons/icons';
 import { groupsReverse as groups } from 'common/data/informalGroups';
-import { Survey } from './';
+import { Survey } from 'Survey/common/config';
 
 const breedingOptions = [
   { value: null, isDefault: true, label: 'Not recorded' },

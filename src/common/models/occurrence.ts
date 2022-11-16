@@ -151,4 +151,8 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
 
     return this.media.flatMap(getSuggestions).sort(byProbability);
   }
+
+  setTaxon(newTaxon: Taxon) {
+    this.parent?.setTaxon(newTaxon);
+  }
 }

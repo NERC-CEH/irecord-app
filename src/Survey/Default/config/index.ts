@@ -4,6 +4,7 @@ import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import AppOccurrence from 'models/occurrence';
+import AppSample from 'models/sample';
 import * as Yup from 'yup';
 import {
   coreAttributes,
@@ -18,6 +19,39 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
 } from 'Survey/common/config';
+import mergeWith from 'lodash.mergewith';
+import arthropodSurvey from './arthropods';
+import dragonfliesSurvey from './dragonflies';
+import bryophytesSurvey from './bryophytes';
+import butterfliesSurvey from './butterflies';
+import mothsSurvey from './moths';
+import plantFungiSurvey from './plantFungi';
+import birdsSurvey from './birds';
+
+export const taxonGroupSurveys = {
+  arthropods: arthropodSurvey,
+  dragonflies: dragonfliesSurvey,
+  bryophytes: bryophytesSurvey,
+  butterflies: butterfliesSurvey,
+  moths: mothsSurvey,
+  'plants-fungi': plantFungiSurvey,
+  birds: birdsSurvey,
+};
+
+export function getTaxaGroupSurvey(taxaGroup: number) {
+  type SpeciesSurvey = Pick<Survey, 'taxaGroups' | 'taxaPriority'>;
+
+  const matchesGroup = (s: SpeciesSurvey) => s.taxaGroups?.includes(taxaGroup);
+
+  const byTaxaPriority = (s1: SpeciesSurvey, s2: SpeciesSurvey) =>
+    (s2.taxaPriority || 1) - (s1.taxaPriority || 1);
+
+  const matchingSurveys = Object.values<SpeciesSurvey>(taxonGroupSurveys)
+    .filter(matchesGroup)
+    .sort(byTaxaPriority);
+
+  return matchingSurveys[0] as Survey;
+}
 
 const stageOptions = [
   { label: 'Not Recorded', value: '', isDefault: true },
@@ -58,7 +92,6 @@ const survey: Survey = {
       icon: 'number',
       group: ['occ:number', 'occ:number-ranges'],
     },
-
     'occ:stage',
     'occ:sex',
     'occ:identifiers',
@@ -193,8 +226,7 @@ const survey: Survey = {
   async create(Sample, Occurrence, options) {
     const { image, taxon, skipLocation, skipGPS } = options;
 
-    // default survey
-    const occurrence = new Occurrence({ attrs: { taxon } });
+    const occurrence = new Occurrence();
 
     if (image) occurrence.media.push(image);
 
@@ -206,6 +238,8 @@ const survey: Survey = {
       attrs: { location: {} },
     });
     sample.occurrences.push(occurrence);
+
+    if (taxon) sample.setTaxon(taxon);
 
     // append locked attributes
     const defaultSurveyLocks = appModel.attrs.attrLocks.default || {};
@@ -250,6 +284,67 @@ const survey: Survey = {
 
     return submission;
   },
+
+  get(sample: AppSample) {
+    const getTaxaSpecifigConfig = () => {
+      if (!sample.occurrences.length) return sample.survey;
+
+      if (!sample.metadata.taxa) return sample.survey;
+
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      return _getFullTaxaGroupSurvey(sample.metadata.taxa);
+    };
+
+    const isSubSample = sample.parent;
+    if (isSubSample) {
+      const taxaSurvey: any = {
+        ...getTaxaSpecifigConfig(),
+        ...sample.parent?.getSurvey()?.smp, // survey subsample config takes precedence
+      };
+      delete taxaSurvey.verify;
+      return taxaSurvey;
+    }
+
+    return getTaxaSpecifigConfig();
+  },
 };
 
 export default survey;
+
+/**
+ * Finds the matching species group survey.
+ * @param taxa species group name e.g. 'birds'.
+ */
+export function _getFullTaxaGroupSurvey(
+  taxa?: keyof typeof taxonGroupSurveys
+): Survey {
+  if (!taxa) return { ...survey };
+
+  const matchedSurvey = taxonGroupSurveys[taxa];
+  if (!matchedSurvey) return survey;
+
+  function skipAttributes(__: any, srcValue: any) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const isObject = typeof srcValue === 'object' && srcValue !== null;
+    if (isObject && srcValue.remote) {
+      return srcValue;
+    }
+    return undefined;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { render, taxaGroups, ...defaultSurveyCopy } = survey;
+  const mergedDefaultSurvey: Survey = mergeWith(
+    {},
+    defaultSurveyCopy,
+    matchedSurvey,
+    skipAttributes
+  );
+
+  if (!mergedDefaultSurvey.render) {
+    mergedDefaultSurvey.render = render;
+  }
+
+  return mergedDefaultSurvey;
+}

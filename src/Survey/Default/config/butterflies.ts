@@ -3,7 +3,7 @@ import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import appModel from 'models/app';
 import { groupsReverse as groups } from 'common/data/informalGroups';
-import { Survey } from './';
+import { Survey } from 'Survey/common/config';
 
 const sex = [
   { value: null, isDefault: true, label: 'Not Recorded' },
@@ -33,6 +33,7 @@ const numberOptions = [
 
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'butterflies',
+  taxaPriority: 2, // must be higher than arthropods
   taxaGroups: [groups.butterfly],
 
   occ: {

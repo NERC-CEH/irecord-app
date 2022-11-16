@@ -55,9 +55,7 @@ const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
   const onSpeciesSelected = async (taxon: any, editBtnClicked?: boolean) => {
     if (editingExisting) {
       const occ = (occurrence || subSample?.occurrences[0]) as Occurrence;
-      (subSample || sample).removeOldTaxonAttributes(occ, taxon);
-      occ.attrs.taxon = taxon;
-      await occ.save();
+      occ.setTaxon(taxon);
 
       goBack();
       return;
