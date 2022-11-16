@@ -27,6 +27,8 @@ import { modelStore } from './store';
 import Occurrence, { Taxon } from './occurrence';
 import Media from './media';
 
+let surveyMigrated = false;
+
 const ATTRS_TO_LEAVE = [
   ...coreAttributes,
 
@@ -162,8 +164,9 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
 
   getSurvey(): Survey {
     const existingBetaUsers = this.survey && parseInt(config.build, 10) < 80; // TODO: remove once the v6 is live
-    if (!this.survey || existingBetaUsers) {
+    if ((!this.survey || existingBetaUsers) && !surveyMigrated) {
       this._migrateLegacySurvey();
+      surveyMigrated = true;
       return this.getSurvey();
     }
 
