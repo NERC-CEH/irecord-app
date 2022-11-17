@@ -1,4 +1,4 @@
-import { GalleryPhoto } from '@capacitor/camera';
+import { Camera, GalleryPhoto } from '@capacitor/camera';
 import { isPlatform } from '@ionic/react';
 import { CameraPreview } from '@capacitor-community/camera-preview';
 import { getObjectURL } from '@flumens';
@@ -8,6 +8,11 @@ import './styles.scss';
  * Uses Camera Preview plugin to pick an image using the camera.
  */
 export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null> {
+  const permission = await Camera.requestPermissions();
+  if (permission.camera === 'denied') {
+    throw new Error('User denied access to camera');
+  }
+
   const getPhoto = (resolve: any) => {
     const container = document.createElement('div');
     container.setAttribute('id', 'camera-container');
