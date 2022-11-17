@@ -17,6 +17,7 @@
 - Unified attribute locking mechanism for all types of inputs. Enabled locking of toggle-type attributes.
 - Reintroduced plant survey survey square change alert.
 - Improved interface accessibility. Increased font sizes and contrast.
+- Improved moth and arthropod survey options.
 - Bug fixes and other improvements.
 
 ## 5.4.4
