@@ -4,6 +4,7 @@ import appModel from 'models/app';
 import userModel from 'models/user';
 import { observer } from 'mobx-react';
 import ActivitiesList from 'Components/ActivitiesList';
+import './styles.scss';
 
 const Container: FC = () => {
   const toast = useToast();
