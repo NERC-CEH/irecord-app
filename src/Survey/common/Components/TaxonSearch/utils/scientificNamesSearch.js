@@ -141,7 +141,6 @@ function search(
 
   if (results.length < maxResults) {
     // search any part of the name
-    // otherWordsRegex = new RegExp(`.*${searchPhrase}`, 'i');
     const searchedPhraseEscaped = helpers.escapeRegExp(searchPhrase);
     otherWordsRegex = new RegExp(searchedPhraseEscaped, 'i');
 

@@ -48,7 +48,7 @@ function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
     return <SurveyCreatePage />;
   }
 
-  return <IonPage id="startNewSurvey" />;
+  return <IonPage id="start-new-survey" />;
 }
 
 // eslint-disable-next-line @getify/proper-arrows/name
