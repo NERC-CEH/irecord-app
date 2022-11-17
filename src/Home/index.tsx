@@ -88,7 +88,7 @@ const HomeController: FC = () => {
   };
   useEffect(exitApp, []);
 
-  const navigateToPrimarySurvey = () => navigate(`/survey/default`);
+  const navigateToPrimarySurvey = () => navigate(`/survey/default`, 'none');
 
   const activitiesOn = !!appModel.getAttrLock('smp', 'activity');
 
@@ -136,6 +136,8 @@ const HomeController: FC = () => {
               <IonFabButton
                 className="fab-button-label"
                 routerLink="/survey/plant"
+                // Fixes app animation transition if fast clicked android back button.
+                routerDirection="none"
               >
                 <IonLabel>
                   <T>Plant Survey</T>
@@ -144,6 +146,8 @@ const HomeController: FC = () => {
               <IonFabButton
                 className="fab-button-label"
                 routerLink="/survey/moth"
+                // Fixes app animation transition if fast clicked android back button.
+                routerDirection="none"
               >
                 <IonLabel>
                   <T>Moth Survey</T>
@@ -152,6 +156,8 @@ const HomeController: FC = () => {
               <IonFabButton
                 className="fab-button-label"
                 routerLink="/survey/list"
+                // Fixes app animation transition if fast clicked android back button.
+                routerDirection="none"
               >
                 <IonLabel>
                   <T>General Survey</T>
