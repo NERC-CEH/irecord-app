@@ -58,7 +58,7 @@ function addSpeciesToResults(results, genus, generaIndex, otherWordsRegex) {
   });
 }
 
-function seatchGeneraDictionary(
+function searchGeneraDictionary(
   results,
   genera,
   maxResults,
@@ -129,7 +129,7 @@ function search(
     !informalGroups.length ||
     informalGroups.indexOf(genus[GENUS_GROUP_INDEX]) >= 0;
 
-  seatchGeneraDictionary(
+  searchGeneraDictionary(
     results,
     genera,
     maxResults,
@@ -141,11 +141,14 @@ function search(
 
   if (results.length < maxResults) {
     // search any part of the name
-    otherWordsRegex = new RegExp(`.*${searchPhrase}`, 'i');
+    // otherWordsRegex = new RegExp(`.*${searchPhrase}`, 'i');
+    const searchedPhraseEscaped = helpers.escapeRegExp(searchPhrase);
+    otherWordsRegex = new RegExp(searchedPhraseEscaped, 'i');
+
     firstWord = '';
     firstWordRegex = /^.*/i;
 
-    seatchGeneraDictionary(
+    searchGeneraDictionary(
       results,
       genera,
       maxResults,
