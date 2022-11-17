@@ -233,7 +233,7 @@ const MenuMain: FC<Props> = ({
             value={useSpeciesImageClassifier}
             onChange={onUseImageClassifier}
           />
-          <InfoMessage color="medium">
+          <InfoMessage color="dark">
             Use image recognition to identify species from your photos.
           </InfoMessage>
           {/* <IonItem routerLink="/settings/language">
