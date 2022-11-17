@@ -1,4 +1,6 @@
 .menu-attr-item-lock {
+  background: white;
+
   &.locked {
     ion-item {
       --detail-icon-color: var(--custom-color-lock);

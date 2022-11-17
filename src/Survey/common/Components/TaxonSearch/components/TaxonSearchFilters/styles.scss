@@ -11,6 +11,7 @@
     ion-item {
       margin: 10px;
       border-radius: var(--theme-border-radius);
+      --border-radius: var(--theme-border-radius);
       --border-style: none;
 
       ion-label {
