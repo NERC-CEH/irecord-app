@@ -97,7 +97,7 @@ const survey: Partial<Survey> & { taxa: string } = {
               set: (value, model) =>
                 Object.assign(model.attrs, {
                   number: value,
-                  'number-ranges': null,
+                  'number-ranges': undefined,
                 }),
               get: model => model.attrs.number,
               input: 'slider',
@@ -107,7 +107,7 @@ const survey: Partial<Survey> & { taxa: string } = {
             {
               set: (value, model) =>
                 Object.assign(model.attrs, {
-                  number: null,
+                  number: undefined,
                   'number-ranges': value,
                 }),
               get: model => model.attrs['number-ranges'],

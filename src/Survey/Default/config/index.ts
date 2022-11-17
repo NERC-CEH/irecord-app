@@ -158,7 +158,7 @@ const survey: Survey = {
               set: (value: number, model: AppOccurrence) =>
                 Object.assign(model.attrs, {
                   number: value,
-                  'number-ranges': null,
+                  'number-ranges': undefined,
                 }),
               get: (model: AppOccurrence) => model.attrs.number,
               input: 'slider',
@@ -168,7 +168,7 @@ const survey: Survey = {
             {
               set: (value: string, model: AppOccurrence) =>
                 Object.assign(model.attrs, {
-                  number: null,
+                  number: undefined,
                   'number-ranges': value,
                 }),
               get: (model: AppOccurrence) => model.attrs['number-ranges'],
