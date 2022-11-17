@@ -1,4 +1,8 @@
 #home-menu {
+  ion-content {
+    --padding-top: env(safe-area-inset-top) !important;
+  }
+
   .app-menu {
     img {
       margin: 0 auto;
