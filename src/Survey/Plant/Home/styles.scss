@@ -11,6 +11,13 @@
     font-size: 1.2em !important;
     height: 30px;
     width: 41px;
+    --padding-start: 0;
+    --padding-end: 0;
+
+    ion-icon {
+      color: var(--ion-color-primary) !important;
+      font-size: 1em;
+    }
   }
 
   .menu-attr-toggle {

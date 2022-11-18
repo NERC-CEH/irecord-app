@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { NavContext, IonToolbar } from '@ionic/react';
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
+import { informationOutline } from 'ionicons/icons';
 import appModel from 'models/app';
 import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
 import {
@@ -94,7 +95,7 @@ const PlantHome: FC<Props> = ({ sample }) => {
 
   const GPSToggle = !isDisabled && (
     <IonToolbar className="grid-alert-toggle">
-      <InfoButton header="Grid square alert" label="ℹ">
+      <InfoButton header="Grid square alert" icon={informationOutline}>
         We will notify you when you cross into another grid square. You can
         select the square size in the app settings.
       </InfoButton>
