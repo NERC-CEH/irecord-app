@@ -1,4 +1,6 @@
 import { Geolocation, Position } from '@capacitor/geolocation';
+import { isPlatform } from '@ionic/core';
+import { HandledError } from '@flumens';
 
 type Options = {
   callback: any;
@@ -11,7 +13,11 @@ const GPS_ACCURACY_LIMIT = 100; // meters
 const API = {
   running: false,
 
-  start({ callback, onUpdate, accuracyLimit = GPS_ACCURACY_LIMIT }: Options) {
+  async start({
+    callback,
+    onUpdate,
+    accuracyLimit = GPS_ACCURACY_LIMIT,
+  }: Options) {
     // geolocation config
     const GPSoptions = {
       enableHighAccuracy: true,
@@ -19,9 +25,23 @@ const API = {
       timeout: 60000,
     };
 
+    if (isPlatform('hybrid')) {
+      const permission = await Geolocation.checkPermissions();
+
+      if (permission.location !== 'granted') {
+        const newPermissions = await Geolocation.requestPermissions({
+          permissions: ['location', 'coarseLocation'],
+        });
+
+        if (newPermissions.location !== 'granted') {
+          throw new HandledError('Location permission was denied');
+        }
+      }
+    }
+
     const onPosition = (position: Position | null, err: Error) => {
       if (err) {
-        callback && callback(new Error(err.message));
+        callback && callback(err);
         return;
       }
 

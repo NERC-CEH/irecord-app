@@ -334,7 +334,8 @@ const survey: Survey = {
         sample.attrs.location = surveyLocation;
 
         if (geolocateSurveyEntries) {
-          sample.startGPS();
+          const ignoreError = () => {};
+          sample.startGPS().catch(ignoreError);
         }
       }
 

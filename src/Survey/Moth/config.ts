@@ -176,7 +176,8 @@ const survey: Survey = {
       },
     });
 
-    sample.startGPS();
+    const ignoreErrors = () => {};
+    sample.startGPS().catch(ignoreErrors);
 
     return Promise.resolve(sample);
   },

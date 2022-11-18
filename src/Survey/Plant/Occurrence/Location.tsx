@@ -52,6 +52,14 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
     return model.save();
   };
 
+  async function onGPSClick() {
+    try {
+      await ModelLocationOrig.utils.onGPSClick(model);
+    } catch (error: any) {
+      toast.error(error);
+    }
+  }
+
   return (
     <ModelLocationOrig
       model={model} // eslint-disable-line
@@ -60,7 +68,7 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
       useGridMap
       suggestLocations={savedSamples.map(getLocation)}
       namePlaceholder="Site name eg nearby village"
-      onGPSClick={ModelLocationOrig.utils.onGPSClick}
+      onGPSClick={onGPSClick}
       backButtonProps={{ text: 'Back' }}
       setLocation={setLocation}
       {...otherProps}

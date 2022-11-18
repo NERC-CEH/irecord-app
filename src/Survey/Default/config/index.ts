@@ -224,6 +224,8 @@ const survey: Survey = {
   },
 
   async create(Sample, Occurrence, options) {
+    const ignoreErrors = () => {};
+
     const { image, taxon, skipLocation, skipGPS } = options;
 
     const occurrence = new Occurrence();
@@ -255,7 +257,8 @@ const survey: Survey = {
       // when there is no taxon we don't know the survey yet
       // these are core attributes and safe to reuse in any survey
       appModel.appendAttrLocks(sample, coreLocks);
-      sample.startGPS();
+      sample.startGPS().catch(ignoreErrors);
+
       return sample;
     }
 
@@ -267,7 +270,7 @@ const survey: Survey = {
 
     const isLocationLocked = appModel.getAttrLock('smp', 'location');
     if (!isLocationLocked && !skipGPS) {
-      sample.startGPS();
+      sample.startGPS().catch(ignoreErrors);
     }
 
     return sample;

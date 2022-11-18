@@ -10,7 +10,7 @@ import {
   IonToolbar,
   isPlatform,
 } from '@ionic/react';
-import { ModelLocation as ModelLocationOrig } from '@flumens';
+import { ModelLocation as ModelLocationOrig, useToast } from '@flumens';
 import Sample from 'models/sample';
 import appModel from 'models/app';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
@@ -30,6 +30,7 @@ const SNAP_POSITIONS = [0, 0.3, 0.5, 1];
 const DEFAULT_SNAP_POSITION = 0.3;
 
 const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
+  const toast = useToast();
   const [showPastLocations, setShowPastLocations] = useState(false);
   const model = subSample || sample;
 
@@ -74,6 +75,14 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
     model.save();
   };
 
+  async function onGPSClick() {
+    try {
+      await ModelLocationOrig.utils.onGPSClick(model);
+    } catch (error: any) {
+      toast.error(error);
+    }
+  }
+
   return (
     <>
       <ModelLocationOrig
@@ -84,7 +93,7 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
         suggestLocations={appModel.attrs.locations || []}
         onLocationNameChange={ModelLocationOrig.utils.onLocationNameChange}
         namePlaceholder="Site name eg nearby village"
-        onGPSClick={ModelLocationOrig.utils.onGPSClick}
+        onGPSClick={onGPSClick}
         backButtonProps={{ text: 'Back' }}
         setLocation={setLocation}
         geocodingParams={{

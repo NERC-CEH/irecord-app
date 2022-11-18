@@ -67,6 +67,7 @@ export {
   useOnBackButton,
   useOnHideModal,
 } from '@flumens/ionic/dist/hooks/navigation';
+export * from '@flumens/ionic/dist/utils/errors';
 export * from '@flumens/ionic/dist/utils/location';
 export * from '@flumens/ionic/dist/utils/validation';
 export * from '@flumens/ionic/dist/utils/image';

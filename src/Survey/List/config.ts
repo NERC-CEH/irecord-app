@@ -111,7 +111,9 @@ const survey: Survey = {
       appendLockedAttrs(sample);
       autoIncrementAbundance(sample);
 
-      if (!skipGPS && appModel.attrs.geolocateSurveyEntries) sample.startGPS();
+      const ignoreErrors = () => {};
+      if (!skipGPS && appModel.attrs.geolocateSurveyEntries)
+        sample.startGPS().catch(ignoreErrors);
 
       return sample;
     },
