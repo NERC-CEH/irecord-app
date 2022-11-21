@@ -159,7 +159,7 @@ const UserSurveyComponent: FC = () => {
 
   const isFinished = (sample: Sample) => sample.metadata.saved;
   const hasManyPending = () => getSamplesList().filter(isFinished).length > 5;
-  const navigateToPrimarySurvey = () => navigate(`/survey/point`);
+  const navigateToPrimarySurvey = () => navigate(`/survey/default`, 'none');
 
   const getPendingSurveys = () => {
     const surveys = getSamplesList(false);
@@ -167,13 +167,12 @@ const UserSurveyComponent: FC = () => {
     if (!surveys.length) {
       return (
         <InfoBackgroundMessage>
-          <div>
+          <div onClick={navigateToPrimarySurvey}>
             You have no finished surveys.
             <br />
             <br />
             Press
-            <IonIcon icon={addOutline} onClick={navigateToPrimarySurvey} /> to
-            add.
+            <IonIcon icon={addOutline} /> to add.
           </div>
         </InfoBackgroundMessage>
       );
