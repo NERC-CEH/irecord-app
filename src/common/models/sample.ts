@@ -163,9 +163,14 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
   private surveyMigrated = false;
 
   getSurvey(): Survey {
-    const existingBetaUsers = this.survey && parseInt(config.build, 10) < 80; // TODO: remove once the v6 is live
-    if ((!this.survey || existingBetaUsers) && !this.surveyMigrated) {
+    if (!this.survey) {
       this._migrateLegacySurvey();
+      return this.getSurvey();
+    }
+
+    const existingBetaUsers = this.survey && parseInt(config.build, 10) < 85; // TODO: remove once the v6 is live
+    if (existingBetaUsers && !this.surveyMigrated) {
+      this._migrateBetaUsersSurvey();
       this.surveyMigrated = true;
       return this.getSurvey();
     }
@@ -226,6 +231,32 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     }
   }
 
+  private _migrateBetaUsersSurvey() {
+    if (this.metadata.survey !== 'default' && this.metadata.survey !== 'list')
+      return;
+
+    const migrateTaxaGroup = (smp: Sample) => {
+      if (!smp.metadata.taxa) {
+        const speciesSurvey = getTaxaGroupSurvey(
+          smp.occurrences[0]?.attrs.taxon?.group as number
+        );
+
+        if (!['moths', 'arthropods'].includes(speciesSurvey?.taxa as string)) {
+          console.log(
+            `Found missing species group. Setting ${smp.cid} to ${speciesSurvey.taxa}.`
+          );
+          smp.metadata.taxa = speciesSurvey.taxa as any;
+        }
+      }
+    };
+
+    if (this.samples) {
+      this.samples.forEach(migrateTaxaGroup);
+    } else {
+      migrateTaxaGroup(this);
+    }
+  }
+
   private _migrateLegacySurvey() {
     if (
       this.metadata.complex_survey === 'plant' ||
@@ -246,27 +277,10 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       return;
     }
 
-    const migrateTaxaGroup = (smp: Sample) => {
-      if (!smp.metadata.taxa) {
-        const speciesSurvey = getTaxaGroupSurvey(
-          smp.occurrences[0]?.attrs.taxon?.group as number
-        );
-
-        if (!['moths', 'arthropods'].includes(speciesSurvey?.taxa as string)) {
-          console.log(
-            `Found missing species group. Setting ${smp.cid} to ${speciesSurvey.taxa}.`
-          );
-          smp.metadata.taxa = speciesSurvey.taxa as any;
-        }
-      }
-    };
-
     if (this.metadata.complex_survey === 'default') {
       console.log(`Found legacy survey. Setting ${this.cid} to list.`);
       this.metadata.survey = 'list';
       this.survey = listSurvey;
-
-      this.samples.forEach(migrateTaxaGroup);
 
       this.save();
       return;
@@ -275,8 +289,6 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     console.log(`Found legacy survey. Setting ${this.cid} to default.`);
     this.metadata.survey = 'default';
     this.survey = defaultSurvey;
-
-    migrateTaxaGroup(this);
 
     this.save();
   }
