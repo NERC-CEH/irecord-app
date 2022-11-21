@@ -109,8 +109,8 @@ const groups = {
 };
 
 // reverse the object for easier lookup
-groups.groupsReverse = Object.fromEntries(
+const groupsReverse = Object.fromEntries(
   Object.entries(groups).map(([k, v]) => [v, parseInt(k, 10)])
 );
 
-module.exports = groups;
+module.exports = { groupsReverse, groups };

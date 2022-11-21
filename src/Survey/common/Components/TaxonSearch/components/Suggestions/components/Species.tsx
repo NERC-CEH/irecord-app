@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { IonItem, IonButton, IonIcon } from '@ionic/react';
 import { createOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
-import informalGroups from 'common/data/informalGroups';
+import { groups as informalGroups } from 'common/data/informalGroups';
 import { Taxon } from 'models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 import './styles.scss';
