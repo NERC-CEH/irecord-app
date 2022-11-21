@@ -7,7 +7,7 @@ import Occurrence from 'models/occurrence';
 import SavedSamplesProps from 'models/savedSamples';
 import { UserModel } from 'models/user';
 import Sample from 'models/sample';
-import { device } from '@flumens';
+import { device, isAxiosNetworkError } from '@flumens';
 import CONFIG from 'common/config';
 import { Survey } from 'Survey/common/config';
 import defaultSurvey from 'Survey/Default/config';
@@ -155,7 +155,9 @@ async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
   try {
     const res = await axios(OPTIONS);
     data = res.data;
-  } catch (error) {
+  } catch (error: any) {
+    if (isAxiosNetworkError(error)) return samples;
+
     console.error(error);
     return samples;
   }

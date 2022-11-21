@@ -6,6 +6,7 @@ import Leaflet, { LatLngBounds, LatLngTuple, Map as LeafletMap } from 'leaflet';
 import 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@flumens/ionic/dist/components/ModelLocationMap/Map/map/leaflet-mapbox-gl';
+import { useToast, device } from '@flumens';
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster';
 import '@changey/react-leaflet-markercluster/dist/styles.min.css';
 import { MapContainer } from 'react-leaflet';
@@ -45,6 +46,7 @@ const getTotalSquares = (squares: Square[]) => {
 const Map: FC = () => {
   const [map, setMap]: any = useState<LeafletMap>();
   const [isFetchingRecords, setFetchingRecords] = useState<any>(null);
+  const toast = useToast();
 
   const [totalSquares, setTotalSquares] = useState<number>(1);
   const [squares, setSquares] = useState<Square[]>([]);
@@ -72,7 +74,7 @@ const Map: FC = () => {
   };
 
   const updateRecords = async () => {
-    if (!map || !userIsLoggedIn) return;
+    if (!map || !userIsLoggedIn || !device.isOnline) return;
 
     const bounds: LatLngBounds = map.getBounds().pad(0.5); // padding +50%
 
@@ -85,7 +87,9 @@ const Map: FC = () => {
     const shouldFetchRecords = zoomLevel >= 14;
     if (shouldFetchRecords) {
       setFetchingRecords(true);
-      const fetchedRecords = await fetchRecords(northWest, southEast);
+      const fetchedRecords = await fetchRecords(northWest, southEast).catch(
+        toast.error
+      );
       // Previous request was cancelled
       if (!fetchedRecords) return;
       setRecords(fetchedRecords);
@@ -97,7 +101,11 @@ const Map: FC = () => {
     const squareSize = getSquareSize(zoomLevel);
 
     setFetchingRecords(true);
-    const fetchedSquares = await fetchSquares(northWest, southEast, squareSize);
+    const fetchedSquares = await fetchSquares(
+      northWest,
+      southEast,
+      squareSize
+    ).catch(toast.error);
     // Previous request was cancelled
     if (!fetchedSquares) return;
     setRecords([]);

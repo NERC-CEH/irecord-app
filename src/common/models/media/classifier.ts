@@ -1,5 +1,6 @@
 import userModel from 'models/user';
 import axios, { AxiosResponse } from 'axios';
+import { HandledError, isAxiosNetworkError } from '@flumens';
 import speciesSearch from 'Survey/common/Components/TaxonSearch/utils';
 import config from 'common/config';
 import { Taxon } from 'models/occurrence';
@@ -54,7 +55,17 @@ export default async function identify(url: string): Promise<Result> {
     timeout: 80000,
   };
 
-  const response: AxiosResponse<AIResult> = await axios(options);
+  let response: AxiosResponse<AIResult>;
+  try {
+    response = await axios(options);
+  } catch (error: any) {
+    if (isAxiosNetworkError(error))
+      throw new HandledError(
+        'Request aborted because of a network issue (timeout or similar).'
+      );
+
+    throw error;
+  }
 
   const withValidData = (sp: Partial<AISuggestion>) =>
     sp.taxa_taxon_list_id && sp.taxon && sp.taxon_group_id && sp.probability;

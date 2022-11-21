@@ -4,6 +4,7 @@
 import { observable } from 'mobx';
 import config from 'common/config';
 import axios, { AxiosRequestConfig } from 'axios';
+import { HandledError, isAxiosNetworkError } from '@flumens';
 import * as Yup from 'yup';
 
 export interface Activity {
@@ -90,6 +91,7 @@ const extension = {
         path: 'enter-app-record',
         user_id: this.attrs.indiciaUserId,
       },
+      timeout: 80000,
     };
 
     try {
@@ -97,16 +99,20 @@ const extension = {
       const { data: response } = await axios(options);
 
       const isValidResponse = await schemaBackend.isValid(response);
+      if (!isValidResponse) throw new Error('Invalid server response.');
 
-      if (!isValidResponse) {
-        throw new Error('Invalid server response.');
-      }
       this.activities.synchronizing = false;
 
       return response.data;
-    } catch (e: any) {
+    } catch (error: any) {
       this.activities.synchronizing = false;
-      throw new Error(e.message);
+
+      if (isAxiosNetworkError(error))
+        throw new HandledError(
+          'Request aborted because of a network issue (timeout or similar).'
+        );
+
+      throw error;
     }
   },
 

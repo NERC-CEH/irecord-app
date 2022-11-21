@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { LatLng } from 'leaflet';
+import { HandledError, isAxiosNetworkError } from '@flumens';
 import userModel from 'models/user';
 import CONFIG from 'common/config';
 import { Survey } from 'Survey/common/config';
@@ -77,10 +78,15 @@ export async function fetchRecords(
     const { data } = await axios(OPTIONS);
 
     records = data;
-  } catch (e) {
-    if (axios.isCancel(e)) {
-      return null;
-    }
+  } catch (error: any) {
+    if (axios.isCancel(error)) return null;
+
+    if (isAxiosNetworkError(error))
+      throw new HandledError(
+        'Request aborted because of a network issue (timeout or similar).'
+      );
+
+    throw error;
   }
 
   const getSource = ({ _source }: any): Hit[] => _source;
@@ -172,10 +178,15 @@ export async function fetchSquares(
     const { data } = await axios(OPTIONS);
 
     records = data;
-  } catch (e) {
-    if (axios.isCancel(e)) {
-      return null;
-    }
+  } catch (error: any) {
+    if (axios.isCancel(error)) return null;
+
+    if (isAxiosNetworkError(error))
+      throw new HandledError(
+        'Request aborted because of a network issue (timeout or similar).'
+      );
+
+    throw error;
   }
 
   const addSize = (square: Bucket): Square => ({
