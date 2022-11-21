@@ -14,6 +14,7 @@ import {
 } from '@flumens';
 import { NavContext } from '@ionic/react';
 import { observable } from 'mobx';
+import * as Sentry from '@sentry/browser';
 import { genericStore } from '../store';
 import activitiesExt from './activitiesExt';
 
@@ -79,6 +80,12 @@ export class UserModel extends DrupalUserModel {
     this.ready
       ?.then(() => this.attrs.password && this._migrateAuth())
       .then(checkForValidation);
+  }
+
+  async logIn(email: string, password: string) {
+    await super.logIn(email, password);
+
+    if (this.id) Sentry.setUser({ id: this.id });
   }
 
   getPrettyName() {
