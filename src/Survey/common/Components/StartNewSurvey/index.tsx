@@ -1,6 +1,5 @@
 import { useEffect, useContext, useState } from 'react';
 import { NavContext, IonPage } from '@ionic/react';
-import appModel from 'models/app';
 import Sample from 'models/sample';
 import Occurrence from 'models/occurrence';
 import savedSamples from 'models/savedSamples';
@@ -13,8 +12,6 @@ async function getNewSample(survey: Survey) {
   await sample.save();
 
   savedSamples.push(sample);
-  await appModel.save();
-
   return sample;
 }
 
