@@ -78,9 +78,9 @@ const getSearchInfo = () => (
         <br />
         <T>
           To find a species from its scientific name you can use shortcuts, e.g.
-          to find{' '}
+          to find
           <b>
-            <i>Bellis perrenis</i>
+            <i> Bellis perrenis</i>
           </b>{' '}
           (Daisy) you can type:
         </T>
