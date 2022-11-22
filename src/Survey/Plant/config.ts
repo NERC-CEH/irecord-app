@@ -300,6 +300,8 @@ const survey: Survey = {
       const { gridSquareUnit, geolocateSurveyEntries } = appModel.attrs;
 
       const sample = new Sample({
+        isSubSample: true,
+
         metadata: {
           survey_id: survey.id,
           survey: survey.name,

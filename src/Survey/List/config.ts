@@ -92,8 +92,12 @@ const survey: Survey = {
       const { taxon, surveySample, skipGPS = false } = options;
 
       const occurrence = new Occurrence();
+
       const { activity } = surveySample.attrs;
+
       const sample = new Sample({
+        isSubSample: true,
+
         metadata: {
           survey_id: survey.id,
           survey: 'default', // not list since it looks for taxa specific attrs
@@ -104,6 +108,7 @@ const survey: Survey = {
           activity,
         },
       });
+
       sample.occurrences.push(occurrence);
 
       sample.setTaxon(taxon);

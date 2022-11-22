@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable no-param-reassign */
 import {
   Sample as SampleOriginal,
@@ -90,16 +91,20 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
 
   declare survey: Survey;
 
-  _store = modelStore;
-
   startGPS: any; // from extension
 
   isGPSRunning: any; // from extension
 
   stopGPS: any; // from extension
 
-  constructor(options: SampleOptions) {
-    super(options);
+  constructor({
+    isSubSample,
+    ...options
+  }: SampleOptions & { isSubSample?: boolean }) {
+    // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
+    const store = isSubSample ? undefined : modelStore; // eventually remove this once using a SubSample class.
+
+    super({ ...options, store });
 
     this.remote.url = `${config.backend.indicia.url}/index.php/services/rest`;
     // eslint-disable-next-line
@@ -165,12 +170,15 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
   getSurvey(): Survey {
     if (!this.survey) {
       this._migrateLegacySurvey();
+      this._migrateTaxaGroups();
+      this.surveyMigrated = true;
+
       return this.getSurvey();
     }
 
-    const existingBetaUsers = this.survey && parseInt(config.build, 10) < 85; // TODO: remove once the v6 is live
+    const existingBetaUsers = parseInt(config.build, 10) < 85; // TODO: remove once the v6 is live
     if (existingBetaUsers && !this.surveyMigrated) {
-      this._migrateBetaUsersSurvey();
+      this._migrateTaxaGroups();
       this.surveyMigrated = true;
       return this.getSurvey();
     }
@@ -197,8 +205,6 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     }
 
     occ.attrs.taxon = newTaxon;
-
-    this.save();
   }
 
   removeOldTaxonAttributes(occ: Occurrence, newTaxon: any) {
@@ -231,7 +237,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     }
   }
 
-  private _migrateBetaUsersSurvey() {
+  private _migrateTaxaGroups() {
     if (this.metadata.survey !== 'default' && this.metadata.survey !== 'list')
       return;
 
@@ -241,7 +247,10 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
           smp.occurrences[0]?.attrs.taxon?.group as number
         );
 
-        if (!['moths', 'arthropods'].includes(speciesSurvey?.taxa as string)) {
+        if (
+          speciesSurvey?.taxa &&
+          !['moths', 'arthropods'].includes(speciesSurvey.taxa)
+        ) {
           console.log(
             `Found missing species group. Setting ${smp.cid} to ${speciesSurvey.taxa}.`
           );

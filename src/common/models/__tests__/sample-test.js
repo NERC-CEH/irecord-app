@@ -37,7 +37,7 @@ describe('Sample', () => {
   });
 
   it('should have current date by default', () => {
-    const sample = new Sample();
+    const sample = new Sample({});
     const { date } = sample.attrs;
 
     expect(DateHelp.print(date)).toBe(DateHelp.print(new Date()));
@@ -200,7 +200,7 @@ describe('Sample', () => {
 
   describe('GPS extension', () => {
     it('has GPS functions', () => {
-      const sample = new Sample();
+      const sample = new Sample({});
       expect(sample.startGPS).toBeInstanceOf(Function);
       expect(sample.stopGPS).toBeInstanceOf(Function);
       expect(sample.isGPSRunning).toBeInstanceOf(Function);
