@@ -32,7 +32,7 @@ const ImageTitle: FC<Props> = ({ image }) => {
       );
     }
 
-    const suggestion = image.getTopSpecies();
+    const suggestion = doesTaxonMatchParent || image.getTopSpecies();
 
     const commonName = suggestion.common_names[0];
     const species = commonName || suggestion.scientific_name;
