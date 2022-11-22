@@ -416,8 +416,8 @@ msgstr "Pre-adult"
 msgid "stage"
 msgstr "stage"
 
-msgid "If anyone helped with the identification please enter their name here."
-msgstr "If anyone helped with the identification please enter their name here."
+msgid "If another person identified the species for you, please enter their name here."
+msgstr "If another person identified the species for you, please enter their name here."
 
 msgid "identifiers"
 msgstr "identifiers"
@@ -428,8 +428,8 @@ msgstr "Abundance"
 msgid "Stage"
 msgstr "Stage"
 
-msgid "Identifiers"
-msgstr "Identifiers"
+msgid "Identified by"
+msgstr "Identified by"
 
 msgid "Present"
 msgstr "Present"

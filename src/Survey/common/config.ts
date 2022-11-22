@@ -86,11 +86,12 @@ export const recordersAttr = {
 };
 
 export const identifiersAttr = {
-  menuProps: { icon: peopleOutline },
+  menuProps: { icon: peopleOutline, label: 'Identified by' },
   pageProps: {
+    headerProps: { title: 'Identified by' },
     attrProps: {
       input: 'inputList',
-      info: 'If anyone helped with the identification please enter their name here.',
+      info: 'If another person identified the species for you, please enter their name here.',
       inputProps: {
         placeholder: 'Name',
       },
