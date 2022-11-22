@@ -1507,3 +1507,27 @@ msgstr "Type in a species name (English or scientific name, or a genus or family
 # Species search info background message
 msgid "To find a species from its scientific name you can use shortcuts, e.g. to find <2><i>Bellis perrenis</i></2> (Daisy) you can type:"
 msgstr "To find a species from its scientific name you can use shortcuts, e.g. to f
+
+# Activities page alert info message
+msgid "Click on the activity below which you would like to participate in."
+msgstr "Click on the activity below which you would like to participate in."
+
+# Activities page alert message
+msgid "Click on the activity below which you would like to participate in.<1><0><0>You can join in with more activities by visiting the <2>iRecord Activities</2> page.</0></0><1><0>Pull to refresh the list.</0></1><2><0>For more about Activities see the <2>iRecord Help</2> page.</0></2></1>"
+msgstr "Click on the activity below which you would like to participate in.<1><0><0>You can join in with more activities by visiting the <2>iRecord Activities</2> page.</0></0><1><0>Pull to refresh the list.</0></1><2><0>For more about Activities see the <2>iRecord Help</2> page.</0></2></1>"
+
+# Activities page button label
+msgid "READ MORE"
+msgstr "READ MORE"
+
+# Activities page alert button label
+msgid "Got it"
+msgstr "Got it"
+
+# Activities page alert message
+msgid "You can join in with more activities by visiting the <1>iRecord Activities</1> page."
+msgstr "You can join in with more activities by visiting the <1>iRecord Activities</1> page."
+
+# Activities page alert message
+msgid "For more about Activities see the <1>iRecord Help</1> page."
+msgstr "For more about Activities see the <1>iRecord Help</1> page."

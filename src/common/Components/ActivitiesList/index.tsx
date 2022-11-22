@@ -152,6 +152,16 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
           <p>
             <T>Pull to refresh the list.</T>
           </p>
+
+          <p>
+            <T>
+              For more about Activities see the{' '}
+              <a href={`${CONFIG.backend.url}/joining-activity`}>
+                iRecord Help
+              </a>{' '}
+              page.
+            </T>
+          </p>
         </InfoButton>
       </InfoMessage>
 
