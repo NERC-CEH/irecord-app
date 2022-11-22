@@ -37,11 +37,12 @@ const useAttributeLockingTip = (sample: Sample) => {
     appModel.attrs.shownLockingSwipeTip = true;
 
     alert({
-      header: 'Tip: Locking Attributes',
+      header: 'Tip: Locks for data entry',
       message: (
         <div className="attr-lock-tip">
-          You can preserve your current attribute value for the subsequently
-          added records by locking it.
+          If you have added some information for one of the attributes attached
+          to your record, you can 'lock' that information so that it is
+          automatically added to the next record as well.
           <p>
             Swipe an attribute to the left and tap on the{' '}
             <IonIcon icon={lockClosedOutline} /> button.
