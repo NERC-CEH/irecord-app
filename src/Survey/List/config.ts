@@ -48,7 +48,7 @@ function autoIncrementAbundance(sample: AppSample) {
 
 const survey: Survey = {
   name: 'list',
-  label: 'General',
+  label: 'Species List',
   id: 576,
 
   webForm: 'enter-app-record-list',

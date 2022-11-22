@@ -1326,8 +1326,8 @@ msgid "Moth Survey"
 msgstr "Moth Survey"
 
 # Survey label
-msgid "General Survey"
-msgstr "General Survey"
+msgid "Species List Survey"
+msgstr "Species List Survey"
 
 msgid "Map"
 msgstr "Map"

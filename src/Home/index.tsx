@@ -160,7 +160,7 @@ const HomeController: FC = () => {
                 routerDirection="none"
               >
                 <IonLabel>
-                  <T>General Survey</T>
+                  <T>Species List Survey</T>
                 </IonLabel>
               </IonFabButton>
             </LongPressFabButton>
