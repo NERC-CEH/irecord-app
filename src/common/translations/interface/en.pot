@@ -785,6 +785,9 @@ msgstr "Close"
 msgid "How many individuals of this type?"
 msgstr "How many individuals of this type?"
 
+msgid "How many individuals of this species did you see?"
+msgstr "How many individuals of this species did you see?"
+
 msgid "Yikes!"
 msgstr "Yikes!"
 

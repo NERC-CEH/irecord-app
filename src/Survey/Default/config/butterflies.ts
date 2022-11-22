@@ -101,7 +101,7 @@ const survey: Partial<Survey> & { taxa: string } = {
                 }),
               get: model => model.attrs.number,
               input: 'slider',
-              info: 'How many individuals of this type?',
+              info: 'How many individuals of this species did you see?',
               inputProps: { max: 500 },
             },
             {

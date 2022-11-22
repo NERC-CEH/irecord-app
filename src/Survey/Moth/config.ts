@@ -89,7 +89,7 @@ const survey: Survey = {
           headerProps: { title: 'Quantity' },
           attrProps: {
             input: 'slider',
-            info: 'How many individuals of this type?',
+            info: 'How many individuals of this species did you see?',
             inputProps: {
               inputProps: { max: 500 },
             },
