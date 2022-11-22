@@ -9,7 +9,7 @@ import './styles.scss';
  */
 export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null> {
   const permission = await Camera.requestPermissions();
-  if (permission.camera === 'denied') {
+  if (permission.camera !== 'granted') {
     throw new Error('User denied access to camera');
   }
 
