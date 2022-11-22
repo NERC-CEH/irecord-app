@@ -89,22 +89,43 @@ const Help: FC = () => (
           <Collapse title="Searching for species">
             <p>
               <T>
-                For quicker searching of the taxa you can use different
-                shortcuts.
+                Type in a species name (English or scientific name, or a genus
+                or family etc.).
               </T>
               <br />
               <br />
-              For <i>Puffinus baroli</i>
-              :
+              <T>
+                To find a species from its scientific name you can use
+                shortcuts, e.g. to find
+                <b>
+                  <i> Bellis perrenis</i>
+                </b>{' '}
+                (Daisy) you can type:
+              </T>
               <br />
               <br />
-              <i>puffinus ba</i>
+              <b>
+                <i>bellis p</i>
+              </b>
               <br />
-              <i>puffinus .oli</i>
+              <b>
+                <i>bellis .ni</i>
+              </b>
               <br />
-              <i>pubar</i> (2+3 characters)
+              <b>
+                <i> beper </i>
+              </b>{' '}
+              (2 letters of genus + 3 of species)
               <br />
-              <i>baroli</i>
+              <b>
+                <i>perennis</i>
+              </b>
+              <br />
+              <br />
+              <T>
+                Once you have added the name, you can add a photo, and the app
+                will suggest an identification based on the photo
+              </T>
             </p>
           </Collapse>
           <Collapse title="Sync. with iRecord">

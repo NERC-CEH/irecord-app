@@ -66,38 +66,48 @@ function deDuplicateSuggestions(suggestions: any) {
   return results;
 }
 
-const getSearchInfo = (t: any) => (
+const getSearchInfo = () => (
   <IonItem className="empty">
     <span>
       <p>
-        {t(
-          'For quicker searching of the taxa you can use different shortcuts.'
-        )}
+        <T>
+          Type in a species name (English or scientific name, or a genus or
+          family etc.).
+        </T>
         <br />
         <br />
-        For{' '}
+        <T>
+          To find a species from its scientific name you can use shortcuts, e.g.
+          to find{' '}
+          <b>
+            <i>Bellis perrenis</i>
+          </b>{' '}
+          (Daisy) you can type:
+        </T>
+        <br />
+        <br />
         <b>
-          <i>Turdus merula</i>
+          <i>bellis p</i>
         </b>
-        :
-        <br />
         <br />
         <b>
-          <i>turdus me</i>
+          <i>bellis .ni</i>
         </b>
         <br />
         <b>
-          <i>turdus .la</i>
-        </b>
-        <br />
-        <b>
-          <i>tumer</i>
+          <i> beper </i>
         </b>{' '}
-        (2+3 characters)
+        (2 letters of genus + 3 of species)
         <br />
         <b>
-          <i>merula</i>
+          <i>perennis</i>
         </b>
+        <br />
+        <br />
+        <T>
+          Once you have added the name, you can add a photo, and the app will
+          suggest an identification based on the photo
+        </T>
       </p>
     </span>
   </IonItem>
@@ -161,7 +171,7 @@ const Suggestions: FC<Props> = ({
           </h3>
         );
 
-      return getSearchInfo(t);
+      return getSearchInfo();
     }
 
     const noSpeciesFound = searchResults.length === 0;
