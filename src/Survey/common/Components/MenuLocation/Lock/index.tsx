@@ -10,7 +10,7 @@ import {
 } from '@ionic/react';
 import Sample from 'models/sample';
 import appModel from 'models/app';
-import { useToast } from '@flumens';
+import { useToast, useAlert } from '@flumens';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import {
   lockOpenOutline,
@@ -30,6 +30,7 @@ export interface Props {
 const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
   const sliderRef = useRef<any>();
   const toast = useToast();
+  const alert = useAlert();
 
   const isLocationLocked = appModel.isAttrLocked(sample, 'location');
   const isLocationNameLocked = appModel.isAttrLocked(sample, 'locationName');
@@ -37,10 +38,21 @@ const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
 
   const { location } = sample.attrs;
   // don't lock GPS because it varies more than a map or gridref
-  const canLockLocation = location?.source !== 'gps' && !!location?.latitude;
+  const canLockLocation = !!location?.latitude;
   const canLockName = !!location?.name;
+  const gpsLocationSource = location?.source === 'gps';
 
   const toggleLocationLockWrap = () => {
+    if (gpsLocationSource) {
+      alert({
+        header: "Can't lock location",
+        message:
+          'You can lock the location only if it was selected using a map or entered manually.',
+        buttons: [{ text: 'OK, got it' }],
+      });
+
+      return;
+    }
     sliderRef.current.close();
 
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
@@ -97,6 +109,8 @@ const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
 
   const allowLocking = !skipLocks && (canLockName || canLockLocation);
 
+  const locationColor = gpsLocationSource ? 'medium' : 'secondary';
+
   return (
     <IonItemSliding
       ref={sliderRef}
@@ -118,7 +132,7 @@ const Lock: FC<Props> = ({ sample, skipLocks, label }) => {
         {canLockLocation && (
           <IonItemOption
             className={clsx('lock', isLocationLocked && 'locked')}
-            color="secondary"
+            color={locationColor}
             onClick={toggleLocationLockWrap}
           >
             <div className="label-wrap">
