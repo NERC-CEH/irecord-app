@@ -16,7 +16,7 @@ const ImageTitle: FC<Props> = ({ image }) => {
   const identifierWasNotUsed = !image.attrs.species;
   if (identifierWasNotUsed) return null;
 
-  const doesTaxonMatchParent = image.getIdentifiedTaxonThatMatchParent();
+  const parentMatchingSuggestion = image.getIdentifiedTaxonThatMatchParent();
   const identifierFoundNoSpecies = !image.attrs?.species?.suggestions.length;
 
   const getMessage = () => {
@@ -32,12 +32,15 @@ const ImageTitle: FC<Props> = ({ image }) => {
       );
     }
 
-    const suggestion = doesTaxonMatchParent || image.getTopSpecies();
+    const suggestion = image.getTopSpecies();
 
     const commonName = suggestion.common_names[0];
     const species = commonName || suggestion.scientific_name;
 
     const probability = ((suggestion.probability || 0) * 100).toFixed(0);
+
+    const doesTaxonMatchParent =
+      parentMatchingSuggestion?.warehouse_id === suggestion.warehouse_id;
 
     if (!doesTaxonMatchParent) {
       return (
