@@ -60,7 +60,7 @@ const ListHome: FC<Props> = ({ sample }) => {
   return (
     <Page id="survey-complex-default-edit">
       <Header
-        title={`${survey.label} Survey`}
+        title={`${survey.label}`}
         rightSlot={finishButton}
         defaultHref="/home/surveys"
         subheader={subheader}
