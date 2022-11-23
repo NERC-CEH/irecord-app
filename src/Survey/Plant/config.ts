@@ -248,9 +248,9 @@ const survey: Survey = {
         },
 
         identifiers: {
-          menuProps: { icon: peopleOutline, label: 'Identifier by' },
+          menuProps: { icon: peopleOutline, label: 'Identified by' },
           pageProps: {
-            headerProps: { title: 'Identifier by' },
+            headerProps: { title: 'Identified by' },
             attrProps: {
               input: 'inputList',
               info: 'If another person identified the species for you, please enter their name here.',
