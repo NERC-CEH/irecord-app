@@ -79,7 +79,9 @@ workflows:
                 #!/usr/bin/env bash
 
                 DIRECTORY="$BITRISE_PROJECT_NAME/$NPM_PACKAGE_VERSION"
-                npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_APK_PATH
+                FILE="$BITRISE_DEPLOY_DIR/app-debug.aab"
+                echo $DIRECTORY $FILE
+                npx @flumens/onedrive-upload --directory $DIRECTORY --file $FILE
       - script@1:
           title: Git Tag
           inputs:
