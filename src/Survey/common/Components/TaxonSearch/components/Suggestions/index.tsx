@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { IonList, IonItem, IonSpinner } from '@ionic/react';
 import { hashCode } from 'helpers/UUID';
-import { useTranslation, Trans as T } from 'react-i18next';
+import { Trans as T } from 'react-i18next';
 import { Taxon } from 'models/occurrence';
 import Species from './components/Species';
 import './styles.scss';
@@ -130,8 +130,6 @@ const Suggestions: FC<Props> = ({
   suggestedSpecies,
   suggestionsAreLoading,
 }) => {
-  const { t } = useTranslation();
-
   const getSuggestion = (species: Taxon) => {
     const key = hashCode(JSON.stringify(species));
     return (
