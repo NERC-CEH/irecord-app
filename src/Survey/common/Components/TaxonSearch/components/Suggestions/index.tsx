@@ -106,7 +106,7 @@ const getSearchInfo = () => (
         <br />
         <T>
           Once you have added the name, you can add a photo, and the app will
-          suggest an identification based on the photo
+          suggest an identification based on the photo.
         </T>
       </p>
     </span>

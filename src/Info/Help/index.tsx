@@ -124,7 +124,7 @@ const Help: FC = () => (
               <br />
               <T>
                 Once you have added the name, you can add a photo, and the app
-                will suggest an identification based on the photo
+                will suggest an identification based on the photo.
               </T>
             </p>
           </Collapse>

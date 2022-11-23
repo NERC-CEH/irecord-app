@@ -1,12 +1,12 @@
 #suggestions .empty {
-  width: 80%;
-  max-width: 250px;
-  margin: 50px auto 0;
+  width: 100%;
+  margin: 0 auto 30px;
+  max-width: calc(100% - 30px);
   border-radius: var(--theme-border-radius);
-
   --border-width: 0;
   --background: var(--ion-color-light);
   --color: var(--ion-color-light-contrast);
+
   span {
     margin: 0 auto;
     font-weight: 200;
@@ -16,6 +16,14 @@
       font-weight: 300;
     }
   }
+}
+
+#suggestions .empty.md {
+  margin-top: 22px;
+}
+
+#suggestions .empty.ios {
+  margin-top: 18px;
 }
 
 #suggestions .search-result {
