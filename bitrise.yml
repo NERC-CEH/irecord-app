@@ -73,6 +73,14 @@ workflows:
             - app_password: $ITUNES_CONNECT_APP_PASS
             - itunescon_user: $ITUNES_CONNECT_USER
       - script@1:
+          title: Upload Builds to OneDrive
+          inputs:
+            - content: |
+                #!/usr/bin/env bash
+
+                DIRECTORY="$BITRISE_PROJECT_NAME/$NPM_PACKAGE_VERSION"
+                npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_APK_PATH
+      - script@1:
           title: Git Tag
           inputs:
             - content: |
