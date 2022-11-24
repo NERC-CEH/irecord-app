@@ -30,7 +30,7 @@ const PlantHomeMain: FC<Props> = ({ sample, onDelete }) => {
         )}
 
         <div className="rounded">
-          <MenuDynamicAttrs model={sample} />
+          <MenuDynamicAttrs model={sample} skipLocks />
         </div>
       </IonList>
 
