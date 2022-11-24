@@ -26,7 +26,7 @@ workflows:
             - build_gradle_path: $BITRISE_SOURCE_DIR/android/app/build.gradle
             - version_code_offset: '700000000'
             - new_version_name: $NPM_PACKAGE_VERSION
-      - android-build@0:
+      - android-build@1:
           inputs:
             - module: app
             - variant: release\ndebug
@@ -37,6 +37,9 @@ workflows:
             - debuggable_permitted: 'false'
             - verbose_log: 'true'
             - android_app: $BITRISE_AAB_PATH
+      - bitrise-step-export-universal-apk@0:
+          inputs:
+            - aab_path: $BITRISE_DEPLOY_DIR/app-debug.aab
   ci:
     before_run:
       - web
@@ -47,20 +50,10 @@ workflows:
   deploy:
     steps:
       - npm@1:
-          run_if: enveq "BUILD_ONLY" ""
           title: Deploy to demo site
+          run_if: enveq "BUILD_ONLY" ""
           inputs:
             - command: run deploy
-      - deploy-to-bitrise-io@1:
-          title: Create www artifact
-          inputs:
-            - notify_user_groups: none
-            - deploy_path: $BITRISE_SOURCE_DIR/build
-            - is_compress: 'true'
-      - deploy-to-bitrise-io@1:
-          title: Create app artifact
-          inputs:
-            - notify_user_groups: none
       - google-play-deploy@3:
           run_if: enveq "BUILD_ONLY" ""
           inputs:
@@ -76,18 +69,13 @@ workflows:
           title: Upload Builds to OneDrive
           inputs:
             - content: |
-                #!/usr/bin/env bash
-
                 DIRECTORY="$BITRISE_PROJECT_NAME/$NPM_PACKAGE_VERSION"
-                FILE="$BITRISE_DEPLOY_DIR/app-debug.aab"
-                echo $DIRECTORY $FILE
-                npx @flumens/onedrive-upload --directory $DIRECTORY --file $FILE
+                npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_APK_PATH
+                npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_DEPLOY_DIR/App.ipa
       - script@1:
           title: Git Tag
           inputs:
             - content: |
-                #!/usr/bin/env bash
-
                 TAG_NAME="v$NPM_PACKAGE_VERSION-$BITRISE_BUILD_NUMBER"
                 git tag -a "$TAG_NAME" -m "* Demo link: $DEMO_URL" -m "* Build link: $BITRISE_BUILD_URL" "$BITRISE_GIT_COMMIT"
                 git push origin "$TAG_NAME"
