@@ -37,9 +37,6 @@ workflows:
             - debuggable_permitted: 'false'
             - verbose_log: 'true'
             - android_app: $BITRISE_AAB_PATH
-      - bitrise-step-export-universal-apk@0:
-          inputs:
-            - aab_path: $BITRISE_DEPLOY_DIR/app-debug.aab
   ci:
     before_run:
       - web
@@ -70,7 +67,7 @@ workflows:
           inputs:
             - content: |
                 DIRECTORY="$BITRISE_PROJECT_NAME/$NPM_PACKAGE_VERSION"
-                npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_APK_PATH
+                npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_DEPLOY_DIR/app-debug.aab
                 npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_DEPLOY_DIR/App.ipa
       - script@1:
           title: Git Tag
