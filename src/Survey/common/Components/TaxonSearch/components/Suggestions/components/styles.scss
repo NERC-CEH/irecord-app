@@ -2,7 +2,7 @@
   width: 100%;
   margin: 0 auto 30px;
   max-width: calc(100% - 30px);
-  border-radius: var(--theme-border-radius);
+  --border-radius: var(--theme-border-radius);
   --border-width: 0;
   --background: var(--ion-color-light);
   --color: var(--ion-color-light-contrast);
