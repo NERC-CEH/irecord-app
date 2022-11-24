@@ -33,7 +33,8 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
     const gridCoords = locationToGrid(newLocation);
     const gridWithParentAcc = locationToGrid({ ...newLocation, accuracy });
     const isWithinParent = parentGridref === gridWithParentAcc;
-    const isAccurateEnough = newLocation.gridref.length >= parentGridref.length;
+    const isAccurateEnough =
+      newLocation?.gridref?.length >= parentGridref.length;
     if (!gridCoords || !isAccurateEnough || !isWithinParent)
       return toast.warn(`Selected location should be within ${parentGridref}`, {
         position: 'bottom',
