@@ -49,7 +49,7 @@ export const defaults: Attrs = {
   useExperiments: false,
   useGridNotifications: false,
   gridSquareUnit: 'monad',
-  speciesListSortedByTime: false,
+  speciesListSortedByTime: true,
   geolocateSurveyEntries: true,
 
   showSurveysDeleteTip: true,
