@@ -201,7 +201,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       if (occ.attrs.taxon) this.removeOldTaxonAttributes(occ, newTaxon);
 
       const survey = getTaxaGroupSurvey(newTaxon.group);
-      if (survey?.taxa) this.metadata.taxa = survey.taxa as any;
+      this.metadata.taxa = survey?.taxa as any;
     }
 
     occ.attrs.taxon = newTaxon;
@@ -209,32 +209,32 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
 
   removeOldTaxonAttributes(occ: Occurrence, newTaxon: any) {
     const survey = this.getSurvey();
-    const newSurvey = getTaxaGroupSurvey(newTaxon.group);
+    const newSurvey = getTaxaGroupSurvey(newTaxon.group) || defaultSurvey;
 
-    if (survey.taxa !== newSurvey.taxa) {
-      console.log(`Removing old ${survey.taxa} taxa attributes`);
+    if (survey.taxa === newSurvey.taxa) return;
 
-      // remove non-core attributes for survey switch
-      const removeSmpNonCoreAttr = (key: any) => {
-        if (!ATTRS_TO_LEAVE.includes(`smp:${key}`)) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          delete this.attrs[key];
-        }
-      };
+    console.log(`Removing old ${survey.taxa} taxa attributes`);
 
-      Object.keys(this.attrs).forEach(removeSmpNonCoreAttr);
+    // remove non-core attributes for survey switch
+    const removeSmpNonCoreAttr = (key: any) => {
+      if (!ATTRS_TO_LEAVE.includes(`smp:${key}`)) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete this.attrs[key];
+      }
+    };
 
-      const removeOccNonCoreAttr = (key: any) => {
-        if (!ATTRS_TO_LEAVE.includes(`occ:${key}`)) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          // eslint-disable-next-line no-param-reassign
-          delete occ.attrs[key];
-        }
-      };
-      Object.keys(occ.attrs).forEach(removeOccNonCoreAttr);
-    }
+    Object.keys(this.attrs).forEach(removeSmpNonCoreAttr);
+
+    const removeOccNonCoreAttr = (key: any) => {
+      if (!ATTRS_TO_LEAVE.includes(`occ:${key}`)) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        delete occ.attrs[key];
+      }
+    };
+    Object.keys(occ.attrs).forEach(removeOccNonCoreAttr);
   }
 
   private _migrateTaxaGroups() {
