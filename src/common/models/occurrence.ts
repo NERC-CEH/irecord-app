@@ -149,7 +149,19 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
       suggestion2: ClassifierSuggestion
     ) => suggestion2.probability - suggestion1.probability;
 
-    return this.media.flatMap(getSuggestions).sort(byProbability);
+    const uniqueSpecies = new Set();
+    const removeDuplicates = (sp: Taxon) => {
+      const isDuplicate = uniqueSpecies.has(sp?.scientific_name);
+
+      uniqueSpecies.add(sp?.scientific_name);
+
+      return !isDuplicate;
+    };
+
+    return this.media
+      .flatMap(getSuggestions)
+      .sort(byProbability)
+      .filter(removeDuplicates);
   }
 
   setTaxon(newTaxon: Taxon) {
