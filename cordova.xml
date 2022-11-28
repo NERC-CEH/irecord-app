@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget xmlns:android="http://schemas.android.com/apk/res/android" android-packageName="uk.org.orks.app" ios-CFBundleIdentifier="uk.org.orks.orks-cwt" version="{APP_VER}" android-versionCode="2120{ANDROID_BUNDLE_VER}" ios-CFBundleVersion="{BUNDLE_VER}"
+<widget xmlns:android="http://schemas.android.com/apk/res/android" android-packageName="uk.org.orks.app" ios-CFBundleIdentifier="uk.org.orks.orks-cwt" version="{APP_VER}" android-versionCode="2220541{ANDROID_BUNDLE_VER}" ios-CFBundleVersion="{BUNDLE_VER}" android-exported="true"
   xmlns="http://www.w3.org/ns/widgets"
   xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
@@ -71,6 +71,9 @@
 
   <platform name="android">
     <allow-intent href="market:*" />
+    <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/activity" mode="merge">
+      <activity android:exported="true" />
+    </edit-config>
     <config-file parent="/*" target="AndroidManifest.xml">
       <queries>
           <intent>
@@ -89,6 +92,7 @@
 
   <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge">
     <application android:requestLegacyExternalStorage="true"/>
+    <activity android:exported="true" />
   </edit-config>
 
   <platform name="ios">
