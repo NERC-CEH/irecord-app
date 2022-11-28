@@ -76,13 +76,20 @@ export default class Media extends MediaOriginal {
   }
 
   getURL() {
-    const { data: name } = this.attrs;
+    const { data: name, path } = this.attrs;
 
     if (!isPlatform('hybrid') || process.env.NODE_ENV === 'test') {
       return name;
     }
 
-    return Capacitor.convertFileSrc(`${config.dataPath}/${name}`);
+    let pathToFile = config.dataPath;
+
+    // backwards compatible
+    if (!path) {
+      pathToFile = config.dataPath.replace('/Documents/', '/Library/NoCloud/');
+    }
+
+    return Capacitor.convertFileSrc(`${pathToFile}/${name}`);
   }
 
   getIdentifiedTaxonThatMatchParent() {
