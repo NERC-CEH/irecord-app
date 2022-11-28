@@ -85,7 +85,7 @@ export default class Media extends MediaOriginal {
     let pathToFile = config.dataPath;
 
     // backwards compatible
-    if (!path) {
+    if (!path && isPlatform('ios')) {
       pathToFile = config.dataPath.replace('/Documents/', '/Library/NoCloud/');
     }
 
