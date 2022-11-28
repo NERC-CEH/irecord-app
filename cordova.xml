@@ -71,6 +71,16 @@
 
   <platform name="android">
     <allow-intent href="market:*" />
+    <config-file parent="/*" target="AndroidManifest.xml">
+      <queries>
+          <intent>
+              <action android:name="android.media.action.IMAGE_CAPTURE" />
+          </intent>
+          <intent>
+              <action android:name="android.intent.action.GET_CONTENT" />
+          </intent>
+      </queries>
+    </config-file>
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*" />
