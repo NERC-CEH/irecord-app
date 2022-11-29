@@ -112,10 +112,10 @@ const PlantHome: FC<Props> = ({ sample }) => {
   const { training } = sample.attrs;
 
   const subheader = (
-    <>
+    <div>
       {!!training && <AppHeaderBand training />}
       {GPSToggle}
-    </>
+    </div>
   );
 
   return (
