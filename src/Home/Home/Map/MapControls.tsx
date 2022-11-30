@@ -27,6 +27,8 @@ const MapInfo: FC<Props> = ({ map }) => {
   const [location, setLocation] = useState<Location | null>(null);
 
   const stopGPS = async () => {
+    if (!locating) return;
+
     await GPS.stop(locating);
     setLocating(null);
   };
