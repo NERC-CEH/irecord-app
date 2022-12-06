@@ -6,6 +6,7 @@ import { lockClosedOutline } from 'ionicons/icons';
 import { Main, useAlert } from '@flumens';
 import Sample from 'models/sample';
 import { useRouteMatch } from 'react-router';
+import { Trans as T } from 'react-i18next';
 import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
@@ -40,14 +41,16 @@ const useAttributeLockingTip = (sample: Sample) => {
       header: 'Tip: Locks for data entry',
       message: (
         <div className="attr-lock-tip">
-          If you have added some information for one of the attributes attached
-          to your record, you can 'lock' that information so that it is
-          automatically added to the next record as well.
-          <p>
-            Swipe an attribute to the left and tap on the{' '}
-            <IonIcon icon={lockClosedOutline} /> button.
-          </p>
-          <img src={lockScreenshot} alt="" />
+          <T>
+            If you have added some information for one of the attributes
+            attached to your record, you can 'lock' that information so that it
+            is automatically added to the next record as well.
+            <p>
+              Swipe an attribute to the left and tap on the{' '}
+              <IonIcon icon={lockClosedOutline} /> button.
+            </p>
+            <img src={lockScreenshot} alt="" />
+          </T>
         </div>
       ),
       buttons: [{ text: 'OK, got it' }],

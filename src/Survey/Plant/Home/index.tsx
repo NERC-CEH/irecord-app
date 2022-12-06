@@ -5,6 +5,7 @@ import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
 import { informationOutline } from 'ionicons/icons';
 import appModel from 'models/app';
+import { Trans as T } from 'react-i18next';
 import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
 import {
   Page,
@@ -96,15 +97,16 @@ const PlantHome: FC<Props> = ({ sample }) => {
   const GPSToggle = !isDisabled && (
     <IonToolbar className="grid-alert-toggle">
       <InfoButton header="Grid square alert" icon={informationOutline}>
-        We will notify you when you cross into another grid square. You can
-        select the square size in the app settings.
+        <T>
+          We will notify you when you cross into another grid square. You can
+          select the square size in the app settings.
+        </T>
       </InfoButton>
 
       <MenuAttrToggle
         label="Use grid alert"
         value={isGridAlertActive}
         onChange={onToggleGridAlert}
-        skipTranslation
       />
     </IonToolbar>
   );

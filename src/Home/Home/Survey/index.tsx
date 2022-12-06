@@ -158,7 +158,9 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
       <div className="count">
         <div className="count-wrapper">
           <div className="number">{speciesCount}</div>
-          <div className="label">Species</div>
+          <div className="label">
+            <T>Species</T>
+          </div>
         </div>
       </div>
     );
@@ -197,7 +199,7 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
       </IonItem>
       <IonItemOptions side="end">
         <IonItemOption color="danger" onClick={deleteSurveyWrap}>
-          {t('Delete')}
+          <T>Delete</T>
         </IonItemOption>
       </IonItemOptions>
     </IonItemSliding>

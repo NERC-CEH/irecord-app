@@ -97,7 +97,7 @@ const getSearchInfo = () => (
         <b>
           <i> beper </i>
         </b>{' '}
-        (2 letters of genus + 3 of species)
+        <T>(2 letters of genus + 3 of species)</T>
         <br />
         <b>
           <i>perennis</i>

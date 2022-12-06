@@ -1,6 +1,7 @@
 import { FC, useContext } from 'react';
 import userModel from 'models/user';
 import { NavContext } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 import { useToast, useLoader, Page, Header, device } from '@flumens';
 import Main from './Main';
 import './styles.scss';
@@ -14,10 +15,15 @@ const LoginController: FC = () => {
   const context = useContext(NavContext);
   const toast = useToast();
   const loader = useLoader();
+  const { t } = useTranslation();
 
   const onSuccessReturn = () => {
     const { email } = userModel.attrs;
-    toast.success(`Successfully logged in as: ${email}`);
+
+    toast.success(t('Successfully logged in as: {{email}}', { email }), {
+      skipTranslation: true,
+    });
+
     context.navigate('/home/surveys', 'root');
   };
 

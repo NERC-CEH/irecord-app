@@ -12,7 +12,7 @@ import {
   IonToggle,
   IonInput,
 } from '@ionic/react';
-import { useTranslation } from 'react-i18next';
+import { Trans as T, useTranslation } from 'react-i18next';
 import { Main, useOnHideModal } from '@flumens';
 
 type Location = any;
@@ -68,11 +68,15 @@ const EditModal: FC<Props> = ({ location, onLocationSave }) => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={closeModal}>Close</IonButton>
+            <IonButton onClick={closeModal}>
+              <T>Close</T>
+            </IonButton>
           </IonButtons>
           <IonTitle>{t('Edit Location')}</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={save}>Save</IonButton>
+            <IonButton onClick={save}>
+              <T>Save</T>
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

@@ -2,6 +2,7 @@
 import { FC } from 'react';
 import Media from 'models/media';
 import { IonLabel, IonNote, isPlatform } from '@ionic/react';
+import { Trans as T } from 'react-i18next';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import './styles.scss';
@@ -23,7 +24,7 @@ const ImageTitle: FC<Props> = ({ image }) => {
     if (identifierFoundNoSpecies) {
       return (
         <IonLabel className="better-image-tip">
-          Sorry, we could not identify this species.
+          <T>Sorry, we could not identify this species.</T>
           <IonNote>
             Make sure that your species is in the centre of the image and is in
             focus.
@@ -45,16 +46,20 @@ const ImageTitle: FC<Props> = ({ image }) => {
     if (!doesTaxonMatchParent) {
       return (
         <IonLabel>
-          We think it is <b>{probability}%</b> likely to be{' '}
-          <b className={clsx(!commonName && 'scientific')}>{species}</b>.
+          <T>
+            We think it is <b>{{ probability }}%</b> likely to be{' '}
+            <b className={clsx(!commonName && 'scientific')}>{{ species }}</b>.
+          </T>
         </IonLabel>
       );
     }
 
     return (
       <IonLabel>
-        Great! We also think it is <b>{probability}%</b> likely to be{' '}
-        <b className={clsx(!commonName && 'scientific')}>{species}</b>.
+        <T>
+          Great! We also think it is <b>{{ probability }}%</b> likely to be{' '}
+          <b className={clsx(!commonName && 'scientific')}>{{ species }}</b>.
+        </T>
       </IonLabel>
     );
   };

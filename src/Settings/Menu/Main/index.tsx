@@ -30,10 +30,11 @@ function useResetDialog(resetApp: any) {
   const showResetDialog = () =>
     alert({
       header: 'Reset',
-      skipTranslation: true,
       message: (
         <>
-          Are you sure you want to reset the application to its initial state?
+          <T>
+            Are you sure you want to reset the application to its initial state?
+          </T>
           <InfoMessage
             color="danger"
             icon={warningOutline}
@@ -62,10 +63,9 @@ function useUserDeleteDialog(deleteUser: any) {
   const showUserDeleteDialog = () => {
     alert({
       header: 'Account delete',
-      skipTranslation: true,
       message: (
         <>
-          Are you sure you want to delete your account?
+          <T>Are you sure you want to delete your account?</T>
           <InfoMessage
             color="danger"
             icon={warningOutline}

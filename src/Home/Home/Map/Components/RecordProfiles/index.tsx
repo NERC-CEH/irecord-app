@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { closeCircle, checkmarkCircle, cameraOutline } from 'ionicons/icons';
 import { Gallery } from '@flumens';
 import config from 'common/config';
+import { Trans as T } from 'react-i18next';
 import MultiPageCustomAlert from './MultiPageCustomAlert';
 import ImageWithBackground from './ImageWithBackground';
 import { Record, Media } from '../../esResponse.d';
@@ -143,22 +144,37 @@ const Profile = (record: Record) => {
 
         <IonCardContent>
           <div className="record-attribute">
-            <span>Status:</span> {statusText}
+            <span>
+              <T>Status</T>:
+            </span>{' '}
+            {statusText}
           </div>
           <div className="record-attribute">
-            <span>Date:</span> {formattedDate}
+            <span>
+              <T>Date</T>:
+            </span>{' '}
+            {formattedDate}
           </div>
           <div className="record-attribute">
-            <span>Location:</span> {gridRef}
+            <span>
+              <T>Location</T>:
+            </span>{' '}
+            {gridRef}
           </div>
           {count && (
             <div className="record-attribute">
-              <span>Count:</span> {count}
+              <span>
+                <T>Count</T>:
+              </span>{' '}
+              {count}
             </div>
           )}
           {stage && (
             <div className="record-attribute">
-              <span>Stage:</span> {stage}
+              <span>
+                <T>Stage</T>:
+              </span>{' '}
+              {stage}
             </div>
           )}
         </IonCardContent>

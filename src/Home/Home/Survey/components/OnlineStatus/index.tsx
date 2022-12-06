@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import Sample from 'models/sample';
+import { Trans as T } from 'react-i18next';
 import { IonSpinner, IonChip, IonButton } from '@ionic/react';
 import { observer } from 'mobx-react';
 import './styles.scss';
@@ -18,7 +19,7 @@ const UsersSurveys: FC<Props> = ({ onUpload, sample, uploadIsPrimary }) => {
   if (!saved) {
     return (
       <IonChip color="dark" class="survey-status ion-text-wrap">
-        Draft
+        <T>Draft</T>
       </IonChip>
     );
   }
@@ -33,7 +34,7 @@ const UsersSurveys: FC<Props> = ({ onUpload, sample, uploadIsPrimary }) => {
       onClick={onUpload}
       fill={uploadIsPrimary ? undefined : 'outline'}
     >
-      Upload
+      <T>Upload</T>
     </IonButton>
   );
 };

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import Occurrence from 'models/occurrence';
 import { InfoMessage, InfoButton } from '@flumens';
+import { Trans as T } from 'react-i18next';
 import clsx from 'clsx';
 import { checkmarkCircle, closeCircle } from 'ionicons/icons';
 import './styles.scss';
@@ -15,32 +16,47 @@ const getVerificationText = (
     verified: (
       <>
         <h2>
-          <b>Verification</b>: {statusMessage}
+          <b>
+            <T>Verification</T>
+          </b>
+          : <T>{statusMessage}</T>
         </h2>
 
-        <div>Thanks for sending in your record.</div>
+        <div>
+          <T>Thanks for sending in your record.</T>
+        </div>
       </>
     ),
     plausible: (
       <>
         <h2>
-          <b>Verification</b>: {statusMessage}
+          <b>
+            <T>Verification</T>
+          </b>
+          : <T>{statusMessage}</T>
         </h2>
         <div>
-          Thanks for sending in your record. From this record details, we think
-          it could be the <b>{taxonName}</b> species.
+          <T>
+            Thanks for sending in your record. From this record details, we
+            think it could be the <b>{{ taxonName }}</b> species.
+          </T>
         </div>
       </>
     ),
     rejected: (
       <>
         <h2>
-          <b>Verification</b>: {statusMessage}
+          <b>
+            <T>Verification</T>
+          </b>
+          : <T>{statusMessage}</T>
         </h2>
 
         <div>
-          Thanks for sending in your record. We do not think this is{' '}
-          <b>{taxonName}</b> species.
+          <T>
+            Thanks for sending in your record. We do not think this is{' '}
+            <b>{{ taxonName }}</b> species.
+          </T>
         </div>
       </>
     ),
@@ -81,15 +97,21 @@ const VerificationMessage: FC<Props> = ({ occurrence }) => {
   const hasVerifyDetails = verifierName && verifyDate;
 
   return (
-    <InfoMessage className={clsx('verification-message', status)} icon={icon}>
+    <InfoMessage
+      className={clsx('verification-message', status)}
+      icon={icon}
+      skipTranslation
+    >
       {verificationText}
       {hasVerifyDetails && (
         <InfoButton label="Details" header="Details">
           <p>
-            Verified by: <b>{verifierName}</b>
+            <T>Verified by:</T>
+            <b>{verifierName}</b>
           </p>
           <p>
-            Verified on: <b>{verifyDate}</b>
+            <T>Verified on:</T>
+            <b>{verifyDate}</b>
           </p>
         </InfoButton>
       )}

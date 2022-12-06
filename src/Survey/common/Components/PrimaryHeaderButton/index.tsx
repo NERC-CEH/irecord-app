@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { IonButton } from '@ionic/react';
 import Sample from 'models/sample';
+import { Trans as T } from 'react-i18next';
 import './styles.scss';
 
 interface Props {
@@ -21,7 +22,7 @@ const PrimaryHeaderButton: FC<Props> = ({ sample, onClick }) => {
       color={isValid ? 'primary' : 'medium'}
       fill="solid"
     >
-      {sample.metadata.saved ? 'Upload' : 'Finish'}
+      {sample.metadata.saved ? <T>Upload</T> : <T>Finish</T>}
     </IonButton>
   );
 };
