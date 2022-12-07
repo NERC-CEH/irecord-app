@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
-import { useTranslation, Trans as T } from 'react-i18next';
+import { Trans as T } from 'react-i18next';
 import VerificationStatus from 'common/Components/VerificationStatus';
 import VerificationListStatus from 'common/Components/VerificationListStatus';
 import OnlineStatus from './components/OnlineStatus';
@@ -61,7 +61,6 @@ type Props = {
 
 const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
   const { navigate } = useContext(NavContext);
-  const { t } = useTranslation();
   const toast = useToast();
   const deleteSurvey = useSurveyDeletePrompt(sample);
   const checkSampleStatus = useValidateCheck(sample);
