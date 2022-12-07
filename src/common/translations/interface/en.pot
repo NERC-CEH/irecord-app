@@ -1317,15 +1317,15 @@ msgstr "You can preserve your current attribute value for the subsequently added
 msgid "Other recording options"
 msgstr "Other recording options"
 
-# Survey label
+# Plant Survey name
 msgid "Plant Survey"
 msgstr "Plant Survey"
 
-# Survey label
+# Moth Survey name
 msgid "Moth Survey"
 msgstr "Moth Survey"
 
-# Survey label
+# List Survey name
 msgid "Species List Survey"
 msgstr "Species List Survey"
 
@@ -1825,11 +1825,11 @@ msgstr "Site name eg nearby village"
 msgid "Are you sure you want to delete the saved location?"
 msgstr "Are you sure you want to delete the saved location?"
 
-# Part of Moth survey
+# Moth survey method message
 msgid "If trapping overnight please enter the date for the evening on which the trap was put out."
 msgstr "If trapping overnight please enter the date for the evening on which the trap was put out."
 
-# Part of Moth survey
+# Moth survey entry
 msgid "Method"
 msgstr "Method"
 
@@ -1941,21 +1941,6 @@ msgstr "Great! We also think it is <1>{{probability}}%</1> likely to be <4>{{spe
 msgid "We think it is <1>{{probability}}%</1> likely to be <4>{{species}}</4>."
 msgstr "We think it is <1>{{probability}}%</1> likely to be <4>{{species}}</4>."
 
-# Part of Plant Survey 
-msgid "Grid square alert"
-msgstr "Grid square alert"
-
-# Part of Plant Survey 
-msgid "Square"
-msgstr "Square"
-
-# Part of Plant Survey 
-msgid "Vice County"
-msgstr "Vice County"
-
-# Part of Plant Survey 
-msgid "Are you sure you want to delete {{speciesPrettyName}}?"
-msgstr "Are you sure you want to delete {{speciesPrettyName}}?"
 
 # Incomplete form message 
 msgid "Please fill in"
@@ -1977,6 +1962,30 @@ msgstr "The user has not been activated or is blocked."
 msgid "A new verification email was successfully sent now. If you did not receive the email, then check your Spam or Junk email folders."
 msgstr "A new verification email was successfully sent now. If you did not receive the email, then check your Spam or Junk email folders."
 
+# Plant Survey attributes 
+msgid "Grid square alert"
+msgstr "Grid square alert"
+
+# Plant Survey attributes 
+msgid "Square"
+msgstr "Square"
+
+# Plant Survey attributes 
+msgid "Vice County"
+msgstr "Vice County"
+
+# Plant Survey attributes 
+msgid "Are you sure you want to delete {{speciesPrettyName}}?"
+msgstr "Are you sure you want to delete {{speciesPrettyName}}?"
+
+# Plant Survey info message
+msgid "We will notify you when you cross into another grid square. You can select the square size in the app settings."
+msgstr "We will notify you when you cross into another grid square. You can select the square size in the app settings."
+
+# Plant Survey info message
+msgid "Use grid alert"
+msgstr "Use grid alert"
+
 # Plant survey attribute
 msgid "Status"
 msgstr "Status"
@@ -1985,39 +1994,39 @@ msgstr "Status"
 msgid "Sensitive"
 msgstr "Sensitive"
 
-# Stutus attribute message
+# Status attribute message
 msgid "Please pick the status."
 msgstr "Please pick the status."
 
-# Stutus option
+# Status option
 msgid "Native"
 msgstr "Native"
 
-# Stutus option
+# Status option
 msgid "Unknown"
 msgstr "Unknown"
 
-# Stutus option
+# Status option
 msgid "Introduced"
 msgstr "Introduced"
 
-# Stutus option
+# Status option
 msgid "Introduced - planted"
 msgstr "Introduced - planted"
 
-# Stutus option
+# Status option
 msgid "Introduced - surviving"
 msgstr "Introduced - surviving"
 
-# Stutus option
+# Status option
 msgid "Introduced - casual"
 msgstr "Introduced - casual"
 
-# Stutus option
+# Status option
 msgid "Introduced - established"
 msgstr "Introduced - established"
 
-# Stutus option
+# Status option
 msgid "Introduced - invasive"
 msgstr "Introduced - invasive"
 
@@ -2045,6 +2054,10 @@ msgstr "Survey incomplete"
 msgid "Please enter location and its name."
 msgstr "Please enter location and its name."
 
+# Survey verification message
+msgid "Recorders field is missing."
+msgstr "Recorders field is missing."
+
 # Locking attributes message
 msgid "The attribute value was locked and will be pre-filled for subsequent records."
 msgstr "The attribute value was locked and will be pre-filled for subsequent records."
@@ -2061,13 +2074,6 @@ msgstr "You can lock the location only if it was selected using a map or entered
 msgid "Finish"
 msgstr "Finish"
 
-# Plant Survey info message
-msgid "We will notify you when you cross into another grid square. You can select the square size in the app settings."
-msgstr "We will notify you when you cross into another grid square. You can select the square size in the app settings."
-
-# Plant Survey info message
-msgid "Use grid alert"
-msgstr "Use grid alert"
 
 # Taxon search info message
 msgid "(2 letters of genus + 3 of species)"
@@ -2144,4 +2150,24 @@ msgstr "rejected"
 # Verification message
 msgid "Thanks for sending in your record. We do not think this is <2>{{taxonName}}</2> species."
 msgstr "Thanks for sending in your record. We do not think this is <2>{{taxonName}}</2> species."
+
+# Account not verified alert button label
+msgid "Resend"
+msgstr "Resend"
+
+# Account not verified alert message
+msgid "Looks like your email hasn't been verified yet."
+msgstr "Looks like your email hasn't been verified yet."
+
+# Account not verified alert message
+msgid "Should we resend the verification email?"
+msgstr "Should we resend the verification email?"
+
+# Login required fields
+msgid "email is a required field"
+msgstr "email is a required field"
+
+# Login required fields 
+msgid "password is a required field"
+msgstr "password is a required field"
 
