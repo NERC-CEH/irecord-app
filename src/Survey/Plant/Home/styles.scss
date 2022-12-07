@@ -5,6 +5,8 @@
       var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.2)))
     );
 
+  padding-top: 0 !important;
+
   ion-button.info-button {
     float: left;
     margin: 9px;

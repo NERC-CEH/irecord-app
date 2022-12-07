@@ -33,6 +33,7 @@
 
   &.training {
     --background: var(--ion-color-dark);
+    padding: 0;
 
     ion-title {
       color: white !important;
