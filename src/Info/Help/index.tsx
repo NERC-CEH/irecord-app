@@ -3,19 +3,19 @@ import CONFIG from 'common/config';
 import { Page, Collapse, Header, Main } from '@flumens';
 import { IonList, IonItemDivider, IonIcon, IonItem } from '@ionic/react';
 import {
-  settings,
+  settingsOutline,
   arrowUndoOutline,
-  person,
-  personAdd,
-  menu,
-  create,
-  add,
-  trash,
-  camera,
-  lockClosed,
+  personOutline,
+  personAddOutline,
+  menuOutline,
+  createOutline,
+  addOutline,
+  trashOutline,
+  cameraOutline,
+  lockClosedOutline,
   lockOpenOutline,
-  people,
-  logOut,
+  peopleOutline,
+  logOutOutline,
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import './styles.scss';
@@ -31,230 +31,187 @@ const Help: FC = () => (
         </IonItemDivider>
         <div className="rounded">
           <Collapse title="How to make a new record">
-            <p>
-              <T>There are two ways to start a record</T>
-              .
-              <br />
-              <br />
-              <strong>
-                <T>Taking a photo</T>
-              </strong>
-              <br />
-              <T>Press the camera button</T>{' '}
-              <IonIcon icon={camera} size="small" />{' '}
-              <T>
-                in the home page header. This will prompt you to select the
-                photo source: camera or gallery. Once you have picked a photo,
-                the app will create a new record without any species associated
-                with it.
-              </T>
-              <br />
-              <br />
-              <strong>
-                <T>Selecting species</T>
-              </strong>
-              <br />
-              <T>Please press the plus</T> <IonIcon icon={add} size="small" />{' '}
-              <T>
-                button in the home page. This will bring you to the taxa search
-                page. After selecting the species, open the record (either by
-                opening it directly from the taxa search page using the edit
-                button
-              </T>
-              <span className="icon edit" />{' '}
-              <T>
-                beside the species name or through the home-list page) and fill
-                in the details of the sighting, like location, date, number seen
-                etc
-              </T>
-              .
-              <br />
-              <br />
-              <T>
-                When finished, press the Upload button in the record's page
-                header.
-              </T>
-            </p>
+            <div>
+              <p>
+                <T>There are two ways to start a record.</T>
+              </p>
+              <p>
+                <b>
+                  <T>Taking a photo</T>
+                </b>
+              </p>
+              <p>
+                <T>
+                  Press the camera button{' '}
+                  <IonIcon icon={cameraOutline} size="small" /> in the home page
+                  header. This will prompt you to select the photo source:
+                  camera or gallery. Once you have picked a photo, the app will
+                  create a new record without any species associated with it.
+                </T>
+              </p>
+              <p>
+                <b>
+                  <T>Selecting species</T>
+                </b>
+              </p>
+              <p>
+                <T>
+                  Please press the plus{' '}
+                  <IonIcon icon={addOutline} size="small" /> button in the home
+                  page. This will bring you to the taxa search page. After
+                  selecting the species, open the record (either by opening it
+                  directly from the taxa search page using the edit button{' '}
+                  <span className="icon edit" /> beside the species name or
+                  through the home-list page) and fill in the details of the
+                  sighting, like location, date, number seen etc.
+                </T>
+              </p>
+              <p>
+                <T>
+                  When finished, press the Upload button in the record's page
+                  header.
+                </T>
+              </p>
+            </div>
           </Collapse>
 
           <Collapse title="Adding lists of records - surveying">
-            <p>
-              <T>
-                You can record lists of species. Long-pressing the green plus
-                button in the home page will show more advanced recording
-                options.
-              </T>
-            </p>
+            <T>
+              You can record lists of species. Long-pressing the green plus
+              button in the home page will show more advanced recording options.
+            </T>
           </Collapse>
           <Collapse title="Searching for species">
-            <p>
-              <T>
-                Type in a species name (English or scientific name, or a genus
-                or family etc.).
-              </T>
-              <br />
-              <br />
-              <T>
-                To find a species from its scientific name you can use
-                shortcuts, e.g. to find
+            <div>
+              <p>
+                <T>
+                  Type in a species name - English or scientific name, or a
+                  genus or family etc.
+                </T>
+              </p>
+              <p>
+                <T>
+                  To find a species from its scientific name you can use
+                  shortcuts, e.g. to find <i>Bellis perrenis</i> (Daisy) you can
+                  type:
+                </T>
+              </p>
+              <p>
                 <b>
-                  <i> Bellis perrenis</i>
+                  <i>bellis p</i>
+                </b>
+                <br />
+                <b>
+                  <i>bellis .ni</i>
+                </b>
+                <br />
+                <b>
+                  <i> beper </i>
                 </b>{' '}
-                (Daisy) you can type:
-              </T>
-              <br />
-              <br />
-              <b>
-                <i>bellis p</i>
-              </b>
-              <br />
-              <b>
-                <i>bellis .ni</i>
-              </b>
-              <br />
-              <b>
-                <i> beper </i>
-              </b>{' '}
-              <T>(2 letters of genus + 3 of species)</T>
-              <br />
-              <b>
-                <i>perennis</i>
-              </b>
-              <br />
-              <br />
-              <T>
-                Once you have added the name, you can add a photo, and the app
-                will suggest an identification based on the photo.
-              </T>
-            </p>
+                <T>(2 letters of genus + 3 of species)</T>
+                <br />
+                <b>
+                  <i>perennis</i>
+                </b>
+              </p>
+              <p>
+                <T>
+                  Once you have added the name, you can add a photo and the app
+                  will suggest an identification based on the photo.
+                </T>
+              </p>
+            </div>
           </Collapse>
           <Collapse title="Sync. with iRecord">
-            <p>
-              <T>
-                All your saved records will be shown on the home page. By
-                default a record is in
-              </T>{' '}
-              <i>
-                <T>draft</T>
-              </i>{' '}
-              <T>mode until it is set for upload. While it is in</T>{' '}
-              <i>
-                <T>draft</T>
-              </i>{' '}
-              <T>
-                mode the application will not synchronise your record with the
-                database.
-              </T>
-              <br />
-              <br />
-              <T>
-                To set it for upload, open the record and press the Upload
-                button in the header. The application will try to submit your
-                record once there is a good network connection.
-              </T>{' '}
-              <T>
-                If the record has reached the database, it will be moved to the
-                Uploaded list in the Home page (see Uploaded tab).
-              </T>
-              <br />
-              <br />
-              <T>
-                Once it has successfully reached the database the record becomes
-                unavailable for new edits. To further edit it please use the
-              </T>{' '}
-              <a href="http://irecord.org.uk">
-                <T>iRecord Website</T>
-              </a>
-              .
-              <br />
-              <br />
-              <b>
-                <T>Note</T>:
-              </b>{' '}
-              <T>
-                you have to be signed in to your iRecord account and have a
-                network connection, for the records to be automatically
-                synchronised in the background
-              </T>
-              .
-              <br />
-            </p>
+            <div>
+              <p>
+                <T>
+                  All your saved records will be shown on the home page. By
+                  default a record is in <i>draft</i> mode until it is set for
+                  upload. While it is in <i>draft</i> mode the application will
+                  not synchronise your record with the database.
+                </T>
+              </p>
+              <p>
+                <T>
+                  To set it for upload, open the record and press the Upload
+                  button in the header. The application will try to submit your
+                  record once there is a good network connection. If the record
+                  has reached the database, it will be moved to the Uploaded
+                  list in the Home page (see Uploaded tab).
+                </T>
+              </p>
+              <p>
+                <T>
+                  Once it has successfully reached the database the record
+                  becomes unavailable for new edits. To further edit it please
+                  use the <a href="http://irecord.org.uk">iRecord Website</a>.
+                </T>
+              </p>
+              <p>
+                <T>
+                  <b>Note:</b> you have to be signed in to your iRecord account
+                  and have a network connection, for the records to be
+                  automatically synchronised in the background.
+                </T>
+              </p>
+            </div>
           </Collapse>
-          {/* <Collapse title='Send all records</T>>
-          <p>
-            {t(
-              'You can set all your valid draft records for upload in one go. To do that go to the settings page'
-            )}
-            <IonIcon icon={settings} size="small" /> 
-            {' '}
-            <T>and click Submit All</T>
-            <IonIcon icon={send} size="small" /> 
-            {' '}
-            <T>button</T>
-.
-            {' '}
-            <T>This will try to send all the valid records</T>
-.
-          </p>
-        </Collapse> */}
           <Collapse title="Delete a record">
-            <p>
-              <T>
-                To delete a record, swipe it left in the Home page and click the
-                delete
-              </T>
-              <IonIcon icon={trash} size="small" /> <T>button</T>
-              .
-              <img
-                src={deleteRecordImage}
-                style={{ width: '80%', margin: '20px' }}
-              />
-              <br />
-              <br />
-              <T>
-                You can also remove all the locally saved records that have been
-                successfully synchronised with the database. This will leave the
-                records on the database untouched. To do that go to settings
-                page
-              </T>
-              <IonIcon icon={settings} size="small" /> <T>and click</T>{' '}
-              <T>Remove All Saved</T>
-              <IonIcon icon={trash} size="small" /> <T>button</T>.
-            </p>
+            <div>
+              <p>
+                <T>
+                  To delete a record, swipe it left in the Home page and click
+                  the delete <IonIcon icon={trashOutline} size="small" />{' '}
+                  button.
+                </T>
+                <img
+                  src={deleteRecordImage}
+                  style={{ width: '80%', margin: '20px' }}
+                />
+              </p>
+              <p>
+                <T>
+                  You can also remove all the locally saved records that have
+                  been successfully synchronised with the database. This will
+                  leave the records in the database untouched. To do that go to
+                  settings page <IonIcon icon={settingsOutline} size="small" />{' '}
+                  and click <b>Remove Uploaded Surveys</b>{' '}
+                  <IonIcon icon={trashOutline} size="small" /> button.
+                </T>
+              </p>
+            </div>
           </Collapse>
           <Collapse title="Lock an attribute">
-            <p>
-              <T>
-                You can lock record attributes like date, location, number etc,
-                which will preserve your current attribute value for the
-                subsequently added records.
-              </T>
-              <br />
-              <br />
-              <T>
-                To lock an attribute swipe the menu attribute item to the left
-                and click on the lock
-              </T>{' '}
-              <IonIcon icon={lockClosed} size="small" />{' '}
-              <T>button. This will change the symbol to locked</T>
-              <IonIcon icon={lockOpenOutline} size="small" />{' '}
-              <T>both on the button and next to the attribute</T>
-              .
-              <br />
-              <br />
-              <b>
-                <T>Note</T>:
-              </b>{' '}
-              <T>
-                For a GPS-sourced location, only the location name can be
-                locked, not the GPS value. As you move about, the GPS value will
-                change. This will allow recording of different GPS values within
-                an named area while keeping the location name the same. You can
-                lock a location if it is selected using a map or entered
-                manually
-              </T>
-              .
-            </p>
+            <div>
+              <p>
+                <T>
+                  You can lock record attributes like date, location, number
+                  etc, which will preserve your current attribute value for the
+                  subsequently added records.
+                </T>
+              </p>
+              <p>
+                <T>
+                  To lock an attribute swipe the menu attribute item to the left
+                  and click on the lock{' '}
+                  <IonIcon icon={lockClosedOutline} size="small" /> button. This
+                  will change the symbol to locked{' '}
+                  <IonIcon icon={lockOpenOutline} size="small" /> both on the
+                  button and next to the attribute.
+                </T>
+              </p>
+              <p>
+                <T>
+                  <b>Note:</b> For a GPS-sourced location, only the location
+                  name can be locked, not the GPS value. As you move about, the
+                  GPS value will change. This will allow recording of different
+                  GPS values within an named area while keeping the location
+                  name the same. You can lock a location if it is selected using
+                  a map or entered manually.
+                </T>
+              </p>
+            </div>
           </Collapse>
         </div>
 
@@ -264,51 +221,88 @@ const Help: FC = () => (
 
         <div className="rounded">
           <Collapse title="Sign in/out or register">
-            <p>
-              <T>To login, open the main menu page</T>{' '}
-              <IonIcon icon={menu} size="small" />,<T>click Login</T>{' '}
-              <IonIcon icon={person} size="small" />
-              <T>or Register</T> <IonIcon icon={personAdd} size="small" />
-              <T>buttons and follow the instructions</T>
-              .
-              <br />
-              <br />
-              <T>To logout, visit the main menu page</T>{' '}
-              <IonIcon icon={menu} size="small" />
-              <T>and click the logout</T> <IonIcon icon={logOut} size="small" />{' '}
-              <T>button</T>
-              .
-              <br />
-              <br />
-              <b>
-                <T>Note</T>:
-              </b>{' '}
-              <T>
-                after registering a new account you must verify your email
-                address by clicking on a verification link sent to your email
-              </T>
-              .
-            </p>
+            <div>
+              <p>
+                <T>
+                  To login, open the main menu page{' '}
+                  <IonIcon icon={menuOutline} size="small" />, click Login{' '}
+                  <IonIcon icon={personOutline} size="small" /> or Register{' '}
+                  <IonIcon icon={personAddOutline} size="small" /> buttons and
+                  follow the instructions.
+                </T>
+              </p>
+              <p>
+                <T>
+                  To logout, visit the main menu page{' '}
+                  <IonIcon icon={menuOutline} size="small" /> and click the
+                  logout <IonIcon icon={logOutOutline} size="small" /> button
+                </T>
+              </p>
+              <p>
+                <T>
+                  <b>Note:</b> after registering a new account you must verify
+                  your email address by clicking on a verification link sent to
+                  your email.
+                </T>
+              </p>
+            </div>
           </Collapse>
+          <Collapse title="Verification of your records">
+            <div>
+              <p>
+                <T>
+                  When you add a record to the app and then upload it to
+                  iRecord, it may be checked by one of the expert verifiers who
+                  volunteer on behalf of the national or local wildlife
+                  recording schemes. If that happens you will see notifications
+                  in the app to tell you that the record has been accepted or
+                  not.
+                </T>
+              </p>
+              <p>
+                <T>
+                  Some verifiers may have added additional comments or queries
+                  to your records, and at the moment these are not available
+                  within the app, so you may wish to log on to the iRecord
+                  website and view your records and notifications there.
+                </T>
+              </p>
+              <p>
+                <T>
+                  If you do not wish to see the notifications in the app you can
+                  tick the box for “Do not show again”, but if you do this the
+                  notifications will become unavailable unless you reset the app
+                  settings or reinstall the app.
+                </T>
+              </p>
+              <p>
+                <T>
+                  For more information about the record checking process see{' '}
+                  <a href="https://irecord.org.uk/records-verified">
+                    Verification: what, who and why
+                  </a>{' '}
+                  on the iRecord website.
+                </T>
+              </p>
+            </div>
+          </Collapse>{' '}
           <Collapse title="Activities">
-            <p>
-              <T>
-                To send records to a specific activity you can select it in the
-                Activities page.
-              </T>
-              <IonIcon icon={people} size="small" />
-              <br />
-              <br />
-              <b>
-                <T>Note</T>:
-              </b>{' '}
-              <T>
-                only the activities that allow this mobile app records and only
-                the ones that you have joined on the iRecord website will be
-                available to select
-              </T>
-              .
-            </p>
+            <div>
+              <p>
+                <T>
+                  To send records to a specific activity you can select it in
+                  the Activities <IonIcon icon={peopleOutline} size="small" />{' '}
+                  page.
+                </T>
+              </p>
+              <p>
+                <T>
+                  <b>Note:</b> only the activities that allow this mobile app
+                  records and only the ones that you have joined on the iRecord
+                  website will be available to select.
+                </T>
+              </p>
+            </div>
           </Collapse>
         </div>
 
@@ -317,43 +311,44 @@ const Help: FC = () => (
         </IonItemDivider>
         <div className="rounded">
           <Collapse title="Manage saved locations">
-            <p>
-              <T>
-                You can manage your saved locations both on any record's
-                location page and from the settings page.
-              </T>
-              <IonIcon icon={settings} size="small" />
-              <T>Swipe a location left and click edit</T>
-              <IonIcon icon={create} size="small" /> <T>or delete</T>
-              <IonIcon icon={trash} size="small" /> <T>buttons</T>
-              .
-              <br />
-              <br />
-              <span className="location-favourite icon icon-star " />{' '}
-              <T>
-                You can make your location stick to the top of the locations
-                list by clicking the Favourite toggle
-              </T>
-              .
-            </p>
+            <div>
+              <p>
+                <T>
+                  You can manage your saved locations both on any record's
+                  location page and from the settings{' '}
+                  <IonIcon icon={settingsOutline} size="small" /> page.
+                </T>
+                <T>
+                  Swipe a location left and click edit{' '}
+                  <IonIcon icon={createOutline} size="small" /> or delete
+                  <IonIcon icon={trashOutline} size="small" /> buttons.
+                </T>
+              </p>
+              <p>
+                <span className="location-favourite icon icon-star " />{' '}
+                <T>
+                  You can make your location stick to the top of the locations
+                  list by clicking the Favourite toggle.
+                </T>
+              </p>
+            </div>
           </Collapse>
           <Collapse title="Reset the application">
-            <p>
-              <T>Go to the application settings page</T>{' '}
-              <IonIcon icon={settings} size="small" />{' '}
-              <T>and click on the Reset</T>{' '}
-              <IonIcon icon={arrowUndoOutline} size="small" />
-              <T>button</T>.
-            </p>
+            <div>
+              <T>
+                Go to the application settings page{' '}
+                <IonIcon icon={settingsOutline} size="small" /> and click on the
+                Reset <IonIcon icon={arrowUndoOutline} size="small" /> button.
+              </T>
+            </div>
           </Collapse>
           <IonItem>
-            <p>
-              <T>For more help please visit the iRecord</T>{' '}
-              <a href={`${CONFIG.backend.url}forum/26`}>
-                <T>forum</T>
-              </a>
-              .
-            </p>
+            <div>
+              <T>
+                For more help please visit the iRecord{' '}
+                <a href={`${CONFIG.backend.url}forum/26`}>forum</a>.
+              </T>
+            </div>
           </IonItem>
         </div>
       </IonList>
