@@ -2171,3 +2171,23 @@ msgstr "email is a required field"
 msgid "password is a required field"
 msgstr "password is a required field"
 
+# Uploaded record Link to iRecord website
+msgid "This record has been submitted and cannot be edited within this App.<1><0>iRecord website</0></1>"
+msgstr "This record has been submitted and cannot be edited within this App.<1><0>iRecord website</0></1>"
+
+# Uploaded record Link to iRecord website
+msgid "iRecord website"
+msgstr "iRecord website""
+
+# Verification status
+msgid "Unconfirmed"
+msgstr "Unconfirmed"
+
+# Verification status
+msgid "Rejected"
+msgstr "Rejected"
+
+# Verification status
+msgid "Accepted"
+msgstr "Accepted"
+

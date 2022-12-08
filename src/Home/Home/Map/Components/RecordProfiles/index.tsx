@@ -147,7 +147,7 @@ const Profile = (record: Record) => {
             <span>
               <T>Status</T>:
             </span>{' '}
-            {statusText}
+            <T>{statusText}</T>
           </div>
           <div className="record-attribute">
             <span>
@@ -174,7 +174,7 @@ const Profile = (record: Record) => {
               <span>
                 <T>Stage</T>:
               </span>{' '}
-              {stage}
+              <T>{stage}</T>
             </div>
           )}
         </IonCardContent>
