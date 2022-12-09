@@ -1725,9 +1725,9 @@ msgstr "You can reset the app data to its default settings."
 msgid "Are you sure you want to remove all successfully synchronised local records?<p><i><b>Note:</b> records on the server will not be touched.</i></p>"
 msgstr "Are you sure you want to remove all successfully synchronised local records?<p><i><b>Note:</b> records on the server will not be touched.</i></p>"
 
-# Home page backgrond message
-msgid "<0>You have no finished surveys.<br/><br/>Press<4></4> to add.</0>"
-msgstr "<0>You have no finished surveys.<br/><br/>Press<4></4> to add.</0>"
+# Home page background message
+msgid "<0>You have no finished surveys.<br/><br/>Press <4></4> to add record details, or press <6></6> to add a photo first.</0>"
+msgstr "<0>You have no finished surveys.<br/><br/>Press <4></4> to add record details, or press <6></6> to add a photo first.</0>"
 
 # Alert message 
 msgid "Incorrect password or email"

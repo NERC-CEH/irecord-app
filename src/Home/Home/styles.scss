@@ -87,9 +87,15 @@
 
 .info-background-message ion-icon,
 ion-alert .tip-icon {
-  background: var(--ion-color-primary) !important;
   --ionicon-stroke-width: 40px;
-  border-radius: 50% !important;
   margin-bottom: -3px;
-  color: white;
+
+  border-radius: 50% !important;
+  background: rgb(242, 242, 242) !important;
+  color: black !important;
+
+  &.with-background {
+    color: white !important;
+    background: var(--ion-color-primary) !important;
+  }
 }

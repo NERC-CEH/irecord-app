@@ -20,7 +20,7 @@ import userModel from 'models/user';
 import { Trans as T } from 'react-i18next';
 import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
 import savedSamples, { uploadAllSamples } from 'models/savedSamples';
-import { addOutline } from 'ionicons/icons';
+import { addOutline, cameraOutline } from 'ionicons/icons';
 import VirtualList from './VirtualList';
 import Survey from './Survey';
 import Map from './Map';
@@ -171,8 +171,9 @@ const UserSurveyComponent: FC = () => {
             You have no finished surveys.
             <br />
             <br />
-            Press
-            <IonIcon icon={addOutline} /> to add.
+            Press <IonIcon icon={addOutline} className="with-background" /> to
+            add record details, or press <IonIcon icon={cameraOutline} /> to add
+            a photo first.
           </div>
         </InfoBackgroundMessage>
       );
