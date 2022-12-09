@@ -33,11 +33,6 @@ const MapInfo: FC<Props> = ({ map }) => {
     setLocating(null);
   };
 
-  useIonViewDidEnter(() => {
-    const refreshMap = () => map.invalidateSize();
-    map.whenReady(refreshMap);
-  });
-
   useIonViewWillLeave(() => {
     if (locating) stopGPS();
   });
