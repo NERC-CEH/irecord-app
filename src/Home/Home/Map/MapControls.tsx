@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { useMap } from 'react-leaflet';
-import { IonIcon, useIonViewDidEnter, useIonViewWillLeave } from '@ionic/react';
+import { IonIcon, useIonViewWillLeave } from '@ionic/react';
 import { locateOutline } from 'ionicons/icons';
 import { useToast } from '@flumens';
 import GPS from 'helpers/GPS';
