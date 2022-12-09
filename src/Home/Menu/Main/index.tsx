@@ -20,17 +20,34 @@ import {
   openOutline,
 } from 'ionicons/icons';
 import { AppModel } from 'models/app';
-import { Main, InfoMessage } from '@flumens';
+import savedSamples from 'models/savedSamples';
+import { Main, InfoMessage, UserFeedbackRequest } from '@flumens';
 import { Trans as T } from 'react-i18next';
 import config from 'common/config';
 import './styles.scss';
 import appLogo from './logo.svg';
 
+const shouldShowFeedback = (appModel: AppModel, isLoggedIn: boolean) => {
+  if (appModel.attrs.feedbackGiven) {
+    return false;
+  }
+
+  if (appModel.attrs.useTraining) {
+    return false;
+  }
+
+  if (!isLoggedIn) {
+    return false;
+  }
+
+  return savedSamples.length > 5;
+};
+
 type Props = {
   logOut: any;
   refreshAccount: any;
   resendVerificationEmail: any;
-  isLoggedIn: any;
+  isLoggedIn: boolean;
   user: any;
   appModel: AppModel;
 };
@@ -48,11 +65,28 @@ const MenuMain: FC<Props> = ({
   const isNotVerified = user.verified === false; // verified is undefined in old versions
   const userEmail = user.email;
 
+  const onFeedbackDone = () => {
+    // eslint-disable-next-line no-param-reassign
+    appModel.attrs.feedbackGiven = true;
+    appModel.save();
+  };
+
+  const showFeedback = shouldShowFeedback(appModel, isLoggedIn);
+
   return (
     <Main className="app-menu">
       <img src={appLogo} alt="app logo" />
 
       <IonList lines="full">
+        {showFeedback && (
+          <div className="rounded">
+            <UserFeedbackRequest
+              email={config.feedbackEmail}
+              onFeedbackDone={onFeedbackDone}
+            />
+          </div>
+        )}
+
         <IonItemDivider>
           <T>User</T>
         </IonItemDivider>

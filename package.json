@@ -39,6 +39,8 @@
     "@flumens/ionic": "1.19.0",
     "@ionic-native/core": "5.36.0",
     "@ionic-native/launch-review": "^5.29.0",
+    "cordova-launch-review": "^4.0.1",
+    "cordova-plugin-device": "^2.1.0",
     "@ionic/core": "^6.2.6",
     "@ionic/react": "^6.2.6",
     "@ionic/react-router": "^6.2.6",

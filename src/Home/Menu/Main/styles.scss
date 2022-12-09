@@ -3,6 +3,11 @@
     --padding-top: env(safe-area-inset-top) !important;
   }
 
+  #feedback-request {
+    border-radius: var(--theme-border-radius);
+    box-shadow: none;
+  }
+
   .app-menu {
     img {
       margin: 0 auto;

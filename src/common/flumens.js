@@ -62,6 +62,7 @@ export {
   Attrs as DrupalUserModelAttrs,
 } from '@flumens/ionic/dist/models/DrupalUserModel';
 export { default as InputWithValidation } from '@flumens/ionic/dist/components/InputWithValidation';
+export { default as UserFeedbackRequest } from '@flumens/ionic/dist/components/UserFeedbackRequest';
 export {
   useDisableBackButton,
   useOnBackButton,
