@@ -19,4 +19,26 @@
     margin-bottom: -4px;
     color: white;
   }
+
+  ul li:first-child {
+    margin-bottom: 10px;
+  }
+
+  .image-classifier {
+    text-align: center;
+
+    h3 {
+      margin: 5px 0 20px 0;
+    }
+
+    .agree {
+      background: var(--classifier-success-background);
+      color: var(--classifier-success);
+    }
+
+    .disagree {
+      background: var(--classifier-unlikely-background);
+      color: var(--classifier-reject);
+    }
+  }
 }

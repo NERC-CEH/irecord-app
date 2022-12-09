@@ -1698,6 +1698,42 @@ msgid "Once you have added the name, you can add a photo, and the app will sugge
 msgstr "Once you have added the name, you can add a photo, and the app will suggest an identification based on the photo."
 
 # Help page content
+msgid "Image recognition"
+msgstr "Image recognition"
+
+# Help page content
+msgid "If you have added a photo to your record, the app will offer suggestions about the identification, using automatic image recognition."
+msgstr "If you have added a photo to your record, the app will offer suggestions about the identification, using automatic image recognition."
+
+# Help page content
+msgid "If you add a record using the plus button, you will be asked to add a species name to your record first. You can then add one or more photos, and the app will tell you if it agrees with the species name. If not it may suggest a different identification."
+msgstr "If you add a record using the plus button, you will be asked to add a species name to your record first. You can then add one or more photos, and the app will tell you if it agrees with the species name. If not it may suggest a different identification."
+
+# Help page content
+msgid "If you add a record using the photo button, you can add a photo first, and the app will be able to suggest an identification. You can then go on to use the suggested species name if you agree with it, or add your own identification instead."
+msgstr "If you add a record using the photo button, you can add a photo first, and the app will be able to suggest an identification. You can then go on to use the suggested species name if you agree with it, or add your own identification instead."
+
+# Help page content
+msgid "After uploading the photo, check the thumbnail to see if it shows a percentage indicating the probability of a suggested identification. If a different identification is being suggested a small red warning circle will be displayed – open the thumbnail to see alternative identification suggestions."
+msgstr "After uploading the photo, check the thumbnail to see if it shows a percentage indicating the probability of a suggested identification. If a different identification is being suggested a small red warning circle will be displayed – open the thumbnail to see alternative identification suggestions."
+
+# Help page content
+msgid "Identification agreed"
+msgstr "Identification agreed"
+
+# Help page content
+msgid "Alternative Identification suggested"
+msgstr "Alternative Identification suggested"
+
+# Help page content
+msgid "When you open up the thumbnail image you can tap on any of the alternative suggestions shown, and that will set the identification for your record."
+msgstr "When you open up the thumbnail image you can tap on any of the alternative suggestions shown, and that will set the identification for your record."
+
+# Help page content
+msgid "The image recognition process can be very helpful, but it doesn’t get it right every time! Check what is being suggested before making your final decision, and if you think the app suggestion is wrong feel free to stick to your own identification."
+msgstr "The image recognition process can be very helpful, but it doesn’t get it right every time! Check what is being suggested before making your final decision, and if you think the app suggestion is wrong feel free to stick to your own identification."
+
+# Help page content
 msgid "mode until it is set for upload. While it is in"
 msgstr "mode until it is set for upload. While it is in"
 

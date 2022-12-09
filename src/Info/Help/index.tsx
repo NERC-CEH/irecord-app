@@ -20,6 +20,9 @@ import {
 import { Trans as T } from 'react-i18next';
 import './styles.scss';
 import deleteRecordImage from './swipe_record.png';
+import imageRecognitionAgreeImg from './image_recognition_agree.jpg';
+import imageRecognitionDisagreeImg from './image_recognition_disagree.jpg';
+import suggestionsImg from './image_recognition_suggestions.jpg';
 
 const Help: FC = () => (
   <Page id="help-page">
@@ -70,6 +73,82 @@ const Help: FC = () => (
                 <T>
                   When finished, press the Upload button in the record's page
                   header.
+                </T>
+              </p>
+            </div>
+          </Collapse>
+
+          <Collapse title="Image recognition">
+            <div>
+              <p>
+                <T>
+                  If you have added a photo to your record, the app will offer
+                  suggestions about the identification, using automatic image
+                  recognition.
+                </T>
+              </p>
+
+              <ul>
+                <li>
+                  <T>
+                    If you add a record using the plus button, you will be asked
+                    to add a species name to your record first. You can then add
+                    one or more photos, and the app will tell you if it agrees
+                    with the species name. If not it may suggest a different
+                    identification.
+                  </T>
+                </li>
+
+                <li>
+                  <T>
+                    If you add a record using the photo button, you can add a
+                    photo first, and the app will be able to suggest an
+                    identification. You can then go on to use the suggested
+                    species name if you agree with it, or add your own
+                    identification instead.
+                  </T>
+                </li>
+              </ul>
+
+              <p>
+                <T>
+                  After uploading the photo, check the thumbnail to see if it
+                  shows a percentage indicating the probability of a suggested
+                  identification. If a different identification is being
+                  suggested a small red warning circle will be displayed – open
+                  the thumbnail to see alternative identification suggestions.
+                </T>
+              </p>
+
+              <div className="image-classifier">
+                <img src={imageRecognitionAgreeImg} />
+                <h3 className="agree">
+                  <T>Identification agreed</T>
+                </h3>
+
+                <img src={imageRecognitionDisagreeImg} />
+                <h3 className="disagree">
+                  <T>Alternative Identification suggested</T>
+                </h3>
+              </div>
+
+              <p>
+                <T>
+                  When you open up the thumbnail image you can tap on any of the
+                  alternative suggestions shown, and that will set the
+                  identification for your record.
+                </T>
+              </p>
+
+              <img src={suggestionsImg} />
+
+              <p>
+                <T>
+                  The image recognition process can be very helpful, but it
+                  doesn’t get it right every time! Check what is being suggested
+                  before making your final decision, and if you think the app
+                  suggestion is wrong feel free to stick to your own
+                  identification.
                 </T>
               </p>
             </div>
