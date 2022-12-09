@@ -17,13 +17,14 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { starOutline } from 'ionicons/icons';
 import L from 'leaflet';
 import config from 'common/config';
+import locationNameIcon from 'common/images/location-name.svg';
 import PastLocationsList from 'Components/PastLocationsList';
 import './styles.scss';
 
 type Props = {
   sample: Sample;
   subSample?: Sample;
-  onLocationNameChange?: any;
+  locationNameProps?: any;
 };
 
 const SNAP_POSITIONS = [0, 0.3, 0.5, 1];
@@ -90,16 +91,19 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
         mapProviderOptions={config.map}
         useGridRef
         useGridMap
-        suggestLocations={appModel.attrs.locations || []}
-        onLocationNameChange={ModelLocationOrig.utils.onLocationNameChange}
-        namePlaceholder="Site name eg nearby village"
         onGPSClick={onGPSClick}
         backButtonProps={{ text: 'Back' }}
         setLocation={setLocation}
-        geocodingParams={{
-          access_token: config.map.mapboxApiKey,
-          types: 'locality,place,district,neighborhood,region,postcode',
-          country: 'GB',
+        locationNameProps={{
+          onChange: ModelLocationOrig.utils.onLocationNameChange,
+          suggestLocations: appModel.attrs.locations || [],
+          placeholder: 'Site name eg nearby village',
+          icon: locationNameIcon,
+          geocodingParams: {
+            access_token: config.map.mapboxApiKey,
+            types: 'locality,place,district,neighborhood,region,postcode',
+            country: 'GB',
+          },
         }}
         className="with-past-locations"
         {...otherProps}
@@ -149,7 +153,7 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
 };
 
 (ModelLocation as any).WithoutName = (props: Props) => (
-  <ModelLocation {...props} onLocationNameChange={null} />
+  <ModelLocation {...props} locationNameProps={{}} />
 );
 
 export default ModelLocation;

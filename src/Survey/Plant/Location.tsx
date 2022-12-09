@@ -7,10 +7,10 @@ import {
 } from '@flumens';
 import { isPlatform } from '@ionic/react';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import savedSamples from 'models/savedSamples';
 import Sample from 'models/sample';
 import appModel from 'models/app';
 import config from 'common/config';
+import locationNameIcon from 'common/images/location-name.svg';
 
 /**
  * Updates child sample locations to match the parent (survey) sample.
@@ -24,8 +24,6 @@ function updateChildrenLocations(sample: Sample) {
     subSample.attrs.location = location;
   });
 }
-
-const getLocation = (sample: Sample) => sample.attrs.location || {};
 
 type Props = {
   sample: Sample;
@@ -89,12 +87,15 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
       mapProviderOptions={config.map}
       useGridRef
       useGridMap
-      suggestLocations={savedSamples.map(getLocation)}
-      onLocationNameChange={ModelLocationOrig.utils.onLocationNameChange}
-      namePlaceholder="Site name eg nearby village"
       onGPSClick={onGPSClick}
       backButtonProps={{ text: 'Back' }}
       setLocation={setLocation}
+      locationNameProps={{
+        onChange: ModelLocationOrig.utils.onLocationNameChange,
+        suggestLocations: appModel.attrs.locations || [],
+        placeholder: 'Site name eg nearby village',
+        icon: locationNameIcon,
+      }}
       {...otherProps}
     />
   );

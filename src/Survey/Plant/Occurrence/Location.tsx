@@ -6,11 +6,8 @@ import {
 } from '@flumens';
 import { isPlatform } from '@ionic/react';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import savedSamples from 'models/savedSamples';
 import Sample from 'models/sample';
 import config from 'common/config';
-
-const getLocation = (sample: Sample) => sample.attrs.location || {};
 
 type Props = {
   sample: Sample;
@@ -67,8 +64,6 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
       mapProviderOptions={config.map}
       useGridRef
       useGridMap
-      suggestLocations={savedSamples.map(getLocation)}
-      namePlaceholder="Site name eg nearby village"
       onGPSClick={onGPSClick}
       backButtonProps={{ text: 'Back' }}
       setLocation={setLocation}
