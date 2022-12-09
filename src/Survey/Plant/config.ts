@@ -25,7 +25,7 @@ import * as Yup from 'yup';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 
 const stageOptions = [
-  { label: 'Not Recorded', value: '', isDefault: true },
+  { label: 'Not Recorded', value: null, isDefault: true },
   { value: 'Flowering', id: 5331 },
   { value: 'Fruiting', id: 5330 },
   { value: 'Juvenile', id: 5328 },
@@ -35,7 +35,7 @@ const stageOptions = [
 ];
 
 const statusOptions = [
-  { label: 'Not Recorded', value: '', isDefault: true },
+  { label: 'Not Recorded', value: null, isDefault: true },
   { value: 'Native', id: 5709 },
   { value: 'Unknown', id: 5710 },
   { value: 'Introduced', id: 6775 },

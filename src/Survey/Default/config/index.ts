@@ -54,14 +54,14 @@ export function getTaxaGroupSurvey(taxaGroup: number) {
 }
 
 const stageOptions = [
-  { label: 'Not Recorded', value: '', isDefault: true },
+  { label: 'Not Recorded', value: null, isDefault: true },
   { value: 'Adult', id: 1950 },
   { value: 'Pre-adult', id: 1951 },
   { value: 'Other', id: 1952 },
 ];
 
 const sexOptions = [
-  { label: 'Not Recorded', value: '', isDefault: true },
+  { label: 'Not Recorded', value: null, isDefault: true },
   { value: 'Male', id: 1947 },
   { value: 'Female', id: 1948 },
   { value: 'Mixed', id: 3482 },

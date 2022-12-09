@@ -25,7 +25,7 @@ const sex = [
 ];
 
 const methodOptions = [
-  { label: 'Not Recorded', value: '', isDefault: true },
+  { label: 'Not Recorded', value: null, isDefault: true },
   { value: 'MV light', id: 2196 },
   { value: 'LED light', id: 17557 },
   { value: 'Actinic light', id: 2197 },
