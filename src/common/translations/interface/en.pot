@@ -1340,37 +1340,121 @@ msgstr "Hide"
 msgid "To delete any surveys swipe it to the left."
 msgstr "To delete any surveys swipe it to the left."
 
-# Part of Help page 
-msgid "Press the camera button<1></1>in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
-msgstr "Press the camera button<1></1>in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
+# Part of Help Page
+msgid "There are two ways to start a record."
+msgstr "There are two ways to start a record."
 
-# Part of Help page 
-msgid "Please press the plus<1></1>button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button<3></3>beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc.<br/><br/>When finished, press the Upload button in the record's page header."
-msgstr "Please press the plus<1></1>button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button<3></3>beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc.<br/><br/>When finished, press the Upload button in the record's page header."
+# Part of Help Page
+msgid "Press the camera button <2></2> in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
+msgstr "Press the camera button <2></2> in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
 
-# Part of Help page 
-msgid "All your saved records will be shown on the home page. By default a record is in <i>draft</i> mode until it is set for upload. While it is in <i>draft</i> mode the application will not synchronise your record with the database.<br/><br/>To set it for upload, open the record and press the Upload button in the header. The application will try to submit your record once there is a good network connection. If the record has reached the database, it will be moved to the Uploaded list in the Home page (see Uploaded tab).<br/><br/>Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <16>iRecord website</16>.<br/><br/><20>Note:</20> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background .<br/>"
-msgstr "All your saved records will be shown on the home page. By default a record is in <i>draft</i> mode until it is set for upload. While it is in <i>draft</i> mode the application will not synchronise your record with the database.<br/><br/>To set it for upload, open the record and press the Upload button in the header. The application will try to submit your record once there is a good network connection. If the record has reached the database, it will be moved to the Uploaded list in the Home page (see Uploaded tab).<br/><br/>Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <16>iRecord website</16>.<br/><br/><20>Note:</20> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background .<br/>"
+# Part of Help Page
+msgid "Please press the plus <2></2> button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button <5></5> beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc."
+msgstr "Please press the plus <2></2> button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button <5></5> beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc."
 
-# Part of Help page 
-msgid "To delete a record, swipe it left in the Home page and click the delete<1></1>button.<3></3><br/><br/>You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page<7></7>and click <i>Remove All Saved</i><11></11>button."
-msgstr "To delete a record, swipe it left in the Home page and click the delete<1></1>button.<3></3><br/><br/>You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page<7></7>and click <i>Remove All Saved</i><11></11>button."
+# Part of Help Page
+msgid "Type in a species name - English or scientific name, or a genus or family etc."
+msgstr "Type in a species name - English or scientific name, or a genus or family etc."
 
-# Part of Help page 
-msgid "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records.<br/><br/>To lock an attribute click on the lock<4></4>button in the attribute edit page header. This will change the symbol to locked<6></6>both on the button and next to the attribute.<br/><br/><10>Note:</10> For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within a named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually."
-msgstr "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records.<br/><br/>To lock an attribute click on the lock<4></4>button in the attribute edit page header. This will change the symbol to locked<6></6>both on the button and next to the attribute.<br/><br/><10>Note:</10> For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within a named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually."
+# Part of Help Page
+msgid "To find a species from its scientific name you can use shortcuts, e.g. to find <i>Bellis perrenis</i> (Daisy) you can type:"
+msgstr "To find a species from its scientific name you can use shortcuts, e.g. to find <i>Bellis perrenis</i> (Daisy) you can type:"
 
-# Part of Help page 
-msgid "To send records to a specific activity you can select it in the Activities page.<1></1><br/><br/><4>Note:</4> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
-msgstr "To send records to a specific activity you can select it in the Activities page.<1></1><br/><br/><4>Note:</4> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
+# Part of Help Page
+msgid "Once you have added the name, you can add a photo and the app will suggest an identification based on the photo."
+msgstr "Once you have added the name, you can add a photo and the app will suggest an identification based on the photo."
 
-# Part of Help page 
-msgid "You can manage your saved locations both on any record's location page and from the settings page.<1></1>Swipe a location left and click edit<3></3>or delete<5></5>buttons.<br/><br/><9></9> You can make your location stick to the top of the locations list by clicking the Favourite toggle ."
-msgstr "You can manage your saved locations both on any record's location page and from the settings page.<1></1>Swipe a location left and click edit<3></3>or delete<5></5>buttons.<br/><br/><9></9> You can make your location stick to the top of the locations list by clicking the Favourite toggle ."
+# Part of Help Page
+msgid "All your saved records will be shown on the home page. By default a record is in <i>draft</i> mode until it is set for upload. While it is in <i>draft</i> mode the application will not synchronise your record with the database."
+msgstr "All your saved records will be shown on the home page. By default a record is in <i>draft</i> mode until it is set for upload. While it is in <i>draft</i> mode the application will not synchronise your record with the database."
 
-# Part of Help page 
-msgid "For quicker searching of the taxa you can use different shortcuts.<br/><br/>For <5><i>Turdus merula</i></5>:<br/><br/><9><i>turdus me</i></9><br/><11><i>turdus .la</i></11><br/><13><i>tumer</i></13> (2+3 characters)<br/><17><i>merula</i></17>"
-msgstr "For quicker searching of the taxa you can use different shortcuts.<br/><br/>For <5><i>Turdus merula</i></5>:<br/><br/><9><i>turdus me</i></9><br/><11><i>turdus .la</i></11><br/><13><i>tumer</i></13> (2+3 characters)<br/><17><i>merula</i></17>"
+# Part of Help Page
+msgid "To set it for upload, open the record and press the Upload button in the header. The application will try to submit your record once there is a good network connection. If the record has reached the database, it will be moved to the Uploaded list in the Home page (see Uploaded tab)."
+msgstr "To set it for upload, open the record and press the Upload button in the header. The application will try to submit your record once there is a good network connection. If the record has reached the database, it will be moved to the Uploaded list in the Home page (see Uploaded tab)."
+
+# Part of Help Page
+msgid "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <1>iRecord Website</1>."
+msgstr "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <1>iRecord Website</1>."
+
+# Part of Help Page
+msgid "<0>Note:</0> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background."
+msgstr "<0>Note:</0> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background."
+
+# Part of Help Page
+msgid "To delete a record, swipe it left in the Home page and click the delete <1></1> button."
+msgstr "To delete a record, swipe it left in the Home page and click the delete <1></1> button."
+
+# Part of Help Page
+msgid "You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records in the database untouched. To do that go to settings page <1></1> and click <4>Remove Uploaded Surveys</4> <6></6> button."
+msgstr "You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records in the database untouched. To do that go to settings page <1></1> and click <4>Remove Uploaded Surveys</4> <6></6> button."
+
+# Part of Help Page
+msgid "To lock an attribute swipe the menu attribute item to the left and click on the lock <2></2> button. This will change the symbol to locked <5></5> both on the button and next to the attribute."
+msgstr "To lock an attribute swipe the menu attribute item to the left and click on the lock <2></2> button. This will change the symbol to locked <5></5> both on the button and next to the attribute."
+
+# Part of Help Page
+msgid "<0>Note:</0> For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within an named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually."
+msgstr "<0>Note:</0> For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within an named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually."
+
+# Part of Help Page
+msgid "To login, open the main menu page <2></2>, click Login <5></5> or Register <8></8> buttons and follow the instructions."
+msgstr "To login, open the main menu page <2></2>, click Login <5></5> or Register <8></8> buttons and follow the instructions."
+
+# Part of Help Page
+msgid "To logout, visit the main menu page <2></2> and click the logout <4></4> button"
+msgstr "To logout, visit the main menu page <2></2> and click the logout <4></4> button"
+
+# Part of Help Page
+msgid "<0>Note:</0> after registering a new account you must verify your email address by clicking on a verification link sent to your email."
+msgstr "<0>Note:</0> after registering a new account you must verify your email address by clicking on a verification link sent to your email."
+
+# Part of Help Page
+msgid "Verification of your records"
+msgstr "Verification of your records"
+
+# Part of Help Page
+msgid "When you add a record to the app and then upload it to iRecord, it may be checked by one of the expert verifiers who volunteer on behalf of the national or local wildlife recording schemes. If that happens you will see notifications in the app to tell you that the record has been accepted or not."
+msgstr "When you add a record to the app and then upload it to iRecord, it may be checked by one of the expert verifiers who volunteer on behalf of the national or local wildlife recording schemes. If that happens you will see notifications in the app to tell you that the record has been accepted or not."
+
+# Part of Help Page
+msgid "Some verifiers may have added additional comments or queries to your records, and at the moment these are not available within the app, so you may wish to log on to the iRecord website and view your records and notifications there."
+msgstr "Some verifiers may have added additional comments or queries to your records, and at the moment these are not available within the app, so you may wish to log on to the iRecord website and view your records and notifications there."
+
+# Part of Help Page
+msgid "If you do not wish to see the notifications in the app you can tick the box for “Do not show again”, but if you do this the notifications will become unavailable unless you reset the app settings or reinstall the app."
+msgstr "If you do not wish to see the notifications in the app you can tick the box for “Do not show again”, but if you do this the notifications will become unavailable unless you reset the app settings or reinstall the app."
+
+# Part of Help Page
+msgid "For more information about the record checking process see <2>Verification: what, who and why</2> on the iRecord website."
+msgstr "For more information about the record checking process see <2>Verification: what, who and why</2> on the iRecord website."
+
+# Part of Help Page
+msgid "To send records to a specific activity you can select it in the Activities <1></1> page."
+msgstr "To send records to a specific activity you can select it in the Activities <1></1> page."
+
+# Part of Help Page
+msgid "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
+msgstr "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
+
+# Part of Help Page
+msgid "You can manage your saved locations both on any record's location page and from the settings <2></2> page."
+msgstr "You can manage your saved locations both on any record's location page and from the settings <2></2> page."
+
+# Part of Help Page
+msgid "Swipe a location left and click edit <2></2> or delete<4></4> buttons."
+msgstr "Swipe a location left and click edit <2></2> or delete<4></4> buttons."
+
+# Part of Help Page
+msgid "You can make your location stick to the top of the locations list by clicking the Favourite toggle."
+msgstr "You can make your location stick to the top of the locations list by clicking the Favourite toggle."
+
+# Part of Help Page
+msgid "Go to the application settings page <2></2> and click on the Reset <4></4> button."
+msgstr "Go to the application settings page <2></2> and click on the Reset <4></4> button."
+
+# Part of Help Page
+msgid "For more help please visit the iRecord <2>forum</2>."
+msgstr "For more help please visit the iRecord <2>forum</2>."
 
 # Bird survey breeding attribute
 msgid "breeding"
