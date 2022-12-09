@@ -2177,7 +2177,7 @@ msgstr "This record has been submitted and cannot be edited within this App.<1><
 
 # Uploaded record Link to iRecord website
 msgid "iRecord website"
-msgstr "iRecord website""
+msgstr "iRecord website"
 
 # Verification status
 msgid "Unconfirmed"
@@ -2190,4 +2190,52 @@ msgstr "Rejected"
 # Verification status
 msgid "Accepted"
 msgstr "Accepted"
+
+# Date
+msgid "Yesterday"
+msgstr "Yesterday"
+
+# Part of verification message
+msgid "Details"
+msgstr "Details"
+
+# Part of verification message
+msgid "Verified by:"
+msgstr "Verified by:"
+
+# Part of verification message
+msgid "Verified on:"
+msgstr "Verified on:"
+
+# Part of verification message
+msgid "Count"
+msgstr "Count"
+
+# Part of verification message
+msgid "New verified records"
+msgstr "New verified records"
+
+# Part of verification message
+msgid "Some of your records have been verified. You can find those in your <2>Uploaded</2> records list."
+msgstr "Some of your records have been verified. You can find those in your <2>Uploaded</2> records list."
+
+# Part of verification message
+msgid "Do not show again"
+msgstr "Do not show again"
+
+# Part of verification message
+msgid "See records"
+msgstr "See records"
+
+# Camera permission denied
+msgid "User denied access to camera"
+msgstr "User denied access to camera"
+
+# Location permission denied
+msgid "Location permission was denied"
+msgstr "Location permission was denied"
+
+# Sign up form required field
+msgid "email must be a valid emai"
+msgstr "email must be a valid emai"
 

@@ -4,6 +4,7 @@ import appModel from 'models/app';
 import savedSamples from 'models/savedSamples';
 import Occurrence from 'models/occurrence';
 import { observer } from 'mobx-react';
+import { Trans as T, useTranslation } from 'react-i18next';
 import { NavContext, IonItem, IonCheckbox, IonLabel } from '@ionic/react';
 import VerificationIcon from 'common/Components/VerificationStatus/VerificationIcon';
 import './styles.scss';
@@ -12,6 +13,7 @@ let isPopupVisible = false;
 
 const UpdatedRecordsDialog: FC = () => {
   const alert = useAlert();
+  const { t } = useTranslation();
   const { navigate } = useContext(NavContext);
 
   const { showVerifiedRecordsNotification } = appModel.attrs;
@@ -39,29 +41,37 @@ const UpdatedRecordsDialog: FC = () => {
     const message = (
       <>
         <p>
-          Some of your records have been verified. You can find those in your{' '}
-          <b>Uploaded</b> records list.
+          <T>
+            Some of your records have been verified. You can find those in your{' '}
+            <b>Uploaded</b> records list.
+          </T>
         </p>
 
         <div className="counts">
           {!!verified && (
             <div className="verified-count">
               <VerificationIcon status="verified" />
-              <span>Accepted:</span>
+              <span>
+                <T>Accepted</T>:
+              </span>
               <b>{verified}</b>
             </div>
           )}
           {!!plausible && (
             <div className="verified-count">
               <VerificationIcon status="plausible" />
-              <span>Plausible:</span>
+              <span>
+                <T>Plausible</T>:
+              </span>
               <b>{plausible}</b>
             </div>
           )}
           {!!rejected && (
             <div className="verified-count">
               <VerificationIcon status="rejected" />
-              <span>Rejected:</span>
+              <span>
+                <T>Rejected</T>:
+              </span>
               <b>{rejected}</b>
             </div>
           )}
@@ -74,27 +84,30 @@ const UpdatedRecordsDialog: FC = () => {
             onIonChange={onToggleAlert}
           />
           <IonLabel>
-            <small>Do not show again</small>
+            <small>
+              <T>Do not show again</T>
+            </small>
           </IonLabel>
         </IonItem>
       </>
     );
 
     alert({
-      header: `New verified records (${updatedOccurrences.length})`,
+      header: `${t('New verified records')} (${updatedOccurrences.length})`,
       message,
       cssClass: 'updated-records-dialog',
       backdropDismiss: false,
+      skipTranslation: true,
       buttons: [
         {
-          text: 'Close',
+          text: t('Close'),
           handler: () => {
             isPopupVisible = false;
             appModel.save();
           },
         },
         {
-          text: 'See records',
+          text: t('See records'),
           handler: () => {
             isPopupVisible = false;
             appModel.save();
