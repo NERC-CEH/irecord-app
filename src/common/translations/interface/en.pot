@@ -2267,9 +2267,9 @@ msgstr "Thanks for sending in your record. From this record details, we think it
 msgid "rejected"
 msgstr "rejected"
 
-# Verification message
-msgid "Thanks for sending in your record. We do not think this is <2>{{taxonName}}</2> species."
-msgstr "Thanks for sending in your record. We do not think this is <2>{{taxonName}}</2> species."
+# Verification message 
+msgid "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided."
+msgstr "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided." "in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided."
 
 # Account not verified alert button label
 msgid "Resend"

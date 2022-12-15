@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Occurrence from 'models/occurrence';
 import { InfoMessage, InfoButton } from '@flumens';
-import { Trans as T } from 'react-i18next';
+import { useTranslation, Trans as T } from 'react-i18next';
 import clsx from 'clsx';
 import { checkmarkCircle, closeCircle } from 'ionicons/icons';
 import './styles.scss';
@@ -9,7 +9,8 @@ import './styles.scss';
 const getVerificationText = (
   status: string,
   message: string,
-  taxonName: string
+  taxonName: string,
+  t: any
 ) => {
   const statusMessage = message || status;
   const verifyStatus: { [key: string]: JSX.Element } = {
@@ -54,8 +55,10 @@ const getVerificationText = (
 
         <div>
           <T>
-            Thanks for sending in your record. We do not think this is{' '}
-            <b>{{ taxonName }}</b> species.
+            Thanks for sending in your record. A verifier has marked it as{' '}
+            <b>{{ statusMessage: t(statusMessage) }}</b> in this case. Please
+            log in to the iRecord website to see any additional information that
+            the verifier may have provided.
           </T>
         </div>
       </>
@@ -79,13 +82,15 @@ const VerificationMessage: FC<Props> = ({ occurrence }) => {
   const status = occurrence.getVerificationStatus();
   const message = occurrence.getVerificationStatusMessage();
   const taxonName = occurrence.getPrettyName();
+  const { t } = useTranslation();
+
   const verificationObject = occurrence?.metadata?.verification;
 
   if (!status) return null;
 
   const textCode = status;
 
-  const verificationText = getVerificationText(textCode, message, taxonName);
+  const verificationText = getVerificationText(textCode, message, taxonName, t);
 
   if (!verificationText) return null;
 
