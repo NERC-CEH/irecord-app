@@ -14,8 +14,14 @@ const DisabledRecordMessage: FC<Props> = ({ sample }) => {
   const [occ] = sample.occurrences;
 
   return (
-    <InfoMessage color="dark" className="disabled-record-message">
-      This record has been submitted and cannot be edited within this App.
+    <InfoMessage
+      color="dark"
+      className="disabled-record-message"
+      skipTranslation
+    >
+      <T>
+        This record has been submitted and cannot be edited within this App.
+      </T>
       <IonButton
         expand="block"
         href={

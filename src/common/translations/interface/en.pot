@@ -47,42 +47,11 @@ msgstr "BRC Approved"
 msgid "Credits"
 msgstr "Credits"
 
-
-msgid "Please sign in with your iRecord account or register."
-msgstr "Please sign in with your iRecord account or register."
-
-msgid "Sign in"
-msgstr "Sign in"
-
-msgid "Request a new password"
-msgstr "Request a new password"
-
-msgid "I agree to"
-msgstr "I agree to"
-
-msgid "Terms and Conditions"
-msgstr "Terms and Conditions"
-
-msgid "Create"
-msgstr "Create"
-
-msgid "Enter your username or email address to request a password reset"
-msgstr "Enter your username or email address to request a password reset"
-
-msgid "Request"
-msgstr "Request"
-
 msgid "Reset"
 msgstr "Reset"
 
 msgid "Records"
 msgstr "Records"
-
-msgid "Submit All"
-msgstr "Submit All"
-
-msgid "Remove All Saved"
-msgstr "Remove All Saved"
 
 msgid "Training Mode"
 msgstr "Training Mode"
@@ -120,9 +89,6 @@ msgstr "map"
 msgid "Past Locations"
 msgstr "Past Locations"
 
-msgid "Favourite"
-msgstr "Favourite"
-
 msgid "Please pick your grid square unit."
 msgstr "Please pick your grid square unit."
 
@@ -131,9 +97,6 @@ msgstr "Tetrad (2km square)"
 
 msgid "Monad (1km square)"
 msgstr "Monad (1km square)"
-
-msgid "Locations"
-msgstr "Locations"
 
 msgid "Who can use the app?"
 msgstr "Who can use the app?"
@@ -153,116 +116,25 @@ msgstr "There are two ways to start a record"
 msgid "Taking a photo"
 msgstr "Taking a photo"
 
-msgid "Press the camera button"
-msgstr "Press the camera button"
-
-msgid "in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it. Clicking on the newly created record will open the taxa search page."
-msgstr "in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it. Clicking on the newly created record will open the taxa search page."
-
 msgid "Selecting species"
 msgstr "Selecting species"
-
-msgid "Please press the plus"
-msgstr "Please press the plus"
-
-msgid "button in the home page header. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button"
-msgstr "button in the home page header. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button"
-
-msgid "beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc"
-msgstr "beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc"
-
-msgid "When finished, set for submission by pressing the paper plane"
-msgstr "When finished, set for submission by pressing the paper plane"
-
-msgid "button"
-msgstr "button"
 
 msgid "Searching for species"
 msgstr "Searching for species"
 
-msgid "The application holds all of the UK’s species (70000+) and all the associated taxonomy ranks. For quicker searching of the taxa you can use different shortcuts. For example, to find"
-msgstr "The application holds all of the UK’s species (70000+) and all the associated taxonomy ranks. For quicker searching of the taxa you can use different shortcuts. For example, to find"
-
-msgid "you can type in the search bar"
-msgstr "you can type in the search bar"
-
 msgid "Sync. with iRecord"
 msgstr "Sync. with iRecord"
-
-msgid "All your saved records will be shown on the home page. By default a record is in"
-msgstr "All your saved records will be shown on the home page. By default a record is in"
-
-msgid "draft"
-msgstr "draft"
-
-msgid "mode until it is set for submission. While it is in"
-msgstr "mode until it is set for submission. While it is in"
-
-msgid "mode the application will not synchronise your record with the database. To set it for sending, open the record and press the"
-msgstr "mode the application will not synchronise your record with the database. To set it for sending, open the record and press the"
-
-msgid "button in the header. The application will try to submit your record once there is a good network connection"
-msgstr "button in the header. The application will try to submit your record once there is a good network connection"
-
-msgid "If the record has reached the database a red"
-msgstr "If the record has reached the database a red"
-
-msgid "set for submission & saved locally"
-msgstr "set for submission & saved locally"
-
-msgid "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the"
-msgstr "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the"
 
 msgid "iRecord Website"
 msgstr "iRecord Website"
 
-msgid "Note"
-msgstr "Note"
-
-msgid "you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background"
-msgstr "you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background"
-
-msgid "Send all records"
-msgstr "Send all records"
-
-msgid "You can set all your draft records for submission. To do that go to the settings page"
-msgstr "You can set all your draft records for submission. To do that go to the settings page"
-
-msgid "and click Submit All"
-msgstr "and click Submit All"
-
-msgid "This will try to send all the valid records"
-msgstr "This will try to send all the valid records"
-
 msgid "Delete a record"
 msgstr "Delete a record"
-
-msgid "To delete a record, swipe it left in the home-list page and click the delete"
-msgstr "To delete a record, swipe it left in the home-list page and click the delete"
-
-msgid "You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page"
-msgstr "You can also remove all the locally saved records that have been successfully synchronised with the database. This will leave the records on the database untouched. To do that go to settings page"
-
-msgid "and click"
-msgstr "and click"
-
 msgid "Lock an attribute"
 msgstr "Lock an attribute"
 
 msgid "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records"
 msgstr "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records"
-
-msgid "To lock an attribute click on the lock"
-msgstr "To lock an attribute click on the lock"
-
-msgid "button in the attribute edit page header. This will change the symbol to locked"
-msgstr "button in the attribute edit page header. This will change the symbol to locked"
-
-msgid "both on the button and next to the attribute"
-msgstr "both on the button and next to the attribute"
-
-msgid "For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within an named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually"
-msgstr "For a GPS-sourced location, only the location name can be locked, not the GPS value. As you move about, the GPS value will change. This will allow recording of different GPS values within an named area while keeping the location name the same. You can lock a location if it is selected using a map or entered manually"
 
 msgid "User"
 msgstr "User"
@@ -270,38 +142,8 @@ msgstr "User"
 msgid "Sign in/out or register"
 msgstr "Sign in/out or register"
 
-msgid "To login, open the main menu page"
-msgstr "To login, open the main menu page"
-
-msgid "click Login"
-msgstr "click Login"
-
-msgid "or Register"
-msgstr "or Register"
-
-msgid "buttons and follow the instructions"
-msgstr "buttons and follow the instructions"
-
-msgid "To logout, visit the main menu page"
-msgstr "To logout, visit the main menu page"
-
-msgid "and click the logout"
-msgstr "and click the logout"
-
-msgid "after registering a new account you must verify your email address by clicking on a verification link sent to your email"
-msgstr "after registering a new account you must verify your email address by clicking on a verification link sent to your email"
-
 msgid "Activities"
 msgstr "Activities"
-
-msgid "To send records to a specific activity you can select it in the Activities"
-msgstr "To send records to a specific activity you can select it in the Activities"
-
-msgid "page"
-msgstr "page"
-
-msgid "only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select"
-msgstr "only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select"
 
 # Part of activities page 
 msgid "Pull to refresh the list."
@@ -323,29 +165,10 @@ msgstr "You can manage your saved locations both on any record's location page a
 msgid "Swipe a location left and click edit"
 msgstr "Swipe a location left and click edit"
 
-msgid "or delete"
-msgstr "or delete"
 
-msgid "buttons"
-msgstr "buttons"
-
-msgid "You can make your location stick to the top of the locations list by clicking the Favourite toggle"
-msgstr "You can make your location stick to the top of the locations list by clicking the Favourite toggle"
 
 msgid "Reset the application"
 msgstr "Reset the application"
-
-msgid "Go to the application settings page"
-msgstr "Go to the application settings page"
-
-msgid "and click on the Reset"
-msgstr "and click on the Reset"
-
-msgid "For more help please visit the iRecord"
-msgstr "For more help please visit the iRecord"
-
-msgid "forum"
-msgstr "forum"
 
 msgid "Wherever you see this logo on a biological recording app you can be assured that the data you submit will be: made available to experts for quality assurance; made available for conservation and research and preserved for long-term use."
 msgstr "Wherever you see this logo on a biological recording app you can be assured that the data you submit will be: made available to experts for quality assurance; made available for conservation and research and preserved for long-term use."
@@ -377,14 +200,8 @@ msgstr "BRC apps"
 msgid "feature some of the same species?  We have introduced the BRC Approved logo to signify that data from our apps all go to the same place. Therefore, you are free to choose which app you use to record a given species. All records will be sent to the same place, treated in the same way and will meet the established standards required by the Biological Record Centre"
 msgstr "feature some of the same species?  We have introduced the BRC Approved logo to signify that data from our apps all go to the same place. Therefore, you are free to choose which app you use to record a given species. All records will be sent to the same place, treated in the same way and will meet the established standards required by the Biological Record Centre"
 
-msgid "This app was funded by the"
-msgstr "This app was funded by the"
-
 msgid "Welcome screen credits"
 msgstr "Welcome screen credits"
-
-msgid "For quicker searching of the taxa you can use different shortcuts. For example, to find"
-msgstr "For quicker searching of the taxa you can use different shortcuts. For example, to find"
 
 msgid "Species"
 msgstr "Species"
@@ -434,8 +251,6 @@ msgstr "Identified by"
 msgid "Present"
 msgstr "Present"
 
-msgid "Username or email"
-msgstr "Username or email"
 
 msgid "Password"
 msgstr "Password"
@@ -443,14 +258,8 @@ msgstr "Password"
 msgid "Email"
 msgstr "Email"
 
-msgid "First Name"
-msgstr "First Name"
 
-msgid "Surname"
-msgstr "Surname"
 
-msgid "Confirm password"
-msgstr "Confirm password"
 
 msgid "No photo has been added.<br/>Press <3></3> to add."
 msgstr "No photo has been added.<br/>Press <3></3> to add."
@@ -773,8 +582,6 @@ msgstr "waterbear"
 msgid "Comment"
 msgstr "Comment"
 
-msgid "Filter"
-msgstr "Filter"
 
 msgid "Filters"
 msgstr "Filters"
@@ -803,23 +610,15 @@ msgstr "Edit Location"
 msgid "Save"
 msgstr "Save"
 
-msgid "This record hasn't been saved to iRecord yet, are you sure you want to remove it from your device?"
-msgstr "This record hasn't been saved to iRecord yet, are you sure you want to remove it from your device?"
 
 msgid "Delete"
 msgstr "Delete"
 
-msgid "Information"
-msgstr "Information"
 
 msgid "Refresh"
 msgstr "Refresh"
 
-msgid "Click on the activity below which you would like to participate in. Any records you add from now on will be submitted to the chosen activity. You can join in with more activities by logging in to"
-msgstr "Click on the activity below which you would like to participate in. Any records you add from now on will be submitted to the chosen activity. You can join in with more activities by logging in to"
 
-msgid "and visiting the Record > Activities page"
-msgstr "and visiting the Record > Activities page"
 
 msgid "Are you sure you want to reset the application to its initial state?"
 msgstr "Are you sure you want to reset the application to its initial state?"
@@ -866,14 +665,9 @@ msgstr "Let's add one!"
 msgid "Species name"
 msgstr "Species name"
 
-msgid "Page not found :("
-msgstr "Page not found :("
 
 msgid "No location"
 msgstr "No location"
-
-msgid "Location missing"
-msgstr "Location missing"
 
 msgid "Sorry"
 msgstr "Sorry"
@@ -881,20 +675,9 @@ msgstr "Sorry"
 msgid "Welcome"
 msgstr "Welcome"
 
-msgid "Welcome aboard!"
-msgstr "Welcome aboard!"
 
 msgid "OK, got it"
 msgstr "OK, got it"
-
-msgid "helps you with management and sharing of your wildlife observations"
-msgstr "helps you with management and sharing of your wildlife observations"
-
-msgid "Get Started"
-msgstr "Get Started"
-
-msgid "T&Cs"
-msgstr "T&Cs"
 
 msgid "Species missing"
 msgstr "Species missing"
@@ -1073,23 +856,14 @@ msgstr "location"
 msgid "Record"
 msgstr "Record"
 
-msgid "can't be blank"
-msgstr "can't be blank"
 
-msgid "you must agree to the terms"
-msgstr "you must agree to the terms"
 
-msgid "passwords are not equal"
-msgstr "passwords are not equal"
 
-msgid "is too short"
-msgstr "is too short"
 
-msgid "invalid"
-msgstr "invalid"
 
-msgid "View on iRecord"
-msgstr "View on iRecord"
+
+
+
 
 msgid "This record has been submitted and cannot be edited within this App."
 msgstr "This record has been submitted and cannot be edited within this App."
@@ -1148,17 +922,11 @@ msgstr "How about a rating on the App Store then?"
 msgid "How about a rating on the Play Store then?"
 msgstr "How about a rating on the Play Store then?"
 
-msgid "You have no records"
-msgstr "You have no records"
-
 msgid "Forgot password?"
 msgstr "Forgot password?"
 
 msgid "We are very grateful for all the people that helped to create this app:"
 msgstr "We are very grateful for all the people that helped to create this app:"
-
-msgid "This app was developed by"
-msgstr "This app was developed by"
 
 msgid "Names:"
 msgstr "Names:"
@@ -1240,9 +1008,6 @@ msgstr "cyanobacterium"
 
 msgid "web-spinner"
 msgstr "web-spinner"
-
-msgid "For quicker searching of the taxa you can use different shortcuts."
-msgstr "For quicker searching of the taxa you can use different shortcuts."
 
 msgid "Upload"
 msgstr "Upload"
@@ -1341,10 +1106,6 @@ msgid "To delete any surveys swipe it to the left."
 msgstr "To delete any surveys swipe it to the left."
 
 # Part of Help Page
-msgid "There are two ways to start a record."
-msgstr "There are two ways to start a record."
-
-# Part of Help Page
 msgid "Press the camera button <2></2> in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
 msgstr "Press the camera button <2></2> in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
 
@@ -1437,8 +1198,8 @@ msgid "<0>Note:</0> only the activities that allow this mobile app records and o
 msgstr "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
 
 # Part of Help Page
-msgid "You can manage your saved locations both on any record's location page and from the settings <2></2> page."
-msgstr "You can manage your saved locations both on any record's location page and from the settings <2></2> page."
+msgid "You can manage your saved locations both on any record's location page and from the settings <2></2> page"
+msgstr "You can manage your saved locations both on any record's location page and from the settings <2></2> page"
 
 # Part of Help Page
 msgid "Swipe a location left and click edit <2></2> or delete<4></4> buttons."
@@ -1754,10 +1515,6 @@ msgid "To delete a record, swipe it left in the Home page and click the delete"
 msgstr "To delete a record, swipe it left in the Home page and click the delete"
 
 # Help page content
-msgid "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records."
-msgstr "You can lock record attributes like date, location, number etc, which will preserve your current attribute value for the subsequently added records."
-
-# Help page content
 msgid "To lock an attribute swipe the menu attribute item to the left and click on the lock"
 msgstr "To lock an attribute swipe the menu attribute item to the left and click on the lock"
 
@@ -1774,22 +1531,6 @@ msgid "You can manage your saved locations both on any record's location page an
 msgstr "You can manage your saved locations both on any record's location page and from the settings page."
 
 # BRC page content 
-msgid "Wherever you see this logo on a biological recording app you can be assured that the data you submit will be: made available to experts for quality assurance; made available for conservation and research and preserved for long-term use.'"
-msgstr "Wherever you see this logo on a biological recording app you can be assured that the data you submit will be: made available to experts for quality assurance; made available for conservation and research and preserved for long-term use.'"
-
-# BRC page content 
-msgid "This logo indicates that your data is:"
-msgstr "This logo indicates that your data is:"
-
-# BRC page content 
-msgid "Sent to the Biological Record Centre’s data warehouse linked to the iRecord system where it accessible to you as the recorder, to an expert community of verifiers and other users of iRecord."
-msgstr "Sent to the Biological Record Centre’s data warehouse linked to the iRecord system where it accessible to you as the recorder, to an expert community of verifiers and other users of iRecord."
-
-# BRC page content 
-msgid "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Atlas."
-msgstr "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Atlas."
-
-# BRC page content 
 msgid "The <2>Biological Records Centre</2> (BRC), established in 1964, is a national focus in the UK for terrestrial and freshwater species recording. BRC works closely with the voluntary recording community, principally through support of national recording schemes and societies. BRC is supported by the Joint Nature Conservation Committee (JNCC) and the UK Centre for Ecology & Hydrology (UKCEH). The work of BRC is a major component of the National Biodiversity Network (NBN)."
 msgstr "The <2>Biological Records Centre</2> (BRC), established in 1964, is a national focus in the UK for terrestrial and freshwater species recording. BRC works closely with the voluntary recording community, principally through support of national recording schemes and societies. BRC is supported by the Joint Nature Conservation Committee (JNCC) and the UK Centre for Ecology & Hydrology (UKCEH). The work of BRC is a major component of the National Biodiversity Network (NBN)."
 
@@ -1800,10 +1541,6 @@ msgstr "You might have noticed that several of <2>BRC apps</2> feature some of t
 # Credits page content 
 msgid "This app was part-funded by the <2>UK Centre for Ecology & Hydrology</2>/<4>Joint Nature Conservation Committee</4> partnership supporting BRC."
 msgstr "This app was part-funded by the <2>UK Centre for Ecology & Hydrology</2>/<4>Joint Nature Conservation Committee</4> partnership supporting BRC."
-
-# Credits page content 
-msgid "Welcome screen credits:"
-msgstr "Welcome screen credits:"
 
 # Credits page content 
 msgid "Icons were made by"
@@ -2292,10 +2029,6 @@ msgid "password is a required field"
 msgstr "password is a required field"
 
 # Uploaded record Link to iRecord website
-msgid "This record has been submitted and cannot be edited within this App.<1><0>iRecord website</0></1>"
-msgstr "This record has been submitted and cannot be edited within this App.<1><0>iRecord website</0></1>"
-
-# Uploaded record Link to iRecord website
 msgid "iRecord website"
 msgstr "iRecord website"
 
@@ -2356,6 +2089,33 @@ msgid "Location permission was denied"
 msgstr "Location permission was denied"
 
 # Sign up form required field
-msgid "email must be a valid emai"
-msgstr "email must be a valid emai"
+msgid "email must be a valid email"
+msgstr "email must be a valid email"
 
+# Grid page header title 
+msgid "Grid Unit"
+msgstr "Grid Unit"
+
+# Users map Login required message
+msgid "You need to login to your <2>iRecord account</2> to be able to view the records."
+msgstr "You need to login to your <2>iRecord account</2> to be able to view the records."
+
+# Reset email alert message 
+msgid "We've sent an email to you"
+msgstr "We've sent an email to you"
+
+# Reset email alert message 
+msgid "Click the link in the email to reset your password. If you don't see the email, check other places like your junk, spam or other folders."
+msgstr "Click the link in the email to reset your password. If you don't see the email, check other places like your junk, spam or other folders."
+
+# Past location label 
+msgid "Favourite"
+msgstr "Favourite"
+
+# Lock Tip message 
+msgid "Tip: Locks for data entry"
+msgstr "Tip: Locks for data entry"
+
+# Lock Tip message 
+msgid "If you have added some information for one of the attributes attached to your record, you can 'lock' that information so that it is automatically added to the next record as well.<1>Swipe an attribute to the left and tap on the <2></2> button.</1><2></2>"
+msgstr "If you have added some information for one of the attributes attached to your record, you can 'lock' that information so that it is automatically added to the next record as well.<1>Swipe an attribute to the left and tap on the <2></2> button.</1><2></2>"

@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import userModel from 'models/user';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { Trans as T } from 'react-i18next';
 import Leaflet, { LatLngBounds, LatLngTuple, Map as LeafletMap } from 'leaflet';
 import 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -190,9 +191,11 @@ const Map: FC = () => {
       >
         {!userIsLoggedIn && (
           <div className="login-message">
-            You need to login to your{' '}
-            <Link to="/user/login">iRecord account</Link> to be able to view the
-            records.
+            <T>
+              You need to login to your{' '}
+              <Link to="/user/login">iRecord account</Link> to be able to view
+              the records.
+            </T>
           </div>
         )}
 

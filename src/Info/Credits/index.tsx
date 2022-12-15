@@ -1,4 +1,5 @@
 import { Page, Main, Header, Section } from '@flumens';
+import { Trans as T } from 'react-i18next';
 import sponsorsLogo from './sponsors.svg';
 import './styles.scss';
 
@@ -74,7 +75,9 @@ export default () => (
       </Section>
 
       <Section>
-        <H>Welcome screen credits:</H>
+        <H skipTranslation>
+          <T>Welcome screen credits</T>:
+        </H>
         <P skipTranslation className="credits">
           <span>David Kitching</span>
           <span>UK Ladybird Survey</span>

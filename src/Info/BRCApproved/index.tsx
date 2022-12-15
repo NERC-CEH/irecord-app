@@ -1,6 +1,7 @@
 import { Page, Header, Main, Section } from '@flumens';
-import './styles.scss';
+import { Trans as T } from 'react-i18next';
 import brcLogo from './BRC_approved_logo.png';
+import './styles.scss';
 
 const { P, H } = Section;
 
@@ -15,20 +16,28 @@ export default () => (
           Wherever you see this logo on a biological recording app you can be
           assured that the data you submit will be: made available to experts
           for quality assurance; made available for conservation and research
-          and preserved for long-term use.'
+          and preserved for long-term use.
         </P>
       </Section>
 
       <Section>
-        <H>This logo indicates that your data is:</H>
-        <P>
-          Sent to the Biological Record Centre’s data warehouse linked to the
-          iRecord system where it accessible to you as the recorder, to an
-          expert community of verifiers and other users of iRecord.
+        <H skipTranslation>
+          <T>This logo indicates that your data is</T>:
+        </H>
+        <P skipTranslation>
+          <T>
+            Sent to the Biological Record Centre’s data warehouse linked to the
+            iRecord system where it accessible to you as the recorder, to an
+            expert community of verifiers and other users of iRecord
+          </T>
+          .
         </P>
-        <P>
-          Quality assured data is passed onto Local Environmental Records
-          Centres, National Recording Schemes and to the NBN Atlas.
+        <P skipTranslation>
+          <T>
+            Quality assured data is passed onto Local Environmental Records
+            Centres, National Recording Schemes and to the NBN Atlas
+          </T>
+          .
         </P>
       </Section>
 

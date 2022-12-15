@@ -36,7 +36,7 @@ const Help: FC = () => (
           <Collapse title="How to make a new record">
             <div>
               <p>
-                <T>There are two ways to start a record.</T>
+                <T>There are two ways to start a record</T>.
               </p>
               <p>
                 <b>
@@ -267,8 +267,9 @@ const Help: FC = () => (
                 <T>
                   You can lock record attributes like date, location, number
                   etc, which will preserve your current attribute value for the
-                  subsequently added records.
+                  subsequently added records
                 </T>
+                .
               </p>
               <p>
                 <T>
@@ -395,8 +396,9 @@ const Help: FC = () => (
                 <T>
                   You can manage your saved locations both on any record's
                   location page and from the settings{' '}
-                  <IonIcon icon={settingsOutline} size="small" /> page.
+                  <IonIcon icon={settingsOutline} size="small" /> page
                 </T>
+                .
                 <T>
                   Swipe a location left and click edit{' '}
                   <IonIcon icon={createOutline} size="small" /> or delete
