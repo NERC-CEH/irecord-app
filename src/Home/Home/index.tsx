@@ -159,7 +159,7 @@ const UserSurveyComponent: FC = () => {
 
   const isFinished = (sample: Sample) => sample.metadata.saved;
   const hasManyPending = () => getSamplesList().filter(isFinished).length > 5;
-  const navigateToPrimarySurvey = () => navigate(`/survey/default`, 'none');
+  const navigateToPrimarySurvey = () => navigate(`/survey/default`);
 
   const getPendingSurveys = () => {
     const surveys = getSamplesList(false);

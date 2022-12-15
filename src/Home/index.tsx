@@ -88,7 +88,7 @@ const HomeController: FC = () => {
   };
   useEffect(exitApp, []);
 
-  const navigateToPrimarySurvey = () => navigate(`/survey/default`, 'none');
+  const navigateToPrimarySurvey = () => navigate(`/survey/default`);
 
   const activitiesOn = !!appModel.getAttrLock('smp', 'activity');
 

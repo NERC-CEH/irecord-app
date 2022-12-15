@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext } from 'react';
 import { NavContext, IonPage } from '@ionic/react';
 import Sample from 'models/sample';
 import Occurrence from 'models/occurrence';
@@ -22,15 +22,11 @@ type Props = {
 
 function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
   const context = useContext(NavContext);
-  const [showSurveyCreatePage, setShowSurveyCreatePage] = useState(false);
   const match = useRouteMatch();
 
   const createSampleWrap = () => {
     const createSample = async () => {
-      if (SurveyCreatePage) {
-        setShowSurveyCreatePage(true);
-        return;
-      }
+      if (SurveyCreatePage) return;
 
       const sample = await getNewSample(survey);
 
@@ -41,9 +37,7 @@ function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
   };
   useEffect(createSampleWrap, []);
 
-  if (showSurveyCreatePage) {
-    return <SurveyCreatePage />;
-  }
+  if (SurveyCreatePage) return <SurveyCreatePage />;
 
   return <IonPage id="start-new-survey" />;
 }
