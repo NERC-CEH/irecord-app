@@ -164,7 +164,7 @@ const AppPhotoPicker: FC<Props> = ({
         model={model}
         Image={useClassifier ? ImageWithClassification : undefined}
         Gallery={useClassifier ? GalleryWithClassification : undefined}
-        galleryProps={{ onCrop: onCropExisting, onSpeciesSelect }}
+        galleryProps={{ onCrop: onCropExisting, onSpeciesSelect, isDisabled }}
         isDisabled={isDisabled}
       />
 

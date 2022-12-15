@@ -12,6 +12,7 @@ type Props = {
   onClose: () => boolean;
   onCrop: any;
   onSpeciesSelect: any;
+  isDisabled: boolean;
 };
 
 const Footer = ({ children }: any) => (
@@ -24,6 +25,7 @@ const GalleryComponent: FC<Props> = ({
   onClose,
   onCrop,
   onSpeciesSelect,
+  isDisabled,
 }) => {
   const toast = useToast();
   const checkUserStatus = useUserStatusCheck();
@@ -39,6 +41,8 @@ const GalleryComponent: FC<Props> = ({
     };
 
     const onSpeciesSelectWrap = (...args: any) => {
+      if (isDisabled) return;
+
       onSpeciesSelect(...args);
       onClose();
     };
