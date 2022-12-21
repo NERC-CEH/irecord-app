@@ -88,7 +88,7 @@ const survey: Survey = {
     },
 
     recorders: {
-      menuProps: { icon: peopleOutline },
+      menuProps: { icon: peopleOutline, skipValueTranslation: true },
       pageProps: {
         attrProps: {
           input: 'inputList',
@@ -202,7 +202,7 @@ const survey: Survey = {
         taxon: taxonAttr,
 
         abundance: {
-          menuProps: { icon: numberIcon },
+          menuProps: { icon: numberIcon, skipValueTranslation: true },
           pageProps: {
             attrProps: {
               input: 'input',
@@ -248,7 +248,11 @@ const survey: Survey = {
         },
 
         identifiers: {
-          menuProps: { icon: peopleOutline, label: 'Identified by' },
+          menuProps: {
+            icon: peopleOutline,
+            label: 'Identified by',
+            skipValueTranslation: true,
+          },
           pageProps: {
             headerProps: { title: 'Identified by' },
             attrProps: {

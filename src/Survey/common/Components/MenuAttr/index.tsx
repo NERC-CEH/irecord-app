@@ -54,6 +54,7 @@ export type Config = Omit<MenuAttrItemProps, 'type'> &
     get?: (model: Sample | Occurrence) => any;
     set?: (value: any, model: Sample | Occurrence) => any;
     attrProps?: Partial<AttrProps>;
+    skipValueTranslation?: boolean;
   };
 
 const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
@@ -76,6 +77,7 @@ const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
     type,
     get,
     set,
+    skipValueTranslation,
   } = menuProps;
   const valueRaw = metadata
     ? (model.metadata as any)[attr]
@@ -146,6 +148,7 @@ const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
       value={value}
       label={label}
       icon={icon}
+      skipValueTranslation={skipValueTranslation}
       required={required}
       className={className}
       {...itemProps}

@@ -54,7 +54,7 @@ export const dateAttr = {
 };
 
 export const commentAttr = {
-  menuProps: { icon: clipboardOutline },
+  menuProps: { icon: clipboardOutline, skipValueTranslation: true },
   pageProps: {
     attrProps: {
       input: 'textarea',
@@ -72,7 +72,7 @@ export const activityAttr = {
 };
 
 export const recordersAttr = {
-  menuProps: { icon: peopleOutline },
+  menuProps: { icon: peopleOutline, skipValueTranslation: true },
   pageProps: {
     attrProps: {
       input: 'inputList',
@@ -86,7 +86,11 @@ export const recordersAttr = {
 };
 
 export const identifiersAttr = {
-  menuProps: { icon: peopleOutline, label: 'Identified by' },
+  menuProps: {
+    icon: peopleOutline,
+    label: 'Identified by',
+    skipValueTranslation: true,
+  },
   pageProps: {
     headerProps: { title: 'Identified by' },
     attrProps: {
