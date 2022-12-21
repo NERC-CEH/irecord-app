@@ -2040,10 +2040,6 @@ msgstr "Unconfirmed"
 msgid "Rejected"
 msgstr "Rejected"
 
-# Verification status
-msgid "Accepted"
-msgstr "Accepted"
-
 # Date
 msgid "Yesterday"
 msgstr "Yesterday"
