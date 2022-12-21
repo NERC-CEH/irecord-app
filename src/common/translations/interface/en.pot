@@ -1414,6 +1414,10 @@ msgstr "Last name"
 msgid "By clicking Sign Up, you agree to our <2>Privacy Policy</2> and <6>Terms and Conditions</6>"
 msgstr "By clicking Sign Up, you agree to our <2>Privacy Policy</2> and <6>Terms and Conditions</6>"
 
+# Register user account page
+msgid "Welcome aboard"
+msgstr "Welcome aboard"
+
 # Reset User account page 
 msgid "Enter your email address to request a password reset."
 msgstr "Enter your email address to request a password reset."
