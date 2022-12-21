@@ -1820,6 +1820,10 @@ msgid "The user has not been activated or is blocked."
 msgstr "The user has not been activated or is blocked."
 
 # Toast message 
+msgid "This account is already activated."
+msgstr "This account is already activated."
+
+# Toast message 
 msgid "A new verification email was successfully sent now. If you did not receive the email, then check your Spam or Junk email folders."
 msgstr "A new verification email was successfully sent now. If you did not receive the email, then check your Spam or Junk email folders."
 
