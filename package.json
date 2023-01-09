@@ -3,7 +3,7 @@
   "id": "uk.ac.ceh.irecord",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "start": "webpack serve --progress --port 8000",
