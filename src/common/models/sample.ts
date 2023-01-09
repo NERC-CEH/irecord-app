@@ -176,8 +176,8 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       return this.getSurvey();
     }
 
-    const existingBetaUsers = parseInt(config.build, 10) < 92; // TODO: remove once the v6 is live
-    if (existingBetaUsers && !this.surveyMigrated) {
+    const existingV6Users = parseInt(config.build, 10) < 106; // TODO: remove once the v6.0.2(106) is live
+    if (existingV6Users && !this.surveyMigrated) {
       this._migrateTaxaGroups();
       this.surveyMigrated = true;
       return this.getSurvey();
@@ -259,7 +259,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       }
     };
 
-    if (this.samples) {
+    if (this.samples.length) {
       this.samples.forEach(migrateTaxaGroup);
     } else {
       migrateTaxaGroup(this);
