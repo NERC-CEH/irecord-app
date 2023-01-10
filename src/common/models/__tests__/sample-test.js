@@ -233,7 +233,7 @@ describe('Sample', () => {
 
     it('should add a system attributes', async () => {
       // Given
-      config.version = 1;
+      config.version = '1';
       device.info = { osVersion: 1, platform: 'ios' };
       const sample = await getDefaultSample();
 
@@ -247,7 +247,9 @@ describe('Sample', () => {
       expect(values[`smpAttr:${systemAttrs.device_version.remote.id}`]).toEqual(
         1
       );
-      expect(values[`smpAttr:${systemAttrs.app_version.remote.id}`]).toEqual(1);
+      expect(values[`smpAttr:${systemAttrs.app_version.remote.id}`]).toEqual(
+        '1'
+      );
     });
 
     it('should set subsamples missing location to parent survey location', async () => {
