@@ -3,6 +3,7 @@ import { isPlatform } from '@ionic/react';
 import {
   CameraPreview,
   CameraPreviewPictureOptions,
+  CameraPreviewOptions,
 } from '@capacitor-community/camera-preview';
 import { getObjectURL } from '@flumens';
 import './styles.scss';
@@ -75,7 +76,7 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
 
     // eslint-disable-next-line @getify/proper-arrows/name
     (async () => {
-      const cameraPreviewOptions = {
+      const cameraPreviewOptions: CameraPreviewOptions = {
         position: 'rear',
         paddingBottom: 80,
         parent: 'camera-container',
@@ -83,6 +84,7 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
         toBack: true,
         disableAudio: true,
         enableZoom: true,
+        enableHighResolution: true,
         rotateWhenOrientationChanged: false,
       };
       await CameraPreview.start(cameraPreviewOptions);
