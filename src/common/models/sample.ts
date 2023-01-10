@@ -176,7 +176,8 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       return this.getSurvey();
     }
 
-    const existingV6Users = parseInt(config.build, 10) < 106; // TODO: remove once the v6.0.2(106) is live
+    const existingV6Users =
+      parseInt(config.version.split('.').join(''), 10) < 602; // TODO: remove once the v6.0.2  is live
     if (existingV6Users && !this.surveyMigrated) {
       this._migrateTaxaGroups();
       this.surveyMigrated = true;
