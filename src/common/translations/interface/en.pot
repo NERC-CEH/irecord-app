@@ -2123,3 +2123,39 @@ msgstr "Tip: Locks for data entry"
 # Lock Tip message 
 msgid "If you have added some information for one of the attributes attached to your record, you can 'lock' that information so that it is automatically added to the next record as well.<1>Swipe an attribute to the left and tap on the <2></2> button.</1><2></2>"
 msgstr "If you have added some information for one of the attributes attached to your record, you can 'lock' that information so that it is automatically added to the next record as well.<1>Swipe an attribute to the left and tap on the <2></2> button.</1><2></2>"
+
+# Arthropods stage option
+msgid "Cocoon"
+msgstr "Cocoon"
+
+# Arthropods stage option
+msgid "Exuvia"
+msgstr "Exuvia"
+
+# Arthropods stage option
+msgid "Mine (empty)"
+msgstr "Mine (empty)"
+
+# Arthropods stage option
+msgid "Mine (tenanted)"
+msgstr "Mine (tenanted)"
+
+# Arthropods stage option
+msgid "Case"
+msgstr "Case"
+
+# Arthropods stage option
+msgid "Nymph"
+msgstr "Nymph"
+
+# Arthropods stage option
+msgid "Gall"
+msgstr "Gall"
+
+# Arthropods stage option
+msgid "Dead"
+msgstr "Dead"
+
+# Toast message
+msgid "Sorry, looks like you're offline."
+msgstr "Sorry, looks like you're offline."
