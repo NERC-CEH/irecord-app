@@ -44,6 +44,8 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
     const takePhoto = async () => {
       const cameraPreviewPictureOptions: CameraPreviewPictureOptions = {
         quality: 95,
+        height: window.screen.height * 2,
+        width: window.screen.width * 2,
       };
 
       const result = await CameraPreview.capture(cameraPreviewPictureOptions);
