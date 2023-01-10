@@ -427,7 +427,7 @@ const Help: FC = () => (
             <div>
               <T>
                 For more help please visit the iRecord{' '}
-                <a href={`${CONFIG.backend.url}forum/26`}>forum</a>.
+                <a href={`${CONFIG.backend.url}/forum/36`}>forum</a>.
               </T>
             </div>
           </IonItem>
