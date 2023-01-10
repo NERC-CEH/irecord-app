@@ -1,6 +1,9 @@
 import { Camera, GalleryPhoto } from '@capacitor/camera';
 import { isPlatform } from '@ionic/react';
-import { CameraPreview } from '@capacitor-community/camera-preview';
+import {
+  CameraPreview,
+  CameraPreviewPictureOptions,
+} from '@capacitor-community/camera-preview';
 import { getObjectURL } from '@flumens';
 import './styles.scss';
 
@@ -39,8 +42,8 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
     }
 
     const takePhoto = async () => {
-      const cameraPreviewPictureOptions = {
-        quality: 50,
+      const cameraPreviewPictureOptions: CameraPreviewPictureOptions = {
+        quality: 95,
       };
 
       const result = await CameraPreview.capture(cameraPreviewPictureOptions);

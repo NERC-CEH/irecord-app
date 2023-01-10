@@ -1,5 +1,6 @@
 ## 6.0.1
 
+- Improved camera picture quality.
 - Bug fixes.
 
 ## 6.0.0
