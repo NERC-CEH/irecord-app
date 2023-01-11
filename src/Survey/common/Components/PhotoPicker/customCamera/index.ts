@@ -45,8 +45,10 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
     const takePhoto = async () => {
       const cameraPreviewPictureOptions: CameraPreviewPictureOptions = {
         quality: 95,
-        height: window.screen.height * 2,
-        width: window.screen.width * 2,
+
+        // Needs higher res when capturing screenshots https://github.com/capacitor-community/camera-preview/issues/59
+        height: window.screen.height * 5,
+        width: window.screen.width * 5,
       };
 
       const result = await CameraPreview.capture(cameraPreviewPictureOptions);
@@ -84,7 +86,6 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
         toBack: true,
         disableAudio: true,
         enableZoom: true,
-        enableHighResolution: true,
         rotateWhenOrientationChanged: false,
       };
       await CameraPreview.start(cameraPreviewOptions);
