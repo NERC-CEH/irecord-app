@@ -1,3 +1,7 @@
+## 6.0.2
+
+- Fixed "Number-ranges" attribute bug.
+
 ## 6.0.1
 
 - Improved camera picture quality.

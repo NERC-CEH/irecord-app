@@ -6,7 +6,8 @@ import { Survey } from 'Survey/common/config';
 
 const numberOptions = [
   { isPlaceholder: true, label: 'Ranges' },
-  { value: 1, id: 665 },
+  { value: '1', id: 665 },
+  { value: 1, id: 665, className: 'hidden' }, // TODO: remove this in the future when users migrated
   { value: '2-5', id: 666 },
   { value: '6-20', id: 667 },
   { value: '21-100', id: 668 },

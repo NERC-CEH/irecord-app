@@ -358,3 +358,8 @@ ion-list .rounded > *:last-child.menu-attr-item,
 ion-list .rounded > *:last-child .date-input-attr ion-item[slot='header'] {
   --border-style: none !important;
 }
+
+// TODO: Remove after fixing numberRanges: 1 as number
+.radio-input-attr ion-item.hidden {
+  display: none;
+}
