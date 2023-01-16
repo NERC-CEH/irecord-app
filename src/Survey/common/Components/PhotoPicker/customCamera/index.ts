@@ -33,7 +33,12 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
     cameraButton.classList.add('camera-button');
 
     async function cleanUp() {
-      await CameraPreview.stop();
+      try {
+        await CameraPreview.stop();
+      } catch (e) {
+        return;
+      }
+
       document.body.removeChild(container);
 
       root?.removeAttribute('style');
