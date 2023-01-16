@@ -2159,3 +2159,11 @@ msgstr "Dead"
 # Toast message
 msgid "Sorry, looks like you're offline."
 msgstr "Sorry, looks like you're offline."
+
+# Toast message 
+msgid "timeout"
+msgstr "timeout"
+
+# Device GPS is disabled 
+msgid "Location services are not enabled"
+msgstr "Location services are not enabled"
