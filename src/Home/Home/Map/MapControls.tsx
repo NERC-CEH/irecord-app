@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import { IonIcon, useIonViewWillLeave } from '@ionic/react';
 import { locateOutline } from 'ionicons/icons';
-import { useToast } from '@flumens';
+import { useToast, HandledError } from '@flumens';
 import GPS from 'helpers/GPS';
 import L from 'leaflet';
 import MapControl from 'Components/MapControl';
@@ -60,7 +60,14 @@ const MapInfo: FC<Props> = ({ map }) => {
       setLocation(loc);
     };
 
-    const locatingJobId = await GPS.start({ callback }).catch(toast.error);
+    const locatingJobId = await GPS.start({ callback }).catch(error => {
+      if (error.message === 'Location services are not enabled') {
+        toast.error(new HandledError('Location services are not enabled'));
+        return;
+      }
+
+      toast.error(error);
+    });
 
     setLocating(locatingJobId);
   };

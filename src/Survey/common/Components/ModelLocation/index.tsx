@@ -10,7 +10,11 @@ import {
   IonToolbar,
   isPlatform,
 } from '@ionic/react';
-import { ModelLocation as ModelLocationOrig, useToast } from '@flumens';
+import {
+  ModelLocation as ModelLocationOrig,
+  useToast,
+  HandledError,
+} from '@flumens';
 import Sample from 'models/sample';
 import appModel from 'models/app';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
@@ -80,6 +84,11 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
     try {
       await ModelLocationOrig.utils.onGPSClick(model);
     } catch (error: any) {
+      if (error.message === 'Location services are not enabled') {
+        toast.error(new HandledError('Location services are not enabled'));
+        return;
+      }
+
       toast.error(error);
     }
   }
