@@ -66,7 +66,7 @@ const FooterMessage: FC<Props> = ({
     );
   }
 
-  if (identifierWasNotUsed) {
+  if (identifierWasNotUsed && !image.isDisabled()) {
     return (
       <IonButton className="re-identify-button" onClick={identifyImage}>
         Get species suggestions
