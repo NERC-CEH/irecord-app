@@ -1,3 +1,7 @@
+## 6.0.3
+
+- Bug fixes.
+
 ## 6.0.2
 
 - Fixed "Number-ranges" attribute bug.
