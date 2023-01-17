@@ -21,6 +21,7 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { starOutline } from 'ionicons/icons';
 import L from 'leaflet';
 import config from 'common/config';
+import { GPS_DISABLED_ERROR_MESSAGE } from 'helpers/GPS';
 import locationNameIcon from 'common/images/location-name.svg';
 import PastLocationsList from 'Components/PastLocationsList';
 import './styles.scss';
@@ -84,8 +85,8 @@ const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
     try {
       await ModelLocationOrig.utils.onGPSClick(model);
     } catch (error: any) {
-      if (error.message === 'Location services are not enabled') {
-        toast.error(new HandledError('Location services are not enabled'));
+      if (error.message === GPS_DISABLED_ERROR_MESSAGE) {
+        toast.error(new HandledError(GPS_DISABLED_ERROR_MESSAGE));
         return;
       }
 

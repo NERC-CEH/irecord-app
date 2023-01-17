@@ -2,6 +2,8 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 import { isPlatform } from '@ionic/core';
 import { HandledError } from '@flumens';
 
+export const GPS_DISABLED_ERROR_MESSAGE = 'Location services are not enabled';
+
 type Options = {
   callback: any;
   onUpdate?: any;

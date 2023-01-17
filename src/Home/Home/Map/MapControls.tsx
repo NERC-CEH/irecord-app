@@ -3,7 +3,7 @@ import { useMap } from 'react-leaflet';
 import { IonIcon, useIonViewWillLeave } from '@ionic/react';
 import { locateOutline } from 'ionicons/icons';
 import { useToast, HandledError } from '@flumens';
-import GPS from 'helpers/GPS';
+import GPS, { GPS_DISABLED_ERROR_MESSAGE } from 'helpers/GPS';
 import L from 'leaflet';
 import MapControl from 'Components/MapControl';
 
@@ -61,8 +61,8 @@ const MapInfo: FC<Props> = ({ map }) => {
     };
 
     const locatingJobId = await GPS.start({ callback }).catch(error => {
-      if (error.message === 'Location services are not enabled') {
-        toast.error(new HandledError('Location services are not enabled'));
+      if (error.message === GPS_DISABLED_ERROR_MESSAGE) {
+        toast.error(new HandledError(GPS_DISABLED_ERROR_MESSAGE));
         return;
       }
 
