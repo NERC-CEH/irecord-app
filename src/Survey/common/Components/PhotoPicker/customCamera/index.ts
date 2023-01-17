@@ -35,8 +35,9 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
     async function cleanUp() {
       try {
         await CameraPreview.stop();
-      } catch (e) {
-        return;
+      } catch (error) {
+        // do nothing
+        console.log(error);
       }
 
       document.body.removeChild(container);
