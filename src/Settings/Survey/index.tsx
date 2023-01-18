@@ -17,6 +17,8 @@ const GridType: FC = () => {
     value: key,
   }));
 
+  const navigateBack = () => goBack();
+
   return (
     <Page id="settings-survey">
       <Header title="Grid Unit" />
@@ -25,7 +27,7 @@ const GridType: FC = () => {
           input="radio"
           inputProps={{ options: values }}
           attr="gridSquareUnit"
-          onChange={goBack}
+          onChange={navigateBack}
           model={appModel}
           info={message}
         />
