@@ -17,10 +17,15 @@ type Collection = Sample[] & {
 const savedSamples: Collection = initStoredSamples(modelStore, Sample);
 
 // eslint-disable-next-line
-export async function uploadAllSamples() {
+export async function uploadAllSamples(toast: any) {
   console.log('SavedSamples: uploading all.');
   const getUploadPromise = (s: Sample) => !s.isUploaded() && s.upload();
-  await Promise.all(savedSamples.map(getUploadPromise));
+
+  const processError = (err: any) => {
+    if (err.isHandled) return;
+    toast.error(err);
+  };
+  await Promise.all(savedSamples.map(getUploadPromise)).catch(processError);
 
   console.log('SavedSamples: all records were uploaded!');
 }

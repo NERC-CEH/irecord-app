@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 import { useRouteMatch } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { Page, Main, date as DateHelp } from '@flumens';
+import { Page, Main, date as DateHelp, useToast } from '@flumens';
 import userModel from 'models/user';
 import { Trans as T } from 'react-i18next';
 import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
@@ -112,6 +112,8 @@ const getSurveys = (surveys: Sample[], showUploadAll?: boolean) => {
 const UserSurveyComponent: FC = () => {
   const { navigate } = useContext(NavContext);
 
+  const toast = useToast();
+
   const match = useRouteMatch<{ id?: string }>();
 
   const initSegment = 'pending';
@@ -144,7 +146,7 @@ const UserSurveyComponent: FC = () => {
       return null;
     }
 
-    return uploadAllSamples();
+    return uploadAllSamples(toast);
   };
 
   const getUploadedSurveys = () => {
