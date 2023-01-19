@@ -66,7 +66,12 @@ const AppPhotoPicker: FC<Props> = ({
   const useClassifier = !disableClassifier && useSpeciesImageClassifier;
 
   const identify = (imageModel: Media) => {
-    if (useClassifier && device.isOnline && userModel.isLoggedIn()) {
+    if (
+      useClassifier &&
+      device.isOnline &&
+      userModel.isLoggedIn() &&
+      userModel.attrs.verified
+    ) {
       const processError = (error: any) =>
         !error.isHandled && console.error(error); // don't toast this to user
       imageModel.identify().catch(processError);

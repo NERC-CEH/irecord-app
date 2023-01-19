@@ -25,7 +25,12 @@ type URL = string;
 
 const identify = (imageModel: Media) => {
   const { useSpeciesImageClassifier } = appModel.attrs;
-  if (useSpeciesImageClassifier && device.isOnline && userModel.isLoggedIn()) {
+  if (
+    useSpeciesImageClassifier &&
+    device.isOnline &&
+    userModel.isLoggedIn() &&
+    userModel.attrs.verified
+  ) {
     const processError = (error: any) =>
       !error.isHandled && console.error(error); // don't toast this to user
     imageModel.identify().catch(processError);
