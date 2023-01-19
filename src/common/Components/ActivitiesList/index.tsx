@@ -31,6 +31,13 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
   const { t } = useTranslation();
 
   const syncActivities = async () => {
+    if (
+      !device.isOnline ||
+      !userModel.isLoggedIn() ||
+      !userModel.attrs.verified
+    )
+      return;
+
     try {
       await loader.show('Please wait...');
 
@@ -43,12 +50,7 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
   };
 
   const syncActivitiesFirstTime = () => {
-    if (
-      userModel.attrs.activities?.length ||
-      !device.isOnline ||
-      !userModel.isLoggedIn()
-    )
-      return;
+    if (userModel.attrs.activities?.length) return;
 
     syncActivities();
   };

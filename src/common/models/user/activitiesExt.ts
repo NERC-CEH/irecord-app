@@ -39,7 +39,12 @@ const extension = {
 
     if (this.activities.synchronizing) return;
 
-    if (!((this.isLoggedIn() && this._lastSyncExpired()) || force)) {
+    if (
+      !(
+        (this.isLoggedIn() && this.attrs.verified && this._lastSyncExpired()) ||
+        force
+      )
+    ) {
       this._removeExpired();
       return;
     }
