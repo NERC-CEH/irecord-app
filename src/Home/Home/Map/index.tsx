@@ -73,6 +73,7 @@ const Map: FC = () => {
   const closeRecordInfo = () => setShowRecordsInfo([]);
 
   const userIsLoggedIn = userModel.isLoggedIn();
+  const userIsVerified = userModel.attrs.verified;
 
   const disableTapForIOS = !isPlatform('ios'); // TODO: https://github.com/Leaflet/Leaflet/issues/7255
 
@@ -99,7 +100,7 @@ const Map: FC = () => {
   };
 
   const updateRecords = async () => {
-    if (!map || !userIsLoggedIn || !device.isOnline) return;
+    if (!map || !userIsLoggedIn || !userIsVerified || !device.isOnline) return;
 
     const bounds: LatLngBounds = map.getBounds().pad(0.5); // padding +50%
 
