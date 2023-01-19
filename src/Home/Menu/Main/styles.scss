@@ -14,5 +14,27 @@
       display: block;
       height: 140px;
     }
+
+    .verification-warning {
+      --background: #fcffeb;
+
+      ion-note {
+        color: #000000;
+        font-size: 1em;
+      }
+      ion-icon {
+        color: #000000 !important;
+      }
+
+      ion-button {
+        font-size: 0.9em;
+        &.md {
+          font-size: 0.7em;
+        }
+        float: right;
+        color: #000000;
+        --border-color: #000000;
+      }
+    }
   }
 }
