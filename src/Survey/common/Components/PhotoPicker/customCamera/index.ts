@@ -12,6 +12,8 @@ import './styles.scss';
  * Uses Camera Preview plugin to pick an image using the camera.
  */
 export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null> {
+  let photoIsBeingProcessed = false;
+
   const permission = await Camera.requestPermissions();
   if (permission.camera !== 'granted') {
     throw new Error('User denied access to camera');
@@ -46,9 +48,15 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
 
       // cameraButton.removeEventListener('click', takePhoto);
       // cancelButton.removeEventListener('click', cleanUp);
+
+      photoIsBeingProcessed = false;
     }
 
     const takePhoto = async () => {
+      if (photoIsBeingProcessed) return; // prevent camera capture btn double-tap
+
+      photoIsBeingProcessed = true;
+
       const cameraPreviewPictureOptions: CameraPreviewPictureOptions = {
         quality: 95,
 
