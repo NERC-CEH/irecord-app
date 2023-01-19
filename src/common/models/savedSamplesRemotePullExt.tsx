@@ -255,7 +255,12 @@ async function init(
   };
 
   async function sync() {
-    if (!savedSamples.length || !userModel.isLoggedIn() || !device.isOnline)
+    if (
+      !savedSamples.length ||
+      !userModel.isLoggedIn() ||
+      !userModel.attrs.verified ||
+      !device.isOnline
+    )
       return;
 
     const lastSyncTime =
