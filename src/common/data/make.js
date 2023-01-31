@@ -13,34 +13,51 @@ const UKSIListID = 15;
 
 const FETCH_LIMIT = 50000;
 
+const warehouseURL = 'https://warehouse1.indicia.org.uk';
+const websiteURL = 'https://irecord.org.uk';
+
+async function getToken() {
+  const clientId = process.env.APP_BACKEND_CLIENT_ID;
+  const clientPass = process.env.APP_BACKEND_CLIENT_PASS;
+  if (!clientId || !clientPass) {
+    return Promise.reject(
+      new Error(
+        'Requires a website client id and secret set as APP_BACKEND_CLIENT_ID and APP_BACKEND_CLIENT_PASS'
+      )
+    );
+  }
+
+  const params = new URLSearchParams();
+  params.append('grant_type', 'client_credentials');
+  params.append('client_id', clientId);
+  params.append('client_secret', clientPass);
+
+  const options = {
+    method: 'post',
+    url: `${websiteURL}/oauth/token`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    data: params,
+  };
+
+  const res = await axios(options);
+  return res.data.access_token;
+}
+
 async function fetch() {
   console.log('Pulling all the species from remote report.');
 
-  const apiKey = process.env.APP_INDICIA_API_KEY;
-  if (!apiKey) {
-    return Promise.reject(
-      new Error('Requires a website indicia-api key set as APP_INDICIA_API_KEY')
-    );
-  }
-
-  const basicAuth = process.env.APP_INDICIA_BASIC_AUTH;
-  if (!basicAuth) {
-    return Promise.reject(
-      new Error('Requires a user basic auth key set as APP_INDICIA_BASIC_AUTH')
-    );
-  }
-
+  const token = await getToken();
   const data = [];
   let offset = 0;
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const options = {
-      url: `https://irecord.org.uk/api/v1/reports/projects/irecord/taxa/taxa_list_for_app.xml?taxon_list_id=${UKSIListID}&limit=${FETCH_LIMIT}&offset=${offset}`,
+      url: `${warehouseURL}/index.php/services/rest/reports/library/taxa/taxa/taxa_list_for_app.xml?taxon_list_id=${UKSIListID}&limit=${FETCH_LIMIT}&offset=${offset}`,
       headers: {
-        'x-api-key': apiKey,
-        Authorization: `Basic ${basicAuth}`,
-        'Cache-Control': 'no-cache',
+        Authorization: `Bearer ${token}`,
       },
     };
 
