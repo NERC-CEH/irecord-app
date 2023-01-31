@@ -55,7 +55,7 @@ async function fetch() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const options = {
-      url: `${warehouseURL}/index.php/services/rest/reports/library/taxa/taxa/taxa_list_for_app.xml?taxon_list_id=${UKSIListID}&limit=${FETCH_LIMIT}&offset=${offset}`,
+      url: `${warehouseURL}/index.php/services/rest/reports/library/taxa/taxa_list_for_app.xml?taxon_list_id=${UKSIListID}&limit=${FETCH_LIMIT}&offset=${offset}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
