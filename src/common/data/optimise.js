@@ -165,11 +165,17 @@ function isGenusDuplicate(optimised, taxa, index) {
   return true;
 }
 
+function withoutTaxon(taxa) {
+  if (!taxa[TAXON]) console.warn(`${taxa[ID]} has no taxon`);
+  return !!taxa[TAXON];
+}
+
 /**
  * Optimises the array by grouping species to genus.
  */
 function optimise(speciesFromReport) {
-  const speciesFlattened = flattenSpeciesReport(speciesFromReport);
+  let speciesFlattened = flattenSpeciesReport(speciesFromReport);
+  speciesFlattened = speciesFlattened.filter(withoutTaxon);
 
   checkAllSpeciesHasInformalGroup(speciesFlattened);
 
