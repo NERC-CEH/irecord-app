@@ -1,3 +1,7 @@
+## 6.0.4
+
+- Improve GPS tracking.
+
 ## 6.0.3
 
 - Bug fixes.
