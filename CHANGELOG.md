@@ -2,6 +2,7 @@
 
 - Improve GPS tracking.
 - Fix moth survey taxon changing.
+- Updated the species dictionary.
 
 ## 6.0.3
 
