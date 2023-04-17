@@ -342,6 +342,47 @@ describe('Sample', () => {
       expect(sample.occurrences[0].attrs.taxon).toEqual(newTaxon);
     });
 
+    it('should not allow setting taxon to samples with subSamples', async () => {
+      // Given
+      const sample = await getDefaultSample();
+      const subSample = await getDefaultSample();
+      sample.samples.push(subSample);
+      const newTaxon = { group: taxonGroupSurveys.birds.taxaGroups[0] };
+
+      // When
+      // Then
+      expect(() => sample.setTaxon(newTaxon)).toThrow(
+        'setTaxon must be used with subSamples only'
+      );
+    });
+
+    it('should not allow setting taxon to samples with multiple occurrences without specifying which occ to use', async () => {
+      // Given
+      const sample = await getDefaultSample();
+      const anotherOccurrence = new Occurrence();
+      sample.occurrences.push(anotherOccurrence);
+      const newTaxon = { group: taxonGroupSurveys.birds.taxaGroups[0] };
+
+      // When
+      // Then
+      expect(() => sample.setTaxon(newTaxon)).toThrow(
+        'setTaxon cannot be used with samples with multiple occurrences without specifying the occurrence'
+      );
+    });
+
+    it('should should throw if no occurrence was found', async () => {
+      // Given
+      const sample = await getDefaultSample();
+      const anotherOccurrence = new Occurrence();
+      sample.occurrences.push(anotherOccurrence);
+      const newTaxon = { group: taxonGroupSurveys.birds.taxaGroups[0] };
+
+      // When
+      // Then
+      expect(() => new Sample().setTaxon(newTaxon)).toThrow(); // no occurrences
+      expect(() => sample.setTaxon(newTaxon, '123')).toThrow(); // missing specific occurrence
+    });
+
     it('should set taxon group in sample metadata', async () => {
       // Given
       const sample = await getDefaultSample();

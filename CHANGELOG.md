@@ -1,6 +1,7 @@
 ## 6.0.4
 
 - Improve GPS tracking.
+- Fix moth survey taxon changing.
 
 ## 6.0.3
 

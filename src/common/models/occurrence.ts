@@ -165,6 +165,6 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
   }
 
   setTaxon(newTaxon: Taxon) {
-    this.parent?.setTaxon(newTaxon);
+    this.parent?.setTaxon(newTaxon, this.cid);
   }
 }

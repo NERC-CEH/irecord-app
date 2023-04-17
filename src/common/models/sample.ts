@@ -192,11 +192,19 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     return this.survey as Survey;
   }
 
-  setTaxon(newTaxon: Taxon) {
+  setTaxon(newTaxon: Taxon, occurrenceId?: string) {
     if (this.samples.length)
       throw new Error('setTaxon must be used with subSamples only');
 
-    const [occ] = this.occurrences;
+    if (this.occurrences.length > 1 && !occurrenceId)
+      throw new Error(
+        'setTaxon cannot be used with samples with multiple occurrences without specifying the occurrence'
+      );
+
+    const byId = (o: Occurrence) => o.cid === occurrenceId;
+    const occ: Occurrence = occurrenceId
+      ? this.occurrences.find(byId)!
+      : this.occurrences[0];
 
     if (this.survey.name === 'default') {
       if (occ.attrs.taxon) this.removeOldTaxonAttributes(occ, newTaxon);
@@ -214,7 +222,8 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
 
     if (survey.taxa === newSurvey.taxa) return;
 
-    console.log(`Removing old ${survey.taxa} taxa attributes`);
+    process.env.NODE_ENV !== 'test' &&
+      console.log(`Removing old ${survey.taxa} taxa attributes`);
 
     // remove non-core attributes for survey switch
     const removeSmpNonCoreAttr = (key: any) => {
