@@ -6,6 +6,7 @@ import {
 } from '@flumens';
 import { IObservableArray } from 'mobx';
 import { Survey } from 'Survey/common/config';
+import { Taxon as SearchTaxon } from 'helpers/taxonSearch';
 import Media, { ClassifierResult, ClassifierSuggestion } from './media';
 import Sample from './sample';
 
@@ -36,18 +37,12 @@ export enum MachineInvolvement {
   MACHINE = 5,
 }
 
-export type Taxon = {
-  warehouse_id: number;
-  group: number;
-  scientific_name: string;
-  common_names: string[];
-  array_id?: number;
-  species_id?: number;
-  found_in_name?: number; // which common_names array index to use if any
-
+type ClassifierAttrs = {
   probability?: number;
   machineInvolvement?: MachineInvolvement;
 } & Partial<ClassifierResult>;
+
+export type Taxon = SearchTaxon & ClassifierAttrs;
 
 type Attrs = Omit<OccurrenceAttrs, 'taxon'> & {
   taxon?: Taxon;

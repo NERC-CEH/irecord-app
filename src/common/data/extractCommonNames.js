@@ -4,15 +4,31 @@
 
 /* eslint-disable */
 
-const {
+import {
   GENUS_SPECIES_INDEX,
   GENUS_NAMES_INDEX,
   SPECIES_NAMES_INDEX,
-} = require('./constants');
+} from './constants.js';
 
-const {
-  getCommonName,
-} = require('../../Survey/common/Components/TaxonSearch/utils/searchHelpers.js');
+function isGenusPointer(p) {
+  return p.length === 2;
+}
+
+/**
+ * Return common name from common names array pointer
+ * @param p array pointersrc/common/pages/Taxon/utils/searchHelpers.js
+ */
+function getCommonName(allSpecies, p) {
+  if (isGenusPointer(p)) {
+    const [genusIndex, nameIndex] = p;
+    return allSpecies[genusIndex][GENUS_NAMES_INDEX][nameIndex].toLowerCase();
+  }
+
+  const [genusIndex, speciesIndex, nameIndex] = p;
+  return allSpecies[genusIndex][GENUS_SPECIES_INDEX][speciesIndex][
+    SPECIES_NAMES_INDEX
+  ][nameIndex].toLowerCase();
+}
 
 /**
  * Splits a word and adds it to common names array
@@ -82,7 +98,7 @@ const sortPointers = (species, namePointers) => {
   namePointers.forEach(pointerSorter);
 };
 
-module.exports = species => {
+export default species => {
   console.log('Building name map...');
 
   const namePointers = getNamePointers(species);

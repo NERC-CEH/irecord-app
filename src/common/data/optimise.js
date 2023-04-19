@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const speciesInformalGroups = require('./informalGroups');
-const taxonCleaner = require('./clean');
+import { groups as speciesInformalGroups } from './informalGroups.js';
+import taxonCleaner from './clean.js';
 
-const {
+import {
   GENUS_ID_INDEX,
   GENUS_GROUP_INDEX,
   GENUS_TAXON_INDEX,
@@ -16,7 +16,7 @@ const {
   TAXON,
   GROUP,
   ID,
-} = require('./constants.json');
+} from './constants.js';
 
 const enableWelsh = process.env.APP_WELSH;
 
@@ -33,7 +33,7 @@ function normalizeValue(value) {
 function checkAllSpeciesHasInformalGroup(speciesList) {
   console.log('Checking if all the species has an informal group metadata.');
 
-  const groups = Object.keys(speciesInformalGroups.groups);
+  const groups = Object.keys(speciesInformalGroups);
   speciesList.forEach(species => {
     if (!groups.includes(`${species[GROUP]}`)) {
       throw new Error(`No Such species informal group found ${species[GROUP]}`);
@@ -96,8 +96,9 @@ function addGenus(optimised, taxa) {
 function getLastGenus(optimised, taxa, taxaNameSplitted, index) {
   const lastEntry = index || optimised.length - 1;
   let lastGenus = optimised[lastEntry];
+
   // no genus with the same name and group was found
-  if (lastGenus[TAXON] !== taxaNameSplitted[0]) {
+  if (lastGenus?.[TAXON] !== taxaNameSplitted[0]) {
     // create a new genus with matching group
     lastGenus = [0, taxa[GROUP], taxaNameSplitted[0], []];
     optimised.push(lastGenus);
@@ -173,7 +174,7 @@ function withoutTaxon(taxa) {
 /**
  * Optimises the array by grouping species to genus.
  */
-function optimise(speciesFromReport) {
+export default function optimise(speciesFromReport) {
   let speciesFlattened = flattenSpeciesReport(speciesFromReport);
   speciesFlattened = speciesFlattened.filter(withoutTaxon);
 
@@ -207,5 +208,3 @@ function optimise(speciesFromReport) {
 
   return optimised;
 }
-
-module.exports = optimise;

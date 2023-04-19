@@ -1,13 +1,15 @@
 /* eslint-disable import/extensions */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-// get local environment variables from .env
-require('dotenv').config({ silent: true, path: '../../../.env' }); // eslint-disable-line
-const fs = require('fs');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const axios = require('axios');
-const makeCommonNameMap = require('./extractCommonNames');
-const optimise = require('./optimise');
+import dotenv from 'dotenv';
+import fs from 'fs';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import axios from 'axios';
+import makeCommonNameMap from './extractCommonNames.js';
+import optimise from './optimise.js';
+
+dotenv.config({ silent: true, path: '../../../.env' });
 
 const UKSIListID = 15;
 
@@ -72,6 +74,9 @@ async function fetch() {
   }
 
   console.log(`Pulled ${data.length} species`);
+
+  const alphabetically = (t1, t2) => t1.taxon.localeCompare(t2.taxon);
+  data.sort(alphabetically);
 
   return { data };
 }

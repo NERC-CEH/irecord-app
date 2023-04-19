@@ -1,4 +1,4 @@
-const groups = {
+export const groups = {
   65: 'acarine',
   66: 'acorn worm',
   67: 'alga',
@@ -109,8 +109,6 @@ const groups = {
 };
 
 // reverse the object for easier lookup
-const groupsReverse = Object.fromEntries(
+export const groupsReverse = Object.fromEntries(
   Object.entries(groups).map(([k, v]) => [v, parseInt(k, 10)])
 );
-
-module.exports = { groupsReverse, groups };

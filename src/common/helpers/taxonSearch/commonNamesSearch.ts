@@ -10,10 +10,28 @@ import {
   SPECIES_ID_INDEX,
   SPECIES_TAXON_INDEX,
   SPECIES_NAMES_INDEX,
-} from 'common/data/constants.json';
-import helpers from './searchHelpers';
+} from 'common/data/constants';
+import {
+  Genera,
+  NamePointers,
+  NamePointer,
+  Genus,
+  Taxon,
+  GenusNamePointer,
+  CommonNamePointer,
+} from '.';
+import {
+  findFirstMatching,
+  getFirstWordRegex,
+  getOtherWordsRegex,
+  isGenusPointer,
+} from './searchHelpers';
 
-function addGenusToResults(results, genus, p) {
+function addGenusToResults(
+  results: Taxon[],
+  genus: Genus,
+  p: GenusNamePointer
+) {
   // check if matches full phrase
   results.push({
     array_id: p[0],
@@ -21,13 +39,17 @@ function addGenusToResults(results, genus, p) {
     warehouse_id: genus[GENUS_ID_INDEX],
     group: genus[GENUS_GROUP_INDEX],
     scientific_name: genus[GENUS_TAXON_INDEX],
-    common_names: genus[GENUS_NAMES_INDEX],
+    common_names: genus[GENUS_NAMES_INDEX] || [],
   });
 }
 
-function addSpeciesToResults(results, genus, p) {
-  const [, speciesIndex] = p;
-  const speciesEntry = genus[GENUS_SPECIES_INDEX][speciesIndex];
+function addSpeciesToResults(
+  results: Taxon[],
+  genus: Genus,
+  p: CommonNamePointer
+) {
+  const speciesIndex = p[1];
+  const speciesEntry = genus[GENUS_SPECIES_INDEX]![speciesIndex];
 
   results.push({
     array_id: p[0],
@@ -36,44 +58,57 @@ function addSpeciesToResults(results, genus, p) {
     warehouse_id: speciesEntry[SPECIES_ID_INDEX],
     group: genus[GENUS_GROUP_INDEX],
     scientific_name: `${genus[GENUS_TAXON_INDEX]} ${speciesEntry[SPECIES_TAXON_INDEX]}`,
-    common_names: speciesEntry[SPECIES_NAMES_INDEX],
+    common_names: speciesEntry[SPECIES_NAMES_INDEX] || [],
   });
 }
 
-function addToResults(results, genus, p) {
-  if (helpers.isGenusPointer(p)) {
+function addToResults(results: Taxon[], genus: Genus, p: NamePointer) {
+  if (isGenusPointer(p)) {
     addGenusToResults(results, genus, p);
   } else {
-    addSpeciesToResults(results, genus, p);
+    addSpeciesToResults(results, genus, p as CommonNamePointer);
   }
 }
 
-function getNameFromPointer(genus, p) {
-  if (helpers.isGenusPointer(p)) {
-    const [, nameIndex] = p;
-    return genus[GENUS_NAMES_INDEX][nameIndex];
+function getNameFromPointer(genus: Genus, p: NamePointer) {
+  if (isGenusPointer(p)) {
+    const genusPointer = p as GenusNamePointer;
+    const nameIndex = genusPointer[1];
+    return genus[GENUS_NAMES_INDEX]![nameIndex];
   }
 
-  const [, speciesIndex, nameIndex] = p;
-  const speciesEntry = genus[GENUS_SPECIES_INDEX][speciesIndex];
-  return speciesEntry[SPECIES_NAMES_INDEX][nameIndex];
+  const commonNamePointer = p as CommonNamePointer;
+  const speciesIndex = commonNamePointer[1];
+  const nameIndex = commonNamePointer[2];
+  const speciesEntry = genus[GENUS_SPECIES_INDEX]![speciesIndex];
+  return speciesEntry[SPECIES_NAMES_INDEX]![nameIndex];
 }
 
-function firstNameMatchCheck(genus, p, firstWordRegex, wordCount) {
+function firstNameMatchCheck(
+  genus: Genus,
+  p: NamePointer,
+  firstWordRegex: RegExp,
+  wordCount: number
+) {
   const name = getNameFromPointer(genus, p);
   const word = name.split(/\s+/).slice(wordCount).join(' ');
 
   return firstWordRegex.test(word);
 }
 
-function otherNamesMatchCheck(genus, p, otherWordsRegex, wordCount) {
+function otherNamesMatchCheck(
+  genus: Genus,
+  p: NamePointer,
+  otherWordsRegex: RegExp | undefined,
+  wordCount: number
+) {
   const name = getNameFromPointer(genus, p);
   const word = name.split(/\s+/).slice(wordCount).join(' ');
 
   return !otherWordsRegex || otherWordsRegex.test(word);
 }
 
-function groupMatchCheck(informalGroups, group) {
+function groupMatchCheck(informalGroups: number[], group: number) {
   // check if species is in informal groups to search
   if (informalGroups.length && informalGroups.indexOf(group) < 0) {
     // skip this taxa because not in the searched informal groups
@@ -83,18 +118,18 @@ function groupMatchCheck(informalGroups, group) {
 }
 
 function searchWordIndex(
-  results,
-  species,
-  wordIndex,
-  searchPhrase,
-  firstWordRegex,
-  otherWordsRegex,
-  wordCount,
-  maxResults,
-  informalGroups
+  results: Taxon[],
+  species: Genera,
+  wordIndex: NamePointer[],
+  searchPhrase: string,
+  firstWordRegex: RegExp,
+  otherWordsRegex: RegExp | undefined,
+  wordCount: number,
+  maxResults: number,
+  informalGroups: number[]
 ) {
   // find first match in array
-  let pointersArrayIndex = helpers.findFirstMatching(
+  let pointersArrayIndex = findFirstMatching(
     species,
     wordIndex,
     searchPhrase,
@@ -106,9 +141,7 @@ function searchWordIndex(
   }
 
   while (pointersArrayIndex < wordIndex.length) {
-    if (results.length >= maxResults) {
-      return;
-    }
+    if (results.length >= maxResults) return;
 
     const p = wordIndex[pointersArrayIndex];
     const genus = species[p[0]];
@@ -154,21 +187,19 @@ function searchWordIndex(
  * @returns {Array}
  */
 function search(
-  species,
-  wordIndexArray,
-  searchPhrase,
-  maxResults,
-  informalGroups
+  species: Genera,
+  wordIndexArray: NamePointers,
+  searchPhrase: string,
+  maxResults: number,
+  informalGroups: number[]
 ) {
-  const results = [];
+  const results: Taxon[] = [];
 
-  const { firstWordRegex } = helpers.getFirstWordRegex(searchPhrase);
-  const { otherWordsRegex } = helpers.getOtherWordsRegex(searchPhrase);
+  const { firstWordRegex } = getFirstWordRegex(searchPhrase);
+  const { otherWordsRegex } = getOtherWordsRegex(searchPhrase);
 
   wordIndexArray.forEach((wordIndex, wordCount) => {
-    if (results.length >= maxResults) {
-      return;
-    }
+    if (results.length >= maxResults) return;
 
     searchWordIndex(
       results,

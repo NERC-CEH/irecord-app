@@ -1,4 +1,4 @@
-module.exports = (taxon, common) => {
+export default (taxon, common) => {
   if (!taxon) {
     return null;
   }

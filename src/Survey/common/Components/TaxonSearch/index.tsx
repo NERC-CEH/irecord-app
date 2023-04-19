@@ -2,7 +2,7 @@ import { useRef, FC, useState } from 'react';
 import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Taxon } from 'models/occurrence';
-import searchSpecies from './utils';
+import searchSpecies, { Options } from 'helpers/taxonSearch';
 import Suggestions from './components/Suggestions';
 import './styles.scss';
 
@@ -14,7 +14,7 @@ type Props = {
   onSpeciesSelected: any;
   recordedTaxa?: any[];
   informalGroups?: number[];
-  namesFilter?: string | null;
+  namesFilter?: Options['namesFilter'];
   resetOnSelect?: boolean;
   showEditButton?: boolean;
   suggestedSpecies?: Taxon[];

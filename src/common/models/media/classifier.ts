@@ -1,7 +1,7 @@
 import userModel from 'models/user';
 import axios, { AxiosResponse } from 'axios';
 import { HandledError, isAxiosNetworkError } from '@flumens';
-import speciesSearch from 'Survey/common/Components/TaxonSearch/utils';
+import speciesSearch from 'helpers/taxonSearch';
 import config from 'common/config';
 import { Taxon } from 'models/occurrence';
 

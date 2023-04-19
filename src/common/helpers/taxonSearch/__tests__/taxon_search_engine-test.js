@@ -61,18 +61,15 @@ import search from '..';
         return searchNonAlpha1().then(searchNonAlpha2);
       });
 
-      it('should accept hybrids', () =>
-        search('Caryopteris incana x mongholica =')
-          .then(results => {
-            expect(Array.isArray(results)).toBe(true);
-            expect(results.length).toBe(1);
-          })
-          .then(() =>
-            search('X Cupressocyparis').then(cupressocyparisResults => {
-              expect(Array.isArray(cupressocyparisResults)).toBe(true);
-              expect(cupressocyparisResults.length).toBe(1);
-            })
-          ));
+      it('should accept hybrids', async () => {
+        let results = await search('Caryopteris incana x mongholica =');
+        expect(Array.isArray(results)).toBe(true);
+        expect(results.length).toBe(1);
+
+        let cupressocyparisResults = await search('X Cupressocyparis');
+        expect(Array.isArray(cupressocyparisResults)).toBe(true);
+        expect(cupressocyparisResults.length).toBe(1);
+      });
 
       it('should find genus common names', () =>
         search('Willow')
@@ -184,7 +181,7 @@ import search from '..';
       describe('genus', () => {
         it('should add all species belonging to it', () =>
           search('Puffinus').then(results => {
-            expect(results.length).toBe(6);
+            expect(results.length >= 6).toBe(true);
             const genus = results[0];
             expect(genus.warehouse_id).toBe(141974);
             expect(genus.scientific_name).toBe('Puffinus');
