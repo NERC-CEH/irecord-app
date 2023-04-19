@@ -188,7 +188,7 @@ export default function optimise(speciesFromReport) {
 
     // hybrid genus names starting with X should
     // have a full genus eg. X Agropogon littoralis
-    if (taxaNameSplitted[0] === 'X') {
+    if (taxaNameSplitted[0].toLowerCase() === 'x') {
       taxaNameSplitted[0] = `${taxaNameSplitted.shift()} ${
         taxaNameSplitted[0]
       }`;
