@@ -90,7 +90,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@capacitor/cli": "^4.4.0",
     "@flumens/eslint-config": "^2.0.1",
-    "@flumens/webpack-config": "^4.2.1",
+    "@flumens/webpack-config": "^5.0.0",
     "@types/jest": "^27.5.1",
     "@types/leaflet": "^1.7.10",
     "@types/lodash.mergewith": "^4.6.7",
