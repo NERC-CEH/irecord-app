@@ -2,6 +2,11 @@
   ion-content {
     --padding-bottom: 30px;
 
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+
     .credits span {
       display: block;
       margin-bottom: 10px;

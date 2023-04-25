@@ -8,7 +8,7 @@ const { P, H } = Section;
 export default () => (
   <Page id="credits">
     <Header title="Credits" />
-    <Main id="credits">
+    <Main>
       <img src={sponsorsLogo} alt="" />
 
       <Section>
