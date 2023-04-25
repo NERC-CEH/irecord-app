@@ -124,9 +124,13 @@ const FiltersModal: FC<Props> = ({
     <IonModal isOpen={showModal}>
       <IonHeader translucent>
         <IonToolbar>
-          <IonTitle>Filters</IonTitle>
+          <IonTitle>
+            <T>Filters</T>
+          </IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={toggleModal}>Close</IonButton>
+            <IonButton onClick={toggleModal}>
+              <T>Close</T>
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
