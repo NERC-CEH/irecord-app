@@ -1,5 +1,6 @@
 import { Camera, GalleryPhoto } from '@capacitor/camera';
 import { isPlatform } from '@ionic/react';
+import i18next from 'i18next';
 import {
   CameraPreview,
   CameraPreviewPictureOptions,
@@ -86,7 +87,7 @@ export default async function getPhotoFromPreview(): Promise<GalleryPhoto | null
     };
     const cancelButton = document.createElement('button');
     cancelButton.classList.add('cancel-button');
-    cancelButton.textContent = 'Cancel';
+    cancelButton.textContent = i18next.t('Cancel');
     cancelButton.addEventListener('click', cancelCamera);
     container.appendChild(cancelButton);
 
