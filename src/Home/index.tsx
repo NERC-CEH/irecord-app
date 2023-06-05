@@ -42,11 +42,15 @@ function useLongPressTip() {
         header: 'Tip: Adding Observations',
         message: (
           <>
-            Tap on the <IonIcon class="tip-icon" icon={addOutline} /> button to
-            capture a new record. <br />
+            <T>
+              Tap on the <IonIcon class="tip-icon" icon={addOutline} /> button
+              to capture a new record. <br />
+            </T>
             <br />
-            Long-press <IonIcon class="tip-icon" icon={addOutline} /> button to
-            see some more advanced options.
+            <T>
+              Long-press <IonIcon class="tip-icon" icon={addOutline} /> button
+              to see some more advanced options.
+            </T>
           </>
         ),
         buttons: [

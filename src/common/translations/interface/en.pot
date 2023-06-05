@@ -2200,3 +2200,11 @@ msgstr "Identifying..."
 # Error message
 msgid "Not implemented on web."
 msgstr "Not implemented on web."
+
+# Tip message 
+msgid "Tap on the <1></1> button to capture a new record. <br/>"
+msgstr "Tap on the <1></1> button to capture a new record. <br/>"
+
+# Tip message 
+msgid "Long-press <1></1> button to see some more advanced options."
+msgstr "Long-press <1></1> button to see some more advanced options."
