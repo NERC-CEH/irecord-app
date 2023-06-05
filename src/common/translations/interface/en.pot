@@ -1344,7 +1344,7 @@ msgstr "Done"
 # Logout alert message
 msgid "Discard local data"
 msgstr "Discard local data"
-`
+
 # Species search info background message
 msgid "Type in a species name (English or scientific name, or a genus or family etc.)."
 msgstr "Type in a species name (English or scientific name, or a genus or family etc.)."
