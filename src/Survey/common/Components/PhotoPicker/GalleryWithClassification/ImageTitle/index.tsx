@@ -26,8 +26,10 @@ const ImageTitle: FC<Props> = ({ image }) => {
         <IonLabel className="better-image-tip">
           <T>Sorry, we could not identify this species.</T>
           <IonNote>
-            Make sure that your species is in the centre of the image and is in
-            focus.
+            <T>
+              Make sure that your species is in the centre of the image and is
+              in focus.
+            </T>
           </IonNote>
         </IonLabel>
       );

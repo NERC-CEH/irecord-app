@@ -3,6 +3,7 @@ import Media, { ClassifierSuggestion } from 'models/media';
 import { isPlatform, IonLabel, IonButton, IonSpinner } from '@ionic/react';
 import CONFIG from 'common/config';
 import { observer } from 'mobx-react';
+import { Trans as T } from 'react-i18next';
 import clsx from 'clsx';
 import './styles.scss';
 
@@ -57,10 +58,12 @@ const FooterMessage: FC<Props> = ({
   if (image.isIdentifying()) {
     return (
       <>
-        <h3>Suggestions:</h3>
+        <h3>
+          <T>Suggestions:</T>
+        </h3>
 
         <span className="id-loading">
-          Identifying... <IonSpinner />
+          <T>Identifying...</T> <IonSpinner />
         </span>
       </>
     );
@@ -69,7 +72,7 @@ const FooterMessage: FC<Props> = ({
   if (identifierWasNotUsed && !image.isDisabled()) {
     return (
       <IonButton className="re-identify-button" onClick={identifyImage}>
-        Get species suggestions
+        <T>Get species suggestions</T>
       </IonButton>
     );
   }
@@ -106,7 +109,9 @@ const FooterMessage: FC<Props> = ({
 
   return (
     <>
-      <h3>Suggestions:</h3>
+      <h3>
+        <T>Suggestions:</T>
+      </h3>
 
       <div className="species-array-wrapper">
         <div className="species-array">{getIdentifiedSpeciesList()}</div>

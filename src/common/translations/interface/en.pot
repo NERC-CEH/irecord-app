@@ -1344,7 +1344,7 @@ msgstr "Done"
 # Logout alert message
 msgid "Discard local data"
 msgstr "Discard local data"
-
+`
 # Species search info background message
 msgid "Type in a species name (English or scientific name, or a genus or family etc.)."
 msgstr "Type in a species name (English or scientific name, or a genus or family etc.)."
@@ -2167,3 +2167,27 @@ msgstr "timeout"
 # Device GPS is disabled 
 msgid "Location services are not enabled"
 msgstr "Location services are not enabled"
+
+# Part of Camera 
+msgid "Get species suggestions"
+msgstr "Get species suggestions"
+
+# Part of Camera 
+msgid "Crop/Zoom"
+msgstr "Crop/Zoom"
+
+# Failed to indentify species message
+msgid "Sorry, we cwould not identify this species."
+msgstr "Sorry, we could not identify this species."
+
+# Failed to indentify species message
+msgid "Make sure that your species is in the centre of the image and is in focus."
+msgstr "Make sure that your species is in the centre of the image and is in focus."
+
+# Context term 
+msgid "Identifying..."
+msgstr "Identifying..."
+
+# Context term 
+msgid "Suggestions:"
+msgstr "Suggestions:"
