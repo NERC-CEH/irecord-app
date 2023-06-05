@@ -3,7 +3,7 @@
   "id": "uk.ac.ceh.irecord",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "start": "webpack serve --progress --port 8000",
@@ -36,7 +36,7 @@
     "@capacitor/status-bar": "^4.0.1",
     "@changey/react-leaflet-markercluster": "^4.0.0-rc1",
     "@flumens/bigu": "^0.4.0",
-    "@flumens/ionic": "1.20.2",
+    "@flumens/ionic": "1.26.1",
     "@ionic-native/core": "5.36.0",
     "@ionic-native/launch-review": "^5.29.0",
     "@ionic/core": "^6.2.6",
