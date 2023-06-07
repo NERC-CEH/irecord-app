@@ -1,3 +1,7 @@
+## 6.0.6
+
+- Fixed Upload All to skip drafts.
+
 ## 6.0.5
 
 - Updated the species dictionary.

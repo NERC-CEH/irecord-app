@@ -19,7 +19,8 @@ const savedSamples: Collection = initStoredSamples(modelStore, Sample);
 // eslint-disable-next-line
 export async function uploadAllSamples(toast: any) {
   console.log('SavedSamples: uploading all.');
-  const getUploadPromise = (s: Sample) => !s.isUploaded() && s.upload();
+  const getUploadPromise = (s: Sample) =>
+    !s.isUploaded() && s.metadata.saved && s.upload();
 
   const processError = (err: any) => {
     if (err.isHandled) return;
