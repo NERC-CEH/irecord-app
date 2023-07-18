@@ -42,9 +42,7 @@ const ListOccurrenceHome: FC<Props> = ({ subSample: sample }) => {
             <MenuAttr
               model={occ}
               attr="comment"
-              itemProps={{
-                routerLink: `${url}/occ/${occ.cid}/comment`,
-              }}
+              routerLink={`${url}/occ/${occ.cid}/comment`}
             />
             <MenuDynamicAttrs model={sample} />
           </div>

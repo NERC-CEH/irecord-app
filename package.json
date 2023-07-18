@@ -6,7 +6,7 @@
   "version": "6.0.5",
   "homepage": "https://irecord.org.uk",
   "scripts": {
-    "start": "webpack serve --progress --port 8000",
+    "start": "webpack serve --progress --port 8001",
     "build": "NODE_ENV=production webpack",
     "build:production": "npm run clean && npm run build && npx cap sync && sed -i '' 's/uk.ac.ceh.irecord/uk.ac.ceh.ir/g' ios/App/App/capacitor.config.json && npm run build:resources",
     "build:resources": "mkdir -p resources && cp -R other/designs/android resources && cp -R other/designs/*.png resources && npx cordova-res ios --skip-config --resources resources --copy && npx cordova-res android --skip-config --resources resources --copy",

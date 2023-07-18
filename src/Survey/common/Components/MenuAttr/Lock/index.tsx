@@ -117,11 +117,10 @@ export type LockConfig = {
 export type MenuAttrWithLockProps = {
   model: Sample | Occurrence;
   attr: string;
-  itemProps?: any;
 };
 
 export const WithLock: FC<MenuAttrWithLockProps> = observer(
-  ({ model, attr, itemProps: itemPropsProp, ...other }) => {
+  ({ model, attr, ...other }) => {
     const isLocked = appModel.isAttrLocked(model, attr);
 
     // eslint-disable-next-line no-unused-expressions
@@ -138,16 +137,14 @@ export const WithLock: FC<MenuAttrWithLockProps> = observer(
       appModel.setAttrLock(model, attr, newValue);
     };
 
-    const itemProps = {
-      ...itemPropsProp,
-
+    const detailIconProps: MenuAttrWithLockProps = {
       // chevronForwardOutline - 'undefined' doesn't work in this case, why?
       detailIcon: isLocked ? lockClosedOutline : chevronForwardOutline,
     };
 
     if (attr === 'date') {
-      itemProps.inputProps = {
-        ...itemProps.inputProps,
+      detailIconProps.inputProps = {
+        ...detailIconProps.inputProps,
         accordionProps: {
           toggleIcon: isLocked ? lockClosedOutline : chevronDownOutline,
         },
@@ -160,7 +157,7 @@ export const WithLock: FC<MenuAttrWithLockProps> = observer(
           model={model}
           attr={attr}
           onChange={onChange}
-          itemProps={itemProps}
+          {...detailIconProps}
           {...other}
         />
       </Lock>

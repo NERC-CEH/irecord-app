@@ -31,7 +31,11 @@ export {
   default as MenuAttrItem,
   Props as MenuAttrItemProps,
 } from '@flumens/ionic/dist/components/MenuAttrItem';
-export { default as MenuAttrItemFromModel } from '@flumens/ionic/dist/components/MenuAttrItemFromModel';
+export {
+  default as MenuAttrItemFromModel,
+  MenuProps as MenuAttrItemFromModelMenuProps,
+  Props as MenuAttrItemFromModelProps,
+} from '@flumens/ionic/dist/components/MenuAttrItemFromModel';
 export { default as MenuAttrToggle } from '@flumens/ionic/dist/components/MenuAttrToggle';
 export { default as ImageCropper } from '@flumens/ionic/dist/components/ImageCropper';
 export { default as Store } from '@flumens/ionic/dist/models/Store';

@@ -101,7 +101,7 @@ const MenuDynamicAttrs: FC<Props> = ({
           model={selectedModel}
           attr={attrName}
           className="menu-attr-item"
-          itemProps={{ routerLink }}
+          routerLink={routerLink}
         />
       );
 

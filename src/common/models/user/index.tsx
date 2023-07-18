@@ -54,7 +54,11 @@ export class UserModel extends DrupalUserModel {
 
   attrs: Attrs = DrupalUserModel.extendAttrs(this.attrs, defaults);
 
-  registerSchema = Yup.object().shape({
+  resetSchema: any = this.resetSchema;
+
+  loginSchema: any = this.loginSchema;
+
+  registerSchema: any = Yup.object().shape({
     email: Yup.string().email('email is not valid').required('Please fill in'),
     password: Yup.string().required('Please fill in'),
     firstName: Yup.string().required('Please fill in'),
