@@ -21,6 +21,10 @@ trigger_map:
 workflows:
   android:
     steps:
+      - set-java-version@1:
+          run_if: .IsCI
+          inputs:
+            - set_java_version: '17'
       - change-android-versioncode-and-versionname@1:
           inputs:
             - build_gradle_path: $BITRISE_SOURCE_DIR/android/app/build.gradle
@@ -68,9 +72,15 @@ workflows:
             - content: |
                 DIRECTORY="$BITRISE_PROJECT_NAME/$NPM_PACKAGE_VERSION"
                 npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_DEPLOY_DIR/app-debug.aab
+      - script@1:
+          title: Upload Builds to OneDrive
+          inputs:
+            - content: |
+                DIRECTORY="$BITRISE_PROJECT_NAME/$NPM_PACKAGE_VERSION"
                 npx @flumens/onedrive-upload --directory $DIRECTORY --file $BITRISE_DEPLOY_DIR/App.ipa
       - script@1:
           title: Git Tag
+          run_if: enveq "BUILD_ONLY" ""
           inputs:
             - content: |
                 TAG_NAME="v$NPM_PACKAGE_VERSION-$BITRISE_BUILD_NUMBER"
@@ -79,26 +89,23 @@ workflows:
   ios:
     steps:
       - certificate-and-profile-installer@1: {}
-      - recreate-user-schemes@1:
-          inputs:
-            - project_path: $BITRISE_PROJECT_PATH
       - set-ios-version@2:
           run_if: 'true'
           inputs:
             - bundle_version: $BITRISE_BUILD_NUMBER
             - bundle_version_short: $NPM_PACKAGE_VERSION
             - info_plist_file: ios/App/App/Info.plist
-      - xcode-archive@3:
+      - xcode-archive@5:
           inputs:
-            - export_method: app-store
+            - distribution_method: app-store
   web:
     steps:
+      - nvm@1: {}
       - script@1:
           title: Print system info
           inputs:
             - content: |
                 #!/usr/bin/env bash
-
                 echo "Node version:"
                 node --version
                 npm --version

@@ -1,7 +1,6 @@
 {
-	"appId": "uk.ac.ceh.irecord",
+	"appId": "uk.ac.ceh.ir",
 	"appName": "iRecord App",
-	"bundledWebRuntime": false,
 	"webDir": "build",
 	"cordova": {}
 }

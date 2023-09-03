@@ -1,3 +1,7 @@
+## 6.0.7
+
+Updated libraries (Capacitor).
+
 ## 6.0.6
 
 - Fixed Upload All to skip drafts.
