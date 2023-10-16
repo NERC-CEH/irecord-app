@@ -1,13 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react';
-import { Trans as T } from 'react-i18next';
+import { Trans as T, useTranslation } from 'react-i18next';
 import { MapRef, LngLatBounds } from 'react-map-gl';
 import { Link } from 'react-router-dom';
-import { useToast, device, MapContainer, ElasticOccurrence } from '@flumens';
+import {
+  useToast,
+  device,
+  MapContainer,
+  ElasticOccurrence,
+  mapMetresToZoom,
+} from '@flumens';
 import { IonSpinner } from '@ionic/react';
 import GeolocateButton from 'common/Components/GeolocateButton';
 import config from 'common/config';
+import { groups as informalGroups } from 'common/data/informalGroups';
 import userModel from 'models/user';
+import MapFilters, { dateRanges, monthAgo } from './Filters';
 import RecordProfiles from './RecordProfiles';
 import { fetchRecords, fetchSquares, Square } from './recordsService';
 import './styles.scss';
@@ -31,6 +39,7 @@ const getTotalSquares = (squares: Square[]) => {
 };
 
 const Map = () => {
+  const { t } = useTranslation();
   const [mapRef, setMapRef] = useState<{ current?: MapRef }>({});
   const measuredRef = useCallback(
     (node: any) => node && setMapRef({ current: node }),
@@ -43,6 +52,23 @@ const Map = () => {
   const [totalSquares, setTotalSquares] = useState<number>(1);
   const [squares, setSquares] = useState<Square[]>([]);
   const [records, setRecords] = useState<ElasticOccurrence[]>([]);
+
+  const [startDate, setStartDate] = useState(monthAgo);
+  const onStartDateSelect = (value: any) => setStartDate(value);
+
+  const [speciesGroup, setSpeciesGroup] = useState('');
+  const onSpeciesGroupSelect = (value: any) => setSpeciesGroup(value);
+  const speciesGroupOptions = [
+    { label: t('All species'), value: '' },
+
+    ...Object.keys(informalGroups)
+      .sort((a: string, b: string) =>
+        t((informalGroups as any)[a]).localeCompare(
+          t((informalGroups as any)[b])
+        )
+      )
+      .map((id: string) => ({ value: id, label: (informalGroups as any)[id] })),
+  ];
 
   const userIsLoggedIn = userModel.isLoggedIn();
 
@@ -66,9 +92,12 @@ const Map = () => {
     const shouldFetchRecords = zoomLevel >= 13;
     if (shouldFetchRecords) {
       setFetchingRecords(true);
-      const fetchedRecords = await fetchRecords(northWest, southEast).catch(
-        toast.error
-      );
+      const fetchedRecords = await fetchRecords({
+        northWest,
+        southEast,
+        startDate,
+        speciesGroup,
+      }).catch(toast.error);
       // Previous request was cancelled
       if (!fetchedRecords) return;
       setRecords(fetchedRecords);
@@ -80,11 +109,13 @@ const Map = () => {
     const squareSize = getSquareSize(zoomLevel);
 
     setFetchingRecords(true);
-    const fetchedSquares = await fetchSquares(
+    const fetchedSquares = await fetchSquares({
       northWest,
       southEast,
-      squareSize
-    ).catch(toast.error);
+      squareSize,
+      startDate,
+      speciesGroup,
+    }).catch(toast.error);
 
     // Previous request was cancelled
     if (!fetchedSquares) return;
@@ -96,6 +127,10 @@ const Map = () => {
   };
 
   const updateMapCentre = () => updateRecords();
+
+  useEffect(() => {
+    updateRecords();
+  }, [speciesGroup, startDate]);
 
   const [showRecordsInfo, setShowRecordsInfo] = useState<ElasticOccurrence[]>(
     []
@@ -139,10 +174,9 @@ const Map = () => {
   const recordMarkers = records.map(getRecordMarker);
 
   const getSquareMarker = (square: Square) => {
-    const opacity = Number((square.doc_count / totalSquares).toFixed(2));
+    const opacity = Number((square.doc_count ** 1.8 / totalSquares).toFixed(2)); // pow of 1.8 to increase the difference between different square opacities
 
-    // max 90%, min 40%
-    const normalizedOpacity = Math.min(Math.max(opacity, 0.4), 0.9);
+    const normalizedOpacity = Math.min(Math.max(opacity, 0.4), 0.7); // max 70%, min 40%
 
     const [longitude, latitude] = square.key.split(' ').map(parseFloat);
 
@@ -151,15 +185,25 @@ const Map = () => {
     const metersToPixels =
       radius / padding / 0.075 / Math.cos((latitude * Math.PI) / 180);
 
+    const zoomIn = () => {
+      mapRef.current?.flyTo({
+        center: [longitude, latitude],
+        zoom: mapMetresToZoom(square.size / 2) || mapRef.current.getZoom(),
+        duration: 500,
+      });
+    };
+
     return (
       <MapContainer.Marker.Circle
         key={square.key}
         id={square.key}
         longitude={longitude}
         latitude={latitude}
+        onClick={zoomIn}
         paint={{
-          'circle-stroke-color': 'white',
-          'circle-color': '#6b7a15',
+          'circle-stroke-color': '#003265',
+          'circle-stroke-width': 1,
+          'circle-color': '#007dfa',
           'circle-opacity': normalizedOpacity,
           'circle-radius': [
             'interpolate',
@@ -179,17 +223,51 @@ const Map = () => {
 
   let initialViewState;
 
+  const transformRequest = (url: string) =>
+    url.startsWith('https://api.os.uk') ? { url: `${url}&srs=3857` } : { url };
+
   return (
     <MapContainer
       id="user-records"
       ref={measuredRef}
       accessToken={config.map.mapboxApiKey}
-      mapStyle="mapbox://styles/mapbox/satellite-streets-v10"
+      maxZoom={17}
+      customAttribution='&copy; <a href="http://www.ordnancesurvey.co.uk/">Ordnance Survey</a>'
+      mapStyle={`https://api.os.uk/maps/vector/v1/vts/resources/styles?key=${config.map.osApiKey}`}
+      maxBounds={
+        [
+          [-8.834, 49.562], // Southwest
+          [1.9, 60.934], // Northeast
+        ] as any
+      }
       maxPitch={0}
-      maxZoom={20}
       initialViewState={initialViewState}
       onMoveEnd={updateMapCentre}
+      transformRequest={transformRequest}
     >
+      <MapContainer.Control>
+        <MapFilters>
+          <div className="filters-column">
+            <div className="filters-row">
+              <MapFilters.Select
+                options={dateRanges}
+                onChange={onStartDateSelect}
+                value={startDate}
+              />
+            </div>
+          </div>
+          <div className="filters-column">
+            <div className="filters-row">
+              <MapFilters.Select
+                options={speciesGroupOptions}
+                onChange={onSpeciesGroupSelect}
+                value={speciesGroup}
+              />
+            </div>
+          </div>
+        </MapFilters>
+      </MapContainer.Control>
+
       {!userIsLoggedIn && (
         <div className="login-message">
           <T>

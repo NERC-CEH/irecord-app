@@ -12,12 +12,65 @@ export interface Square {
 
 type LatLng = { lat: number; lng: number };
 
-const getRecordsQuery = (northWest: LatLng, southEast: LatLng) =>
-  JSON.stringify({
+export const getESTimestamp = (dateString: string) => {
+  const dateFormat = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/London',
+  });
+
+  const timeFormat = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/London',
+    timeStyle: 'medium',
+  });
+
+  // format to 2020-02-21
+  const date = dateFormat
+    .format(new Date(dateString))
+    .split('/')
+    .reverse()
+    .join('-');
+
+  // format to 08:37:55
+  const time = timeFormat.format(new Date(dateString));
+
+  return `${date} ${time}`;
+};
+
+type RecordQueryOptions = {
+  northWest: LatLng;
+  southEast: LatLng;
+  startDate?: string;
+  speciesGroup?: string;
+};
+
+const getRecordsQuery = ({
+  northWest,
+  southEast,
+  startDate,
+  speciesGroup,
+}: RecordQueryOptions) => {
+  const must: any = [matchAppSurveys];
+
+  if (startDate) {
+    must.push({
+      range: {
+        'metadata.created_on': { gte: getESTimestamp(startDate) },
+      },
+    });
+  }
+
+  if (speciesGroup) {
+    must.push({
+      match: {
+        'taxon.input_group_id': speciesGroup,
+      },
+    });
+  }
+
+  return JSON.stringify({
     size: 1000,
     query: {
       bool: {
-        must: [matchAppSurveys],
+        must,
         filter: {
           geo_bounding_box: {
             'location.point': {
@@ -29,12 +82,12 @@ const getRecordsQuery = (northWest: LatLng, southEast: LatLng) =>
       },
     },
   });
+};
 
 let requestCancelToken: any;
 
 export async function fetchRecords(
-  northWest: LatLng,
-  southEast: LatLng
+  options: RecordQueryOptions
 ): Promise<ElasticOccurrence[] | null> {
   if (requestCancelToken) {
     requestCancelToken.cancel();
@@ -51,7 +104,7 @@ export async function fetchRecords(
     },
     timeout: 80000,
     cancelToken: requestCancelToken.token,
-    data: getRecordsQuery(northWest, southEast),
+    data: getRecordsQuery(options),
   };
 
   let records = [];
@@ -77,16 +130,46 @@ export async function fetchRecords(
   return records;
 }
 
-const getSquaresQuery = (
-  northWest: LatLng,
-  southEast: LatLng,
-  squareSize: number
-) =>
-  JSON.stringify({
+type SquareQueryOptions = {
+  northWest: LatLng;
+  southEast: LatLng;
+  squareSize: number;
+  startDate?: string;
+  speciesGroup?: string;
+};
+
+const getSquaresQuery = ({
+  northWest,
+  southEast,
+  squareSize,
+  startDate,
+  speciesGroup,
+}: SquareQueryOptions) => {
+  const must: any = [matchAppSurveys];
+
+  if (startDate) {
+    must.push({
+      range: {
+        'metadata.created_on': { gte: getESTimestamp(startDate) },
+      },
+    });
+  }
+
+  if (speciesGroup) {
+    must.push({
+      match: {
+        'taxon.input_group_id': speciesGroup,
+      },
+    });
+  }
+
+  const squareSizeInKm = squareSize / 1000;
+
+  return JSON.stringify({
     size: 0,
     query: {
       bool: {
-        must: [matchAppSurveys],
+        must,
         filter: {
           geo_bounding_box: {
             'location.point': {
@@ -103,27 +186,25 @@ const getSquaresQuery = (
         aggs: {
           by_square: {
             terms: {
-              field: `location.grid_square.${squareSize}km.centre`,
+              field: `location.grid_square.${squareSizeInKm}km.centre`,
               size: 100000,
             },
           },
         },
       },
     },
+    sort: [{ 'event.date_start': 'desc' }],
   });
+};
 
 export async function fetchSquares(
-  northWest: LatLng,
-  southEast: LatLng,
-  squareSize: number // in meters
+  options: SquareQueryOptions
 ): Promise<Square[] | null> {
   if (requestCancelToken) {
     requestCancelToken.cancel();
   }
 
   requestCancelToken = axios.CancelToken.source();
-
-  const squareSizeInKm = squareSize / 1000;
 
   const OPTIONS: AxiosRequestConfig = {
     method: 'post',
@@ -134,7 +215,7 @@ export async function fetchSquares(
     },
     timeout: 80000,
     cancelToken: requestCancelToken.token,
-    data: getSquaresQuery(northWest, southEast, squareSizeInKm),
+    data: getSquaresQuery(options),
   };
 
   let records = [];
@@ -156,7 +237,7 @@ export async function fetchSquares(
 
   const addSize = (square: Square): Square => ({
     ...square,
-    size: squareSize,
+    size: options.squareSize,
   });
 
   const squares =
