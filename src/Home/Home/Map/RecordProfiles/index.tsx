@@ -1,22 +1,24 @@
 import { useState } from 'react';
-import { IonCardHeader, IonCardContent, IonIcon } from '@ionic/react';
-import { Pagination } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import '@ionic/react/css/ionic-swiper.css';
 import clsx from 'clsx';
 import { closeCircle, checkmarkCircle, cameraOutline } from 'ionicons/icons';
-import { Gallery } from '@flumens';
-import config from 'common/config';
 import { Trans as T } from 'react-i18next';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Gallery, ElasticOccurrence, ImageWithBackground } from '@flumens';
+import { IonCardHeader, IonCardContent, IonIcon } from '@ionic/react';
+import '@ionic/react/css/ionic-swiper.css';
+import config from 'common/config';
 import MultiPageCustomAlert from './MultiPageCustomAlert';
-import ImageWithBackground from './ImageWithBackground';
-import { Record, Media } from '../../esResponse.d';
 import './styles.scss';
 
+// https://stackoverflow.com/a/57447842
+type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
+
+type Media = ArrayElement<ElasticOccurrence['occurrence']['media']>;
 type Props = {
-  records: Record[];
+  records: ElasticOccurrence[];
   onClose: any;
 };
 
@@ -28,7 +30,7 @@ const statuses = {
 // Verification status 1: Accepted, Rejected or Unconfirmed
 // Verification status 2: Correct, Considered correct, Unable to verify, Incorrect, Not reviewed, or Plausible
 
-const Profile = (record: Record) => {
+const Profile = (record: ElasticOccurrence) => {
   const [showGallery, setShowGallery] = useState<number>();
 
   const getSlides = (media?: Media[]) => {

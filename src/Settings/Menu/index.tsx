@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import appModel, { Attrs as AppModelAttrs } from 'models/app';
-import userModel from 'models/user';
 import { observer } from 'mobx-react';
-import { NavContext } from '@ionic/react';
-import savedSamples, { removeAllSynced } from 'models/savedSamples';
 import { Page, Header, useToast, PickByType, useLoader } from '@flumens';
+import { NavContext } from '@ionic/react';
+import appModel, { Attrs as AppModelAttrs } from 'models/app';
+import savedSamples, { removeAllSynced } from 'models/savedSamples';
+import userModel from 'models/user';
 import Main from './Main';
 
 async function resetApp(toast: any) {
@@ -92,9 +92,7 @@ const Container = () => {
   const {
     sendAnalytics,
     useTraining,
-    useGridRef,
-    useGridMap,
-    useExperiments,
+    // useExperiments,
     gridSquareUnit,
     geolocateSurveyEntries,
     useSpeciesImageClassifier,
@@ -110,9 +108,7 @@ const Container = () => {
         deleteUser={deleteUser}
         sendAnalytics={sendAnalytics}
         useTraining={useTraining}
-        useGridRef={useGridRef}
-        useGridMap={useGridMap}
-        useExperiments={useExperiments}
+        // useExperiments={useExperiments}
         gridSquareUnit={gridSquareUnit}
         geolocateSurveyEntries={geolocateSurveyEntries}
         useSpeciesImageClassifier={useSpeciesImageClassifier}

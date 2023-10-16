@@ -146,8 +146,8 @@ msgid "Activities"
 msgstr "Activities"
 
 # Part of activities page 
-msgid "Pull to refresh the list."
-msgstr "Pull to refresh the list."
+msgid "Swipe down on the activity list to refresh it."
+msgstr "Swipe down on the activity list to refresh it."
 
 # Part of activities page 
 msgid "Sorry, no activities data is available at the moment."
@@ -1355,10 +1355,6 @@ msgstr "To find a species from its scientific name you can use shortcuts, e.g. t
 msgid "Click on the activity below which you would like to participate in."
 msgstr "Click on the activity below which you would like to participate in."
 
-# Activities page alert message
-msgid "Click on the activity below which you would like to participate in.<1><0><0>You can join in with more activities by visiting the <2>iRecord Activities</2> page.</0></0><1><0>Pull to refresh the list.</0></1><2><0>For more about Activities see the <2>iRecord Help</2> page.</0></2></1>"
-msgstr "Click on the activity below which you would like to participate in.<1><0><0>You can join in with more activities by visiting the <2>iRecord Activities</2> page.</0></0><1><0>Pull to refresh the list.</0></1><2><0>For more about Activities see the <2>iRecord Help</2> page.</0></2></1>"
-
 # Activities page button label
 msgid "READ MORE"
 msgstr "READ MORE"
@@ -1368,12 +1364,12 @@ msgid "Got it"
 msgstr "Got it"
 
 # Activities page alert message
-msgid "You can join in with more activities by visiting the <1>iRecord Activities</1> page."
-msgstr "You can join in with more activities by visiting the <1>iRecord Activities</1> page."
+msgid "You can join in with more activities by visiting the <2>iRecord Activities</2> page."
+msgstr "You can join in with more activities by visiting the <2>iRecord Activities</2> page."
 
 # Activities page alert message
-msgid "For more about Activities see the <1>iRecord Help</1> page."
-msgstr "For more about Activities see the <1>iRecord Help</1> page."
+msgid "For more about Activities see the <2>iRecord Help</2> page."
+msgstr "For more about Activities see the <2>iRecord Help</2> page."
 
 # Sign up page
 msgid "Welcome back"

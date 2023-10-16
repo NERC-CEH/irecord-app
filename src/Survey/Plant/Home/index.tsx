@@ -1,12 +1,8 @@
 import { FC, useContext } from 'react';
 import { observer } from 'mobx-react';
-import { NavContext, IonToolbar } from '@ionic/react';
-import Sample, { useValidateCheck } from 'models/sample';
-import { useUserStatusCheck } from 'models/user';
 import { informationOutline } from 'ionicons/icons';
-import appModel from 'models/app';
 import { Trans as T } from 'react-i18next';
-import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import {
   Page,
   Header,
@@ -15,9 +11,14 @@ import {
   MenuAttrToggle,
   InfoButton,
 } from '@flumens';
+import { NavContext, IonToolbar, isPlatform } from '@ionic/react';
+import appModel from 'models/app';
+import Sample, { useValidateCheck } from 'models/sample';
+import { useUserStatusCheck } from 'models/user';
+import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
 import PrimaryHeaderButton from 'Survey/common/Components/PrimaryHeaderButton';
-import gridAlertService from './gridAlertService';
 import Main from './Main';
+import gridAlertService from './gridAlertService';
 import './styles.scss';
 
 type Location = any;
@@ -73,9 +74,11 @@ const PlantHome: FC<Props> = ({ sample }) => {
 
   const showGridChangeAlert = (newLocation: Location) => {
     if (!newLocation.gridref) {
-      console.error('No gridref in grid alert');
+      console.warn('No gridref in grid alert');
       return;
     }
+
+    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Medium });
 
     const { gridSquareUnit } = appModel.attrs;
 

@@ -49,8 +49,11 @@ const ImageTitle: FC<Props> = ({ image }) => {
       return (
         <IonLabel>
           <T>
-            We think it is <b>{{ probability }}%</b> likely to be{' '}
-            <b className={clsx(!commonName && 'scientific')}>{{ species }}</b>.
+            We think it is <b>{{ probability } as any}%</b> likely to be{' '}
+            <b className={clsx(!commonName && 'scientific')}>
+              {{ species } as any}
+            </b>
+            .
           </T>
         </IonLabel>
       );
@@ -59,8 +62,12 @@ const ImageTitle: FC<Props> = ({ image }) => {
     return (
       <IonLabel>
         <T>
-          Great! We also think it is <b>{{ probability }}%</b> likely to be{' '}
-          <b className={clsx(!commonName && 'scientific')}>{{ species }}</b>.
+          Great! We also think it is <b>{{ probability } as any}%</b> likely to
+          be{' '}
+          <b className={clsx(!commonName && 'scientific')}>
+            {{ species } as any}
+          </b>
+          .
         </T>
       </IonLabel>
     );

@@ -1,20 +1,22 @@
-import { FC, useState } from 'react';
-import { IonButton, IonIcon } from '@ionic/react';
-import SwiperCore, { Pagination } from 'swiper';
-import { Swiper } from 'swiper/react';
+import { useState } from 'react';
+import clsx from 'clsx';
+import { close, arrowForwardOutline, arrowBackOutline } from 'ionicons/icons';
+import SwiperCore from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { Swiper } from 'swiper/react';
+import { IonButton, IonIcon } from '@ionic/react';
 import '@ionic/react/css/ionic-swiper.css';
-import { close, arrowForwardOutline, arrowBackOutline } from 'ionicons/icons';
-import clsx from 'clsx';
 import CustomAlert from './CustomAlert';
 import './styles.scss';
 
 type Props = {
   onClose: any;
+  children: any;
 };
 
-const MultiPageCustomAlert: FC<Props> = ({ children, onClose }) => {
+const MultiPageCustomAlert = ({ children, onClose }: Props) => {
   const [controlledSwiper, setControlledSwiper] = useState<SwiperCore>();
   const [moreSlidesExist, setMoreSlidesExist] = useState(true);
   const [prevSlidesExist, setPrevSlidesExist] = useState(false);

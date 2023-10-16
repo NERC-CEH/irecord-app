@@ -18,13 +18,13 @@ const UsersSurveys: FC<Props> = ({ onUpload, sample, uploadIsPrimary }) => {
 
   if (!saved) {
     return (
-      <IonChip color="dark" class="survey-status ion-text-wrap">
+      <IonChip color="dark" className="survey-status ion-text-wrap">
         <T>Draft</T>
       </IonChip>
     );
   }
 
-  if (synchronising) return <IonSpinner class="survey-status" />;
+  if (synchronising) return <IonSpinner className="survey-status" />;
 
   if (isDisabled) return null;
 

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import appModel from 'models/app';
 import { Page, Main } from '@flumens';
 import { observer } from 'mobx-react';
@@ -9,7 +9,10 @@ import {
   IonIcon,
   IonFooter,
 } from '@ionic/react';
-import SwiperCore, { Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import SwiperCore from 'swiper';
+import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { arrowForward, checkmarkOutline } from 'ionicons/icons';
 import './styles.scss';
@@ -18,7 +21,11 @@ import welcomeBackground2 from './images/welcome_2.jpg';
 import welcomeBackground3 from './images/welcome_3.jpg';
 import welcomeBackground4 from './images/welcome_4.jpg';
 
-const OnBoardingScreens: FC = ({ children }) => {
+type Props = {
+  children: any;
+};
+
+const OnBoardingScreens = ({ children }: Props) => {
   const [moreSlidesExist, setMoreSlidesExist] = useState(true);
   const [controlledSwiper, setControlledSwiper] = useState<SwiperCore>();
 

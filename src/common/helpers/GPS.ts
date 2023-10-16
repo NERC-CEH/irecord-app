@@ -1,8 +1,6 @@
 import { Geolocation, Position } from '@capacitor/geolocation';
-import { isPlatform } from '@ionic/core';
 import { HandledError } from '@flumens';
-
-export const GPS_DISABLED_ERROR_MESSAGE = 'Location services are not enabled';
+import { isPlatform } from '@ionic/core';
 
 type Options = {
   callback: any;
@@ -73,5 +71,18 @@ const API = {
     Geolocation.clearWatch({ id });
   },
 };
+
+export const GPS_DISABLED_ERROR_MESSAGE = 'Location services are not enabled';
+
+export async function hasGPSPermissions() {
+  try {
+    const permission = await Geolocation.checkPermissions();
+    return permission?.location !== 'denied';
+  } catch (err: any) {
+    if (err?.message === GPS_DISABLED_ERROR_MESSAGE) return false;
+  }
+
+  return false;
+}
 
 export default API;

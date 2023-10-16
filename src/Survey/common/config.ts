@@ -5,12 +5,12 @@ import {
 } from 'ionicons/icons';
 import * as Yup from 'yup';
 import { date as DateHelp, device, PageProps, RemoteConfig } from '@flumens';
-import { Config as MenuProps } from 'Survey/common/Components/MenuAttr';
-import Occurrence, { Taxon } from 'models/occurrence';
-import Sample from 'models/sample';
-import Media from 'models/media';
 import config from 'common/config';
 import progressIcon from 'common/images/progress-circles.svg';
+import Media from 'models/media';
+import Occurrence, { Taxon } from 'models/occurrence';
+import Sample from 'models/sample';
+import { Config as MenuProps } from 'Survey/common/Components/MenuAttr';
 
 const fixedLocationSchema = Yup.object().shape({
   latitude: Yup.number().required(),
@@ -201,8 +201,9 @@ export const locationAttr = {
       // eslint-disable-next-line
       submission.values = { ...submission.values };
 
-      submission.values['smpAttr:760'] = source; // eslint-disable-line
-      submission.values['smpAttr:335'] = gridref; // eslint-disable-line
+      if (source) submission.values['smpAttr:760'] = source; // eslint-disable-line
+      if (gridref) submission.values['smpAttr:335'] = gridref; // eslint-disable-line
+
       submission.values['smpAttr:282'] = accuracy; // eslint-disable-line
       submission.values['smpAttr:283'] = altitude; // eslint-disable-line
       submission.values['smpAttr:284'] = altitudeAccuracy; // eslint-disable-line

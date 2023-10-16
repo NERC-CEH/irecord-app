@@ -363,3 +363,8 @@ ion-list .rounded > *:last-child .date-input-attr ion-item[slot='header'] {
 .radio-input-attr ion-item.hidden {
   display: none;
 }
+
+// disable Ionic default button height - used for smaller buttons e.g. map controls
+ion-button {
+  min-height: 0;
+}

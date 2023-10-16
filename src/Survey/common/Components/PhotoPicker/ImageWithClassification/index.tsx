@@ -35,7 +35,7 @@ const Image: FC<Props> = ({ media, isDisabled, onDelete, onClick }) => {
   return (
     <div className="img">
       {!isDisabled && (
-        <IonButton fill="clear" class="delete" onClick={onDelete}>
+        <IonButton fill="clear" className="delete" onClick={onDelete}>
           <IonIcon icon={close} />
         </IonButton>
       )}

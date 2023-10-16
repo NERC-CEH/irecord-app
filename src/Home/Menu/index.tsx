@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react';
-import appModel from 'models/app';
-import userModel from 'models/user';
 import { Trans as T } from 'react-i18next';
 import { Page, useAlert, useLoader, useToast } from '@flumens';
+import appModel from 'models/app';
+import userModel from 'models/user';
 import Main from './Main';
 
 const useConfirmationDialog = () => {

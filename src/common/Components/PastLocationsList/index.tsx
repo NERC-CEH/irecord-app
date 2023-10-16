@@ -1,5 +1,9 @@
 import { FC, createRef, useState } from 'react';
 import { observer } from 'mobx-react';
+import clsx from 'clsx';
+import { star, starOutline } from 'ionicons/icons';
+import { Trans as T } from 'react-i18next';
+import { useAlert } from '@flumens';
 import {
   IonList,
   IonItemOption,
@@ -8,13 +12,9 @@ import {
   IonItemSliding,
   IonLabel,
 } from '@ionic/react';
-import { star, starOutline, informationCircleOutline } from 'ionicons/icons';
-import { useAlert, InfoMessage } from '@flumens';
 import appModel from 'models/app';
 import StringHelp from 'helpers/string';
 import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
-import { Trans as T } from 'react-i18next';
-import clsx from 'clsx';
 import EditModal from './EditModal';
 import './styles.scss';
 
@@ -170,9 +170,9 @@ const PastLocations: FC<Props> = ({ onSelect }) => {
     <div className="past-locations">
       <EditModal location={editLocation} onLocationSave={onSave} />
 
-      <InfoMessage className="blue" icon={informationCircleOutline}>
+      <InfoBackgroundMessage name="showPastLocationsTip">
         Here you can select or swipe to edit your previous locations
-      </InfoMessage>
+      </InfoBackgroundMessage>
 
       {getPastLocations()}
     </div>

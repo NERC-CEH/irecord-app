@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { IonList, IonItem, IonSpinner } from '@ionic/react';
-import { hashCode } from 'helpers/UUID';
 import { Trans as T } from 'react-i18next';
+import { hashCode } from '@flumens';
+import { IonList, IonItem, IonSpinner } from '@ionic/react';
 import { Taxon } from 'models/occurrence';
 import Species from './components/Species';
 import './styles.scss';

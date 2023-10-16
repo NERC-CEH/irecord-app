@@ -1,4 +1,4 @@
-import { AppModel, defaults } from '../index';
+import { AppModel } from '../index';
 
 const MAX_SAVED = 30; // use small value to speed up tests
 

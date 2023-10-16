@@ -1,46 +1,28 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { LatLng } from 'leaflet';
-import { HandledError, isAxiosNetworkError } from '@flumens';
-import userModel from 'models/user';
+import { HandledError, isAxiosNetworkError, ElasticOccurrence } from '@flumens';
 import CONFIG from 'common/config';
-import { Survey } from 'Survey/common/config';
-import defaultSurvey from 'Survey/Default/config';
-import listSurvey from 'Survey/List/config';
-import mothSurvey from 'Survey/Moth/config';
-import plantSurvey from 'Survey/Plant/config';
-import { Hit, Bucket, Record, Square } from './esResponse.d';
+import { matchAppSurveys } from 'common/services/ES';
+import userModel from 'models/user';
 
-const getSurveyQuery = ({ id }: Survey) => ({
-  match: {
-    'metadata.survey.id': id,
-  },
-});
+export interface Square {
+  key: string;
+  doc_count: number;
+  size: number; // in meters
+}
+
+type LatLng = { lat: number; lng: number };
 
 const getRecordsQuery = (northWest: LatLng, southEast: LatLng) =>
   JSON.stringify({
     size: 1000,
     query: {
       bool: {
-        must: [
-          {
-            bool: {
-              should: [defaultSurvey, listSurvey, mothSurvey, plantSurvey].map(
-                getSurveyQuery
-              ),
-            },
-          },
-        ],
+        must: [matchAppSurveys],
         filter: {
           geo_bounding_box: {
             'location.point': {
-              top_left: {
-                lat: northWest.lat,
-                lon: northWest.lng,
-              },
-              bottom_right: {
-                lat: southEast.lat,
-                lon: southEast.lng,
-              },
+              top_left: { lat: northWest.lat, lon: northWest.lng },
+              bottom_right: { lat: southEast.lat, lon: southEast.lng },
             },
           },
         },
@@ -53,7 +35,7 @@ let requestCancelToken: any;
 export async function fetchRecords(
   northWest: LatLng,
   southEast: LatLng
-): Promise<Record[] | null> {
+): Promise<ElasticOccurrence[] | null> {
   if (requestCancelToken) {
     requestCancelToken.cancel();
   }
@@ -62,7 +44,7 @@ export async function fetchRecords(
 
   const OPTIONS: AxiosRequestConfig = {
     method: 'post',
-    url: CONFIG.backend.recordsServiceURL,
+    url: CONFIG.backend.occurrenceServiceURL,
     headers: {
       authorization: `Bearer ${await userModel.getAccessToken()}`,
       'Content-Type': 'application/json',
@@ -75,7 +57,10 @@ export async function fetchRecords(
   let records = [];
 
   try {
-    const { data } = await axios(OPTIONS);
+    const res = await axios(OPTIONS);
+    const getSource = (hit: any): ElasticOccurrence => hit._source;
+    const data = res.data.hits.hits.map(getSource);
+    // TODO: validate the response is correct
 
     records = data;
   } catch (error: any) {
@@ -89,10 +74,7 @@ export async function fetchRecords(
     throw error;
   }
 
-  const getSource = ({ _source }: any): Hit[] => _source;
-  // TODO: validate the response is correct
-
-  return records?.hits?.hits.map(getSource);
+  return records;
 }
 
 const getSquaresQuery = (
@@ -104,26 +86,12 @@ const getSquaresQuery = (
     size: 0,
     query: {
       bool: {
-        must: [
-          {
-            bool: {
-              should: [defaultSurvey, listSurvey, mothSurvey, plantSurvey].map(
-                getSurveyQuery
-              ),
-            },
-          },
-        ],
+        must: [matchAppSurveys],
         filter: {
           geo_bounding_box: {
             'location.point': {
-              top_left: {
-                lat: northWest.lat,
-                lon: northWest.lng,
-              },
-              bottom_right: {
-                lat: southEast.lat,
-                lon: southEast.lng,
-              },
+              top_left: { lat: northWest.lat, lon: northWest.lng },
+              bottom_right: { lat: southEast.lat, lon: southEast.lng },
             },
           },
         },
@@ -131,10 +99,7 @@ const getSquaresQuery = (
     },
     aggs: {
       by_srid: {
-        terms: {
-          field: 'location.grid_square.srid',
-          size: 1000,
-        },
+        terms: { field: 'location.grid_square.srid', size: 1000 },
         aggs: {
           by_square: {
             terms: {
@@ -162,7 +127,7 @@ export async function fetchSquares(
 
   const OPTIONS: AxiosRequestConfig = {
     method: 'post',
-    url: CONFIG.backend.recordsServiceURL,
+    url: CONFIG.backend.occurrenceServiceURL,
     headers: {
       authorization: `Bearer ${await userModel.getAccessToken()}`,
       'Content-Type': 'application/json',
@@ -189,7 +154,7 @@ export async function fetchSquares(
     throw error;
   }
 
-  const addSize = (square: Bucket): Square => ({
+  const addSize = (square: Square): Square => ({
     ...square,
     size: squareSize,
   });

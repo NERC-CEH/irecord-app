@@ -1,3 +1,7 @@
+## 6.1.0
+
+Updated libraries and made some functionality changes.
+
 ## 6.0.7
 
 Updated libraries (Capacitor).

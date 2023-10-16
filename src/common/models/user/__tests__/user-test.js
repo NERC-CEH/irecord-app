@@ -1,6 +1,6 @@
+import sinon from 'sinon';
 import * as store from 'models/store';
 import { UserModel } from '../index';
-import sinon from 'sinon';
 
 /* eslint-disable no-unused-expressions */
 function initUserModel(login) {
@@ -109,6 +109,7 @@ describe.skip('User Model', () => {
         userModel.save();
 
         sinon.spy(UserModel.prototype, 'fetchActivities');
+        // eslint-disable-next-line no-param-reassign
         userModel = new UserModel();
 
         expect(userModel.fetchActivities.called).toBe(false);
@@ -179,6 +180,7 @@ describe.skip('User Model', () => {
 
     it('should reset activities on logout', () =>
       initUserModel().then(userModel => {
+        // eslint-disable-next-line no-param-reassign
         userModel.attrs.activities = [getRandActivity(), getRandActivity()];
 
         userModel.logOut();

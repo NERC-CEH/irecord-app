@@ -2,7 +2,7 @@
  * User model describing the user model on backend. Persistent.
  **************************************************************************** */
 import { useContext } from 'react';
-import CONFIG from 'common/config';
+import { observable } from 'mobx';
 import * as Yup from 'yup';
 import {
   DrupalUserModel,
@@ -13,8 +13,8 @@ import {
   DrupalUserModelAttrs,
 } from '@flumens';
 import { NavContext } from '@ionic/react';
-import { observable } from 'mobx';
 import * as Sentry from '@sentry/browser';
+import CONFIG from 'common/config';
 import { genericStore } from '../store';
 import activitiesExt from './activitiesExt';
 
@@ -52,6 +52,8 @@ export class UserModel extends DrupalUserModel {
 
   activities: any; // from extension
 
+  // eslint-disable-next-line
+  // @ts-ignore
   attrs: Attrs = DrupalUserModel.extendAttrs(this.attrs, defaults);
 
   registerSchema = Yup.object().shape({
@@ -77,9 +79,7 @@ export class UserModel extends DrupalUserModel {
         this.refreshProfile();
       }
     };
-    this.ready
-      ?.then(() => this.attrs.password && this._migrateAuth())
-      .then(checkForValidation);
+    this.ready?.then(checkForValidation);
   }
 
   async logIn(email: string, password: string) {
@@ -116,49 +116,6 @@ export class UserModel extends DrupalUserModel {
     await this._sendVerificationEmail();
 
     return true;
-  }
-
-  async getAccessToken(...args: any) {
-    if (this.attrs.password) await this._migrateAuth();
-
-    return super.getAccessToken(...args);
-  }
-
-  /**
-   * Migrate from Indicia API auth to JWT. Remove in the future versions.
-   */
-  async _migrateAuth() {
-    console.log('Migrating user auth.');
-    if (!this.attrs.email) {
-      // email might not exist
-      delete this.attrs.password;
-      return this.save();
-    }
-
-    try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const tokens = await this._exchangePasswordToTokens(
-        this.attrs.email,
-        this.attrs.password
-      );
-      this.attrs.tokens = tokens;
-      delete this.attrs.password;
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      await this._refreshAccessToken();
-    } catch (e: any) {
-      if (e.message === 'Incorrect password or email') {
-        console.log('Removing invalid old user credentials');
-        delete this.attrs.password;
-        return this.logOut();
-      }
-      console.error(e);
-      throw e;
-    }
-
-    return this.save();
   }
 
   resetDefaults() {

@@ -39,7 +39,7 @@ const getVerificationText = (
         <div>
           <T>
             Thanks for sending in your record. From this record details, we
-            think it could be the <b>{{ taxonName }}</b> species.
+            think it could be the <b>{{ taxonName } as any}</b> species.
           </T>
         </div>
       </>
@@ -56,9 +56,9 @@ const getVerificationText = (
         <div>
           <T>
             Thanks for sending in your record. A verifier has marked it as{' '}
-            <b>{{ statusMessage: t(statusMessage) }}</b> in this case. Please
-            log in to the iRecord website to see any additional information that
-            the verifier may have provided.
+            <b>{{ statusMessage: t(statusMessage) } as any}</b> in this case.
+            Please log in to the iRecord website to see any additional
+            information that the verifier may have provided.
           </T>
         </div>
       </>

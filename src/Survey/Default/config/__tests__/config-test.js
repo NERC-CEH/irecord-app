@@ -1,13 +1,8 @@
-import defaultSurvey, {
-  _getFullTaxaGroupSurvey,
-  getTaxaGroupSurvey,
-} from '../';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import defaultSurvey, { _getFullTaxaGroupSurvey, getTaxaGroupSurvey } from '..';
 import birdsSurvey from '../birds';
 import dragonfliesSurvey from '../dragonflies';
-
-import i18n from 'i18next';
-
-import { initReactI18next } from 'react-i18next';
 
 i18n.use(initReactI18next).init({ lng: 'en' });
 

@@ -1,8 +1,7 @@
 import { FC, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import CONFIG from 'common/config';
-import { IonList, IonRefresher, IonRefresherContent } from '@ionic/react';
 import { chevronDownOutline, informationCircleOutline } from 'ionicons/icons';
+import { Trans as T, useTranslation } from 'react-i18next';
 import {
   InfoMessage,
   InfoButton,
@@ -11,11 +10,12 @@ import {
   useLoader,
   device,
 } from '@flumens';
+import { IonList, IonRefresher, IonRefresherContent } from '@ionic/react';
+import CONFIG from 'common/config';
+import { AppModel } from 'models/app';
 import Sample from 'models/sample';
 import { UserModel } from 'models/user';
-import { AppModel } from 'models/app';
 import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
-import { Trans as T, useTranslation } from 'react-i18next';
 import './styles.scss';
 
 type Props = {
@@ -114,6 +114,7 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
 
   const showEmptyDataMessage = () => {
     // Do nothing?
+    return null;
   };
 
   const getReport = () => {
@@ -137,10 +138,14 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
 
   return (
     <>
-      <InfoMessage icon={informationCircleOutline} className="blue">
-        {t(
-          'Click on the activity below which you would like to participate in.'
-        )}
+      <InfoMessage
+        icon={informationCircleOutline}
+        className="blue"
+        skipTranslation
+      >
+        <T>
+          Click on the activity below which you would like to participate in.
+        </T>
         <InfoButton label="READ MORE" header="Activities">
           <p>
             <T>
@@ -152,9 +157,8 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
             </T>
           </p>
           <p>
-            <T>Pull to refresh the list.</T>
+            <T>Swipe down on the activity list to refresh it.</T>
           </p>
-
           <p>
             <T>
               For more about Activities see the{' '}

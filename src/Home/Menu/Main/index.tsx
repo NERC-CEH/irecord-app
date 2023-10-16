@@ -1,13 +1,6 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react';
 import {
-  IonIcon,
-  IonList,
-  IonItem,
-  IonItemDivider,
-  IonButton,
-} from '@ionic/react';
-import {
   settingsOutline,
   exitOutline,
   personOutline,
@@ -19,13 +12,20 @@ import {
   informationCircleOutline,
   openOutline,
 } from 'ionicons/icons';
+import { Trans as T } from 'react-i18next';
+import { Main, InfoMessage, UserFeedbackRequest } from '@flumens';
+import {
+  IonIcon,
+  IonList,
+  IonItem,
+  IonItemDivider,
+  IonButton,
+} from '@ionic/react';
+import config from 'common/config';
 import { AppModel } from 'models/app';
 import savedSamples from 'models/savedSamples';
-import { Main, InfoMessage, UserFeedbackRequest } from '@flumens';
-import { Trans as T } from 'react-i18next';
-import config from 'common/config';
-import './styles.scss';
 import appLogo from './logo.svg';
+import './styles.scss';
 
 const shouldShowFeedback = (appModel: AppModel, isLoggedIn: boolean) => {
   if (appModel.attrs.feedbackGiven) {
@@ -102,8 +102,8 @@ const MenuMain: FC<Props> = ({
 
           {isLoggedIn && isNotVerified && (
             <InfoMessage className="verification-warning">
-              Looks like your <b>{{ userEmail }}</b> email hasn't been verified
-              yet.
+              Looks like your <b>{{ userEmail } as any}</b> email hasn't been
+              verified yet.
               <div>
                 <IonButton fill="outline" onClick={refreshAccount}>
                   Refresh
@@ -128,16 +128,6 @@ const MenuMain: FC<Props> = ({
               <T>Register</T>
             </IonItem>
           )}
-        </div>
-
-        <IonItemDivider>
-          <T>Settings</T>
-        </IonItemDivider>
-        <div className="rounded">
-          <IonItem routerLink="/settings/menu" detail>
-            <IonIcon icon={settingsOutline} size="small" slot="start" />
-            <T>App</T>
-          </IonItem>
         </div>
 
         <IonItemDivider>
@@ -175,6 +165,16 @@ const MenuMain: FC<Props> = ({
           >
             <IonIcon icon={lockClosedOutline} size="small" slot="start" />
             <T>Privacy Policy</T>
+          </IonItem>
+        </div>
+
+        <IonItemDivider>
+          <T>App</T>
+        </IonItemDivider>
+        <div className="rounded">
+          <IonItem routerLink="/settings/menu" detail>
+            <IonIcon icon={settingsOutline} size="small" slot="start" />
+            <T>Settings</T>
           </IonItem>
         </div>
       </IonList>

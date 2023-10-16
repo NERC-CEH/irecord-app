@@ -62,11 +62,11 @@ import search from '..';
       });
 
       it('should accept hybrids', async () => {
-        let results = await search('Caryopteris incana x mongholica =');
+        const results = await search('Caryopteris incana x mongholica =');
         expect(Array.isArray(results)).toBe(true);
         expect(results.length).toBe(1);
 
-        let cupressocyparisResults = await search('X Cupressocyparis');
+        const cupressocyparisResults = await search('X Cupressocyparis');
         expect(Array.isArray(cupressocyparisResults)).toBe(true);
         expect(cupressocyparisResults.length).toBe(1);
       });
@@ -170,7 +170,7 @@ import search from '..';
           expect(containsPuffinus).toBeUndefined();
         }));
 
-      it('should allow searching Recorder style (5 characters) ', () =>
+      it('should allow searching Recorder style (5 characters)', () =>
         search('pupuf').then(results => {
           const containsPuffinus = results.find(
             res => res.scientific_name === 'Puffinus puffinus'

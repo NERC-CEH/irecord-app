@@ -72,7 +72,7 @@ const FiltersModal: FC<Props> = ({
 
   const filtersList = filters.map((_, i) => (
     <IonItem key={filters[i].id}>
-      <IonLabel class="filter-label">{t(filters[i].label)}</IonLabel>
+      <IonLabel className="filter-label">{t(filters[i].label)}</IonLabel>
       <IonCheckbox
         value={filters[i].id}
         onIonChange={onSearchTaxaFilterSelect}

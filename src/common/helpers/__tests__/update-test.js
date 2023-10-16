@@ -1,9 +1,6 @@
 import CONFIG from 'common/config';
 import appModel from 'models/app';
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
-import savedSamples from 'models/savedSamples';
-import Update, { updateSamples } from '../update';
+import Update from '../update';
 
 /* eslint-disable */
 

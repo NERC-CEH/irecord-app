@@ -1,4 +1,4 @@
-import { AppModel, defaults } from 'models/app';
+import { AppModel } from 'models/app';
 
 async function getAppModel() {
   const genericStoreMock = { find: async () => null, save: async () => null };

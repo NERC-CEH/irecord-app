@@ -1,15 +1,6 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react';
 import {
-  IonIcon,
-  IonList,
-  IonItemDivider,
-  IonItem,
-  IonLabel,
-} from '@ionic/react';
-import { Trans as T, useTranslation } from 'react-i18next';
-import {
-  flameOutline,
   arrowUndoOutline,
   schoolOutline,
   trashOutline,
@@ -18,9 +9,17 @@ import {
   locationOutline,
   warningOutline,
   personRemoveOutline,
-  cameraOutline,
+  cameraOutline, // megaphoneOutline,
 } from 'ionicons/icons';
+import { Trans as T, useTranslation } from 'react-i18next';
 import { Main, useAlert, InfoMessage, MenuAttrToggle } from '@flumens';
+import {
+  IonIcon,
+  IonList,
+  IonItemDivider,
+  IonItem,
+  IonLabel,
+} from '@ionic/react';
 import config from 'common/config';
 import './styles.scss';
 
@@ -128,13 +127,11 @@ type Props = {
   deleteAllSamples: any;
   isLoggedIn: boolean;
   useTraining: boolean;
-  useGridRef: boolean;
-  useGridMap: boolean;
   gridSquareUnit: string;
   geolocateSurveyEntries: boolean;
   onToggle: any;
   sendAnalytics?: boolean;
-  useExperiments?: boolean;
+  // useExperiments?: boolean;
   useSpeciesImageClassifier: boolean;
 };
 
@@ -146,10 +143,8 @@ const MenuMain: FC<Props> = ({
   onToggle,
   useTraining,
   sendAnalytics,
-  useGridRef,
-  useExperiments,
+  // useExperiments,
   geolocateSurveyEntries,
-  useGridMap,
   gridSquareUnit,
   useSpeciesImageClassifier,
 }) => {
@@ -160,16 +155,16 @@ const MenuMain: FC<Props> = ({
 
   const onSendAnalyticsToggle = (checked: boolean) =>
     onToggle('sendAnalytics', checked);
-  const onGridMapToggle = (checked: boolean) => onToggle('useGridMap', checked);
-  const onGridRefToggle = (checked: boolean) => onToggle('useGridRef', checked);
   const onTrainingModeToggle = (checked: boolean) =>
     onToggle('useTraining', checked);
   const onGeolocateSurveyEntriesToggle = (checked: boolean) =>
     onToggle('geolocateSurveyEntries', checked);
-  const onUseExperiments = (checked: boolean) =>
-    onToggle('useExperiments', checked);
+  // const onUseExperiments = (checked: boolean) =>
+  //   onToggle('useExperiments', checked);
   const onUseImageClassifier = (checked: boolean) =>
     onToggle('useSpeciesImageClassifier', checked);
+
+  // const onToggleGridAlert = () => console.log(11);
 
   return (
     <Main>
@@ -178,30 +173,6 @@ const MenuMain: FC<Props> = ({
           <T>Location</T>
         </IonItemDivider>
         <div className="rounded">
-          <MenuAttrToggle
-            icon={gridOutline}
-            label="Use Grid Ref"
-            value={useGridRef}
-            onChange={onGridRefToggle}
-          />
-
-          <InfoMessage color="dark">
-            Locations should be represented as UK Grid Reference instead of
-            Latitude and Longitude.
-          </InfoMessage>
-
-          <MenuAttrToggle
-            icon={gridOutline}
-            label="Show Map Grid"
-            value={useGridMap}
-            disabled={!useGridRef}
-            onChange={onGridMapToggle}
-          />
-
-          <InfoMessage color="dark">
-            Show UK Grid Reference over the map.
-          </InfoMessage>
-
           <IonItem routerLink="/settings/survey" detail>
             <IonIcon icon={gridOutline} size="small" slot="start" />
             <IonLabel>
@@ -209,6 +180,17 @@ const MenuMain: FC<Props> = ({
             </IonLabel>
             <IonLabel slot="end">{gridSquareUnit}</IonLabel>
           </IonItem>
+
+          {/* <MenuAttrToggle
+            icon={megaphoneOutline}
+            label="New Grid Square Alert"
+            value={true}
+            onChange={onToggleGridAlert}
+          />
+          <InfoMessage color="dark">
+            We will alert you when you enter a new grid square during Species
+            List or Plant surveys.
+          </InfoMessage> */}
 
           <IonItem routerLink="/settings/locations" detail>
             <IonIcon icon={locationOutline} size="small" slot="start" />
@@ -221,6 +203,11 @@ const MenuMain: FC<Props> = ({
             value={geolocateSurveyEntries}
             onChange={onGeolocateSurveyEntriesToggle}
           />
+
+          <InfoMessage color="dark">
+            We will notify you when you cross into another grid square. You can
+            select the square size in the app settings.
+          </InfoMessage>
         </div>
 
         <IonItemDivider>
@@ -229,7 +216,7 @@ const MenuMain: FC<Props> = ({
         <div className="rounded">
           <MenuAttrToggle
             icon={cameraOutline}
-            label="Suggest species"
+            label="Suggest Species"
             value={useSpeciesImageClassifier}
             onChange={onUseImageClassifier}
           />
@@ -257,7 +244,7 @@ const MenuMain: FC<Props> = ({
             Mark any new records as 'training' and exclude from all reports.
           </InfoMessage>
 
-          <MenuAttrToggle
+          {/* <MenuAttrToggle
             icon={flameOutline}
             label="Experimental Features"
             value={useExperiments}
@@ -267,7 +254,7 @@ const MenuMain: FC<Props> = ({
           <InfoMessage color="dark">
             Some features are in a trial state and are subject to change in
             future releases.
-          </InfoMessage>
+          </InfoMessage> */}
 
           <MenuAttrToggle
             icon={shareOutline}
@@ -280,7 +267,7 @@ const MenuMain: FC<Props> = ({
           </InfoMessage>
         </div>
 
-        <div className="rounded destructive-item">
+        <div className="destructive-item rounded">
           <IonItem onClick={showDeleteAllSamplesDialog}>
             <IonIcon icon={trashOutline} size="small" slot="start" />
             <IonLabel>
@@ -294,7 +281,7 @@ const MenuMain: FC<Props> = ({
           <IonItem onClick={showResetDialog}>
             <IonIcon icon={arrowUndoOutline} size="small" slot="start" />
             <IonLabel>
-              <T>Reset app</T>
+              <T>Reset App</T>
             </IonLabel>
           </IonItem>
           <InfoMessage color="dark">

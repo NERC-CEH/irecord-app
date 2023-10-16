@@ -26,9 +26,10 @@ import './styles.scss';
 type Props = {
   model: Sample | Occurrence;
   attr: string;
+  children: any;
 };
 
-const Lock: FC<Props> = ({ model, attr, children }) => {
+const Lock = ({ model, attr, children }: Props) => {
   const toast = useToast();
 
   let value = (model.attrs as any)[attr];

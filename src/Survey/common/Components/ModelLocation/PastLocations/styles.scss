@@ -1,0 +1,35 @@
+#bottom-sheet-tracks {
+  ion-header.md {
+    box-shadow: none;
+    border-width: 0 0 0.55px;
+
+    ion-title {
+      font-size: 0.9em;
+      font-weight: bolder;
+      padding-inline-start: 16px;
+    }
+  }
+
+  ion-toolbar.ios {
+    --background: var(--ion-page-background);
+    --min-height: 35px;
+    padding-left: 16px;
+
+    ion-title {
+      padding-inline: 0;
+      text-align: left;
+    }
+
+    ion-button {
+      --padding-end: 0;
+    }
+  }
+
+  .info-background-message {
+    max-width: 300px;
+
+    span {
+      padding: 20px 10px;
+    }
+  }
+}

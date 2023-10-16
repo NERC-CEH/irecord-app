@@ -1,6 +1,6 @@
 import { useRef, FC, useState } from 'react';
-import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
 import { Taxon } from 'models/occurrence';
 import searchSpecies, { Options } from 'helpers/taxonSearch';
 import Suggestions from './components/Suggestions';
@@ -36,7 +36,7 @@ const TaxonSearch: FC<Props> = ({
   const inputEl = useRef<any>();
 
   const [searchResults, setSearchResults] = useState<Taxon[]>();
-  const [searchPhrase, setSearchPrase] = useState('');
+  const [searchPhrase, setSearchPhrase] = useState('');
 
   const annotateRecordedTaxa = (newSearchResults: any) =>
     newSearchResults.map((result: any) =>
@@ -53,7 +53,7 @@ const TaxonSearch: FC<Props> = ({
       newSearchPhrase.length >= MIN_SEARCH_LENGTH;
     if (!isValidSearch) {
       setSearchResults(undefined);
-      setSearchPrase('');
+      setSearchPhrase('');
       return;
     }
 
@@ -67,19 +67,19 @@ const TaxonSearch: FC<Props> = ({
 
     const annotatedSearchResults = annotateRecordedTaxa(newSearchResults);
     setSearchResults(annotatedSearchResults);
-    setSearchPrase(newSearchPhrase);
+    setSearchPhrase(newSearchPhrase);
   };
 
   const onInputClear = () => {
     setSearchResults(undefined);
-    setSearchPrase('');
+    setSearchPhrase('');
   };
 
   const onSpeciesSelectedWrap = (species: any, editButtonPressed?: boolean) => {
     onSpeciesSelected(species, editButtonPressed);
     if (resetOnSelect && !editButtonPressed) {
       setSearchResults(undefined);
-      setSearchPrase('');
+      setSearchPhrase('');
       inputEl.current.value = '';
       inputEl.current.setFocus();
     }
@@ -98,7 +98,7 @@ const TaxonSearch: FC<Props> = ({
         ref={inputEl}
         placeholder={t('Species name')}
         debounce={300}
-        onIonChange={onInputKeystroke}
+        onIonInput={onInputKeystroke}
         onIonClear={onInputClear}
         showCancelButton="never"
       />

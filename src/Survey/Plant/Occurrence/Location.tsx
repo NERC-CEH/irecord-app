@@ -1,75 +1,55 @@
 import { FC } from 'react';
-import {
-  ModelLocation as ModelLocationOrig,
-  useToast,
-  locationToGrid,
-} from '@flumens';
-import { isPlatform } from '@ionic/react';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { useToast, locationToGrid } from '@flumens';
 import Sample from 'models/sample';
-import config from 'common/config';
+import ModelLocation, {
+  setModelLocation as setLocation,
+} from 'Survey/common/Components/ModelLocation';
 
 type Props = {
   sample: Sample;
   subSample?: Sample;
-  onLocationNameChange?: any;
 };
 
-const ModelLocation: FC<Props> = ({ sample, subSample, ...otherProps }) => {
+const ModelGridOccurrenceLocation: FC<Props> = ({ sample, subSample }) => {
   const toast = useToast();
   const model = subSample || sample;
 
-  const setLocation = async (newLocation: any) => {
+  const setLocationWithGridCheck = (_: any, newLocation: any) => {
     const { gridref: parentGridref, accuracy } =
       model.parent?.attrs?.location || {};
-    if (!parentGridref)
-      return toast.warn(`Parent location must be selected first.`, {
+    if (!parentGridref) {
+      toast.warn(`Parent location must be selected first.`, {
         position: 'bottom',
       });
+      return;
+    }
 
     const gridCoords = locationToGrid(newLocation);
     const gridWithParentAcc = locationToGrid({ ...newLocation, accuracy });
     const isWithinParent = parentGridref === gridWithParentAcc;
     const isAccurateEnough =
       newLocation?.gridref?.length >= parentGridref.length;
-    if (!gridCoords || !isAccurateEnough || !isWithinParent)
-      return toast.warn(`Selected location should be within ${parentGridref}`, {
+    if (!gridCoords || !isAccurateEnough || !isWithinParent) {
+      toast.warn(`Selected location should be within ${parentGridref}`, {
         position: 'bottom',
       });
-
-    // we don't need the GPS running and overwriting the selected location
-    if (model.isGPSRunning()) {
-      model.stopGPS();
+      return;
     }
 
-    isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
+    setLocation(model, newLocation);
 
-    const oldLocation = sample.attrs.location || {};
-    model.attrs.location = { ...oldLocation, ...newLocation };
-
-    return model.save();
+    model.save();
   };
 
-  async function onGPSClick() {
-    try {
-      await ModelLocationOrig.utils.onGPSClick(model);
-    } catch (error: any) {
-      toast.error(error);
-    }
-  }
-
   return (
-    <ModelLocationOrig
-      model={model} // eslint-disable-line
-      mapProviderOptions={config.map}
-      useGridRef
-      useGridMap
-      onGPSClick={onGPSClick}
-      backButtonProps={{ text: 'Back' }}
-      setLocation={setLocation}
-      {...otherProps}
+    <ModelLocation
+      sample={sample}
+      subSample={subSample}
+      skipPastLocations
+      skipLocationName
+      setLocation={setLocationWithGridCheck}
     />
   );
 };
 
-export default ModelLocation;
+export default ModelGridOccurrenceLocation;

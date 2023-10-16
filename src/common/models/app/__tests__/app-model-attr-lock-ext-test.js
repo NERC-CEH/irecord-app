@@ -1,5 +1,5 @@
-import { AppModel, defaults } from 'models/app';
 import stringify from 'json-stable-stringify';
+import { AppModel } from 'models/app';
 
 async function getAppModel() {
   const genericStoreMock = { find: async () => null, save: async () => null };

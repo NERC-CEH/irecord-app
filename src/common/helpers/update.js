@@ -1,13 +1,12 @@
 /** ****************************************************************************
  * App update functionality.
  **************************************************************************** */
-
-import CONFIG from 'common/config';
-import savedSamples from 'models/savedSamples';
-import appModel from 'models/app';
-import userModel from 'models/user';
 import { set as setMobXAttrs } from 'mobx';
 import { loader } from '@flumens';
+import CONFIG from 'common/config';
+import appModel from 'models/app';
+import savedSamples from 'models/savedSamples';
+import userModel from 'models/user';
 
 const MIN_UPDATE_TIME = 5000; // show updating dialog for minimum seconds
 
@@ -222,7 +221,7 @@ const API = {
     if (!silent) {
       loader.show({
         header: 'Updating',
-        message: t('This should take only a moment...'),
+        message: 'This should take only a moment...',
       });
     }
     const startTime = Date.now();

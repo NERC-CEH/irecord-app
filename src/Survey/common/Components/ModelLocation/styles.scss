@@ -1,31 +1,18 @@
-.with-past-locations .leaflet-top {
-  // fix opening the layers overlap with the past locations button
-  top: 59px;
+// fixes location input caret color
+.location-input-attr ion-input input,
+.location-name-attr ion-input input {
+  --highlight-color: var(--ion-color-primary-dark) !important;
 }
 
-#bottom-sheet {
-  --height: 95vh;
-
-  &::part(handle) {
-    margin-top: 10px;
+.map-settings-panel {
+  ion-item-divider {
+    padding-left: 16px;
   }
 
-  ion-toolbar {
-    --background: var(--ion-page-background);
-    --min-height: 35px;
-  }
-}
-
-.past-locations-control {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-
-  ion-button {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    --padding-end: 3px;
-    --padding-start: 3px;
+  .radio-input-attr ion-radio-group > ion-item ion-img {
+    margin: 5px 15px 5px 5px;
+    border-radius: 5px;
+    padding: 0;
+    overflow: hidden;
   }
 }

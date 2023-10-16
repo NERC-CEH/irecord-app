@@ -43,13 +43,13 @@ function useLongPressTip() {
         message: (
           <>
             <T>
-              Tap on the <IonIcon class="tip-icon" icon={addOutline} /> button
-              to capture a new record. <br />
+              Tap on the <IonIcon className="tip-icon" icon={addOutline} />{' '}
+              button to capture a new record. <br />
             </T>
             <br />
             <T>
-              Long-press <IonIcon class="tip-icon" icon={addOutline} /> button
-              to see some more advanced options.
+              Long-press <IonIcon className="tip-icon" icon={addOutline} />{' '}
+              button to see some more advanced options.
             </T>
           </>
         ),

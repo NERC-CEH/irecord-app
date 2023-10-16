@@ -1,32 +1,34 @@
 /* eslint-disable max-classes-per-file */
+
 /* eslint-disable no-param-reassign */
+import { IObservableArray } from 'mobx';
+import { useTranslation } from 'react-i18next';
 import {
   Sample as SampleOriginal,
   SampleAttrs,
   SampleOptions,
   SampleMetadata,
-  getDeepErrorMessage,
+  ModelValidationMessage,
   device,
   useAlert,
   locationToGrid,
+  Location,
 } from '@flumens';
-import userModel from 'models/user';
-import appModel from 'models/app';
 import config from 'common/config';
+import appModel from 'models/app';
+import userModel from 'models/user';
 import defaultSurvey, {
   taxonGroupSurveys,
   getTaxaGroupSurvey,
 } from 'Survey/Default/config';
 import listSurvey from 'Survey/List/config';
-import plantSurvey from 'Survey/Plant/config';
 import mothSurvey from 'Survey/Moth/config';
-import { IObservableArray } from 'mobx';
+import plantSurvey from 'Survey/Plant/config';
 import { coreAttributes, Survey } from 'Survey/common/config';
-import { useTranslation } from 'react-i18next';
+import Media from './media';
+import Occurrence, { Taxon } from './occurrence';
 import GPSExtension from './sampleGPSExt';
 import { modelStore } from './store';
-import Occurrence, { Taxon } from './occurrence';
-import Media from './media';
 
 const ATTRS_TO_LEAVE = [
   ...coreAttributes,
@@ -44,14 +46,6 @@ const surveyConfigs = {
   list: listSurvey,
   plant: plantSurvey,
   moth: mothSurvey,
-};
-
-type Location = {
-  latitude?: string;
-  longitude?: string;
-  source?: string;
-  accuracy?: number;
-  gridref?: string;
 };
 
 type Attrs = SampleAttrs & {
@@ -328,17 +322,16 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     if (isPlantSurvey && !isChild) {
       const { gridSquareUnit } = this.metadata;
 
-      const gridCoords = locationToGrid(location);
-      if (!gridCoords) return null;
+      const accuracy = gridSquareUnit === 'monad' ? 500 : 1000; // tetrad otherwise
+      const gridref = locationToGrid({ ...location, accuracy });
+      if (!gridref) return null;
 
-      location.source = 'gridref'; // eslint-disable-line
-      location.accuracy = gridSquareUnit !== 'monad' ? 500 : 1000; // tetrad otherwise
-
-      this.attrs.location = location;
-      return this.save();
+      location.source = 'gridref';
+      location.gridref = gridref;
+      location.accuracy = accuracy;
     }
 
-    this.attrs.location = location;
+    Object.assign(this.attrs.location, location);
     return this.save();
   };
 
@@ -379,7 +372,7 @@ export const useValidateCheck = (sample: Sample) => {
       alert({
         header: t('Survey incomplete'),
         skipTranslation: true,
-        message: getDeepErrorMessage(invalids),
+        message: <ModelValidationMessage {...invalids} />,
         buttons: [
           {
             text: t('Got it'),
@@ -394,3 +387,13 @@ export const useValidateCheck = (sample: Sample) => {
 
   return showValidateCheck;
 };
+
+export const getEmptyLocation = (): Partial<Location> => ({
+  latitude: undefined,
+  longitude: undefined,
+  gridref: '',
+  accuracy: undefined,
+  altitude: undefined,
+  altitudeAccuracy: undefined,
+  source: '',
+});

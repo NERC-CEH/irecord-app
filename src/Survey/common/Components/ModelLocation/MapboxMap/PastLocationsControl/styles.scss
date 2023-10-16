@@ -1,0 +1,19 @@
+.map-control-past-locations {
+  height: 41px;
+  width: 41px;
+  margin: 10px;
+  --padding-end: 3px;
+  --padding-start: 3px;
+
+  --box-shadow: 0 0 17px #0000003b, 0 0 7px #00000063;
+
+  transition-duration: 0.4s;
+  &:active {
+    transform: scale(90%);
+  }
+
+  ion-icon {
+    margin: 4px;
+    --ionicon-stroke-width: 26px;
+  }
+}

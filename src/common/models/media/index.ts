@@ -1,15 +1,15 @@
-import { Media as MediaOriginal, MediaAttrs } from '@flumens';
-import config from 'common/config';
-import { isPlatform } from '@ionic/react';
 import { observable } from 'mobx';
-import userModel from 'models/user';
 import { Capacitor } from '@capacitor/core';
 import {
   Filesystem,
   Directory as FilesystemDirectory,
 } from '@capacitor/filesystem';
+import { Media as MediaOriginal, MediaAttrs } from '@flumens';
+import { isPlatform } from '@ionic/react';
+import config from 'common/config';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
+import userModel from 'models/user';
 import identifyImage, { Result, Suggestion } from './classifier';
 
 export type ClassifierResult = Result;
@@ -69,7 +69,6 @@ export default class Media extends MediaOriginal {
       if (silent) return;
 
       this.parent.save();
-      return;
     } catch (err) {
       console.error(err);
     }

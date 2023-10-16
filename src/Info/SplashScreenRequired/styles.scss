@@ -70,11 +70,12 @@
 
       .swiper-pagination-bullet {
         opacity: 1;
+        --bullet-background: var(--ion-color-primary-contrast);
       }
 
       .swiper-pagination-bullet-active {
         opacity: 0.8;
-        background: var(--ion-color-primary);
+        background: var(--ion-color-primary-tint);
       }
     }
   }
