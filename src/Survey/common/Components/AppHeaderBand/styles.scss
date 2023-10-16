@@ -1,13 +1,11 @@
 .app-header-band {
   --min-height: 30px;
-  --background: rgba(var(--custom-color-complex-survey-rgb), 0.2);
 
   ion-back-button {
     visibility: hidden;
   }
 
   ion-title {
-    color: var(--custom-color-complex-survey-dark) !important;
     font-weight: bold;
     font-size: 0.9em;
 

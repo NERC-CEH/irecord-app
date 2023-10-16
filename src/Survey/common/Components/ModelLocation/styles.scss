@@ -1,3 +1,8 @@
+.location-input-attr {
+  ion-input {
+    --padding-start: 18px;
+  }
+}
 // fixes location input caret color
 .location-input-attr ion-input input,
 .location-name-attr ion-input input {

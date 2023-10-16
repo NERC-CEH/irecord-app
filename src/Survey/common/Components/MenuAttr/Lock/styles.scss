@@ -3,37 +3,37 @@
 
   &.locked {
     ion-item {
-      --detail-icon-color: var(--custom-color-lock);
+      --detail-icon-color: var(--attr-lock-color);
       --detail-icon-opacity: 0.55;
     }
 
     ion-datetime,
     ion-label[slot='end'] {
-      color: var(--custom-color-lock);
+      color: var(--attr-lock-color);
     }
 
     ion-toggle {
-      --background-checked: var(--custom-color-lock-tint);
+      --background-checked: var(--attr-lock-color-tint);
       &.md {
-        --handle-background-checked: var(--custom-color-lock);
+        --handle-background-checked: var(--attr-lock-color);
       }
     }
 
     ion-accordion-group {
       .accordion-collapsed > [slot='header'] .ion-accordion-toggle-icon,
       .accordion-collapsing > [slot='header'] .ion-accordion-toggle-icon {
-        color: var(--custom-color-lock);
+        color: var(--attr-lock-color);
 
         opacity: 0.55;
       }
       .accordion-expanding > [slot='header'] .ion-accordion-toggle-icon {
         transform: rotate(40deg);
-        color: var(--custom-color-lock);
+        color: var(--attr-lock-color);
         opacity: 0.55;
       }
       .accordion-expanded > [slot='header'] .ion-accordion-toggle-icon {
         transform: rotate(0deg);
-        color: var(--custom-color-lock);
+        color: var(--attr-lock-color);
         opacity: 0.55;
       }
 
