@@ -45,18 +45,18 @@ function exposeColorsAsCssVariables({ addBase, theme }) {
 }
 
 const primary = {
-  // https://www.tailwindshades.com/#color=69.49640287769785%2C71.2820512820513%2C38.23529411764706&step-up=9&step-down=14&hue-shift=0&name=citron&base-stop=7&v=1&overrides=e30%3D
+  // https://www.tailwindshades.com/#color=69.49640287769785%2C71.2820512820513%2C38.23529411764706&step-up=11&step-down=10&hue-shift=0&name=citron&base-stop=6&v=1&overrides=e30%3D
   DEFAULT: '#91A71C',
-  50: '#FBFDF1',
-  100: '#F5F9DD',
-  200: '#E9F3B6',
-  300: '#DDEC8E',
-  400: '#D2E667',
-  500: '#C6DF40',
-  600: '#B3CE23',
-  700: '#91A71C',
-  800: '#5C6A12',
-  900: '#272D07',
+  50: '#FDFEF9',
+  100: '#F6FAE1',
+  200: '#E8F2B1',
+  300: '#D9EA81',
+  400: '#CBE251',
+  500: '#BBD724',
+  600: '#91A71C',
+  700: '#6B7B15',
+  800: '#45500D',
+  900: '#1F2406',
   950: '#0C0E02',
 };
 

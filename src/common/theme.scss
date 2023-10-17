@@ -104,7 +104,6 @@
 
   --ion-page-background: #f0f3f0;
   --ion-headings-font-weight: 300;
-  // --ion-item-border-color: red;
   --ion-item-border-color: rgb(0, 0, 0, 0.2);
 
   --light-shadow: 0px 0px 11px 0px #00000012;
@@ -270,7 +269,7 @@ ion-item-divider {
 // brighter default radio option
 .radio-input-attr ion-radio-group > ion-item.radio-input-default-option {
   opacity: 1 !important;
-  --background: #ffffff78;
+  --background: rgba(var(--color-primary-50-rgb), 1);
 }
 
 // clearer date picker
@@ -342,13 +341,13 @@ ion-list + ion-list > .rounded {
 #suggestions .empty,
 .taxa-filter-edit-dialog-form ion-item,
 .rounded:not(:empty) {
-  border: 1px solid #ecebebe3;
+  border: 1px solid rgba(var(--color-primary-800-rgb), 0.2);
   border-radius: var(--theme-border-radius);
 }
 
 // subtle borders around rounded radio items
 ion-radio-group .item-radio-checked:not(.radio-input-default-option) {
-  border: 1px #dce0d5 solid;
+  border: 1px solid rgba(var(--color-primary-800-rgb), 0.4);
 }
 
 ion-list .rounded > .info-message {

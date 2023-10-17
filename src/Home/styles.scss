@@ -1,8 +1,8 @@
 ion-tab-bar {
   --color: var(--ion-color-dark);
 
-  border-top: 1px solid var(--ion-color-light-shade);
-  --background: #fffdef;
+  border-top: 1px solid rgba(var(--color-primary-700-rgb), 0.3);
+  --background: var(--color-primary-50);
   padding: 5px 0;
 
   display: flex;
@@ -38,6 +38,19 @@ ion-tab-bar {
       --padding-start: 3;
       --padding-end: 3;
 
+      &.tab-selected {
+        &:not(.activities-button-on) {
+          color: var(--color-primary-800);
+        }
+        ion-icon {
+          --ionicon-stroke-width: 35px;
+        }
+
+        ion-label {
+          font-weight: bold;
+        }
+      }
+
       // https://github.com/ionic-team/ionic-framework/issues/22511
       .on-click-container {
         display: flex;
@@ -67,7 +80,7 @@ ion-tab-bar {
     justify-content: center;
     display: flex;
     align-items: center;
-    background: #424242;
+    background: var(--color-primary-900);
     color: white;
     font-size: 0.8rem;
   }

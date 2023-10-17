@@ -4,7 +4,6 @@ import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
 import { Taxon } from 'models/occurrence';
 import searchSpecies, { Options } from 'helpers/taxonSearch';
 import Suggestions from './components/Suggestions';
-import './styles.scss';
 
 export { default as TaxonSearchFilters } from './components/TaxonSearchFilters';
 
