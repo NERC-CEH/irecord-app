@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import Sample from 'models/sample';
+import { Trans as T } from 'react-i18next';
 import { InfoMessage } from '@flumens';
 import { IonButton } from '@ionic/react';
-import { Trans as T } from 'react-i18next';
 import config from 'common/config';
+import Sample from 'models/sample';
 import './styles.scss';
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
 
 const DisabledRecordMessage: FC<Props> = ({ sample }) => {
   const [occ] = sample.occurrences;
+  const hasOccId = parseInt(occ?.id || '', 10) > 0; // -1 in case couldn't retrieve
 
   return (
     <InfoMessage
@@ -25,7 +26,7 @@ const DisabledRecordMessage: FC<Props> = ({ sample }) => {
       <IonButton
         expand="block"
         href={
-          occ?.id
+          hasOccId
             ? `${config.backend.url}/record-details?occurrence_id=${occ.id}`
             : config.backend.url
         }
