@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react';
+import { Capacitor } from '@capacitor/core';
 import {
   PhotoPicker,
   ImageCropper,
@@ -9,16 +10,14 @@ import {
   deleteFile,
 } from '@flumens';
 import { isPlatform } from '@ionic/react';
-import { Capacitor } from '@capacitor/core';
-import Media from 'models/media';
-import Sample from 'models/sample';
-import appModel from 'models/app';
-import userModel from 'models/user';
-import Occurrence from 'models/occurrence';
 import config from 'common/config';
+import appModel from 'models/app';
+import Media from 'models/media';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
+import userModel from 'models/user';
 import GalleryWithClassification from './GalleryWithClassification';
 import ImageWithClassification from './ImageWithClassification';
-import getPhotoFromCustomCamera from './customCamera';
 import './styles.scss';
 
 type URL = string;
@@ -81,9 +80,7 @@ const AppPhotoPicker: FC<Props> = ({
   async function onAddNew(shouldUseCamera: boolean) {
     try {
       const photoURLs = await captureImage(
-        shouldUseCamera
-          ? { getPhoto: getPhotoFromCustomCamera }
-          : { multiple: true }
+        shouldUseCamera ? { camera: true } : { multiple: true }
       );
       if (!photoURLs.length) return;
 

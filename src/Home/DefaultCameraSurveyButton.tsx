@@ -1,12 +1,7 @@
 import { FC, useState } from 'react';
 import { cameraOutline } from 'ionicons/icons';
-import defaultSurveyConfig from 'Survey/Default/config';
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
-import Media from 'models/media';
-import userModel from 'models/user';
-import appModel from 'models/app';
-import getPhotoFromCustomCamera from 'Survey/common/Components/PhotoPicker/customCamera';
+import { Trans as T } from 'react-i18next';
+import { Capacitor } from '@capacitor/core';
 import {
   captureImage,
   ImageCropper,
@@ -15,11 +10,15 @@ import {
   deleteFile,
   device,
 } from '@flumens';
-import savedSamples from 'models/savedSamples';
-import { Capacitor } from '@capacitor/core';
 import { IonIcon, IonLabel, isPlatform } from '@ionic/react';
-import { Trans as T } from 'react-i18next';
 import config from 'common/config';
+import appModel from 'models/app';
+import Media from 'models/media';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
+import savedSamples from 'models/savedSamples';
+import userModel from 'models/user';
+import defaultSurveyConfig from 'Survey/Default/config';
 
 type URL = string;
 
@@ -43,9 +42,7 @@ const DefaultCameraSurveyButton: FC = () => {
 
   async function onClick() {
     try {
-      const photoURLs = await captureImage({
-        getPhoto: getPhotoFromCustomCamera,
-      });
+      const photoURLs = await captureImage({ camera: true });
       if (!photoURLs.length) return;
 
       const getImageModel = async (imageURL: URL) =>
