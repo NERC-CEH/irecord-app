@@ -1,21 +1,25 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
-import { IonButton, IonLabel, IonList } from '@ionic/react';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
-import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
-import SpeciesList from 'Survey/common/Components/SpeciesList';
-import { Main } from '@flumens';
-import Sample from 'models/sample';
-import { useRouteMatch } from 'react-router';
 import { Trans as T } from 'react-i18next';
+import { useRouteMatch } from 'react-router';
+import { InfoMessage, Main } from '@flumens';
+import { IonButton, IonLabel, IonList } from '@ionic/react';
+import Sample from 'models/sample';
+import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
+import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import SpeciesList from 'Survey/common/Components/SpeciesList';
 import './styles.scss';
 
 type Props = {
   sample: Sample;
   onDelete: any;
+  showChildSampleDistanceWarning: boolean;
 };
 
-const PlantHomeMain: FC<Props> = ({ sample, onDelete }) => {
+const PlantHomeMain = ({
+  sample,
+  onDelete,
+  showChildSampleDistanceWarning,
+}: Props) => {
   const { url } = useRouteMatch();
 
   const isDisabled = sample.isDisabled();
@@ -30,6 +34,12 @@ const PlantHomeMain: FC<Props> = ({ sample, onDelete }) => {
         )}
 
         <div className="rounded">
+          {showChildSampleDistanceWarning && (
+            <InfoMessage color="warning">
+              Some species are located far from the survey area. Please check
+              that this is correct.
+            </InfoMessage>
+          )}
           <MenuDynamicAttrs model={sample} skipLocks />
         </div>
       </IonList>

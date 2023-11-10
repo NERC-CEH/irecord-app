@@ -1,9 +1,10 @@
 import { FC, useContext } from 'react';
 import { observer } from 'mobx-react';
+import { Page, Header, useToast } from '@flumens';
 import { NavContext } from '@ionic/react';
+import distance from '@turf/distance';
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
-import { Page, Header, useToast } from '@flumens';
 import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
 import PrimaryHeaderButton from 'Survey/common/Components/PrimaryHeaderButton';
 import Main from './Main';
@@ -57,6 +58,20 @@ const ListHome: FC<Props> = ({ sample }) => {
 
   const subheader = !!training && <AppHeaderBand training />;
 
+  const { location } = sample.attrs;
+
+  const isLocationFurtherThan5000m = (smp: Sample) =>
+    distance(
+      [location.latitude, location.longitude],
+      [smp.attrs.location.latitude, smp.attrs.location.longitude],
+      {
+        units: 'meters',
+      }
+    ) > 5000;
+  const showChildSampleDistanceWarning = sample.samples.some(
+    isLocationFurtherThan5000m
+  );
+
   return (
     <Page id="survey-complex-default-edit">
       <Header
@@ -65,7 +80,11 @@ const ListHome: FC<Props> = ({ sample }) => {
         defaultHref="/home/surveys"
         subheader={subheader}
       />
-      <Main sample={sample} onDelete={onSubSampleDelete} />
+      <Main
+        sample={sample}
+        onDelete={onSubSampleDelete}
+        showChildSampleDistanceWarning={showChildSampleDistanceWarning}
+      />
     </Page>
   );
 };

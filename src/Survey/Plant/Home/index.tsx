@@ -12,6 +12,7 @@ import {
   InfoButton,
 } from '@flumens';
 import { NavContext, IonToolbar, isPlatform } from '@ionic/react';
+import distance from '@turf/distance';
 import appModel from 'models/app';
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
@@ -123,6 +124,20 @@ const PlantHome: FC<Props> = ({ sample }) => {
     </div>
   );
 
+  const { location } = sample.attrs;
+
+  const isLocationFurtherThan5000m = (smp: Sample) =>
+    distance(
+      [location.latitude, location.longitude],
+      [smp.attrs.location.latitude, smp.attrs.location.longitude],
+      {
+        units: 'meters',
+      }
+    ) > 5000;
+  const showChildSampleDistanceWarning = sample.samples.some(
+    isLocationFurtherThan5000m
+  );
+
   return (
     <Page id="survey-complex-plant-edit">
       <Header
@@ -131,7 +146,11 @@ const PlantHome: FC<Props> = ({ sample }) => {
         defaultHref="/home/surveys"
         subheader={subheader}
       />
-      <Main sample={sample} onDelete={onSubSampleDelete} />
+      <Main
+        sample={sample}
+        onDelete={onSubSampleDelete}
+        showChildSampleDistanceWarning={showChildSampleDistanceWarning}
+      />
     </Page>
   );
 };

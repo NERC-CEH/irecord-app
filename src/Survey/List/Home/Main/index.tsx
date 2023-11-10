@@ -1,22 +1,26 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
-import { IonButton, IonLabel, IonList } from '@ionic/react';
-import { Main } from '@flumens';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
-import MenuAttr from 'Survey/common/Components/MenuAttr';
-import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
-import SpeciesList from 'Survey/common/Components/SpeciesList';
-import Sample from 'models/sample';
-import { useRouteMatch } from 'react-router';
 import { Trans as T } from 'react-i18next';
+import { useRouteMatch } from 'react-router';
+import { InfoMessage, Main } from '@flumens';
+import { IonButton, IonLabel, IonList } from '@ionic/react';
+import Sample from 'models/sample';
+import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
+import MenuAttr from 'Survey/common/Components/MenuAttr';
+import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import SpeciesList from 'Survey/common/Components/SpeciesList';
 import './styles.scss';
 
 type Props = {
   sample: Sample;
   onDelete: any;
+  showChildSampleDistanceWarning: boolean;
 };
 
-const HomeMain: FC<Props> = ({ sample, onDelete }) => {
+const HomeMain = ({
+  sample,
+  onDelete,
+  showChildSampleDistanceWarning,
+}: Props) => {
   const { url } = useRouteMatch();
 
   // calculate unique taxa
@@ -51,6 +55,12 @@ const HomeMain: FC<Props> = ({ sample, onDelete }) => {
         )}
 
         <div className="rounded">
+          {showChildSampleDistanceWarning && (
+            <InfoMessage color="warning">
+              Some species are located far from the survey area. Please check
+              that this is correct.
+            </InfoMessage>
+          )}
           <MenuDynamicAttrs model={sample} skipLocks />
         </div>
       </IonList>
