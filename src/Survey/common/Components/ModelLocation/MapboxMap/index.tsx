@@ -43,6 +43,7 @@ const getInitialView = (
 type Props = {
   location: any;
   parentLocation: any;
+  childLocations: any[];
   isDisabled: any;
   isLocating: any;
   onMapClick: any;
@@ -55,6 +56,7 @@ type Props = {
 const MapboxContainer = ({
   location,
   parentLocation,
+  childLocations,
   isDisabled,
   onMapClick,
   currentStyle,
@@ -97,6 +99,15 @@ const MapboxContainer = ({
   const transformRequest = (url: string) =>
     url.startsWith('https://api.os.uk') ? { url: `${url}&srs=3857` } : { url };
 
+  const childLocationMarkers = childLocations.map((loc: Location) => (
+    <MapContainer.Marker.Circle
+      id={`${loc.latitude}${loc.longitude}`}
+      key={`${loc.latitude}${loc.longitude}`}
+      {...loc}
+      paint={{ 'circle-color': '#00bd1a', 'circle-stroke-color': 'white' }}
+    />
+  ));
+
   return (
     <MapContainer
       onReady={setMapRef}
@@ -124,6 +135,8 @@ const MapboxContainer = ({
         parentGridref={parentLocation?.gridref}
         {...location}
       />
+
+      {childLocationMarkers}
     </MapContainer>
   );
 };

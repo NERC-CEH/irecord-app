@@ -154,6 +154,10 @@ const ModelLocationMap = ({
 
   const isMapboxMap = currentStyle !== 'os_explorer';
 
+  const getSampleLocation = (smp: Sample) => smp.attrs.location;
+  const childLocations =
+    model?.samples?.map(getSampleLocation).filter(isValidLocation) || [];
+
   return (
     <Page id="model-location">
       <MapHeader>
@@ -184,6 +188,7 @@ const ModelLocationMap = ({
           <MapboxMap
             location={location}
             parentLocation={parentLocation}
+            childLocations={childLocations}
             isDisabled={isDisabled}
             onMapClick={onMapClick}
             onGPSClick={onGPSClick}
@@ -198,6 +203,7 @@ const ModelLocationMap = ({
           <LeafletMap
             model={model}
             location={location}
+            childLocations={childLocations}
             setLocation={setLocation}
             onGPSClick={onGPSClick}
             onLayersClick={onLayersClick}

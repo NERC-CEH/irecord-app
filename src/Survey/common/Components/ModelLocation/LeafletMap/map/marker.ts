@@ -33,9 +33,7 @@ const marker: any = {
     // remove previous marker
     this._removeMapMarker();
 
-    if (!location.latitude) {
-      return;
-    }
+    if (!location.latitude) return;
 
     if (!location.gridref) {
       // outside GB
@@ -109,7 +107,7 @@ const marker: any = {
    * @param isComplexMarker
    * @returns {*}
    */
-  generateCircleMarker(location: any, isComplexMarker: any) {
+  generateCircleMarker(location: any, isComplexMarker: any, paint: any) {
     const latLng = L.latLng([location.latitude, location.longitude]);
 
     const options = {
@@ -117,6 +115,7 @@ const marker: any = {
       weight: 1,
       opacity: 1,
       fillOpacity: 0.7,
+      ...paint,
     };
 
     let newMarker;

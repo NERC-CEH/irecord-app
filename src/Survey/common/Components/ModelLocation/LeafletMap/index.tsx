@@ -67,6 +67,7 @@ const centerMap = (
 interface Props {
   model: any;
   location: any;
+  childLocations: any[];
   setLocation: any;
   onGPSClick?: any;
   onLayersClick?: any;
@@ -76,6 +77,7 @@ interface Props {
 const Map: FC<Props> = ({
   model,
   location,
+  childLocations,
   setLocation,
   onGPSClick = null,
   onLayersClick = null,
@@ -133,6 +135,20 @@ const Map: FC<Props> = ({
     location.longitude,
     location.geocoded,
   ]);
+
+  const addChildMarkers = () => {
+    if (!map) return;
+
+    const addChildMarker = (loc: Location) => {
+      const marker = mapHelpers.generateCircleMarker(loc, false, {
+        fillColor: '#00bd1a',
+        color: 'white',
+      });
+      marker.addTo(map);
+    };
+    childLocations.map(addChildMarker);
+  };
+  useEffect(addChildMarkers, [map, childLocations]);
 
   const updateGPSState = () => {
     if (!map) return;
