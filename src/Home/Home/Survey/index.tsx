@@ -144,7 +144,7 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
     if (!occ) return null;
 
     const media = occ.media.length && occ.media[0];
-    let img: any = media && media.attrs.thumbnail;
+    let img: any = media && media.getURL();
     img = img ? <img src={img} /> : '';
 
     return <div className="photo">{img}</div>;

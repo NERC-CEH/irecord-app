@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { FC } from 'react';
-import { IonIcon, IonButton, IonSpinner } from '@ionic/react';
 import { observer } from 'mobx-react';
 import { alertCircleOutline, close } from 'ionicons/icons';
-import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
+import { IonIcon, IonButton, IonSpinner } from '@ionic/react';
 import Media from 'models/media';
 import Occurrence from 'models/occurrence';
+import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 import './styles.scss';
 
 type Props = {
@@ -39,7 +39,7 @@ const Image: FC<Props> = ({ media, isDisabled, onDelete, onClick }) => {
           <IonIcon icon={close} />
         </IonButton>
       )}
-      <img src={media.attrs.thumbnail} onClick={onClick} />
+      <img src={media.getURL()} onClick={onClick} />
 
       {showLoading && <IonSpinner slot="end" />}
 

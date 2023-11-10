@@ -87,7 +87,8 @@ const AppPhotoPicker: FC<Props> = ({
       const getImageModel = async (imageURL: URL) =>
         Media.getImageModel(
           isPlatform('hybrid') ? Capacitor.convertFileSrc(imageURL) : imageURL,
-          config.dataPath
+          config.dataPath,
+          true
         );
       const imageModels: Media[] = await Promise.all<any>(
         photoURLs.map(getImageModel)
@@ -126,7 +127,11 @@ const AppPhotoPicker: FC<Props> = ({
       : savedURL;
 
     // copy over new image values to existing model to preserve its observability
-    const newImageModel = await Media.getImageModel(savedURL, config.dataPath);
+    const newImageModel = await Media.getImageModel(
+      savedURL,
+      config.dataPath,
+      true
+    );
     Object.assign(image?.attrs, { ...newImageModel.attrs, species: null });
 
     if (!image.parent) {
