@@ -1,4 +1,19 @@
 import {
+  peopleOutline,
+  businessOutline,
+  pencilOutline,
+  eyeOffOutline,
+} from 'ionicons/icons';
+import * as Yup from 'yup';
+import { checkGridType } from '@flumens';
+import { groupsReverse as groups } from 'common/data/informalGroups';
+import VCs from 'common/data/vice_counties.data.json';
+import gridAlertService from 'common/helpers/gridAlertService';
+import numberIcon from 'common/images/number.svg';
+import progressIcon from 'common/images/progress-circles.svg';
+import appModel from 'models/app';
+import userModel from 'models/user';
+import {
   dateAttr,
   commentAttr,
   verifyLocationSchema,
@@ -9,20 +24,6 @@ import {
   makeSubmissionBackwardsCompatible,
   assignParentLocationIfMissing,
 } from 'Survey/common/config';
-import {
-  peopleOutline,
-  businessOutline,
-  pencilOutline,
-  eyeOffOutline,
-} from 'ionicons/icons';
-import progressIcon from 'common/images/progress-circles.svg';
-import numberIcon from 'common/images/number.svg';
-import VCs from 'common/data/vice_counties.data.json';
-import { checkGridType } from '@flumens';
-import userModel from 'models/user';
-import appModel from 'models/app';
-import * as Yup from 'yup';
-import { groupsReverse as groups } from 'common/data/informalGroups';
 
 const stageOptions = [
   { label: 'Not Recorded', value: null, isDefault: true },
@@ -301,7 +302,7 @@ const survey: Survey = {
       return null;
     },
 
-    async create(Sample, Occurrence, { taxon, surveySample }) {
+    async create({ Sample, Occurrence, taxon, surveySample }) {
       const { gridSquareUnit, geolocateSurveyEntries } = appModel.attrs;
 
       const sample = new Sample({
@@ -375,8 +376,8 @@ const survey: Survey = {
     return null;
   },
 
-  create(Sample) {
-    const { gridSquareUnit } = appModel.attrs;
+  create({ Sample, alert }) {
+    const { gridSquareUnit, useGridNotifications } = appModel.attrs;
 
     // add currently logged in user as one of the recorders
     const recorders = [];
@@ -397,6 +398,8 @@ const survey: Survey = {
         recorders,
       },
     });
+
+    if (useGridNotifications) gridAlertService.start(sample.cid, alert);
 
     return Promise.resolve(sample);
   },

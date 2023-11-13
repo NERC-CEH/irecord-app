@@ -1,4 +1,7 @@
+import * as Yup from 'yup';
+import gridAlertService from 'common/helpers/gridAlertService';
 import appModel from 'models/app';
+import AppSample from 'models/sample';
 import userModel from 'models/user';
 import {
   coreAttributes,
@@ -13,8 +16,6 @@ import {
   makeSubmissionBackwardsCompatible,
   assignParentLocationIfMissing,
 } from 'Survey/common/config';
-import AppSample from 'models/sample';
-import * as Yup from 'yup';
 
 function appendLockedAttrs(sample: AppSample) {
   const defaultSurveyLocks = appModel.attrs.attrLocks.complex || {};
@@ -88,9 +89,7 @@ const survey: Survey = {
   },
 
   smp: {
-    async create(Sample, Occurrence, options) {
-      const { taxon, surveySample, skipGPS = false } = options;
-
+    async create({ Sample, Occurrence, taxon, surveySample, skipGPS = false }) {
       const occurrence = new Occurrence();
 
       const { activity } = surveySample.attrs;
@@ -151,7 +150,7 @@ const survey: Survey = {
     return null;
   },
 
-  create(Sample) {
+  create({ Sample, alert }) {
     // add currently logged in user as one of the recorders
     const recorders = [];
     if (userModel.isLoggedIn()) {
@@ -171,6 +170,9 @@ const survey: Survey = {
         activity,
       },
     });
+
+    const { useGridNotifications } = appModel.attrs;
+    if (useGridNotifications) gridAlertService.start(sample.cid, alert);
 
     return Promise.resolve(sample);
   },

@@ -1,19 +1,12 @@
 import { useEffect, useContext } from 'react';
+import { useRouteMatch } from 'react-router';
+import { useAlert } from '@flumens';
 import { NavContext, IonPage } from '@ionic/react';
-import Sample from 'models/sample';
 import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
 import savedSamples from 'models/savedSamples';
 import { Survey } from 'Survey/common/config';
-import { useRouteMatch } from 'react-router';
 import './styles.scss';
-
-async function getNewSample(survey: Survey) {
-  const sample = await survey.create(Sample, Occurrence, {});
-  await sample.save();
-
-  savedSamples.push(sample);
-  return sample;
-}
 
 type Props = {
   survey: Survey;
@@ -23,12 +16,16 @@ type Props = {
 function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
   const context = useContext(NavContext);
   const match = useRouteMatch();
+  const alert = useAlert();
 
   const createSampleWrap = () => {
     const createSample = async () => {
       if (SurveyCreatePage) return;
 
-      const sample = await getNewSample(survey);
+      const sample = await survey.create({ Sample, Occurrence, alert });
+      await sample.save();
+
+      savedSamples.push(sample);
 
       context.navigate(`${match.url}/${sample.cid}`, 'none', 'replace');
     };

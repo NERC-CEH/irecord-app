@@ -255,14 +255,12 @@ interface Attrs {
 type OccurrenceConfig = {
   render?: any[] | ((model: Occurrence) => any[]);
   attrs: Attrs;
-  create?: (
-    Occ: typeof Occurrence,
-    options: {
-      taxon: Taxon;
-      identifier?: string;
-      photo?: any;
-    }
-  ) => Occurrence;
+  create?: (props: {
+    Occurrence: typeof Occurrence;
+    taxon: Taxon;
+    identifier?: string;
+    photo?: any;
+  }) => Occurrence;
   verify?: (attrs: any) => any;
   modifySubmission?: (submission: any, model: any) => any;
   /**
@@ -274,15 +272,13 @@ type OccurrenceConfig = {
 export type SampleConfig = {
   render?: any[] | ((model: Sample) => any[]);
   attrs?: Attrs;
-  create?: (
-    Smp: typeof Sample,
-    Occ: typeof Occurrence,
-    options: {
-      taxon: Taxon;
-      surveySample: Sample;
-      skipGPS?: boolean;
-    }
-  ) => Promise<Sample>;
+  create?: (props: {
+    Sample: typeof Sample;
+    Occurrence: typeof Occurrence;
+    taxon: Taxon;
+    surveySample: Sample;
+    skipGPS?: boolean;
+  }) => Promise<Sample>;
   verify?: (attrs: any) => any;
   modifySubmission?: (submission: any, model: any) => any;
   smp?: SampleConfig;
@@ -327,22 +323,13 @@ export interface Survey extends SampleConfig {
    */
   get?: (sample: Sample) => Survey;
 
-  create: (
-    Smp: typeof Sample,
-    Occ: typeof Occurrence,
-    options: {
-      taxon?: Taxon;
-      image?: Media | null;
-      skipLocation?: boolean;
-      skipGPS?: boolean;
-    }
-  ) => Promise<Sample>;
-
-  createWithPhoto?: (
-    Smp: typeof Sample,
-    Occ: typeof Occurrence,
-    options: {
-      image: Media;
-    }
-  ) => Promise<Sample>;
+  create: (props: {
+    Sample: typeof Sample;
+    Occurrence: typeof Occurrence;
+    taxon?: Taxon;
+    image?: Media | null;
+    skipLocation?: boolean;
+    skipGPS?: boolean;
+    alert?: any;
+  }) => Promise<Sample>;
 }

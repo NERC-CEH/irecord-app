@@ -78,7 +78,7 @@ const DefaultCameraSurveyButton: FC = () => {
       : savedURL;
 
     // copy over new image values to existing model to preserve its observability
-    const newImageModel = await Media.getImageModel(
+    const newImageModel: any = await Media.getImageModel(
       savedURL,
       config.dataPath,
       true
@@ -87,13 +87,11 @@ const DefaultCameraSurveyButton: FC = () => {
 
     setEditImage(undefined);
 
-    const sample = await (defaultSurveyConfig as any).createWithPhoto(
+    const sample = await defaultSurveyConfig.create({
       Sample,
       Occurrence,
-      {
-        image: newImageModel,
-      }
-    );
+      image: newImageModel,
+    });
 
     await sample.save();
 

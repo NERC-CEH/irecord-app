@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { Page, Header, useToast } from '@flumens';
 import { NavContext } from '@ionic/react';
 import distance from '@turf/distance';
+import gridAlertService from 'common/helpers/gridAlertService';
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
 import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
@@ -33,6 +34,8 @@ const ListHome: FC<Props> = ({ sample }) => {
   const _processDraft = async () => {
     const isValid = checkSampleStatus();
     if (!isValid) return;
+
+    gridAlertService.stop(sample.cid);
 
     // eslint-disable-next-line no-param-reassign
     sample.metadata.saved = true;

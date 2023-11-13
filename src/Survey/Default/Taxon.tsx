@@ -1,19 +1,19 @@
 import { FC, useContext } from 'react';
 import { observer } from 'mobx-react';
+import { useRouteMatch } from 'react-router';
 import { Page, Header, Main } from '@flumens';
+import { NavContext } from '@ionic/react';
+import appModel from 'models/app';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
+import savedSamples from 'models/savedSamples';
+import surveyConfig from 'Survey/Default/config';
 import TaxonSearch, {
   TaxonSearchFilters,
 } from 'Survey/common/Components/TaxonSearch';
-import Sample from 'models/sample';
-import appModel from 'models/app';
-import savedSamples from 'models/savedSamples';
-import Occurrence from 'models/occurrence';
-import { useRouteMatch } from 'react-router';
-import surveyConfig from 'Survey/Default/config';
-import { NavContext } from '@ionic/react';
 
 const getNewSample = async (taxon: any) => {
-  const newSample = await surveyConfig.create(Sample, Occurrence, { taxon });
+  const newSample = await surveyConfig.create({ Sample, Occurrence, taxon });
   newSample.save();
   savedSamples.push(newSample);
   return newSample;

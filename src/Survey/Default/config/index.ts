@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
-import appModel from 'models/app';
+import mergeWith from 'lodash.mergewith';
+import * as Yup from 'yup';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
+import appModel from 'models/app';
 import AppOccurrence from 'models/occurrence';
 import AppSample from 'models/sample';
-import * as Yup from 'yup';
 import {
   coreAttributes,
   dateAttr,
@@ -19,14 +20,13 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
 } from 'Survey/common/config';
-import mergeWith from 'lodash.mergewith';
 import arthropodSurvey from './arthropods';
-import dragonfliesSurvey from './dragonflies';
+import birdsSurvey from './birds';
 import bryophytesSurvey from './bryophytes';
 import butterfliesSurvey from './butterflies';
+import dragonfliesSurvey from './dragonflies';
 import mothsSurvey from './moths';
 import plantFungiSurvey from './plantFungi';
-import birdsSurvey from './birds';
 
 export const taxonGroupSurveys = {
   arthropods: arthropodSurvey,
@@ -224,10 +224,8 @@ const survey: Survey = {
     },
   },
 
-  async create(Sample, Occurrence, options) {
+  async create({ Sample, Occurrence, image, taxon, skipLocation, skipGPS }) {
     const ignoreErrors = () => {};
-
-    const { image, taxon, skipLocation, skipGPS } = options;
 
     const occurrence = new Occurrence();
 
@@ -275,10 +273,6 @@ const survey: Survey = {
     }
 
     return sample;
-  },
-
-  async createWithPhoto(Sample, Occurrence, { image }) {
-    return survey.create(Sample, Occurrence, { image });
   },
 
   modifySubmission(submission) {

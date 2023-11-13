@@ -1,5 +1,9 @@
-import userModel from 'models/user';
+import * as Yup from 'yup';
+import { groupsReverse as groups } from 'common/data/informalGroups';
+import genderIcon from 'common/images/gender.svg';
+import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
+import userModel from 'models/user';
 import {
   verifyLocationSchema,
   recordersAttr,
@@ -13,10 +17,6 @@ import {
   mothStageAttr,
   makeSubmissionBackwardsCompatible,
 } from 'Survey/common/config';
-import genderIcon from 'common/images/gender.svg';
-import numberIcon from 'common/images/number.svg';
-import * as Yup from 'yup';
-import { groupsReverse as groups } from 'common/data/informalGroups';
 
 const sex = [
   { value: 'Male', id: 1947 },
@@ -129,7 +129,7 @@ const survey: Survey = {
       return null;
     },
 
-    create(Occurrence, { taxon }) {
+    create({ Occurrence, taxon }) {
       const newOccurrene = new Occurrence({ attrs: { taxon, number: 1 } });
 
       const locks = appModel.attrs.attrLocks.complex.moth || {};
@@ -157,7 +157,7 @@ const survey: Survey = {
     return null;
   },
 
-  create(Sample) {
+  create({ Sample }) {
     // add currently logged in user as one of the recorders
     const recorders = [];
     if (userModel.isLoggedIn()) {

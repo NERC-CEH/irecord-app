@@ -1,12 +1,12 @@
 import { FC, useContext } from 'react';
 import { observer } from 'mobx-react';
+import { useTranslation } from 'react-i18next';
+import { useRouteMatch } from 'react-router';
 import { Page, Header, Main, useToast } from '@flumens';
-import Sample from 'models/sample';
+import { NavContext } from '@ionic/react';
 import appModel from 'models/app';
 import Occurrence, { Taxon as TaxonI } from 'models/occurrence';
-import { useRouteMatch } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { NavContext } from '@ionic/react';
+import Sample from 'models/sample';
 import TaxonSearch, { TaxonSearchFilters } from './TaxonSearch';
 
 type Props = {
@@ -25,7 +25,8 @@ const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
   const shouldCreateOccurrences = !!surveyConfig.occ?.create;
 
   const createNewOccurrenceModel = async (taxon: any) => {
-    const newOccurrence = (await surveyConfig.occ?.create?.(Occurrence, {
+    const newOccurrence = (await surveyConfig.occ?.create?.({
+      Occurrence,
       taxon,
     })) as Occurrence;
     sample.occurrences.push(newOccurrence);
@@ -35,7 +36,9 @@ const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
   };
 
   const createNewSampleModel = async (taxon: TaxonI) => {
-    const newSample = (await surveyConfig.smp?.create?.(Sample, Occurrence, {
+    const newSample = (await surveyConfig.smp?.create?.({
+      Sample,
+      Occurrence,
       taxon,
       surveySample: sample,
     })) as Sample;

@@ -15,6 +15,7 @@ import {
   Location,
 } from '@flumens';
 import config from 'common/config';
+import gridAlertService from 'common/helpers/gridAlertService';
 import appModel from 'models/app';
 import userModel from 'models/user';
 import defaultSurvey, {
@@ -115,6 +116,8 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
 
   cleanUp() {
     this.stopGPS();
+
+    gridAlertService.stop(this.cid);
 
     const stopGPS = (smp: Sample) => {
       smp.stopGPS();
@@ -359,6 +362,11 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     }
 
     return this.isUploaded() && !!this.occurrences.some(hasBeenVerified);
+  }
+
+  async destroy(silent?: boolean) {
+    this.cleanUp();
+    return super.destroy(silent);
   }
 }
 

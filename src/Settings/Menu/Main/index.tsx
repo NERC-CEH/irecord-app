@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
 import {
   arrowUndoOutline,
@@ -9,7 +8,8 @@ import {
   locationOutline,
   warningOutline,
   personRemoveOutline,
-  cameraOutline, // megaphoneOutline,
+  cameraOutline,
+  megaphoneOutline,
 } from 'ionicons/icons';
 import { Trans as T, useTranslation } from 'react-i18next';
 import { Main, useAlert, InfoMessage, MenuAttrToggle } from '@flumens';
@@ -131,11 +131,12 @@ type Props = {
   geolocateSurveyEntries: boolean;
   onToggle: any;
   sendAnalytics?: boolean;
+  useGridNotifications?: boolean;
   // useExperiments?: boolean;
   useSpeciesImageClassifier: boolean;
 };
 
-const MenuMain: FC<Props> = ({
+const MenuMain = ({
   resetApp,
   isLoggedIn,
   deleteUser,
@@ -147,7 +148,8 @@ const MenuMain: FC<Props> = ({
   geolocateSurveyEntries,
   gridSquareUnit,
   useSpeciesImageClassifier,
-}) => {
+  useGridNotifications,
+}: Props) => {
   const showUserDeleteDialog = useUserDeleteDialog(deleteUser);
   const showResetDialog = useResetDialog(resetApp);
   const showDeleteAllSamplesDialog =
@@ -163,8 +165,8 @@ const MenuMain: FC<Props> = ({
   //   onToggle('useExperiments', checked);
   const onUseImageClassifier = (checked: boolean) =>
     onToggle('useSpeciesImageClassifier', checked);
-
-  // const onToggleGridAlert = () => console.log(11);
+  const onToggleGridNotifications = (checked: boolean) =>
+    onToggle('useGridNotifications', checked);
 
   return (
     <Main>
@@ -173,25 +175,6 @@ const MenuMain: FC<Props> = ({
           <T>Location</T>
         </IonItemDivider>
         <div className="rounded">
-          <IonItem routerLink="/settings/survey" detail>
-            <IonIcon icon={gridOutline} size="small" slot="start" />
-            <IonLabel>
-              <T>Grid Square Unit</T>
-            </IonLabel>
-            <IonLabel slot="end">{gridSquareUnit}</IonLabel>
-          </IonItem>
-
-          {/* <MenuAttrToggle
-            icon={megaphoneOutline}
-            label="New Grid Square Alert"
-            value={true}
-            onChange={onToggleGridAlert}
-          />
-          <InfoMessage color="dark">
-            We will alert you when you enter a new grid square during Species
-            List or Plant surveys.
-          </InfoMessage> */}
-
           <IonItem routerLink="/settings/locations" detail>
             <IonIcon icon={locationOutline} size="small" slot="start" />
             <T>Manage Saved</T>
@@ -205,8 +188,27 @@ const MenuMain: FC<Props> = ({
           />
 
           <InfoMessage color="dark">
-            We will notify you when you cross into another grid square. You can
-            select the square size in the app settings.
+            We will use GPS to obtain precise locations for species during
+            Species List and Plant surveys.
+          </InfoMessage>
+
+          <IonItem routerLink="/settings/survey" detail>
+            <IonIcon icon={gridOutline} size="small" slot="start" />
+            <IonLabel>
+              <T>Grid Square Unit</T>
+            </IonLabel>
+            <IonLabel slot="end">{gridSquareUnit}</IonLabel>
+          </IonItem>
+
+          <MenuAttrToggle
+            icon={megaphoneOutline}
+            label="Grid Square Notifications"
+            value={useGridNotifications}
+            onChange={onToggleGridNotifications}
+          />
+          <InfoMessage color="dark">
+            We will alert you when you enter a new grid square during Species
+            List or Plant surveys.
           </InfoMessage>
         </div>
 
