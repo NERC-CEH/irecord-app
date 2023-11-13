@@ -1,21 +1,20 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react';
+import { lockClosedOutline } from 'ionicons/icons';
+import { Trans as T } from 'react-i18next';
+import { useRouteMatch } from 'react-router';
+import { Main, useAlert } from '@flumens';
 import { IonList, IonIcon, useIonViewDidEnter } from '@ionic/react';
 import appModel from 'models/app';
-import { lockClosedOutline } from 'ionicons/icons';
-import { Main, useAlert } from '@flumens';
 import Sample from 'models/sample';
-import { useRouteMatch } from 'react-router';
-import { Trans as T } from 'react-i18next';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
-import MenuAttr from 'Survey/common/Components/MenuAttr';
-import MenuLocation from 'Survey/common/Components/MenuLocation';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
+import MenuAttr from 'Survey/common/Components/MenuAttr';
+import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
 import VerificationMessage from 'Survey/common/Components/VerificationMessage';
 import lockScreenshot from './lock.png';
-
 import './styles.scss';
 
 interface Props {
@@ -101,6 +100,7 @@ const EditMain: FC<Props> = ({ sample }) => {
           <MenuTaxonItem occ={occ} />
           <MenuLocation.WithLock sample={sample} />
           <MenuAttr.WithLock model={sample} attr="date" />
+          <MenuAttr.WithLock model={sample} attr="recorder" />
           <MenuAttr.WithLock
             model={occ}
             attr="comment"

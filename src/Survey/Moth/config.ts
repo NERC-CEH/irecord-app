@@ -6,7 +6,7 @@ import appModel from 'models/app';
 import userModel from 'models/user';
 import {
   verifyLocationSchema,
-  recordersAttr,
+  recorderAttr,
   Survey,
   locationAttr,
   getSystemAttrs,
@@ -54,7 +54,9 @@ const survey: Survey = {
 
     date: dateAttr,
 
-    recorders: recordersAttr,
+    recorder: recorderAttr,
+    /** @deprecated */
+    recorders: recorderAttr,
 
     method: {
       menuProps: { icon: numberIcon },
@@ -145,9 +147,8 @@ const survey: Survey = {
           location: verifyLocationSchema,
           date: Yup.string().nullable().required('Date is missing.'),
           method: Yup.string().nullable().required('Method is missing.'),
-          recorders: Yup.array()
-            .of(Yup.string())
-            .min(1, 'Recorders field is missing.'),
+          // TODO: re-enable in future versions after everyone uploads
+          // recorder: Yup.string().nullable().required('Recorder field is missing.'),
         })
         .validateSync(attrs, { abortEarly: false });
     } catch (attrError) {
@@ -159,9 +160,9 @@ const survey: Survey = {
 
   create({ Sample }) {
     // add currently logged in user as one of the recorders
-    const recorders = [];
+    let recorder = '';
     if (userModel.isLoggedIn()) {
-      recorders.push(userModel.getPrettyName());
+      recorder = userModel.getPrettyName();
     }
 
     const sample = new Sample({
@@ -172,7 +173,7 @@ const survey: Survey = {
       attrs: {
         location: {},
         date: '', // user should specify the trap time
-        recorders,
+        recorder,
       },
     });
 

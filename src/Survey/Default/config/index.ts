@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
+import userModel from 'common/models/user';
 import appModel from 'models/app';
 import AppOccurrence from 'models/occurrence';
 import AppSample from 'models/sample';
@@ -19,6 +20,7 @@ import {
   identifiersAttr,
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
+  recorderAttr,
 } from 'Survey/common/config';
 import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
@@ -102,6 +104,10 @@ const survey: Survey = {
     location: locationAttr,
 
     date: dateAttr,
+
+    recorder: recorderAttr,
+    /** @deprecated */
+    recorders: recorderAttr,
 
     activity: activityAttr,
   },
@@ -231,12 +237,18 @@ const survey: Survey = {
 
     if (image) occurrence.media.push(image);
 
+    // add currently logged in user as one of the recorders
+    let recorder = '';
+    if (userModel.isLoggedIn()) {
+      recorder = userModel.getPrettyName();
+    }
+
     const sample = new Sample({
       metadata: {
         survey_id: survey.id,
         survey: survey.name,
       },
-      attrs: { location: {} },
+      attrs: { location: {}, recorder },
     });
     sample.occurrences.push(occurrence);
 

@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react';
-import { IonButton, IonLabel, IonList } from '@ionic/react';
-import { Main, InfoMessage } from '@flumens';
-import Sample from 'models/sample';
 import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
-import SpeciesList from 'Survey/common/Components/SpeciesList';
+import { Main, InfoMessage } from '@flumens';
+import { IonButton, IonLabel, IonList } from '@ionic/react';
+import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
-import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
+import MenuLocation from 'Survey/common/Components/MenuLocation';
+import SpeciesList from 'Survey/common/Components/SpeciesList';
 import './styles.scss';
 
 type Props = {
@@ -41,7 +41,7 @@ const MothHomeMain: FC<Props> = ({ sample, onDelete }) => {
               which the trap was put out.
             </InfoMessage>
           )}
-          <MenuAttr model={sample} attr="recorders" />
+          <MenuAttr model={sample} attr="recorder" />
           <MenuAttr model={sample} attr="method" />
           <MenuAttr model={sample} attr="comment" />
         </div>

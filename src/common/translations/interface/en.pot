@@ -1620,8 +1620,8 @@ msgid "No site name"
 msgstr "No site name"
 
 # Part of Species List survey 
-msgid "Recorders"
-msgstr "Recorders"
+msgid "Recorder"
+msgstr "Recorder"
 
 # Part of Species List survey 
 msgid "Flumens Test"
@@ -1913,8 +1913,8 @@ msgid "Please enter location and its name."
 msgstr "Please enter location and its name."
 
 # Survey verification message
-msgid "Recorders field is missing."
-msgstr "Recorders field is missing."
+msgid "Recorder field is missing."
+msgstr "Recorder field is missing."
 
 # Locking attributes message
 msgid "The attribute value was locked and will be pre-filled for subsequent records."

@@ -6,7 +6,7 @@ import userModel from 'models/user';
 import {
   coreAttributes,
   dateAttr,
-  recordersAttr,
+  recorderAttr,
   commentAttr,
   verifyLocationSchema,
   Survey,
@@ -54,12 +54,14 @@ const survey: Survey = {
 
   webForm: 'enter-app-record-list',
 
-  render: ['smp:location', 'smp:date', 'smp:recorders', 'smp:comment'],
+  render: ['smp:location', 'smp:date', 'smp:recorder', 'smp:comment'],
 
   attrs: {
     location: locationAttr,
 
-    recorders: recordersAttr,
+    recorder: recorderAttr,
+    /** @deprecated */
+    recorders: recorderAttr,
 
     comment: commentAttr,
 
@@ -138,9 +140,8 @@ const survey: Survey = {
       Yup.object()
         .shape({
           location: verifyLocationSchema,
-          recorders: Yup.array()
-            .of(Yup.string())
-            .min(1, 'Recorders field is missing.'),
+          // TODO: re-enable in future versions after everyone uploads
+          // recorder: Yup.string().nullable().required('Recorder field is missing.'),
         })
         .validateSync(attrs, { abortEarly: false });
     } catch (attrError) {
@@ -152,9 +153,9 @@ const survey: Survey = {
 
   create({ Sample, alert }) {
     // add currently logged in user as one of the recorders
-    const recorders = [];
+    let recorder = '';
     if (userModel.isLoggedIn()) {
-      recorders.push(userModel.getPrettyName());
+      recorder = userModel.getPrettyName();
     }
 
     const activity = appModel.getAttrLock('smp', 'activity');
@@ -166,7 +167,7 @@ const survey: Survey = {
       },
       attrs: {
         location: {},
-        recorders,
+        recorder,
         activity,
       },
     });

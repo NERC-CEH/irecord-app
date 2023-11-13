@@ -71,11 +71,11 @@ export const activityAttr = {
   remote: { id: 'group_id', values: (activity: any) => activity.id },
 };
 
-export const recordersAttr = {
+export const recorderAttr = {
   menuProps: { icon: peopleOutline, skipValueTranslation: true },
   pageProps: {
     attrProps: {
-      input: 'inputList',
+      input: 'input',
       info: 'If anyone helped with documenting the record please enter their name here.',
       inputProps: { placeholder: 'Recorder name' },
     },
@@ -109,6 +109,7 @@ export const coreAttributes = [
   'smp:locationName',
   'smp:location_type',
   'smp:date',
+  'smp:recorder',
   'occ:comment',
   'smp:activity',
 ];
