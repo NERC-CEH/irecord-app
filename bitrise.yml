@@ -98,7 +98,8 @@ workflows:
       - xcode-archive@5:
           inputs:
             - distribution_method: app-store
-            - automatic_code_signing: api-key
+            # - automatic_code_signing: api-key
+            - automatic_code_signing: apple-id
   web:
     steps:
       - nvm@1: {}
