@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { IonItem, IonButton, IonIcon } from '@ionic/react';
 import { createOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
+import { IonItem, IonButton, IonIcon } from '@ionic/react';
 import { groups as informalGroups } from 'common/data/informalGroups';
 import { Taxon } from 'models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
@@ -76,28 +76,30 @@ const Species: FC<Props> = ({
 
   return (
     <IonItem className="search-result" onClick={onClickWrap}>
-      {probability && (
-        <div className="probability">
-          <ProbabilityBadge probability={probability} />
-        </div>
-      )}
+      <div className="flex w-full items-center">
+        {probability && (
+          <div className="probability">
+            <ProbabilityBadge probability={probability} />
+          </div>
+        )}
 
-      <div className="taxon">{prettyName}</div>
+        <div className="taxon">{prettyName}</div>
 
-      <span className={`group ${!showEditButton ? 'right' : ''} `}>
-        <T>{group}</T>
-      </span>
+        <span className={`group ${!showEditButton ? 'right' : ''} `}>
+          <T>{group}</T>
+        </span>
 
-      {showEditButton && (
-        <IonButton
-          className="edit-shortcut"
-          slot="end"
-          fill="clear"
-          color="medium"
-        >
-          <IonIcon slot="icon-only" icon={createOutline} mode="md" />
-        </IonButton>
-      )}
+        {showEditButton && (
+          <IonButton
+            className="edit-shortcut"
+            slot="end"
+            fill="clear"
+            color="medium"
+          >
+            <IonIcon slot="icon-only" icon={createOutline} mode="md" />
+          </IonButton>
+        )}
+      </div>
     </IonItem>
   );
 };

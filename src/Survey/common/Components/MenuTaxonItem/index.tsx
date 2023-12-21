@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { IonItem, IonLabel, IonBadge } from '@ionic/react';
-import { Trans as T } from 'react-i18next';
-import Occurrence from 'models/occurrence';
-import { useRouteMatch } from 'react-router';
-import clsx from 'clsx';
 import { observer } from 'mobx-react';
+import clsx from 'clsx';
+import { Trans as T } from 'react-i18next';
+import { useRouteMatch } from 'react-router';
+import { IonItem, IonLabel, IonBadge } from '@ionic/react';
+import Occurrence from 'models/occurrence';
 import './styles.scss';
 
 interface Props {
@@ -36,15 +36,17 @@ const MenuTaxonItem: FC<Props> = ({ occ }) => {
       })}
     >
       <IonLabel text-wrap slot="end">
-        {empty && (
-          <IonBadge color="warning">
-            <T>Species missing</T>
-          </IonBadge>
-        )}
-        {commonName && <IonLabel className="long">{commonName}</IonLabel>}
-        <IonLabel className="long">
-          <i>{scientificName}</i>
-        </IonLabel>
+        <div className="flex w-full flex-col items-end">
+          {empty && (
+            <IonBadge color="warning">
+              <T>Species missing</T>
+            </IonBadge>
+          )}
+          {commonName && <IonLabel className="long">{commonName}</IonLabel>}
+          <IonLabel className="long">
+            <i>{scientificName}</i>
+          </IonLabel>
+        </div>
       </IonLabel>
     </IonItem>
   );

@@ -1,6 +1,6 @@
 import { starOutline } from 'ionicons/icons';
 import { MapContainer } from '@flumens';
-import { IonButton, IonIcon } from '@ionic/react';
+import { IonIcon } from '@ionic/react';
 import './styles.scss';
 
 type Props = { onClick: any };
@@ -8,14 +8,13 @@ type Props = { onClick: any };
 const PastLocationsControl = ({ onClick }: Props) => {
   return (
     <MapContainer.Control>
-      <IonButton
+      <button
         onClick={onClick}
-        shape="round"
-        color="light"
         className="map-control-past-locations"
+        aria-label="past locations"
       >
         <IonIcon slot="icon-only" icon={starOutline} />
-      </IonButton>
+      </button>
     </MapContainer.Control>
   );
 };

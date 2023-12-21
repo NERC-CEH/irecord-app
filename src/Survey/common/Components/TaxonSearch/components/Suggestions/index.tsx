@@ -148,10 +148,10 @@ const Suggestions: FC<Props> = ({
 
     return (
       <>
+        <div>{/* quick hack to fix odd css style */}</div>
         <h3>
           <T>Suggestions</T>:
         </h3>
-
         {deDuped.map(getSuggestion)}
       </>
     );

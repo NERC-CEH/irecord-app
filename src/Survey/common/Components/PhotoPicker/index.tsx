@@ -77,7 +77,7 @@ const AppPhotoPicker: FC<Props> = ({
     }
   };
 
-  async function onAddNew(shouldUseCamera: boolean) {
+  async function onAdd(shouldUseCamera: boolean) {
     try {
       const photoURLs = await captureImage(
         shouldUseCamera ? { camera: true } : { multiple: true }
@@ -109,6 +109,8 @@ const AppPhotoPicker: FC<Props> = ({
       toast.error(e);
     }
   }
+
+  const onRemove = (m: any) => m.destroy();
 
   const onDoneEdit = async (imageDataURL: URL) => {
     const image = editImage as Media;
@@ -167,8 +169,9 @@ const AppPhotoPicker: FC<Props> = ({
     <>
       <PhotoPicker
         className="with-cropper"
-        onAddNew={onAddNew}
-        model={model}
+        onAdd={onAdd}
+        onRemove={onRemove}
+        value={model.media}
         Image={useClassifier ? ImageWithClassification : undefined}
         Gallery={useClassifier ? GalleryWithClassification : undefined}
         galleryProps={{ onCrop: onCropExisting, onSpeciesSelect, isDisabled }}
