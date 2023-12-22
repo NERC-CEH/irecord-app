@@ -1,6 +1,12 @@
 ## 6.1.0
 
-Updated libraries and made some functionality changes.
+- Added recorder attribute to the general survey.
+- Improved image storage.
+- Fixed camera image storage to phone's gallery.
+- Added global gridref square notifications.
+- Improved general survey species location validation.
+- Updated the species dictionary.
+- Updated framework and libraries.
 
 ## 6.0.7
 
