@@ -81,7 +81,9 @@ const MapboxContainer = ({
 
   const style: any = {
     satellite: {
+      maxZoom: 19,
       mapStyle: 'mapbox://styles/mapbox/satellite-streets-v11',
+      maxBounds: null,
     },
 
     os: {
