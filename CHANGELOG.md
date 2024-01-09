@@ -1,3 +1,5 @@
+## 6.1.1
+
 ## 6.1.0
 
 - Added recorder attribute to the general survey.
