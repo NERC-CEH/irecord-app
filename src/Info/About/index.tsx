@@ -9,7 +9,7 @@ const About = () => (
     <Main id="about">
       <Section>
         <P>
-          iRecord App is an application that enables you to get involved in
+          Sam testing iRecord App which is an application that enables you to get involved in
           biological recording. You can contribute your sightings with photos,
           GPS acquired coordinates, descriptions and other information, thus
           providing scientists with important new biodiversity information that
