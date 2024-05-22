@@ -20,9 +20,7 @@ import {
 import { Trans as T } from 'react-i18next';
 import './styles.scss';
 import deleteRecordImage from './swipe_record.png';
-import imageRecognitionAgreeImg from './image_recognition_agree.jpg';
-import imageRecognitionDisagreeImg from './image_recognition_disagree.jpg';
-import suggestionsImg from './image_recognition_suggestions.jpg';
+
 
 const Help: FC = () => (
   <Page id="help-page">
@@ -38,11 +36,13 @@ const Help: FC = () => (
               <p>
                 <T>There are two ways to start a record</T>.
               </p>
+              <br />
               <p>
                 <b>
                   <T>Taking a photo</T>
                 </b>
               </p>
+              <br />
               <p>
                 <T>
                   Press the camera button{' '}
@@ -52,11 +52,13 @@ const Help: FC = () => (
                   create a new record without any species associated with it.
                 </T>
               </p>
+              <br />
               <p>
                 <b>
                   <T>Selecting species</T>
                 </b>
               </p>
+              <br />
               <p>
                 <T>
                   Please press the plus{' '}
@@ -69,6 +71,7 @@ const Help: FC = () => (
                   sighting, like location, date, number seen etc.
                 </T>
               </p>
+              <br />
               <p>
                 <T>
                   When finished, press the Upload button in the record's page
@@ -78,77 +81,35 @@ const Help: FC = () => (
             </div>
           </Collapse>
 
-          <Collapse title="Image recognition">
+          <Collapse title="Adding lists of records - surveying">
             <div>
               <p>
                 <T>
-                  If you have added a photo to your record, the app will offer
-                  suggestions about the identification, using automatic image
-                  recognition.
+                You can record lists of species. Long-pressing the green plus button in the home page will show more advanced recording options.
                 </T>
               </p>
+            </div>
+          </Collapse>
 
-              <ul>
-                <li>
-                  <T>
-                    If you add a record using the plus button, you will be asked
-                    to add a species name to your record first. You can then add
-                    one or more photos, and the app will tell you if it agrees
-                    with the species name. If not it may suggest a different
-                    identification.
-                  </T>
-                </li>
-
-                <li>
-                  <T>
-                    If you add a record using the photo button, you can add a
-                    photo first, and the app will be able to suggest an
-                    identification. You can then go on to use the suggested
-                    species name if you agree with it, or add your own
-                    identification instead.
-                  </T>
-                </li>
-              </ul>
-
+          <Collapse title="Searching for species">
+            <div>
               <p>
                 <T>
-                  After uploading the photo, check the thumbnail to see if it
-                  shows a percentage indicating the probability of a suggested
-                  identification. If a different identification is being
-                  suggested a small red warning circle will be displayed – open
-                  the thumbnail to see alternative identification suggestions.
-                </T>
-              </p>
-
-              <div className="image-classifier">
-                <img src={imageRecognitionAgreeImg} />
-                <h3 className="agree">
-                  <T>Identification agreed</T>
-                </h3>
-
-                <img src={imageRecognitionDisagreeImg} />
-                <h3 className="disagree">
-                  <T>Alternative Identification suggested</T>
-                </h3>
-              </div>
-
-              <p>
-                <T>
-                  When you open up the thumbnail image you can tap on any of the
-                  alternative suggestions shown, and that will set the
-                  identification for your record.
-                </T>
-              </p>
-
-              <img src={suggestionsImg} />
-
-              <p>
-                <T>
-                  The image recognition process can be very helpful, but it
-                  doesn’t get it right every time! Check what is being suggested
-                  before making your final decision, and if you think the app
-                  suggestion is wrong feel free to stick to your own
-                  identification.
+                For quicker searching of the taxa you can use different shortcuts.
+                <br />
+                <br />
+              
+                For <i>Puffinus baroli:</i>
+            
+                <br />
+                <br />
+                <i>puffinus ba</i>
+                <br />
+                <i>puffinus .oli</i>
+                <br />
+                <i>pubar</i> (2+3 characters)
+                <br />
+                <i>baroli</i>
                 </T>
               </p>
             </div>
@@ -160,47 +121,7 @@ const Help: FC = () => (
               button in the home page will show more advanced recording options.
             </T>
           </Collapse>
-          <Collapse title="Searching for species">
-            <div>
-              <p>
-                <T>
-                  Type in a species name - English or scientific name, or a
-                  genus or family etc.
-                </T>
-              </p>
-              <p>
-                <T>
-                  To find a species from its scientific name you can use
-                  shortcuts, e.g. to find <i>Bellis perrenis</i> (Daisy) you can
-                  type:
-                </T>
-              </p>
-              <p>
-                <b>
-                  <i>bellis p</i>
-                </b>
-                <br />
-                <b>
-                  <i>bellis .ni</i>
-                </b>
-                <br />
-                <b>
-                  <i> beper </i>
-                </b>{' '}
-                <T>(2 letters of genus + 3 of species)</T>
-                <br />
-                <b>
-                  <i>perennis</i>
-                </b>
-              </p>
-              <p>
-                <T>
-                  Once you have added the name, you can add a photo and the app
-                  will suggest an identification based on the photo.
-                </T>
-              </p>
-            </div>
-          </Collapse>
+          
           <Collapse title="Sync. with iRecord">
             <div>
               <p>
@@ -211,6 +132,7 @@ const Help: FC = () => (
                   not synchronise your record with the database.
                 </T>
               </p>
+              <br />
               <p>
                 <T>
                   To set it for upload, open the record and press the Upload
@@ -220,16 +142,18 @@ const Help: FC = () => (
                   list in the Home page (see Uploaded tab).
                 </T>
               </p>
+              <br />
               <p>
                 <T>
                   Once it has successfully reached the database the record
                   becomes unavailable for new edits. To further edit it please
-                  use the <a href="http://irecord.org.uk">iRecord Website</a>.
+                  use the <a href="https://orks.org.uk">ORKS Website</a>.
                 </T>
               </p>
+              <br />
               <p>
                 <T>
-                  <b>Note:</b> you have to be signed in to your iRecord account
+                  <b>Note:</b> you have to be signed in to your ORKS account
                   and have a network connection, for the records to be
                   automatically synchronised in the background.
                 </T>
@@ -244,18 +168,20 @@ const Help: FC = () => (
                   the delete <IonIcon icon={trashOutline} size="small" />{' '}
                   button.
                 </T>
+                <br />
                 <img
                   src={deleteRecordImage}
                   style={{ width: '80%', margin: '20px' }}
                 />
               </p>
+              <br />
               <p>
                 <T>
                   You can also remove all the locally saved records that have
                   been successfully synchronised with the database. This will
                   leave the records in the database untouched. To do that go to
                   settings page <IonIcon icon={settingsOutline} size="small" />{' '}
-                  and click <b>Remove Uploaded Surveys</b>{' '}
+                  and click <b>Remove All Saved</b>{' '}
                   <IonIcon icon={trashOutline} size="small" /> button.
                 </T>
               </p>
@@ -267,20 +193,20 @@ const Help: FC = () => (
                 <T>
                   You can lock record attributes like date, location, number
                   etc, which will preserve your current attribute value for the
-                  subsequently added records
+                  subsequently added records.
                 </T>
-                .
-              </p>
+                </p>
+            <br />
               <p>
                 <T>
-                  To lock an attribute swipe the menu attribute item to the left
-                  and click on the lock{' '}
-                  <IonIcon icon={lockClosedOutline} size="small" /> button. This
+                  To lock an attribute click on the lock{' '}
+                  <IonIcon icon={lockClosedOutline} size="small" /> button in the attribute edit page header. This
                   will change the symbol to locked{' '}
                   <IonIcon icon={lockOpenOutline} size="small" /> both on the
                   button and next to the attribute.
                 </T>
               </p>
+            <br />
               <p>
                 <T>
                   <b>Note:</b> For a GPS-sourced location, only the location
@@ -311,6 +237,7 @@ const Help: FC = () => (
                   follow the instructions.
                 </T>
               </p>
+            <br />
               <p>
                 <T>
                   To logout, visit the main menu page{' '}
@@ -318,6 +245,7 @@ const Help: FC = () => (
                   logout <IonIcon icon={logOutOutline} size="small" /> button
                 </T>
               </p>
+            <br />
               <p>
                 <T>
                   <b>Note:</b> after registering a new account you must verify
@@ -327,63 +255,21 @@ const Help: FC = () => (
               </p>
             </div>
           </Collapse>
-          <Collapse title="Verification of your records">
+          <Collapse title="Groups">
             <div>
               <p>
                 <T>
-                  When you add a record to the app and then upload it to
-                  iRecord, it may be checked by one of the expert verifiers who
-                  volunteer on behalf of the national or local wildlife
-                  recording schemes. If that happens you will see notifications
-                  in the app to tell you that the record has been accepted or
-                  not.
+                To send records to a specific group you can select it in the Groups page.
                 </T>
               </p>
+              <br />
               <p>
                 <T>
-                  Some verifiers may have added additional comments or queries
-                  to your records, and at the moment these are not available
-                  within the app, so you may wish to log on to the iRecord
-                  website and view your records and notifications there.
-                </T>
-              </p>
-              <p>
-                <T>
-                  If you do not wish to see the notifications in the app you can
-                  tick the box for “Do not show again”, but if you do this the
-                  notifications will become unavailable unless you reset the app
-                  settings or reinstall the app.
-                </T>
-              </p>
-              <p>
-                <T>
-                  For more information about the record checking process see{' '}
-                  <a href="https://irecord.org.uk/records-verified">
-                    Verification: what, who and why
-                  </a>{' '}
-                  on the iRecord website.
+                <b>Note:</b>only the groups that allow this mobile app records and only the ones that you have joined on the ORKS website will be available to select
                 </T>
               </p>
             </div>
           </Collapse>{' '}
-          <Collapse title="Activities">
-            <div>
-              <p>
-                <T>
-                  To send records to a specific activity you can select it in
-                  the Activities <IonIcon icon={peopleOutline} size="small" />{' '}
-                  page.
-                </T>
-              </p>
-              <p>
-                <T>
-                  <b>Note:</b> only the activities that allow this mobile app
-                  records and only the ones that you have joined on the iRecord
-                  website will be available to select.
-                </T>
-              </p>
-            </div>
-          </Collapse>
         </div>
 
         <IonItemDivider>
@@ -396,15 +282,16 @@ const Help: FC = () => (
                 <T>
                   You can manage your saved locations both on any record's
                   location page and from the settings{' '}
-                  <IonIcon icon={settingsOutline} size="small" /> page
+                  <IonIcon icon={settingsOutline} size="small" /> page.
                 </T>
-                .
+
                 <T>
                   Swipe a location left and click edit{' '}
                   <IonIcon icon={createOutline} size="small" /> or delete
                   <IonIcon icon={trashOutline} size="small" /> buttons.
                 </T>
               </p>
+              <br />
               <p>
                 <span className="location-favourite icon icon-star " />{' '}
                 <T>
@@ -427,7 +314,8 @@ const Help: FC = () => (
             <div>
               <T>
                 For more help please visit the iRecord{' '}
-                <a href={`${CONFIG.backend.url}/forum/36`}>forum</a>.
+                <a href={`${CONFIG.backend.url}/forum/36`}>forum</a> Or drop us an
+            <a href="mailto:orks%40cornwallwildlifetrust.gov.uk">email</a>.
               </T>
             </div>
           </IonItem>

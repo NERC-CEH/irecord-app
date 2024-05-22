@@ -1,6 +1,6 @@
 import { Page, Main, Header, Section } from '@flumens';
 import { Trans as T } from 'react-i18next';
-import sponsorsLogo from './sponsors.svg';
+import ercissLogo from './cwt-erccis.png';
 import './styles.scss';
 
 const { P, H } = Section;
@@ -9,78 +9,41 @@ export default () => (
   <Page id="credits">
     <Header title="Credits" />
     <Main>
-      <img src={sponsorsLogo} alt="" />
+      <img src={ercissLogo} alt="Cornwall Wildlife Trust erccis Logo" />
 
       <Section>
         <H>
-          We are very grateful for all the people that helped to create this
-          app:
+        We are very grateful for all the people that have helped to develop and test the ORKS App:
         </H>
         <P skipTranslation className="credits">
           <span>
-            <b>David Roy</b> (UKCEH)
+          <b>Richard Frost</b>
           </span>
           <span>
-            <b>Karolis Kazlauskis</b> (Flumens)
+          <b>ERCCIS Staff (past and present!)</b>
           </span>
           <span>
-            <b>John van Breda</b> (Biodiverse IT)
+          <b>ERCCIS Volunteers (past and present!)</b>
           </span>
           <span>
-            <b>Tom Humphrey</b> (BSBI)
-          </span>
-          <span>
-            <b>Martin Harvey</b> (UKCEH)
-          </span>
-          <span>
-            <b>Sally Rankin</b>
-          </span>
-          <span>
-            <b>Colin Harrower</b> (UKCEH)
-          </span>
-          <span>
-            <b>Tom August</b> (UKCEH)
-          </span>
-          <span>
-            <b>Chris Raper</b> (NHM)
-          </span>
-          <span>
-            <b>Charles Roper</b> (FSC)
-          </span>
-          <span>
-            <b>Matt Smith</b>
-          </span>
-          <span>
-            <b>Alan Rowland</b>
-          </span>
-          <span>
-            <b>David Genney</b>
-          </span>
-          <span>
-            <b>Graham Checkley</b>
+          <b>
+              A special thank you to Niki, Laura 1, Laura 2, Amity, Josh, Nic,
+              Gary, John, Jenny, Alan and Stuart.
+            </b>
           </span>
         </P>
       </Section>
 
       <Section>
         <P>
-          This app was part-funded by the{' '}
-          <a href="https://www.ceh.ac.uk/">UK Centre for Ecology & Hydrology</a>
-          /
-          <a href="http://jncc.defra.gov.uk/">
-            Joint Nature Conservation Committee
-          </a>{' '}
-          partnership supporting BRC.
+          This app was funded by {' '}
+          <a href="https://www.erccis.org.uk/">ERCCIS</a>
         </P>
       </Section>
 
       <Section>
-        <H skipTranslation>
-          <T>Welcome screen credits</T>:
-        </H>
-        <P skipTranslation className="credits">
-          <span>David Kitching</span>
-          <span>UK Ladybird Survey</span>
+          <P skipTranslation className="credits">
+          Many thanks to the photographers for the use of their images in the welcome screen gallery.
         </P>
       </Section>
 
