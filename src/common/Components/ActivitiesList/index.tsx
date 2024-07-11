@@ -144,31 +144,14 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
         skipTranslation
       >
         <T>
-          Click on the activity below which you would like to participate in.
+          Click on the group below which you would like to participate in. Any records you add from now on will be submitted to the chosen group. You can join in with more groups by logging in to
+          {' '}
+              <a href={`${CONFIG.backend.url}`}>
+                ORKS
+              </a>{' '} and visiting the Share Sightings (ORKS) {'>'} Browse recording groups page.
+              <br />
+            Pull to refresh the list.
         </T>
-        <InfoButton label="READ MORE" header="Activities">
-          <p>
-            <T>
-              You can join in with more activities by visiting the{' '}
-              <a href={`${CONFIG.backend.url}/activities/list`}>
-                iRecord Activities
-              </a>{' '}
-              page.
-            </T>
-          </p>
-          <p>
-            <T>Swipe down on the activity list to refresh it.</T>
-          </p>
-          <p>
-            <T>
-              For more about Activities see the{' '}
-              <a href={`${CONFIG.backend.url}/joining-activity`}>
-                iRecord Help
-              </a>{' '}
-              page.
-            </T>
-          </p>
-        </InfoButton>
       </InfoMessage>
 
       <IonRefresher slot="fixed" onIonRefresh={syncActivitiesOnPull}>

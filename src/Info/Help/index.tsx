@@ -265,7 +265,7 @@ const Help: FC = () => (
               <br />
               <p>
                 <T>
-                <b>Note:</b>only the groups that allow this mobile app records and only the ones that you have joined on the ORKS website will be available to select
+                <b>Note:</b> only the groups that allow this mobile app records and only the ones that you have joined on the ORKS website will be available to select
                 </T>
               </p>
             </div>
@@ -315,7 +315,7 @@ const Help: FC = () => (
               <T>
                 For more help please visit the iRecord{' '}
                 <a href={`${CONFIG.backend.url}/forum/36`}>forum</a> Or drop us an
-            <a href="mailto:orks%40cornwallwildlifetrust.gov.uk">email</a>.
+            <a href="mailto:orks%40cornwallwildlifetrust.gov.uk"> email</a>.
               </T>
             </div>
           </IonItem>

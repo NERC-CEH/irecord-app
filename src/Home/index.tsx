@@ -122,7 +122,7 @@ const HomeController: FC = () => {
           >
             <IonIcon icon={peopleOutline} />
             <IonLabel>
-              <T>Activities</T>
+              <T>Groups</T>
             </IonLabel>
           </IonTabButton>
 

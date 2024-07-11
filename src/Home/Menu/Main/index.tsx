@@ -24,7 +24,7 @@ import {
 import config from 'common/config';
 import { AppModel } from 'models/app';
 import savedSamples from 'models/savedSamples';
-import appLogo from './logo.svg';
+import appLogo from './logo.png';
 import './styles.scss';
 
 const shouldShowFeedback = (appModel: AppModel, isLoggedIn: boolean) => {
@@ -158,7 +158,7 @@ const MenuMain: FC<Props> = ({
           </IonItem>
 
           <IonItem
-            href={`${config.backend.url}/privacy-notice?lang=${lang}`}
+            href={`${config.backend.url}/AboutUs/Policies`}
             target="_blank"
             detail
             detailIcon={openOutline}

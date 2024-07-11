@@ -72,7 +72,7 @@ const RegisterMain: FC<Props> = ({ onSubmit, schema }) => {
         <div className="terms-info-text">
           <T>
             By clicking Sign Up, you agree to our{' '}
-            <IonRouterLink href={`${config.backend.url}/privacy-notice`}>
+            <IonRouterLink href={`${config.backend.url}/AboutUs/Policies`}>
               Privacy Policy
             </IonRouterLink>{' '}
             and{' '}
