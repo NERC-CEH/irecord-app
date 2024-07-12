@@ -51,6 +51,7 @@ type Attrs = Omit<OccurrenceAttrs, 'taxon'> & {
   abundance?: any;
   comment?: string;
   stage?: string;
+  type?: string;
   sex?: any;
 };
 

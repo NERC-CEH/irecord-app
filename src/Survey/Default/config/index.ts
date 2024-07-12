@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
 import mergeWith from 'lodash.mergewith';
 import * as Yup from 'yup';
-import genderIcon from 'common/images/gender.svg';
+import fingerprintIcon from 'common/images/fingerprint.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
+import targetIcon from 'common/images/target.svg';
 import userModel from 'common/models/user';
 import appModel from 'models/app';
 import AppOccurrence from 'models/occurrence';
@@ -57,28 +58,53 @@ export function getTaxaGroupSurvey(taxaGroup: number) {
 
 const stageOptions = [
   { label: 'Not Recorded', value: null, isDefault: true },
-  { value: 'Adult', id: 1950 },
+  { value: 'Male', id: 3484 },
   { value: 'Pre-adult', id: 1951 },
+  { value: 'Female', id: 3483 },
   { value: 'Other', id: 1952 },
+  { value: 'Adult', id: 3405 },
+  { value: 'Adult male', id: 3406 },
+  { value: 'Adult female', id: 3407 },
+  { value: 'Juvenile', id: 3408 },
+  { value: 'Juvenile male', id: 3409 },
+  { value: 'Juvenile female', id: 3410 },
+  { value: 'Breeding pair', id: 3411 },
+  { value: 'Mixed group', id: 5261 },
+  { value: 'In flower', id: 3412 },
+  { value: 'Fruiting', id: 3413 },
+  { value: 'Egg', id: 3956 },
+  { value: 'Larva', id: 3957 },
+  { value: 'Nymph', id: 3959 },
+  { value: 'Spawn', id: 3960 },
+  { value: 'Pupa', id: 3958 },
+  { value: 'Other (please add to comments)', id: 3414 },
 ];
 
-const sexOptions = [
-  { label: 'Not Recorded', value: null, isDefault: true },
-  { value: 'Male', id: 1947 },
-  { value: 'Female', id: 1948 },
-  { value: 'Mixed', id: 3482 },
+const typeOptions = [
+  { value: 'Bat Breeding Roost', id: 5296 },
+  { value: 'Bat Detected', id: 5299 },
+  { value: 'Bat Grounded', id: 7799 },
+  { value: 'Bat Hibernacula', id: 5294 },
+  { value: 'Bat in hand', id: 21902 },
+  { value: 'Bat Roost', id: 3924 },
+  { value: 'Burrow', id: 3391 },
+  { value: 'Colony', id: 5667 },
+  { value: 'Dead', id: 3385 },
+  { value: 'Dead on road', id: 3386 },
+  { value: 'Dung or droppings', id: 3388 },
+  { value: 'Feeding remains', id: 3387 },
+  { value: 'Living organism', id: 21966 },
+  { value: 'Nest', id: 3392 },
+  { value: 'Tracks or trail', id: 3389 },
+  { value: 'Other (please add to comments)', id: 3393 },
 ];
 
-const numberOptions = [
-  { isPlaceholder: true, label: 'Ranges' },
-  { value: null, isDefault: true, label: 'Present' },
-  { value: '1', id: 665 },
-  { value: 1, id: 665, className: 'hidden' }, // TODO: remove this in the future when users migrated
-  { value: '2-5', id: 666 },
-  { value: '6-20', id: 667 },
-  { value: '21-100', id: 668 },
-  { value: '101-500', id: 669 },
-  { value: '500+', id: 670 },
+const sensitivityOptions = [
+  { label: 'Not Sensitive', value: null, isDefault: true },
+  { value: 'Blur to 1km', id: 1000 },
+  { value: 'Blur to 2km', id: 2000 },
+  { value: 'Blur to 10km', id: 10000 },
+  { value: 'Blur to 100km', id: 100000 },
 ];
 
 const survey: Survey = {
@@ -96,8 +122,9 @@ const survey: Survey = {
       group: ['occ:number', 'occ:number-ranges'],
     },
     'occ:stage',
-    'occ:sex',
+    'occ:type',
     'occ:identifiers',
+    'occ:sensitivity_precision',
   ],
 
   attrs: {
@@ -151,7 +178,7 @@ const survey: Survey = {
           },
           setLock: (model, _, value) => {
             const numberRegex = /^\d+$/; // https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
-            if (numberRegex.test(`${value}`)) {
+            if (numberRegex.test(`${ value}`))  {
               appModel.setAttrLock(model, 'number', value, true);
             } else {
               appModel.setAttrLock(model, 'number-ranges', value, true);
@@ -172,26 +199,13 @@ const survey: Survey = {
               info: 'How many individuals of this species did you see?',
               inputProps: { max: 500 },
             },
-            {
-              set: (value: string, model: AppOccurrence) =>
-                Object.assign(model.attrs, {
-                  number: undefined,
-                  'number-ranges': value,
-                }),
-              get: (model: AppOccurrence) => model.attrs['number-ranges'],
-              onChange: () => window.history.back(),
-              input: 'radio',
-              inputProps: { options: numberOptions },
-            },
           ],
         },
-        remote: { id: 16 },
+        remote: { id: 93 },
       },
 
-      'number-ranges': { remote: { id: 523, values: numberOptions } },
-
       stage: {
-        menuProps: { icon: progressIcon },
+        menuProps: { icon: fingerprintIcon },
         pageProps: {
           attrProps: {
             input: 'radio',
@@ -199,20 +213,31 @@ const survey: Survey = {
             inputProps: { options: stageOptions },
           },
         },
-        remote: { id: 106, values: stageOptions },
+        remote: { id: 218, values: stageOptions },
       },
-      sex: {
-        menuProps: { icon: genderIcon },
+      type: {
+        menuProps: { icon: progressIcon },
         pageProps: {
           attrProps: {
             input: 'radio',
-            info: 'Please indicate the sex of the organism.',
-            inputProps: { options: sexOptions },
+            info: 'Please pick the type of observation.',
+            inputProps: { options: typeOptions },
           },
         },
-        remote: { id: 105, values: sexOptions },
+        remote: { id: 217, values: typeOptions },
       },
       identifiers: identifiersAttr,
+      sensitivity_precision: {
+        menuProps: { label: 'Sensitivity', icon: targetIcon },
+        pageProps: {
+          attrProps: {
+            input: 'radio',
+            info: 'This is the precision that the record will be shown at for public viewing.',
+            inputProps: { options: sensitivityOptions },
+          },
+        },
+        remote: { id: 105, values: sensitivityOptions },
+      },
       comment: commentAttr,
     },
     verify(attrs) {
