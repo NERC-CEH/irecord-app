@@ -60,8 +60,6 @@ const MenuMain: FC<Props> = ({
   refreshAccount,
   resendVerificationEmail,
 }) => {
-  const lang = appModel.attrs.language;
-
   const isNotVerified = user.verified === false; // verified is undefined in old versions
   const userEmail = user.email;
 

@@ -11,7 +11,6 @@ import {
   cameraOutline,
   lockClosedOutline,
   lockOpenOutline,
-  peopleOutline,
   logOutOutline,
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';

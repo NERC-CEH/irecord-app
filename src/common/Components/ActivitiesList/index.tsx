@@ -2,14 +2,7 @@ import { FC, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { chevronDownOutline, informationCircleOutline } from 'ionicons/icons';
 import { Trans as T, useTranslation } from 'react-i18next';
-import {
-  InfoMessage,
-  InfoButton,
-  RadioInput,
-  useToast,
-  useLoader,
-  device,
-} from '@flumens';
+import { InfoMessage, RadioInput, useToast, useLoader, device } from '@flumens';
 import { IonList, IonRefresher, IonRefresherContent } from '@ionic/react';
 import CONFIG from 'common/config';
 import { AppModel } from 'models/app';
@@ -144,13 +137,13 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
         skipTranslation
       >
         <T>
-          Click on the group below which you would like to participate in. Any records you add from now on will be submitted to the chosen group. You can join in with more groups by logging in to
-          {' '}
-              <a href={`${CONFIG.backend.url}`}>
-                ORKS
-              </a>{' '} and visiting the Share Sightings (ORKS) {'>'} Browse recording groups page.
-              <br />
-            Pull to refresh the list.
+          Click on the group below which you would like to participate in. Any
+          records you add from now on will be submitted to the chosen group. You
+          can join in with more groups by logging in to{' '}
+          <a href={`${CONFIG.backend.url}`}>ORKS</a> and visiting the Share
+          Sightings (ORKS) {'>'} Browse recording groups page.
+          <br />
+          Pull to refresh the list.
         </T>
       </InfoMessage>
 

@@ -1,5 +1,4 @@
 import { Page, Main, Header, Section } from '@flumens';
-import { Trans as T } from 'react-i18next';
 import ercissLogo from './cwt-erccis.png';
 import './styles.scss';
 
@@ -13,20 +12,21 @@ export default () => (
 
       <Section>
         <H>
-        We are very grateful for all the people that have helped to develop and test the ORKS App:
+          We are very grateful for all the people that have helped to develop
+          and test the ORKS App:
         </H>
         <P skipTranslation className="credits">
           <span>
-          <b>Richard Frost</b>
+            <b>Richard Frost</b>
           </span>
           <span>
-          <b>ERCCIS Staff (past and present!)</b>
+            <b>ERCCIS Staff (past and present!)</b>
           </span>
           <span>
-          <b>ERCCIS Volunteers (past and present!)</b>
+            <b>ERCCIS Volunteers (past and present!)</b>
           </span>
           <span>
-          <b>
+            <b>
               A special thank you to Niki, Laura 1, Laura 2, Amity, Josh, Nic,
               Gary, John, Jenny, Alan and Stuart.
             </b>
@@ -36,14 +36,14 @@ export default () => (
 
       <Section>
         <P>
-          This app was funded by {' '}
-          <a href="https://www.erccis.org.uk/">ERCCIS</a>
+          This app was funded by <a href="https://www.erccis.org.uk/">ERCCIS</a>
         </P>
       </Section>
 
       <Section>
-          <P skipTranslation className="credits">
-          Many thanks to the photographers for the use of their images in the welcome screen gallery.
+        <P skipTranslation className="credits">
+          Many thanks to the photographers for the use of their images in the
+          welcome screen gallery.
         </P>
       </Section>
 
