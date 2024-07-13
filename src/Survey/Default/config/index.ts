@@ -2,6 +2,7 @@
 import mergeWith from 'lodash.mergewith';
 import * as Yup from 'yup';
 import fingerprintIcon from 'common/images/fingerprint.svg';
+import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import targetIcon from 'common/images/target.svg';
@@ -55,6 +56,13 @@ export function getTaxaGroupSurvey(taxaGroup: number) {
 
   return matchingSurveys[0] as Survey;
 }
+
+const sexOptions = [
+  { label: 'Not Recorded', value: null, isDefault: true },
+  { value: 'Male', id: 1947 },
+  { value: 'Female', id: 1948 },
+  { value: 'Mixed', id: 3482 },
+];
 
 const stageOptions = [
   { label: 'Not Recorded', value: null, isDefault: true },
@@ -122,6 +130,7 @@ const survey: Survey = {
       group: ['occ:number', 'occ:number-ranges'],
     },
     'occ:stage',
+    'occ:sex',
     'occ:type',
     'occ:identifiers',
     'occ:sensitivity_precision',
@@ -209,11 +218,22 @@ const survey: Survey = {
         pageProps: {
           attrProps: {
             input: 'radio',
-            info: 'Please pick the life stage.',
+            info: 'Please pick the life stage and sex of the organism, if recorded.',
             inputProps: { options: stageOptions },
           },
         },
         remote: { id: 218, values: stageOptions },
+      },
+      sex: {
+        menuProps: { icon: genderIcon },
+        pageProps: {
+          attrProps: {
+            input: 'radio',
+            info: 'Please indicate the sex of the organism.',
+            inputProps: { options: sexOptions },
+          }
+        },
+        remote: { id: 105, values: sexOptions },
       },
       type: {
         menuProps: { icon: progressIcon },
