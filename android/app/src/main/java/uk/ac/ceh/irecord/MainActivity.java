@@ -1,4 +1,4 @@
-package uk.ac.ceh.irecord;
+package uk.org.orks.app;
 
 import com.getcapacitor.BridgeActivity;
 

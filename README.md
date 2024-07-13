@@ -1,4 +1,4 @@
-# iRecord App
+# ORKS App
 
 An application that enables you to get involved in biological
 recording. You can contribute your sightings with GPS acquired coordinates,

@@ -122,11 +122,11 @@ msgstr "Selecting species"
 msgid "Searching for species"
 msgstr "Searching for species"
 
-msgid "Sync. with iRecord"
-msgstr "Sync. with iRecord"
+msgid "Sync. with ORKS"
+msgstr "Sync. with ORKS"
 
-msgid "iRecord Website"
-msgstr "iRecord Website"
+msgid "ORKS Website"
+msgstr "ORKS Website"
 
 msgid "Delete a record"
 msgstr "Delete a record"
@@ -176,8 +176,8 @@ msgstr "Wherever you see this logo on a biological recording app you can be assu
 msgid "This logo indicates that your data is"
 msgstr "This logo indicates that your data is"
 
-msgid "Sent to the Biological Record Centre’s data warehouse linked to the iRecord system where it accessible to you as the recorder, to an expert community of verifiers and other users of iRecord"
-msgstr "Sent to the Biological Record Centre’s data warehouse linked to the iRecord system where it accessible to you as the recorder, to an expert community of verifiers and other users of iRecord"
+msgid "Sent to the Biological Record Centre’s data warehouse linked to the ORKS system where it accessible to you as the recorder, to an expert community of verifiers and other users of ORKS"
+msgstr "Sent to the Biological Record Centre’s data warehouse linked to the ORKS system where it accessible to you as the recorder, to an expert community of verifiers and other users of ORKS"
 
 msgid "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Gateway"
 msgstr "Quality assured data is passed onto Local Environmental Records Centres, National Recording Schemes and to the NBN Gateway"
@@ -1131,12 +1131,12 @@ msgid "To set it for upload, open the record and press the Upload button in the 
 msgstr "To set it for upload, open the record and press the Upload button in the header. The application will try to submit your record once there is a good network connection. If the record has reached the database, it will be moved to the Uploaded list in the Home page (see Uploaded tab)."
 
 # Part of Help Page
-msgid "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <1>iRecord Website</1>."
-msgstr "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <1>iRecord Website</1>."
+msgid "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <1>ORKS Website</1>."
+msgstr "Once it has successfully reached the database the record becomes unavailable for new edits. To further edit it please use the <1>ORKS Website</1>."
 
 # Part of Help Page
-msgid "<0>Note:</0> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background."
-msgstr "<0>Note:</0> you have to be signed in to your iRecord account and have a network connection, for the records to be automatically synchronised in the background."
+msgid "<0>Note:</0> you have to be signed in to your ORKS account and have a network connection, for the records to be automatically synchronised in the background."
+msgstr "<0>Note:</0> you have to be signed in to your ORKS account and have a network connection, for the records to be automatically synchronised in the background."
 
 # Part of Help Page
 msgid "To delete a record, swipe it left in the Home page and click the delete <1></1> button."
@@ -1171,28 +1171,28 @@ msgid "Verification of your records"
 msgstr "Verification of your records"
 
 # Part of Help Page
-msgid "When you add a record to the app and then upload it to iRecord, it may be checked by one of the expert verifiers who volunteer on behalf of the national or local wildlife recording schemes. If that happens you will see notifications in the app to tell you that the record has been accepted or not."
-msgstr "When you add a record to the app and then upload it to iRecord, it may be checked by one of the expert verifiers who volunteer on behalf of the national or local wildlife recording schemes. If that happens you will see notifications in the app to tell you that the record has been accepted or not."
+msgid "When you add a record to the app and then upload it to ORKS, it may be checked by one of the expert verifiers who volunteer on behalf of the national or local wildlife recording schemes. If that happens you will see notifications in the app to tell you that the record has been accepted or not."
+msgstr "When you add a record to the app and then upload it to ORKS, it may be checked by one of the expert verifiers who volunteer on behalf of the national or local wildlife recording schemes. If that happens you will see notifications in the app to tell you that the record has been accepted or not."
 
 # Part of Help Page
-msgid "Some verifiers may have added additional comments or queries to your records, and at the moment these are not available within the app, so you may wish to log on to the iRecord website and view your records and notifications there."
-msgstr "Some verifiers may have added additional comments or queries to your records, and at the moment these are not available within the app, so you may wish to log on to the iRecord website and view your records and notifications there."
+msgid "Some verifiers may have added additional comments or queries to your records, and at the moment these are not available within the app, so you may wish to log on to the ORKS website and view your records and notifications there."
+msgstr "Some verifiers may have added additional comments or queries to your records, and at the moment these are not available within the app, so you may wish to log on to the ORKS website and view your records and notifications there."
 
 # Part of Help Page
 msgid "If you do not wish to see the notifications in the app you can tick the box for “Do not show again”, but if you do this the notifications will become unavailable unless you reset the app settings or reinstall the app."
 msgstr "If you do not wish to see the notifications in the app you can tick the box for “Do not show again”, but if you do this the notifications will become unavailable unless you reset the app settings or reinstall the app."
 
 # Part of Help Page
-msgid "For more information about the record checking process see <2>Verification: what, who and why</2> on the iRecord website."
-msgstr "For more information about the record checking process see <2>Verification: what, who and why</2> on the iRecord website."
+msgid "For more information about the record checking process see <2>Verification: what, who and why</2> on the ORKS website."
+msgstr "For more information about the record checking process see <2>Verification: what, who and why</2> on the ORKS website."
 
 # Part of Help Page
 msgid "To send records to a specific activity you can select it in the Activities <1></1> page."
 msgstr "To send records to a specific activity you can select it in the Activities <1></1> page."
 
 # Part of Help Page
-msgid "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
-msgstr "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
+msgid "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the ORKS website will be available to select."
+msgstr "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the ORKS website will be available to select."
 
 # Part of Help Page
 msgid "You can manage your saved locations both on any record's location page and from the settings <2></2> page"
@@ -1211,8 +1211,8 @@ msgid "Go to the application settings page <2></2> and click on the Reset <4></4
 msgstr "Go to the application settings page <2></2> and click on the Reset <4></4> button."
 
 # Part of Help Page
-msgid "For more help please visit the iRecord <2>forum</2>."
-msgstr "For more help please visit the iRecord <2>forum</2>."
+msgid "For more help please visit the ORKS <2>forum</2>."
+msgstr "For more help please visit the ORKS <2>forum</2>."
 
 # Bird survey breeding attribute
 msgid "breeding"
@@ -1364,12 +1364,12 @@ msgid "Got it"
 msgstr "Got it"
 
 # Activities page alert message
-msgid "You can join in with more activities by visiting the <2>iRecord Activities</2> page."
-msgstr "You can join in with more activities by visiting the <2>iRecord Activities</2> page."
+msgid "You can join in with more activities by visiting the <2>ORKS Activities</2> page."
+msgstr "You can join in with more activities by visiting the <2>ORKS Activities</2> page."
 
 # Activities page alert message
-msgid "For more about Activities see the <2>iRecord Help</2> page."
-msgstr "For more about Activities see the <2>iRecord Help</2> page."
+msgid "For more about Activities see the <2>ORKS Help</2> page."
+msgstr "For more about Activities see the <2>ORKS Help</2> page."
 
 # Sign up page
 msgid "Welcome back"
@@ -1416,12 +1416,12 @@ msgid "Enter your email address to request a password reset."
 msgstr "Enter your email address to request a password reset."
 
 # About page content
-msgid "iRecord App is an application that enables you to get involved in biological recording. You can contribute your sightings with photos, GPS acquired coordinates, descriptions and other information, thus providing scientists with important new biodiversity information that contributes to nature conservation, planning, research and education.'"
-msgstr "iRecord App is an application that enables you to get involved in biological recording. You can contribute your sightings with photos, GPS acquired coordinates, descriptions and other information, thus providing scientists with important new biodiversity information that contributes to nature conservation, planning, research and education.'"
+msgid "ORKS App is an application that enables you to get involved in biological recording. You can contribute your sightings with photos, GPS acquired coordinates, descriptions and other information, thus providing scientists with important new biodiversity information that contributes to nature conservation, planning, research and education.'"
+msgstr "ORKS App is an application that enables you to get involved in biological recording. You can contribute your sightings with photos, GPS acquired coordinates, descriptions and other information, thus providing scientists with important new biodiversity information that contributes to nature conservation, planning, research and education.'"
 
 # About page content
-msgid "We encourage everyone to get involved with recording species as it is very easy and quick to submit useful records without specialist knowledge. It doesn't matter whether you are an amateur enthusiast or a qualified biologist, iRecord App is for anyone who wants to contribute to our database observations of the natural environment.'"
-msgstr "We encourage everyone to get involved with recording species as it is very easy and quick to submit useful records without specialist knowledge. It doesn't matter whether you are an amateur enthusiast or a qualified biologist, iRecord App is for anyone who wants to contribute to our database observations of the natural environment.'"
+msgid "We encourage everyone to get involved with recording species as it is very easy and quick to submit useful records without specialist knowledge. It doesn't matter whether you are an amateur enthusiast or a qualified biologist, ORKS App is for anyone who wants to contribute to our database observations of the natural environment.'"
+msgstr "We encourage everyone to get involved with recording species as it is very easy and quick to submit useful records without specialist knowledge. It doesn't matter whether you are an amateur enthusiast or a qualified biologist, ORKS App is for anyone who wants to contribute to our database observations of the natural environment.'"
 
 # About page content
 msgid "This app was hand crafted with love by<1> Flumens.</1> Agency specializing in building bespoke data oriented sollutions. For suggestions and feedback please do not hesitate to <5>contact us</5>."
@@ -1608,8 +1608,8 @@ msgid "You can delete your user account from the system."
 msgstr "You can delete your user account from the system."
 
 # Delete acount alert message
-msgid "This will remove your account on the iRecord website. You will lose access to any records that you have previously submitted using the app or website."
-msgstr "This will remove your account on the iRecord website. You will lose access to any records that you have previously submitted using the app or website."
+msgid "This will remove your account on the ORKS website. You will lose access to any records that you have previously submitted using the app or website."
+msgstr "This will remove your account on the ORKS website. You will lose access to any records that you have previously submitted using the app or website."
 
 # Part of Species List survey 
 msgid "Species List"
@@ -2006,8 +2006,8 @@ msgid "rejected"
 msgstr "rejected"
 
 # Verification message 
-msgid "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided."
-msgstr "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided." "in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided."
+msgid "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the ORKS website to see any additional information that the verifier may have provided."
+msgstr "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the ORKS website to see any additional information that the verifier may have provided." "in this case. Please log in to the ORKS website to see any additional information that the verifier may have provided."
 
 # Account not verified alert button label
 msgid "Resend"
@@ -2029,9 +2029,9 @@ msgstr "email is a required field"
 msgid "password is a required field"
 msgstr "password is a required field"
 
-# Uploaded record Link to iRecord website
-msgid "iRecord website"
-msgstr "iRecord website"
+# Uploaded record Link to ORKS website
+msgid "ORKS website"
+msgstr "ORKS website"
 
 # Verification status
 msgid "Unconfirmed"
@@ -2094,8 +2094,8 @@ msgid "Grid Unit"
 msgstr "Grid Unit"
 
 # Users map Login required message
-msgid "You need to login to your <2>iRecord account</2> to be able to view the records."
-msgstr "You need to login to your <2>iRecord account</2> to be able to view the records."
+msgid "You need to login to your <2>ORKS account</2> to be able to view the records."
+msgstr "You need to login to your <2>ORKS account</2> to be able to view the records."
 
 # Reset email alert message 
 msgid "We've sent an email to you"

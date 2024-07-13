@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import Occurrence from 'models/occurrence';
-import { InfoMessage, InfoButton } from '@flumens';
-import { useTranslation, Trans as T } from 'react-i18next';
 import clsx from 'clsx';
 import { checkmarkCircle, closeCircle } from 'ionicons/icons';
+import { useTranslation, Trans as T } from 'react-i18next';
+import { InfoMessage, InfoButton } from '@flumens';
+import Occurrence from 'models/occurrence';
 import './styles.scss';
 
 const getVerificationText = (
@@ -57,8 +57,8 @@ const getVerificationText = (
           <T>
             Thanks for sending in your record. A verifier has marked it as{' '}
             <b>{{ statusMessage: t(statusMessage) } as any}</b> in this case.
-            Please log in to the iRecord website to see any additional
-            information that the verifier may have provided.
+            Please log in to the ORKS website to see any additional information
+            that the verifier may have provided.
           </T>
         </div>
       </>

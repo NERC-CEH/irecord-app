@@ -1,14 +1,14 @@
 {
-  "name": "irecord-app",
-  "id": "uk.ac.ceh.irecord",
-  "title": "iRecord App",
-  "description": "iRecord mobile application.",
+  "name": "orks-app",
+  "id": "uk.org.orks.app",
+  "title": "ORKS App",
+  "description": "ORKS mobile application.",
   "version": "6.1.1",
-  "homepage": "https://irecord.org.uk",
+  "homepage": "https://orks.org.uk",
   "scripts": {
     "start": "webpack serve --progress --port 8000",
     "build": "NODE_ENV=production webpack",
-    "build:production": "npm run clean && npm run build && npx cap sync && sed -i '' 's/uk.ac.ceh.irecord/uk.ac.ceh.ir/g' ios/App/App/capacitor.config.json && npm run build:resources",
+    "build:production": "npm run clean && npm run build && npx cap sync && sed -i '' 's/uk.org.orks.app/uk.ac.ceh.ir/g' ios/App/App/capacitor.config.json && npm run build:resources",
     "build:resources": "mkdir -p resources && cp -R other/designs/android resources && cp -R other/designs/*.png resources && npx cordova-res ios --skip-config --resources resources --copy && npx cordova-res android --skip-config --resources resources --copy",
     "deploy": "cp other/demo.html build/ && URL=$(vercel --prod -t $VERCEL_TOKEN --confirm ./build) && CLEAN_URL=$(echo $URL | sed -r \"s/https:\\/\\/(.*)$/\\1/g\") && DEMO_URL=$(echo $CLEAN_URL | sed -r \"s/(.*\\-)[a-z0-9]+\\-flumens(\\.vercel\\.app)$/\\1${BITRISE_BUILD_NUMBER}\\2/g\") && vercel alias set $CLEAN_URL $DEMO_URL -t $VERCEL_TOKEN && envman add --key DEMO_URL --value \"https://$DEMO_URL\"",
     "deploy:production": "bitrise run ci",
@@ -128,10 +128,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NERC-CEH/irecord-app"
+    "url": "https://github.com/ERCCIS/orks-app"
   },
   "bugs": {
-    "url": "https://github.com/NERC-CEH/irecord-app/issues"
+    "url": "https://github.com/ERCCIS/orks-app/issues"
   },
   "licenses": [
     {
@@ -140,6 +140,7 @@
     }
   ],
   "keywords": [
+    "orks",
     "irecord",
     "biological",
     "recording",

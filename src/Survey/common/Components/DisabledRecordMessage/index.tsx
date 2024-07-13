@@ -31,7 +31,7 @@ const DisabledRecordMessage: FC<Props> = ({ sample }) => {
             : config.backend.url
         }
       >
-        <T>iRecord website</T>
+        <T>ORKS website</T>
       </IonButton>
     </InfoMessage>
   );

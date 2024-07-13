@@ -1,7 +1,4 @@
 import { FC } from 'react';
-import CONFIG from 'common/config';
-import { Page, Collapse, Header, Main } from '@flumens';
-import { IonList, IonItemDivider, IonIcon, IonItem } from '@ionic/react';
 import {
   settingsOutline,
   arrowUndoOutline,
@@ -18,9 +15,11 @@ import {
   logOutOutline,
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
+import { Page, Collapse, Header, Main } from '@flumens';
+import { IonList, IonItemDivider, IonIcon, IonItem } from '@ionic/react';
+import CONFIG from 'common/config';
 import './styles.scss';
 import deleteRecordImage from './swipe_record.png';
-
 
 const Help: FC = () => (
   <Page id="help-page">
@@ -85,7 +84,9 @@ const Help: FC = () => (
             <div>
               <p>
                 <T>
-                You can record lists of species. Long-pressing the green plus button in the home page will show more advanced recording options.
+                  You can record lists of species. Long-pressing the green plus
+                  button in the home page will show more advanced recording
+                  options.
                 </T>
               </p>
             </div>
@@ -95,21 +96,20 @@ const Help: FC = () => (
             <div>
               <p>
                 <T>
-                For quicker searching of the taxa you can use different shortcuts.
-                <br />
-                <br />
-              
-                For <i>Puffinus baroli:</i>
-            
-                <br />
-                <br />
-                <i>puffinus ba</i>
-                <br />
-                <i>puffinus .oli</i>
-                <br />
-                <i>pubar</i> (2+3 characters)
-                <br />
-                <i>baroli</i>
+                  For quicker searching of the taxa you can use different
+                  shortcuts.
+                  <br />
+                  <br />
+                  For <i>Puffinus baroli:</i>
+                  <br />
+                  <br />
+                  <i>puffinus ba</i>
+                  <br />
+                  <i>puffinus .oli</i>
+                  <br />
+                  <i>pubar</i> (2+3 characters)
+                  <br />
+                  <i>baroli</i>
                 </T>
               </p>
             </div>
@@ -121,8 +121,8 @@ const Help: FC = () => (
               button in the home page will show more advanced recording options.
             </T>
           </Collapse>
-          
-          <Collapse title="Sync. with iRecord">
+
+          <Collapse title="Sync. with ORKS">
             <div>
               <p>
                 <T>
@@ -153,9 +153,9 @@ const Help: FC = () => (
               <br />
               <p>
                 <T>
-                  <b>Note:</b> you have to be signed in to your ORKS account
-                  and have a network connection, for the records to be
-                  automatically synchronised in the background.
+                  <b>Note:</b> you have to be signed in to your ORKS account and
+                  have a network connection, for the records to be automatically
+                  synchronised in the background.
                 </T>
               </p>
             </div>
@@ -195,18 +195,18 @@ const Help: FC = () => (
                   etc, which will preserve your current attribute value for the
                   subsequently added records.
                 </T>
-                </p>
-            <br />
+              </p>
+              <br />
               <p>
                 <T>
                   To lock an attribute click on the lock{' '}
-                  <IonIcon icon={lockClosedOutline} size="small" /> button in the attribute edit page header. This
-                  will change the symbol to locked{' '}
-                  <IonIcon icon={lockOpenOutline} size="small" /> both on the
-                  button and next to the attribute.
+                  <IonIcon icon={lockClosedOutline} size="small" /> button in
+                  the attribute edit page header. This will change the symbol to
+                  locked <IonIcon icon={lockOpenOutline} size="small" /> both on
+                  the button and next to the attribute.
                 </T>
               </p>
-            <br />
+              <br />
               <p>
                 <T>
                   <b>Note:</b> For a GPS-sourced location, only the location
@@ -237,7 +237,7 @@ const Help: FC = () => (
                   follow the instructions.
                 </T>
               </p>
-            <br />
+              <br />
               <p>
                 <T>
                   To logout, visit the main menu page{' '}
@@ -245,7 +245,7 @@ const Help: FC = () => (
                   logout <IonIcon icon={logOutOutline} size="small" /> button
                 </T>
               </p>
-            <br />
+              <br />
               <p>
                 <T>
                   <b>Note:</b> after registering a new account you must verify
@@ -259,13 +259,16 @@ const Help: FC = () => (
             <div>
               <p>
                 <T>
-                To send records to a specific group you can select it in the Groups page.
+                  To send records to a specific group you can select it in the
+                  Groups page.
                 </T>
               </p>
               <br />
               <p>
                 <T>
-                <b>Note:</b> only the groups that allow this mobile app records and only the ones that you have joined on the ORKS website will be available to select
+                  <b>Note:</b> only the groups that allow this mobile app
+                  records and only the ones that you have joined on the ORKS
+                  website will be available to select
                 </T>
               </p>
             </div>
@@ -314,8 +317,9 @@ const Help: FC = () => (
             <div>
               <T>
                 For more help please visit the iRecord{' '}
-                <a href={`${CONFIG.backend.url}/forum/36`}>forum</a> Or drop us an
-            <a href="mailto:orks%40cornwallwildlifetrust.gov.uk"> email</a>.
+                <a href={`${CONFIG.backend.url}/forum/36`}>forum</a> Or drop us
+                an
+                <a href="mailto:orks%40cornwallwildlifetrust.gov.uk"> email</a>.
               </T>
             </div>
           </IonItem>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">iRecord App</string>
-    <string name="title_activity_main">iRecord App</string>
-    <string name="package_name">uk.ac.ceh.irecord</string>
-    <string name="custom_url_scheme">uk.ac.ceh.irecord</string>
+    <string name="app_name">ORKS App</string>
+    <string name="title_activity_main">ORKS App</string>
+    <string name="package_name">uk.org.orks.app</string>
+    <string name="custom_url_scheme">uk.org.orks.app</string>
 </resources>
