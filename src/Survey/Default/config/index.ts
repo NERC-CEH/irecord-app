@@ -104,6 +104,7 @@ const typeOptions = [
   { value: 'Living organism', id: 21966 },
   { value: 'Nest', id: 3392 },
   { value: 'Tracks or trail', id: 3389 },
+  { value: 'Heard', id: 3384 },
   { value: 'Other (please add to comments)', id: 3393 },
 ];
 
