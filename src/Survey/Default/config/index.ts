@@ -25,13 +25,13 @@ import {
   makeSubmissionBackwardsCompatible,
   recorderAttr,
 } from 'Survey/common/config';
-import arthropodSurvey from './arthropods';
+/*import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
 import bryophytesSurvey from './bryophytes';
 import butterfliesSurvey from './butterflies';
 import dragonfliesSurvey from './dragonflies';
 import mothsSurvey from './moths';
-import plantFungiSurvey from './plantFungi';
+import plantFungiSurvey from './plantFungi';*/
 
 export const taxonGroupSurveys = {};
 

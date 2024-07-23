@@ -207,7 +207,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       if (occ.attrs.taxon) this.removeOldTaxonAttributes(occ, newTaxon);
 
       const survey = getTaxaGroupSurvey(newTaxon.group);
-      this.metadata.taxa = survey?.taxa as any;
+     /* this.metadata.taxa = survey?.taxa as any; */
     }
 
     occ.attrs.taxon = newTaxon;
@@ -261,7 +261,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
           console.log(
             `Found missing species group. Setting ${smp.cid} to ${speciesSurvey.taxa}.`
           );
-          smp.metadata.taxa = speciesSurvey.taxa as any;
+          /*smp.metadata.taxa = speciesSurvey.taxa as any;*/
         }
       }
     };

@@ -95,6 +95,7 @@
     "@types/proj4": "^2.5.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
+    "@types/react-map-gl": "^6.1.6",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "5.3.3",
     "@types/react-window": "^1.8.8",
