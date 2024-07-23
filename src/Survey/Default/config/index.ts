@@ -2,6 +2,7 @@
 import mergeWith from 'lodash.mergewith';
 import * as Yup from 'yup';
 import fingerprintIcon from 'common/images/fingerprint.svg';
+import radarIcon from 'common/images/radar.svg';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
@@ -49,13 +50,6 @@ export function getTaxaGroupSurvey(taxaGroup: number) {
   return matchingSurveys[0] as Survey;
 }
 
-const sexOptions = [
-  { label: 'Not Recorded', value: null, isDefault: true },
-  { value: 'Male', id: 1947 },
-  { value: 'Female', id: 1948 },
-  { value: 'Mixed', id: 3482 },
-];
-
 const stageOptions = [
   { label: 'Not Recorded', value: null, isDefault: true },
   { value: 'Male', id: 3484 },
@@ -78,6 +72,18 @@ const stageOptions = [
   { value: 'Spawn', id: 3960 },
   { value: 'Pupa', id: 3958 },
   { value: 'Other (please add to comments)', id: 3414 },
+];
+
+const methodOptions = [
+  { label: 'Not recorded', value: null, isDefault: true },
+  { value:'Auditory record', id: 8800 }, //need to clarify the id as this is currently just a placeholder 
+  { value:'Bat detector', id: 8801 },   //need to clarify the id as this is currently just a placeholder
+  { value:'Camera trap', id: 5870 },   
+  { value:'Kick sample', id: 8803 },   //need to clarify the id as this is currently just a placeholder
+  { value:'Light trap', id: 3390 },   
+  { value:'Net trap', id: 5869 },   
+  { value:'Trap', id: 5881 },   
+  { value:'Visual observation', id: 8807 },   //need to clarify the id as this is currently just a placeholder
 ];
 
 const typeOptions = [
@@ -123,8 +129,8 @@ const survey: Survey = {
       group: ['occ:number', 'occ:number-ranges'],
     },
     'occ:stage',
-    'occ:sex',
     'occ:type',
+    'occ:method',
     'occ:identifiers',
     'occ:sensitivity_precision',
   ],
@@ -207,7 +213,7 @@ const survey: Survey = {
       },
 
       stage: {
-        menuProps: { icon: fingerprintIcon },
+        menuProps: { label:'Life Stage/Sex', icon: fingerprintIcon },
         pageProps: {
           attrProps: {
             input: 'radio',
@@ -217,17 +223,19 @@ const survey: Survey = {
         },
         remote: { id: 218, values: stageOptions },
       },
-      sex: {
-        menuProps: { icon: genderIcon },
+      
+      method: {
+        menuProps: { icon: radarIcon },
         pageProps: {
           attrProps: {
             input: 'radio',
-            info: 'Please indicate the sex of the organism.',
-            inputProps: { options: sexOptions },
-          }
+            info: 'Please select the method used to collect the record.',
+            inputProps: { options: methodOptions },
+          },
         },
-        remote: { id: 105, values: sexOptions },
+        remote: { id: 888, values: methodOptions }, //need to clarify what the remote id is as this is currently just a placeholder
       },
+
       type: {
         menuProps: { icon: progressIcon },
         pageProps: {

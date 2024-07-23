@@ -88,11 +88,11 @@ export const recorderAttr = {
 export const identifiersAttr = {
   menuProps: {
     icon: peopleOutline,
-    label: 'Identified by',
+    label: 'Identifiers',
     skipValueTranslation: true,
   },
   pageProps: {
-    headerProps: { title: 'Identified by' },
+    headerProps: { title: 'Identifiers' },
     attrProps: {
       input: 'inputList',
       info: 'If another person identified the species for you, please enter their name here.',
