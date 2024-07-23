@@ -76,14 +76,14 @@ const stageOptions = [
 
 const methodOptions = [
   { label: 'Not recorded', value: null, isDefault: true },
-  { value:'Auditory record', id: 8800 }, //need to clarify the id as this is currently just a placeholder 
-  { value:'Bat detector', id: 8801 },   //need to clarify the id as this is currently just a placeholder
-  { value:'Camera trap', id: 5870 },   
-  { value:'Kick sample', id: 8803 },   //need to clarify the id as this is currently just a placeholder
-  { value:'Light trap', id: 3390 },   
-  { value:'Net trap', id: 5869 },   
-  { value:'Trap', id: 5881 },   
-  { value:'Visual observation', id: 8807 },   //need to clarify the id as this is currently just a placeholder
+  { value:'Auditory record', id: 21965 },  
+  { value:'Bat detector', id: 21947 },   
+  { value:'Camera trap', id: 21948 },   
+  { value:'Kick sample', id: 21967 },   
+  { value:'Light trap', id: 21949 },   
+  { value:'Net trap', id: 21950 },   
+  { value:'Trap', id: 21951 },   
+  { value:'Visual observation', id: 21952 },  
 ];
 
 const typeOptions = [
@@ -233,8 +233,7 @@ const survey: Survey = {
             inputProps: { options: methodOptions },
           },
         },
-        remote: { id: 888, values: methodOptions }, //need to clarify what the remote id is as this is currently just a placeholder
-      },
+        remote: { id: 1811, values: methodOptions },
 
       type: {
         menuProps: { icon: progressIcon },
