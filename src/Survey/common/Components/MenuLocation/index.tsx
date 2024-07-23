@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import Sample from 'models/sample';
 import clsx from 'clsx';
-import { IonItem, IonLabel, IonIcon, IonBadge } from '@ionic/react';
 import { locationOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
+import { IonItem, IonLabel, IonIcon, IonBadge } from '@ionic/react';
+import Sample from 'models/sample';
 import StringHelp from 'helpers/string';
 import GridRefValue from './GridRefValue';
 import Lock, { Props as MenuLocationWithLockProps } from './Lock';

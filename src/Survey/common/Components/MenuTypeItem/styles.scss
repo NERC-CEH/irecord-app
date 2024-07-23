@@ -1,0 +1,19 @@
+// type attributes
+.menu-attr-item-type ion-label[slot='end'] {
+  max-width: 100% !important;
+
+  ion-badge[color='warning'] {
+    margin-top: 5px;
+    font-size: 1em;
+    font-weight: normal;
+    width: -webkit-fit-content;
+    width: fit-content;
+    background-color: rgba(var(--ion-color-warning-rgb), 0.15);
+    color: var(--ion-color-warning-dark);
+  }
+
+  ion-label:last-child {
+    // extra padding for italics
+    padding-right: 4px;
+  }
+}

@@ -29,8 +29,7 @@ const useAttributeLockingTip = (sample: Sample) => {
     if (shownLockingSwipeTip) return;
 
     const [occ] = sample.occurrences;
-    const hasLockableAttributes =
-      occ && (occ.attrs.comment || occ.attrs.stage || occ.attrs.sex);
+    const hasLockableAttributes = occ && (occ.attrs.comment || occ.attrs.stage);
 
     if (!hasLockableAttributes) return;
 

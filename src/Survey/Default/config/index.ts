@@ -3,7 +3,6 @@ import mergeWith from 'lodash.mergewith';
 import * as Yup from 'yup';
 import fingerprintIcon from 'common/images/fingerprint.svg';
 import radarIcon from 'common/images/radar.svg';
-import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import targetIcon from 'common/images/target.svg';
@@ -24,6 +23,7 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
   recorderAttr,
+  verifyTypeSchema,
 } from 'Survey/common/config';
 /*import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
@@ -213,7 +213,7 @@ const survey: Survey = {
       },
 
       stage: {
-        menuProps: { label:'Life Stage/Sex', icon: fingerprintIcon },
+        menuProps: { label: 'Life Stage/Sex', icon: fingerprintIcon },
         pageProps: {
           attrProps: {
             input: 'radio',
@@ -234,9 +234,10 @@ const survey: Survey = {
           },
         },
         remote: { id: 1811, values: methodOptions },
+      },
 
       type: {
-        menuProps: { icon: progressIcon },
+        menuProps: { icon: progressIcon, label: 'Type' },
         pageProps: {
           attrProps: {
             input: 'radio',

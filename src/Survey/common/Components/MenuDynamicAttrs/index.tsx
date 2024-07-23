@@ -1,11 +1,12 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react';
+import { useRouteMatch } from 'react-router';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
-import { useRouteMatch } from 'react-router';
+import MenuTypeItem from 'Survey/common/Components/MenuTypeItem';
 import './styles.scss';
 
 type Model = Sample | Occurrence;
@@ -30,6 +31,14 @@ const MenuDynamicAttrs: FC<Props> = ({
     }
 
     return <MenuTaxonItem key={element} occ={occ} />;
+  };
+
+  const getTypeAttr = (element: any, occ: Occurrence) => {
+    if (!(occ instanceof Occurrence)) {
+      throw new Error('Invalid type attr configuration');
+    }
+
+    return <MenuTypeItem key={element} occ={occ} />;
   };
 
   const getAttrParts = (element: any) => {
@@ -92,18 +101,10 @@ const MenuDynamicAttrs: FC<Props> = ({
       return getLocationAttr(element, selectedModel, attrConfig);
     }
 
-    const routerLink = getRouterLink(element, selectedModel);
+    if (attrName === 'type')
+      return getTypeAttr(element, selectedModel as Occurrence);
 
-    if (skipLocks)
-      return (
-        <MenuAttr
-          key={element}
-          model={selectedModel}
-          attr={attrName}
-          className="menu-attr-item"
-          itemProps={{ routerLink }}
-        />
-      );
+    const routerLink = getRouterLink(element, selectedModel);
 
     return (
       <MenuAttr.WithLock

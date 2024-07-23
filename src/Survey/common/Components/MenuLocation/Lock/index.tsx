@@ -1,5 +1,13 @@
 import { FC, useRef } from 'react';
 import { observer } from 'mobx-react';
+import clsx from 'clsx';
+import {
+  lockOpenOutline,
+  lockClosedOutline,
+  chevronForwardOutline,
+} from 'ionicons/icons';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { useToast, useAlert } from '@flumens';
 import {
   IonLabel,
   IonIcon,
@@ -8,16 +16,8 @@ import {
   IonItemOptions,
   isPlatform,
 } from '@ionic/react';
-import Sample from 'models/sample';
 import appModel from 'models/app';
-import { useToast, useAlert } from '@flumens';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import {
-  lockOpenOutline,
-  lockClosedOutline,
-  chevronForwardOutline,
-} from 'ionicons/icons';
-import clsx from 'clsx';
+import Sample from 'models/sample';
 import MenuLocation from '..';
 import './styles.scss';
 
