@@ -32,15 +32,7 @@ import dragonfliesSurvey from './dragonflies';
 import mothsSurvey from './moths';
 import plantFungiSurvey from './plantFungi';
 
-export const taxonGroupSurveys = {
-  arthropods: arthropodSurvey,
-  dragonflies: dragonfliesSurvey,
-  bryophytes: bryophytesSurvey,
-  butterflies: butterfliesSurvey,
-  moths: mothsSurvey,
-  'plants-fungi': plantFungiSurvey,
-  birds: birdsSurvey,
-};
+export const taxonGroupSurveys = {};
 
 export function getTaxaGroupSurvey(taxaGroup: number) {
   type SpeciesSurvey = Pick<Survey, 'taxaGroups' | 'taxaPriority'>;
