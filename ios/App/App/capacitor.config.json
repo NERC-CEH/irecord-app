@@ -1,6 +1,6 @@
 {
-  "appId": "uk.ac.ceh.ir",
-  "appName": "iRecord App",
-  "webDir": "build",
-  "cordova": {}
+	"appId": "uk.ac.ceh.ir",
+	"appName": "ORKS App",
+	"webDir": "build",
+	"cordova": {}
 }
