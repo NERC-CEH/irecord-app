@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { date as DateHelp, device, PageProps, RemoteConfig } from '@flumens';
 import config from 'common/config';
 import progressIcon from 'common/images/progress-circles.svg';
+import radarIcon from 'common/images/radar.svg';
 import Media from 'models/media';
 import Occurrence, { Taxon } from 'models/occurrence';
 import Sample from 'models/sample';
@@ -87,6 +88,33 @@ export const activityAttr = {
     parse: (value: any) => value?.title,
   },
   remote: { id: 'group_id', values: (activity: any) => activity.id },
+};
+
+const methodOptions = [
+  { label: 'Not recorded', value: null, isDefault: true },
+  { value:'Auditory record', id: 21965 },  
+  { value:'Bat detector', id: 21947 },   
+  { value:'Camera trap', id: 21948 },   
+  { value:'Kick sample', id: 21967 },   
+  { value:'Light trap', id: 21949 },   
+  { value:'Net trap', id: 21950 },   
+  { value:'Trap', id: 21951 },   
+  { value:'Visual observation', id: 21952 },  
+];
+
+export const methodAttr = {
+  menuProps: {
+    icon: radarIcon,
+    
+  },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please select the method used to collect the record.',
+      inputProps: { options: methodOptions },
+    },
+  },
+  remote: { id: 1811, values: methodOptions },
 };
 
 export const recorderAttr = {

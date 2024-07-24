@@ -2,7 +2,6 @@
 import mergeWith from 'lodash.mergewith';
 import * as Yup from 'yup';
 import fingerprintIcon from 'common/images/fingerprint.svg';
-import radarIcon from 'common/images/radar.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import targetIcon from 'common/images/target.svg';
@@ -23,7 +22,7 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
   recorderAttr,
-  verifyTypeSchema,
+  methodAttr,
 } from 'Survey/common/config';
 /*import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
@@ -74,18 +73,6 @@ const stageOptions = [
   { value: 'Other (please add to comments)', id: 3414 },
 ];
 
-const methodOptions = [
-  { label: 'Not recorded', value: null, isDefault: true },
-  { value:'Auditory record', id: 21965 },  
-  { value:'Bat detector', id: 21947 },   
-  { value:'Camera trap', id: 21948 },   
-  { value:'Kick sample', id: 21967 },   
-  { value:'Light trap', id: 21949 },   
-  { value:'Net trap', id: 21950 },   
-  { value:'Trap', id: 21951 },   
-  { value:'Visual observation', id: 21952 },  
-];
-
 const typeOptions = [
   { value: 'Bat Breeding Roost', id: 5296 },
   { value: 'Bat Detected', id: 5299 },
@@ -130,7 +117,6 @@ const survey: Survey = {
     },
     'occ:stage',
     'occ:type',
-    'occ:method',
     'occ:identifiers',
     'occ:sensitivity_precision',
   ],
@@ -145,6 +131,8 @@ const survey: Survey = {
     recorders: recorderAttr,
 
     activity: activityAttr,
+
+    method: methodAttr,
   },
 
   verify(attrs: any) {
@@ -222,18 +210,6 @@ const survey: Survey = {
           },
         },
         remote: { id: 218, values: stageOptions },
-      },
-      
-      method: {
-        menuProps: { icon: radarIcon },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            info: 'Please select the method used to collect the record.',
-            inputProps: { options: methodOptions },
-          },
-        },
-        remote: { id: 1811, values: methodOptions },
       },
 
       type: {
