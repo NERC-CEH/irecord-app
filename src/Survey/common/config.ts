@@ -37,7 +37,7 @@ export const verifyLocationSchema = Yup.mixed().test(
 const typeSchema = Yup.string().defined();
 
 const validateType = (val: any) => {
-  try {console.log('type', val)
+  try {
     typeSchema.validateSync(val);
     return true;
   } catch (e) {
@@ -158,6 +158,7 @@ export const coreAttributes = [
   'smp:recorder',
   'occ:comment',
   'smp:activity',
+  'smp:method',
 ];
 
 export const taxonAttr = {

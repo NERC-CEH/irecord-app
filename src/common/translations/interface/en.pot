@@ -943,6 +943,18 @@ msgstr "You have no previous locations."
 msgid "Sex"
 msgstr "Sex"
 
+msgid "Type"
+msgstr "Type"
+
+msgid "Life Stage/Sex"
+msgstr "Life Stage/Sex"
+
+msgid "Identifiers"
+msgstr "Identifiers"
+
+msgid "Sensitivity"
+msgstr "Sensitivity"
+
 msgid "Mixed"
 msgstr "Mixed"
 

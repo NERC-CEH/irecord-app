@@ -18,7 +18,7 @@ const MenuTypeItem: FC<Props> = ({ occ, label = 'Type' }) => {
   const { url } = useRouteMatch();
 
   const { type } = occ.attrs;
-  console.log('type', type);
+
   const empty = type === '' || type === undefined;
 
   const occPath = url.includes('/occ/') ? '' : `occ/${occ.cid}/`;

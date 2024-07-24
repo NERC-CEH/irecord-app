@@ -15,6 +15,7 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
   assignParentLocationIfMissing,
+  methodAttr,
 } from 'Survey/common/config';
 
 function appendLockedAttrs(sample: AppSample) {
@@ -66,6 +67,8 @@ const survey: Survey = {
     comment: commentAttr,
 
     activity: activityAttr,
+
+    method: methodAttr,
 
     date: {
       ...dateAttr,

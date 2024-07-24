@@ -23,6 +23,7 @@ import {
   makeSubmissionBackwardsCompatible,
   recorderAttr,
   methodAttr,
+  verifyTypeSchema,
 } from 'Survey/common/config';
 /*import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
@@ -116,6 +117,7 @@ const survey: Survey = {
       group: ['occ:number', 'occ:number-ranges'],
     },
     'occ:stage',
+    'smp:method',
     'occ:type',
     'occ:identifiers',
     'occ:sensitivity_precision',
@@ -233,7 +235,7 @@ const survey: Survey = {
             inputProps: { options: sensitivityOptions },
           },
         },
-        remote: { id: 105, values: sensitivityOptions },
+        remote: { values: sensitivityOptions },
       },
       comment: commentAttr,
     },
@@ -242,6 +244,9 @@ const survey: Survey = {
         Yup.object()
           .shape({
             taxon: Yup.object().nullable().required('Species is missing.'),
+          })
+          .shape({
+            type: verifyTypeSchema,
           })
           .validateSync(attrs, { abortEarly: false });
       } catch (attrError) {
