@@ -1,5 +1,4 @@
 import { clipboardOutline } from 'ionicons/icons';
-import landIcon from 'common/images/land.svg';
 import genderIcon from 'common/images/gender.svg';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from 'Survey/common/config';
@@ -35,7 +34,7 @@ const survey: Partial<Survey> & { taxa: string } = {
 
   attrs: {
     habitat: {
-      menuProps: { icon: landIcon },
+      menuProps: { icon: genderIcon },
       pageProps: {
         attrProps: {
           input: 'radio',

@@ -1,5 +1,4 @@
 import numberIcon from 'common/images/number.svg';
-import landIcon from 'common/images/land.svg';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from 'Survey/common/config';
 
@@ -49,7 +48,7 @@ const survey: Partial<Survey> & { taxa: string } = {
 
   attrs: {
     site: {
-      menuProps: { icon: landIcon, label: 'Site type' },
+      menuProps: { icon: numberIcon, label: 'Site type' },
       pageProps: {
         attrProps: {
           input: 'radio',
