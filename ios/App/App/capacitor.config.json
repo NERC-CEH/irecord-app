@@ -1,5 +1,5 @@
 {
-	"appId": "uk.ac.ceh.ir",
+	"appId": "uk.org.orks.app",
 	"appName": "ORKS App",
 	"webDir": "build",
 	"cordova": {}
