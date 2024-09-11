@@ -1,17 +1,17 @@
 .gallery-modal ion-content .swiper .footer-container {
   h3 {
-    font-size: 1em;
-    font-weight: 600;
-    color: #fff;
-    text-align: left;
     margin: 8px 0 13px 5px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: left;
   }
 
   .id-loading {
     display: flex;
     align-self: center;
-    color: white;
     margin: 30px auto;
+    color: white;
     font-size: 0.8em;
 
     ion-spinner {
@@ -22,34 +22,34 @@
   }
 
   .re-identify-button {
-    width: fit-content;
     margin: 10px auto 0;
+    width: fit-content;
   }
 
   .species-array-wrapper {
+    display: flex;
     margin: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    display: flex;
 
     .species-array {
-      width: 100%;
-      overflow: auto;
       display: flex;
       flex: 1;
+      width: 100%;
       height: 70%;
+      overflow: auto;
 
       .species-tile {
-        padding: 10px 8px 0px 0;
-        height: 100px;
         display: flex;
-        justify-content: center;
         position: relative;
-        max-width: 90%;
+        justify-content: center;
         border-radius: 10px;
-        overflow: hidden;
+        padding: 10px 8px 0px 0;
         min-width: 31%;
+        max-width: 90%;
+        height: 100px;
+        overflow: hidden;
 
         &:first-of-type {
           margin-left: 10px;
@@ -60,47 +60,49 @@
         }
 
         .score {
-          width: 2.4em;
-          height: 2.4em;
-          background: #fff;
+          display: flex;
           position: absolute;
-          z-index: 99;
-          border-radius: 50%;
           top: 1px;
           right: 1px;
-          display: flex;
           justify-content: center;
           align-items: center;
+          z-index: 99;
+          border-radius: 50%;
+          background: #fff;
+          width: 2.4em;
+          height: 2.4em;
 
           &.success {
-            color: var(--ion-color-primary);
             border: 2px solid var(--ion-color-primary);
+            color: var(--ion-color-primary);
           }
 
           &.warning {
-            color: var(--ion-color-warning);
             border: 2px solid var(--ion-color-warning);
+            color: var(--ion-color-warning);
           }
 
           &.danger {
-            color: var(--ion-color-danger);
             border: 2px solid var(--ion-color-danger);
+            color: var(--ion-color-danger);
           }
 
           ion-label {
-            font-size: 0.7em;
             font-weight: 600;
+            font-size: 0.7em;
           }
         }
 
         .container {
-          position: relative;
-          background: white;
           display: flex;
+          position: relative;
           flex-direction: column;
-          border-radius: 10px;
-          width: 100%;
           align-items: center;
+          border-radius: 10px;
+          background: white;
+          width: 100%;
+
+          overflow: hidden;
 
           ion-icon {
             // TODO: remove once real pics are available
@@ -115,20 +117,20 @@
           }
 
           ion-label {
-            padding: 0 2px;
-            flex: 1;
-            text-align: center;
-            z-index: 10;
-            color: #121414;
-            font-weight: 500;
-            max-width: 95%;
             display: flex;
+            flex: 1;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
+            z-index: 10;
+            padding: 0 2px;
+            max-width: 95%;
             overflow: hidden;
-            font-size: 0.9em;
+            color: #121414;
+            font-weight: 500;
             font-weight: bolder;
+            font-size: 0.9em;
+            text-align: center;
 
             &.scientific {
               font-style: italic;
@@ -136,20 +138,18 @@
             }
           }
 
-          overflow: hidden;
-
           .species-thumbnail {
             z-index: 10;
-            padding: -20px 0 0 0;
             margin-top: -5px;
             margin: -5px -3% -10%;
+            padding: -20px 0 0 0;
             max-height: 90%;
           }
           img.species-thumbnail-background {
             position: absolute;
-            height: 100%;
-            width: 100%;
             top: 0;
+            width: 100%;
+            height: 100%;
           }
           div.species-thumbnail-background {
             position: absolute;
@@ -159,24 +159,24 @@
 
             img {
               position: absolute;
-              filter: blur(30px);
               transform: scale(2.5);
-              height: 100%;
+              filter: blur(30px);
               width: 100%;
+              height: 100%;
             }
           }
 
           .info-box {
             position: absolute;
-            right: 0;
             top: 0;
-            height: 100%;
-            width: 100%;
-            background: #fffffff0;
-            border-radius: 50%;
+            right: 0;
             transform: translate(50%, -50%);
-            box-shadow: 0 0 15px 5px #e6e6e6;
             z-index: 100;
+            box-shadow: 0 0 15px 5px #e6e6e6;
+            border-radius: 50%;
+            background: #fffffff0;
+            width: 100%;
+            height: 100%;
 
             ion-icon {
               width: 30%;
@@ -194,14 +194,14 @@
       }
 
       .img-placeholder {
-        background: #262626e3;
-        border-radius: 11px;
-        overflow: hidden;
-        width: 100%;
-        position: relative;
         display: flex;
+        position: relative;
         align-self: stretch;
         margin: 10px 5px 0px 5px;
+        border-radius: 11px;
+        background: #262626e3;
+        width: 100%;
+        overflow: hidden;
       }
     }
   }

@@ -12,14 +12,8 @@ import {
   megaphoneOutline,
 } from 'ionicons/icons';
 import { Trans as T, useTranslation } from 'react-i18next';
-import { Main, useAlert, InfoMessage, MenuAttrToggle } from '@flumens';
-import {
-  IonIcon,
-  IonList,
-  IonItemDivider,
-  IonItem,
-  IonLabel,
-} from '@ionic/react';
+import { Main, useAlert, InfoMessage, Toggle } from '@flumens';
+import { IonIcon, IonList, IonItem, IonLabel } from '@ionic/react';
 import config from 'common/config';
 import './styles.scss';
 
@@ -34,13 +28,11 @@ function useResetDialog(resetApp: any) {
           <T>
             Are you sure you want to reset the application to its initial state?
           </T>
-          <InfoMessage
-            color="danger"
-            icon={warningOutline}
-            className="destructive-warning"
-          >
-            This will wipe all the locally stored app data!
-          </InfoMessage>
+          <p>
+            <b>
+              <T>This will wipe all the locally stored app data!</T>
+            </b>
+          </p>
         </>
       ),
       buttons: [
@@ -65,11 +57,7 @@ function useUserDeleteDialog(deleteUser: any) {
       message: (
         <>
           <T>Are you sure you want to delete your account?</T>
-          <InfoMessage
-            color="danger"
-            icon={warningOutline}
-            className="destructive-warning"
-          >
+          <InfoMessage color="danger" prefix={<IonIcon src={warningOutline} />}>
             This will remove your account on the iRecord website. You will lose
             access to any records that you have previously submitted using the
             app or website.
@@ -171,23 +159,22 @@ const MenuMain = ({
   return (
     <Main>
       <IonList lines="full">
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>Location</T>
-        </IonItemDivider>
-        <div className="rounded">
+        </h3>
+        <div className="rounded-list">
           <IonItem routerLink="/settings/locations" detail>
             <IonIcon icon={locationOutline} size="small" slot="start" />
             <T>Manage Saved</T>
           </IonItem>
 
-          <MenuAttrToggle
-            icon={locationOutline}
+          <Toggle
+            prefix={<IonIcon src={locationOutline} className="size-6" />}
             label="Geolocate Survey Entries"
-            value={geolocateSurveyEntries}
+            defaultSelected={geolocateSurveyEntries}
             onChange={onGeolocateSurveyEntriesToggle}
           />
-
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             We will use GPS to obtain precise locations for species during
             Species List and Plant surveys.
           </InfoMessage>
@@ -200,29 +187,29 @@ const MenuMain = ({
             <IonLabel slot="end">{gridSquareUnit}</IonLabel>
           </IonItem>
 
-          <MenuAttrToggle
-            icon={megaphoneOutline}
+          <Toggle
+            prefix={<IonIcon src={megaphoneOutline} className="size-6" />}
             label="Grid Square Notifications"
-            value={useGridNotifications}
+            defaultSelected={useGridNotifications}
             onChange={onToggleGridNotifications}
           />
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             We will alert you when you enter a new grid square during Species
             List or Plant surveys.
           </InfoMessage>
         </div>
 
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>Application</T>
-        </IonItemDivider>
-        <div className="rounded">
-          <MenuAttrToggle
-            icon={cameraOutline}
+        </h3>
+        <div className="rounded-list">
+          <Toggle
+            prefix={<IonIcon src={cameraOutline} className="size-6" />}
             label="Suggest Species"
-            value={useSpeciesImageClassifier}
+            defaultSelected={useSpeciesImageClassifier}
             onChange={onUseImageClassifier}
           />
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             Use image recognition to identify species from your photos.
           </InfoMessage>
           {/* <IonItem routerLink="/settings/language">
@@ -236,13 +223,13 @@ const MenuMain = ({
             <IonLabel slot="end">{t(countries[country])}</IonLabel>
           </IonItem> */}
 
-          <MenuAttrToggle
-            icon={schoolOutline}
+          <Toggle
+            prefix={<IonIcon src={schoolOutline} className="size-6" />}
             label="Training Mode"
-            value={useTraining}
+            defaultSelected={useTraining}
             onChange={onTrainingModeToggle}
           />
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             Mark any new records as 'training' and exclude from all reports.
           </InfoMessage>
 
@@ -253,18 +240,18 @@ const MenuMain = ({
             onChange={onUseExperiments}
           />
 
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             Some features are in a trial state and are subject to change in
             future releases.
           </InfoMessage> */}
 
-          <MenuAttrToggle
-            icon={shareOutline}
+          <Toggle
             label="Share App Analytics"
-            value={sendAnalytics}
+            prefix={<IonIcon src={shareOutline} className="size-5" />}
             onChange={onSendAnalyticsToggle}
+            defaultSelected={sendAnalytics}
           />
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             Share app crash data so we can make the app more reliable.
           </InfoMessage>
         </div>
@@ -276,7 +263,7 @@ const MenuMain = ({
               <T>Remove Uploaded Surveys</T>
             </IonLabel>
           </IonItem>
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             You can remove uploaded surveys from this device.
           </InfoMessage>
 
@@ -286,7 +273,7 @@ const MenuMain = ({
               <T>Reset App</T>
             </IonLabel>
           </IonItem>
-          <InfoMessage color="dark">
+          <InfoMessage inline>
             You can reset the app data to its default settings.
           </InfoMessage>
 
@@ -298,7 +285,7 @@ const MenuMain = ({
                   <T>Delete account</T>
                 </IonLabel>
               </IonItem>
-              <InfoMessage color="dark">
+              <InfoMessage inline>
                 You can delete your user account from the system.
               </InfoMessage>
             </>

@@ -1,16 +1,16 @@
 .filter-select {
   min-height: fit-content;
   --padding-start: 19px;
-  max-width: fit-content;
-  margin-right: 6px;
-  border-radius: 25px;
-  font-size: 15px;
-  border: 1px solid var(--ion-item-border-color);
-  font-weight: 500;
-  max-width: -moz-fit-content;
   flex: 1 0 auto;
+  margin-right: 6px;
+  border: 1px solid var(--ion-item-border-color);
+  border-radius: 25px;
   background: var(--color-primary-100);
+  max-width: fit-content;
+  max-width: -moz-fit-content;
   color: var(--color-primary-900);
+  font-weight: 500;
+  font-size: 15px;
 
   --padding-start: 25px;
   --padding-end: 25px;

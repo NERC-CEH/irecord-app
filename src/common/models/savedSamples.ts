@@ -1,9 +1,9 @@
 import { initStoredSamples } from '@flumens';
-import { modelStore } from './store';
-import Sample from './sample';
-import userModel from './user';
 import appModel from './app';
+import Sample from './sample';
 import remotePullExtInit, { Verification } from './savedSamplesRemotePullExt';
+import { modelStore } from './store';
+import userModel from './user';
 
 console.log('SavedSamples: initializing');
 
@@ -42,5 +42,11 @@ export function removeAllSynced() {
 }
 
 remotePullExtInit(savedSamples, userModel, appModel);
+
+export function getPending() {
+  const byUploadStatus = (sample: Sample) => !sample.metadata.syncedOn;
+
+  return savedSamples.filter(byUploadStatus);
+}
 
 export default savedSamples;

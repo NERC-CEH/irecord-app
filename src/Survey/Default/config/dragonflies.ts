@@ -1,6 +1,6 @@
-import numberIcon from 'common/images/number.svg';
-import landIcon from 'common/images/land.svg';
 import { groupsReverse as groups } from 'common/data/informalGroups';
+import landIcon from 'common/images/land.svg';
+import numberIcon from 'common/images/number.svg';
 import { Survey } from 'Survey/common/config';
 
 const numRanges = [

@@ -1,12 +1,14 @@
 @mixin slide {
   flex-direction: column;
+  background-position: center;
+  background-size: cover;
 
   .slide-header {
-    background-size: cover;
-    height: 100%;
-    width: 100%;
     position: absolute;
     top: 0;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -15,32 +17,29 @@
     position: fixed !important;
     top: 0;
     left: 0;
+    background: white;
     width: 100vw;
     height: 100vh;
-    background: white;
 
     .message {
-      max-width: 100%;
       position: absolute;
-      background: white;
-      background-color: #ffffffe3;
-      max-width: 90%;
-      margin: 0 auto;
       -webkit-backdrop-filter: blur(5px);
       backdrop-filter: blur(5px);
+      margin: 0 auto;
       border-radius: 10px;
-      overflow: hidden;
+      background: white;
       background: rgb(255, 255, 255);
       background: linear-gradient(0deg, rgb(254, 255, 247) 0%, white 68%);
+      max-width: 90%;
+      overflow: hidden;
 
       p {
-        text-align: left;
-        font-size: 1.1em;
-        margin-bottom: 5px;
-        color: var(--ion-color-dark);
-        padding: 10px 20px 15px 20px;
         margin: 0;
+        padding: 10px 20px 15px 20px;
+        color: var(--ion-color-dark);
+        font-size: 1.1em;
         line-height: 1.5em;
+        text-align: left;
       }
     }
 
@@ -55,14 +54,14 @@
     }
 
     h2 {
-      letter-spacing: 2px;
-      font-size: 1.3rem;
       margin: 0;
-      text-align: center;
-      color: var(--ion-color-light);
       padding: 15px;
-      font-weight: bold;
+      color: var(--ion-color-light);
       color: var(--ion-color-primary);
+      font-weight: bold;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      text-align: center;
     }
 
     .swiper-pagination-bullets {
@@ -81,66 +80,61 @@
   }
 
   .app-name {
-    font-family: 'Museo300';
-    font-size: 25px;
-    font-weight: 400;
-    text-align: center;
+    position: absolute;
+    top: -16px;
+    left: 0;
+    z-index: 10000;
+    background: white;
+    padding: 10px;
+    padding-top: calc(var(--ion-safe-area-top, 0) + 10px);
+    width: 100%;
     color: black;
+    font-weight: 400;
+    font-size: 25px;
+    text-align: center;
 
     &.md {
       padding: 0;
     }
 
     b {
-      font-family: 'Museo700';
       color: var(--ion-color-primary);
     }
-
-    position: absolute;
-    top: -16px;
-    left: 0;
-    width: 100%;
-    z-index: 10000;
-    background: white;
-    padding: 10px;
-    padding-top: calc(var(--ion-safe-area-top, 0) + 10px);
   }
 
   .swiper-slide {
     @include slide;
-    background-size: cover;
-    background-position: center;
 
     .app-logo-wrapper {
-      background-color: #ffffff47;
       position: absolute;
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(5px);
+      background-color: #ffffff47;
+      background-color: rgba(255, 255, 255, 0.7);
+      width: 100%;
 
       img {
         display: block;
+        margin: 0 auto;
         padding: 30px;
         max-width: 90%;
-        margin: 0 auto;
       }
     }
 
     .slide-header {
-      max-width: 90%;
       background-position: center;
       padding-top: calc(var(--ion-safe-area-top, 0) + 10px);
+      max-width: 90%;
     }
 
     .message-container {
       position: absolute;
       bottom: 100px;
-      width: 100%;
-      background-color: #ffffffad;
-      max-width: 90%;
-      margin: 0 auto;
       backdrop-filter: blur(5px);
+      margin: 0 auto;
       border-radius: 10px;
+      background-color: #ffffffad;
+      width: 100%;
+      max-width: 90%;
     }
   }
 
@@ -155,11 +149,11 @@
     bottom: 0;
 
     ion-button {
-      height: 50px;
-      width: 50px;
       margin: 10px;
-      border-radius: 50%;
       box-shadow: 0 0 15px #00000099;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
     }
   }
 }

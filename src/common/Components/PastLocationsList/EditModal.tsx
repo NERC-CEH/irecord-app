@@ -1,4 +1,6 @@
-import { createRef, FC } from 'react';
+import { createRef } from 'react';
+import { Trans as T, useTranslation } from 'react-i18next';
+import { Main, useOnHideModal } from '@flumens';
 import {
   IonList,
   IonItem,
@@ -12,8 +14,6 @@ import {
   IonToggle,
   IonInput,
 } from '@ionic/react';
-import { Trans as T, useTranslation } from 'react-i18next';
-import { Main, useOnHideModal } from '@flumens';
 
 type Location = any;
 
@@ -22,7 +22,7 @@ type Props = {
   onLocationSave: any;
 };
 
-const EditModal: FC<Props> = ({ location, onLocationSave }) => {
+const EditModal = ({ location, onLocationSave }: Props) => {
   const { t } = useTranslation();
   const inputRef = createRef<any>();
 
@@ -39,7 +39,7 @@ const EditModal: FC<Props> = ({ location, onLocationSave }) => {
 
   const form = (
     <IonList className="location-edit-form">
-      <div className="rounded">
+      <div className="rounded-list">
         <IonItem>
           <IonLabel>{t('Name')}</IonLabel>
           <IonInput

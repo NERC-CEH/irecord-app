@@ -1,18 +1,15 @@
-import { FC, useContext } from 'react';
-import userModel from 'models/user';
-import { NavContext } from '@ionic/react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TypeOf } from 'zod';
 import { useToast, useLoader, Page, Header, device } from '@flumens';
+import { NavContext } from '@ionic/react';
+import userModel, { UserModel } from 'models/user';
 import Main from './Main';
-import './styles.scss';
 
-export type Details = {
-  password: string;
-  email: string;
-};
+type Details = TypeOf<typeof UserModel.loginSchema>;
 
-const LoginController: FC = () => {
-  const context = useContext(NavContext);
+const LoginController = () => {
+  const { navigate } = useContext(NavContext);
   const toast = useToast();
   const loader = useLoader();
   const { t } = useTranslation();
@@ -24,12 +21,10 @@ const LoginController: FC = () => {
       skipTranslation: true,
     });
 
-    context.navigate('/home/surveys', 'root');
+    navigate('/home/landing', 'root');
   };
 
-  async function onLogin(details: Details) {
-    const { email, password } = details;
-
+  async function onLogin({ email, password }: Details) {
     if (!device.isOnline) {
       toast.warn("Sorry, looks like you're offline.");
       return;
@@ -41,17 +36,27 @@ const LoginController: FC = () => {
       await userModel.logIn(email.trim(), password);
 
       onSuccessReturn();
-    } catch (err: any) {
-      toast.error(err);
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      }
+      console.error(err);
     }
 
     loader.hide();
   }
+  // ion-toolbar {
+  //   position: fixed;
+  //   ;
 
+  //   ion-back-button {
+  //     color: var(--ion-color-light-contrast);
+  //   }
+  // }
   return (
     <Page id="user-login">
-      <Header className="ion-no-border" />
-      <Main schema={userModel.loginSchema} onSubmit={onLogin} />
+      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]" />
+      <Main onSubmit={onLogin} />
     </Page>
   );
 };

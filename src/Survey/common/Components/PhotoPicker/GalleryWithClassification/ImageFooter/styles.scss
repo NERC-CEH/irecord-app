@@ -1,15 +1,15 @@
 .gallery-modal .footer-container {
   display: flex;
-  flex-direction: column;
-  width: 100%;
   position: fixed;
   bottom: 0;
+  flex-direction: column;
   background: #131313ed !important;
   padding-bottom: 26px;
+  width: 100%;
 
   .crop-button {
     align-self: end;
-    height: fit-content;
     margin-top: 20px;
+    height: fit-content;
   }
 }

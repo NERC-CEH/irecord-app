@@ -1,17 +1,17 @@
-import { FC, useEffect, useContext } from 'react';
-import { useAlert } from '@flumens';
-import appModel from 'models/app';
-import savedSamples from 'models/savedSamples';
-import Occurrence from 'models/occurrence';
+import { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T, useTranslation } from 'react-i18next';
+import { useAlert } from '@flumens';
 import { NavContext, IonItem, IonCheckbox, IonLabel } from '@ionic/react';
 import VerificationIcon from 'common/Components/VerificationStatus/VerificationIcon';
+import appModel from 'models/app';
+import Occurrence from 'models/occurrence';
+import savedSamples from 'models/savedSamples';
 import './styles.scss';
 
 let isPopupVisible = false;
 
-const UpdatedRecordsDialog: FC = () => {
+const UpdatedRecordsDialog = () => {
   const alert = useAlert();
   const { t } = useTranslation();
   const { navigate } = useContext(NavContext);

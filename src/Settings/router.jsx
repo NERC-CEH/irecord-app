@@ -1,8 +1,8 @@
 import { Route } from 'react-router-dom';
 import appModel from 'models/app';
 import userModel from 'models/user';
-import Menu from './Menu';
 import Locations from './Locations';
+import Menu from './Menu';
 import Survey from './Survey';
 
 export default [

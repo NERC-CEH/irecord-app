@@ -1,5 +1,5 @@
-import { Page, Header, Main, Section } from '@flumens';
 import { Trans as T } from 'react-i18next';
+import { Page, Header, Main, Section } from '@flumens';
 import brcLogo from './BRC_approved_logo.png';
 import './styles.scss';
 

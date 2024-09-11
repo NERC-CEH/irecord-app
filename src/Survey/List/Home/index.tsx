@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { Page, Header, useToast } from '@flumens';
 import { NavContext } from '@ionic/react';
@@ -6,15 +6,15 @@ import distance from '@turf/distance';
 import gridAlertService from 'common/helpers/gridAlertService';
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
-import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
-import PrimaryHeaderButton from 'Survey/common/Components/PrimaryHeaderButton';
+import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
+import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
 
 type Props = {
   sample: Sample;
 };
 
-const ListHome: FC<Props> = ({ sample }) => {
+const ListHome = ({ sample }: Props) => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
   const checkSampleStatus = useValidateCheck(sample);
@@ -54,12 +54,12 @@ const ListHome: FC<Props> = ({ sample }) => {
     !isSaved ? _processDraft() : _processSubmission();
 
   const finishButton = (
-    <PrimaryHeaderButton sample={sample} onClick={onFinish} />
+    <SurveyHeaderButton sample={sample} onClick={onFinish} />
   );
 
   const { training } = sample.attrs;
 
-  const subheader = !!training && <AppHeaderBand training />;
+  const subheader = !!training && <TrainingBand />;
 
   const { location } = sample.attrs;
 

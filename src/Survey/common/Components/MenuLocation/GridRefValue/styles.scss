@@ -1,8 +1,8 @@
 .gridref-label {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  max-width: 100%;
   margin-left: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   ion-spinner {
     width: 15px;

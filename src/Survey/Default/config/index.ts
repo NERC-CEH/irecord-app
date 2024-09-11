@@ -343,7 +343,7 @@ export function _getFullTaxaGroupSurvey(
     return undefined;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
   const { render, taxaGroups, ...defaultSurveyCopy } = survey;
   const mergedDefaultSurvey: Survey = mergeWith(
     {},

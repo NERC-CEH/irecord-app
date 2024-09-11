@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { useRouteMatch } from 'react-router';
 import { Page, Header, Main } from '@flumens';
@@ -19,7 +19,7 @@ const getNewSample = async (taxon: any) => {
   return newSample;
 };
 
-const Taxon: FC = () => {
+const Taxon = () => {
   const { navigate } = useContext(NavContext);
   const match = useRouteMatch();
 

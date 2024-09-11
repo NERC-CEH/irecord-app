@@ -1,4 +1,4 @@
-import { useRef, FC, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
 import { Taxon } from 'models/occurrence';
@@ -20,7 +20,7 @@ type Props = {
   suggestionsAreLoading?: boolean;
 };
 
-const TaxonSearch: FC<Props> = ({
+const TaxonSearch = ({
   onSpeciesSelected,
   recordedTaxa,
   informalGroups,
@@ -29,7 +29,7 @@ const TaxonSearch: FC<Props> = ({
   showEditButton,
   suggestedSpecies,
   suggestionsAreLoading,
-}) => {
+}: Props) => {
   const { t } = useTranslation();
 
   const inputEl = useRef<any>();

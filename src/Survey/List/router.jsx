@@ -1,9 +1,9 @@
-import ModelLocation from 'Survey/common/Components/ModelLocation';
+import { RouteWithModels, AttrPage } from '@flumens';
+import savedSamples from 'models/savedSamples';
 import Activity from 'Survey/common/Components/Activity';
+import ModelLocation from 'Survey/common/Components/ModelLocation';
 import StartNewSurvey from 'Survey/common/Components/StartNewSurvey';
 import Taxon from 'Survey/common/Components/Taxon';
-import savedSamples from 'models/savedSamples';
-import { RouteWithModels, AttrPage } from '@flumens';
 import ListHome from './Home';
 import OccurrenceHome from './OccurrenceHome';
 import survey from './config';

@@ -1,5 +1,5 @@
-import { Page, Main, Header } from '@flumens';
 import { observer } from 'mobx-react';
+import { Page, Main, Header } from '@flumens';
 import PastLocationsList from 'Components/PastLocationsList';
 
 const Container = () => (

@@ -1,9 +1,9 @@
 .attributes-list {
-  background-color: transparent;
   margin-top: 2px;
+  border-bottom: none;
+  background-color: transparent;
   // height: calc(100vh - 80px - 220px - 15px - 36px);
   overflow: auto;
-  border-bottom: none;
 
   ion-item {
     --background: var(--ion-color-light);

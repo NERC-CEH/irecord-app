@@ -1,18 +1,18 @@
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { NavContext } from '@ionic/react';
-import { useUserStatusCheck } from 'models/user';
-import AppHeaderBand from 'Survey/common/Components/AppHeaderBand';
-import PrimaryHeaderButton from 'Survey/common/Components/PrimaryHeaderButton';
 import { Page, useToast, Header } from '@flumens';
+import { NavContext } from '@ionic/react';
 import Sample, { useValidateCheck } from 'models/sample';
+import { useUserStatusCheck } from 'models/user';
+import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
+import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
 
 type Props = {
   sample: Sample;
 };
 
-const MothHome: FC<Props> = ({ sample }) => {
+const MothHome = ({ sample }: Props) => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
   const checkSampleStatus = useValidateCheck(sample);
@@ -46,7 +46,7 @@ const MothHome: FC<Props> = ({ sample }) => {
     !sample.metadata.saved ? _processDraft() : _processSubmission();
 
   const finishButton = (
-    <PrimaryHeaderButton sample={sample} onClick={onFinish} />
+    <SurveyHeaderButton sample={sample} onClick={onFinish} />
   );
 
   const onSubSampleDelete = async (subSample: Sample) => {
@@ -54,7 +54,7 @@ const MothHome: FC<Props> = ({ sample }) => {
   };
 
   const { training } = sample.attrs;
-  const subheader = !!training && <AppHeaderBand training />;
+  const subheader = !!training && <TrainingBand />;
 
   return (
     <Page id="survey-complex-moth-edit">

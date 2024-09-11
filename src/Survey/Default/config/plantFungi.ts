@@ -1,7 +1,7 @@
-import numberIcon from 'common/images/number.svg';
-import Sample from 'models/sample';
-import appModel from 'models/app';
 import { groupsReverse as groups } from 'common/data/informalGroups';
+import numberIcon from 'common/images/number.svg';
+import appModel from 'models/app';
+import Sample from 'models/sample';
 import { Survey } from 'Survey/common/config';
 
 const numberOptions = [

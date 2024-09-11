@@ -1,22 +1,21 @@
-import { FC, useContext } from 'react';
-import { useAlert, useToast } from '@flumens';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
+import { Trans as T } from 'react-i18next';
+import { Badge, useAlert, useToast } from '@flumens';
 import {
   IonItem,
   IonItemSliding,
   IonItemOptions,
   IonItemOption,
   NavContext,
-  IonBadge,
 } from '@ionic/react';
+import VerificationListStatus from 'common/Components/VerificationListStatus';
+import VerificationStatus from 'common/Components/VerificationStatus';
 import Sample, { useValidateCheck } from 'models/sample';
 import { useUserStatusCheck } from 'models/user';
-import { Trans as T } from 'react-i18next';
-import VerificationStatus from 'common/Components/VerificationStatus';
-import VerificationListStatus from 'common/Components/VerificationListStatus';
-import OnlineStatus from './components/OnlineStatus';
 import Attributes from './components/Attributes';
 import Location from './components/Location';
+import OnlineStatus from './components/OnlineStatus';
 import './styles.scss';
 
 function useSurveyDeletePrompt(sample: Sample) {
@@ -59,7 +58,7 @@ type Props = {
   style?: any;
 };
 
-const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
+const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
   const { navigate } = useContext(NavContext);
   const toast = useToast();
   const deleteSurvey = useSurveyDeletePrompt(sample);
@@ -102,24 +101,24 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
       <div className="survey-info">
         <div className="details">
           {taxon ? (
-            <div className="species">{taxon}</div>
+            <div className="overflow-hidden text-ellipsis whitespace-nowrap text-base font-bold">
+              {taxon}
+            </div>
           ) : (
-            <IonBadge className="species" color="warning">
-              <T>Species missing</T>
-            </IonBadge>
+            <Badge color="warning" size="small">
+              Species missing
+            </Badge>
           )}
 
-          <div className="core">
+          <div className="core py-1">
             <Location sample={sample} />
           </div>
 
-          <div className="attributes">
-            <Attributes
-              occ={occ}
-              isDefaultSurvey={isDefaultSurvey}
-              sample={sample}
-            />
-          </div>
+          <Attributes
+            occ={occ}
+            isDefaultSurvey={isDefaultSurvey}
+            sample={sample}
+          />
         </div>
       </div>
     );
@@ -176,9 +175,14 @@ const Survey: FC<Props> = ({ sample, style, uploadIsPrimary }) => {
       <VerificationListStatus sample={sample} />
     );
 
+  const openItem = () => {
+    if (sample.remote.synchronising) return; // fixes button onPressUp and other accidental navigation
+    navigate(href!);
+  };
+
   return (
     <IonItemSliding className="survey-list-item" style={style}>
-      <IonItem routerLink={href} detail={false}>
+      <IonItem onClick={openItem} detail={false}>
         <div className="survey-info-container">
           {activity && <div className="activity-band" />}
           {training && <div className="training-band" />}

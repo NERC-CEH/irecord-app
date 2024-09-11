@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-
-import { groups as speciesInformalGroups } from './informalGroups.js';
 import taxonCleaner from './clean.js';
-
 import {
   GENUS_ID_INDEX,
   GENUS_GROUP_INDEX,
@@ -17,6 +14,7 @@ import {
   GROUP,
   ID,
 } from './constants.js';
+import { groups as speciesInformalGroups } from './informalGroups.js';
 
 const enableWelsh = process.env.APP_WELSH;
 

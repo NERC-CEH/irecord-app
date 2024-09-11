@@ -1,38 +1,38 @@
 .photo-picker .img {
   .badge {
     position: absolute;
-    left: 2px;
     bottom: 2px;
+    left: 2px;
     padding: 3px;
   }
 
   .warning-icon {
     position: absolute;
-    left: 2px;
     bottom: 2px;
-    height: 20px;
-    width: 20px;
-    background: var(--classifier-unlikely-background);
-    color: var(--classifier-unlikely);
+    left: 2px;
     border-radius: 100%;
+    background: var(--classifier-unlikely-background);
+    width: 20px;
+    height: 20px;
+    color: var(--classifier-unlikely);
   }
 
   .success-icon {
     position: absolute;
-    left: 2px;
     bottom: 2px;
+    left: 2px;
+    border-radius: 100%;
     background: var(--classifier-success-background);
     color: var(--classifier-success);
-    border-radius: 100%;
   }
 
   ion-spinner {
     position: absolute;
-    left: 2px;
     bottom: 2px;
-    background: #ffffff94;
+    left: 2px;
     border-radius: 50%;
-    height: 1.1em;
+    background: #ffffff94;
     width: 1.1em;
+    height: 1.1em;
   }
 }

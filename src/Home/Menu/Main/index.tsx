@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
 import {
   settingsOutline,
@@ -13,35 +12,28 @@ import {
   openOutline,
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
-import { Main, InfoMessage, UserFeedbackRequest } from '@flumens';
-import {
-  IonIcon,
-  IonList,
-  IonItem,
-  IonItemDivider,
-  IonButton,
-} from '@ionic/react';
+import { Main, InfoMessage } from '@flumens';
+import { IonIcon, IonList, IonItem, IonButton } from '@ionic/react';
 import config from 'common/config';
 import { AppModel } from 'models/app';
-import savedSamples from 'models/savedSamples';
 import appLogo from './logo.svg';
 import './styles.scss';
 
-const shouldShowFeedback = (appModel: AppModel, isLoggedIn: boolean) => {
-  if (appModel.attrs.feedbackGiven) {
-    return false;
-  }
+// const shouldShowFeedback = (appModel: AppModel, isLoggedIn: boolean) => {
+//   if (appModel.attrs.feedbackGiven) {
+//     return false;
+//   }
 
-  if (appModel.attrs.useTraining) {
-    return false;
-  }
+//   if (appModel.attrs.useTraining) {
+//     return false;
+//   }
 
-  if (!isLoggedIn) {
-    return false;
-  }
+//   if (!isLoggedIn) {
+//     return false;
+//   }
 
-  return savedSamples.length > 5;
-};
+//   return savedSamples.length > 5;
+// };
 
 type Props = {
   logOut: any;
@@ -52,45 +44,45 @@ type Props = {
   appModel: AppModel;
 };
 
-const MenuMain: FC<Props> = ({
+const MenuMain = ({
   isLoggedIn,
   user,
   logOut,
   appModel,
   refreshAccount,
   resendVerificationEmail,
-}) => {
+}: Props) => {
   const lang = appModel.attrs.language;
 
   const isNotVerified = user.verified === false; // verified is undefined in old versions
   const userEmail = user.email;
 
-  const onFeedbackDone = () => {
-    // eslint-disable-next-line no-param-reassign
-    appModel.attrs.feedbackGiven = true;
-    appModel.save();
-  };
+  // const onFeedbackDone = () => {
+  //   // eslint-disable-next-line no-param-reassign
+  //   appModel.attrs.feedbackGiven = true;
+  //   appModel.save();
+  // };
 
-  const showFeedback = shouldShowFeedback(appModel, isLoggedIn);
+  // const showFeedback = shouldShowFeedback(appModel, isLoggedIn);
 
   return (
     <Main className="app-menu">
       <img src={appLogo} alt="app logo" />
 
-      <IonList lines="full">
-        {showFeedback && (
-          <div className="rounded">
+      <IonList lines="full" className="mb-4">
+        {/* {showFeedback && (
+          <div className="rounded-list">
             <UserFeedbackRequest
               email={config.feedbackEmail}
               onFeedbackDone={onFeedbackDone}
             />
           </div>
-        )}
+        )} */}
 
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>User</T>
-        </IonItemDivider>
-        <div className="rounded">
+        </h3>
+        <div className="rounded-list">
           {isLoggedIn && (
             <IonItem detail id="logout-button" onClick={logOut}>
               <IonIcon icon={exitOutline} size="small" slot="start" />
@@ -130,10 +122,10 @@ const MenuMain: FC<Props> = ({
           )}
         </div>
 
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>Info</T>
-        </IonItemDivider>
-        <div className="rounded">
+        </h3>
+        <div className="rounded-list">
           <IonItem routerLink="/info/about" detail>
             <IonIcon
               icon={informationCircleOutline}
@@ -168,10 +160,10 @@ const MenuMain: FC<Props> = ({
           </IonItem>
         </div>
 
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>App</T>
-        </IonItemDivider>
-        <div className="rounded">
+        </h3>
+        <div className="rounded-list">
           <IonItem routerLink="/settings/menu" detail>
             <IonIcon icon={settingsOutline} size="small" slot="start" />
             <T>Settings</T>

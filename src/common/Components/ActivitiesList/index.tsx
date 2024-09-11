@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { chevronDownOutline, informationCircleOutline } from 'ionicons/icons';
 import { Trans as T, useTranslation } from 'react-i18next';
@@ -10,7 +10,12 @@ import {
   useLoader,
   device,
 } from '@flumens';
-import { IonList, IonRefresher, IonRefresherContent } from '@ionic/react';
+import {
+  IonIcon,
+  IonList,
+  IonRefresher,
+  IonRefresherContent,
+} from '@ionic/react';
 import CONFIG from 'common/config';
 import { AppModel } from 'models/app';
 import Sample from 'models/sample';
@@ -25,7 +30,7 @@ type Props = {
   onSelect: any;
 };
 
-const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
+const Activities = ({ sample, userModel, appModel, onSelect }: Props) => {
   const toast = useToast();
   const loader = useLoader();
   const { t } = useTranslation();
@@ -139,14 +144,14 @@ const Activities: FC<Props> = ({ sample, userModel, appModel, onSelect }) => {
   return (
     <>
       <InfoMessage
-        icon={informationCircleOutline}
-        className="blue"
+        prefix={<IonIcon src={informationCircleOutline} className="size-6" />}
+        className="blue m-2"
         skipTranslation
       >
         <T>
           Click on the activity below which you would like to participate in.
         </T>
-        <InfoButton label="READ MORE" header="Activities">
+        <InfoButton label="READ MORE" header="Activities" color="dark">
           <p>
             <T>
               You can join in with more activities by visiting the{' '}

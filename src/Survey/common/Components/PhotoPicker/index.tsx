@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Capacitor } from '@capacitor/core';
 import {
   PhotoPicker,
@@ -53,11 +53,11 @@ const useOnBackButton = (onCancelEdit: () => void, editImage?: Media) => {
   useEffect(hideModal, [editImage]);
 };
 
-const AppPhotoPicker: FC<Props> = ({
+const AppPhotoPicker = ({
   model,
   allowToCrop = true,
   disableClassifier = false,
-}) => {
+}: Props) => {
   const [editImage, setEditImage] = useState<Media>();
   const toast = useToast();
 

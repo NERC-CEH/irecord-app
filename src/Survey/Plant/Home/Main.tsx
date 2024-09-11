@@ -1,13 +1,12 @@
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
-import { InfoMessage, Main } from '@flumens';
-import { IonButton, IonLabel, IonList } from '@ionic/react';
+import { Button, InfoMessage, Main } from '@flumens';
+import { IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
-import './styles.scss';
 
 type Props = {
   sample: Sample;
@@ -21,6 +20,7 @@ const PlantHomeMain = ({
   showChildSampleDistanceWarning,
 }: Props) => {
   const { url } = useRouteMatch();
+  const { navigate } = useContext(NavContext);
 
   const isDisabled = sample.isDisabled();
 
@@ -28,14 +28,14 @@ const PlantHomeMain = ({
     <Main>
       <IonList lines="full">
         {isDisabled && (
-          <div className="rounded">
+          <div className="rounded-list">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}
 
-        <div className="rounded">
+        <div className="rounded-list">
           {showChildSampleDistanceWarning && (
-            <InfoMessage color="warning">
+            <InfoMessage color="warning" inline>
               Some species are located far from the survey area. Please check
               that this is correct.
             </InfoMessage>
@@ -45,16 +45,13 @@ const PlantHomeMain = ({
       </IonList>
 
       {!isDisabled && (
-        <IonButton
+        <Button
           color="primary"
-          expand="block"
-          id="add"
-          routerLink={`${url}/taxon`}
+          className="mx-auto mb-2.5 mt-8"
+          onPress={() => navigate(`${url}/taxon`)}
         >
-          <IonLabel>
-            <T>Add Species</T>
-          </IonLabel>
-        </IonButton>
+          Add Species
+        </Button>
       )}
 
       <SpeciesList sample={sample} onDelete={onDelete} useSubSamples />

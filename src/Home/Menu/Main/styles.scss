@@ -4,14 +4,14 @@
   }
 
   #feedback-request {
-    border-radius: var(--theme-border-radius);
     box-shadow: none;
+    border-radius: var(--theme-border-radius);
   }
 
   .app-menu {
     img {
-      margin: 0 auto;
       display: block;
+      margin: 0 auto;
       height: 140px;
     }
 
@@ -27,13 +27,13 @@
       }
 
       ion-button {
+        float: right;
+        color: #000000;
         font-size: 0.9em;
+        --border-color: #000000;
         &.md {
           font-size: 0.7em;
         }
-        float: right;
-        color: #000000;
-        --border-color: #000000;
       }
     }
   }

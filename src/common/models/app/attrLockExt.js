@@ -1,13 +1,13 @@
 /* eslint-disable no-case-declarations */
+
 /** ****************************************************************************
  * App Model attribute lock functions.
  **************************************************************************** */
-
-import { coreAttributes } from 'Survey/common/config';
-import userModel from 'models/user';
+import { extendObservable, observe } from 'mobx';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
-import { extendObservable, observe } from 'mobx';
+import userModel from 'models/user';
+import { coreAttributes } from 'Survey/common/config';
 
 const isDAFOR = val =>
   ['Dominant', 'Abundant', 'Frequent', 'Occasional', 'Rare'].includes(val);

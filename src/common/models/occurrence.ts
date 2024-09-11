@@ -1,12 +1,12 @@
+import { IObservableArray } from 'mobx';
 import {
   Occurrence as OccurrenceOriginal,
   OccurrenceAttrs,
   OccurrenceMetadata,
   validateRemoteModel,
 } from '@flumens';
-import { IObservableArray } from 'mobx';
-import { Survey } from 'Survey/common/config';
 import { Taxon as SearchTaxon } from 'helpers/taxonSearch';
+import { Survey } from 'Survey/common/config';
 import Media, { ClassifierResult, ClassifierSuggestion } from './media';
 import Sample from './sample';
 

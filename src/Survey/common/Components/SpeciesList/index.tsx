@@ -1,17 +1,10 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
-import {
-  IonButton,
-  IonIcon,
-  IonList,
-  IonItemDivider,
-  IonLabel,
-} from '@ionic/react';
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
-import { InfoBackgroundMessage, useToast } from '@flumens';
 import { filterOutline } from 'ionicons/icons';
+import { InfoBackgroundMessage, useToast } from '@flumens';
+import { IonButton, IonIcon, IonList, IonLabel } from '@ionic/react';
 import appModel from 'models/app';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
 import SpeciesListItem from './SpeciesListItem';
 import './styles.scss';
 
@@ -50,7 +43,7 @@ type Props = {
   useSubSamples?: boolean;
 };
 
-const SpeciesList: FC<Props> = ({ onDelete, sample, useSubSamples }) => {
+const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
   const toast = useToast();
 
   const models = useSubSamples ? sample.samples : sample.occurrences;
@@ -102,12 +95,12 @@ const SpeciesList: FC<Props> = ({ onDelete, sample, useSubSamples }) => {
       </div>
 
       <IonList id="list" lines="full">
-        <div className="rounded">
-          <IonItemDivider className="species-list-header" mode="ios">
+        <div className="rounded-list">
+          <div className="list-divider species-list-header">
             <IonLabel>Count</IonLabel>
             <IonLabel>Species</IonLabel>
             <IonLabel>{speciesList.length}</IonLabel>
-          </IonItemDivider>
+          </div>
 
           {speciesList}
         </div>

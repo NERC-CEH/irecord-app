@@ -1,9 +1,9 @@
-import savedRecords from 'models/savedSamples';
 import GPS from 'mock-geolocation';
-import defaultSurvey from 'Survey/Default/config';
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
 import Media from 'models/media';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
+import savedRecords from 'models/savedSamples';
+import defaultSurvey from 'Survey/Default/config';
 
 const testing = {};
 
@@ -55,7 +55,12 @@ testing.records = {
       warehouse_id: 113813,
     };
 
-    const sample = await defaultSurvey.create(Sample, Occurrence, image, taxon);
+    const sample = await defaultSurvey.create({
+      Sample,
+      Occurrence,
+      image,
+      taxon,
+    });
 
     const randDate = new Date();
     randDate.setDate(Math.floor(Math.random() * 31));

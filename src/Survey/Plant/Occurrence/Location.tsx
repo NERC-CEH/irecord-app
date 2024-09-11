@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { useToast, locationToGrid } from '@flumens';
 import Sample from 'models/sample';
 import ModelLocation, {
@@ -10,7 +9,7 @@ type Props = {
   subSample?: Sample;
 };
 
-const ModelGridOccurrenceLocation: FC<Props> = ({ sample, subSample }) => {
+const ModelGridOccurrenceLocation = ({ sample, subSample }: Props) => {
   const toast = useToast();
   const model = subSample || sample;
 

@@ -1,8 +1,8 @@
+import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import appModel from 'models/app';
-import { groupsReverse as groups } from 'common/data/informalGroups';
 import { Survey } from 'Survey/common/config';
 
 const sex = [

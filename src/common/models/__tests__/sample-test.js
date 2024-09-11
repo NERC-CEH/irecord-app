@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import stringify from 'json-stable-stringify';
 import { initReactI18next } from 'react-i18next';
 import sinon from 'sinon';
-import { device, date as DateHelp } from '@flumens';
+import { device, dateFormat } from '@flumens';
 import config from 'common/config';
 import appModel from 'models/app';
 import Occurrence from 'models/occurrence';
@@ -41,7 +41,9 @@ describe('Sample', () => {
     const sample = new Sample({});
     const { date } = sample.attrs;
 
-    expect(DateHelp.print(date)).toBe(DateHelp.print(new Date()));
+    expect(dateFormat.format(new Date(date))).toBe(
+      dateFormat.format(new Date(new Date()))
+    );
   });
 
   it('should set training mode', async () => {

@@ -1,12 +1,11 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CreateAnimation } from '@ionic/react';
-import './styles.scss';
 
 type Props = {
   value: number;
 };
 
-const AnimatedNumber: FC<Props> = ({ value }: any) => {
+const AnimatedNumber = ({ value }: Props) => {
   const [initialised, setInitialised] = useState<boolean>(false);
   const first = useRef<any>();
 
@@ -32,7 +31,9 @@ const AnimatedNumber: FC<Props> = ({ value }: any) => {
         { property: 'background', fromValue: '#91a71c2b', toValue: '' },
       ]}
     >
-      <span className="animated-number">{value}</span>
+      <span className="flex h-full w-full items-center justify-center text-primary-800">
+        {value}
+      </span>
     </CreateAnimation>
   );
 };

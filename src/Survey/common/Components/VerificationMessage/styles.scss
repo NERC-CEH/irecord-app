@@ -10,8 +10,8 @@
     border: 1px solid rgba(var(--verification-success-rgb), 0.2);
 
     h2 {
-      color: var(--verification-success-dark) !important;
       margin-bottom: 20px;
+      color: var(--verification-success-dark) !important;
     }
 
     ion-icon,
@@ -27,8 +27,8 @@
     border: 1px solid rgba(var(--verification-plausible-rgb), 0.2);
 
     h2 {
-      color: var(--verification-plausible-dark) !important;
       margin-bottom: 20px;
+      color: var(--verification-plausible-dark) !important;
     }
 
     ion-icon,
@@ -44,8 +44,8 @@
     border: 1px solid rgba(var(--verification-rejected-rgb), 0.2);
 
     h2 {
-      color: var(--verification-rejected-dark) !important;
       margin-bottom: 20px;
+      color: var(--verification-rejected-dark) !important;
     }
 
     .h1,

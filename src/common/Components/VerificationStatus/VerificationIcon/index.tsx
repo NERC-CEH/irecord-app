@@ -1,13 +1,12 @@
-import { FC } from 'react';
-import { IonIcon } from '@ionic/react';
 import { checkmarkCircle, closeCircle } from 'ionicons/icons';
+import { IonIcon } from '@ionic/react';
 import './styles.scss';
 
 interface Props {
   status: 'verified' | 'plausible' | 'rejected';
 }
 
-const VerificationStatus: FC<Props> = ({ status }) => {
+const VerificationStatus = ({ status }: Props) => {
   let detailIcon;
   let idClass;
 

@@ -2,16 +2,19 @@
   ion-header ion-toolbar {
     --background: transparent;
 
+    position: fixed;
+    color: var(--ion-color-main);
+
     ion-segment {
+      z-index: 100000000;
+      margin: 8px auto;
+
+      box-shadow: -1px 2px 7px 0 #0000001a, 0 2px 9px 0 #3e396b1a;
+      border-radius: var(--theme-border-radius);
+      background: #fff;
       max-width: calc(
         100% - 20px
       ); // -20px to match the padding of the list below
-      margin: 8px auto;
-      z-index: 100000000;
-      border-radius: var(--theme-border-radius);
-      background: #fff;
-
-      box-shadow: -1px 2px 7px 0 #0000001a, 0 2px 9px 0 #3e396b1a;
 
       &[value='map'] {
         border-radius: var(--theme-border-radius);
@@ -34,13 +37,10 @@
       }
 
       ion-segment-button {
-        padding-left: 10px;
         padding-right: 10px;
+        padding-left: 10px;
       }
     }
-
-    position: fixed;
-    color: var(--ion-color-main);
   }
 
   ion-content {
@@ -48,54 +48,27 @@
     --overflow: hidden;
 
     ion-list {
-      height: 100%;
-      width: calc(100% - 20px);
-      padding: 0 !important;
-      max-width: 600px; // ipad
       margin: 0 auto;
+      padding: 0 !important;
+      width: calc(100% - 20px);
+      max-width: 600px; // ipad
+      height: 100%;
     }
 
     .upload-all-button {
-      margin: 10px auto;
-      height: 35px !important;
       display: block;
       position: absolute;
       right: 17px;
       bottom: 0;
-      overflow: hidden;
-      border-radius: var(--theme-border-radius);
+      margin: 10px auto;
       box-shadow: -1px 2px 7px 0 #0000001a, 0 2px 9px 0 #3e396b1a;
+      border-radius: var(--theme-border-radius);
+      height: 35px !important;
+      overflow: hidden;
 
       &.ios {
         font-size: 0.9em;
       }
     }
-
-    .info-background-message {
-      margin-top: 20vh;
-      margin-bottom: 10vh;
-    }
-  }
-
-  ion-item-divider {
-    padding: 0px 4px 0 12px;
-    background: #dae0da !important;
-    color: #001400;
-    border-radius: var(--theme-border-radius);
-  }
-}
-
-.info-background-message ion-icon,
-ion-alert .tip-icon {
-  --ionicon-stroke-width: 40px;
-  margin-bottom: -3px;
-
-  border-radius: 50% !important;
-  background: rgb(242, 242, 242) !important;
-  color: black !important;
-
-  &.with-background {
-    color: white !important;
-    background: var(--ion-color-primary) !important;
   }
 }

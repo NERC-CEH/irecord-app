@@ -9,12 +9,12 @@
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: calc(100% - 40px);
-    max-width: 400px;
-    padding: 15px;
     z-index: 1000;
+    border-radius: 20px;
 
     background: white;
-    border-radius: 20px;
+    padding: 15px;
+    width: calc(100% - 40px);
+    max-width: 400px;
   }
 }

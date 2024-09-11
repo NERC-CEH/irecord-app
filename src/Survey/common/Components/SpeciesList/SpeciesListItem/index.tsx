@@ -1,6 +1,8 @@
-import { FC } from 'react';
-import { useRouteMatch } from 'react-router';
 import { observer } from 'mobx-react';
+import { alertOutline } from 'ionicons/icons';
+import { Trans as T } from 'react-i18next';
+import { useRouteMatch } from 'react-router';
+import { useAlert } from '@flumens';
 import {
   IonItemOption,
   IonItemOptions,
@@ -8,12 +10,9 @@ import {
   IonItemSliding,
   IonIcon,
 } from '@ionic/react';
-import { useAlert } from '@flumens';
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
-import { Trans as T } from 'react-i18next';
-import { alertOutline } from 'ionicons/icons';
 import VerificationStatus from 'common/Components/VerificationStatus';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
 import IncrementalButton from 'Survey/common/Components/IncrementalButton';
 import './styles.scss';
 
@@ -72,12 +71,12 @@ type Props = {
   useSubSamples?: boolean;
 };
 
-const SpeciesListItem: FC<Props> = ({
+const SpeciesListItem = ({
   model,
   increaseCount,
   onDelete,
   useSubSamples,
-}) => {
+}: Props) => {
   const { url } = useRouteMatch();
 
   const isDisabled = model.isDisabled();

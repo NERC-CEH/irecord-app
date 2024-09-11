@@ -1,5 +1,14 @@
-import { FC, useRef } from 'react';
-import appModel from 'models/app';
+import { useRef } from 'react';
+import { observer } from 'mobx-react';
+import clsx from 'clsx';
+import {
+  lockOpenOutline,
+  lockClosedOutline,
+  chevronForwardOutline,
+  chevronDownOutline,
+} from 'ionicons/icons';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { useToast } from '@flumens';
 import {
   IonItemSliding,
   IonItemOptions,
@@ -7,20 +16,10 @@ import {
   IonIcon,
   isPlatform,
 } from '@ionic/react';
-import Sample from 'models/sample';
+import appModel from 'models/app';
 import Occurrence from 'models/occurrence';
-import { observer } from 'mobx-react';
-import { useToast } from '@flumens';
-import {
-  lockOpenOutline,
-  lockClosedOutline,
-  chevronForwardOutline,
-  chevronDownOutline,
-} from 'ionicons/icons';
-import clsx from 'clsx';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import Sample from 'models/sample';
 import MenuAttr from '..';
-
 import './styles.scss';
 
 type Props = {
@@ -121,8 +120,13 @@ export type MenuAttrWithLockProps = {
   itemProps?: any;
 };
 
-export const WithLock: FC<MenuAttrWithLockProps> = observer(
-  ({ model, attr, itemProps: itemPropsProp, ...other }) => {
+export const WithLock = observer(
+  ({
+    model,
+    attr,
+    itemProps: itemPropsProp,
+    ...other
+  }: MenuAttrWithLockProps) => {
     const isLocked = appModel.isAttrLocked(model, attr);
 
     // eslint-disable-next-line no-unused-expressions

@@ -8,12 +8,14 @@
 
     .ion-accordion-toggle-icon {
       display: block;
-      margin: 0;
-      font-size: 20px;
       opacity: 0.5;
+      margin-right: -6px;
+      margin-left: 10px;
+      font-size: 20px;
 
       &.ios {
         opacity: 0.3;
+        margin-left: 0;
       }
     }
 

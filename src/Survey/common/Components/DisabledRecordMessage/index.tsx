@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { Trans as T } from 'react-i18next';
 import { InfoMessage } from '@flumens';
 import { IonButton } from '@ionic/react';
@@ -10,16 +9,12 @@ interface Props {
   sample: Sample;
 }
 
-const DisabledRecordMessage: FC<Props> = ({ sample }) => {
+const DisabledRecordMessage = ({ sample }: Props) => {
   const [occ] = sample.occurrences;
   const hasOccId = parseInt(occ?.id || '', 10) > 0; // -1 in case couldn't retrieve
 
   return (
-    <InfoMessage
-      color="dark"
-      className="disabled-record-message"
-      skipTranslation
-    >
+    <InfoMessage className="disabled-record-message" skipTranslation>
       <T>
         This record has been submitted and cannot be edited within this App.
       </T>

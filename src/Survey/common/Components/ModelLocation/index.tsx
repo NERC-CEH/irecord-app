@@ -14,7 +14,7 @@ import {
   isValidLocation,
   useToast,
   Location,
-  RadioInputOption,
+  RadioOption,
 } from '@flumens';
 import { isPlatform } from '@ionic/core';
 import { useIonViewWillLeave } from '@ionic/react';
@@ -55,8 +55,8 @@ export const setModelLocation = async (
 };
 
 type Styles = 'satellite' | 'os' | 'os_explorer';
-export const useMapStyles = (): [Styles, any, RadioInputOption[]] => {
-  const layers: RadioInputOption[] = [
+export const useMapStyles = (): [Styles, any, RadioOption[]] => {
+  const layers: RadioOption[] = [
     {
       value: 'Map Type',
       isPlaceholder: true,
@@ -64,17 +64,17 @@ export const useMapStyles = (): [Styles, any, RadioInputOption[]] => {
     {
       label: 'Satellite',
       value: 'satellite',
-      icon: satelliteMapIcon,
+      prefix: <img src={satelliteMapIcon} className="-m-3 size-10" />,
     },
     {
       label: 'Ordnance Survey',
       value: 'os',
-      icon: standardMapIcon,
+      prefix: <img src={standardMapIcon} className="-m-3 size-10" />,
     },
     {
       label: 'Ordnance Survey (Explorer)',
       value: 'os_explorer',
-      icon: osMapIcon,
+      prefix: <img src={osMapIcon} className="-m-3 size-10" />,
     },
   ];
 

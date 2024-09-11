@@ -1,10 +1,9 @@
-import { FC } from 'react';
-import Media, { ClassifierSuggestion } from 'models/media';
+import { observer } from 'mobx-react';
+import clsx from 'clsx';
+import { Trans as T } from 'react-i18next';
 import { isPlatform, IonLabel, IonButton, IonSpinner } from '@ionic/react';
 import CONFIG from 'common/config';
-import { observer } from 'mobx-react';
-import { Trans as T } from 'react-i18next';
-import clsx from 'clsx';
+import Media, { ClassifierSuggestion } from 'models/media';
 import './styles.scss';
 
 type Props = {
@@ -15,7 +14,7 @@ type Props = {
 
 type SpeciesTileProps = { suggestion: ClassifierSuggestion; onClick: any };
 
-const SpeciesTile: FC<SpeciesTileProps> = ({ suggestion, onClick }) => {
+const SpeciesTile = ({ suggestion, onClick }: SpeciesTileProps) => {
   const { common_names, scientific_name, probability } = suggestion;
 
   const commonName = common_names[0];
@@ -47,11 +46,7 @@ const SpeciesTile: FC<SpeciesTileProps> = ({ suggestion, onClick }) => {
   );
 };
 
-const FooterMessage: FC<Props> = ({
-  image,
-  identifyImage,
-  onSpeciesSelect,
-}) => {
+const FooterMessage = ({ image, identifyImage, onSpeciesSelect }: Props) => {
   const identifierWasNotUsed = !image.attrs?.species;
   const speciesList = image.attrs?.species?.suggestions;
 

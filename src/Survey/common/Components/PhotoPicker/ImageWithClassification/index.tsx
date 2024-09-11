@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { FC } from 'react';
 import { observer } from 'mobx-react';
 import { alertCircleOutline, close } from 'ionicons/icons';
 import { IonIcon, IonButton, IonSpinner } from '@ionic/react';
@@ -15,7 +14,7 @@ type Props = {
   onClick: any;
 };
 
-const Image: FC<Props> = ({ media, isDisabled, onDelete, onClick }) => {
+const Image = ({ media, isDisabled, onDelete, onClick }: Props) => {
   const hasBeenIdentified = !!media.attrs?.species;
 
   const userSpeciesMatchesAI = media.getIdentifiedTaxonThatMatchParent();

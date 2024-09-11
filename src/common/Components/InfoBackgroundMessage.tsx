@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
 import { InfoBackgroundMessage } from '@flumens';
 import appModel, { Attrs } from 'models/app';
@@ -6,9 +5,10 @@ import appModel, { Attrs } from 'models/app';
 interface Props {
   name?: keyof Attrs;
   children: any;
+  className?: string;
 }
 
-const Message: FC<Props> = ({ name, children, ...props }) => {
+const Message = ({ name, children, ...props }: Props) => {
   if (name && !appModel.attrs[name]) {
     return null;
   }

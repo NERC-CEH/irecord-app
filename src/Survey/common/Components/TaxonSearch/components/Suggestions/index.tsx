@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { Trans as T } from 'react-i18next';
 import { hashCode } from '@flumens';
 import { IonList, IonItem, IonSpinner } from '@ionic/react';
@@ -122,14 +121,14 @@ type Props = {
   showEditButton?: boolean;
 };
 
-const Suggestions: FC<Props> = ({
+const Suggestions = ({
   searchResults,
   showEditButton,
   searchPhrase,
   onSpeciesSelected,
   suggestedSpecies,
   suggestionsAreLoading,
-}) => {
+}: Props) => {
   const getSuggestion = (species: Taxon) => {
     const key = hashCode(JSON.stringify(species));
     return (

@@ -1,12 +1,12 @@
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { NavContext } from '@ionic/react';
-import { Page, Attr, Header, Main, gridrefAccuracy } from '@flumens';
 import { useTranslation } from 'react-i18next';
+import { Page, Attr, Header, Main, gridrefAccuracy } from '@flumens';
+import { NavContext } from '@ionic/react';
 import appModel from 'models/app';
 import './styles.scss';
 
-const GridType: FC = () => {
+const GridType = () => {
   const { goBack } = useContext(NavContext);
   const { t } = useTranslation();
 

@@ -1,19 +1,19 @@
 .map-control-past-locations {
-  height: 41px;
-  width: 41px;
-  margin: 15px 10px;
-  background: white;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 17px #0000003b, 0 0 7px #00000063;
-  padding: 3px;
   transition-duration: 0.4s;
+  margin: 15px 10px;
+  box-shadow: 0 0 17px #0000003b, 0 0 7px #00000063;
+  border-radius: 50%;
+  background: white;
+  padding: 3px;
+  width: 41px;
+  height: 41px;
 
   &:active {
-    background: #c7c7c7;
     transform: scale(90%);
+    background: #c7c7c7;
   }
 
   ion-icon {

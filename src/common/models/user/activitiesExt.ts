@@ -2,10 +2,10 @@
  * App Model activities functions.
  **************************************************************************** */
 import { observable } from 'mobx';
-import config from 'common/config';
 import axios, { AxiosRequestConfig } from 'axios';
-import { HandledError, isAxiosNetworkError } from '@flumens';
 import * as Yup from 'yup';
+import { HandledError, isAxiosNetworkError } from '@flumens';
+import config from 'common/config';
 
 export interface Activity {
   id: any;

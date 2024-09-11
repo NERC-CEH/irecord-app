@@ -3,3 +3,7 @@ div.rounded ion-item.photo-picker.with-cropper {
   --border-radius: var(--theme-border-radius);
   border-radius: var(--theme-border-radius);
 }
+
+ion-button[hidden] {
+  display: block;
+}

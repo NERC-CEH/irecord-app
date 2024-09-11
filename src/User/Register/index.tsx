@@ -1,26 +1,21 @@
-import { FC, useContext } from 'react';
-import userModel from 'models/user';
-import { NavContext } from '@ionic/react';
+import { useContext } from 'react';
 import { Trans as T } from 'react-i18next';
+import { TypeOf } from 'zod';
 import { Page, Header, device, useToast, useAlert, useLoader } from '@flumens';
+import { NavContext } from '@ionic/react';
+import userModel, { UserModel } from 'models/user';
 import Main from './Main';
-import './styles.scss';
 
-export type Details = {
-  password: string;
-  email: string;
-  firstName?: string | undefined;
-  secondName?: string | undefined;
-};
+type Details = TypeOf<typeof UserModel.registerSchema>;
 
-const RegisterContainer: FC = () => {
+const RegisterContainer = () => {
   const context = useContext(NavContext);
   const alert = useAlert();
   const toast = useToast();
   const loader = useLoader();
 
   const onSuccess = () => {
-    context.navigate('/home/surveys', 'root');
+    context.navigate('/home/landing', 'root');
   };
 
   async function onRegister(details: Details) {
@@ -49,8 +44,8 @@ const RegisterContainer: FC = () => {
         header: 'Welcome aboard',
         message: (
           <T>
-            Before submitting any records please check your email and click on
-            the verification link.
+            Before starting any surveys please check your email and click on the
+            verification link.
           </T>
         ),
         buttons: [
@@ -70,8 +65,8 @@ const RegisterContainer: FC = () => {
 
   return (
     <Page id="user-register">
-      <Header className="ion-no-border" />
-      <Main schema={userModel.registerSchema} onSubmit={onRegister} />
+      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]" />
+      <Main onSubmit={onRegister} />
     </Page>
   );
 };

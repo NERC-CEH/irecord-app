@@ -1,8 +1,8 @@
-import { FC } from 'react';
 import { createOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
-import { IonItem, IonButton, IonIcon } from '@ionic/react';
+import { IonItem, IonIcon } from '@ionic/react';
 import { groups as informalGroups } from 'common/data/informalGroups';
+import { Button } from 'common/flumens';
 import { Taxon } from 'models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 import './styles.scss';
@@ -58,24 +58,19 @@ type Props = {
   showEditButton?: boolean;
 };
 
-const Species: FC<Props> = ({
+const Species = ({
   species,
   searchPhrase,
   showEditButton,
   onSelect,
-}) => {
+}: Props) => {
   const prettyName = prettifyName(species, searchPhrase);
   const group = (informalGroups as any)[species.group];
-
-  const onClickWrap = (e: any) => {
-    const pressedEditShortcut = e.target.tagName === 'ION-BUTTON';
-    onSelect(species, pressedEditShortcut);
-  };
 
   const { probability } = species;
 
   return (
-    <IonItem className="search-result" onClick={onClickWrap}>
+    <IonItem className="search-result" onClick={() => onSelect(species)}>
       <div className="flex w-full items-center">
         {probability && (
           <div className="probability">
@@ -90,14 +85,14 @@ const Species: FC<Props> = ({
         </span>
 
         {showEditButton && (
-          <IonButton
-            className="edit-shortcut"
+          <Button
+            className="right-0 w-1/5 max-w-[80px] rounded-none border-0 border-l border-solid border-l-gray-300"
             slot="end"
             fill="clear"
-            color="medium"
+            onPress={() => onSelect(species, true)}
           >
             <IonIcon slot="icon-only" icon={createOutline} mode="md" />
-          </IonButton>
+          </Button>
         )}
       </div>
     </IonItem>

@@ -1,10 +1,9 @@
-import { FC } from 'react';
-import StringHelp from 'helpers/string';
-import appModel from 'models/app';
 import { observer } from 'mobx-react';
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
 import { Trans as T } from 'react-i18next';
+import appModel from 'models/app';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
+import StringHelp from 'helpers/string';
 
 type Props = {
   occ: Occurrence;
@@ -12,7 +11,7 @@ type Props = {
   isDefaultSurvey: boolean;
 };
 
-const Attributes: FC<Props> = ({ occ, sample, isDefaultSurvey }) => {
+const Attributes = ({ occ, sample, isDefaultSurvey }: Props) => {
   let number = StringHelp.limit(occ.attrs.number);
   if (!number) {
     number = StringHelp.limit(occ.attrs['number-ranges']);
@@ -25,7 +24,11 @@ const Attributes: FC<Props> = ({ occ, sample, isDefaultSurvey }) => {
   const stageLocked = appModel.isAttrLocked(occ, 'stage');
 
   const commentComponent = (
-    <span className={`comment ${commentLocked ? 'locked' : ''}`}>
+    <span
+      className={`mr-2.5 w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm ${
+        commentLocked ? 'locked' : ''
+      }`}
+    >
       {comment}
     </span>
   );
@@ -36,14 +39,14 @@ const Attributes: FC<Props> = ({ occ, sample, isDefaultSurvey }) => {
   }
 
   return (
-    <>
-      <span className={`number ${numberLocked ? 'locked' : ''}`}>{number}</span>
-      <span className={`stage ${stageLocked ? 'locked' : ''}`}>
+    <div className="flex flex-nowrap text-sm [&>*:not(:empty)]:mr-2">
+      <span className={`${numberLocked ? 'locked' : ''}`}>{number}</span>
+      <span className={`${stageLocked ? 'locked' : ''}`}>
         <T>{stage}</T>
       </span>
 
       {commentComponent}
-    </>
+    </div>
   );
 };
 

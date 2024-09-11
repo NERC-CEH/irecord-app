@@ -1,12 +1,11 @@
-import { FC } from 'react';
+import { observer } from 'mobx-react';
 import { Page, Main, useToast } from '@flumens';
 import appModel from 'models/app';
 import userModel from 'models/user';
-import { observer } from 'mobx-react';
 import ActivitiesList from 'Components/ActivitiesList';
 import './styles.scss';
 
-const Container: FC = () => {
+const Container = () => {
   const toast = useToast();
 
   const onSelect = (activityID: string) => {

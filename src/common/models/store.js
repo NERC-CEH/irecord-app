@@ -1,5 +1,5 @@
-import { isPlatform } from '@ionic/react';
 import { Store } from '@flumens';
+import { isPlatform } from '@ionic/react';
 
 const isDemo = !isPlatform('hybrid');
 

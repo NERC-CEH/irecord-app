@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import {
   useToast,
   checkGridType,
@@ -30,7 +29,7 @@ type Props = {
   subSample?: Sample;
 };
 
-const ModelGridLocation: FC<Props> = ({ sample, subSample }) => {
+const ModelGridLocation = ({ sample, subSample }: Props) => {
   const toast = useToast();
 
   const model = subSample || sample;

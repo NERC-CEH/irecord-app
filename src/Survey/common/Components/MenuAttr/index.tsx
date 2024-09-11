@@ -1,19 +1,19 @@
-import { FC, Fragment } from 'react';
+import { Fragment } from 'react';
+import { observer } from 'mobx-react';
+import clsx from 'clsx';
 import { useRouteMatch } from 'react-router';
-import { IonItem } from '@ionic/react';
 import {
   Attr,
   MenuAttrItem,
-  MenuAttrToggle,
-  date as dateHelp,
   MenuAttrItemProps,
   AttrProps,
+  Toggle,
+  getRelativeDate,
 } from '@flumens';
-import Sample from 'models/sample';
+import { IonIcon, IonItem } from '@ionic/react';
 import Occurrence from 'models/occurrence';
-import { observer } from 'mobx-react';
-import clsx from 'clsx';
-import { WithLock, LockConfig, MenuAttrWithLockProps } from './Lock';
+import Sample from 'models/sample';
+import { WithLock, LockConfig } from './Lock';
 import './styles.scss';
 
 function parseValue(value: any, parse: any, model: Sample | Occurrence) {
@@ -25,7 +25,7 @@ function parseValue(value: any, parse: any, model: Sample | Occurrence) {
   if (!value) return null;
 
   if (parse === 'date') {
-    return dateHelp.print(value);
+    return getRelativeDate(value);
   }
 
   if (value instanceof Array) {
@@ -57,13 +57,7 @@ export type Config = Omit<MenuAttrItemProps, 'type'> &
     skipValueTranslation?: boolean;
   };
 
-const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
-  attr,
-  model,
-  onChange,
-  itemProps,
-  className,
-}) => {
+const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
   const match = useRouteMatch();
 
   const survey = model.getSurvey();
@@ -108,10 +102,10 @@ const MenuAttr: FC<Props> & { WithLock: FC<MenuAttrWithLockProps> } = ({
     delete itemProps?.routerLink;
 
     return (
-      <MenuAttrToggle
+      <Toggle
         value={get ? get(model) : value}
         label={label}
-        icon={icon}
+        icon={<IonIcon src={icon as string} className="size-6" />}
         onChange={onAttrToggle}
         disabled={isDisabled}
         {...itemProps}

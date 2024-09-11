@@ -23,7 +23,7 @@ export type Attrs = ModelAttrs & {
   shownLockingSwipeTip: boolean;
   showPastLocationsTip: boolean;
   feedbackGiven: boolean;
-  taxonGroupFilters: any[];
+  taxonGroupFilters: number[];
   searchNamesOnly: '' | 'scientific' | 'common';
   sendAnalytics: boolean;
   appSession: number;
@@ -93,18 +93,6 @@ export class AppModel extends Model {
 
     Object.assign(this, PastLocationsExtension);
     Object.assign(this, AttributeLockExtension);
-  }
-
-  toggleTaxonFilter(filter: any) {
-    const { taxonGroupFilters } = this.attrs;
-    const index = taxonGroupFilters.indexOf(filter);
-    if (index >= 0) {
-      taxonGroupFilters.splice(index, 1);
-    } else {
-      taxonGroupFilters.push(filter);
-    }
-
-    this.save();
   }
 
   resetDefaults() {

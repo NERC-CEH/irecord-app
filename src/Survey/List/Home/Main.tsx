@@ -1,14 +1,13 @@
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
-import { InfoMessage, Main } from '@flumens';
-import { IonButton, IonLabel, IonList } from '@ionic/react';
+import { Button, InfoMessage, Main } from '@flumens';
+import { IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
-import './styles.scss';
 
 type Props = {
   sample: Sample;
@@ -22,6 +21,7 @@ const HomeMain = ({
   showChildSampleDistanceWarning,
 }: Props) => {
   const { url } = useRouteMatch();
+  const { navigate } = useContext(NavContext);
 
   // calculate unique taxa
   const uniqueTaxa: any = {};
@@ -40,23 +40,23 @@ const HomeMain = ({
 
   return (
     <Main>
-      <IonList lines="full">
+      <IonList lines="full" className="flex flex-col gap-4">
         {isDisabled && (
-          <div className="rounded">
+          <div className="rounded-list">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}
 
         {/* Only showing if pre-selected */}
         {activity && (
-          <div className="rounded">
+          <div className="rounded-list">
             <MenuAttr.WithLock model={sample} attr="activity" />
           </div>
         )}
 
-        <div className="rounded">
+        <div className="rounded-list">
           {showChildSampleDistanceWarning && (
-            <InfoMessage color="warning">
+            <InfoMessage color="warning" inline>
               Some species are located far from the survey area. Please check
               that this is correct.
             </InfoMessage>
@@ -66,16 +66,13 @@ const HomeMain = ({
       </IonList>
 
       {!isDisabled && (
-        <IonButton
+        <Button
           color="primary"
-          expand="block"
-          id="add"
-          routerLink={`${url}/taxon`}
+          className="mx-auto mb-2.5 mt-8"
+          onPress={() => navigate(`${url}/taxon`)}
         >
-          <IonLabel>
-            <T>Add Species</T>
-          </IonLabel>
-        </IonButton>
+          Add Species
+        </Button>
       )}
 
       <SpeciesList sample={sample} onDelete={onDelete} useSubSamples />

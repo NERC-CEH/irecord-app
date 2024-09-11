@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-export { default as ErrorBoundary } from '@flumens/ionic/dist/components/Main/ErrorBoundary';
-export { default as initAnalytics } from '@flumens/ionic/dist/utils/analytics';
+export { options as sentryOptions } from '@flumens/ionic/dist/utils/sentry';
 export { default as Main } from '@flumens/ionic/dist/components/Main';
 export { default as Page } from '@flumens/ionic/dist/components/Page';
 export { default as Header } from '@flumens/ionic/dist/components/Header';
@@ -23,26 +22,32 @@ export * from '@flumens/ionic/dist/components/Map/utils';
 export { default as Gallery } from '@flumens/ionic/dist/components/Gallery';
 export {
   default as RadioInput,
-  type Option as RadioInputOption,
-} from '@flumens/ionic/dist/components/RadioInput';
+  type RadioOption,
+} from '@flumens/tailwind/dist/components/Radio';
+export { default as CheckboxInput } from '@flumens/tailwind/dist/components/Checkbox';
+export { default as VirtualList } from '@flumens/ionic/dist/components/VirtualList';
+export {
+  default as Input,
+  type Props as InputProps,
+} from '@flumens/tailwind/dist/components/Input';
 export { default as PhotoPicker } from '@flumens/ionic/dist/components/PhotoPicker';
-export { default as date } from '@flumens/ionic/dist/utils/date';
+export * from '@flumens/ionic/dist/utils/date';
 export { default as device } from '@flumens/ionic/dist/utils/device';
 export * from '@flumens/ionic/dist/utils/uuid';
 export { useToast, useAlert, useLoader } from '@flumens/ionic/dist/hooks';
 export { default as Collapse } from '@flumens/ionic/dist/components/Collapse';
-export { default as InfoMessage } from '@flumens/ionic/dist/components/InfoMessage';
-export { default as LongPressButton } from '@flumens/ionic/dist/components/LongPressButton';
+export { default as InfoMessage } from '@flumens/tailwind/dist/components/InfoMessage';
+export { default as Badge } from '@flumens/tailwind/dist/components/Badge';
+export { default as Button } from '@flumens/tailwind/dist/components/Button';
 export { default as LongPressFabButton } from '@flumens/ionic/dist/components/LongPressFabButton';
-export { default as InfoBackgroundMessage } from '@flumens/ionic/dist/components/InfoBackgroundMessage';
+export { default as InfoBackgroundMessage } from '@flumens/tailwind/dist/components/InfoBackgroundMessage';
 export { default as InfoButton } from '@flumens/ionic/dist/components/InfoButton';
 export { default as Section } from '@flumens/ionic/dist/components/Section';
 export {
   default as MenuAttrItem,
   type Props as MenuAttrItemProps,
 } from '@flumens/ionic/dist/components/MenuAttrItem';
-export { default as MenuAttrItemFromModel } from '@flumens/ionic/dist/components/MenuAttrItemFromModel';
-export { default as MenuAttrToggle } from '@flumens/ionic/dist/components/MenuAttrToggle';
+export { default as Toggle } from '@flumens/tailwind/dist/components/Switch';
 export { default as ImageCropper } from '@flumens/ionic/dist/components/ImageCropper';
 export { default as ModelValidationMessage } from '@flumens/ionic/dist/components/ModelValidationMessage';
 export { default as Store } from '@flumens/ionic/dist/models/Store';
@@ -73,8 +78,7 @@ export {
   default as DrupalUserModel,
   type Attrs as DrupalUserModelAttrs,
 } from '@flumens/ionic/dist/models/DrupalUserModel';
-export { default as InputWithValidation } from '@flumens/ionic/dist/components/InputWithValidation';
-export { default as UserFeedbackRequest } from '@flumens/ionic/dist/components/UserFeedbackRequest';
+// export { default as UserFeedbackRequest } from '@flumens/ionic/dist/components/UserFeedbackRequest';
 export {
   useDisableBackButton,
   useOnBackButton,
@@ -90,3 +94,16 @@ export {
   type default as ElasticOccurrence,
   type Media as ElasticOccurrenceMedia,
 } from '@flumens/ionic/dist/models/Indicia/ElasticOccurrence.d';
+
+export {
+  default as TailwindContext,
+  type ContextValue as TailwindContextValue,
+} from '@flumens/tailwind/dist/components/Context';
+export {
+  type Block as BlockT,
+  type ChoiceValues,
+} from '@flumens/tailwind/dist/Survey';
+export {
+  default as TailwindBlockContext,
+  defaultContext,
+} from '@flumens/tailwind/dist/components/Block/Context';

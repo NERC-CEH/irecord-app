@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { IonSelect, IonSelectOption } from '@ionic/react';
 import './styles.scss';
 
@@ -18,7 +17,7 @@ type Props = {
   value: any;
 };
 
-const FilterSelect: FC<Props> = ({ options, onChange, value: valueProp }) => {
+const FilterSelect = ({ options, onChange, value: valueProp }: Props) => {
   const getOption = ({ value, label }: any) => (
     <IonSelectOption
       className="filter-option"

@@ -4,7 +4,7 @@ import {
   clipboardOutline,
 } from 'ionicons/icons';
 import * as Yup from 'yup';
-import { date as DateHelp, device, PageProps, RemoteConfig } from '@flumens';
+import { dateFormat, device, PageProps, RemoteConfig } from '@flumens';
 import config from 'common/config';
 import progressIcon from 'common/images/progress-circles.svg';
 import Media from 'models/media';
@@ -50,7 +50,7 @@ export const dateAttr = {
     },
   },
 
-  values: (date: any) => DateHelp.print(date, false),
+  values: (date: any) => dateFormat.format(new Date(date)),
 };
 
 export const commentAttr = {

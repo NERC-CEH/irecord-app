@@ -9,9 +9,6 @@
   font-weight: bold;
 
   .species-list-header {
-    background: #e6e6e6 !important;
-    color: #252525;
-
     padding-left: 7px;
     --inner-padding-end: 0;
 
@@ -21,11 +18,10 @@
     }
 
     ion-label {
-      width: 100%;
-      text-align: center;
-      font-family: 'Museo300';
-      font-weight: normal;
       margin-left: 0;
+      width: 100%;
+      font-weight: normal;
+      text-align: center;
 
       &:nth-of-type(2) {
         padding-left: 16px;

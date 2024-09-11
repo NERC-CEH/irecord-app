@@ -1,9 +1,7 @@
-import { FC } from 'react';
-import { IonSpinner } from '@ionic/react';
 import { observer } from 'mobx-react';
-import Sample from 'models/sample';
 import { prettyPrintLocation } from '@flumens';
-
+import { IonSpinner } from '@ionic/react';
+import Sample from 'models/sample';
 import './styles.scss';
 
 function getValue(sample: Sample) {
@@ -18,7 +16,7 @@ type Props = {
   sample: Sample;
 };
 
-const GridRefValue: FC<Props> = ({ sample }) => {
+const GridRefValue = ({ sample }: Props) => {
   const value = getValue(sample);
   if (!value) return null;
 

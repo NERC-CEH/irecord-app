@@ -1,29 +1,33 @@
-import { FC, useState, useContext, useEffect } from 'react';
-import Sample from 'models/sample';
+import { useState, useContext, useEffect } from 'react';
+import { observer } from 'mobx-react';
+import { addOutline, cameraOutline } from 'ionicons/icons';
+import { Trans as T } from 'react-i18next';
+import { useRouteMatch } from 'react-router-dom';
+import {
+  Page,
+  Main,
+  useToast,
+  getRelativeDate,
+  Badge,
+  VirtualList,
+} from '@flumens';
 import {
   IonHeader,
   IonToolbar,
   IonSegment,
   IonSegmentButton,
   IonLabel,
-  IonBadge,
   IonIcon,
   IonList,
   NavContext,
   IonButton,
-  IonItemDivider,
 } from '@ionic/react';
-import { useRouteMatch } from 'react-router-dom';
-import { observer } from 'mobx-react';
-import { Page, Main, date as DateHelp, useToast } from '@flumens';
-import userModel from 'models/user';
-import { Trans as T } from 'react-i18next';
 import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
+import Sample from 'models/sample';
 import savedSamples, { uploadAllSamples } from 'models/savedSamples';
-import { addOutline, cameraOutline } from 'ionicons/icons';
-import VirtualList from './VirtualList';
-import Survey from './Survey';
+import userModel from 'models/user';
 import Map from './Map';
+import Survey from './Survey';
 import './styles.scss';
 
 // https://stackoverflow.com/questions/47112393/getting-the-iphone-x-safe-area-using-javascript
@@ -70,14 +74,18 @@ const getSurveys = (surveys: Sample[], showUploadAll?: boolean) => {
   });
 
   // eslint-disable-next-line react/no-unstable-nested-components
-  const Item: FC<{ index: number }> = ({ index, ...itemProps }) => {
+  const Item = ({ index, ...itemProps }: { index: number }) => {
     if (dateIndices.includes(index)) {
       const { date, count } = groupedSurveys[index];
       return (
-        <IonItemDivider key={date} style={(itemProps as any).style} mode="ios">
-          <IonLabel>{DateHelp.print(date, true)}</IonLabel>
+        <div
+          className="list-divider rounded-md"
+          key={date}
+          style={(itemProps as any).style}
+        >
+          <IonLabel>{getRelativeDate(date)}</IonLabel>
           {count > 1 && <IonLabel slot="end">{count}</IonLabel>}
-        </IonItemDivider>
+        </div>
       );
     }
 
@@ -109,7 +117,7 @@ const getSurveys = (surveys: Sample[], showUploadAll?: boolean) => {
   );
 };
 
-const UserSurveyComponent: FC = () => {
+const UserSurveyComponent = () => {
   const { navigate } = useContext(NavContext);
 
   const toast = useToast();
@@ -153,7 +161,11 @@ const UserSurveyComponent: FC = () => {
     const surveys = getSamplesList(true);
 
     if (!surveys.length) {
-      return <InfoBackgroundMessage>No uploaded surveys</InfoBackgroundMessage>;
+      return (
+        <InfoBackgroundMessage className="mt-20">
+          No uploaded surveys
+        </InfoBackgroundMessage>
+      );
     }
 
     return getSurveys(surveys);
@@ -168,14 +180,18 @@ const UserSurveyComponent: FC = () => {
 
     if (!surveys.length) {
       return (
-        <InfoBackgroundMessage>
+        <InfoBackgroundMessage className="mt-20">
           <div onClick={navigateToPrimarySurvey}>
             You have no finished surveys.
             <br />
             <br />
-            Press <IonIcon icon={addOutline} className="with-background" /> to
-            add record details, or press <IonIcon icon={cameraOutline} /> to add
-            a photo first.
+            Press{' '}
+            <IonIcon
+              icon={addOutline}
+              className="rounded-full bg-primary-600 text-white"
+            />{' '}
+            to add record details, or press <IonIcon icon={cameraOutline} /> to
+            add a photo first.
           </div>
         </InfoBackgroundMessage>
       );
@@ -203,29 +219,18 @@ const UserSurveyComponent: FC = () => {
 
   const getPendingSurveysCount = () => {
     const pendingSurveys = getSamplesList();
-
-    if (!pendingSurveys.length) {
-      return null;
-    }
+    if (!pendingSurveys.length) return null;
 
     return (
-      <IonBadge color="warning" slot="end">
+      <Badge
+        color="warning"
+        skipTranslation
+        size="small"
+        fill="solid"
+        className="mx-1 bg-warning-600"
+      >
         {pendingSurveys.length}
-      </IonBadge>
-    );
-  };
-
-  const getUploadedSurveysCount = () => {
-    const uploadedSurveys = getSamplesList(true);
-
-    if (!uploadedSurveys.length) {
-      return null;
-    }
-
-    return (
-      <IonBadge color="light" slot="end">
-        {uploadedSurveys.length}
-      </IonBadge>
+      </Badge>
     );
   };
 
@@ -248,7 +253,6 @@ const UserSurveyComponent: FC = () => {
             <IonSegmentButton value="uploaded">
               <IonLabel className="ion-text-wrap">
                 <T>Uploaded</T>
-                {getUploadedSurveysCount()}
               </IonLabel>
             </IonSegmentButton>
 

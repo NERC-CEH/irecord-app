@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -74,7 +74,7 @@ interface Props {
   onPastLocationsClick?: any;
 }
 
-const Map: FC<Props> = ({
+const Map = ({
   model,
   location,
   childLocations,
@@ -82,7 +82,7 @@ const Map: FC<Props> = ({
   onGPSClick = null,
   onLayersClick = null,
   onPastLocationsClick = null,
-}) => {
+}: Props) => {
   const defaultZoom = undefined;
   const [map, setMap] = useState<any>(null);
 

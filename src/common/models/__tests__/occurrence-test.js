@@ -1,7 +1,7 @@
-import Sample from 'models/sample';
-import Occurrence from 'models/occurrence';
 /* eslint-disable no-unused-expressions */
 import sinon from 'sinon';
+import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
 
 describe('Occurrence', () => {
   it.skip('should validate', () => {
@@ -40,7 +40,7 @@ describe('Occurrence', () => {
 
     it('should throw an error if no parent sample', () => {
       const occurrence = new Occurrence({ attrs: { taxon: { group: 1 } } });
-      expect(occurrence.getSurvey.bind(occurrence)).toThrowError(
+      expect(occurrence.getSurvey.bind(occurrence)).toThrow(
         'No parent exists to get survey'
       );
     });

@@ -1,4 +1,4 @@
-import { FC, createRef, useState } from 'react';
+import { createRef, useState } from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { star, starOutline } from 'ionicons/icons';
@@ -54,7 +54,7 @@ type Props = {
   onSelect?: any;
 };
 
-const PastLocations: FC<Props> = ({ onSelect }) => {
+const PastLocations = ({ onSelect }: Props) => {
   const [editLocation, setEditLocation] = useState<Location>(null);
 
   const showDeletePopup = useShowDeletePopup();

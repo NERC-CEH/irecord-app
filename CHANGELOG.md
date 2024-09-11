@@ -1,5 +1,7 @@
 ## 6.1.1
 
+- Updated libraries.
+
 ## 6.1.0
 
 - Added recorder attribute to the general survey.
@@ -12,7 +14,7 @@
 
 ## 6.0.7
 
-Updated libraries (Capacitor).
+- Updated libraries (Capacitor).
 
 ## 6.0.6
 

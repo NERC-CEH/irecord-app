@@ -2,27 +2,27 @@
   .login-message {
     position: absolute;
     top: 40%;
-    background: white;
-    width: 80%;
-    max-width: 300px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 15px 30px;
     box-shadow: 0 0 13px 3px #0000004d;
     border-radius: var(--theme-border-radius);
+    background: white;
+    padding: 15px 30px;
+    width: 80%;
+    max-width: 300px;
     font-size: 1.1em;
   }
 
   .mapboxgl-ctrl-top-right {
-    margin-top: 80px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    margin-top: 80px;
   }
 
   ion-spinner {
-    color: white;
-    width: 100%;
     margin-top: 10px;
+    width: 100%;
+    color: white;
   }
 }

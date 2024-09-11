@@ -1,9 +1,8 @@
-import { FC } from 'react';
-import { IonButton, IonIcon } from '@ionic/react';
-import { cropOutline } from 'ionicons/icons';
-import Media from 'models/media';
 import { observer } from 'mobx-react';
+import { cropOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
+import { IonButton, IonIcon } from '@ionic/react';
+import Media from 'models/media';
 import SpeciesSuggestions from './SpeciesSuggestions';
 import './styles.scss';
 
@@ -14,12 +13,12 @@ interface Props {
   onSpeciesSelect: any;
 }
 
-const ImageFooter: FC<Props> = ({
+const ImageFooter = ({
   onCrop,
   image,
   identifyImage,
   onSpeciesSelect,
-}) => {
+}: Props) => {
   const onCropWrap = () => onCrop(image);
 
   const allowToEdit = !image.parent?.isDisabled() && !image.isIdentifying();

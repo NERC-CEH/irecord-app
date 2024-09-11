@@ -1,17 +1,17 @@
-import { FC, useContext } from 'react';
-import { NavContext } from '@ionic/react';
-import Sample from 'models/sample';
-import appModel from 'models/app';
-import userModel from 'models/user';
-import { Page, Main, Header } from '@flumens';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
+import { Page, Main, Header } from '@flumens';
+import { NavContext } from '@ionic/react';
+import appModel from 'models/app';
+import Sample from 'models/sample';
+import userModel from 'models/user';
 import ActivitiesList from 'Components/ActivitiesList';
 
 type Props = {
   sample: Sample;
 };
 
-const Activity: FC<Props> = ({ sample }) => {
+const Activity = ({ sample }: Props) => {
   const { goBack } = useContext(NavContext);
 
   const onSelect = async (activityID: string) => {

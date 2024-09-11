@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { useTranslation } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
@@ -15,7 +15,7 @@ type Props = {
   occurrence?: Occurrence;
 };
 
-const Taxon: FC<Props> = ({ sample, subSample, occurrence }) => {
+const Taxon = ({ sample, subSample, occurrence }: Props) => {
   const { navigate, goBack } = useContext(NavContext);
   const { url } = useRouteMatch<any>();
   const toast = useToast();

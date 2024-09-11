@@ -1,17 +1,14 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
-import clsx from 'clsx';
-import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
-import { IonItem, IonLabel, IonBadge } from '@ionic/react';
+import { IonItem } from '@ionic/react';
+import { Badge } from 'common/flumens';
 import Occurrence from 'models/occurrence';
-import './styles.scss';
 
 interface Props {
   occ: Occurrence;
 }
 
-const MenuTaxonItem: FC<Props> = ({ occ }) => {
+const MenuTaxonItem = ({ occ }: Props) => {
   const isDisabled = occ.isDisabled();
   const { url } = useRouteMatch();
 
@@ -31,23 +28,18 @@ const MenuTaxonItem: FC<Props> = ({ occ }) => {
     <IonItem
       detail={!isDisabled}
       routerLink={!isDisabled ? `${url}/${occPath}taxon` : undefined}
-      className={clsx('menu-attr-item menu-attr-item-taxon required', {
-        // empty,
-      })}
+      className="menu-attr-item menu-attr-item-taxon required"
     >
-      <IonLabel text-wrap slot="end">
-        <div className="flex w-full flex-col items-end">
-          {empty && (
-            <IonBadge color="warning">
-              <T>Species missing</T>
-            </IonBadge>
-          )}
-          {commonName && <IonLabel className="long">{commonName}</IonLabel>}
-          <IonLabel className="long">
-            <i>{scientificName}</i>
-          </IonLabel>
+      <div
+        slot="end"
+        className="flex w-full !max-w-none flex-col items-end py-2"
+      >
+        {empty && <Badge color="warning">Species missing</Badge>}
+        {commonName && <div className="long">{commonName}</div>}
+        <div className="long">
+          <i>{scientificName}</i>
         </div>
-      </IonLabel>
+      </div>
     </IonItem>
   );
 };

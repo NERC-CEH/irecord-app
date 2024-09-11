@@ -1,7 +1,3 @@
-import { FC } from 'react';
-import CONFIG from 'common/config';
-import { Page, Collapse, Header, Main } from '@flumens';
-import { IonList, IonItemDivider, IonIcon, IonItem } from '@ionic/react';
 import {
   settingsOutline,
   arrowUndoOutline,
@@ -18,21 +14,24 @@ import {
   logOutOutline,
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
-import './styles.scss';
-import deleteRecordImage from './swipe_record.png';
+import { Page, Collapse, Header, Main } from '@flumens';
+import { IonList, IonIcon, IonItem } from '@ionic/react';
+import CONFIG from 'common/config';
 import imageRecognitionAgreeImg from './image_recognition_agree.jpg';
 import imageRecognitionDisagreeImg from './image_recognition_disagree.jpg';
 import suggestionsImg from './image_recognition_suggestions.jpg';
+import './styles.scss';
+import deleteRecordImage from './swipe_record.png';
 
-const Help: FC = () => (
+const Help = () => (
   <Page id="help-page">
     <Header title="Help" />
     <Main id="faq">
       <IonList lines="none">
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>Records</T>
-        </IonItemDivider>
-        <div className="rounded">
+        </h3>
+        <div className="rounded-list">
           <Collapse title="How to make a new record">
             <div>
               <p>
@@ -60,13 +59,17 @@ const Help: FC = () => (
               <p>
                 <T>
                   Please press the plus{' '}
-                  <IonIcon icon={addOutline} size="small" /> button in the home
-                  page. This will bring you to the taxa search page. After
-                  selecting the species, open the record (either by opening it
-                  directly from the taxa search page using the edit button{' '}
-                  <span className="icon edit" /> beside the species name or
-                  through the home-list page) and fill in the details of the
-                  sighting, like location, date, number seen etc.
+                  <IonIcon
+                    icon={addOutline}
+                    className="rounded-full bg-primary-600 text-white"
+                    size="small"
+                  />{' '}
+                  button in the home page. This will bring you to the taxa
+                  search page. After selecting the species, open the record
+                  (either by opening it directly from the taxa search page using
+                  the edit button <span className="icon edit" /> beside the
+                  species name or through the home-list page) and fill in the
+                  details of the sighting, like location, date, number seen etc.
                 </T>
               </p>
               <p>
@@ -295,11 +298,11 @@ const Help: FC = () => (
           </Collapse>
         </div>
 
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>User</T>
-        </IonItemDivider>
+        </h3>
 
-        <div className="rounded">
+        <div className="rounded-list">
           <Collapse title="Sign in/out or register">
             <div>
               <p>
@@ -386,10 +389,10 @@ const Help: FC = () => (
           </Collapse>
         </div>
 
-        <IonItemDivider>
+        <h3 className="list-title">
           <T>Other</T>
-        </IonItemDivider>
-        <div className="rounded">
+        </h3>
+        <div className="rounded-list">
           <Collapse title="Manage saved locations">
             <div>
               <p>

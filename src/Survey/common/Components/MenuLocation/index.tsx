@@ -1,14 +1,13 @@
-import { FC } from 'react';
-import Sample from 'models/sample';
 import clsx from 'clsx';
-import { IonItem, IonLabel, IonIcon, IonBadge } from '@ionic/react';
 import { locationOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
+import { IonItem, IonIcon, IonLabel } from '@ionic/react';
+import { Badge } from 'common/flumens';
+import Sample from 'models/sample';
 import StringHelp from 'helpers/string';
 import GridRefValue from './GridRefValue';
-import Lock, { Props as MenuLocationWithLockProps } from './Lock';
-import './styles.scss';
+import Lock from './Lock';
 
 interface Props {
   sample: Sample;
@@ -18,14 +17,13 @@ interface Props {
   label?: string;
 }
 
-const MenuLocation: FC<Props> & { WithLock: FC<MenuLocationWithLockProps> } = ({
+const MenuLocation = ({
   sample,
   className,
   skipName,
   label = 'Location',
-
   ...otherProps
-}) => {
+}: Props) => {
   const { url } = useRouteMatch();
 
   const { location } = sample.attrs;
@@ -34,23 +32,19 @@ const MenuLocation: FC<Props> & { WithLock: FC<MenuLocationWithLockProps> } = ({
   const locationName = location.name;
 
   const locationItem = hasLocation ? (
-    <IonLabel className="location-value">
+    <div className="location-value">
       <GridRefValue sample={sample} />
-    </IonLabel>
+    </div>
   ) : (
-    <IonBadge color="warning">
-      <T>No location</T>
-    </IonBadge>
+    <Badge color="warning">No location</Badge>
   );
 
   const locationNameItem = locationName ? (
-    <IonLabel className="location-name-value">
-      {StringHelp.limit(locationName, 30)}
-    </IonLabel>
+    <div className="location-name-value">
+      {StringHelp.limit(locationName, 25)}
+    </div>
   ) : (
-    <IonBadge color="warning">
-      <T>No site name</T>
-    </IonBadge>
+    <Badge color="warning">No site name</Badge>
   );
 
   const isDisabled = sample.isDisabled();
@@ -59,22 +53,19 @@ const MenuLocation: FC<Props> & { WithLock: FC<MenuLocationWithLockProps> } = ({
     <IonItem
       detail={!isDisabled}
       routerLink={!isDisabled ? `${url}/location` : undefined}
-      className={clsx(
-        'menu-attr-item menu-attr-item-location required',
-        className
-      )}
+      className={clsx('menu-attr-item required', className)}
       {...otherProps}
     >
       <IonIcon icon={locationOutline} slot="start" />
 
-      <IonLabel className="location-label">
+      <IonLabel>
         <T>{label}</T>
       </IonLabel>
 
-      <IonLabel slot="end">
+      <div slot="end" className="flex flex-col items-end gap-1 py-2">
         {locationItem}
         {!skipName && locationNameItem}
-      </IonLabel>
+      </div>
     </IonItem>
   );
 };

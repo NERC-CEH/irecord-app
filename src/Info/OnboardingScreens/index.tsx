@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import appModel from 'models/app';
-import { Page, Main } from '@flumens';
 import { observer } from 'mobx-react';
+import { arrowForward, checkmarkOutline } from 'ionicons/icons';
+import SwiperCore from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Page, Main } from '@flumens';
 import {
   IonButton,
   IonToolbar,
@@ -9,17 +14,12 @@ import {
   IonIcon,
   IonFooter,
 } from '@ionic/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import SwiperCore from 'swiper';
-import { Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { arrowForward, checkmarkOutline } from 'ionicons/icons';
-import './styles.scss';
+import appModel from 'models/app';
 import welcomeBackground1 from './images/welcome_1.jpg';
 import welcomeBackground2 from './images/welcome_2.jpg';
 import welcomeBackground3 from './images/welcome_3.jpg';
 import welcomeBackground4 from './images/welcome_4.jpg';
+import './styles.scss';
 
 type Props = {
   children: any;

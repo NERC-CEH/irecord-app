@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { cameraOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { Capacitor } from '@capacitor/core';
@@ -36,7 +36,7 @@ const identify = (imageModel: Media) => {
   }
 };
 
-const DefaultCameraSurveyButton: FC = () => {
+const DefaultCameraSurveyButton = () => {
   const [editImage, setEditImage] = useState<Media>();
   const toast = useToast();
 
@@ -105,7 +105,7 @@ const DefaultCameraSurveyButton: FC = () => {
   return (
     <>
       {/* https://github.com/ionic-team/ionic-framework/issues/22511 */}
-      <div className="on-click-container" onClick={onClick}>
+      <div className="flex flex-col" onClick={onClick}>
         <IonIcon icon={cameraOutline} />
         <IonLabel>
           <T>Photo</T>

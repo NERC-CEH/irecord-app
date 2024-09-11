@@ -1,23 +1,22 @@
-import { FC } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
-import { Main, InfoMessage } from '@flumens';
-import { IonButton, IonLabel, IonList } from '@ionic/react';
+import { Main, InfoMessage, Button } from '@flumens';
+import { IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
-import './styles.scss';
 
 type Props = {
   sample: Sample;
   onDelete: any;
 };
 
-const MothHomeMain: FC<Props> = ({ sample, onDelete }) => {
+const MothHomeMain = ({ sample, onDelete }: Props) => {
   const { url } = useRouteMatch();
+  const { navigate } = useContext(NavContext);
 
   const isDisabled = sample.isDisabled();
 
@@ -27,16 +26,16 @@ const MothHomeMain: FC<Props> = ({ sample, onDelete }) => {
     <Main>
       <IonList lines="full">
         {isDisabled && (
-          <div className="rounded">
+          <div className="rounded-list">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}
 
-        <div className="rounded">
+        <div className="rounded-list">
           <MenuLocation sample={sample} />
           <MenuAttr model={sample} attr="date" />
           {!hasDate && (
-            <InfoMessage color="dark">
+            <InfoMessage inline>
               If trapping overnight please enter the date for the evening on
               which the trap was put out.
             </InfoMessage>
@@ -47,16 +46,13 @@ const MothHomeMain: FC<Props> = ({ sample, onDelete }) => {
         </div>
       </IonList>
       {!isDisabled && (
-        <IonButton
+        <Button
           color="primary"
-          expand="block"
-          id="add"
-          routerLink={`${url}/taxon`}
+          className="mx-auto mb-2.5 mt-8"
+          onPress={() => navigate(`${url}/taxon`)}
         >
-          <IonLabel>
-            <T>Add Species</T>
-          </IonLabel>
-        </IonButton>
+          Add Species
+        </Button>
       )}
 
       <SpeciesList sample={sample} onDelete={onDelete} />

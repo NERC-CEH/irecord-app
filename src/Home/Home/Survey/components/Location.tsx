@@ -1,16 +1,15 @@
-import { FC } from 'react';
-import Sample from 'models/sample';
-import { IonBadge, IonSpinner } from '@ionic/react';
-import appModel from 'models/app';
 import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
-import './styles.scss';
+import { IonSpinner } from '@ionic/react';
+import { Badge } from 'common/flumens';
+import appModel from 'models/app';
+import Sample from 'models/sample';
 
 type Props = {
   sample: Sample;
 };
 
-const Location: FC<Props> = ({ sample }) => {
+const Location = ({ sample }: Props) => {
   const isLocating = sample.isGPSRunning();
   const locationPrint = sample.printLocation();
 
@@ -23,27 +22,25 @@ const Location: FC<Props> = ({ sample }) => {
   if (!locationPrint) {
     if (isLocating) {
       return (
-        <span className="location">
+        <span className="italic">
           <T>Locating</T>
-          <IonSpinner />.
+          <IonSpinner className="h-2" />
         </span>
       );
     }
 
     return (
-      <span className="location warning">
-        <IonBadge className="location-warning" color="warning">
-          <T>No location </T>
-        </IonBadge>
-      </span>
+      <Badge color="warning" size="small">
+        No location
+      </Badge>
     );
   }
 
   if (!locationName) {
     return (
-      <IonBadge className="location warning" color="warning">
-        <T>No location name</T>
-      </IonBadge>
+      <Badge color="warning" size="small">
+        No location name
+      </Badge>
     );
   }
 

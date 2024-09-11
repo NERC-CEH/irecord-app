@@ -3,7 +3,7 @@
  **************************************************************************** */
 import { useContext } from 'react';
 import { observable } from 'mobx';
-import * as Yup from 'yup';
+import { z, object } from 'zod';
 import {
   DrupalUserModel,
   device,
@@ -56,11 +56,20 @@ export class UserModel extends DrupalUserModel {
   // @ts-ignore
   attrs: Attrs = DrupalUserModel.extendAttrs(this.attrs, defaults);
 
-  registerSchema = Yup.object().shape({
-    email: Yup.string().email('email is not valid').required('Please fill in'),
-    password: Yup.string().required('Please fill in'),
-    firstName: Yup.string().required('Please fill in'),
-    secondName: Yup.string().required('Please fill in'),
+  static registerSchema: any = object({
+    email: z.string().email('Please fill in'),
+    password: z.string().min(1, 'Please fill in'),
+    firstName: z.string().min(1, 'Please fill in'),
+    secondName: z.string().min(1, 'Please fill in'),
+  });
+
+  static resetSchema: any = object({
+    email: z.string().email('Please fill in'),
+  });
+
+  static loginSchema: any = object({
+    email: z.string().email('Please fill in'),
+    password: z.string().min(1, 'Please fill in'),
   });
 
   uploadCounter = observable({ count: 0 });

@@ -13,53 +13,53 @@ ion-item-sliding.survey-list-item {
 
     .survey-info-container {
       display: flex;
-      height: 100%;
-      width: 100%;
       justify-content: space-between;
       align-items: center;
+      width: 100%;
+      height: 100%;
 
       .photo {
-        flex: none;
         position: relative;
+        flex: none;
         margin: 0 10px 0 0;
-        height: var(--survey-item-height);
+        border-radius: 10px 0 0 10px;
+        background-color: #e5eacd;
         min-width: var(--survey-item-height);
         max-width: var(--survey-item-height);
-        background-color: #e5eacd;
+        height: var(--survey-item-height);
         overflow: hidden;
-        border-radius: 10px 0 0 10px;
 
         img {
-          height: 100%;
           width: 100%;
+          height: 100%;
           object-fit: cover;
         }
       }
 
       .count {
         flex: none;
+        z-index: 1000;
+        margin: 0 10px 0 0;
         width: var(--survey-item-height);
         min-width: var(--survey-item-height);
-        margin: 0 10px 0 0;
-        z-index: 1000;
 
         .count-wrapper {
+          margin: 0 auto;
           box-shadow: 0 0 0 6px white;
+          border-radius: var(--theme-border-radius);
           background: white;
           width: fit-content;
-          margin: 0 auto;
-          border-radius: var(--theme-border-radius);
         }
 
         .number {
-          background: #edeced;
-          border-radius: 50%;
-          height: 40px;
-          width: 40px;
-          text-align: center;
-          line-height: 40px;
           margin: 0 auto;
+          border-radius: 50%;
           border-radius: var(--theme-border-radius);
+          background: #edeced;
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
         }
 
         .label {
@@ -72,72 +72,42 @@ ion-item-sliding.survey-list-item {
         display: flex;
         flex: auto;
         width: 100%;
-
-        white-space: nowrap;
         min-width: 10px;
         overflow: hidden;
+
+        white-space: nowrap;
 
         h3:not(:first-of-type) {
           margin-bottom: 10px;
         }
 
         .details {
+          padding-right: 10px;
           width: 100%;
 
-          .species {
-            display: block;
-            font-size: 15px;
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
           .survey-name {
-            font-size: 15px;
-            font-weight: 700;
             color: var(--ion-color-dark);
+            font-weight: 700;
+            font-size: 15px;
             text-transform: capitalize;
           }
           .species-count {
             font-size: 14px;
           }
           .core {
-            white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
             font-size: 14px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
             span {
-              font-weight: 500;
               color: var(--ion-color-dark);
+              font-weight: 500;
 
               &.warning {
                 margin: 1px 0;
                 color: var(--ion-color-warning);
               }
-            }
-          }
-          .attributes {
-            display: flex;
-            flex-wrap: nowrap;
-
-            *:not(:empty) {
-              margin-right: 14px;
-            }
-
-            .stage,
-            .number {
-              font-size: 14px;
-            }
-            .comment {
-              width: 100%;
-              font-size: 14px;
-              margin-right: 10px;
-              overflow: hidden;
-              word-wrap: normal;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              color: var(--ion-color-medium-dark);
             }
           }
 
@@ -151,36 +121,36 @@ ion-item-sliding.survey-list-item {
 
     ion-badge[color='warning'] {
       margin: 1px 0;
+      background-color: rgba(var(--ion-color-warning-rgb), 0.15);
+      width: -webkit-fit-content;
+      width: fit-content;
+      color: var(--ion-color-warning-dark);
+      font-weight: normal;
+
+      font-size: 1em;
 
       &:not(:last-of-type) {
         margin-bottom: 5px;
       }
-
-      font-size: 1em;
-      font-weight: normal;
-      width: -webkit-fit-content;
-      width: fit-content;
-      background-color: rgba(var(--ion-color-warning-rgb), 0.15);
-      color: var(--ion-color-warning-dark);
     }
 
     .training-band {
       position: absolute;
+      z-index: 1000;
+      background-color: black;
       width: 7px;
       height: 100%;
-      background-color: black;
-      z-index: 1000;
     }
     .activity-band {
       position: absolute;
+      z-index: 1000;
+      background-color: var(--ion-color-secondary);
       width: 7px;
       height: 100%;
-      background-color: var(--ion-color-secondary);
-      z-index: 1000;
     }
     .activity-band + .training-band {
-      left: 7px;
       top: 0;
+      left: 7px;
     }
   }
 }

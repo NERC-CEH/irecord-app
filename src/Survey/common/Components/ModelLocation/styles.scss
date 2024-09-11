@@ -3,6 +3,10 @@
     --padding-start: 18px;
   }
 }
+.auto-suggest-input-attr .location-name-attr ion-input {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
 // fixes location input caret color
 .location-input-attr ion-input input,
 .location-name-attr ion-input input {

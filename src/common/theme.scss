@@ -1,6 +1,4 @@
-@import '@ionic/core/css/core.css';
 @import '@ionic/core/css/ionic.bundle.css';
-
 @import '@flumens/ionic/dist/themes/rounded.css';
 
 @tailwind base;
@@ -8,10 +6,6 @@
 @tailwind utilities;
 
 @layer base {
-  a {
-    // change link colours
-    color: var(--ion-color-primary);
-  }
   h1 {
     // tailwind is loaded later than ionic so resets some of the ionic's base styles
     @apply mt-5 text-2xl;
@@ -107,40 +101,65 @@
   --ion-item-border-color: rgb(0, 0, 0, 0.2);
 
   --light-shadow: 0px 0px 11px 0px #00000012;
+
+  --form-value-color: rgba(var(--color-primary-800-rgb), 0.9);
 }
 
 // status bar
 html.ios.plt-hybrid #status-bar-background {
-  background: transparent;
-  width: 100vw;
-  height: env(safe-area-inset-top);
   position: fixed;
   top: 0;
   z-index: 1000;
+  background: transparent;
+  width: 100vw;
+  height: env(safe-area-inset-top);
+}
+
+// Fixes the tabbed page top safe area
+html[mode='ios'] .tabs-inner .ion-page {
+  // margin-top: var(--ion-safe-area-top);
 }
 
 // FONTS START
 @font-face {
+  font-weight: 300;
+  src: url('./fonts/Quicksand-Light.ttf');
   font-family: 'Quicksand';
-  src: url('./fonts/Quicksand-Medium.ttf');
 }
-
 @font-face {
-  font-family: 'Quicksand Bold';
+  font-weight: 400;
+  src: url('./fonts/Quicksand-Regular.ttf');
+  font-family: 'Quicksand';
+}
+@font-face {
+  font-weight: 500;
+  src: url('./fonts/Quicksand-Medium.ttf');
+  font-family: 'Quicksand';
+}
+@font-face {
+  font-weight: 600;
+  src: url('./fonts/Quicksand-SemiBold.ttf');
+  font-family: 'Quicksand';
+}
+@font-face {
+  font-weight: 700;
   src: url('./fonts/Quicksand-Bold.ttf');
+  font-family: 'Quicksand';
 }
 
 ion-title,
 h1 {
   color: var(--ion-color-primary);
-  font-family: 'Quicksand Bold' !important;
+  font-weight: 700;
+  font-family: 'Quicksand' !important;
 }
 
 ion-item-divider,
 ion-badge,
 ion-label.bold,
 b {
-  font-family: 'Quicksand Bold' !important;
+  font-weight: 600;
+  font-family: 'Quicksand' !important;
 }
 
 .apps-section .apps-section-h,
@@ -160,6 +179,7 @@ ion-note,
 ion-label,
 ion-chip,
 ion-item {
+  font-weight: 400;
   font-family: 'Quicksand' !important;
 }
 // FONTS END
@@ -169,13 +189,13 @@ ion-item {
 h1,
 h2,
 h3 {
-  color: var(--ion-color-primary-dark);
+  color: var(--color-primary-900);
 }
 
-// move south from status-bar
-.ion-page ion-content:only-child {
-  --padding-top: 20px !important;
-}
+// // move south from status-bar
+// .ion-page ion-content:only-child {
+//   --padding-top: 20px !important;
+// }
 
 // make the toolbar white
 ion-header ion-toolbar {
@@ -204,34 +224,14 @@ ion-header ion-toolbar {
 
 // change link colours
 a {
-  color: var(--ion-color-primary);
+  color: var(--color-primary-700);
+  font-weight: 600;
 }
 
 // info messages
-.attr-page .info-message,
-.info-message.blue {
-  --background: rgba(var(--color-secondary-400-rgb), 0.15);
-  background: white; // above is transparent
-  border: 1px solid var(--color-secondary-100);
-  border-radius: var(--theme-border-radius);
-
-  ion-note,
-  ion-icon {
-    color: var(--ion-color-secondary-dark) !important;
-  }
-
-  ion-button {
-    color: var(--ion-color-secondary-dark) !important;
-    --border-color: var(--ion-color-secondary-dark) !important;
-  }
-}
-.info-message ion-note {
-  &.ios {
-    font-size: 1.2em;
-  }
-  &.md {
-    font-size: 1em;
-  }
+.info-message.blue,
+.attr-page .info-message {
+  @apply border-secondary-300/40 bg-secondary-50 text-secondary-900;
 }
 
 // ACCESSIBILITY IMPROVEMENTS START
@@ -254,31 +254,9 @@ ion-item {
 
 // brighter and bigger divider
 ion-item-divider {
-  font-size: 0.9em;
-  color: var(--ion-text-color);
   padding: 0 5px 7px 5px;
-}
-
-// brighter attribute page divider
-.attr-page ion-item-divider ion-label {
-  font-family: 'Quicksand Bold' !important;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
-// brighter default radio option
-.radio-input-attr ion-radio-group > ion-item.radio-input-default-option {
-  opacity: 1 !important;
-  --background: rgba(var(--color-primary-50-rgb), 1);
-}
-
-// clearer date picker
-.date-input-attr ion-label[slot='end'] {
-  font-size: 1em;
-
-  &.ios {
-    font-size: 0.9em;
-  }
+  color: var(--ion-text-color);
+  font-size: 0.9em;
 }
 
 // clearer menu items
@@ -290,21 +268,17 @@ ion-item-divider {
   ion-label[slot='end'] {
     opacity: 1 !important;
     color: #000000b3;
-
-    &.ios {
-      font-size: 0.9em;
-    }
   }
+}
+
+// menu date picker match other input value colors
+.date-input-attr ion-label[slot='end'] {
+  color: var(--form-value-color);
 }
 
 // larger collapse headers
 .collapse-block ion-label.ion-text-wrap {
-  font-size: 0.9em;
-}
-
-// larger radio inputs
-.radio-input-attr ion-item ion-label.ios {
-  font-size: 0.9em !important;
+  font-size: 1rem;
 }
 
 // clearer alert messages
@@ -312,24 +286,11 @@ ion-alert div.alert-message.sc-ion-alert-md {
   color: black;
   font-size: 1.1em;
 }
-
 // ACCESSIBILITY IMPROVEMENTS END
 
 // overwrite required item colours
 .menu-attr-item.required.empty > ion-icon:first-of-type {
   color: black;
-}
-
-// prettier main buttons
-ion-button[type='submit'],
-ion-button[expand='block'] {
-  max-height: 40px;
-  --border-radius: var(--theme-border-radius);
-}
-
-// reduce distance between two rounded lists
-ion-list + ion-list > .rounded {
-  margin-top: 0 !important;
 }
 
 // subtle borders around rounded items
@@ -340,23 +301,15 @@ ion-list + ion-list > .rounded {
 .radio-input-attr ion-item,
 #suggestions .empty,
 .taxa-filter-edit-dialog-form ion-item,
-.rounded:not(:empty) {
+.rounded-list:not(:empty) {
   border: 1px solid rgba(var(--color-primary-800-rgb), 0.2);
   border-radius: var(--theme-border-radius);
 }
 
-// subtle borders around rounded radio items
-ion-radio-group .item-radio-checked:not(.radio-input-default-option) {
-  border: 1px solid rgba(var(--color-primary-800-rgb), 0.4);
-}
-
-ion-list .rounded > .info-message {
-  margin: 0;
-}
-
 // Fix last date input in the list
-ion-list .rounded > *:last-child.menu-attr-item,
-ion-list .rounded > *:last-child .date-input-attr ion-item[slot='header'] {
+ion-list .rounded-list > .menu-attr-item:last-child,
+ion-list .rounded-list > .menu-attr-item:last-child > ion-item,
+ion-list .rounded-list > *:last-child .date-input-attr ion-item[slot='header'] {
   --border-style: none !important;
 }
 
@@ -365,7 +318,28 @@ ion-list .rounded > *:last-child .date-input-attr ion-item[slot='header'] {
   display: none;
 }
 
-// disable Ionic default button height - used for smaller buttons e.g. map controls
-ion-button {
-  min-height: 0;
+// list item picture
+.list-avatar {
+  @apply flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md bg-neutral-100;
+}
+
+// top of the list title
+.list-title {
+  @apply mx-1 mb-3 mt-4 flex items-center text-base font-semibold;
+}
+
+// top of the list item
+.list-divider {
+  @apply flex items-center justify-between bg-primary-700/10 p-1 px-2 text-sm text-primary-900;
+}
+
+// Make Android icons dark, same as iOS
+ion-icon[slot='start'].md {
+  color: var(--ion-text-color, #000);
+}
+
+// Makes iOS menu items same height as Android
+ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }

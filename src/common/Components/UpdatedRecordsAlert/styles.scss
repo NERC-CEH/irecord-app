@@ -1,7 +1,7 @@
 .updated-records-dialog {
   .counts {
-    background-color: var(--ion-page-background);
     margin: 0 -24px;
+    background-color: var(--ion-page-background);
     padding: 1px 10px;
 
     .verified-count {
@@ -18,8 +18,8 @@
       }
       b {
         width: 33%;
-        text-align: center;
         font-size: 1.2em;
+        text-align: center;
       }
     }
   }
@@ -31,14 +31,14 @@
   ion-item {
     margin: 0 -10px;
 
-    &.ios {
-      margin-left: -2px;
-    }
-
     --padding-start: 0;
     --background: transparent;
 
     font-size: 16px !important;
+
+    &.ios {
+      margin-left: -2px;
+    }
 
     ion-checkbox {
       margin-right: 10px;

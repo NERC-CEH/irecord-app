@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
 import { Page, useAlert, useLoader, useToast } from '@flumens';
@@ -38,7 +37,7 @@ const useConfirmationDialog = () => {
   return showConfirmationDialog;
 };
 
-const Controller: FC = () => {
+const Controller = () => {
   const showLogoutConfirmationDialog = useConfirmationDialog();
   const toast = useToast();
   const loader = useLoader();

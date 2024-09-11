@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { observer } from 'mobx-react';
 import { lockClosedOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
@@ -59,7 +58,7 @@ const useAttributeLockingTip = (sample: Sample) => {
   useIonViewDidEnter(showTip);
 };
 
-const EditMain: FC<Props> = ({ sample }) => {
+const EditMain = ({ sample }: Props) => {
   useAttributeLockingTip(sample);
 
   const { url } = useRouteMatch();
@@ -72,31 +71,31 @@ const EditMain: FC<Props> = ({ sample }) => {
 
   return (
     <Main>
-      <IonList lines="full">
+      <IonList lines="full" className="flex flex-col gap-4">
         {isDisabled && (
-          <div className="rounded">
+          <div className="rounded-list">
             <VerificationMessage occurrence={occ} />
           </div>
         )}
 
         {isDisabled && (
-          <div className="rounded">
+          <div className="rounded-list">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}
 
         {/* Only showing if pre-selected */}
         {activity && (
-          <div className="rounded">
+          <div className="rounded-list">
             <MenuAttr.WithLock model={sample} attr="activity" />
           </div>
         )}
 
-        <div className="rounded">
+        <div className="rounded-list">
           <PhotoPicker model={occ} />
         </div>
 
-        <div className="rounded">
+        <div className="rounded-list">
           <MenuTaxonItem occ={occ} />
           <MenuLocation.WithLock sample={sample} />
           <MenuAttr.WithLock model={sample} attr="date" />

@@ -14,27 +14,27 @@
   }
 
   .message {
-    padding: 0;
-    max-height: 480px;
-    max-width: 300px;
     border-radius: var(--theme-border-radius);
+    padding: 0;
+    max-width: 300px;
+    max-height: 480px;
     overflow: hidden;
 
     .alert-species-profile {
-      overflow: hidden;
       width: 100%;
+      overflow: hidden;
 
       .gallery {
         background: #808080;
 
         .empty {
-          height: 150px;
           display: flex;
           justify-content: center;
+          height: 150px;
 
           ion-icon {
-            height: 100%;
             width: 57px;
+            height: 100%;
             --ionicon-stroke-width: 15px;
             color: #afafaf;
           }
@@ -71,25 +71,25 @@
         .title {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
           justify-content: center;
+          align-items: flex-start;
           margin-left: 21px;
           text-align: left;
 
           h1 {
-            font-size: 1.2rem;
             margin: 0 !important;
+            font-size: 1.2rem;
           }
           h3 {
-            font-size: 1rem;
             margin: 0 !important;
             color: var(--ion-color-dark);
+            font-size: 1rem;
           }
         }
 
         .verification-status {
-          align-self: center;
           display: flex;
+          align-self: center;
           font-size: 2em;
 
           ion-icon {
@@ -109,22 +109,22 @@
       }
 
       ion-card-content {
+        margin: 10px 8px;
+        border-radius: var(--theme-border-radius);
         background-color: #efefef;
         padding: 8px;
-        margin: 10px 8px;
         color: black;
-        border-radius: var(--theme-border-radius);
 
         .record-attribute {
           display: flex;
-          line-height: 2em;
           font-size: 17px;
+          line-height: 2em;
           text-align: left;
 
           span {
-            font-weight: bolder;
             display: inline-block;
             min-width: 100px;
+            font-weight: bolder;
             text-align: left;
           }
         }

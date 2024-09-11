@@ -1,8 +1,8 @@
 import { Route } from 'react-router-dom';
-import Credits from './Credits';
 import About from './About';
-import Help from './Help';
 import BRCApproved from './BRCApproved';
+import Credits from './Credits';
+import Help from './Help';
 
 export default [
   <Route path="/info/credits" key="/info/credits" exact component={Credits} />,

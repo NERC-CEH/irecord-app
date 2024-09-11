@@ -1,5 +1,5 @@
-import progressIcon from 'common/images/progress-circles.svg';
 import { groupsReverse as groups } from 'common/data/informalGroups';
+import progressIcon from 'common/images/progress-circles.svg';
 import { Survey } from 'Survey/common/config';
 
 const stage = [
