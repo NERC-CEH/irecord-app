@@ -21,9 +21,9 @@
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>ITSAppUsesNonExemptEncryption</key>
-    <false/>
+    <false />
     <key>LSRequiresIPhoneOS</key>
-    <true/>
+    <true />
     <key>NSCameraUsageDescription</key>
     <string>Allow camera access to attach photos to your records.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -54,6 +54,6 @@
       <string>UIInterfaceOrientationPortraitUpsideDown</string>
     </array>
     <key>UIViewControllerBasedStatusBarAppearance</key>
-    <true/>
+    <true />
   </dict>
 </plist>

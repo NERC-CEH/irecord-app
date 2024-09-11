@@ -1,6 +1,21 @@
 {
-  "appId": "uk.ac.ceh.ir",
-  "appName": "iRecord App",
-  "webDir": "build",
-  "cordova": {}
+	"appId": "uk.ac.ceh.irecord",
+	"appName": "iRecord App",
+	"webDir": "build",
+	"cordova": {},
+	"packageClassList": [
+		"CameraPreview",
+		"AppPlugin",
+		"CAPCameraPlugin",
+		"DevicePlugin",
+		"FilesystemPlugin",
+		"GeolocationPlugin",
+		"HapticsPlugin",
+		"KeyboardPlugin",
+		"CAPNetworkPlugin",
+		"SplashScreenPlugin",
+		"StatusBarPlugin",
+		"SentryCapacitor",
+		"CDVPlugin"
+	]
 }
