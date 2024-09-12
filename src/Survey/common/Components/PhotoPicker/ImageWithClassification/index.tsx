@@ -43,7 +43,10 @@ const Image = ({ media, isDisabled, onDelete, onClick }: Props) => {
       {showLoading && <IonSpinner slot="end" />}
 
       {!showLoading && hasBeenIdentified && selectedSpeciesMatch && (
-        <ProbabilityBadge probability={probability} />
+        <ProbabilityBadge
+          probability={probability}
+          className="absolute bottom-0 z-10 ml-1 rounded-lg"
+        />
       )}
 
       {!showLoading && hasBeenIdentified && !selectedSpeciesMatch && (

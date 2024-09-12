@@ -343,3 +343,11 @@ ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios {
   margin-top: 12px;
   margin-bottom: 12px;
 }
+
+// Unify menu lines with Tailwind package components
+.date-input-attr ion-accordion:last-of-type ion-item[slot='header'],
+.list-ios-lines-full ion-item.item-lines-default,
+.list-md-lines-full ion-item.item-lines-default {
+  --border-width: 0 0 0.5px 0 !important;
+  --border-color: #e5e5e5 !important;
+}
