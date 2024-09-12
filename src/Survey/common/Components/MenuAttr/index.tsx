@@ -102,14 +102,17 @@ const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
     delete itemProps?.routerLink;
 
     return (
-      <Toggle
-        value={get ? get(model) : value}
-        label={label}
-        icon={<IonIcon src={icon as string} className="size-6" />}
-        onChange={onAttrToggle}
-        disabled={isDisabled}
-        {...itemProps}
-      />
+      <IonItem className="[--border-style:none] [--inner-padding-end:0] [--padding-start:0]">
+        <Toggle
+          defaultSelected={get ? get(model) : value}
+          className="w-full"
+          label={label}
+          prefix={<IonIcon src={icon as string} className="size-6" />}
+          onChange={onAttrToggle}
+          disabled={isDisabled}
+          {...itemProps}
+        />
+      </IonItem>
     );
   }
 

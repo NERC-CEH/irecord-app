@@ -12,11 +12,8 @@
       color: var(--attr-lock-color);
     }
 
-    ion-toggle {
-      --background-checked: var(--attr-lock-color-tint);
-      &.md {
-        --handle-background-checked: var(--attr-lock-color);
-      }
+    .switch-input {
+      --form-value-color: var(--attr-lock-color-tint);
     }
 
     ion-accordion-group {
