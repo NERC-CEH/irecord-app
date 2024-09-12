@@ -21,7 +21,7 @@ const LoginController = () => {
       skipTranslation: true,
     });
 
-    navigate('/home/landing', 'root');
+    navigate('/home/surveys', 'root');
   };
 
   async function onLogin({ email, password }: Details) {
