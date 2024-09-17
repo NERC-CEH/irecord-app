@@ -39,7 +39,7 @@ const Attributes = ({ occ, sample, isDefaultSurvey }: Props) => {
   }
 
   return (
-    <div className="flex flex-nowrap text-sm [&>*:not(:empty)]:mr-2">
+    <div className="flex flex-nowrap text-xs [&>*:not(:empty)]:mr-2">
       <span className={`${numberLocked ? 'locked' : ''}`}>{number}</span>
       <span className={`${stageLocked ? 'locked' : ''}`}>
         <T>{stage}</T>

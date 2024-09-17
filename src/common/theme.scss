@@ -205,10 +205,7 @@ ion-header ion-toolbar {
   ion-button,
   ion-back-button {
     color: var(--ion-color-dark) !important;
-    font-size: 1em;
-    &.md {
-      font-size: 0.9em;
-    }
+    font-size: 1rem;
   }
 
   ion-input,
@@ -274,6 +271,7 @@ ion-item-divider {
 // menu date picker match other input value colors
 .date-input-attr ion-label[slot='end'] {
   color: var(--form-value-color);
+  font-size: 1rem;
 }
 
 // larger collapse headers
@@ -285,6 +283,15 @@ ion-item-divider {
 ion-alert div.alert-message.sc-ion-alert-md {
   color: black;
   font-size: 1.1em;
+}
+
+// increase link and menu label visibility
+label.field-label,
+ion-item[detail='true'][href],
+ion-item > ion-icon + ion-label,
+ion-item.item > ion-icon + ion-label.sc-ion-label-md-h {
+  font-weight: 500;
+  font-size: 1rem;
 }
 // ACCESSIBILITY IMPROVEMENTS END
 
@@ -338,6 +345,12 @@ ion-icon[slot='start'].md {
   color: var(--ion-text-color, #000);
 }
 
+// make all menu icons same size
+ion-icon[slot='start'][size='small'] {
+  width: 25px;
+  height: 24px;
+}
+
 // Makes iOS menu items same height as Android
 ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios {
   margin-top: 12px;
@@ -350,4 +363,9 @@ ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios {
 .list-md-lines-full ion-item.item-lines-default {
   --border-width: 0 0 0.5px 0 !important;
   --border-color: #e5e5e5 !important;
+}
+
+// Fix menu date button label alignment for Android
+ion-accordion ion-icon[slot='start'].md {
+  margin-right: 37px;
 }

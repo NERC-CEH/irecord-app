@@ -256,7 +256,7 @@ const MenuMain = ({
           </InfoMessage>
         </div>
 
-        <div className="destructive-item rounded">
+        <div className="destructive-item rounded-list mt-6">
           <IonItem onClick={showDeleteAllSamplesDialog}>
             <IonIcon icon={trashOutline} size="small" slot="start" />
             <IonLabel>
@@ -293,7 +293,7 @@ const MenuMain = ({
         </div>
       </IonList>
 
-      <p className="app-version">{`v${config.version} (${config.build})`}</p>
+      <p className="float-right mx-2.5 my-3 opacity-70">{`v${config.version} (${config.build})`}</p>
     </Main>
   );
 };
