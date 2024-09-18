@@ -245,6 +245,14 @@ msgstr "Abundance"
 msgid "Stage"
 msgstr "Stage"
 
+# Survey attribute 
+msgid "Recorder name"
+msgstr "Recorder name"
+
+# Survey attribute 
+msgid "If anyone helped with documenting the record please enter their name here."
+msgstr "If anyone helped with documenting the record please enter their name here."
+
 msgid "Identified by"
 msgstr "Identified by"
 
@@ -545,6 +553,9 @@ msgstr "symphylan"
 
 msgid "tapeworm"
 msgstr "tapeworm"
+
+msgid "parasitic roundworm"
+msgstr "parasitic roundworm"
 
 msgid "thorny-headed worm"
 msgstr "thorny-headed worm"
@@ -889,8 +900,8 @@ msgstr "Incorrect password or email."
 msgid "Invalid date selected"
 msgstr "Invalid date selected"
 
-msgid "Are you sure you want to remove this record from your device?</br><i><b>Note:</b> it will remain on the server.</i>"
-msgstr "Are you sure you want to remove this record from your device?</br><i><b>Note:</b> it will remain on the server.</i>"
+msgid "Are you sure you want to remove this record from your device?<1><0>Note:</0> it will remain in the database.</1>"
+msgstr "Are you sure you want to remove this record from your device?<1><0>Note:</0> it will remain in the database.</1>"
 
 msgid "The development was led by SEWBReC, and was jointly funded by BIS, WWBIC and Cofnod."
 msgstr "The development was led by SEWBReC, and was jointly funded by BIS, WWBIC and Cofnod."
@@ -996,6 +1007,26 @@ msgstr "No finished pending records"
 
 msgid "No uploaded surveys"
 msgstr "No uploaded surveys"
+
+# Surveys Map  
+msgid "Last three days"
+msgstr "Last three days"
+
+# Surveys Map  
+msgid "Last month"
+msgstr "Last month"
+
+# Surveys Map  
+msgid "Last six months"
+msgstr "Last six months"
+
+# Surveys Map  
+msgid "Last year"
+msgstr "Last year"
+
+# Surveys Map  
+msgid "All species"
+msgstr "All species"
 
 msgid "Back"
 msgstr "Back"
@@ -1576,12 +1607,13 @@ msgid "You can reset the app data to its default settings."
 msgstr "You can reset the app data to its default settings."
 
 # Part of App settings page
-msgid "Are you sure you want to remove all successfully synchronised local records?<p><i><b>Note:</b> records on the server will not be touched.</i></p>"
-msgstr "Are you sure you want to remove all successfully synchronised local records?<p><i><b>Note:</b> records on the server will not be touched.</i></p>"
+       
+msgid "Are you sure you want to remove all successfully synchronised local records?<1><0>Note:</0> records on the server will not be touched.</1>"
+msgstr "Are you sure you want to remove all successfully synchronised local records?<1><0>Note:</0> records on the server will not be touched.</1>"
 
 # Home page background message
-msgid "<0>You have no finished surveys.<br/><br/>Press <4></4> to add record details, or press <6></6> to add a photo first.</0>"
-msgstr "<0>You have no finished surveys.<br/><br/>Press <4></4> to add record details, or press <6></6> to add a photo first.</0>"
+msgid "<0>You have no finished surveys.<br/><br/>Press <5></5> to add record details, or press <8></8> to add a photo first.</0>"
+msgstr "<0>You have no finished surveys.<br/><br/>Press <5></5> to add record details, or press <8></8> to add a photo first.</0>"
 
 # Alert message 
 msgid "Incorrect password or email"
@@ -1678,6 +1710,26 @@ msgstr "Site name eg nearby village"
 # Past location deleting entry alert message
 msgid "Are you sure you want to delete the saved location?"
 msgstr "Are you sure you want to delete the saved location?"
+
+# Location map page settings 
+msgid "Map Settings"
+msgstr "Map Settings"
+
+# Location map page settings 
+msgid "Map Type"
+msgstr "Map Type"
+
+# Location map page settings 
+msgid "Satellite"
+msgstr "Satellite"
+
+# Location map page settings 
+msgid "Ordnance Survey"
+msgstr "Ordnance Survey"
+
+# Location map page settings 
+msgid "Ordnance Survey (Explorer)"
+msgstr "Ordnance Survey (Explorer)"
 
 # Moth survey method message
 msgid "If trapping overnight please enter the date for the evening on which the trap was put out."

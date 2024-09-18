@@ -106,6 +106,7 @@ export const groups = {
   226: 'thorny-headed worm',
   239: 'cyanobacterium',
   240: 'web-spinner',
+  245: 'parasitic roundworm',
 };
 
 // reverse the object for easier lookup
