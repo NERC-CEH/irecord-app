@@ -22,15 +22,23 @@ function useSurveyDeletePrompt(sample: Sample) {
   const alert = useAlert();
 
   const promptSurveyDelete = () => {
-    let body =
-      "This record hasn't been uploaded to the database yet. " +
-      'Are you sure you want to remove it from your device?';
+    let body = (
+      <T>
+        This record hasn't been uploaded to the database yet. Are you sure you
+        want to remove it from your device?
+      </T>
+    );
 
     const isSynced = sample.metadata.syncedOn;
     if (isSynced) {
-      body =
-        'Are you sure you want to remove this record from your device?' +
-        '</br><i><b>Note:</b> it will remain in the database.</i>';
+      body = (
+        <T>
+          Are you sure you want to remove this record from your device?
+          <p>
+            <b>Note:</b> it will remain in the database.
+          </p>
+        </T>
+      );
     }
     alert({
       header: 'Delete',
@@ -80,7 +88,9 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
       return (
         <div className="survey-info">
           <div className="details">
-            <div className="survey-name">{`${survey.label} Survey`}</div>
+            <div className="text-base font-semibold capitalize">
+              <T>{survey.label} Survey</T>
+            </div>
 
             <div className="core">
               <Location sample={sample} />
@@ -101,7 +111,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
       <div className="survey-info">
         <div className="details">
           {taxon ? (
-            <div className="overflow-hidden text-ellipsis whitespace-nowrap text-base font-bold">
+            <div className="overflow-hidden text-ellipsis whitespace-nowrap text-base font-semibold">
               {taxon}
             </div>
           ) : (
@@ -124,10 +134,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
     );
   }
 
-  const onUpload = async (e: any) => {
-    e.preventDefault();
-    e.stopPropagation();
-
+  const onUpload = async () => {
     const isUserOK = await checkUserStatus();
     if (!isUserOK) return;
 

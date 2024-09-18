@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ReactNode } from 'react';
 import clsx from 'clsx';
+import { t } from 'i18next';
 import FilterSelect from './FilterSelect';
 import './styles.css';
 
@@ -21,10 +22,10 @@ today = new Date();
 const yearAgo = new Date(today.setMonth(today.getMonth() - 12)).toISOString();
 
 export const dateRanges = [
-  { label: 'Last three days', value: threeDaysAgo },
-  { label: 'Last month', value: monthAgo },
-  { label: 'Last six months', value: sixMonthsAgo },
-  { label: 'Last year', value: yearAgo },
+  { label: t('Last three days'), value: threeDaysAgo },
+  { label: t('Last month'), value: monthAgo },
+  { label: t('Last six months'), value: sixMonthsAgo },
+  { label: t('Last year'), value: yearAgo },
 ];
 
 type Props = {

@@ -56,7 +56,9 @@ const IncrementalButton = ({
       onLongPress={onLongClick}
       preventDefault
     >
-      {valueItem}
+      <div className="flex h-full w-full items-center justify-center">
+        {valueItem}
+      </div>
       <div className="label-divider" />
     </Button>
   );

@@ -11,7 +11,7 @@ import {
   cameraOutline,
   megaphoneOutline,
 } from 'ionicons/icons';
-import { Trans as T, useTranslation } from 'react-i18next';
+import { Trans as T } from 'react-i18next';
 import { Main, useAlert, InfoMessage, Toggle } from '@flumens';
 import { IonIcon, IonList, IonItem, IonLabel } from '@ionic/react';
 import config from 'common/config';
@@ -82,17 +82,20 @@ function useUserDeleteDialog(deleteUser: any) {
 }
 
 function useDeleteAllSamplesDialog(deleteAllSamples: any) {
-  const { t } = useTranslation();
   const alert = useAlert();
 
   const showDeleteAllSamplesDialog = () =>
     alert({
       header: 'Remove All',
-      message: `${t(
-        'Are you sure you want to remove all successfully synchronised local records?'
-      )}<p><i><b>${t('Note')}:</b> ${t(
-        'records on the server will not be touched.'
-      )}</i></p>`,
+      message: (
+        <T>
+          Are you sure you want to remove all successfully synchronised local
+          records?
+          <p>
+            <b>Note:</b> records on the server will not be touched.
+          </p>
+        </T>
+      ),
       buttons: [
         {
           text: 'Cancel',
@@ -205,7 +208,7 @@ const MenuMain = ({
         <div className="rounded-list">
           <Toggle
             prefix={<IonIcon src={cameraOutline} className="size-6" />}
-            label="Suggest Species"
+            label="Suggest species"
             defaultSelected={useSpeciesImageClassifier}
             onChange={onUseImageClassifier}
           />
@@ -270,7 +273,7 @@ const MenuMain = ({
           <IonItem onClick={showResetDialog}>
             <IonIcon icon={arrowUndoOutline} size="small" slot="start" />
             <IonLabel>
-              <T>Reset App</T>
+              <T>Reset app</T>
             </IonLabel>
           </IonItem>
           <InfoMessage inline>

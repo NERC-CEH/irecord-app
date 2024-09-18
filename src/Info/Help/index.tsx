@@ -27,7 +27,7 @@ const Help = () => (
   <Page id="help-page">
     <Header title="Help" />
     <Main id="faq">
-      <IonList lines="none">
+      <IonList lines="none" className="mb-3">
         <h3 className="list-title">
           <T>Records</T>
         </h3>
@@ -38,9 +38,9 @@ const Help = () => (
                 <T>There are two ways to start a record</T>.
               </p>
               <p>
-                <b>
+                <h4 className="my-2 font-bold">
                   <T>Taking a photo</T>
-                </b>
+                </h4>
               </p>
               <p>
                 <T>
@@ -52,9 +52,9 @@ const Help = () => (
                 </T>
               </p>
               <p>
-                <b>
+                <h4 className="my-2 font-bold">
                   <T>Selecting species</T>
-                </b>
+                </h4>
               </p>
               <p>
                 <T>
@@ -230,7 +230,7 @@ const Help = () => (
                   use the <a href="http://irecord.org.uk">iRecord Website</a>.
                 </T>
               </p>
-              <p>
+              <p className="mt-2">
                 <T>
                   <b>Note:</b> you have to be signed in to your iRecord account
                   and have a network connection, for the records to be
@@ -284,7 +284,7 @@ const Help = () => (
                   button and next to the attribute.
                 </T>
               </p>
-              <p>
+              <p className="mt-2">
                 <T>
                   <b>Note:</b> For a GPS-sourced location, only the location
                   name can be locked, not the GPS value. As you move about, the
@@ -321,7 +321,7 @@ const Help = () => (
                   logout <IonIcon icon={logOutOutline} size="small" /> button
                 </T>
               </p>
-              <p>
+              <p className="mt-2">
                 <T>
                   <b>Note:</b> after registering a new account you must verify
                   your email address by clicking on a verification link sent to
@@ -378,7 +378,7 @@ const Help = () => (
                   page.
                 </T>
               </p>
-              <p>
+              <p className="mt-2">
                 <T>
                   <b>Note:</b> only the activities that allow this mobile app
                   records and only the ones that you have joined on the iRecord
@@ -401,7 +401,7 @@ const Help = () => (
                   location page and from the settings{' '}
                   <IonIcon icon={settingsOutline} size="small" /> page
                 </T>
-                .
+                .{' '}
                 <T>
                   Swipe a location left and click edit{' '}
                   <IonIcon icon={createOutline} size="small" /> or delete
@@ -427,7 +427,7 @@ const Help = () => (
             </div>
           </Collapse>
           <IonItem>
-            <div>
+            <div className="pt-3">
               <T>
                 For more help please visit the iRecord{' '}
                 <a href={`${CONFIG.backend.url}/forum/36`}>forum</a>.

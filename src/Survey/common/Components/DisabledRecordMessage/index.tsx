@@ -1,6 +1,5 @@
 import { Trans as T } from 'react-i18next';
-import { InfoMessage } from '@flumens';
-import { IonButton } from '@ionic/react';
+import { Button, InfoMessage } from '@flumens';
 import config from 'common/config';
 import Sample from 'models/sample';
 import './styles.scss';
@@ -18,16 +17,16 @@ const DisabledRecordMessage = ({ sample }: Props) => {
       <T>
         This record has been submitted and cannot be edited within this App.
       </T>
-      <IonButton
-        expand="block"
+      <Button
         href={
           hasOccId
             ? `${config.backend.url}/record-details?occurrence_id=${occ.id}`
             : config.backend.url
         }
+        className="mt-2 p-1"
       >
-        <T>iRecord website</T>
-      </IonButton>
+        iRecord website
+      </Button>
     </InfoMessage>
   );
 };

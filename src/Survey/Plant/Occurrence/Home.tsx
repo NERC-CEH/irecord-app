@@ -21,7 +21,7 @@ const PlantOccurrenceHome = ({ subSample: sample }: Props) => {
       <Header title="Edit" />
 
       <Main>
-        <IonList lines="full" className="flex flex-col gap-4">
+        <IonList lines="full" className="mb-2 flex flex-col gap-4">
           {isDisabled && (
             <div className="rounded-list">
               <VerificationMessage occurrence={occ} />

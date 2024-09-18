@@ -29,7 +29,7 @@ const RegisterMain = ({ onSubmit }: Props) => {
   const togglePassword = () => setShowPassword(!showPassword);
 
   const { formState, handleSubmit, control } = useForm<Details>({
-    defaultValues: { fullName: '', email: '', password: '' },
+    defaultValues: { firstName: '', secondName: '', email: '', password: '' },
     resolver: zodResolver(UserModel.registerSchema),
   });
 
@@ -46,13 +46,13 @@ const RegisterMain = ({ onSubmit }: Props) => {
               control={control}
               name="firstName"
               prefix={<IonIcon icon={personOutline} className="size-5" />}
-              placeholder="First Name"
+              placeholder="First name"
             />
             <ControlledInput
               control={control}
               name="secondName"
               prefix={<IonIcon icon={personOutline} className="size-5" />}
-              placeholder="Last Name"
+              placeholder="Last name"
             />
             <ControlledInput
               control={control}

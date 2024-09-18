@@ -51,7 +51,7 @@ const PastLocations = ({ model, isOpen, onClose }: Props) => {
       <IonHeader>
         <IonToolbar color="light">
           <IonTitle>
-            <T>Past locations</T>
+            <T>Past Locations</T>
           </IonTitle>
           <IonButtons slot="end">
             <IonButton fill="clear" onClick={onClose}>

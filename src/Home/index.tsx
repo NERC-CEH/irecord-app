@@ -42,12 +42,20 @@ function useLongPressTip() {
         message: (
           <>
             <T>
-              Tap on the <IonIcon className="tip-icon" icon={addOutline} />{' '}
+              Tap on the{' '}
+              <IonIcon
+                className="rounded-full bg-primary text-white"
+                icon={addOutline}
+              />{' '}
               button to capture a new record. <br />
             </T>
             <br />
             <T>
-              Long-press <IonIcon className="tip-icon" icon={addOutline} />{' '}
+              Long-press{' '}
+              <IonIcon
+                className="rounded-full bg-primary text-white"
+                icon={addOutline}
+              />{' '}
               button to see some more advanced options.
             </T>
           </>

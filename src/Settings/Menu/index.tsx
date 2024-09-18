@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Page, Header, useToast, PickByType, useLoader } from '@flumens';
-import { NavContext } from '@ionic/react';
+import { NavContext, isPlatform } from '@ionic/react';
 import appModel, { Attrs as AppModelAttrs } from 'models/app';
 import savedSamples, { removeAllSynced } from 'models/savedSamples';
 import userModel from 'models/user';
@@ -82,6 +83,7 @@ function onToggle(
   setting: keyof PickByType<AppModelAttrs, boolean>,
   checked: boolean
 ) {
+  isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
   appModel.attrs[setting] = checked;
   appModel.save();
 }

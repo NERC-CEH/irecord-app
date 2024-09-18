@@ -94,7 +94,7 @@ const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
         </IonButton>
       </div>
 
-      <IonList id="list" lines="full">
+      <IonList id="list" lines="full" className="mb-2">
         <div className="rounded-list">
           <div className="list-divider species-list-header">
             <IonLabel>Count</IonLabel>
