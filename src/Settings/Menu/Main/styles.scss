@@ -1,23 +1,5 @@
 #settings {
   ion-content {
-    --padding-top: 10px;
-
-    .menu-attr-toggle {
-      ion-icon {
-        font-size: 18px;
-      }
-    }
-
-    ion-item ion-toggle {
-      padding-right: 0;
-    }
-
-    .rounded {
-      .menu-attr-toggle:first-of-type {
-        --border-radius: 15px 15px 0 0;
-      }
-    }
-
     .destructive-item {
       ion-item ion-icon,
       ion-item:not(.info-message) ion-label {

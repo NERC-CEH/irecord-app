@@ -41,7 +41,7 @@ const EditModal = ({ location, onLocationSave }: Props) => {
     <IonList className="location-edit-form">
       <div className="rounded-list">
         <IonItem>
-          <IonLabel>{t('Name')}</IonLabel>
+          <IonLabel className="mr-2">{t('Name')}</IonLabel>
           <IonInput
             id="location-name"
             type="text"

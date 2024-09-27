@@ -115,11 +115,6 @@ html.ios.plt-hybrid #status-bar-background {
   height: env(safe-area-inset-top);
 }
 
-// Fixes the tabbed page top safe area
-html[mode='ios'] .tabs-inner .ion-page {
-  // margin-top: var(--ion-safe-area-top);
-}
-
 // FONTS START
 @font-face {
   font-weight: 300;
@@ -182,6 +177,9 @@ ion-item {
   font-weight: 400;
   font-family: 'Quicksand' !important;
 }
+button[type='button'] > div {
+  font-weight: 500;
+}
 // FONTS END
 
 // header colours
@@ -191,11 +189,6 @@ h2,
 h3 {
   color: var(--color-primary-900);
 }
-
-// // move south from status-bar
-// .ion-page ion-content:only-child {
-//   --padding-top: 20px !important;
-// }
 
 // make the toolbar white
 ion-header ion-toolbar {
@@ -226,7 +219,6 @@ a {
 }
 
 // info messages
-.info-message.blue,
 .attr-page .info-message {
   @apply border-secondary-300/40 bg-secondary-50 text-secondary-900;
 }
@@ -259,9 +251,6 @@ ion-item-divider {
 // clearer menu items
 .menu-attr-item,
 .attr-wrapper {
-  ion-icon[slot='start'] {
-    --ionicon-stroke-width: 24px;
-  }
   ion-label[slot='end'] {
     opacity: 1 !important;
     color: #000000b3;
@@ -286,7 +275,7 @@ ion-alert div.alert-message.sc-ion-alert-md {
 }
 
 // increase link and menu label visibility
-label.field-label,
+.field-label:first-of-type,
 ion-item[detail='true'][href],
 ion-item > ion-icon + ion-label,
 ion-item.item > ion-icon + ion-label.sc-ion-label-md-h {
@@ -345,9 +334,14 @@ ion-icon[slot='start'].md {
   color: var(--ion-text-color, #000);
 }
 
-// make all menu icons same size
-ion-icon[slot='start'][size='small'] {
-  width: 25px;
+// unify icon strokes and widths
+ion-icon.size-5,
+ion-icon.size-6,
+.menu-attr-item ion-icon[slot='start'],
+ion-item > ion-icon[slot='start'],
+.single-photo-picker ion-icon[slot='start'] {
+  --ionicon-stroke-width: 24px;
+  width: 24px;
   height: 24px;
 }
 
@@ -355,6 +349,12 @@ ion-icon[slot='start'][size='small'] {
 ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios {
   margin-top: 12px;
   margin-bottom: 12px;
+}
+
+// Make menu item value colours same as form values, e.g. Settings page
+ion-item .sc-ion-label-md-h.sc-ion-label-md-s.md[slot='end'],
+ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios[slot='end'] {
+  color: var(--form-value-color);
 }
 
 // Unify menu lines with Tailwind package components
@@ -368,4 +368,9 @@ ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios {
 // Fix menu date button label alignment for Android
 ion-accordion ion-icon[slot='start'].md {
   margin-right: 37px;
+}
+
+// Fix input list input width
+.input-list-attr-item input.plain-input {
+  width: 100%;
 }

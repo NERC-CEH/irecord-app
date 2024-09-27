@@ -145,7 +145,8 @@ const Activities = ({ sample, userModel, appModel, onSelect }: Props) => {
     <>
       <InfoMessage
         prefix={<IonIcon src={informationCircleOutline} className="size-6" />}
-        className="blue m-2"
+        className="m-2"
+        color="secondary"
         skipTranslation
       >
         <T>

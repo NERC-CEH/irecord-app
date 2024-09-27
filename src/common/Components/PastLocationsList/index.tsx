@@ -127,8 +127,8 @@ const PastLocations = ({ onSelect }: Props) => {
             onClick={() => selectLocation(id)}
           >
             <IonLabel className="details" position="stacked" mode="ios">
-              <IonLabel slot="start">
-                {name ? <strong>{name}</strong> : ''}
+              <IonLabel slot="start" className="font-medium">
+                {name}
               </IonLabel>
               <IonLabel slot="start">{locationStr}</IonLabel>
               <IonLabel slot="start" className="location-raw">
