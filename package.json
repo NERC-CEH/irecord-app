@@ -3,7 +3,7 @@
   "id": "uk.ac.ceh.irecord",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "prepare": "husky",
@@ -36,7 +36,7 @@
     "@capacitor/splash-screen": "6.0.2",
     "@capacitor/status-bar": "6.0.1",
     "@flumens/bigu": "0.4.0",
-    "@flumens/ionic": "2.0.0-alpha.61",
+    "@flumens/ionic": "2.0.0-alpha.64.1",
     "@flumens/tailwind": "0.17.2",
     "@hookform/resolvers": "^3.9.0",
     "@ionic-native/core": "5.36.0",

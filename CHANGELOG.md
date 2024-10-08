@@ -1,3 +1,7 @@
+## 6.1.2
+
+- Fixed Back button navigation.
+
 ## 6.1.1
 
 - Updated libraries.
