@@ -29,6 +29,9 @@ const ResetMain = ({ onSubmit }: Props) => {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Fake onSubmit on Enter */}
+          <input type="submit" className="hidden" />
+
           <div className="rounded-list">
             <ControlledInput
               control={control}
@@ -42,7 +45,7 @@ const ResetMain = ({ onSubmit }: Props) => {
           <Button
             className={clsx('mx-auto my-8', !formState.isValid && 'opacity-50')}
             color="primary"
-            type="submit"
+            onPress={() => handleSubmit(onSubmit)()}
           >
             Reset
           </Button>
