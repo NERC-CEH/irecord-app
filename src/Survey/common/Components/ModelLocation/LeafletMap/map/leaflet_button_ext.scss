@@ -5,7 +5,9 @@
   border: 2px solid rgba(0, 0, 0, 0);
 
   .leaflet-buttons-control-button {
-    box-shadow: 0 0 17px #0000003b, 0 0 7px #00000063;
+    box-shadow:
+      0 0 17px #0000003b,
+      0 0 7px #00000063;
     border-radius: 50%;
     background: #fff;
     width: 36px;

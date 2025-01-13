@@ -56,7 +56,7 @@ const getLocationCommponent = (model: Sample) => {
   if (locationString) {
     locationComponent = <span>{locationString}</span>;
   } else if (isLocating) {
-    locationComponent = <span className=" warn">Locating...</span>;
+    locationComponent = <span className="warn">Locating...</span>;
   } else {
     return null;
   }

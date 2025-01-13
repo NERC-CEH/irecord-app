@@ -409,7 +409,7 @@ const Help = () => (
                 </T>
               </p>
               <p>
-                <span className="location-favourite icon icon-star " />{' '}
+                <span className="location-favourite icon icon-star" />{' '}
                 <T>
                   You can make your location stick to the top of the locations
                   list by clicking the Favourite toggle.

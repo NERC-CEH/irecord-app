@@ -46,7 +46,9 @@
     margin-top: -24px !important;
     margin-left: -24px !important;
     color: var(--ion-color-danger);
-    text-shadow: 0px 0px 1px black, 0px 0px 4px black;
+    text-shadow:
+      0px 0px 1px black,
+      0px 0px 4px black;
     &:before {
       font-size: 34px;
     }

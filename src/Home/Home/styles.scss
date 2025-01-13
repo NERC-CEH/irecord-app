@@ -9,7 +9,9 @@
       z-index: 100000000;
       margin: 8px auto;
 
-      box-shadow: -1px 2px 7px 0 #0000001a, 0 2px 9px 0 #3e396b1a;
+      box-shadow:
+        -1px 2px 7px 0 #0000001a,
+        0 2px 9px 0 #3e396b1a;
       border-radius: var(--theme-border-radius);
       background: #fff;
       max-width: calc(
@@ -66,7 +68,9 @@
       right: 17px;
       bottom: 0;
       margin: 10px auto;
-      box-shadow: -1px 2px 7px 0 #0000001a, 0 2px 9px 0 #3e396b1a;
+      box-shadow:
+        -1px 2px 7px 0 #0000001a,
+        0 2px 9px 0 #3e396b1a;
       border-radius: var(--theme-border-radius);
       height: 35px !important;
       overflow: hidden;
