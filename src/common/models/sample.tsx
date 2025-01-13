@@ -29,7 +29,7 @@ import { coreAttributes, Survey } from 'Survey/common/config';
 import Media from './media';
 import Occurrence, { Taxon } from './occurrence';
 import GPSExtension from './sampleGPSExt';
-import { modelStore } from './store';
+import { samplesStore } from './store';
 
 const ATTRS_TO_LEAVE = [
   ...coreAttributes,
@@ -97,7 +97,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     ...options
   }: SampleOptions & { isSubSample?: boolean }) {
     // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
-    const store = isSubSample ? undefined : modelStore; // eventually remove this once using a SubSample class.
+    const store = isSubSample ? undefined : samplesStore; // eventually remove this once using a SubSample class.
 
     super({ ...options, store });
 

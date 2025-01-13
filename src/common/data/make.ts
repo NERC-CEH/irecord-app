@@ -1,56 +1,40 @@
-/* eslint-disable import/extensions */
-
-/* eslint-disable @typescript-eslint/no-var-requires */
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import dotenv from 'dotenv';
 import fs from 'fs';
+import camelCase from 'lodash/camelCase';
+import mapKeys from 'lodash/mapKeys';
+import { z, object } from 'zod';
 import makeCommonNameMap from './extractCommonNames.js';
 import optimise from './optimise.js';
 
-dotenv.config({ silent: true, path: '../../../.env' });
+dotenv.config({ path: '../../../.env' });
+
+const remoteSchema = object({
+  id: z.string(),
+  taxonGroup: z.string(),
+  taxon: z.string(),
+  commonName: z.string().optional(),
+  cym: z.string().optional(),
+  synonym: z.string().optional(),
+});
+
+export type RemoteAttributes = z.infer<typeof remoteSchema>;
 
 const UKSIListID = 15;
 
 const FETCH_LIMIT = 50000;
 
 const warehouseURL = 'https://warehouse1.indicia.org.uk';
-const websiteURL = 'https://irecord.org.uk';
 
-async function getToken() {
-  const clientId = process.env.APP_BACKEND_CLIENT_ID;
-  const clientPass = process.env.APP_BACKEND_CLIENT_PASS;
-  if (!clientId || !clientPass) {
-    return Promise.reject(
-      new Error(
-        'Requires a website client id and secret set as APP_BACKEND_CLIENT_ID and APP_BACKEND_CLIENT_PASS'
-      )
-    );
-  }
-
-  const params = new URLSearchParams();
-  params.append('grant_type', 'client_credentials');
-  params.append('client_id', clientId);
-  params.append('client_secret', clientPass);
-
-  const options = {
-    method: 'post',
-    url: `${websiteURL}/oauth/token`,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    data: params,
-  };
-
-  const res = await axios(options);
-  return res.data.access_token;
+const { ANON_WAREHOUSE_TOKEN } = process.env;
+if (!ANON_WAREHOUSE_TOKEN) {
+  throw new Error('ANON_WAREHOUSE_TOKEN is missing from env.');
 }
 
-async function fetch() {
+async function fetch(): Promise<RemoteAttributes[]> {
   console.log('Pulling all the species from remote report.');
 
-  const token = await getToken();
   const data = [];
   let offset = 0;
 
@@ -59,7 +43,7 @@ async function fetch() {
     const options = {
       url: `${warehouseURL}/index.php/services/rest/reports/library/taxa/taxa_list_for_app.xml?taxon_list_id=${UKSIListID}&limit=${FETCH_LIMIT}&offset=${offset}`,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${ANON_WAREHOUSE_TOKEN}`,
       },
     };
 
@@ -75,13 +59,19 @@ async function fetch() {
 
   console.log(`Pulled ${data.length} species`);
 
-  const alphabetically = (t1, t2) => t1.taxon.localeCompare(t2.taxon);
-  data.sort(alphabetically);
+  const getValues = (doc: any) =>
+    mapKeys(doc, (_, key) => (key.includes(':') ? key : camelCase(key)));
 
-  return { data };
+  const byTaxon = (s1: any, s2: any) => s1.taxon.localeCompare(s2.taxon);
+
+  const docs: any = data.map(getValues).sort(byTaxon);
+
+  docs.forEach(remoteSchema.parse);
+
+  return docs;
 }
 
-function saveSpeciesToFile(species) {
+function saveSpeciesToFile(species: any) {
   return new Promise((resolve, reject) => {
     console.log(`Writing ./species.data.json`);
 
@@ -96,7 +86,7 @@ function saveSpeciesToFile(species) {
   });
 }
 
-function saveCommonNamesToFile(commonNames) {
+function saveCommonNamesToFile(commonNames: any) {
   return new Promise((resolve, reject) => {
     console.log(`Writing ./species_names.data.json`);
     fs.writeFile(
@@ -115,7 +105,7 @@ function saveCommonNamesToFile(commonNames) {
 }
 
 fetch()
-  .then(species => optimise(species))
+  .then((species: any) => optimise(species))
   .then(saveSpeciesToFile)
   .then(makeCommonNameMap)
   .then(saveCommonNamesToFile)

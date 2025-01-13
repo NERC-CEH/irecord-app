@@ -29,7 +29,7 @@ function useSurveyDeletePrompt(sample: Sample) {
       </T>
     );
 
-    const isSynced = sample.metadata.syncedOn;
+    const isSynced = sample.syncedAt;
     if (isSynced) {
       body = (
         <T>

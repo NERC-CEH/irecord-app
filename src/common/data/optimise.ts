@@ -15,10 +15,11 @@ import {
   ID,
 } from './constants.js';
 import { groups as speciesInformalGroups } from './informalGroups.js';
+import { RemoteAttributes } from './make';
 
 const enableWelsh = process.env.APP_WELSH;
 
-function normalizeValue(value) {
+function normalizeValue(value: number) {
   // check if int
   // https://coderwall.com/p/5tlhmw/converting-strings-to-number-in-javascript-pitfalls
   const int = value * 1;
@@ -28,28 +29,28 @@ function normalizeValue(value) {
   return value;
 }
 
-function checkAllSpeciesHasInformalGroup(speciesList) {
+function checkAllSpeciesHasInformalGroup(speciesList: any[]) {
   console.log('Checking if all the species has an informal group metadata.');
 
   const groups = Object.keys(speciesInformalGroups);
-  speciesList.forEach(species => {
+  speciesList.forEach((species: any[]) => {
     if (!groups.includes(`${species[GROUP]}`)) {
       throw new Error(`No Such species informal group found ${species[GROUP]}`);
     }
   });
 }
 
-const flattenSpeciesReport = speciesFromReport =>
-  speciesFromReport.data.map(s => {
-    const flattened = [];
+const flattenSpeciesReport = (speciesFromReport: RemoteAttributes[]) =>
+  speciesFromReport.map(s => {
+    const flattened: any = [];
     flattened[ID] = parseInt(s.id, 10);
-    flattened[GROUP] = parseInt(s.taxon_group, 10);
+    flattened[GROUP] = parseInt(s.taxonGroup, 10);
     flattened[TAXON] = s.taxon;
 
     flattened[COMMON_NAMES] = [];
     // in the order of importance
-    if (s.common_name) {
-      flattened[COMMON_NAMES].push(s.common_name);
+    if (s.commonName) {
+      flattened[COMMON_NAMES].push(s.commonName);
     }
     if (s.synonym) {
       flattened[COMMON_NAMES].push(s.synonym);
@@ -61,14 +62,14 @@ const flattenSpeciesReport = speciesFromReport =>
     return flattened;
   });
 
-function addGenus(optimised, taxa) {
-  const taxon = taxonCleaner(taxa[TAXON], false, true);
+function addGenus(optimised: any[], taxa: any[]) {
+  const taxon = taxonCleaner(taxa[TAXON], false);
   if (!taxon) {
     return;
   }
 
-  const commonNames = taxa[COMMON_NAMES].map(name =>
-    taxonCleaner(name, true, true)
+  const commonNames = taxa[COMMON_NAMES].map((name: any) =>
+    taxonCleaner(name, true)
   );
 
   const genus = [];
@@ -91,7 +92,12 @@ function addGenus(optimised, taxa) {
  * @param taxaNameSplitted
  * @returns {*}
  */
-function getLastGenus(optimised, taxa, taxaNameSplitted, index) {
+function getLastGenus(
+  optimised: any[],
+  taxa: any[],
+  taxaNameSplitted: any[],
+  index?: number | undefined
+) {
   const lastEntry = index || optimised.length - 1;
   let lastGenus = optimised[lastEntry];
 
@@ -112,7 +118,7 @@ function getLastGenus(optimised, taxa, taxaNameSplitted, index) {
   return lastGenus;
 }
 
-function addSpecies(optimised, taxa, taxaNameSplitted) {
+function addSpecies(optimised: any[], taxa: any[][], taxaNameSplitted: any[]) {
   // species that needs to be appended to genus
   const lastGenus = getLastGenus(optimised, taxa, taxaNameSplitted);
 
@@ -122,7 +128,7 @@ function addSpecies(optimised, taxa, taxaNameSplitted) {
     speciesArray = lastGenus[GENUS_SPECIES_INDEX];
   }
 
-  const id = normalizeValue(taxa[ID]);
+  const id = normalizeValue(taxa[ID] as any);
 
   const taxon = taxaNameSplitted.slice(1).join(' ');
   const taxonClean = taxonCleaner(taxon, false);
@@ -131,9 +137,9 @@ function addSpecies(optimised, taxa, taxaNameSplitted) {
     return;
   }
 
-  const commonNames = taxa[COMMON_NAMES].map(name =>
+  const commonNames = taxa[COMMON_NAMES].map((name: any) =>
     taxonCleaner(name, true)
-  ).filter(exists => exists);
+  ).filter((exists: any) => exists);
 
   const species = [];
   species[SPECIES_ID_INDEX] = id;
@@ -145,7 +151,11 @@ function addSpecies(optimised, taxa, taxaNameSplitted) {
   speciesArray.push(species);
 }
 
-function isGenusDuplicate(optimised, taxa, index) {
+function isGenusDuplicate(
+  optimised: string | any[],
+  taxa: any[],
+  index?: number | undefined
+) {
   const lastEntry = index || optimised.length - 1;
   if (lastEntry < 0) {
     // empty array
@@ -164,7 +174,7 @@ function isGenusDuplicate(optimised, taxa, index) {
   return true;
 }
 
-function withoutTaxon(taxa) {
+function withoutTaxon(taxa: any[]) {
   if (!taxa[TAXON]) console.warn(`${taxa[ID]} has no taxon`);
   return !!taxa[TAXON];
 }
@@ -172,15 +182,16 @@ function withoutTaxon(taxa) {
 /**
  * Optimises the array by grouping species to genus.
  */
-export default function optimise(speciesFromReport) {
+export default function optimise(speciesFromReport: RemoteAttributes[]) {
   let speciesFlattened = flattenSpeciesReport(speciesFromReport);
+
   speciesFlattened = speciesFlattened.filter(withoutTaxon);
 
   checkAllSpeciesHasInformalGroup(speciesFlattened);
 
-  const optimised = [];
+  const optimised: never[] = [];
 
-  speciesFlattened.forEach(taxa => {
+  speciesFlattened.forEach((taxa: any[]) => {
     const taxaName = taxa[TAXON];
     const taxaNameSplitted = taxaName.split(' ');
 

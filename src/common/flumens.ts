@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-export { options as sentryOptions } from '@flumens/ionic/dist/utils/sentry';
+export { options as sentryOptions } from '@flumens/utils/dist/sentry';
 export { default as Main } from '@flumens/ionic/dist/components/Main';
 export { default as Page } from '@flumens/ionic/dist/components/Page';
 export { default as Header } from '@flumens/ionic/dist/components/Header';
@@ -31,9 +31,9 @@ export {
   type Props as InputProps,
 } from '@flumens/tailwind/dist/components/Input';
 export { default as PhotoPicker } from '@flumens/ionic/dist/components/PhotoPicker';
-export * from '@flumens/ionic/dist/utils/date';
-export { default as device } from '@flumens/ionic/dist/utils/device';
-export * from '@flumens/ionic/dist/utils/uuid';
+export * from '@flumens/utils/dist/date';
+export { default as device } from '@flumens/utils/dist/device';
+export * from '@flumens/utils/dist/uuid';
 export { useToast, useAlert, useLoader } from '@flumens/ionic/dist/hooks';
 export { default as Collapse } from '@flumens/ionic/dist/components/Collapse';
 export { default as InfoMessage } from '@flumens/tailwind/dist/components/InfoMessage';
@@ -50,50 +50,49 @@ export {
 export { default as Toggle } from '@flumens/tailwind/dist/components/Switch';
 export { default as ImageCropper } from '@flumens/ionic/dist/components/ImageCropper';
 export { default as ModelValidationMessage } from '@flumens/ionic/dist/components/ModelValidationMessage';
-export { default as Store } from '@flumens/ionic/dist/models/Store';
-export { default as initStoredSamples } from '@flumens/ionic/dist/models/initStoredSamples';
-export * from '@flumens/ionic/dist/models/Indicia/helpers';
+export { default as SampleCollection } from '@flumens/models/dist/Indicia/SampleCollection';
+export * from '@flumens/models/dist/Indicia/helpers';
 export {
   default as Model,
   type Attrs as ModelAttrs,
-} from '@flumens/ionic/dist/models/Model';
+} from '@flumens/models/dist/Model';
 export {
   default as Sample,
   type Attrs as SampleAttrs,
   type Metadata as SampleMetadata,
   type Options as SampleOptions,
   type RemoteConfig,
-} from '@flumens/ionic/dist/models/Indicia/Sample';
+} from '@flumens/models/dist/Indicia/Sample';
 export {
   default as Media,
   type Attrs as MediaAttrs,
-} from '@flumens/ionic/dist/models/Indicia/Media';
+} from '@flumens/models/dist/Indicia/Media';
 export {
   default as Occurrence,
   type Attrs as OccurrenceAttrs,
   type Metadata as OccurrenceMetadata,
   type Options as OccurrenceOptions,
-} from '@flumens/ionic/dist/models/Indicia/Occurrence';
+} from '@flumens/models/dist/Indicia/Occurrence';
 export {
   default as DrupalUserModel,
   type Attrs as DrupalUserModelAttrs,
-} from '@flumens/ionic/dist/models/DrupalUserModel';
+} from '@flumens/models/dist/Drupal/User';
 // export { default as UserFeedbackRequest } from '@flumens/ionic/dist/components/UserFeedbackRequest';
 export {
   useDisableBackButton,
   useOnBackButton,
   useOnHideModal,
 } from '@flumens/ionic/dist/hooks/navigation';
-export * from '@flumens/ionic/dist/utils/errors';
-export * from '@flumens/ionic/dist/utils/location';
-export * from '@flumens/ionic/dist/utils/image';
-export * from '@flumens/ionic/dist/utils/type';
+export * from '@flumens/utils/dist/errors';
+export * from '@flumens/utils/dist/location';
+export * from '@flumens/utils/dist/image';
+export * from '@flumens/utils/dist/type';
 export { default as ImageWithBackground } from '@flumens/ionic/dist/components/ImageWithBackground';
 
 export {
   type default as ElasticOccurrence,
   type Media as ElasticOccurrenceMedia,
-} from '@flumens/ionic/dist/models/Indicia/ElasticOccurrence.d';
+} from '@flumens/models/dist/Indicia/ElasticOccurrence.d';
 
 export {
   default as TailwindContext,

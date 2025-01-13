@@ -18,8 +18,8 @@ const speciesOccAddedTimeSort = (
   model1: Sample | Occurrence,
   model2: Sample | Occurrence
 ) => {
-  const date1 = new Date(model1.metadata.createdOn);
-  const date2 = new Date(model2.metadata.createdOn);
+  const date1 = new Date(model1.createdAt);
+  const date2 = new Date(model2.createdAt);
   return date2.getTime() - date1.getTime();
 };
 

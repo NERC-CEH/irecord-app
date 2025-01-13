@@ -183,7 +183,8 @@ export const assignParentLocationIfMissing = (
     // eslint-disable-next-line no-param-reassign
     submission.values[keys.location.id] = parentLocation;
 
-    const locationType = keys.location_type.values[parentAttrs.location_type];
+    const locationType =
+      keys.location_type.values[(parentAttrs as any).location_type];
 
     // eslint-disable-next-line no-param-reassign
     submission.values[keys.location_type.id] = locationType;

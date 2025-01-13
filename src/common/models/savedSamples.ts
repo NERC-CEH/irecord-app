@@ -1,20 +1,17 @@
-import { initStoredSamples } from '@flumens';
+import { SampleCollection } from '@flumens';
 import appModel from './app';
 import Sample from './sample';
 import remotePullExtInit, { Verification } from './savedSamplesRemotePullExt';
-import { modelStore } from './store';
+import { samplesStore } from './store';
 import userModel from './user';
 
 console.log('SavedSamples: initializing');
 
-type Collection = Sample[] & {
-  ready: Promise<any>;
-  resetDefaults: any;
-
-  verified: Verification;
-};
-
-const savedSamples: Collection = initStoredSamples(modelStore, Sample);
+const savedSamples: SampleCollection<Sample> & { verified: Verification } =
+  new SampleCollection({
+    store: samplesStore,
+    Model: Sample,
+  }) as any;
 
 // eslint-disable-next-line
 export async function uploadAllSamples(toast: any) {
@@ -35,7 +32,7 @@ export function removeAllSynced() {
   console.log('SavedSamples: removing all synced samples.');
 
   const destroy = (sample: Sample) =>
-    !sample.metadata.syncedOn ? null : sample.destroy();
+    !sample.syncedAt ? null : sample.destroy();
   const toWait = savedSamples.map(destroy);
 
   return Promise.all(toWait);
@@ -44,7 +41,7 @@ export function removeAllSynced() {
 remotePullExtInit(savedSamples, userModel, appModel);
 
 export function getPending() {
-  const byUploadStatus = (sample: Sample) => !sample.metadata.syncedOn;
+  const byUploadStatus = (sample: Sample) => !sample.syncedAt;
 
   return savedSamples.filter(byUploadStatus);
 }

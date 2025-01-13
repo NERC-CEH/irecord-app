@@ -206,13 +206,12 @@ function updateLocalOccurrences(
 
 function getEarliestTimestamp(savedSamples: typeof SavedSamplesProps) {
   const byTime = (s1: Sample, s2: Sample) =>
-    new Date(s1.metadata.createdOn).getTime() -
-    new Date(s2.metadata.createdOn).getTime();
+    new Date(s1.createdAt).getTime() - new Date(s2.createdAt).getTime();
 
   const [firstSample] = [...savedSamples].sort(byTime);
   if (!firstSample) return new Date().getTime(); // should never happen
 
-  let earliestTimestamp = new Date(firstSample.metadata.createdOn);
+  let earliestTimestamp = new Date(firstSample.createdAt);
 
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
@@ -232,9 +231,9 @@ async function init(
   // in-memory observable to use in reports and other views
   savedSamples.verified = observable({ updated: [], timestamp: null });
 
-  const originalResetDefaults = savedSamples.resetDefaults;
+  const originalResetDefaults = savedSamples.reset;
   // eslint-disable-next-line @getify/proper-arrows/name
-  savedSamples.resetDefaults = () => {
+  savedSamples.reset = () => {
     set(savedSamples.verified, { count: 0, timestamp: null });
     return originalResetDefaults();
   };

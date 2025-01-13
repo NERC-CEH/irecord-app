@@ -142,7 +142,7 @@ const UserSurveyComponent = () => {
 
   const getSamplesList = (uploaded?: boolean) => {
     const byUploadStatus = (sample: Sample) =>
-      uploaded ? sample.metadata.syncedOn : !sample.metadata.syncedOn;
+      uploaded ? sample.syncedAt : !sample.syncedAt;
 
     return savedSamples.filter(byUploadStatus).sort(bySurveyDate);
   };

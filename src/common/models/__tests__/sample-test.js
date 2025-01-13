@@ -29,7 +29,7 @@ describe('Sample', () => {
   let sampleRemoteCreateStub;
   beforeEach(() => {
     sampleRemoteCreateStub = sinon
-      .stub(Sample.prototype, '_createRemote')
+      .stub(Sample.prototype, 'saveRemote')
       .resolves({ data: {} });
   });
 

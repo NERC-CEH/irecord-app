@@ -14,7 +14,7 @@ async function resetApp(toast: any) {
   try {
     await appModel.resetDefaults();
     await userModel.resetDefaults();
-    await savedSamples.resetDefaults();
+    await savedSamples.reset();
 
     toast.success('Done', { position: 'bottom' });
   } catch (e: any) {

@@ -15,7 +15,7 @@ import {
 import { NavContext } from '@ionic/react';
 import * as Sentry from '@sentry/browser';
 import CONFIG from 'common/config';
-import { genericStore } from '../store';
+import { mainStore } from '../store';
 import activitiesExt from './activitiesExt';
 
 export interface Attrs extends DrupalUserModelAttrs {
@@ -43,7 +43,7 @@ const defaults: Attrs = {
   activities: [],
 };
 
-export class UserModel extends DrupalUserModel {
+export class UserModel extends DrupalUserModel<Attrs> {
   hasActivityExpired: any; // from extension
 
   getActivity: any; // from extension
@@ -51,10 +51,6 @@ export class UserModel extends DrupalUserModel {
   syncActivities: any; // from extension
 
   activities: any; // from extension
-
-  // eslint-disable-next-line
-  // @ts-ignore
-  attrs: Attrs = DrupalUserModel.extendAttrs(this.attrs, defaults);
 
   static registerSchema: any = object({
     email: z.string().email('Please fill in'),
@@ -79,7 +75,7 @@ export class UserModel extends DrupalUserModel {
   getAchievedStatsMilestone?: any; // from extension
 
   constructor(options: any) {
-    super(options);
+    super({ ...options, attrs: { ...defaults, ...options.attrs } });
     Object.assign(this, activitiesExt);
 
     const checkForValidation = () => {
@@ -136,7 +132,7 @@ export class UserModel extends DrupalUserModel {
 
 const userModel = new UserModel({
   cid: 'user',
-  store: genericStore,
+  store: mainStore,
   config: CONFIG.backend,
 });
 

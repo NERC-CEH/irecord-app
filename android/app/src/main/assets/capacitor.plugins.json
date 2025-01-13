@@ -1,5 +1,9 @@
 [
 	{
+		"pkg": "@capacitor-community/sqlite",
+		"classpath": "com.getcapacitor.community.database.sqlite.CapacitorSQLitePlugin"
+	},
+	{
 		"pkg": "@capacitor-community/camera-preview",
 		"classpath": "com.ahm.capacitor.camera.preview.CameraPreview"
 	},
@@ -42,9 +46,5 @@
 	{
 		"pkg": "@capacitor/status-bar",
 		"classpath": "com.capacitorjs.plugins.statusbar.StatusBarPlugin"
-	},
-	{
-		"pkg": "@sentry/capacitor",
-		"classpath": "io.sentry.capacitor.SentryCapacitor"
 	}
 ]

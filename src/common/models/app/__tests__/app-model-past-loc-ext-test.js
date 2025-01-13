@@ -12,6 +12,7 @@ const genLocation = favourite => ({
 async function getAppModel() {
   const genericStoreMock = { find: async () => null, save: async () => null };
   const appModel = new AppModel({ cid: 'app', store: genericStoreMock });
+  appModel.fetch();
   await appModel.ready;
   return appModel;
 }
