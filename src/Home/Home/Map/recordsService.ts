@@ -35,6 +35,12 @@ export const getESTimestamp = (dateString: string) => {
   return `${date} ${time}`;
 };
 
+const notTraining = {
+  match: {
+    'metadata.trial': 'false',
+  },
+};
+
 type RecordQueryOptions = {
   northWest: LatLng;
   southEast: LatLng;
@@ -48,7 +54,7 @@ const getRecordsQuery = ({
   startDate,
   speciesGroup,
 }: RecordQueryOptions) => {
-  const must: any = [matchAppSurveys];
+  const must: any = [matchAppSurveys, notTraining];
 
   if (startDate) {
     must.push({
@@ -145,7 +151,7 @@ const getSquaresQuery = ({
   startDate,
   speciesGroup,
 }: SquareQueryOptions) => {
-  const must: any = [matchAppSurveys];
+  const must: any = [matchAppSurveys, notTraining];
 
   if (startDate) {
     must.push({
