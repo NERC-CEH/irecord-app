@@ -19,24 +19,23 @@ const Header = () => {
   };
 
   const isFiltering =
-    appModel.attrs.searchNamesOnly || appModel.attrs.taxonGroupFilters.length;
+    appModel.attrs.searchNamesOnly ||
+    appModel.attrs.taxonSearchGroupFilters.length;
 
   const filtersCount =
     (appModel.attrs.searchNamesOnly ? 1 : 0) +
-    appModel.attrs.taxonGroupFilters.length;
+    appModel.attrs.taxonSearchGroupFilters.length;
 
-  const onSearchTaxaFilterSelect = (filters: string[]) => {
-    appModel.attrs.taxonGroupFilters = filters.map((s: string) =>
-      parseInt(s, 10)
-    );
+  const onSearchTaxaFilterSelect = (newFilters: number[][]) => {
+    appModel.attrs.taxonSearchGroupFilters = newFilters;
     appModel.save();
   };
 
   return (
     <>
       <FiltersModal
-        onSearchTaxaFilterSelect={onSearchTaxaFilterSelect}
-        onSearchNamesFilterSelect={onSearchNamesFilterSelect}
+        onTaxaFilterChange={onSearchTaxaFilterSelect}
+        onNameFilterChange={onSearchNamesFilterSelect}
         toggleModal={toggleModal}
         showModal={showModal}
       />

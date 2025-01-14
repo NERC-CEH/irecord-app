@@ -12,7 +12,7 @@ const MIN_SEARCH_LENGTH = 2;
 type Props = {
   onSpeciesSelected: any;
   recordedTaxa?: any[];
-  informalGroups?: number[];
+  selectedFilters?: number[];
   namesFilter?: Options['namesFilter'];
   resetOnSelect?: boolean;
   showEditButton?: boolean;
@@ -23,7 +23,7 @@ type Props = {
 const TaxonSearch = ({
   onSpeciesSelected,
   recordedTaxa,
-  informalGroups,
+  selectedFilters: informalGroups,
   namesFilter,
   resetOnSelect,
   showEditButton,

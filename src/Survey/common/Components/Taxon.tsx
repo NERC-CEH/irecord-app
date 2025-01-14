@@ -85,8 +85,7 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
     });
   };
 
-  const { searchNamesOnly, taxonGroupFilters: selectedFilters } =
-    appModel.attrs;
+  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.attrs;
 
   const isSpeciesRestrictedSurvey =
     surveyConfig.name !== 'default' && surveyConfig.taxaGroups;
@@ -94,7 +93,7 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
 
   const informalGroups = isSpeciesRestrictedSurvey
     ? surveyConfig.taxaGroups
-    : selectedFilters;
+    : taxonSearchGroupFilters.flat().flat();
   const namesFilter = isSpeciesRestrictedSurvey ? undefined : searchNamesOnly;
 
   const suggestedSpecies = occurrence?.getSuggestions();
@@ -108,7 +107,7 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
           onSpeciesSelected={onSpeciesSelected}
           resetOnSelect
           showEditButton={!editingExisting}
-          informalGroups={informalGroups}
+          selectedFilters={informalGroups}
           namesFilter={namesFilter}
           suggestedSpecies={suggestedSpecies}
           suggestionsAreLoading={suggestionsAreLoading}

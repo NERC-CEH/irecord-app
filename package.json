@@ -21,8 +21,8 @@
     "make:species": "cd src/common/data && tsx make.ts"
   },
   "dependencies": {
-    "@capacitor-community/sqlite": "^6.0.2",
     "@capacitor-community/camera-preview": "6.0.1",
+    "@capacitor-community/sqlite": "^6.0.2",
     "@capacitor/android": "^6.2.0",
     "@capacitor/app": "6.0.2",
     "@capacitor/camera": "^6.1.2",
@@ -39,7 +39,7 @@
     "@flumens/bigu": "0.4.0",
     "@flumens/ionic": "2.0.0-alpha.68",
     "@flumens/models": "0.3.1",
-    "@flumens/tailwind": "0.22.0",
+    "@flumens/tailwind": "0.23.0",
     "@flumens/utils": "^0.0.2",
     "@hookform/resolvers": "^3.10.0",
     "@ionic-native/core": "5.36.0",
@@ -79,6 +79,7 @@
     "react-window": "^1.8.11",
     "sql.js": "^1.12.0",
     "swiper": "^11.2.1",
+    "tailwind-variants": "^0.3.0",
     "yup": "^1.6.1",
     "zod": "^3.24.1"
   },

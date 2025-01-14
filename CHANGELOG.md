@@ -1,6 +1,8 @@
 ## 6.2.0
 
 - Updated libraries.
+- Updated the species dictionary.
+- Simplified species filters.
 
 ## 6.1.2
 

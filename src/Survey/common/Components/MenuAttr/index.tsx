@@ -11,6 +11,7 @@ import {
   getRelativeDate,
 } from '@flumens';
 import { IonIcon, IonItem } from '@ionic/react';
+import { capitalize } from 'common/helpers/string';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import { WithLock, LockConfig } from './Lock';
@@ -34,9 +35,6 @@ function parseValue(value: any, parse: any, model: Sample | Occurrence) {
 
   return value;
 }
-
-const capitalize = (s: string) =>
-  typeof s !== 'string' ? '' : s.charAt(0).toUpperCase() + s.slice(1);
 
 type Props = {
   attr: string;

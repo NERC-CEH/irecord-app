@@ -29,8 +29,9 @@ const Taxon = () => {
     navigate(`${url}/${newSample.cid}`, undefined, 'replace');
   };
 
-  const { searchNamesOnly, taxonGroupFilters: selectedFilters } =
-    appModel.attrs;
+  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.attrs;
+
+  const selectedFilters = taxonSearchGroupFilters.flat().flat();
 
   return (
     <Page id="taxon">
@@ -39,7 +40,7 @@ const Taxon = () => {
         <TaxonSearch
           onSpeciesSelected={onSpeciesSelected}
           namesFilter={searchNamesOnly}
-          informalGroups={selectedFilters}
+          selectedFilters={selectedFilters}
         />
       </Main>
     </Page>

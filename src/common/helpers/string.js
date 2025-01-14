@@ -16,3 +16,7 @@ export default {
     return escaped;
   },
 };
+
+
+export const capitalize = (s) =>
+  typeof s !== 'string' ? '' : s.charAt(0).toUpperCase() + s.slice(1);

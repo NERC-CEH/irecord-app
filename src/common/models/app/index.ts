@@ -23,7 +23,7 @@ export type Attrs = ModelAttrs & {
   shownLockingSwipeTip: boolean;
   showPastLocationsTip: boolean;
   feedbackGiven: boolean;
-  taxonGroupFilters: number[];
+  taxonSearchGroupFilters: number[][];
   searchNamesOnly: '' | 'scientific' | 'common';
   sendAnalytics: boolean;
   appSession: number;
@@ -54,7 +54,7 @@ export const defaults: Attrs = {
   shownLockingSwipeTip: false,
   showPastLocationsTip: true,
   feedbackGiven: false,
-  taxonGroupFilters: [],
+  taxonSearchGroupFilters: [],
   searchNamesOnly: '',
   sendAnalytics: true,
   appSession: 0,

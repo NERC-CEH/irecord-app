@@ -64,7 +64,7 @@ const survey: Partial<Survey> & { taxa: string } = {
     groups.scorpion,
     groups.mantis,
     groups.pauropod,
-    groups['web-spinne'],
+    groups['web-spinner'],
   ],
 
   occ: {
