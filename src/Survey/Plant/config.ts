@@ -314,9 +314,8 @@ const survey: Survey = {
           gridSquareUnit,
         },
         attrs: {
-          location_type: 'british',
+          enteredSrefSystem: 'OSGB',
           location: {},
-          date: surveySample.attrs.date,
         },
       });
 
@@ -392,9 +391,10 @@ const survey: Survey = {
         gridSquareUnit,
       },
       attrs: {
+        date: new Date().toISOString(),
         location: {},
-        location_type: 'british',
-        sample_method_id: 7305,
+        enteredSrefSystem: 'OSGB',
+        sampleMethodId: 7305,
         recorders,
       },
     });

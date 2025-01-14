@@ -104,7 +104,7 @@ const survey: Survey = {
           survey: 'default', // not list since it looks for taxa specific attrs
         },
         attrs: {
-          date: surveySample.attrs.date,
+          enteredSrefSystem: 4326,
           location: {},
           activity,
         },
@@ -166,6 +166,8 @@ const survey: Survey = {
         survey: survey.name,
       },
       attrs: {
+        date: new Date().toISOString(),
+        enteredSrefSystem: 4326,
         location: {},
         recorder,
         activity,

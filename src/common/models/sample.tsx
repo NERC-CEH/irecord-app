@@ -52,6 +52,8 @@ const surveyConfigs = {
 type Attrs = SampleAttrs & {
   location?: any;
   activity?: any;
+  recorder?: any;
+  recorders?: any;
 };
 
 type Metadata = SampleMetadata & {
@@ -95,7 +97,7 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
   constructor({
     isSubSample,
     ...options
-  }: SampleOptions & { isSubSample?: boolean }) {
+  }: SampleOptions<Attrs> & { isSubSample?: boolean }) {
     // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
     const store = isSubSample ? undefined : samplesStore; // eventually remove this once using a SubSample class.
 

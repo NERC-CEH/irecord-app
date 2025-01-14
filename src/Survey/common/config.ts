@@ -107,7 +107,8 @@ export const identifiersAttr = {
 export const coreAttributes = [
   'smp:location',
   'smp:locationName',
-  'smp:location_type',
+  'smp:enteredSrefSystem',
+  'smp:location_type', // backwards compatible
   'smp:date',
   'smp:recorder',
   'occ:comment',
@@ -183,11 +184,11 @@ export const assignParentLocationIfMissing = (
     // eslint-disable-next-line no-param-reassign
     submission.values[keys.location.id] = parentLocation;
 
-    const locationType =
-      keys.location_type.values[(parentAttrs as any).location_type];
-
     // eslint-disable-next-line no-param-reassign
-    submission.values[keys.location_type.id] = locationType;
+    submission.values.enteredSrefSystem =
+      parentAttrs.enteredSrefSystem ||
+      // backwards compatible
+      keys.location_type.values[(parentAttrs as any).location_type];
   }
 };
 

@@ -248,7 +248,12 @@ const survey: Survey = {
         survey_id: survey.id,
         survey: survey.name,
       },
-      attrs: { location: {}, recorder },
+      attrs: {
+        date: new Date().toISOString(),
+        enteredSrefSystem: 4326,
+        location: {},
+        recorder,
+      },
     });
     sample.occurrences.push(occurrence);
 
