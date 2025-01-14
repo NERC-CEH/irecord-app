@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import taxonCleaner from './clean.js';
+import taxonCleaner from './clean';
 import {
   GENUS_ID_INDEX,
   GENUS_GROUP_INDEX,
@@ -13,8 +13,8 @@ import {
   TAXON,
   GROUP,
   ID,
-} from './constants.js';
-import { groups as speciesInformalGroups } from './informalGroups.js';
+} from './constants';
+import { groups as speciesInformalGroups } from './informalGroups';
 import { RemoteAttributes } from './make';
 
 const enableWelsh = process.env.APP_WELSH;

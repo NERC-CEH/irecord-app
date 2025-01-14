@@ -107,9 +107,10 @@ export const groups = {
   239: 'cyanobacterium',
   240: 'web-spinner',
   245: 'parasitic roundworm',
-};
+} as const;
 
-// reverse the object for easier lookup
-export const groupsReverse = Object.fromEntries(
+type Values = (typeof groups)[keyof typeof groups];
+
+export const groupsReverse: Record<Values, number> = Object.fromEntries(
   Object.entries(groups).map(([k, v]) => [v, parseInt(k, 10)])
-);
+) as any;

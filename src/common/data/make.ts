@@ -5,8 +5,8 @@ import fs from 'fs';
 import camelCase from 'lodash/camelCase';
 import mapKeys from 'lodash/mapKeys';
 import { z, object } from 'zod';
-import makeCommonNameMap from './extractCommonNames.js';
-import optimise from './optimise.js';
+import makeCommonNameMap from './extractCommonNames';
+import optimise from './optimise';
 
 dotenv.config({ path: '../../../.env' });
 
