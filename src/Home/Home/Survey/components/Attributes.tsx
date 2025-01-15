@@ -25,7 +25,7 @@ const Attributes = ({ occ, sample, isDefaultSurvey }: Props) => {
 
   const commentComponent = (
     <span
-      className={`mr-2.5 w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm ${
+      className={`mr-2.5 w-full overflow-hidden text-ellipsis whitespace-nowrap ${
         commentLocked ? 'locked' : ''
       }`}
     >

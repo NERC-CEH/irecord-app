@@ -171,7 +171,7 @@ const survey: Survey = {
         survey: survey.name,
       },
       attrs: {
-        date: '', // user should specify the trap time
+        date: undefined, // user should specify the trap time
         enteredSrefSystem: 4326,
         location: {},
         recorder,
