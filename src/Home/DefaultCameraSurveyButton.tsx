@@ -13,10 +13,10 @@ import {
 import { IonIcon, IonLabel, isPlatform } from '@ionic/react';
 import config from 'common/config';
 import appModel from 'models/app';
+import samples from 'models/collections/samples';
 import Media from 'models/media';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
-import savedSamples from 'models/savedSamples';
 import userModel from 'models/user';
 import defaultSurveyConfig from 'Survey/Default/config';
 
@@ -96,7 +96,7 @@ const DefaultCameraSurveyButton = () => {
     await sample.save();
 
     // add to main collection
-    savedSamples.push(sample);
+    samples.push(sample);
     identify(sample.occurrences[0].media[0]);
   };
 

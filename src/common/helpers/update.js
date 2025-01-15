@@ -5,7 +5,7 @@ import { set as setMobXAttrs } from 'mobx';
 import { loader } from '@flumens';
 import CONFIG from 'common/config';
 import appModel from 'models/app';
-import savedSamples from 'models/savedSamples';
+import samples from 'models/collections/samples';
 import userModel from 'models/user';
 
 const MIN_UPDATE_TIME = 5000; // show updating dialog for minimum seconds
@@ -60,8 +60,8 @@ function versionCompare(left, right) {
   return 0;
 }
 
-export function updateSamples(samples, callback) {
-  samples.each(sample => {
+export function updateSamples(samplesList, callback) {
+  samplesList.each(sample => {
     const { group } = sample.attrs;
     if (group) {
       console.log('Update: moving a sample group to activity');
@@ -151,16 +151,14 @@ const API = {
         callback();
       }
 
-      if (savedSamples.fetching) {
+      if (samples.fetching) {
         console.log('Update: waiting for samples collection to be ready');
-        savedSamples.once('fetching:done', () =>
-          updateSamples(savedSamples, onFinish)
-        );
-        savedSamples.once('fetching:error', callback);
+        samples.once('fetching:done', () => updateSamples(samples, onFinish));
+        samples.once('fetching:error', callback);
         return;
       }
 
-      updateSamples(savedSamples, onFinish);
+      updateSamples(samples, onFinish);
     },
 
     '4.0.0': callback => {

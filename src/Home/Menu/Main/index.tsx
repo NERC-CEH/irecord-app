@@ -32,7 +32,7 @@ import './styles.scss';
 //     return false;
 //   }
 
-//   return savedSamples.length > 5;
+//   return samples.length > 5;
 // };
 
 type Props = {

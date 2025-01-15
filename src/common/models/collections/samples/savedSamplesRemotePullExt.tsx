@@ -7,9 +7,9 @@ import { device, isAxiosNetworkError } from '@flumens';
 import CONFIG from 'common/config';
 import { matchAppSurveys } from 'common/services/ES';
 import { AppModel } from 'models/app';
+import SavedSamplesProps from 'models/collections/samples';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
-import SavedSamplesProps from 'models/savedSamples';
 import { UserModel } from 'models/user';
 
 // export type
@@ -159,7 +159,7 @@ async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
 }
 
 function updateLocalOccurrences(
-  savedSamples: typeof SavedSamplesProps,
+  samples: typeof SavedSamplesProps,
   updatedRemoteSamples: any
 ): Occurrence[] {
   const nonPendingUpdatedOccurrences: Occurrence[] = [];
@@ -199,16 +199,16 @@ function updateLocalOccurrences(
     sample.save();
   };
 
-  savedSamples.forEach(findMatchingLocalSamples);
+  samples.forEach(findMatchingLocalSamples);
 
   return nonPendingUpdatedOccurrences;
 }
 
-function getEarliestTimestamp(savedSamples: typeof SavedSamplesProps) {
+function getEarliestTimestamp(samples: typeof SavedSamplesProps) {
   const byTime = (s1: Sample, s2: Sample) =>
     new Date(s1.createdAt).getTime() - new Date(s2.createdAt).getTime();
 
-  const [firstSample] = [...savedSamples].sort(byTime);
+  const [firstSample] = [...samples].sort(byTime);
   if (!firstSample) return new Date().getTime(); // should never happen
 
   let earliestTimestamp = new Date(firstSample.createdAt);
@@ -224,23 +224,23 @@ function getEarliestTimestamp(savedSamples: typeof SavedSamplesProps) {
 }
 
 async function init(
-  savedSamples: typeof SavedSamplesProps,
+  samples: typeof SavedSamplesProps,
   userModel: UserModel,
   appModel: AppModel
 ) {
   // in-memory observable to use in reports and other views
-  savedSamples.verified = observable({ updated: [], timestamp: null });
+  samples.verified = observable({ updated: [], timestamp: null });
 
-  const originalResetDefaults = savedSamples.reset;
+  const originalResetDefaults = samples.reset;
   // eslint-disable-next-line @getify/proper-arrows/name
-  savedSamples.reset = () => {
-    set(savedSamples.verified, { count: 0, timestamp: null });
+  samples.reset = () => {
+    set(samples.verified, { count: 0, timestamp: null });
     return originalResetDefaults();
   };
 
   async function sync() {
     if (
-      !savedSamples.length ||
+      !samples.length ||
       !userModel.isLoggedIn() ||
       !userModel.attrs.verified ||
       !device.isOnline
@@ -248,8 +248,7 @@ async function init(
       return;
 
     const lastSyncTime =
-      appModel.attrs.verifiedRecordsTimestamp ||
-      getEarliestTimestamp(savedSamples);
+      appModel.attrs.verifiedRecordsTimestamp || getEarliestTimestamp(samples);
 
     const shouldSyncWait = new Date().getTime() - lastSyncTime < SQL_TO_ES_LAG;
     if (shouldSyncWait) return;
@@ -269,7 +268,7 @@ async function init(
     );
 
     const updatedLocalOccurrences = await updateLocalOccurrences(
-      savedSamples,
+      samples,
       updatedRemoteSamples
     );
 
@@ -283,10 +282,10 @@ async function init(
       timestamp: appModel.attrs.verifiedRecordsTimestamp,
     };
 
-    set(savedSamples.verified, newVerified);
+    set(samples.verified, newVerified);
   }
 
-  savedSamples.ready.then(sync);
+  samples.ready.then(sync);
   setInterval(sync, SYNC_WAIT);
 }
 

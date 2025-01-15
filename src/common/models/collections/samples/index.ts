@@ -1,13 +1,13 @@
 import { SampleCollection } from '@flumens';
-import appModel from './app';
-import Sample from './sample';
+import appModel from '../../app';
+import Sample from '../../sample';
+import { samplesStore } from '../../store';
+import userModel from '../../user';
 import remotePullExtInit, { Verification } from './savedSamplesRemotePullExt';
-import { samplesStore } from './store';
-import userModel from './user';
 
 console.log('SavedSamples: initializing');
 
-const savedSamples: SampleCollection<Sample> & { verified: Verification } =
+const samples: SampleCollection<Sample> & { verified: Verification } =
   new SampleCollection({
     store: samplesStore,
     Model: Sample,
@@ -23,7 +23,7 @@ export async function uploadAllSamples(toast: any) {
     if (err.isHandled) return;
     toast.error(err);
   };
-  await Promise.all(savedSamples.map(getUploadPromise)).catch(processError);
+  await Promise.all(samples.map(getUploadPromise)).catch(processError);
 
   console.log('SavedSamples: all records were uploaded!');
 }
@@ -33,17 +33,17 @@ export function removeAllSynced() {
 
   const destroy = (sample: Sample) =>
     !sample.syncedAt ? null : sample.destroy();
-  const toWait = savedSamples.map(destroy);
+  const toWait = samples.map(destroy);
 
   return Promise.all(toWait);
 }
 
-remotePullExtInit(savedSamples, userModel, appModel);
+remotePullExtInit(samples, userModel, appModel);
 
 export function getPending() {
   const byUploadStatus = (sample: Sample) => !sample.syncedAt;
 
-  return savedSamples.filter(byUploadStatus);
+  return samples.filter(byUploadStatus);
 }
 
-export default savedSamples;
+export default samples;

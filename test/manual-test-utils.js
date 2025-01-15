@@ -1,8 +1,8 @@
 import GPS from 'mock-geolocation';
+import savedRecords from 'models/collections/samples';
 import Media from 'models/media';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
-import savedRecords from 'models/savedSamples';
 import defaultSurvey from 'Survey/Default/config';
 
 const testing = {};

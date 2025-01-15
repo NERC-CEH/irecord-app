@@ -13,7 +13,7 @@ import { sentryOptions } from 'common/flumens';
 import migrate from 'common/models/migrate';
 import { db } from 'common/models/store';
 import appModel from 'models/app';
-import samples from 'models/savedSamples';
+import samples from 'models/collections/samples';
 import userModel from 'models/user';
 import App from './App';
 

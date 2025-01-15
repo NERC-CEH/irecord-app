@@ -4,7 +4,7 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Page, Header, useToast, PickByType, useLoader } from '@flumens';
 import { NavContext, isPlatform } from '@ionic/react';
 import appModel, { Attrs as AppModelAttrs } from 'models/app';
-import savedSamples, { removeAllSynced } from 'models/savedSamples';
+import samples, { removeAllSynced } from 'models/collections/samples';
 import userModel from 'models/user';
 import Main from './Main';
 
@@ -14,7 +14,7 @@ async function resetApp(toast: any) {
   try {
     await appModel.resetDefaults();
     await userModel.resetDefaults();
-    await savedSamples.reset();
+    await samples.reset();
 
     toast.success('Done', { position: 'bottom' });
   } catch (e: any) {

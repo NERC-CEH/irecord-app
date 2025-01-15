@@ -5,8 +5,8 @@ import { useAlert } from '@flumens';
 import { NavContext, IonItem, IonCheckbox, IonLabel } from '@ionic/react';
 import VerificationIcon from 'common/Components/VerificationStatus/VerificationIcon';
 import appModel from 'models/app';
+import samples from 'models/collections/samples';
 import Occurrence from 'models/occurrence';
-import savedSamples from 'models/savedSamples';
 import './styles.scss';
 
 let isPopupVisible = false;
@@ -26,7 +26,7 @@ const UpdatedRecordsDialog = () => {
   const showAlert = () => {
     if (!showVerifiedRecordsNotification || isPopupVisible) return;
 
-    const updatedOccurrences = savedSamples.verified.updated;
+    const updatedOccurrences = samples.verified.updated;
     if (!updatedOccurrences?.length) return;
 
     isPopupVisible = true;
@@ -118,7 +118,7 @@ const UpdatedRecordsDialog = () => {
     });
   };
 
-  useEffect(showAlert, [savedSamples.verified?.timestamp]);
+  useEffect(showAlert, [samples.verified?.timestamp]);
 
   return null;
 };

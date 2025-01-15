@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
-import { getPending } from 'models/savedSamples';
+import { getPending } from 'models/collections/samples';
 
 type Props = {
   className?: string;

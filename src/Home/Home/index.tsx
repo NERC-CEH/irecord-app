@@ -23,8 +23,8 @@ import {
   IonButton,
 } from '@ionic/react';
 import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
+import samples, { uploadAllSamples } from 'models/collections/samples';
 import Sample from 'models/sample';
-import savedSamples, { uploadAllSamples } from 'models/savedSamples';
 import userModel from 'models/user';
 import Map from './Map';
 import Survey from './Survey';
@@ -144,7 +144,7 @@ const UserSurveyComponent = () => {
     const byUploadStatus = (sample: Sample) =>
       uploaded ? sample.syncedAt : !sample.syncedAt;
 
-    return savedSamples.filter(byUploadStatus).sort(bySurveyDate);
+    return samples.filter(byUploadStatus).sort(bySurveyDate);
   };
 
   const onUploadAll = () => {
