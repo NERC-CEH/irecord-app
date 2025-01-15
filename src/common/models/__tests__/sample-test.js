@@ -15,7 +15,7 @@ import { coreAttributes, systemAttrs } from 'Survey/common/config';
 
 i18n.use(initReactI18next).init({ lng: 'en' });
 
-const validTaxon = { warehouse_id: 1, group: 1 };
+const validTaxon = { warehouseId: 1, group: 1 };
 
 const getDefaultSample = taxon =>
   defaultSurvey.create({

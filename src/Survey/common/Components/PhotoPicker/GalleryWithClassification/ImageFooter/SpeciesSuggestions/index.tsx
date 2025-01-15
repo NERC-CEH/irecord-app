@@ -15,10 +15,10 @@ type Props = {
 type SpeciesTileProps = { suggestion: ClassifierSuggestion; onClick: any };
 
 const SpeciesTile = ({ suggestion, onClick }: SpeciesTileProps) => {
-  const { common_names, scientific_name, probability } = suggestion;
+  const { commonNames, scientificName, probability } = suggestion;
 
-  const commonName = common_names[0];
-  const species = commonName || scientific_name;
+  const commonName = commonNames[0];
+  const species = commonName || scientificName;
 
   let color;
   if (probability > CONFIG.POSITIVE_THRESHOLD) {

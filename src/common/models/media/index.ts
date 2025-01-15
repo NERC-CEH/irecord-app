@@ -95,10 +95,10 @@ export default class Media extends MediaOriginal {
     if (!this.attrs.species || !this.parent) return null;
 
     const occurrenceWarehouseId = (this.parent as Occurrence).attrs?.taxon
-      ?.warehouse_id;
+      ?.warehouseId;
 
     const byWarehouseId = (sp: Suggestion) =>
-      sp.warehouse_id === occurrenceWarehouseId;
+      sp.warehouseId === occurrenceWarehouseId;
     return this.attrs.species?.suggestions.find(byWarehouseId);
   }
 

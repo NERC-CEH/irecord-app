@@ -118,8 +118,12 @@ export const coreAttributes = [
 export const taxonAttr = {
   remote: {
     id: 'taxa_taxon_list_id',
-    values(taxon: any) {
-      return taxon.warehouse_id;
+    values(taxon: Taxon) {
+      return (
+        taxon.warehouseId ||
+        // backwards compatible
+        (taxon as any).warehouse_id
+      );
     },
   },
 };

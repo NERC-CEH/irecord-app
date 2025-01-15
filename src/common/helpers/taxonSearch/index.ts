@@ -61,23 +61,23 @@ export type Options = {
 };
 
 export type Taxon = {
-  warehouse_id: number;
+  warehouseId: number;
   group: number;
-  scientific_name: string;
-  common_names: string[];
+  scientificName: string;
+  commonNames: string[];
 
   /**
    * Where in the genera array the search result was found.
    */
-  array_id?: number;
+  arrayId?: number;
   /**
    * Where in the species array the search result was found.
    */
-  species_id?: number;
+  speciesId?: number;
   /**
-   * Which common_names array index to use if any.
+   * Which commonNames array index to use if any.
    */
-  found_in_name?: number;
+  foundInName?: number;
 };
 
 export type SearchResults = Taxon[];

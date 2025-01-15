@@ -35,10 +35,10 @@ async function getCommonNames(sp: AISuggestion) {
     maxResults: 1,
   });
 
-  const commonNames = taxa?.[0]?.common_names;
-  if (!commonNames?.length) return { common_names: [] };
+  const commonNames = taxa?.[0]?.commonNames;
+  if (!commonNames?.length) return { commonNames: [] };
 
-  return { common_names: commonNames, found_in_name: 0 };
+  return { commonNames, foundInName: 0 };
 }
 
 export default async function identify(url: string): Promise<Result> {
@@ -72,8 +72,8 @@ export default async function identify(url: string): Promise<Result> {
 
   const transformToTaxon = async (sp: AISuggestion): Promise<Suggestion> => ({
     probability: sp.probability,
-    warehouse_id: parseInt(sp.taxa_taxon_list_id, 10),
-    scientific_name: sp.taxon,
+    warehouseId: parseInt(sp.taxa_taxon_list_id, 10),
+    scientificName: sp.taxon,
     group: parseInt(sp.taxon_group_id, 10),
 
     ...(await getCommonNames(sp)),

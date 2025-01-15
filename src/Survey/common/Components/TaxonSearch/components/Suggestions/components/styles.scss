@@ -22,15 +22,6 @@
 }
 
 #suggestions .search-result {
-  padding: 8px 8px 8px 15px;
-  --padding-start: 0px;
-  --inner-padding-end: 0;
-  position: relative;
-  overflow: hidden;
-  font-size: 16px;
-  --background: none;
-  padding: 0;
-
   .probability {
     margin-left: 8px;
     min-width: 68px;
@@ -45,9 +36,9 @@
     background-color: white;
   }
 
-  &:hover {
-    background-color: var(--ion-color-light);
-  }
+  // &:hover {
+  //   background-color: var(--ion-color-light);
+  // }
 
   div.taxon {
     display: flex;
@@ -68,8 +59,7 @@
   span.group {
     position: absolute;
     right: 22%;
-
-    bottom: 0;
+    bottom: -3px;
     color: var(--ion-color-dark);
     font-weight: 200;
     font-size: 14px;

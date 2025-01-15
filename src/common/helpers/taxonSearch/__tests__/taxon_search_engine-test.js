@@ -21,13 +21,13 @@ describe('Taxon Search Engine', () => {
         expect(result).toBeInstanceOf(Object);
         expect(Object.keys(result)).toEqual(
           expect.arrayContaining([
-            'array_id',
-            'species_id',
-            'found_in_name',
-            'warehouse_id',
+            'arrayId',
+            'speciesId',
+            'foundInName',
+            'warehouseId',
             'group',
-            'scientific_name',
-            'common_names',
+            'scientificName',
+            'commonNames',
           ])
         );
       }));
@@ -74,8 +74,8 @@ describe('Taxon Search Engine', () => {
           let found = false;
           results.forEach(result => {
             if (
-              result.common_names[0] === 'Willow' ||
-              result.common_names[1] === 'Willow'
+              result.commonNames[0] === 'Willow' ||
+              result.commonNames[1] === 'Willow'
             ) {
               found = true;
             }
@@ -95,8 +95,8 @@ describe('Taxon Search Engine', () => {
           expect(Object.keys(results)).not.toHaveLength(0);
           const result = results[0];
 
-          expect(result.warehouse_id).toBe(229548);
-          expect(result.scientific_name).toBe('Phytomyza ilicis');
+          expect(result.warehouseId).toBe(229548);
+          expect(result.scientificName).toBe('Phytomyza ilicis');
         });
 
       const searchCommonName = () =>
@@ -104,9 +104,9 @@ describe('Taxon Search Engine', () => {
           expect(Object.keys(results)).not.toHaveLength(0);
           const result = results[0];
 
-          expect(result.warehouse_id).toBe(208098);
-          expect(result.common_names[0]).toBe('Giant Blackberry');
-          expect(result.scientific_name).toBe('Rubus armeniacus');
+          expect(result.warehouseId).toBe(208098);
+          expect(result.commonNames[0]).toBe('Giant Blackberry');
+          expect(result.scientificName).toBe('Rubus armeniacus');
         });
 
       const searchGenus = () =>
@@ -114,8 +114,8 @@ describe('Taxon Search Engine', () => {
           expect(Object.keys(results)).not.toHaveLength(0);
           const result = results[0];
 
-          expect(result.warehouse_id).toBe(213771);
-          expect(result.scientific_name).toBe('Rotaliella');
+          expect(result.warehouseId).toBe(213771);
+          expect(result.scientificName).toBe('Rotaliella');
         });
 
       const searchSpecCase1 = () =>
@@ -123,7 +123,7 @@ describe('Taxon Search Engine', () => {
           expect(Object.keys(results)).not.toHaveLength(0);
           let found = false;
           results.forEach(species => {
-            if (species.common_names[0] === 'Heart Cockle') {
+            if (species.commonNames[0] === 'Heart Cockle') {
               found = true;
             }
           });
@@ -136,7 +136,7 @@ describe('Taxon Search Engine', () => {
           // eslint-disable-next-line
           let found = false;
           results.forEach(species => {
-            if (species.common_names[0] === 'Blackthorn') {
+            if (species.commonNames[0] === 'Blackthorn') {
               found = true;
             }
           });
@@ -153,7 +153,7 @@ describe('Taxon Search Engine', () => {
     it('should allow searching only common names', () =>
       search('puffin', { namesFilter: 'common' }).then(results => {
         const containsPuffinus = results.find(
-          res => res.scientific_name === 'Puffinus'
+          res => res.scientificName === 'Puffinus'
         );
         expect(containsPuffinus).toBeUndefined();
       }));
@@ -161,7 +161,7 @@ describe('Taxon Search Engine', () => {
     it('should allow searching only scientific names', () =>
       search('puffin', { namesFilter: 'scientific' }).then(results => {
         const containsPuffinus = results.find(
-          res => res.common_name === 'Tufted Puffin'
+          res => res.commonName === 'Tufted Puffin'
         );
         expect(containsPuffinus).toBeUndefined();
       }));
@@ -169,7 +169,7 @@ describe('Taxon Search Engine', () => {
     it('should allow searching Recorder style (5 characters)', () =>
       search('pupuf').then(results => {
         const containsPuffinus = results.find(
-          res => res.scientific_name === 'Puffinus puffinus'
+          res => res.scientificName === 'Puffinus puffinus'
         );
         expect(containsPuffinus).toBeInstanceOf(Object);
       }));
@@ -179,12 +179,12 @@ describe('Taxon Search Engine', () => {
         search('Puffinus').then(results => {
           expect(results.length >= 6).toBe(true);
           const genus = results[0];
-          expect(genus.warehouse_id).toBe(141974);
-          expect(genus.scientific_name).toBe('Puffinus');
+          expect(genus.warehouseId).toBe(141974);
+          expect(genus.scientificName).toBe('Puffinus');
 
           const puffinusAsimilis = results[1];
-          expect(puffinusAsimilis.warehouse_id).toBe(160697);
-          expect(puffinusAsimilis.scientific_name).toBe('Puffinus assimilis');
+          expect(puffinusAsimilis.warehouseId).toBe(160697);
+          expect(puffinusAsimilis.scientificName).toBe('Puffinus assimilis');
         }));
     });
 

@@ -36,13 +36,13 @@ const ImageTitle = ({ image }: Props) => {
 
     const suggestion = image.getTopSpecies();
 
-    const commonName = suggestion.common_names[0];
-    const species = commonName || suggestion.scientific_name;
+    const commonName = suggestion.commonNames[0];
+    const species = commonName || suggestion.scientificName;
 
     const probability = ((suggestion.probability || 0) * 100).toFixed(0);
 
     const doesTaxonMatchParent =
-      parentMatchingSuggestion?.warehouse_id === suggestion.warehouse_id;
+      parentMatchingSuggestion?.warehouseId === suggestion.warehouseId;
 
     if (!doesTaxonMatchParent) {
       return (

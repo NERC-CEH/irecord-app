@@ -23,16 +23,6 @@ const HomeMain = ({
   const { url } = useRouteMatch();
   const { navigate } = useContext(NavContext);
 
-  // calculate unique taxa
-  const uniqueTaxa: any = {};
-  sample.samples.forEach(childSample => {
-    const [occ] = childSample.occurrences;
-    if (occ) {
-      const { taxon } = occ.attrs;
-      uniqueTaxa[taxon?.warehouse_id as any] = true;
-    }
-  });
-
   // show activity title.
   const { activity } = sample.attrs;
 

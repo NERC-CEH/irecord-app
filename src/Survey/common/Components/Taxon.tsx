@@ -55,7 +55,7 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
 
   const editingExisting = subSample || occurrence;
 
-  const onSpeciesSelected = async (taxon: any, editBtnClicked?: boolean) => {
+  const onSpeciesSelected = async (taxon: TaxonI, editBtnClicked?: boolean) => {
     if (editingExisting) {
       const occ = (occurrence || subSample?.occurrences[0]) as Occurrence;
       occ.setTaxon(taxon);
@@ -74,9 +74,9 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
     }
 
     const name =
-      taxon.found_in_name >= 0
-        ? taxon.common_names[taxon.found_in_name]
-        : taxon.scientific_name;
+      taxon.foundInName! >= 0
+        ? taxon.commonNames[taxon.foundInName!]
+        : taxon.scientificName;
 
     toast.success(`${t('Added')} ${name}`, {
       duration: 500,

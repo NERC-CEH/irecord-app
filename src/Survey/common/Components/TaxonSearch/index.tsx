@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
 import { Taxon } from 'models/occurrence';
-import searchSpecies, { Options } from 'helpers/taxonSearch';
+import searchSpecies, { Options, SearchResults } from 'helpers/taxonSearch';
 import Suggestions from './components/Suggestions';
 
 export { default as TaxonSearchFilters } from './components/TaxonSearchFilters';
@@ -37,9 +37,9 @@ const TaxonSearch = ({
   const [searchResults, setSearchResults] = useState<Taxon[]>();
   const [searchPhrase, setSearchPhrase] = useState('');
 
-  const annotateRecordedTaxa = (newSearchResults: any) =>
-    newSearchResults.map((result: any) =>
-      recordedTaxa?.includes(result.warehouse_id)
+  const annotateRecordedTaxa = (newSearchResults: SearchResults) =>
+    newSearchResults.map((result: Taxon) =>
+      recordedTaxa?.includes(result.warehouseId)
         ? { ...result, ...{ isRecorded: true } }
         : result
     );

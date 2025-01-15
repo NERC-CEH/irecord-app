@@ -29,11 +29,11 @@ function addGenusToResults(
   if (genus[GENUS_ID_INDEX]) {
     // why genus[GENUS_ID_INDEX] see 'sandDustHack' in generator
     results.push({
-      array_id: generaIndex,
-      warehouse_id: genus[GENUS_ID_INDEX],
+      arrayId: generaIndex,
+      warehouseId: genus[GENUS_ID_INDEX],
       group: genus[GENUS_GROUP_INDEX],
-      scientific_name: genus[GENUS_TAXON_INDEX],
-      common_names: genus[GENUS_NAMES_INDEX] || [],
+      scientificName: genus[GENUS_TAXON_INDEX],
+      commonNames: genus[GENUS_NAMES_INDEX] || [],
     });
   }
 
@@ -42,12 +42,12 @@ function addGenusToResults(
   // eslint-disable-next-line
   speciesArray.forEach((species: Species, speciesIndex: number) => {
     results.push({
-      array_id: generaIndex,
-      species_id: speciesIndex,
-      warehouse_id: species[SPECIES_ID_INDEX],
+      arrayId: generaIndex,
+      speciesId: speciesIndex,
+      warehouseId: species[SPECIES_ID_INDEX],
       group: genus[GENUS_GROUP_INDEX],
-      scientific_name: `${genus[GENUS_TAXON_INDEX]} ${species[SPECIES_TAXON_INDEX]}`,
-      common_names: species[SPECIES_NAMES_INDEX] || [],
+      scientificName: `${genus[GENUS_TAXON_INDEX]} ${species[SPECIES_TAXON_INDEX]}`,
+      commonNames: species[SPECIES_NAMES_INDEX] || [],
     });
   });
 }
@@ -64,12 +64,12 @@ function addSpeciesToResults(
   speciesArray.forEach((species: Species, speciesIndex: number) => {
     if (otherWordsRegex.test(species[SPECIES_TAXON_INDEX])) {
       results.push({
-        array_id: generaIndex,
-        species_id: speciesIndex,
-        warehouse_id: species[SPECIES_ID_INDEX],
+        arrayId: generaIndex,
+        speciesId: speciesIndex,
+        warehouseId: species[SPECIES_ID_INDEX],
         group: genus[GENUS_GROUP_INDEX],
-        scientific_name: `${genus[GENUS_TAXON_INDEX]} ${species[SPECIES_TAXON_INDEX]}`,
-        common_names: species[SPECIES_NAMES_INDEX] || [],
+        scientificName: `${genus[GENUS_TAXON_INDEX]} ${species[SPECIES_TAXON_INDEX]}`,
+        commonNames: species[SPECIES_NAMES_INDEX] || [],
       });
     }
   });
@@ -210,8 +210,8 @@ export default function searchSciNames(
 
   const uniqueIds: number[] = [];
   const deDupedResults = results.filter((sp: Taxon) => {
-    if (!uniqueIds.includes(sp.warehouse_id)) {
-      uniqueIds.push(sp.warehouse_id);
+    if (!uniqueIds.includes(sp.warehouseId)) {
+      uniqueIds.push(sp.warehouseId);
       return true;
     }
     return false;

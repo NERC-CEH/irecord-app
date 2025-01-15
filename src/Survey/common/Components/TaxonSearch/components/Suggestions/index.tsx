@@ -16,18 +16,18 @@ function deDuplicateSuggestions(suggestions: any) {
 
   suggestions.forEach((taxon: any) => {
     const name =
-      taxon.found_in_name >= 0
-        ? taxon.common_names[taxon.found_in_name]
-        : taxon.scientific_name;
+      taxon.foundInName >= 0
+        ? taxon.commonNames[taxon.foundInName]
+        : taxon.scientificName;
 
     const nameNormalized = name.toLocaleLowerCase();
 
     let previousNameNormalized;
     if (previous) {
       const previousName =
-        previous.found_in_name >= 0
-          ? previous.common_names[previous.found_in_name]
-          : previous.scientific_name;
+        previous.foundInName >= 0
+          ? previous.commonNames[previous.foundInName]
+          : previous.scientificName;
 
       previousNameNormalized = previousName.toLocaleLowerCase();
     }
@@ -41,22 +41,21 @@ function deDuplicateSuggestions(suggestions: any) {
       return;
     }
 
-    const sameSpecies = previous.warehouse_id === taxon.warehouse_id;
-    const sameScientificName =
-      previous.scientific_name === taxon.scientific_name;
+    const sameSpecies = previous.warehouseId === taxon.warehouseId;
+    const sameScientificName = previous.scientificName === taxon.scientificName;
     if (!sameSpecies && !sameScientificName) {
       // need to qualify both the last pushed name and this entry with the
       // scientific name helps to disambiguate Silene pusilla and
       // Silene suecica with have been (wrongly) assigned the same
       // vernacular name
       if (!previous._dedupedScientificName) {
-        previous._dedupedScientificName = previous.scientific_name;
+        previous._dedupedScientificName = previous.scientificName;
       }
 
       results.push({
         ...taxon,
         ...{
-          _dedupedScientificName: taxon.scientific_name,
+          _dedupedScientificName: taxon.scientificName,
         },
       });
     }

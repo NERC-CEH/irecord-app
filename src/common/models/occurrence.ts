@@ -80,10 +80,14 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
     const { taxon } = this.attrs;
     if (!taxon) return '';
 
-    if (Number.isFinite(taxon.found_in_name))
-      return taxon.common_names[taxon.found_in_name as number];
+    if (Number.isFinite(taxon.foundInName))
+      return taxon.commonNames[taxon.foundInName as number];
 
-    return taxon.scientific_name;
+    return (
+      taxon.scientificName ||
+      // backwards compatible
+      (taxon as any).scientific_name
+    );
   }
 
   getVerificationStatus() {
@@ -146,9 +150,9 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
 
     const uniqueSpecies = new Set();
     const removeDuplicates = (sp: Taxon) => {
-      const isDuplicate = uniqueSpecies.has(sp?.scientific_name);
+      const isDuplicate = uniqueSpecies.has(sp?.scientificName);
 
-      uniqueSpecies.add(sp?.scientific_name);
+      uniqueSpecies.add(sp?.scientificName);
 
       return !isDuplicate;
     };

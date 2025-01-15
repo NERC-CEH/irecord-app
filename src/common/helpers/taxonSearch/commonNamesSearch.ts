@@ -34,12 +34,12 @@ function addGenusToResults(
 ) {
   // check if matches full phrase
   results.push({
-    array_id: p[0],
-    found_in_name: p[1],
-    warehouse_id: genus[GENUS_ID_INDEX],
+    arrayId: p[0],
+    foundInName: p[1],
+    warehouseId: genus[GENUS_ID_INDEX],
     group: genus[GENUS_GROUP_INDEX],
-    scientific_name: genus[GENUS_TAXON_INDEX],
-    common_names: genus[GENUS_NAMES_INDEX] || [],
+    scientificName: genus[GENUS_TAXON_INDEX],
+    commonNames: genus[GENUS_NAMES_INDEX] || [],
   });
 }
 
@@ -52,13 +52,13 @@ function addSpeciesToResults(
   const speciesEntry = genus[GENUS_SPECIES_INDEX]![speciesIndex];
 
   results.push({
-    array_id: p[0],
-    species_id: p[1],
-    found_in_name: p[2],
-    warehouse_id: speciesEntry[SPECIES_ID_INDEX],
+    arrayId: p[0],
+    speciesId: p[1],
+    foundInName: p[2],
+    warehouseId: speciesEntry[SPECIES_ID_INDEX],
     group: genus[GENUS_GROUP_INDEX],
-    scientific_name: `${genus[GENUS_TAXON_INDEX]} ${speciesEntry[SPECIES_TAXON_INDEX]}`,
-    common_names: speciesEntry[SPECIES_NAMES_INDEX] || [],
+    scientificName: `${genus[GENUS_TAXON_INDEX]} ${speciesEntry[SPECIES_TAXON_INDEX]}`,
+    commonNames: speciesEntry[SPECIES_NAMES_INDEX] || [],
   });
 }
 
