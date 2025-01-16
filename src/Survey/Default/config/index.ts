@@ -21,6 +21,7 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
   recorderAttr,
+  groupIdAttr,
 } from 'Survey/common/config';
 import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
@@ -106,9 +107,13 @@ const survey: Survey = {
     date: dateAttr,
 
     recorder: recorderAttr,
+
     /** @deprecated */
     recorders: recorderAttr,
 
+    groupId: groupIdAttr,
+
+    /** @deprecated */
     activity: activityAttr,
   },
 

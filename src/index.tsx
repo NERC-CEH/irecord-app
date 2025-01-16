@@ -10,6 +10,7 @@ import { setupIonicReact, isPlatform } from '@ionic/react';
 import * as SentryBrowser from '@sentry/browser';
 import config from 'common/config';
 import { sentryOptions } from 'common/flumens';
+import groups from 'common/models/collections/groups';
 import migrate from 'common/models/migrate';
 import { db } from 'common/models/store';
 import appModel from 'models/app';
@@ -38,6 +39,7 @@ mobxConfig({ enforceActions: 'never' });
   await userModel.fetch();
   await appModel.fetch();
   await samples.fetch();
+  await groups.fetch();
 
   appModel.attrs.sendAnalytics &&
     SentryBrowser.init({

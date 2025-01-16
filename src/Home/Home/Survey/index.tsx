@@ -173,7 +173,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
 
   const isDefaultSurvey = survey.name === 'default';
 
-  const { activity, training } = sample.attrs;
+  const { groupId, training } = sample.attrs;
 
   const verificationStatus =
     survey.name === 'default' ? (
@@ -191,7 +191,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
     <IonItemSliding className="survey-list-item" style={style}>
       <IonItem onClick={openItem} detail={false}>
         <div className="survey-info-container">
-          {activity && <div className="activity-band" />}
+          {groupId && <div className="activity-band" />}
           {training && <div className="training-band" />}
 
           {isDefaultSurvey ? getAvatar() : getSpeciesCount()}

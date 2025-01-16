@@ -25,8 +25,8 @@ import {
 } from '@ionic/react';
 import appModel from 'models/app';
 import userModel from 'models/user';
-import Activities from './Activities';
 import DefaultCameraSurveyButton from './DefaultCameraSurveyButton';
+import Groups from './Groups';
 import Home from './Home';
 import Menu from './Menu';
 import PendingSurveysBadge from './PendingSurveysBadge';
@@ -101,7 +101,7 @@ const HomeController = () => {
 
   const navigateToPrimarySurvey = () => navigate(`/survey/default`);
 
-  const activitiesOn = !!appModel.getAttrLock('smp', 'activity');
+  const activitiesOn = !!appModel.getAttrLock('smp', 'groupId');
 
   return (
     <>
@@ -109,7 +109,7 @@ const HomeController = () => {
         <IonRouterOutlet>
           <Redirect exact path="/home" to="/home/surveys" />
           <Route path="/home/surveys/:id?" component={Home} exact />
-          <Route path="/home/activities" component={Activities} exact />
+          <Route path="/home/activities" component={Groups} exact />
           <Route path="/home/menu" component={Menu} exact />
         </IonRouterOutlet>
 

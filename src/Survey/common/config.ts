@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { dateFormat, device, PageProps, RemoteConfig } from '@flumens';
 import config from 'common/config';
 import progressIcon from 'common/images/progress-circles.svg';
+import groups from 'common/models/collections/groups';
 import Media from 'models/media';
 import Occurrence, { Taxon } from 'models/occurrence';
 import Sample from 'models/sample';
@@ -63,12 +64,24 @@ export const commentAttr = {
   },
 };
 
+/**
+ * @deprecated
+ */
 export const activityAttr = {
   menuProps: {
     icon: peopleOutline,
     parse: (value: any) => value?.title,
   },
   remote: { id: 'group_id', values: (activity: any) => activity.id },
+};
+
+export const groupIdAttr = {
+  menuProps: {
+    icon: peopleOutline,
+    label: 'Activity',
+    parse: (groupId: any) =>
+      groups.find((g: any) => g.id === groupId)?.attrs.title || groupId,
+  },
 };
 
 export const recorderAttr = {
@@ -112,7 +125,8 @@ export const coreAttributes = [
   'smp:date',
   'smp:recorder',
   'occ:comment',
-  'smp:activity',
+  'smp:groupId',
+  'smp:activity', // backwards compatible
 ];
 
 export const taxonAttr = {

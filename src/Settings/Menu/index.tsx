@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Page, Header, useToast, PickByType, useLoader } from '@flumens';
 import { NavContext, isPlatform } from '@ionic/react';
+import groups from 'common/models/collections/groups';
 import appModel, { Attrs as AppModelAttrs } from 'models/app';
 import samples, { removeAllSynced } from 'models/collections/samples';
 import userModel from 'models/user';
@@ -14,6 +15,7 @@ async function resetApp(toast: any) {
   try {
     await appModel.resetDefaults();
     await userModel.resetDefaults();
+    await groups.reset();
     await samples.reset();
 
     toast.success('Done', { position: 'bottom' });

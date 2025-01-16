@@ -51,7 +51,7 @@ const surveyConfigs = {
 
 type Attrs = SampleAttrs & {
   location?: any;
-  activity?: any;
+  groupId?: string;
   recorder?: any;
   recorders?: any;
 };
@@ -141,27 +141,6 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
     this.cleanUp();
 
     return this.saveRemote();
-  }
-
-  checkExpiredActivity() {
-    const { activity } = this.attrs;
-    if (activity) {
-      const expired = userModel.hasActivityExpired(activity);
-      if (expired) {
-        const newActivity = userModel.getActivity(activity.id);
-        if (!newActivity) {
-          // the old activity is expired and removed
-          console.log('Sample:Activity: removing exipired activity.');
-          this.attrs.activity = null;
-          this.save();
-        } else {
-          // old activity has been updated
-          console.log('Sample:Activity: updating exipired activity.');
-          this.attrs.activity = newActivity;
-          this.save();
-        }
-      }
-    }
   }
 
   private surveyMigrated = false;

@@ -15,6 +15,7 @@ import {
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
   assignParentLocationIfMissing,
+  groupIdAttr,
 } from 'Survey/common/config';
 
 function appendLockedAttrs(sample: AppSample) {
@@ -60,12 +61,16 @@ const survey: Survey = {
     location: locationAttr,
 
     recorder: recorderAttr,
+
     /** @deprecated */
     recorders: recorderAttr,
 
     comment: commentAttr,
 
+    /** @deprecated */
     activity: activityAttr,
+
+    groupId: groupIdAttr,
 
     date: {
       ...dateAttr,
@@ -94,7 +99,7 @@ const survey: Survey = {
     async create({ Sample, Occurrence, taxon, surveySample, skipGPS = false }) {
       const occurrence = new Occurrence();
 
-      const { activity } = surveySample.attrs;
+      const { groupId } = surveySample.attrs;
 
       const sample = new Sample({
         isSubSample: true,
@@ -106,7 +111,7 @@ const survey: Survey = {
         attrs: {
           enteredSrefSystem: 4326,
           location: {},
-          activity,
+          groupId,
         },
       });
 
@@ -158,7 +163,7 @@ const survey: Survey = {
       recorder = userModel.getPrettyName();
     }
 
-    const activity = appModel.getAttrLock('smp', 'activity');
+    const groupId = appModel.getAttrLock('smp', 'groupId');
 
     const sample = new Sample({
       metadata: {
@@ -170,7 +175,7 @@ const survey: Survey = {
         enteredSrefSystem: 4326,
         location: {},
         recorder,
-        activity,
+        groupId,
       },
     });
 

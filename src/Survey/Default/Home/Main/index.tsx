@@ -65,7 +65,7 @@ const EditMain = ({ sample }: Props) => {
 
   const [occ] = sample.occurrences;
 
-  const { activity } = sample.attrs;
+  const { groupId } = sample.attrs;
 
   const isDisabled = sample.isDisabled();
 
@@ -85,9 +85,9 @@ const EditMain = ({ sample }: Props) => {
         )}
 
         {/* Only showing if pre-selected */}
-        {activity && (
+        {groupId && (
           <div className="rounded-list">
-            <MenuAttr.WithLock model={sample} attr="activity" />
+            <MenuAttr.WithLock model={sample} attr="groupId" />
           </div>
         )}
 

@@ -1,6 +1,6 @@
 import { RouteWithModels, AttrPage } from '@flumens';
 import samples from 'models/collections/samples';
-import Activity from 'Survey/common/Components/Activity';
+import Group from 'Survey/common/Components/Group';
 import StartNewSurvey from 'Survey/common/Components/StartNewSurvey';
 import Taxon from 'Survey/common/Components/Taxon';
 import Home from './Home';
@@ -18,7 +18,7 @@ const routes = [
   [`${baseURL}/:smpId`, Home],
   [`${baseURL}/:smpId/:attr`, AttrPageFromRoute],
   [`${baseURL}/:smpId/location`, Location],
-  [`${baseURL}/:smpId/activity`, Activity],
+  [`${baseURL}/:smpId/groupId`, Group],
   [`${baseURL}/:smpId/taxon`, Taxon],
   [`${baseURL}/:smpId/smp/:subSmpId`, OccurrenceHome],
   [`${baseURL}/:smpId/smp/:subSmpId/:attr`, AttrPageFromRoute],

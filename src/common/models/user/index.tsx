@@ -16,17 +16,12 @@ import { NavContext } from '@ionic/react';
 import * as Sentry from '@sentry/browser';
 import CONFIG from 'common/config';
 import { mainStore } from '../store';
-import activitiesExt from './activitiesExt';
 
 export interface Attrs extends DrupalUserModelAttrs {
   firstName?: string;
   lastName?: string;
   email?: string;
-
   statistics: any;
-
-  activities: any[];
-
   /**
    * @deprecated
    */
@@ -39,19 +34,9 @@ const defaults: Attrs = {
   email: '',
 
   statistics: null,
-
-  activities: [],
 };
 
 export class UserModel extends DrupalUserModel<Attrs> {
-  hasActivityExpired: any; // from extension
-
-  getActivity: any; // from extension
-
-  syncActivities: any; // from extension
-
-  activities: any; // from extension
-
   static registerSchema: any = object({
     email: z.string().email('Please fill in'),
     password: z.string().min(1, 'Please fill in'),
@@ -76,7 +61,6 @@ export class UserModel extends DrupalUserModel<Attrs> {
 
   constructor(options: any) {
     super({ ...options, attrs: { ...defaults, ...options.attrs } });
-    Object.assign(this, activitiesExt);
 
     const checkForValidation = () => {
       if (this.isLoggedIn() && !this.attrs.verified) {

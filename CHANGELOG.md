@@ -3,6 +3,11 @@
 - Updated libraries.
 - Updated the species dictionary.
 - Simplified species filters.
+- Fixed grid square center calculation.
+- Fixed map showing training records.
+- Fixed Android navbar background color.
+- Fixed sub-sample dates getting out of sync.
+- Added an option to join and leave activities.
 
 ## 6.1.2
 
