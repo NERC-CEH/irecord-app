@@ -2,6 +2,7 @@ import {
   calendarOutline,
   peopleOutline,
   clipboardOutline,
+  eyeOffOutline,
 } from 'ionicons/icons';
 import * as Yup from 'yup';
 import { dateFormat, device, PageProps, RemoteConfig } from '@flumens';
@@ -117,6 +118,19 @@ export const identifiersAttr = {
   remote: { id: 18 },
 };
 
+export const sensitivityPrecisionAttr = (defaultPrecision = 2000) => ({
+  menuProps: {
+    label: 'Sensitive',
+    icon: eyeOffOutline,
+    type: 'toggle',
+    get: (model: any) => !!model.attrs.sensitivityPrecision,
+    set: (val: boolean, model: any) => {
+      // eslint-disable-next-line no-param-reassign
+      model.attrs.sensitivityPrecision = val ? defaultPrecision : '';
+    },
+  },
+});
+
 export const coreAttributes = [
   'smp:location',
   'smp:locationName',
@@ -125,6 +139,7 @@ export const coreAttributes = [
   'smp:date',
   'smp:recorder',
   'occ:comment',
+  'occ:sensitivityPrecision',
   'smp:groupId',
   'smp:activity', // backwards compatible
 ];

@@ -2256,3 +2256,11 @@ msgstr "Tap on the <1></1> button to capture a new record. <br/>"
 # Tip message 
 msgid "Long-press <1></1> button to see some more advanced options."
 msgstr "Long-press <1></1> button to see some more advanced options."
+
+# From record attributes 
+msgid "Sensitivity"
+msgstr "Sensitivity"
+
+# From record attributes 
+msgid "This option will 'blur' the location details: they will be displayed as a 1 km square (rather than a precise point) and will have the site name hidden. Precise location details will be made available to verifiers and local records centres, but will not be displayed publicly."
+msgstr "This option will 'blur' the location details: they will be displayed as a 1 km square (rather than a precise point) and will have the site name hidden. Precise location details will be made available to verifiers and local records centres, but will not be displayed publicly."

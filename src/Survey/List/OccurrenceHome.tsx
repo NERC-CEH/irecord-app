@@ -9,6 +9,7 @@ import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
 import VerificationMessage from 'Survey/common/Components/VerificationMessage';
+import { useSensitivityTip } from 'Survey/common/Components/hooks';
 
 type Props = {
   subSample: Sample;
@@ -17,6 +18,7 @@ type Props = {
 const ListOccurrenceHome = ({ subSample: sample }: Props) => {
   const [occ] = sample.occurrences;
   const { url } = useRouteMatch();
+  const showSensitivityWarning = useSensitivityTip();
 
   const isDisabled = sample.isDisabled();
 
@@ -46,6 +48,11 @@ const ListOccurrenceHome = ({ subSample: sample }: Props) => {
               }}
             />
             <MenuDynamicAttrs model={sample} />
+            <MenuAttr
+              model={occ}
+              attr="sensitivityPrecision"
+              onChange={showSensitivityWarning}
+            />
           </div>
         </IonList>
       </Main>

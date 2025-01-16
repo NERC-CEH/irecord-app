@@ -22,6 +22,7 @@ import {
   makeSubmissionBackwardsCompatible,
   recorderAttr,
   groupIdAttr,
+  sensitivityPrecisionAttr,
 } from 'Survey/common/config';
 import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
@@ -219,6 +220,7 @@ const survey: Survey = {
       },
       identifiers: identifiersAttr,
       comment: commentAttr,
+      sensitivityPrecision: sensitivityPrecisionAttr(1000),
     },
     verify(attrs) {
       try {

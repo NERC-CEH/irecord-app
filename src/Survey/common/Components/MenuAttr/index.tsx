@@ -107,7 +107,7 @@ const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
           label={label}
           prefix={<IonIcon src={icon as string} className="size-6" />}
           onChange={onAttrToggle}
-          disabled={isDisabled}
+          isDisabled={isDisabled}
           {...itemProps}
         />
       </IonItem>

@@ -16,6 +16,7 @@ import {
   identifiersAttr,
   mothStageAttr,
   makeSubmissionBackwardsCompatible,
+  sensitivityPrecisionAttr,
 } from 'Survey/common/config';
 
 const sex = [
@@ -81,6 +82,7 @@ const survey: Survey = {
       'occ:sex',
       'occ:identifiers',
       'occ:comment',
+      'occ:sensitivityPrecision',
     ],
 
     attrs: {
@@ -114,6 +116,7 @@ const survey: Survey = {
       },
       identifiers: identifiersAttr,
       comment: commentAttr,
+      sensitivityPrecision: sensitivityPrecisionAttr(1000),
     },
 
     verify(attrs: any) {

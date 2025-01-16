@@ -118,6 +118,7 @@ export type MenuAttrWithLockProps = {
   model: Sample | Occurrence;
   attr: string;
   itemProps?: any;
+  onChange?: any;
 };
 
 export const WithLock = observer(

@@ -1,9 +1,4 @@
-import {
-  peopleOutline,
-  businessOutline,
-  pencilOutline,
-  eyeOffOutline,
-} from 'ionicons/icons';
+import { peopleOutline, businessOutline, pencilOutline } from 'ionicons/icons';
 import * as Yup from 'yup';
 import { checkGridType } from '@flumens';
 import { groupsReverse as groups } from 'common/data/informalGroups';
@@ -23,6 +18,7 @@ import {
   taxonAttr,
   makeSubmissionBackwardsCompatible,
   assignParentLocationIfMissing,
+  sensitivityPrecisionAttr,
 } from 'Survey/common/config';
 
 const stageOptions = [
@@ -269,19 +265,7 @@ const survey: Survey = {
 
         comment: commentAttr,
 
-        sensitivityPrecision: {
-          menuProps: {
-            label: 'Sensitive',
-            icon: eyeOffOutline,
-            type: 'toggle',
-            get: (model: any) => !!model.attrs.sensitivityPrecision,
-            set: (val: boolean, model: any) => {
-              // eslint-disable-next-line no-param-reassign
-              model.attrs.sensitivityPrecision = val ? 2000 : '';
-            },
-          },
-          // remote not needed as this is indicia.js metadata value
-        },
+        sensitivityPrecision: sensitivityPrecisionAttr(),
       },
     },
 
