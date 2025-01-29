@@ -84,9 +84,9 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
       return taxon.commonNames[taxon.foundInName as number];
 
     return (
-      taxon.scientificName ||
+      taxon?.scientificName ||
       // backwards compatible
-      (taxon as any).scientific_name
+      (taxon as any)?.scientific_name
     );
   }
 

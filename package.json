@@ -59,7 +59,6 @@
     "json-stable-stringify": "^1.2.1",
     "jwt-decode": "^4.0.0",
     "leaflet": "1.9.4",
-    "localforage-cordovasqlitedriver": "1.8.0",
     "lodash.camelcase": "^4.3.0",
     "lodash.mapkeys": "^4.6.0",
     "lodash.mergewith": "4.6.2",

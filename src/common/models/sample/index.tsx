@@ -26,10 +26,10 @@ import listSurvey from 'Survey/List/config';
 import mothSurvey from 'Survey/Moth/config';
 import plantSurvey from 'Survey/Plant/config';
 import { coreAttributes, Survey } from 'Survey/common/config';
-import Media from './media';
-import Occurrence, { Taxon } from './occurrence';
+import Media from '../media';
+import Occurrence, { Taxon } from '../occurrence';
+import { samplesStore } from '../store';
 import GPSExtension from './sampleGPSExt';
-import { samplesStore } from './store';
 
 const ATTRS_TO_LEAVE = [
   ...coreAttributes,

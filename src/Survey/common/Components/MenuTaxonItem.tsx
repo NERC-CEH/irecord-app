@@ -17,7 +17,7 @@ const MenuTaxonItem = ({ occ }: Props) => {
   const scientificName =
     taxon?.scientificName ||
     // backwards compatible
-    (taxon as any).scientific_name;
+    (taxon as any)?.scientific_name;
   const commonName =
     taxon && Number.isFinite(taxon.foundInName)
       ? taxon.commonNames[taxon.foundInName as number]
