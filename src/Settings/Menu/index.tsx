@@ -1,9 +1,14 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
+import writeBlob from 'capacitor-blob-writer';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Share } from '@capacitor/share';
 import { Page, Header, useToast, PickByType, useLoader } from '@flumens';
 import { NavContext, isPlatform } from '@ionic/react';
+import CONFIG from 'common/config';
 import groups from 'common/models/collections/groups';
+import { db } from 'common/models/store';
 import appModel, { Attrs as AppModelAttrs } from 'models/app';
 import samples, { removeAllSynced } from 'models/collections/samples';
 import userModel from 'models/user';
@@ -34,6 +39,44 @@ async function deleteAllSamples(toast: any) {
     toast.error(`${e.message}`);
   }
 }
+
+const exportDatabase = async () => {
+  const blob = await db.export();
+
+  if (!isPlatform('hybrid')) {
+    window.open(window.URL.createObjectURL(blob), '_blank');
+    return;
+  }
+
+  const path = `export-app-${CONFIG.build}-${Date.now()}.db`;
+  const directory = Directory.External;
+
+  await writeBlob({ path, directory, blob });
+  const { uri: url } = await Filesystem.getUri({ directory, path });
+  await Share.share({ title: `App database`, files: [url] });
+  await Filesystem.deleteFile({ directory, path });
+};
+
+// For dev purposes only
+const importDatabase = async () => {
+  const blob = await new Promise<Blob>(resolve => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('change', function () {
+      const fileReader = new FileReader();
+      fileReader.onloadend = async (e: any) =>
+        resolve(
+          new Blob([e.target.result], { type: 'application/vnd.sqlite3' })
+        );
+      fileReader.readAsArrayBuffer(input.files![0]);
+    });
+    input.click();
+  });
+
+  await db.sqliteConnection.closeAllConnections();
+  await db.import(blob);
+  window.location.reload();
+};
 
 const useDeleteUser = () => {
   const toast = useToast();
@@ -121,6 +164,8 @@ const Container = () => {
         resetApp={() => resetApp(toast)}
         deleteAllSamples={() => deleteAllSamples(toast)}
         onToggle={(setting: any, checked: any) => onToggle(setting, checked)}
+        exportDatabase={exportDatabase}
+        importDatabase={importDatabase}
       />
     </Page>
   );
