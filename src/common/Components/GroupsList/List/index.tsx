@@ -45,7 +45,7 @@ const GroupsList = ({
     setSegment(newSegment);
 
     if (newSegment === 'all' && !remoteGroups.length) onRefresh('all');
-    if (newSegment === 'joined' && !groups.length) onRefresh('all');
+    if (newSegment === 'joined' && !groups.length) onRefresh('joined');
   };
 
   const [reachedTopOfList, setReachedTopOfList] = useState(true);

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { useTranslation, Trans as T } from 'react-i18next';
 import { RadioOption } from '@flumens';
@@ -94,4 +95,4 @@ const UserGroups = ({ currentValue, onSelect, onLeave }: Props) => {
   );
 };
 
-export default UserGroups;
+export default observer(UserGroups);
