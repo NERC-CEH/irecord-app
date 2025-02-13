@@ -37,7 +37,7 @@ const GroupsList = ({
   onJoinGroup,
   onLeaveGroup,
 }: Props) => {
-  const searchbarRef = useRef<any>();
+  const searchbarRef = useRef<any>(null);
   const [segment, setSegment] = useState<'joined' | 'all'>('joined');
 
   const onSegmentClick = (e: any) => {

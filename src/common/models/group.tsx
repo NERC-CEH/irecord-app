@@ -1,5 +1,5 @@
 import { z, object } from 'zod';
-import { Model, ModelAttrs, UUID } from '@flumens';
+import { Model, ModelAttrs, UUIDv7 } from '@flumens';
 import { groupsStore } from './store';
 
 export type RemoteAttributes = z.infer<typeof GroupModel.remoteSchema>;
@@ -25,7 +25,7 @@ class GroupModel extends Model<Attrs> {
   static parseRemoteJSON({ id, createdOn, ...attrs }: RemoteAttributes) {
     return {
       id,
-      cid: UUID(),
+      cid: UUIDv7(),
       attrs,
       createdAt: new Date(createdOn).getTime(),
     };

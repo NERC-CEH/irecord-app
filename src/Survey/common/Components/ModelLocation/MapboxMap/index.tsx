@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { MapRef, ViewState } from 'react-map-gl';
+import { MapRef, ViewState } from 'react-map-gl/mapbox';
 import {
   isValidLocation,
   mapMetresToZoom,
@@ -68,7 +68,7 @@ const MapboxContainer = ({
   const [mapRef, setMapRef] = useState<MapRef>();
   const flyToLocation = () => {
     mapFlyToLocation(
-      mapRef,
+      mapRef as any,
       isValidLocation(location) ? location : parentLocation || location // for location.geocoded
     );
   };

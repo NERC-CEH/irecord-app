@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T, useTranslation } from 'react-i18next';
-import { MapRef, LngLatBounds } from 'react-map-gl';
+import { MapRef, LngLatBounds } from 'react-map-gl/mapbox';
 import { Link } from 'react-router-dom';
 import {
   useToast,
@@ -81,7 +81,7 @@ const Map = () => {
     )
       return;
 
-    const bounds: LngLatBounds = mapRef.current.getBounds(); // TODO: .pad(0.5); // padding +50%
+    const bounds: LngLatBounds = mapRef.current.getBounds()!; // TODO: .pad(0.5); // padding +50%
 
     const zoomLevel = mapRef.current.getZoom();
     const northWest = bounds.getNorthWest();

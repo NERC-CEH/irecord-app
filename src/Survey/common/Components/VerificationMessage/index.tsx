@@ -13,7 +13,7 @@ const getVerificationText = (
   t: any
 ) => {
   const statusMessage = message || status;
-  const verifyStatus: { [key: string]: JSX.Element } = {
+  const verifyStatus: { [key: string]: any } = {
     verified: (
       <>
         <h2>

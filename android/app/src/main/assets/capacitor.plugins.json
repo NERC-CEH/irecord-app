@@ -4,10 +4,6 @@
 		"classpath": "com.getcapacitor.community.database.sqlite.CapacitorSQLitePlugin"
 	},
 	{
-		"pkg": "@capacitor-community/camera-preview",
-		"classpath": "com.ahm.capacitor.camera.preview.CameraPreview"
-	},
-	{
 		"pkg": "@capacitor/app",
 		"classpath": "com.capacitorjs.plugins.app.AppPlugin"
 	},
@@ -40,11 +36,19 @@
 		"classpath": "com.capacitorjs.plugins.network.NetworkPlugin"
 	},
 	{
+		"pkg": "@capacitor/share",
+		"classpath": "com.capacitorjs.plugins.share.SharePlugin"
+	},
+	{
 		"pkg": "@capacitor/splash-screen",
 		"classpath": "com.capacitorjs.plugins.splashscreen.SplashScreenPlugin"
 	},
 	{
 		"pkg": "@capacitor/status-bar",
 		"classpath": "com.capacitorjs.plugins.statusbar.StatusBarPlugin"
+	},
+	{
+		"pkg": "capacitor-blob-writer",
+		"classpath": "com.equimaps.capacitorblobwriter.BlobWriter"
 	}
 ]

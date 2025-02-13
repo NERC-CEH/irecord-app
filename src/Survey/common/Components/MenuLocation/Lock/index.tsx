@@ -28,7 +28,7 @@ export interface Props {
 }
 
 const Lock = ({ sample, skipLocks, label }: Props) => {
-  const sliderRef = useRef<any>();
+  const sliderRef = useRef<any>(null);
   const toast = useToast();
   const alert = useAlert();
 

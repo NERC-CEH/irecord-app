@@ -39,7 +39,7 @@ const Lock = ({ model, attr, children }: Props) => {
 
   const allowLocking = !!value;
 
-  const sliderRef = useRef<any>();
+  const sliderRef = useRef<any>(null);
 
   if (model.isDisabled()) return <>{children}</>;
 

@@ -7,7 +7,7 @@ type Props = {
 
 const AnimatedNumber = ({ value }: Props) => {
   const [initialised, setInitialised] = useState<boolean>(false);
-  const first = useRef<any>();
+  const first = useRef<any>(null);
 
   const playAnimation = () => {
     if (!initialised) {
@@ -31,7 +31,7 @@ const AnimatedNumber = ({ value }: Props) => {
         { property: 'background', fromValue: '#91a71c2b', toValue: '' },
       ]}
     >
-      <span className="flex h-full w-full items-center justify-center text-primary-800">
+      <span className="text-primary-800 flex h-full w-full items-center justify-center">
         {value}
       </span>
     </CreateAnimation>

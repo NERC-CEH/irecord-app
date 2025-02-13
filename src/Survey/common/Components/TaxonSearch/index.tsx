@@ -32,7 +32,7 @@ const TaxonSearch = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  const inputEl = useRef<any>();
+  const inputEl = useRef<any>(null);
 
   const [searchResults, setSearchResults] = useState<Taxon[]>();
   const [searchPhrase, setSearchPhrase] = useState('');

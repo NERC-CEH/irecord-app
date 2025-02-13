@@ -5,7 +5,6 @@
 	"cordova": {},
 	"packageClassList": [
 		"CapacitorSQLitePlugin",
-		"CameraPreview",
 		"AppPlugin",
 		"CAPCameraPlugin",
 		"DevicePlugin",
@@ -14,7 +13,9 @@
 		"HapticsPlugin",
 		"KeyboardPlugin",
 		"CAPNetworkPlugin",
+		"SharePlugin",
 		"SplashScreenPlugin",
-		"StatusBarPlugin"
+		"StatusBarPlugin",
+		"BlobWriter"
 	]
 }

@@ -15,17 +15,17 @@ export {
 export {
   default as MapContainer,
   useMapStyles,
-} from '@flumens/ionic/dist/components/Map/Container';
+} from '@flumens/tailwind/dist/components/Map/Container';
 export { default as MapHeader } from '@flumens/ionic/dist/components/Map/Header';
 export { default as MapSettingsPanel } from '@flumens/ionic/dist/components/Map/SettingsPanel';
-export * from '@flumens/ionic/dist/components/Map/utils';
+export * from '@flumens/tailwind/dist/components/Map/utils';
 export { default as Gallery } from '@flumens/ionic/dist/components/Gallery';
 export {
   default as RadioInput,
   type RadioOption,
 } from '@flumens/tailwind/dist/components/Radio';
 export { default as CheckboxInput } from '@flumens/tailwind/dist/components/Checkbox';
-export { default as VirtualList } from '@flumens/ionic/dist/components/VirtualList';
+export { default as VirtualList } from '@flumens/tailwind/dist/components/VirtualList';
 export {
   default as Input,
   type Props as InputProps,
@@ -101,7 +101,7 @@ export {
   type ContextValue as TailwindContextValue,
 } from '@flumens/tailwind/dist/components/Context';
 export {
-  type Block as BlockT,
+  type BlockConf as BlockT,
   type ChoiceValues,
 } from '@flumens/tailwind/dist/Survey';
 export {
