@@ -363,7 +363,7 @@ export interface Survey extends SampleConfig {
     Sample: typeof Sample;
     Occurrence: typeof Occurrence;
     taxon?: Taxon;
-    image?: Media | null;
+    images?: Media[] | null;
     skipLocation?: boolean;
     skipGPS?: boolean;
     alert?: any;

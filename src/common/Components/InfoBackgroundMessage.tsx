@@ -6,6 +6,7 @@ interface Props {
   name?: keyof Attrs;
   children: any;
   className?: string;
+  skipTranslation?: boolean;
 }
 
 const Message = ({ name, children, ...props }: Props) => {

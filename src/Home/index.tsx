@@ -4,13 +4,11 @@ import {
   peopleOutline,
   menuOutline,
   homeOutline,
-  addOutline,
+  mapOutline,
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { Route, Redirect } from 'react-router-dom';
 import { App as AppPlugin } from '@capacitor/app';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import { useAlert, LongPressFabButton } from '@flumens';
 import {
   IonTabs,
   IonTabButton,
@@ -18,72 +16,23 @@ import {
   IonLabel,
   IonTabBar,
   IonRouterOutlet,
-  IonFabButton,
   NavContext,
   useIonRouter,
-  isPlatform,
 } from '@ionic/react';
 import appModel from 'models/app';
 import userModel from 'models/user';
-import DefaultCameraSurveyButton from './DefaultCameraSurveyButton';
 import Groups from './Groups';
 import Home from './Home';
+import Map from './Map';
 import Menu from './Menu';
 import PendingSurveysBadge from './PendingSurveysBadge';
+import SurveyButtonWithImagePicker from './SurveyButtonWithImagePicker';
 import './styles.scss';
-
-function useLongPressTip() {
-  const alert = useAlert();
-
-  function showLongPressTip() {
-    if (!appModel.attrs.shownLongPressTip) {
-      alert({
-        header: 'Tip: Adding Observations',
-        message: (
-          <>
-            <T>
-              Tap on the{' '}
-              <IonIcon
-                className="rounded-full bg-primary text-white"
-                icon={addOutline}
-              />{' '}
-              button to capture a new record. <br />
-            </T>
-            <br />
-            <T>
-              Long-press{' '}
-              <IonIcon
-                className="rounded-full bg-primary text-white"
-                icon={addOutline}
-              />{' '}
-              button to see some more advanced options.
-            </T>
-          </>
-        ),
-        buttons: [
-          {
-            text: 'OK, got it',
-            role: 'cancel',
-          },
-        ],
-      });
-      appModel.attrs.shownLongPressTip = true;
-      appModel.save();
-    }
-  }
-
-  useEffect(showLongPressTip, []);
-}
-
-const vibrate = () =>
-  isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
 const HomeController = () => {
   const ionRouter = useIonRouter();
 
   const { navigate } = useContext(NavContext);
-
-  useLongPressTip();
 
   const exitApp = () => {
     const onExitApp = () => !ionRouter.canGoBack() && AppPlugin.exitApp();
@@ -99,7 +48,11 @@ const HomeController = () => {
   };
   useEffect(exitApp, []);
 
-  const navigateToPrimarySurvey = () => navigate(`/survey/default`);
+  const navigateToPrimarySurvey = (sampleId?: string) =>
+    navigate(`/survey/default${sampleId ? `/${sampleId}` : ''}`);
+  const navigateToListSurvey = () => navigate(`/survey/list`);
+  const navigateToMothSurvey = () => navigate(`/survey/moth`);
+  const navigateToPlantSurvey = () => navigate(`/survey/plant`);
 
   const activitiesOn = !!appModel.getAttrLock('smp', 'groupId');
 
@@ -111,6 +64,7 @@ const HomeController = () => {
           <Redirect exact path="/home" to="/home/surveys" />
           <Route path="/home/surveys/:id?" component={Home} exact />
           <Route path="/home/activities" component={Groups} exact />
+          <Route path="/home/map" component={Map} exact />
           <Route path="/home/menu" component={Menu} exact />
         </IonRouterOutlet>
 
@@ -137,52 +91,23 @@ const HomeController = () => {
           </IonTabButton>
 
           {/* @ts-expect-error ionic doesn't support react 19 */}
-          <IonTabButton>
-            <LongPressFabButton
-              onClick={navigateToPrimarySurvey}
-              onLongClick={vibrate}
-              icon={addOutline}
-            >
-              <div className="flex items-center justify-center bg-primary-900 text-[0.8rem] text-[white]">
-                <T>Other recording options</T>
-              </div>
-
-              <IonFabButton
-                routerLink="/survey/plant"
-                color="light"
-                // Fixes app animation transition if fast clicked android back button.
-                routerDirection="none"
-              >
-                <IonLabel>
-                  <T>Plant Survey</T>
-                </IonLabel>
-              </IonFabButton>
-              <IonFabButton
-                routerLink="/survey/moth"
-                color="light"
-                // Fixes app animation transition if fast clicked android back button.
-                routerDirection="none"
-              >
-                <IonLabel>
-                  <T>Moth Survey</T>
-                </IonLabel>
-              </IonFabButton>
-              <IonFabButton
-                routerLink="/survey/list"
-                color="light"
-                // Fixes app animation transition if fast clicked android back button.
-                routerDirection="none"
-              >
-                <IonLabel>
-                  <T>Species List Survey</T>
-                </IonLabel>
-              </IonFabButton>
-            </LongPressFabButton>
+          <IonTabButton className="z-10">
+            <SurveyButtonWithImagePicker
+              onPrimarySurvey={navigateToPrimarySurvey}
+              onListSurvey={navigateToListSurvey}
+              onMothSurvey={navigateToMothSurvey}
+              onPlantSurvey={navigateToPlantSurvey}
+              onCameraSurveyStart={navigateToPrimarySurvey}
+              onGallerySurveyStart={navigateToPrimarySurvey}
+            />
           </IonTabButton>
 
           {/* @ts-expect-error ionic doesn't support react 19 */}
-          <IonTabButton>
-            <DefaultCameraSurveyButton />
+          <IonTabButton tab="map" href="/home/map">
+            <IonIcon icon={mapOutline} />
+            <IonLabel>
+              <T>Map</T>
+            </IonLabel>
           </IonTabButton>
 
           {/* @ts-expect-error ionic doesn't support react 19 */}

@@ -1,5 +1,6 @@
 ## 6.2.0
 
+- Improved UI.
 - Updated libraries.
 - Updated the species dictionary.
 - Simplified species filters.

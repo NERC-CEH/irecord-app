@@ -990,12 +990,6 @@ msgstr "Photo"
 msgid "Menu"
 msgstr "Menu"
 
-msgid "Tip: Adding Observations"
-msgstr "Tip: Adding Observations"
-
-msgid "Tap on the <ion-icon class=\"tip-icon\" src=\"/images/ios-add.svg\"></ion-icon> button to capture a new record."
-msgstr "Tap on the <ion-icon class=\"tip-icon\" src=\"/images/ios-add.svg\"></ion-icon> button to capture a new record."
-
 msgid "Pending"
 msgstr "Pending"
 
@@ -1109,6 +1103,22 @@ msgstr "You can preserve your current attribute value for the subsequently added
 # Surveys list header
 msgid "Other recording options"
 msgstr "Other recording options"
+
+# Surveys list
+msgid "Add a record without a photo"
+msgstr "Add a record without a photo"
+
+# Surveys list
+msgid "Take a new photo of the species"
+msgstr "Take a new photo of the species"
+
+# Surveys list
+msgid "Select multiple photos from your gallery"
+msgstr "Select multiple photos from your gallery"
+
+# Surveys list
+msgid "Show other surveys"
+msgstr "Show other surveys"
 
 # Plant Survey name
 msgid "Plant Survey"
@@ -2248,14 +2258,6 @@ msgstr "Identifying..."
 # Error message
 msgid "Not implemented on web."
 msgstr "Not implemented on web."
-
-# Tip message 
-msgid "Tap on the <1></1> button to capture a new record. <br/>"
-msgstr "Tap on the <1></1> button to capture a new record. <br/>"
-
-# Tip message 
-msgid "Long-press <1></1> button to see some more advanced options."
-msgstr "Long-press <1></1> button to see some more advanced options."
 
 # From record attributes 
 msgid "Sensitivity"

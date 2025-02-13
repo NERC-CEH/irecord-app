@@ -237,12 +237,12 @@ const survey: Survey = {
     },
   },
 
-  async create({ Sample, Occurrence, image, taxon, skipLocation, skipGPS }) {
+  async create({ Sample, Occurrence, images, taxon, skipLocation, skipGPS }) {
     const ignoreErrors = () => {};
 
     const occurrence = new Occurrence();
 
-    if (image) occurrence.media.push(image);
+    if (images?.length) occurrence.media.push(...images);
 
     // add currently logged in user as one of the recorders
     let recorder = '';

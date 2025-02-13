@@ -19,9 +19,9 @@ export type Attrs = ModelAttrs & {
   geolocateSurveyEntries: boolean;
 
   showSurveysDeleteTip: boolean;
-  shownLongPressTip: boolean;
   shownLockingSwipeTip: boolean;
   showPastLocationsTip: boolean;
+  showSurveyOptionsTip: boolean;
   feedbackGiven: boolean;
   taxonSearchGroupFilters: number[][];
   searchNamesOnly: '' | 'scientific' | 'common';
@@ -50,9 +50,9 @@ export const defaults: Attrs = {
   geolocateSurveyEntries: true,
 
   showSurveysDeleteTip: true,
-  shownLongPressTip: false,
   shownLockingSwipeTip: false,
   showPastLocationsTip: true,
+  showSurveyOptionsTip: true,
   feedbackGiven: false,
   taxonSearchGroupFilters: [],
   searchNamesOnly: '',

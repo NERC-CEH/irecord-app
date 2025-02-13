@@ -9,6 +9,7 @@ import {
   MapContainer,
   ElasticOccurrence,
   mapMetresToZoom,
+  Page,
 } from '@flumens';
 import { IonSpinner } from '@ionic/react';
 import GeolocateButton from 'common/Components/GeolocateButton';
@@ -227,70 +228,72 @@ const Map = () => {
     url.startsWith('https://api.os.uk') ? { url: `${url}&srs=3857` } : { url };
 
   return (
-    <MapContainer
-      id="user-records"
-      ref={measuredRef}
-      accessToken={config.map.mapboxApiKey}
-      maxZoom={17}
-      customAttribution='&copy; <a href="http://www.ordnancesurvey.co.uk/">Ordnance Survey</a>'
-      mapStyle={`https://api.os.uk/maps/vector/v1/vts/resources/styles?key=${config.map.osApiKey}`}
-      maxBounds={
-        [
-          [-8.834, 49.562], // Southwest
-          [1.9, 60.934], // Northeast
-        ] as any
-      }
-      maxPitch={0}
-      initialViewState={initialViewState}
-      onMoveEnd={updateMapCentre}
-      transformRequest={transformRequest}
-    >
-      <MapContainer.Control>
-        <MapFilters>
-          <div className="filters-column">
-            <div className="filters-row">
-              <MapFilters.Select
-                options={dateRanges}
-                onChange={onStartDateSelect}
-                value={startDate}
-              />
+    <Page id="home-map">
+      <MapContainer
+        id="user-records"
+        ref={measuredRef}
+        accessToken={config.map.mapboxApiKey}
+        maxZoom={17}
+        customAttribution='&copy; <a href="http://www.ordnancesurvey.co.uk/">Ordnance Survey</a>'
+        mapStyle={`https://api.os.uk/maps/vector/v1/vts/resources/styles?key=${config.map.osApiKey}`}
+        maxBounds={
+          [
+            [-8.834, 49.562], // Southwest
+            [1.9, 60.934], // Northeast
+          ] as any
+        }
+        maxPitch={0}
+        initialViewState={initialViewState}
+        onMoveEnd={updateMapCentre}
+        transformRequest={transformRequest}
+      >
+        <MapContainer.Control>
+          <MapFilters>
+            <div className="filters-column">
+              <div className="filters-row">
+                <MapFilters.Select
+                  options={dateRanges}
+                  onChange={onStartDateSelect}
+                  value={startDate}
+                />
+              </div>
             </div>
-          </div>
-          <div className="filters-column">
-            <div className="filters-row">
-              <MapFilters.Select
-                options={speciesGroupOptions}
-                onChange={onSpeciesGroupSelect}
-                value={speciesGroup}
-              />
+            <div className="filters-column">
+              <div className="filters-row">
+                <MapFilters.Select
+                  options={speciesGroupOptions}
+                  onChange={onSpeciesGroupSelect}
+                  value={speciesGroup}
+                />
+              </div>
             </div>
+          </MapFilters>
+        </MapContainer.Control>
+
+        {!userIsLoggedIn && (
+          <div className="login-message">
+            <T>
+              You need to <Link to="/user/login">login</Link> to your account to
+              be able to view the records.
+            </T>
           </div>
-        </MapFilters>
-      </MapContainer.Control>
+        )}
 
-      {!userIsLoggedIn && (
-        <div className="login-message">
-          <T>
-            You need to <Link to="/user/login">login</Link> to your account to
-            be able to view the records.
-          </T>
-        </div>
-      )}
+        <GeolocateButton />
 
-      <GeolocateButton />
+        {squareMarkers}
 
-      {squareMarkers}
+        {recordMarkers}
 
-      {recordMarkers}
+        <MapContainer.Control>
+          {isFetchingRecords ? <IonSpinner /> : <div />}
+        </MapContainer.Control>
 
-      <MapContainer.Control>
-        {isFetchingRecords ? <IonSpinner /> : <div />}
-      </MapContainer.Control>
-
-      {!!showRecordsInfo?.length && (
-        <RecordProfiles records={showRecordsInfo} onClose={closeRecordInfo} />
-      )}
-    </MapContainer>
+        {!!showRecordsInfo?.length && (
+          <RecordProfiles records={showRecordsInfo} onClose={closeRecordInfo} />
+        )}
+      </MapContainer>
+    </Page>
   );
 };
 

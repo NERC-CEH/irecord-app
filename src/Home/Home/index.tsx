@@ -26,7 +26,6 @@ import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
 import samples, { uploadAllSamples } from 'models/collections/samples';
 import Sample from 'models/sample';
 import userModel from 'models/user';
-import Map from './Map';
 import Survey from './Survey';
 import './styles.scss';
 
@@ -236,7 +235,6 @@ const UserSurveyComponent = () => {
 
   const showingPending = segment === 'pending';
   const showingUploaded = segment === 'uploaded';
-  const showingMap = segment === 'map';
 
   return (
     <Page id="home-user-surveys">
@@ -255,22 +253,13 @@ const UserSurveyComponent = () => {
                 <T>Uploaded</T>
               </IonLabel>
             </IonSegmentButton>
-
-            <IonSegmentButton value="map">
-              <IonLabel className="ion-text-wrap">
-                <T>Map</T>
-              </IonLabel>
-            </IonSegmentButton>
           </IonSegment>
         </IonToolbar>
       </IonHeader>
 
       <Main>
         {showingPending && <IonList>{getPendingSurveys()}</IonList>}
-
         {showingUploaded && <IonList>{getUploadedSurveys()}</IonList>}
-
-        {showingMap && <Map />}
       </Main>
     </Page>
   );
