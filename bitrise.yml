@@ -24,7 +24,7 @@ workflows:
       - set-java-version@1:
           run_if: .IsCI
           inputs:
-            - set_java_version: '17'
+            - set_java_version: '21'
       - change-android-versioncode-and-versionname@1:
           inputs:
             - build_gradle_path: $BITRISE_SOURCE_DIR/android/app/build.gradle
