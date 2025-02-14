@@ -5,7 +5,6 @@ import { IonIcon, IonButton, IonSpinner } from '@ionic/react';
 import Media from 'models/media';
 import Occurrence from 'models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
-import './styles.scss';
 
 type Props = {
   media: Media;
@@ -40,17 +39,25 @@ const Image = ({ media, isDisabled, onDelete, onClick }: Props) => {
       )}
       <img src={media.getURL()} onClick={onClick} />
 
-      {showLoading && <IonSpinner slot="end" />}
+      {showLoading && (
+        <IonSpinner
+          slot="end"
+          className="absolute bottom-0 right-0 m-0.5 size-5 rounded-full bg-black/65 text-white"
+        />
+      )}
 
       {!showLoading && hasBeenIdentified && selectedSpeciesMatch && (
         <ProbabilityBadge
           probability={probability}
-          className="absolute bottom-0 z-10 ml-1 rounded-lg"
+          className="absolute bottom-0 right-0"
         />
       )}
 
       {!showLoading && hasBeenIdentified && !selectedSpeciesMatch && (
-        <IonIcon className="warning-icon" icon={alertCircleOutline} />
+        <IonIcon
+          className="absolute bottom-0 right-0 m-0.5 size-5 rounded-full bg-white text-[var(--classifier-unlikely)]"
+          icon={alertCircleOutline}
+        />
       )}
     </div>
   );

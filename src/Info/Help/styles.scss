@@ -24,13 +24,13 @@
     }
 
     .agree {
-      background: var(--classifier-success-background);
-      color: var(--classifier-success);
+      background: var(--classifier-success);
+      color: white;
     }
 
     .disagree {
-      background: var(--classifier-unlikely-background);
-      color: var(--classifier-reject);
+      background: var(--classifier-unlikely);
+      color: white;
     }
   }
 }

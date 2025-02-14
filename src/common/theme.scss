@@ -89,12 +89,9 @@
   --verification-rejected-rgb: var(--ion-color-danger-rgb);
   --verification-rejected-dark: var(--ion-color-danger-dark);
 
-  --classifier-success: var(--ion-color-primary-dark);
-  --classifier-success-background: #faffd6;
-  --classifier-plausible: var(--ion-color-warning-dark);
-  --classifier-plausible-background: #fff1be;
-  --classifier-unlikely: var(--ion-color-danger-dark);
-  --classifier-unlikely-background: #f3cfd8;
+  --classifier-success: var(--color-primary);
+  --classifier-plausible: var(--color-warning-300);
+  --classifier-unlikely: var(--color-danger);
 
   --ion-page-background: #f0f3f0;
   --ion-headings-font-weight: 300;

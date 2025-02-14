@@ -15,7 +15,7 @@ type Props = {
 };
 
 const Footer = ({ children }: any) => (
-  <div className="footer-container">{children}</div>
+  <div className="fixed bottom-0 w-full pb-[26px]">{children}</div>
 );
 
 const GalleryComponent = ({

@@ -1,10 +1,7 @@
 import { observer } from 'mobx-react';
-import { cropOutline } from 'ionicons/icons';
-import { Trans as T } from 'react-i18next';
-import { IonButton, IonIcon } from '@ionic/react';
+import { Button } from 'common/flumens';
 import Media from 'models/media';
 import SpeciesSuggestions from './SpeciesSuggestions';
-import './styles.scss';
 
 interface Props {
   onCrop: any;
@@ -23,28 +20,24 @@ const ImageFooter = ({
 
   const allowToEdit = !image.parent?.isDisabled() && !image.isIdentifying();
 
-  const cropButton = (
-    <IonButton
-      className="crop-button"
-      onClick={onCropWrap}
-      fill="clear"
-      color="light"
-    >
-      <IonIcon icon={cropOutline} />
-      <T>Crop/Zoom</T>
-    </IonButton>
-  );
-
   return (
-    <>
+    <div className="mx-4 flex justify-between gap-2">
       <SpeciesSuggestions
         image={image}
         identifyImage={identifyImage}
         onSpeciesSelect={onSpeciesSelect}
       />
 
-      {allowToEdit && cropButton}
-    </>
+      {allowToEdit && (
+        <Button
+          className="shrink-0 text-white data-[pressed=true]:bg-neutral-100/40"
+          onPress={onCropWrap}
+          fill="clear"
+        >
+          Crop/Zoom
+        </Button>
+      )}
+    </div>
   );
 };
 
