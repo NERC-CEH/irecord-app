@@ -119,7 +119,7 @@ const SurveyButton = ({
       <button
         onClick={toggleOptions}
         className={clsx(
-          'bottom-[calc(var(--ion-safe-area-bottom,0) + 1.25rem)] fixed left-1/2 z-50 -translate-x-1/2',
+          'fixed bottom-[calc(var(--ion-safe-area-bottom,0)+0.5rem)] left-1/2 z-50 -translate-x-1/2',
           'flex size-16 flex-col items-center justify-center rounded-full bg-primary p-1 text-white',
           showOptions && 'shadow-md'
         )}
