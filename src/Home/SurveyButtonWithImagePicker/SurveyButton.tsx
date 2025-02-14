@@ -119,9 +119,8 @@ const SurveyButton = ({
       <button
         onClick={toggleOptions}
         className={clsx(
-          showOptions && 'survey-button-activated',
           'bottom-[calc(var(--ion-safe-area-bottom,0) + 1.25rem)] fixed left-1/2 z-50 -translate-x-1/2',
-          '-mb-4 flex size-16 flex-col items-center justify-center rounded-full bg-primary p-1 text-white',
+          'flex size-16 flex-col items-center justify-center rounded-full bg-primary p-1 text-white',
           showOptions && 'shadow-md'
         )}
       >
@@ -138,8 +137,8 @@ const SurveyButton = ({
         isOpen={showOtherSurveys}
         header={t('Other recording options')}
         buttons={[
-          { text: t('Plant Survey'), handler: onPlantSurveyWrap },
-          { text: t('Moth Survey'), handler: onMothSurveyWrap },
+          { text: t('Plant List Survey'), handler: onPlantSurveyWrap },
+          { text: t('Moth List Survey'), handler: onMothSurveyWrap },
           { text: t('Species List Survey'), handler: onListSurveyWrap },
           { text: t('Cancel'), role: 'cancel' },
         ]}

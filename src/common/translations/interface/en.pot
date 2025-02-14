@@ -1121,12 +1121,12 @@ msgid "Show other surveys"
 msgstr "Show other surveys"
 
 # Plant Survey name
-msgid "Plant Survey"
-msgstr "Plant Survey"
+msgid "Plant List Survey"
+msgstr "Plant List Survey"
 
 # Moth Survey name
-msgid "Moth Survey"
-msgstr "Moth Survey"
+msgid "Moth List Survey"
+msgstr "Moth List Survey"
 
 # List Survey name
 msgid "Species List Survey"
