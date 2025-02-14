@@ -115,7 +115,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
               {taxon}
             </div>
           ) : (
-            <Badge color="warning" size="small" className="mt-2">
+            <Badge color="warning" size="small">
               Species missing
             </Badge>
           )}

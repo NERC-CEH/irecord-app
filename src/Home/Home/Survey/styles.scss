@@ -84,6 +84,7 @@ ion-item-sliding.survey-list-item {
         .details {
           padding-right: 10px;
           width: 100%;
+          height: var(--survey-item-height);
 
           .species-count {
             font-size: 14px;
