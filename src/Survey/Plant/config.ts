@@ -271,7 +271,7 @@ const survey: Survey = {
       },
     },
 
-    async create({ Sample, Occurrence, taxon, surveySample }) {
+    async create({ Sample, Occurrence, taxon, images, surveySample }) {
       const { gridSquareUnit } = appModel.attrs;
 
       const sample = new Sample({
@@ -289,6 +289,8 @@ const survey: Survey = {
       });
 
       const occurrence = new Occurrence({ attrs: { taxon } });
+      if (images) occurrence.media.push(...images);
+
       sample.occurrences.push(occurrence);
 
       const locks = appModel.attrs.attrLocks.complex.plant || {};

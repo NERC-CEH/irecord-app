@@ -296,7 +296,8 @@ export type SampleConfig = {
   create?: (props: {
     Sample: typeof Sample;
     Occurrence: typeof Occurrence;
-    taxon: Taxon;
+    taxon?: Taxon;
+    images?: Media[];
     surveySample: Sample;
   }) => Promise<Sample>;
   verify?: (attrs: any) => any;

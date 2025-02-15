@@ -17,10 +17,8 @@ export type ClassifierSuggestion = Suggestion;
 
 type Attrs = MediaAttrs & { species: ClassifierResult };
 
-export default class Media extends MediaOriginal {
+export default class Media extends MediaOriginal<Attrs> {
   declare parent?: Sample | Occurrence;
-
-  declare attrs: Attrs;
 
   identification = observable({ identifying: false });
 

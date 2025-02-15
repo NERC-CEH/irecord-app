@@ -31,7 +31,7 @@ const SpeciesSuggestions = ({
 
   if (image.isIdentifying()) {
     return (
-      <div className="flex items-center justify-center gap-3 text-white">
+      <div className="flex items-center justify-center gap-3 rounded-md border border-white bg-black/70 p-3 text-white">
         <T>Identifying...</T> <IonSpinner color="light" className="size-5" />
       </div>
     );
@@ -40,7 +40,7 @@ const SpeciesSuggestions = ({
   if (identifierWasNotUsed && !image.isDisabled()) {
     return (
       <Button
-        className="shrink-0 text-white"
+        className="shrink-0 bg-black/70 text-white"
         onPress={identifyImage}
         fill="outline"
       >
@@ -84,7 +84,7 @@ const SpeciesSuggestions = ({
   return (
     <>
       <Button
-        className="shrink-0 pl-3 text-white"
+        className="shrink-0 bg-black/70 pl-3 text-white"
         onPress={onOpen}
         fill="outline"
         prefix={<ClassificationStatus media={image} />}

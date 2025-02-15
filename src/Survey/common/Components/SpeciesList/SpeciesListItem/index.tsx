@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import { alertOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
-import { useAlert } from '@flumens';
+import { Badge, useAlert } from '@flumens';
 import {
   IonItemOption,
   IonItemOptions,
@@ -124,7 +124,9 @@ const SpeciesListItem = ({
         {getIncrementButton()}
 
         <div className="details">
-          <div className="species">{commonName}</div>
+          <div className="species">
+            {commonName || <Badge color="warning">Species missing</Badge>}
+          </div>
           {useSubSamples && getLocationCommponent(model as Sample)}
         </div>
 

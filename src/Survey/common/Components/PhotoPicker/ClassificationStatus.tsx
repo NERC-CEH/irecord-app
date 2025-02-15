@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+import { observer } from 'mobx-react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { IonIcon, IonSpinner } from '@ionic/react';
 import Media from 'models/media';
@@ -43,4 +44,4 @@ const ClassificationStatus = ({ media }: Props) => {
   );
 };
 
-export default ClassificationStatus;
+export default observer(ClassificationStatus);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Capacitor } from '@capacitor/core';
 import {
   PhotoPicker,
@@ -9,7 +10,7 @@ import {
   saveFile,
   deleteFile,
 } from '@flumens';
-import { isPlatform } from '@ionic/react';
+import { isPlatform, useIonActionSheet } from '@ionic/react';
 import config from 'common/config';
 import appModel from 'models/app';
 import Media from 'models/media';
@@ -21,6 +22,26 @@ import ImageWithClassification from './ImageWithClassification';
 import './styles.scss';
 
 type URL = string;
+
+export function usePromptImageSource() {
+  const { t } = useTranslation();
+  const [presentActionSheet] = useIonActionSheet();
+
+  const promptImageSource = (resolve: any) => {
+    presentActionSheet({
+      buttons: [
+        { text: t('Gallery'), handler: () => resolve(false) },
+        { text: t('Camera'), handler: () => resolve(true) },
+        { text: t('Cancel'), role: 'cancel', handler: () => resolve(null) },
+      ],
+      header: t('Choose a method to upload a photo'),
+    });
+  };
+  const promptImageSourceWrap = () =>
+    new Promise<boolean | null>(promptImageSource);
+
+  return promptImageSourceWrap;
+}
 
 type Props = {
   model: Sample | Occurrence;

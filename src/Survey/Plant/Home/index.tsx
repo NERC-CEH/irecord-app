@@ -1,11 +1,15 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Page, Header, useToast } from '@flumens';
+import { Page, Header, useToast, device, captureImage } from '@flumens';
 import { NavContext } from '@ionic/react';
 import distance from '@turf/distance';
+import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
+import appModel from 'common/models/app';
+import Media from 'common/models/media';
+import Occurrence from 'common/models/occurrence';
 import Sample, { useValidateCheck } from 'models/sample';
-import { useUserStatusCheck } from 'models/user';
+import userModel, { useUserStatusCheck } from 'models/user';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
@@ -75,6 +79,46 @@ const PlantHome = ({ sample }: Props) => {
     isLocationFurtherThan5000m
   );
 
+  async function onSpeciesImageAttach(shouldUseCamera: boolean) {
+    const images = await captureImage({
+      camera: shouldUseCamera,
+      multiple: !shouldUseCamera,
+    });
+
+    if (!images) return;
+
+    const imageArray = Array.isArray(images) ? images : [images];
+    const surveyConfig = sample.getSurvey();
+
+    const subSamplePromise = imageArray.map(async (img: any) => {
+      const imageModel: any = await Media.getImageModel(img, config.dataPath);
+
+      const { useSpeciesImageClassifier } = appModel.attrs;
+      const shouldAutoID =
+        useSpeciesImageClassifier &&
+        device.isOnline &&
+        userModel.isLoggedIn() &&
+        userModel.attrs.verified;
+      if (shouldAutoID) {
+        const processError = (error: any) =>
+          !error.isHandled && console.error(error); // don't toast this to user
+        imageModel.identify().catch(processError);
+      }
+
+      return surveyConfig.smp!.create!({
+        Occurrence,
+        Sample,
+        surveySample: sample,
+        images: [imageModel],
+      });
+    });
+
+    const subSamples = await Promise.all(subSamplePromise);
+    sample.samples.push(...subSamples);
+
+    sample.save();
+  }
+
   return (
     <Page id="survey-complex-plant-edit">
       <Header
@@ -86,6 +130,7 @@ const PlantHome = ({ sample }: Props) => {
       <Main
         sample={sample}
         onDelete={onSubSampleDelete}
+        attachSpeciesImages={onSpeciesImageAttach}
         showChildSampleDistanceWarning={showChildSampleDistanceWarning}
       />
     </Page>

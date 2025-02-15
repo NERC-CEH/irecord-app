@@ -104,8 +104,9 @@ const survey: Survey = {
   },
 
   smp: {
-    async create({ Sample, Occurrence, taxon, surveySample }) {
+    async create({ Sample, Occurrence, taxon, images, surveySample }) {
       const occurrence = new Occurrence();
+      if (images) occurrence.media.push(...images);
 
       const { groupId } = surveySample.attrs;
 
@@ -125,7 +126,7 @@ const survey: Survey = {
 
       sample.occurrences.push(occurrence);
 
-      sample.setTaxon(taxon);
+      if (taxon) sample.setTaxon(taxon);
 
       appendLockedAttrs(sample);
       autoIncrementAbundance(sample);

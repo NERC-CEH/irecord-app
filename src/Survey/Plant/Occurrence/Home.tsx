@@ -29,7 +29,7 @@ const PlantOccurrenceHome = ({ subSample: sample }: Props) => {
           )}
 
           <div className="rounded-list">
-            <PhotoPicker model={occ} disableClassifier />
+            <PhotoPicker model={occ} />
           </div>
 
           <div className="rounded-list">
