@@ -81,35 +81,9 @@ ion-item-sliding.survey-list-item {
           margin-bottom: 10px;
         }
 
-        .details {
-          padding-right: 10px;
-          width: 100%;
-          height: var(--survey-item-height);
-
-          .species-count {
-            font-size: 14px;
-          }
-          .core {
-            overflow: hidden;
-            font-size: 14px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            span {
-              color: var(--ion-color-dark);
-              font-weight: 500;
-
-              &.warning {
-                margin: 1px 0;
-                color: var(--ion-color-warning);
-              }
-            }
-          }
-
-          span.locked,
-          div.locked {
-            color: var(--ion-color-secondary);
-          }
+        span.locked,
+        div.locked {
+          color: var(--ion-color-secondary);
         }
       }
     }

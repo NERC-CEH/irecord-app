@@ -87,7 +87,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
     if (survey.name !== 'default') {
       return (
         <div className="survey-info">
-          <div className="details">
+          <div className="flex flex-col justify-center">
             <div className="text-base font-semibold capitalize">
               <T>{survey.label} Survey</T>
             </div>
@@ -109,7 +109,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
 
     return (
       <div className="survey-info">
-        <div className="details">
+        <div className="flex flex-col justify-center">
           {taxon ? (
             <div className="overflow-hidden text-ellipsis whitespace-nowrap text-base font-semibold">
               {taxon}
