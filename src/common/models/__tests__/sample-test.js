@@ -22,7 +22,6 @@ const getDefaultSample = taxon =>
     Sample,
     Occurrence,
     taxon: taxon || validTaxon,
-    skipGPS: true,
   });
 
 describe('Sample', () => {
@@ -208,13 +207,11 @@ describe('Sample', () => {
         Sample,
         Occurrence,
         taxon: validTaxon,
-        skipGPS: true,
       });
       const subSample = await listSurvey.smp.create({
         Sample,
         Occurrence,
         taxon: validTaxon,
-        skipGPS: true,
         surveySample: sample,
       });
       sample.samples.push(subSample);
@@ -248,28 +245,6 @@ describe('Sample', () => {
       expect(values[`smpAttr:${systemAttrs.app_version.remote.id}`]).toEqual(
         '1'
       );
-    });
-
-    it('should set subsamples missing location to parent survey location', async () => {
-      // Given
-      const sample = await listSurvey.create({ Sample, skipGPS: true });
-      sample.attrs.location = { name: 'location' };
-      const bird = { group: taxonGroupSurveys.birds.taxaGroups[0] };
-      const subSample = await listSurvey.smp.create({
-        Sample,
-        Occurrence,
-        taxon: bird,
-        surveySample: sample,
-        skipGPS: true,
-      });
-      delete subSample.attrs.location;
-      sample.samples.push(subSample);
-
-      // When
-      const { values, samples } = sample.getSubmission();
-
-      // Then
-      expect(values.location_name).toEqual(samples[0].values.location_name);
     });
   });
 

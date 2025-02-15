@@ -16,7 +16,6 @@ export type Attrs = ModelAttrs & {
   useGridNotifications: boolean;
   gridSquareUnit: 'monad';
   speciesListSortedByTime: boolean;
-  geolocateSurveyEntries: boolean;
 
   showSurveysDeleteTip: boolean;
   shownLockingSwipeTip: boolean;
@@ -47,7 +46,6 @@ export const defaults: Attrs = {
   useGridNotifications: false,
   gridSquareUnit: 'monad',
   speciesListSortedByTime: true,
-  geolocateSurveyEntries: true,
 
   showSurveysDeleteTip: true,
   shownLockingSwipeTip: false,

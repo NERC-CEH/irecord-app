@@ -14,8 +14,8 @@ import {
   locationAttr,
   getSystemAttrs,
   makeSubmissionBackwardsCompatible,
-  assignParentLocationIfMissing,
   groupIdAttr,
+  childGeolocationAttr,
 } from 'Survey/common/config';
 
 function appendLockedAttrs(sample: AppSample) {
@@ -55,10 +55,18 @@ const survey: Survey = {
 
   webForm: 'enter-app-record-list',
 
-  render: ['smp:location', 'smp:date', 'smp:recorder', 'smp:comment'],
+  render: [
+    'smp:location',
+    'smp:childGeolocation',
+    'smp:date',
+    'smp:recorder',
+    'smp:comment',
+  ],
 
   attrs: {
     location: locationAttr,
+
+    childGeolocation: childGeolocationAttr,
 
     recorder: recorderAttr,
 
@@ -96,7 +104,7 @@ const survey: Survey = {
   },
 
   smp: {
-    async create({ Sample, Occurrence, taxon, surveySample, skipGPS = false }) {
+    async create({ Sample, Occurrence, taxon, surveySample }) {
       const occurrence = new Occurrence();
 
       const { groupId } = surveySample.attrs;
@@ -122,16 +130,15 @@ const survey: Survey = {
       appendLockedAttrs(sample);
       autoIncrementAbundance(sample);
 
-      const ignoreErrors = () => {};
-      if (!skipGPS && appModel.attrs.geolocateSurveyEntries)
-        sample.startGPS().catch(ignoreErrors);
+      if (surveySample.attrs.childGeolocation) {
+        const ignoreError = () => {};
+        sample.startGPS().catch(ignoreError);
+      }
 
       return sample;
     },
 
-    modifySubmission(submission, sample) {
-      assignParentLocationIfMissing(submission, sample);
-
+    modifySubmission(submission) {
       makeSubmissionBackwardsCompatible(submission, survey);
 
       return submission;

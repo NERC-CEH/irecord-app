@@ -3,6 +3,7 @@ import {
   peopleOutline,
   clipboardOutline,
   eyeOffOutline,
+  locationOutline,
 } from 'ionicons/icons';
 import * as Yup from 'yup';
 import { dateFormat, device, PageProps, RemoteConfig } from '@flumens';
@@ -200,31 +201,6 @@ export const makeSubmissionBackwardsCompatible = (
   }
 };
 
-export const assignParentLocationIfMissing = (
-  submission: any,
-  sample: Sample
-) => {
-  if (!sample.parent) return;
-
-  const keys: any = (sample.parent.keys as any)();
-  const parentAttrs = sample.parent.attrs;
-  const location = submission.values[keys.location.id];
-  if (!location) {
-    const parentLocation = keys.location.values(
-      parentAttrs.location,
-      submission
-    );
-    // eslint-disable-next-line no-param-reassign
-    submission.values[keys.location.id] = parentLocation;
-
-    // eslint-disable-next-line no-param-reassign
-    submission.values.enteredSrefSystem =
-      parentAttrs.enteredSrefSystem ||
-      // backwards compatible
-      keys.location_type.values[(parentAttrs as any).location_type];
-  }
-};
-
 export const locationAttr = {
   remote: {
     id: 'entered_sref',
@@ -252,6 +228,15 @@ export const locationAttr = {
       return `${lat.toFixed(7)}, ${lon.toFixed(7)}`;
     },
   },
+};
+
+export const childGeolocationAttr = {
+  menuProps: {
+    label: 'Geolocate list entries',
+    icon: locationOutline,
+    type: 'toggle',
+  },
+  pageProps: { attrProps: { input: 'toggle' } },
 };
 
 const mothStages = [
@@ -313,7 +298,6 @@ export type SampleConfig = {
     Occurrence: typeof Occurrence;
     taxon: Taxon;
     surveySample: Sample;
-    skipGPS?: boolean;
   }) => Promise<Sample>;
   verify?: (attrs: any) => any;
   modifySubmission?: (submission: any, model: any) => any;
@@ -365,7 +349,6 @@ export interface Survey extends SampleConfig {
     taxon?: Taxon;
     images?: Media[] | null;
     skipLocation?: boolean;
-    skipGPS?: boolean;
     alert?: any;
   }) => Promise<Sample>;
 }

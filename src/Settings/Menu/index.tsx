@@ -141,7 +141,6 @@ const Container = () => {
     useTraining,
     // useExperiments,
     gridSquareUnit,
-    geolocateSurveyEntries,
     useSpeciesImageClassifier,
     useGridNotifications,
   } = appModel.attrs;
@@ -159,7 +158,6 @@ const Container = () => {
         // useExperiments={useExperiments}
         gridSquareUnit={gridSquareUnit}
         useGridNotifications={useGridNotifications}
-        geolocateSurveyEntries={geolocateSurveyEntries}
         useSpeciesImageClassifier={useSpeciesImageClassifier}
         resetApp={() => resetApp(toast)}
         deleteAllSamples={() => deleteAllSamples(toast)}

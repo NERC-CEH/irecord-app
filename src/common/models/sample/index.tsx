@@ -54,6 +54,7 @@ type Attrs = SampleAttrs & {
   groupId?: string;
   recorder?: any;
   recorders?: any;
+  childGeolocation?: any;
 };
 
 type Metadata = SampleMetadata & {

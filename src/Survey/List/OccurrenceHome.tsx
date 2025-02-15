@@ -39,7 +39,7 @@ const ListOccurrenceHome = ({ subSample: sample }: Props) => {
           </div>
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
-            <MenuLocation sample={sample} skipName />
+            <MenuLocation sample={sample} skipName isRequired={false} />
             <MenuAttr
               model={occ}
               attr="comment"

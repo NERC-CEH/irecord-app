@@ -14,6 +14,7 @@ interface Props {
   detailIcon?: any;
   className?: any;
   skipName?: boolean;
+  isRequired?: boolean;
   label?: string;
 }
 
@@ -22,6 +23,7 @@ const MenuLocation = ({
   className,
   skipName,
   label = 'Location',
+  isRequired = true,
   ...otherProps
 }: Props) => {
   const { url } = useRouteMatch();
@@ -36,7 +38,7 @@ const MenuLocation = ({
       <GridRefValue sample={sample} />
     </div>
   ) : (
-    <Badge color="warning">No location</Badge>
+    isRequired && <Badge color="warning">No location</Badge>
   );
 
   const locationNameItem = locationName ? (

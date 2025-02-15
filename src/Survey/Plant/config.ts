@@ -1,6 +1,5 @@
 import { peopleOutline, businessOutline, pencilOutline } from 'ionicons/icons';
 import * as Yup from 'yup';
-import { checkGridType } from '@flumens';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import VCs from 'common/data/vice_counties.data.json';
 import gridAlertService from 'common/helpers/gridAlertService';
@@ -17,8 +16,8 @@ import {
   getSystemAttrs,
   taxonAttr,
   makeSubmissionBackwardsCompatible,
-  assignParentLocationIfMissing,
   sensitivityPrecisionAttr,
+  childGeolocationAttr,
 } from 'Survey/common/config';
 
 const stageOptions = [
@@ -62,6 +61,7 @@ const survey: Survey = {
 
   render: [
     'smp:location',
+    'smp:childGeolocation',
     'smp:vice-county',
     'smp:date',
     'smp:recorders',
@@ -83,6 +83,8 @@ const survey: Survey = {
         },
       },
     },
+
+    childGeolocation: childGeolocationAttr,
 
     recorders: {
       menuProps: { icon: peopleOutline, skipValueTranslation: true },
@@ -269,25 +271,8 @@ const survey: Survey = {
       },
     },
 
-    verify(attrs) {
-      try {
-        Yup.object()
-          .shape({
-            location: Yup.object().shape({
-              latitude: Yup.number().required(),
-              longitude: Yup.number().required(),
-            }),
-          })
-          .validateSync(attrs, { abortEarly: false });
-      } catch (attrError) {
-        return attrError;
-      }
-
-      return null;
-    },
-
     async create({ Sample, Occurrence, taxon, surveySample }) {
-      const { gridSquareUnit, geolocateSurveyEntries } = appModel.attrs;
+      const { gridSquareUnit } = appModel.attrs;
 
       const sample = new Sample({
         isSubSample: true,
@@ -309,33 +294,15 @@ const survey: Survey = {
       const locks = appModel.attrs.attrLocks.complex.plant || {};
       appModel.appendAttrLocks(sample, locks);
 
-      // set sample location to survey's location which
-      // can be corrected by GPS or user later on
-      // TODO: listen for surveySample attribute changes
-      const isSurveyLocationSet = checkGridType(
-        surveySample.attrs.location,
-        surveySample.metadata.gridSquareUnit
-      );
-      if (isSurveyLocationSet) {
-        const surveyLocation = JSON.parse(
-          JSON.stringify(surveySample.attrs.location)
-        );
-        delete surveyLocation.name;
-
-        sample.attrs.location = surveyLocation;
-
-        if (geolocateSurveyEntries) {
-          const ignoreError = () => {};
-          sample.startGPS().catch(ignoreError);
-        }
+      if (surveySample.attrs.childGeolocation) {
+        const ignoreError = () => {};
+        sample.startGPS().catch(ignoreError);
       }
 
       return sample;
     },
 
-    modifySubmission(submission, sample) {
-      assignParentLocationIfMissing(submission, sample);
-
+    modifySubmission(submission) {
       makeSubmissionBackwardsCompatible(submission, survey);
 
       return submission;

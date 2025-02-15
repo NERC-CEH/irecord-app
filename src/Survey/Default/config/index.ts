@@ -237,7 +237,7 @@ const survey: Survey = {
     },
   },
 
-  async create({ Sample, Occurrence, images, taxon, skipLocation, skipGPS }) {
+  async create({ Sample, Occurrence, images, taxon, skipLocation }) {
     const ignoreErrors = () => {};
 
     const occurrence = new Occurrence();
@@ -292,7 +292,7 @@ const survey: Survey = {
     appModel.appendAttrLocks(sample, fullSurveyLocks, skipLocation);
 
     const isLocationLocked = appModel.getAttrLock('smp', 'location');
-    if (!isLocationLocked && !skipGPS) {
+    if (!isLocationLocked) {
       sample.startGPS().catch(ignoreErrors);
     }
 

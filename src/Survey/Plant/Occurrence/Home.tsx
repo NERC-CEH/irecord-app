@@ -34,7 +34,7 @@ const PlantOccurrenceHome = ({ subSample: sample }: Props) => {
 
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
-            <MenuLocation sample={sample} skipName />
+            <MenuLocation sample={sample} skipName isRequired={false} />
             <MenuDynamicAttrs model={sample} />
           </div>
         </IonList>

@@ -152,7 +152,6 @@ type Props = {
   isLoggedIn: boolean;
   useTraining: boolean;
   gridSquareUnit: string;
-  geolocateSurveyEntries: boolean;
   onToggle: any;
   sendAnalytics?: boolean;
   useGridNotifications?: boolean;
@@ -171,7 +170,6 @@ const MenuMain = ({
   useTraining,
   sendAnalytics,
   // useExperiments,
-  geolocateSurveyEntries,
   gridSquareUnit,
   useSpeciesImageClassifier,
   useGridNotifications,
@@ -188,8 +186,6 @@ const MenuMain = ({
     onToggle('sendAnalytics', checked);
   const onTrainingModeToggle = (checked: boolean) =>
     onToggle('useTraining', checked);
-  const onGeolocateSurveyEntriesToggle = (checked: boolean) =>
-    onToggle('geolocateSurveyEntries', checked);
   // const onUseExperiments = (checked: boolean) =>
   //   onToggle('useExperiments', checked);
   const onUseImageClassifier = (checked: boolean) =>
@@ -208,17 +204,6 @@ const MenuMain = ({
             <IonIcon icon={locationOutline} size="small" slot="start" />
             <T>Manage Saved</T>
           </IonItem>
-
-          <Toggle
-            prefix={<IonIcon src={locationOutline} className="size-6" />}
-            label="Geolocate Survey Entries"
-            defaultSelected={geolocateSurveyEntries}
-            onChange={onGeolocateSurveyEntriesToggle}
-          />
-          <InfoMessage inline>
-            We will use GPS to obtain precise locations for species during
-            Species List and Plant surveys.
-          </InfoMessage>
 
           <IonItem routerLink="/settings/survey" detail>
             <IonIcon icon={gridOutline} size="small" slot="start" />
