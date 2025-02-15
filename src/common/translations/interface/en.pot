@@ -1849,15 +1849,6 @@ msgstr "gps"
 msgid "Suggestions"
 msgstr "Suggestions"
 
-# Galery AI suggestion message
-msgid "Great! We also think it is <1>{{probability}}%</1> likely to be <4>{{species}}</4>."
-msgstr "Great! We also think it is <1>{{probability}}%</1> likely to be <4>{{species}}</4>."
-
-# Galery AI suggestion message 
-msgid "We think it is <1>{{probability}}%</1> likely to be <4>{{species}}</4>."
-msgstr "We think it is <1>{{probability}}%</1> likely to be <4>{{species}}</4>."
-
-
 # Incomplete form message 
 msgid "Please fill in"
 msgstr "Please fill in"

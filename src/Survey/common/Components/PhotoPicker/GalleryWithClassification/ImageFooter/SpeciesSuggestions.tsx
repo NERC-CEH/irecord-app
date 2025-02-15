@@ -5,6 +5,7 @@ import { IonSpinner, IonModal } from '@ionic/react';
 import { Button } from 'common/flumens';
 import Media, { ClassifierSuggestion } from 'models/media';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
+import ClassificationStatus from '../../ClassificationStatus';
 
 const SNAP_POSITIONS = [0, 0.3, 0.5, 1];
 const DEFAULT_SNAP_POSITION = 0.3;
@@ -82,7 +83,12 @@ const SpeciesSuggestions = ({
 
   return (
     <>
-      <Button className="shrink-0 text-white" onPress={onOpen} fill="outline">
+      <Button
+        className="shrink-0 pl-3 text-white"
+        onPress={onOpen}
+        fill="outline"
+        prefix={<ClassificationStatus media={image} />}
+      >
         Suggestions
       </Button>
 
