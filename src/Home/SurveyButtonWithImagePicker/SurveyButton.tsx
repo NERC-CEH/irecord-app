@@ -147,7 +147,7 @@ const SurveyButton = ({
 
       {showOptions && (
         <>
-          <div className="fixed bottom-3 left-1/2 z-50 w-[200px] -translate-x-1/2 pb-[var(--ion-safe-area-bottom,0)]">
+          <div className="fixed bottom-[calc(var(--ion-safe-area-bottom,0)+0.5rem)] left-1/2 z-50 w-[200px] -translate-x-1/2">
             <button
               className="absolute -left-2 bottom-0 flex size-14 items-center justify-center rounded-full bg-primary-800 p-2 text-white shadow-md ring-[0.5px] ring-primary-800"
               onClick={onPrimarySurveyWrap}
