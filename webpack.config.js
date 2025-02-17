@@ -19,6 +19,7 @@ const development = {
   APP_MANUAL_TESTING: '',
   APP_BACKEND_URL: '',
   APP_BACKEND_INDICIA_URL: '',
+  APP_FEEDBACK_EMAIL: '',
 };
 
 appConfig.plugins.unshift(
