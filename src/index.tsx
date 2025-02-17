@@ -44,7 +44,7 @@ mobxConfig({ enforceActions: 'never' });
   appModel.attrs.sendAnalytics &&
     SentryBrowser.init({
       ...sentryOptions,
-      dsn: config.sentryDNS,
+      dsn: config.sentryDSN,
       environment: config.environment,
       release: config.version,
       dist: config.build,
