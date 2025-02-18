@@ -1,3 +1,4 @@
+import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
@@ -122,6 +123,12 @@ const survey: Partial<Survey> & { taxa: string } = {
 
       'number-ranges': { remote: { id: 203, values: numberOptions } },
     },
+
+    verify: (attrs: any) =>
+      object({
+        taxon: object({}, { required_error: 'Species is missing.' }).nullable(),
+        stage: string({ required_error: 'Stage is missing.' }).nullable(),
+      }).safeParse(attrs).error,
   },
 };
 

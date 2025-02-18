@@ -1,3 +1,4 @@
+import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import { mothStageAttr, Survey } from 'Survey/common/config';
 
@@ -13,6 +14,12 @@ const survey: Partial<Survey> & { taxa: string } = {
         menuProps: { ...mothStageAttr.menuProps, required: false },
       },
     },
+
+    verify: (attrs: any) =>
+      object({
+        taxon: object({}, { required_error: 'Species is missing.' }).nullable(),
+        stage: string({ required_error: 'Stage is missing.' }).nullable(),
+      }).safeParse(attrs).error,
   },
 };
 
