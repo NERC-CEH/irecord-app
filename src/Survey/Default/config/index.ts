@@ -32,6 +32,7 @@ import dragonfliesSurvey from './dragonflies';
 import mammalsSurvey from './mammals';
 import mothsSurvey from './moths';
 import plantFungiSurvey from './plantFungi';
+import reptilesSurvey from './reptiles';
 
 export const taxonGroupSurveys = {
   arthropods: arthropodSurvey,
@@ -42,6 +43,7 @@ export const taxonGroupSurveys = {
   'plants-fungi': plantFungiSurvey,
   birds: birdsSurvey,
   mammals: mammalsSurvey,
+  reptiles: reptilesSurvey,
 };
 
 export function getTaxaGroupSurvey(taxaGroup: number) {
