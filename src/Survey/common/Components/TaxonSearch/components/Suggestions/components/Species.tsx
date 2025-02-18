@@ -85,7 +85,7 @@ const Species = ({
       <div className="flex w-full items-center py-1">
         {probability && (
           <div className="probability">
-            <ProbabilityBadge probability={probability} />
+            <ProbabilityBadge probability={probability} showInfo />
           </div>
         )}
 

@@ -59,7 +59,11 @@ const SpeciesSuggestions = ({
 
     return (
       <div className="flex min-h-20 w-full items-center justify-start gap-2 border-b border-solid p-2">
-        <ProbabilityBadge probability={probability} className="shrink-0" />
+        <ProbabilityBadge
+          probability={probability}
+          className="shrink-0"
+          showInfo
+        />
         <div className="flex w-full flex-col gap-1">
           {!!commonName && <b>{commonName}</b>}
           {!!scientificName && <i>{scientificName}</i>}
