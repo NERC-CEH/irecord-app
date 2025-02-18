@@ -233,6 +233,14 @@ msgstr "Pre-adult"
 msgid "stage"
 msgstr "stage"
 
+# Survey attribute 
+msgid "Geolocate list entries"
+msgstr "Geolocate list entries"
+
+# Survey attribute 
+msgid "Recorders"
+msgstr "Recorders"
+
 msgid "If another person identified the species for you, please enter their name here."
 msgstr "If another person identified the species for you, please enter their name here."
 

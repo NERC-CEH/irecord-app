@@ -122,7 +122,7 @@ const PlantHome = ({ sample }: Props) => {
   return (
     <Page id="survey-complex-plant-edit">
       <Header
-        title={`${survey.label} Survey`}
+        title={`${survey.label}`}
         rightSlot={finishButton}
         defaultHref="/home/surveys"
         subheader={subheader}

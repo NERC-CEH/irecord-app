@@ -43,7 +43,7 @@ const methodOptions = [
 
 const survey: Survey = {
   name: 'moth',
-  label: 'Moth',
+  label: 'Moth List Survey',
   id: 90,
 
   taxaGroups: [groups.moth],

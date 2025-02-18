@@ -101,7 +101,7 @@ const MothHome = ({ sample }: Props) => {
   return (
     <Page id="survey-complex-moth-edit">
       <Header
-        title={`${survey.label} Survey`}
+        title={`${survey.label}`}
         rightSlot={finishButton}
         defaultHref="/home/surveys"
         subheader={subheader}

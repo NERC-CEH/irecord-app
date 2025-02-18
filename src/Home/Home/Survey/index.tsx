@@ -89,7 +89,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
         <div className="survey-info">
           <div className="flex flex-col justify-center">
             <div className="text-base font-semibold capitalize">
-              <T>{survey.label} Survey</T>
+              <T>{survey.label}</T>
             </div>
 
             <div className="core">

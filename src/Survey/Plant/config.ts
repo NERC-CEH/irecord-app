@@ -44,7 +44,7 @@ const statusOptions = [
 
 const survey: Survey = {
   name: 'plant',
-  label: 'Plant',
+  label: 'Plant List Survey',
   id: 325,
   webForm: 'enter-vascular-plants',
 
