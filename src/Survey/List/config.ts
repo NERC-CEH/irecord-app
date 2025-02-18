@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import { object, string } from 'zod';
 import gridAlertService from 'common/helpers/gridAlertService';
 import appModel from 'models/app';
 import AppSample from 'models/sample';
@@ -8,7 +8,6 @@ import {
   dateAttr,
   recorderAttr,
   commentAttr,
-  verifyLocationSchema,
   Survey,
   activityAttr,
   locationAttr,
@@ -16,6 +15,7 @@ import {
   makeSubmissionBackwardsCompatible,
   groupIdAttr,
   childGeolocationAttr,
+  locationAttrValidator,
 } from 'Survey/common/config';
 
 function appendLockedAttrs(sample: AppSample) {
@@ -148,21 +148,21 @@ const survey: Survey = {
     // occ config is taxa specific
   },
 
-  verify(attrs) {
-    try {
-      Yup.object()
-        .shape({
-          location: verifyLocationSchema,
-          // TODO: re-enable in future versions after everyone uploads
-          // recorder: Yup.string().nullable().required('Recorder field is missing.'),
-        })
-        .validateSync(attrs, { abortEarly: false });
-    } catch (attrError) {
-      return attrError;
-    }
-
-    return null;
-  },
+  verify: (attrs: any) =>
+    object({
+      location: locationAttrValidator({
+        name: string({ required_error: 'Location name is missing' }).min(
+          1,
+          'Location name is missing'
+        ),
+      }),
+      date: string({ required_error: 'Date is missing.' }).nullable(),
+      recorder: string({
+        required_error: 'Recorder field is missing.',
+      })
+        .min(1, 'Recorder field is missing.')
+        .nullable(),
+    }).safeParse(attrs).error,
 
   create({ Sample, alert }) {
     // add currently logged in user as one of the recorders

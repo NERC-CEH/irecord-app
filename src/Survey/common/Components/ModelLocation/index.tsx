@@ -43,6 +43,8 @@ export const setModelLocation = async (
     isFromMap &&
     Haptics.impact({ style: ImpactStyle.Light });
 
+  if (!model.attrs.location) Object.assign(model.attrs, { location: {} });
+
   Object.assign(
     model.attrs.location, // carry over name, geocoded etc
     getEmptyLocation(), // overwrite core location values

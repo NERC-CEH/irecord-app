@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import mergeWith from 'lodash.mergewith';
-import * as Yup from 'yup';
+import { object, string } from 'zod';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
@@ -12,7 +12,6 @@ import {
   coreAttributes,
   dateAttr,
   activityAttr,
-  verifyLocationSchema,
   Survey,
   locationAttr,
   taxonAttr,
@@ -23,6 +22,7 @@ import {
   recorderAttr,
   groupIdAttr,
   sensitivityPrecisionAttr,
+  locationAttrValidator,
 } from 'Survey/common/config';
 import arthropodSurvey from './arthropods';
 import birdsSurvey from './birds';
@@ -118,17 +118,15 @@ const survey: Survey = {
     activity: activityAttr,
   },
 
-  verify(attrs: any) {
-    try {
-      Yup.object()
-        .shape({ location: verifyLocationSchema })
-        .validateSync(attrs, { abortEarly: false });
-    } catch (attrError) {
-      return attrError;
-    }
-
-    return null;
-  },
+  verify: (attrs: any) =>
+    object({
+      location: locationAttrValidator({
+        name: string({ required_error: 'Location name is missing' }).min(
+          1,
+          'Location name is missing'
+        ),
+      }),
+    }).safeParse(attrs).error,
 
   occ: {
     attrs: {
@@ -222,19 +220,11 @@ const survey: Survey = {
       comment: commentAttr,
       sensitivityPrecision: sensitivityPrecisionAttr(1000),
     },
-    verify(attrs) {
-      try {
-        Yup.object()
-          .shape({
-            taxon: Yup.object().nullable().required('Species is missing.'),
-          })
-          .validateSync(attrs, { abortEarly: false });
-      } catch (attrError) {
-        return attrError;
-      }
 
-      return null;
-    },
+    verify: (attrs: any) =>
+      object({
+        taxon: object({}, { required_error: 'Species is missing.' }).nullable(),
+      }).safeParse(attrs).error,
   },
 
   async create({ Sample, Occurrence, images, taxon, skipLocation }) {

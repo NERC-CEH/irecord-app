@@ -82,7 +82,6 @@
     "sql.js": "^1.12.0",
     "swiper": "^11.2.3",
     "tailwind-variants": "^0.3.1",
-    "yup": "^1.6.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {

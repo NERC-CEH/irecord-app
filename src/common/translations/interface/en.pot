@@ -1974,8 +1974,48 @@ msgid "Survey incomplete"
 msgstr "Survey incomplete"
 
 # Survey verification message
-msgid "Please enter location and its name."
-msgstr "Please enter location and its name."
+msgid "Location is missing."
+msgstr "Location is missing."
+
+# Survey verification message
+msgid "Species is missing."
+msgstr "Species is missing."
+
+# Survey verification message
+msgid "Location name is missing"
+msgstr "Location name is missing"
+
+# Activities page 
+msgid "My activities"
+msgstr "My activities"
+
+# Activities page 
+msgid "All activities"
+msgstr "All activities"
+
+# Activities page 
+msgid "Not linked to any activity"
+msgstr "Not linked to any activity"
+
+# Activities page 
+msgid "You haven't joined any activities yet. Go to the "All activities" tab to join an activity.<br/><br/>Pull the page down to refresh the list."
+msgstr "You haven't joined any activities yet. Go to the "All activities" tab to join an activity.<br/><br/>Pull the page down to refresh the list."
+
+# Activities page  
+msgid "There are currently no new activities available to join.<br/><br/>Pull the page down to refresh the list."
+msgstr "There are currently no new activities available to join.<br/><br/>Pull the page down to refresh the list."
+
+# Activities page  
+msgid "Join"
+msgstr "Join"
+
+# Activities page  
+msgid "Successfully joined the activity."
+msgstr "Successfully joined the activity."
+
+# Activities page  
+msgid "Leave"
+msgstr "Leave"
 
 # Survey verification message
 msgid "Recorder field is missing."

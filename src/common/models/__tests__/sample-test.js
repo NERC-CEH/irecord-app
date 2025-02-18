@@ -69,9 +69,7 @@ describe('Sample', () => {
       delete sample.attrs.location;
       const invalids = sample.validateRemote();
 
-      expect(invalids.attributes.errors[0]).toBe(
-        'Please enter location and its name.'
-      );
+      expect(invalids.attributes.errors[0]).toBe('Location is missing.');
     });
   });
 

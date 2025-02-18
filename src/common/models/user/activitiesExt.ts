@@ -3,7 +3,7 @@
  **************************************************************************** */
 import { observable } from 'mobx';
 import axios, { AxiosRequestConfig } from 'axios';
-import * as Yup from 'yup';
+import { array, object, string } from 'zod';
 import { HandledError, isAxiosNetworkError } from '@flumens';
 import config from 'common/config';
 
@@ -16,18 +16,16 @@ export interface Activity {
   group_to_date: any;
 }
 
-const schemaBackend = Yup.object().shape({
-  data: Yup.array().of(
-    Yup.object()
-      .shape({
-        id: Yup.string(),
-        title: Yup.string(),
-        // description: null
-        // group_type: Yup.string,
-        // group_from_date: null
-        // group_to_date: null
-      })
-      .required()
+const schemaBackend = object({
+  data: array(
+    object({
+      id: string(),
+      title: string(),
+      // description: null
+      // group_type: Yup.string,
+      // group_from_date: null
+      // group_to_date: null
+    })
   ),
 });
 
@@ -103,7 +101,7 @@ const extension = {
       this.activities.synchronizing = true;
       const { data: response } = await axios(options);
 
-      const isValidResponse = await schemaBackend.isValid(response);
+      const isValidResponse = await schemaBackend.safeParse(response).success;
       if (!isValidResponse) throw new Error('Invalid server response.');
 
       this.activities.synchronizing = false;

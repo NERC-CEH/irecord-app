@@ -5,7 +5,7 @@ import {
   eyeOffOutline,
   locationOutline,
 } from 'ionicons/icons';
-import * as Yup from 'yup';
+import { z } from 'zod';
 import { dateFormat, device, PageProps, RemoteConfig } from '@flumens';
 import config from 'common/config';
 import progressIcon from 'common/images/progress-circles.svg';
@@ -15,26 +15,21 @@ import Occurrence, { Taxon } from 'models/occurrence';
 import Sample from 'models/sample';
 import { Config as MenuProps } from 'Survey/common/Components/MenuAttr';
 
-const fixedLocationSchema = Yup.object().shape({
-  latitude: Yup.number().required(),
-  longitude: Yup.number().required(),
-  name: Yup.string().required(),
-});
-
-const validateLocation = (val: any) => {
-  try {
-    fixedLocationSchema.validateSync(val);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-export const verifyLocationSchema = Yup.mixed().test(
-  'location',
-  'Please enter location and its name.',
-  validateLocation
-);
+export const locationAttrValidator = (obj: any = {}) =>
+  z
+    .object(
+      {
+        latitude: z.number().nullable().optional(),
+        longitude: z.number().nullable().optional(),
+      },
+      { required_error: 'Location is missing.' }
+    )
+    .extend(obj)
+    .refine(
+      (val: any) =>
+        Number.isFinite(val.latitude) && Number.isFinite(val.longitude),
+      'Location is missing.'
+    );
 
 // eslint-disable-next-line import/prefer-default-export
 export const dateAttr = {

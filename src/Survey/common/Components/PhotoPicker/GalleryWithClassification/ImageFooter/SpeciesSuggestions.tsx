@@ -99,8 +99,8 @@ const SpeciesSuggestions = ({
 
     return (
       <div className="mx-2 mt-5">
-        <h2 className="text-lg font-semibold">Suggestions:</h2>
-        <h3 className="my-1 text-sm">
+        <h2 className="mx-2 text-lg font-semibold">Suggestions:</h2>
+        <h3 className="mx-2 my-1 text-sm">
           <div>
             <T>Note that AI confidence levels are not absolute.</T>
           </div>

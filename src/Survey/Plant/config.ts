@@ -1,6 +1,5 @@
 import { peopleOutline, businessOutline, pencilOutline } from 'ionicons/icons';
-import * as Yup from 'yup';
-import { z, object } from 'zod';
+import { object, array, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import VCs from 'common/data/vice_counties.data.json';
 import gridAlertService from 'common/helpers/gridAlertService';
@@ -11,7 +10,6 @@ import userModel from 'models/user';
 import {
   dateAttr,
   commentAttr,
-  verifyLocationSchema,
   Survey,
   locationAttr,
   getSystemAttrs,
@@ -19,6 +17,7 @@ import {
   makeSubmissionBackwardsCompatible,
   sensitivityPrecisionAttr,
   childGeolocationAttr,
+  locationAttrValidator,
 } from 'Survey/common/config';
 
 const stageOptions = [
@@ -320,28 +319,20 @@ const survey: Survey = {
     },
   },
 
-  verify: (attrs: any) => {
-    console.log('attrs', attrs);
-
-    return z
-      .object({
-        location: z
-          .object({}, { required_error: 'Location is missing.' })
-          // .nullable()
-          .refine((val: any) => {
-            console.log(JSON.parse(JSON.stringify(val)));
-
-            return (
-              Number.isFinite(val.latitude) && Number.isFinite(val.longitude)
-            );
-          }, 'Location is missing.'),
-        recorders: z
-          .array(z.string(), { required_error: 'Recorders field is missing.' })
-          .min(1)
-          .nullable(),
+  verify: (attrs: any) =>
+    object({
+      location: locationAttrValidator({
+        name: string({ required_error: 'Location name is missing' }).min(
+          1,
+          'Location name is missing'
+        ),
+      }),
+      recorders: array(string(), {
+        required_error: 'Recorders field is missing.',
       })
-      .safeParse(attrs).error;
-  },
+        .min(1)
+        .nullable(),
+    }).safeParse(attrs).error,
 
   create({ Sample, alert }) {
     const { gridSquareUnit, useGridNotifications } = appModel.attrs;

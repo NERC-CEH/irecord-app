@@ -1,11 +1,10 @@
-import * as Yup from 'yup';
+import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
 import userModel from 'models/user';
 import {
-  verifyLocationSchema,
   recorderAttr,
   Survey,
   locationAttr,
@@ -17,6 +16,7 @@ import {
   mothStageAttr,
   makeSubmissionBackwardsCompatible,
   sensitivityPrecisionAttr,
+  locationAttrValidator,
 } from 'Survey/common/config';
 
 const sex = [
@@ -119,20 +119,11 @@ const survey: Survey = {
       sensitivityPrecision: sensitivityPrecisionAttr(1000),
     },
 
-    verify(attrs: any) {
-      try {
-        Yup.object()
-          .shape({
-            taxon: Yup.object().nullable().required('Species is missing.'),
-            stage: Yup.string().nullable().required('Stage is missing.'),
-          })
-          .validateSync(attrs, { abortEarly: false });
-      } catch (attrError) {
-        return attrError;
-      }
-
-      return null;
-    },
+    verify: (attrs: any) =>
+      object({
+        taxon: object({}, { required_error: 'Species is missing.' }).nullable(),
+        stage: string({ required_error: 'Stage is missing.' }).nullable(),
+      }).safeParse(attrs).error,
 
     create({ Occurrence, taxon, images }) {
       const newOccurrence = new Occurrence({ attrs: { taxon, number: 1 } });
@@ -144,23 +135,24 @@ const survey: Survey = {
     },
   },
 
-  verify(attrs) {
-    try {
-      Yup.object()
-        .shape({
-          location: verifyLocationSchema,
-          date: Yup.string().nullable().required('Date is missing.'),
-          method: Yup.string().nullable().required('Method is missing.'),
-          // TODO: re-enable in future versions after everyone uploads
-          // recorder: Yup.string().nullable().required('Recorder field is missing.'),
-        })
-        .validateSync(attrs, { abortEarly: false });
-    } catch (attrError) {
-      return attrError;
-    }
-
-    return null;
-  },
+  verify: (attrs: any) =>
+    object({
+      location: locationAttrValidator({
+        name: string({ required_error: 'Location name is missing' }).min(
+          1,
+          'Location name is missing'
+        ),
+      }),
+      date: string({ required_error: 'Date is missing.' }).nullable(),
+      method: string({ required_error: 'Method is missing.' })
+        .min(1, 'Method is missing.')
+        .nullable(),
+      recorder: string({
+        required_error: 'Recorder field is missing.',
+      })
+        .min(1, 'Recorder field is missing.')
+        .nullable(),
+    }).safeParse(attrs).error,
 
   create({ Sample }) {
     // add currently logged in user as one of the recorders
