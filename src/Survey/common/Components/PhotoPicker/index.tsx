@@ -191,11 +191,15 @@ const AppPhotoPicker = ({
       <PhotoPicker
         className="with-cropper"
         onAdd={onAdd}
-        onRemove={onRemove}
         value={model.media}
         Image={useClassifier ? ImageWithClassification : undefined}
         Gallery={useClassifier ? GalleryWithClassification : undefined}
-        galleryProps={{ onCrop: onCropExisting, onSpeciesSelect, isDisabled }}
+        galleryProps={{
+          onCrop: onCropExisting,
+          onSpeciesSelect,
+          isDisabled,
+          onDelete: onRemove,
+        }}
         isDisabled={isDisabled}
       />
 

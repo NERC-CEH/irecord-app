@@ -7,8 +7,8 @@ import Media, { ClassifierSuggestion } from 'models/media';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 import ClassificationStatus from '../../ClassificationStatus';
 
-const SNAP_POSITIONS = [0, 0.3, 0.5, 1];
-const DEFAULT_SNAP_POSITION = 0.3;
+const SNAP_POSITIONS = [0, 0.4, 0.6, 1];
+const DEFAULT_SNAP_POSITION = 0.4;
 
 type Props = {
   image: Media;
@@ -49,41 +49,72 @@ const SpeciesSuggestions = ({
     );
   }
 
-  const identifierFoundNoSpecies = !image.attrs?.species?.suggestions.length;
-  if (identifierFoundNoSpecies || !speciesList.length) return null;
+  const getSuggestions = () => {
+    const identifierFoundNoSpecies = !image.attrs?.species?.suggestions.length;
+    if (identifierFoundNoSpecies || !speciesList.length)
+      return (
+        <div className="mt-5 p-8">
+          <T>Sorry, we could not identify this species.</T>
+          <div>
+            <T>
+              Make sure that your species is in the centre of the image and is
+              in focus.
+            </T>
+          </div>
+        </div>
+      );
 
-  const getSuggestionItem = (suggestion: ClassifierSuggestion) => {
-    const { commonNames, scientificName, probability } = suggestion;
+    const getSuggestionItem = (suggestion: ClassifierSuggestion) => {
+      const { commonNames, scientificName, probability } = suggestion;
 
-    const commonName = commonNames[0];
+      const commonName = commonNames[0];
+
+      return (
+        <div className="flex min-h-20 w-full items-center justify-start gap-2 border-b border-solid p-2">
+          <ProbabilityBadge
+            probability={probability}
+            className="shrink-0"
+            showInfo
+          />
+          <div className="flex w-full flex-col gap-1">
+            {!!commonName && <b>{commonName}</b>}
+            {!!scientificName && <i>{scientificName}</i>}
+          </div>
+
+          <Button
+            className="shrink-0 px-3 py-2 text-sm"
+            onPress={() => {
+              setIsOpen(false);
+              onSpeciesSelect(suggestion);
+            }}
+            fill="outline"
+          >
+            Select
+          </Button>
+        </div>
+      );
+    };
+
+    const suggestions = speciesList.map(getSuggestionItem);
 
     return (
-      <div className="flex min-h-20 w-full items-center justify-start gap-2 border-b border-solid p-2">
-        <ProbabilityBadge
-          probability={probability}
-          className="shrink-0"
-          showInfo
-        />
-        <div className="flex w-full flex-col gap-1">
-          {!!commonName && <b>{commonName}</b>}
-          {!!scientificName && <i>{scientificName}</i>}
-        </div>
-
-        <Button
-          className="shrink-0 px-3 py-2 text-sm"
-          onPress={() => {
-            setIsOpen(false);
-            onSpeciesSelect(suggestion);
-          }}
-          fill="outline"
-        >
-          Select
-        </Button>
+      <div className="mx-2 mt-5">
+        <h2 className="text-lg font-semibold">Suggestions:</h2>
+        <h3 className="my-1 text-sm">
+          <div>
+            <T>Note that AI confidence levels are not absolute.</T>
+          </div>
+          <div className="mt-1">
+            <T>
+              Supplement identifications with additional evidence where
+              possible.
+            </T>
+          </div>
+        </h3>
+        <div className="flex flex-col">{suggestions}</div>
       </div>
     );
   };
-
-  const suggestions = speciesList.map(getSuggestionItem);
 
   return (
     <>
@@ -106,10 +137,7 @@ const SpeciesSuggestions = ({
         onIonModalWillDismiss={onClose}
         className="[&::part(handle)]:mt-2"
       >
-        <div className="mx-2 mt-5">
-          <h2 className="text-lg font-semibold">Suggestions:</h2>
-          <div className="flex flex-col">{suggestions}</div>
-        </div>
+        {getSuggestions()}
       </IonModal>
     </>
   );

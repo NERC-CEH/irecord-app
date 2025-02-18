@@ -1849,6 +1849,18 @@ msgstr "gps"
 msgid "Suggestions"
 msgstr "Suggestions"
 
+# AI suggestions page
+msgid "Note that AI confidence levels are not absolute."
+msgstr "Note that AI confidence levels are not absolute."
+
+# AI suggestions page
+msgid "Supplement identifications with additional evidence where possible."
+msgstr "Supplement identifications with additional evidence where possible."
+
+# AI suggestions page
+msgid "Select"
+msgstr "Select"
+
 # Incomplete form message 
 msgid "Please fill in"
 msgstr "Please fill in"

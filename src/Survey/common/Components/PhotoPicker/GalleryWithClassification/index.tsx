@@ -1,15 +1,16 @@
+import { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Gallery, useToast } from '@flumens';
 import Media from 'models/media';
 import { useUserStatusCheck } from 'models/user';
 import ImageFooter from './ImageFooter';
-import ImageTitle from './ImageTitle';
 
 type Props = {
   items: Media[];
   showGallery: number;
   onClose: () => boolean;
   onCrop: any;
+  onDelete: any;
   onSpeciesSelect: any;
   isDisabled: boolean;
 };
@@ -23,6 +24,7 @@ const GalleryComponent = ({
   showGallery,
   onClose,
   onCrop,
+  onDelete,
   onSpeciesSelect,
   isDisabled,
 }: Props) => {
@@ -53,12 +55,17 @@ const GalleryComponent = ({
           image={image}
           identifyImage={identifyImage}
           onCrop={onCrop}
+          onDelete={onDelete}
           onSpeciesSelect={onSpeciesSelectWrap}
         />
       ),
-      title: <ImageTitle image={image} />,
     };
   };
+
+  const closeGalleryIfDeletedLastPhoto = () => {
+    if (showGallery && !items.length) onClose();
+  };
+  useEffect(closeGalleryIfDeletedLastPhoto, [items.length]);
 
   return (
     <Gallery

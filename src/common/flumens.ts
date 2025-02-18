@@ -30,7 +30,10 @@ export {
   default as Input,
   type Props as InputProps,
 } from '@flumens/tailwind/dist/components/Input';
-export { default as PhotoPicker } from '@flumens/ionic/dist/components/PhotoPicker';
+export {
+  default as PhotoPicker,
+  usePhotoDeletePrompt,
+} from '@flumens/ionic/dist/components/PhotoPicker';
 export * from '@flumens/utils/dist/date';
 export { default as device } from '@flumens/utils/dist/device';
 export * from '@flumens/utils/dist/uuid';
