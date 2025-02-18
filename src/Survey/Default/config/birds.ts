@@ -1,5 +1,6 @@
 import { clipboardOutline } from 'ionicons/icons';
 import { groupsReverse as groups } from 'common/data/informalGroups';
+import progressIcon from 'common/images/progress-circles.svg';
 import { Survey } from 'Survey/common/config';
 
 const breedingOptions = [
@@ -31,6 +32,16 @@ const breedingOptions = [
   { value: '16: Nest with young (NY)', id: 17604 },
 ];
 
+const stage = [
+  { value: 'Not Recorded', id: 17664 },
+  { value: 'Adult', id: 17658 },
+  { value: 'Immature', id: 17659 },
+  { value: 'Chick', id: 17660 },
+  { value: 'Egg', id: 17661 },
+  { value: 'Nest', id: 17662 },
+  { value: 'Other', id: 17663 },
+];
+
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'birds',
   taxaGroups: [groups.bird],
@@ -51,6 +62,17 @@ const survey: Partial<Survey> & { taxa: string } = {
 
   occ: {
     attrs: {
+      stage: {
+        menuProps: { icon: progressIcon },
+        pageProps: {
+          attrProps: {
+            input: 'radio',
+            inputProps: { options: stage },
+          },
+        },
+        remote: { id: 872, values: stage },
+      },
+
       breeding: {
         menuProps: { icon: clipboardOutline },
         pageProps: {
