@@ -269,6 +269,20 @@ const survey: Survey = {
 
         sensitivityPrecision: sensitivityPrecisionAttr(),
       },
+
+      verify(attrs: any) {
+        try {
+          Yup.object()
+            .shape({
+              taxon: Yup.object().nullable().required('Species is missing.'),
+            })
+            .validateSync(attrs, { abortEarly: false });
+        } catch (attrError) {
+          return attrError;
+        }
+
+        return null;
+      },
     },
 
     async create({ Sample, Occurrence, taxon, images, surveySample }) {

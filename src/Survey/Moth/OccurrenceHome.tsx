@@ -25,7 +25,7 @@ const MothOccurrenceHome = ({ occurrence }: Props) => {
           )}
 
           <div className="rounded-list">
-            <PhotoPicker model={occurrence} disableClassifier />
+            <PhotoPicker model={occurrence} />
           </div>
 
           <div className="rounded-list">

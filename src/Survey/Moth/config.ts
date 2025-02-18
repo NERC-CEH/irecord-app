@@ -134,12 +134,13 @@ const survey: Survey = {
       return null;
     },
 
-    create({ Occurrence, taxon }) {
-      const newOccurrene = new Occurrence({ attrs: { taxon, number: 1 } });
+    create({ Occurrence, taxon, images }) {
+      const newOccurrence = new Occurrence({ attrs: { taxon, number: 1 } });
+      if (images) newOccurrence.media.push(...images);
 
       const locks = appModel.attrs.attrLocks.complex.moth || {};
-      appModel.appendAttrLocks(newOccurrene, locks);
-      return newOccurrene;
+      appModel.appendAttrLocks(newOccurrence, locks);
+      return newOccurrence;
     },
   },
 

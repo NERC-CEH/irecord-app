@@ -278,9 +278,9 @@ type OccurrenceConfig = {
   attrs: Attrs;
   create?: (props: {
     Occurrence: typeof Occurrence;
-    taxon: Taxon;
+    taxon?: Taxon;
     identifier?: string;
-    photo?: any;
+    images?: Media[];
   }) => Occurrence;
   verify?: (attrs: any) => any;
   modifySubmission?: (submission: any, model: any) => any;

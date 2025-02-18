@@ -1,9 +1,13 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Page, useToast, Header } from '@flumens';
+import { Page, useToast, Header, captureImage, device } from '@flumens';
 import { NavContext } from '@ionic/react';
+import config from 'common/config';
+import appModel from 'common/models/app';
+import Media from 'common/models/media';
+import Occurrence from 'common/models/occurrence';
 import Sample, { useValidateCheck } from 'models/sample';
-import { useUserStatusCheck } from 'models/user';
+import userModel, { useUserStatusCheck } from 'models/user';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
@@ -53,6 +57,44 @@ const MothHome = ({ sample }: Props) => {
     await subSample.destroy();
   };
 
+  async function onSpeciesImageAttach(shouldUseCamera: boolean) {
+    const images = await captureImage({
+      camera: shouldUseCamera,
+      multiple: !shouldUseCamera,
+    });
+
+    if (!images) return;
+
+    const imageArray = Array.isArray(images) ? images : [images];
+    const surveyConfig = sample.getSurvey();
+
+    const occurrencesPromise = imageArray.map(async (img: any) => {
+      const imageModel: any = await Media.getImageModel(img, config.dataPath);
+
+      const { useSpeciesImageClassifier } = appModel.attrs;
+      const shouldAutoID =
+        useSpeciesImageClassifier &&
+        device.isOnline &&
+        userModel.isLoggedIn() &&
+        userModel.attrs.verified;
+      if (shouldAutoID) {
+        const processError = (error: any) =>
+          !error.isHandled && console.error(error); // don't toast this to user
+        imageModel.identify().catch(processError);
+      }
+
+      return surveyConfig.occ!.create!({
+        Occurrence,
+        images: [imageModel],
+      });
+    });
+
+    const occurrences = await Promise.all(occurrencesPromise);
+    sample.occurrences.push(...occurrences);
+
+    sample.save();
+  }
+
   const { training } = sample.attrs;
   const subheader = !!training && <TrainingBand />;
 
@@ -64,7 +106,11 @@ const MothHome = ({ sample }: Props) => {
         defaultHref="/home/surveys"
         subheader={subheader}
       />
-      <Main sample={sample} onDelete={onSubSampleDelete} />
+      <Main
+        sample={sample}
+        onDelete={onSubSampleDelete}
+        attachSpeciesImages={onSpeciesImageAttach}
+      />
     </Page>
   );
 };
