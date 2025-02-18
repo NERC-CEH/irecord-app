@@ -1,3 +1,4 @@
+import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import landIcon from 'common/images/land.svg';
 import numberIcon from 'common/images/number.svg';
@@ -157,6 +158,30 @@ const survey: Partial<Survey> & { taxa: string } = {
         remote: { id: 39, values: numRanges },
       },
     },
+
+    verify: (attrs: any) =>
+      object({
+        taxon: object({}, { required_error: 'Species is missing.' }).nullable(),
+        adCount: string().nullable().optional(),
+        coCount: string().nullable().optional(),
+        ovCount: string().nullable().optional(),
+        scCount: string().nullable().optional(),
+        laCount: string().nullable().optional(),
+        exCount: string().nullable().optional(),
+        emCount: string().nullable().optional(),
+      })
+        .refine(
+          (val: any) =>
+            val.adCount ||
+            val.coCount ||
+            val.ovCount ||
+            val.scCount ||
+            val.laCount ||
+            val.exCount ||
+            val.emCount,
+          'Stage is missing'
+        )
+        .safeParse(attrs).error,
   },
 };
 
