@@ -14,7 +14,6 @@ const sex = [
 ];
 
 const stage = [
-  { value: null, isDefault: true, label: 'Not Recorded' },
   { value: 'Adults', id: 3929 },
   { value: 'Larvae', id: 3931 },
   { value: 'Eggs', id: 3932 },

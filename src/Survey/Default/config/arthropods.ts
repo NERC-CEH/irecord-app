@@ -4,8 +4,7 @@ import progressIcon from 'common/images/progress-circles.svg';
 import { Survey } from 'Survey/common/config';
 
 const stage = [
-  { id: 17657, value: 'Not recorded', isDefault: true },
-
+  { id: 17657, value: 'Not recorded' },
   { id: 17643, value: 'Adult' },
   { id: 17644, value: 'Pupa' },
   { id: 17645, value: 'Cocoon' },
