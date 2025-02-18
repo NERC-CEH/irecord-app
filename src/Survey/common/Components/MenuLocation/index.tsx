@@ -31,7 +31,7 @@ const MenuLocation = ({
   const { location } = sample.attrs;
 
   const hasLocation = location?.latitude;
-  const locationName = location.name;
+  const locationName = location?.name;
 
   const locationItem = hasLocation ? (
     <div className="location-value">

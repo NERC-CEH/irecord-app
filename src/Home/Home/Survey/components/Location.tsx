@@ -14,7 +14,7 @@ const Location = ({ sample }: Props) => {
   const locationPrint = sample.printLocation();
 
   const { location } = sample.attrs;
-  const locationName = location.name;
+  const locationName = location?.name;
 
   const survey = sample.getSurvey();
   const locationLocked = appModel.isAttrLocked(sample, 'locationName');

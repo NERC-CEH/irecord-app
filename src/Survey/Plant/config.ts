@@ -1,5 +1,6 @@
 import { peopleOutline, businessOutline, pencilOutline } from 'ionicons/icons';
 import * as Yup from 'yup';
+import { z, object } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import VCs from 'common/data/vice_counties.data.json';
 import gridAlertService from 'common/helpers/gridAlertService';
@@ -270,19 +271,13 @@ const survey: Survey = {
         sensitivityPrecision: sensitivityPrecisionAttr(),
       },
 
-      verify(attrs: any) {
-        try {
-          Yup.object()
-            .shape({
-              taxon: Yup.object().nullable().required('Species is missing.'),
-            })
-            .validateSync(attrs, { abortEarly: false });
-        } catch (attrError) {
-          return attrError;
-        }
-
-        return null;
-      },
+      verify: (attrs: any) =>
+        object({
+          taxon: object(
+            {},
+            { required_error: 'Species is missing.' }
+          ).nullable(),
+        }).safeParse(attrs).error,
     },
 
     async create({ Sample, Occurrence, taxon, images, surveySample }) {
@@ -325,21 +320,27 @@ const survey: Survey = {
     },
   },
 
-  verify(attrs) {
-    try {
-      Yup.object()
-        .shape({
-          location: verifyLocationSchema,
-          recorders: Yup.array()
-            .of(Yup.string())
-            .min(1, 'Recorders field is missing.'),
-        })
-        .validateSync(attrs, { abortEarly: false });
-    } catch (attrError) {
-      return attrError;
-    }
+  verify: (attrs: any) => {
+    console.log('attrs', attrs);
 
-    return null;
+    return z
+      .object({
+        location: z
+          .object({}, { required_error: 'Location is missing.' })
+          // .nullable()
+          .refine((val: any) => {
+            console.log(JSON.parse(JSON.stringify(val)));
+
+            return (
+              Number.isFinite(val.latitude) && Number.isFinite(val.longitude)
+            );
+          }, 'Location is missing.'),
+        recorders: z
+          .array(z.string(), { required_error: 'Recorders field is missing.' })
+          .min(1)
+          .nullable(),
+      })
+      .safeParse(attrs).error;
   },
 
   create({ Sample, alert }) {
@@ -359,7 +360,6 @@ const survey: Survey = {
       },
       attrs: {
         date: new Date().toISOString(),
-        location: {},
         enteredSrefSystem: 'OSGB',
         sampleMethodId: 7305,
         recorders,
