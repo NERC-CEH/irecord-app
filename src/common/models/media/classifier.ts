@@ -41,12 +41,15 @@ async function getCommonNames(sp: AISuggestion) {
   return { commonNames, foundInName: 0 };
 }
 
-export default async function identify(url: string): Promise<Result> {
+export default async function identify(
+  url: string,
+  classifier: '/' | 'plantnet' = '/'
+): Promise<Result> {
   const data = new URLSearchParams({ image: url, list: UKSIListID });
 
   const options: any = {
     method: 'post',
-    url: `${config.backend.url}/api-proxy/indicia?_api_proxy_uri=/`,
+    url: `${config.backend.url}/api-proxy/indicia?_api_proxy_uri=${classifier}`,
     headers: {
       Authorization: `Bearer ${await userModel.getAccessToken()}`,
       'Content-Type': 'application/x-www-form-urlencoded',

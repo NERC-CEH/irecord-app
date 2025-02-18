@@ -319,6 +319,7 @@ export interface Survey extends SampleConfig {
    * In-App survey code name.
    */
   name: string;
+  // name: 'plant' | 'list' | 'moth' | 'default';
   /**
    * Pretty survey name to show in the UI.
    */

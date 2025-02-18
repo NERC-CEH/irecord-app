@@ -102,7 +102,7 @@ const PlantHome = ({ sample }: Props) => {
       if (shouldAutoID) {
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
-        imageModel.identify().catch(processError);
+        imageModel.identify('plantnet').catch(processError);
       }
 
       return surveyConfig.smp!.create!({

@@ -111,8 +111,14 @@ export default class Media extends MediaOriginal<Attrs> {
 
   isIdentifying = () => this.identification.identifying;
 
-  async identify() {
+  async identify(classifier?: 'plantnet') {
     this.identification.identifying = true;
+
+    const isPlantSurvey =
+      this.parent?.parent?.parent?.getSurvey().name === 'plant';
+
+    // eslint-disable-next-line no-param-reassign
+    if (!classifier) classifier = isPlantSurvey ? 'plantnet' : undefined;
 
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -123,7 +129,7 @@ export default class Media extends MediaOriginal<Attrs> {
       // @ts-ignore
       const url = this.getRemoteURL();
 
-      const suggestions = await identifyImage(url);
+      const suggestions = await identifyImage(url, classifier);
 
       this.attrs.species = suggestions;
 
