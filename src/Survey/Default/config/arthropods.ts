@@ -1,3 +1,4 @@
+import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import progressIcon from 'common/images/progress-circles.svg';
 import { Survey } from 'Survey/common/config';
@@ -81,6 +82,12 @@ const survey: Partial<Survey> & { taxa: string } = {
         remote: { id: 829, values: stage },
       },
     },
+
+    verify: (attrs: any) =>
+      object({
+        taxon: object({}, { required_error: 'Species is missing.' }).nullable(),
+        stage: string({ required_error: 'Stage is missing.' }).nullable(),
+      }).safeParse(attrs).error,
   },
 };
 
