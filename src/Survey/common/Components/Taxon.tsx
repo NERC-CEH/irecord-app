@@ -96,9 +96,6 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
     : taxonSearchGroupFilters.flat().flat();
   const namesFilter = isSpeciesRestrictedSurvey ? undefined : searchNamesOnly;
 
-  const suggestedSpecies = occurrence?.getSuggestions();
-  const suggestionsAreLoading = occurrence?.isIdentifying();
-
   return (
     <Page id="taxon">
       <Header title="Species" rightSlot={rightSlot} />
@@ -109,8 +106,8 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
           showEditButton={!editingExisting}
           selectedFilters={informalGroups}
           namesFilter={namesFilter}
-          suggestedSpecies={suggestedSpecies}
-          suggestionsAreLoading={suggestionsAreLoading}
+          suggestedSpecies={occurrence?.attrs.classifier?.suggestions}
+          suggestionsAreLoading={occurrence?.isIdentifying}
         />
       </Main>
     </Page>

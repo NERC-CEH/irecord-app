@@ -93,6 +93,13 @@ const PlantHome = ({ sample }: Props) => {
     const subSamplePromise = imageArray.map(async (img: any) => {
       const imageModel: any = await Media.getImageModel(img, config.dataPath);
 
+      const subSample = await surveyConfig.smp!.create!({
+        Occurrence,
+        Sample,
+        surveySample: sample,
+        images: [imageModel],
+      });
+
       const { useSpeciesImageClassifier } = appModel.attrs;
       const shouldAutoID =
         useSpeciesImageClassifier &&
@@ -102,15 +109,10 @@ const PlantHome = ({ sample }: Props) => {
       if (shouldAutoID) {
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
-        imageModel.identify('plantnet').catch(processError);
+        subSample.occurrences[0].identify('plant').catch(processError);
       }
 
-      return surveyConfig.smp!.create!({
-        Occurrence,
-        Sample,
-        surveySample: sample,
-        images: [imageModel],
-      });
+      return subSample;
     });
 
     const subSamples = await Promise.all(subSamplePromise);

@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { Gallery, useToast } from '@flumens';
+import { Gallery } from '@flumens';
 import Media from 'models/media';
-import { useUserStatusCheck } from 'models/user';
 import ImageFooter from './ImageFooter';
 
 type Props = {
@@ -11,6 +10,7 @@ type Props = {
   onClose: () => boolean;
   onCrop: any;
   onDelete: any;
+  onIdentify: any;
   onSpeciesSelect: any;
   isDisabled: boolean;
 };
@@ -26,21 +26,10 @@ const GalleryComponent = ({
   onCrop,
   onDelete,
   onSpeciesSelect,
+  onIdentify,
   isDisabled,
 }: Props) => {
-  const toast = useToast();
-  const checkUserStatus = useUserStatusCheck();
-
   const getItem = (image: Media) => {
-    const identifyImage = async () => {
-      onClose();
-
-      const isUserOK = await checkUserStatus();
-      if (!isUserOK) return;
-
-      image.identify().catch(toast.error);
-    };
-
     const onSpeciesSelectWrap = (...args: any) => {
       if (isDisabled) return;
 
@@ -53,7 +42,7 @@ const GalleryComponent = ({
       footer: (
         <ImageFooter
           image={image}
-          identifyImage={identifyImage}
+          identifySpecies={onIdentify}
           onCrop={onCrop}
           onDelete={onDelete}
           onSpeciesSelect={onSpeciesSelectWrap}
@@ -63,7 +52,7 @@ const GalleryComponent = ({
   };
 
   const closeGalleryIfDeletedLastPhoto = () => {
-    if (showGallery && !items.length) onClose();
+    if (Number.isFinite(showGallery) && !items.length) onClose();
   };
   useEffect(closeGalleryIfDeletedLastPhoto, [items.length]);
 

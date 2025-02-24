@@ -4,7 +4,7 @@ import { IonItem, IonIcon } from '@ionic/react';
 import { groups as informalGroups } from 'common/data/informalGroups';
 import { Button } from 'common/flumens';
 import appModel from 'common/models/app';
-import { Taxon } from 'models/occurrence';
+import { ClassifierSuggestion, Taxon } from 'models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 import './styles.scss';
 
@@ -60,7 +60,7 @@ function prettifyName(
 }
 
 type Props = {
-  species: Taxon;
+  species: Taxon | ClassifierSuggestion;
   searchPhrase?: string;
   onSelect: any;
   showEditButton?: boolean;
@@ -75,7 +75,10 @@ const Species = ({
   const prettyName = prettifyName(species, searchPhrase);
   const group = (informalGroups as any)[species.group];
 
-  const { probability } = species;
+  let probability;
+  if ('probability' in species) {
+    probability = species.probability;
+  }
 
   return (
     <IonItem

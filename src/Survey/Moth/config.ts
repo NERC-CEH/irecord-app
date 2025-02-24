@@ -2,6 +2,7 @@ import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
+import { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
 import userModel from 'models/user';
 import {
@@ -126,7 +127,13 @@ const survey: Survey = {
       }).safeParse(attrs).error,
 
     create({ Occurrence, taxon, images }) {
-      const newOccurrence = new Occurrence({ attrs: { taxon, number: 1 } });
+      const newOccurrence = new Occurrence({
+        attrs: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+          number: 1,
+        },
+      });
       if (images) newOccurrence.media.push(...images);
 
       const locks = appModel.attrs.attrLocks.complex.moth || {};

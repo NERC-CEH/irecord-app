@@ -1,5 +1,6 @@
 import { object, string } from 'zod';
 import gridAlertService from 'common/helpers/gridAlertService';
+import { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
 import AppSample from 'models/sample';
 import userModel from 'models/user';
@@ -105,7 +106,11 @@ const survey: Survey = {
 
   smp: {
     async create({ Sample, Occurrence, taxon, images, surveySample }) {
-      const occurrence = new Occurrence();
+      const occurrence = new Occurrence({
+        attrs: {
+          machineInvolvement: MachineInvolvement.NONE,
+        },
+      });
       if (images) occurrence.media.push(...images);
 
       const { groupId } = surveySample.attrs;

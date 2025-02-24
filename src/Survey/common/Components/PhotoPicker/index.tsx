@@ -85,17 +85,24 @@ const AppPhotoPicker = ({
   const { useSpeciesImageClassifier } = appModel.attrs;
   const useClassifier = !disableClassifier && useSpeciesImageClassifier;
 
-  const identify = (imageModel: Media) => {
+  const identifySpecies = () => {
+    if (!(model instanceof Occurrence)) return;
+
+    // must reset to avoid getting into mixed state where media has changed but not the classifier results
+    model.updateMachineInvolvement();
+
     if (
-      useClassifier &&
-      device.isOnline &&
-      userModel.isLoggedIn() &&
-      userModel.attrs.verified
-    ) {
-      const processError = (error: any) =>
-        !error.isHandled && console.error(error); // don't toast this to user
-      imageModel.identify().catch(processError);
-    }
+      !model.media.length ||
+      !useClassifier ||
+      !device.isOnline ||
+      !userModel.isLoggedIn() ||
+      !userModel.attrs.verified
+    )
+      return;
+
+    const processError = (error: any) =>
+      !error.isHandled && console.error(error); // don't toast this to user
+    model.identify().catch(processError);
   };
 
   async function onAdd(shouldUseCamera: boolean) {
@@ -125,13 +132,16 @@ const AppPhotoPicker = ({
       model.media.push(...imageModels);
       model.save();
 
-      imageModels.map(identify);
+      identifySpecies();
     } catch (e: any) {
       toast.error(e);
     }
   }
 
-  const onRemove = (m: any) => m.destroy();
+  const onRemove = async (m: any) => {
+    await m.destroy();
+    identifySpecies();
+  };
 
   const onDoneEdit = async (imageDataURL: URL) => {
     const image = editImage as Media;
@@ -166,7 +176,7 @@ const AppPhotoPicker = ({
 
     setEditImage(undefined);
 
-    identify(image);
+    identifySpecies();
   };
 
   const onCancelEdit = () => setEditImage(undefined);
@@ -199,6 +209,7 @@ const AppPhotoPicker = ({
           onSpeciesSelect,
           isDisabled,
           onDelete: onRemove,
+          onIdentify: identifySpecies,
         }}
         isDisabled={isDisabled}
       />

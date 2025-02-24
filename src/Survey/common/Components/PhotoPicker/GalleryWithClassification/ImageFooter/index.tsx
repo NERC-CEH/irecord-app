@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import { cropOutline, trashBinOutline } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
-import { Button, usePhotoDeletePrompt } from 'common/flumens';
+import { Button, Occurrence, usePhotoDeletePrompt } from 'common/flumens';
 import Media from 'models/media';
 import SpeciesSuggestions from './SpeciesSuggestions';
 
@@ -9,7 +9,7 @@ interface Props {
   onCrop: any;
   onDelete: any;
   image: Media;
-  identifyImage?: any;
+  identifySpecies?: any;
   onSpeciesSelect: any;
 }
 
@@ -17,7 +17,7 @@ const ImageFooter = ({
   onCrop,
   onDelete,
   image,
-  identifyImage,
+  identifySpecies,
   onSpeciesSelect,
 }: Props) => {
   const showDeletePrompt = usePhotoDeletePrompt();
@@ -30,15 +30,19 @@ const ImageFooter = ({
     onDelete(image);
   };
 
-  const allowToEdit = !image.parent?.isDisabled() && !image.isIdentifying();
+  const occurrence = image.parent instanceof Occurrence ? image.parent : null;
+
+  const allowToEdit = !image.parent?.isDisabled() && !occurrence?.isIdentifying;
 
   return (
     <div className="mx-4 flex justify-between gap-2">
-      <SpeciesSuggestions
-        image={image}
-        identifyImage={identifyImage}
-        onSpeciesSelect={onSpeciesSelect}
-      />
+      {occurrence && (
+        <SpeciesSuggestions
+          occurrence={occurrence}
+          identifySpecies={identifySpecies}
+          onSpeciesSelect={onSpeciesSelect}
+        />
+      )}
 
       {allowToEdit && (
         <div className="flex gap-4">

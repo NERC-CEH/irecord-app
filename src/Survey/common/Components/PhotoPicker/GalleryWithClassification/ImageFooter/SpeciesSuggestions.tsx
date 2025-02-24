@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
 import { IonSpinner, IonModal } from '@ionic/react';
 import { Button } from 'common/flumens';
-import Media, { ClassifierSuggestion } from 'models/media';
+import Occurrence, { ClassifierSuggestion } from 'common/models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 import ClassificationStatus from '../../ClassificationStatus';
 
@@ -11,25 +11,24 @@ const SNAP_POSITIONS = [0, 0.4, 0.6, 1];
 const DEFAULT_SNAP_POSITION = 0.4;
 
 type Props = {
-  image: Media;
-  identifyImage?: any;
+  occurrence: Occurrence;
+  identifySpecies?: any;
   onSpeciesSelect: any;
 };
 
 const SpeciesSuggestions = ({
-  image,
-  identifyImage,
+  occurrence,
+  identifySpecies,
   onSpeciesSelect,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
-  const identifierWasNotUsed = !image.attrs?.species;
-  const speciesList = image.attrs?.species?.suggestions;
+  const identifierWasNotUsed = !occurrence.attrs?.classifier;
+  const speciesList = occurrence.attrs?.classifier?.suggestions;
 
-  if (image.isIdentifying()) {
+  if (occurrence.isIdentifying) {
     return (
       <div className="flex items-center justify-center gap-3 rounded-md border border-white bg-black/70 p-3 text-white">
         <T>Identifying...</T> <IonSpinner color="light" className="size-5" />
@@ -37,11 +36,11 @@ const SpeciesSuggestions = ({
     );
   }
 
-  if (identifierWasNotUsed && !image.isDisabled()) {
+  if (identifierWasNotUsed && !occurrence.isDisabled()) {
     return (
       <Button
         className="shrink-0 bg-black/70 text-white"
-        onPress={identifyImage}
+        onPress={identifySpecies}
         fill="outline"
       >
         Get species suggestions
@@ -50,8 +49,8 @@ const SpeciesSuggestions = ({
   }
 
   const getSuggestions = () => {
-    const identifierFoundNoSpecies = !image.attrs?.species?.suggestions.length;
-    if (identifierFoundNoSpecies || !speciesList.length)
+    const identifierFoundNoSpecies = !speciesList?.length;
+    if (identifierFoundNoSpecies)
       return (
         <div className="mt-5 p-8">
           <T>Sorry, we could not identify this species.</T>
@@ -122,7 +121,7 @@ const SpeciesSuggestions = ({
         className="shrink-0 bg-black/70 pl-3 text-white"
         onPress={onOpen}
         fill="outline"
-        prefix={<ClassificationStatus media={image} />}
+        prefix={<ClassificationStatus occurrence={occurrence} />}
       >
         Suggestions
       </Button>

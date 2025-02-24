@@ -1,7 +1,7 @@
 import { Trans as T } from 'react-i18next';
 import { hashCode } from '@flumens';
 import { IonList, IonItem, IonSpinner } from '@ionic/react';
-import { Taxon } from 'models/occurrence';
+import { ClassifierSuggestion, Taxon } from 'models/occurrence';
 import Species from './components/Species';
 import './styles.scss';
 
@@ -128,7 +128,7 @@ const Suggestions = ({
   suggestedSpecies,
   suggestionsAreLoading,
 }: Props) => {
-  const getSuggestion = (species: Taxon) => {
+  const getSuggestion = (species: ClassifierSuggestion) => {
     const key = hashCode(JSON.stringify(species));
     return (
       <Species

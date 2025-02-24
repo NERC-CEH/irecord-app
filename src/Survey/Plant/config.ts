@@ -6,6 +6,7 @@ import gridAlertService from 'common/helpers/gridAlertService';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import appModel from 'models/app';
+import AppOccurrence, { MachineInvolvement } from 'models/occurrence';
 import userModel from 'models/user';
 import {
   dateAttr,
@@ -277,6 +278,10 @@ const survey: Survey = {
             { required_error: 'Species is missing.' }
           ).nullable(),
         }).safeParse(attrs).error,
+
+      modifySubmission(submission: any, occ: AppOccurrence) {
+        return { ...submission, ...occ.getClassifierSubmission() };
+      },
     },
 
     async create({ Sample, Occurrence, taxon, images, surveySample }) {
@@ -296,7 +301,12 @@ const survey: Survey = {
         },
       });
 
-      const occurrence = new Occurrence({ attrs: { taxon } });
+      const occurrence = new Occurrence({
+        attrs: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+        },
+      });
       if (images) occurrence.media.push(...images);
 
       sample.occurrences.push(occurrence);

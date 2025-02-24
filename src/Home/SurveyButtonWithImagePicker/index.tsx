@@ -51,9 +51,7 @@ const SurveyButtonWithImagePicker = ({
     if (shouldAutoID) {
       const processError = (error: any) =>
         !error.isHandled && console.error(error); // don't toast this to user
-      images.forEach((imageModel: Media) =>
-        imageModel.identify().catch(processError)
-      );
+      sample.occurrences[0].identify().catch(processError);
     }
 
     onPrimarySurvey(sample.cid);

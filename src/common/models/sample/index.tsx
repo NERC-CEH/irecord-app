@@ -40,6 +40,8 @@ const ATTRS_TO_LEAVE = [
   'occ:deleted',
   'smp:training',
   'occ:training',
+  'occ:classifier',
+  'occ:machineInvolvement',
 ];
 
 const surveyConfigs = {
@@ -192,7 +194,9 @@ export default class Sample extends SampleOriginal<Attrs, Metadata> {
       this.metadata.taxa = survey?.taxa as any;
     }
 
-    occ.attrs.taxon = newTaxon;
+    occ.attrs.taxon = JSON.parse(JSON.stringify(newTaxon));
+
+    occ.updateMachineInvolvement(newTaxon);
   }
 
   removeOldTaxonAttributes(occ: Occurrence, newTaxon: any) {

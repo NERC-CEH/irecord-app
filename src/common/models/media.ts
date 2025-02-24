@@ -1,4 +1,3 @@
-import { observable } from 'mobx';
 import { Capacitor } from '@capacitor/core';
 import {
   Filesystem,
@@ -10,17 +9,11 @@ import config from 'common/config';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import userModel from 'models/user';
-import identifyImage, { Result, Suggestion } from './classifier';
 
-export type ClassifierResult = Result;
-export type ClassifierSuggestion = Suggestion;
-
-type Attrs = MediaAttrs & { species: ClassifierResult };
+type Attrs = MediaAttrs;
 
 export default class Media extends MediaOriginal<Attrs> {
   declare parent?: Sample | Occurrence;
-
-  identification = observable({ identifying: false });
 
   constructor(options: any) {
     super(options);
@@ -89,57 +82,8 @@ export default class Media extends MediaOriginal<Attrs> {
     return Capacitor.convertFileSrc(`${pathToFile}/${name}`);
   }
 
-  getIdentifiedTaxonThatMatchParent() {
-    if (!this.attrs.species || !this.parent) return null;
-
-    const occurrenceWarehouseId = (this.parent as Occurrence).attrs?.taxon
-      ?.warehouseId;
-
-    const byWarehouseId = (sp: Suggestion) =>
-      sp.warehouseId === occurrenceWarehouseId;
-    return this.attrs.species?.suggestions.find(byWarehouseId);
-  }
-
   // eslint-disable-next-line class-methods-use-this
   validateRemote() {
     return null;
-  }
-
-  getSuggestions = () => this.attrs.species?.suggestions || [];
-
-  getTopSpecies = () => this.getSuggestions()[0];
-
-  isIdentifying = () => this.identification.identifying;
-
-  async identify(classifier?: 'plantnet') {
-    this.identification.identifying = true;
-
-    const isPlantSurvey =
-      this.parent?.parent?.parent?.getSurvey().name === 'plant';
-
-    // eslint-disable-next-line no-param-reassign
-    if (!classifier) classifier = isPlantSurvey ? 'plantnet' : undefined;
-
-    try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      await this.uploadFile();
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const url = this.getRemoteURL();
-
-      const suggestions = await identifyImage(url, classifier);
-
-      this.attrs.species = suggestions;
-
-      if (!this.parent) return;
-      this.parent.save();
-    } catch (error) {
-      this.identification.identifying = false;
-      throw error;
-    }
-
-    this.identification.identifying = false;
   }
 }

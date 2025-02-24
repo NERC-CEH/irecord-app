@@ -2,30 +2,13 @@
 import { observer } from 'mobx-react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { IonIcon, IonSpinner } from '@ionic/react';
-import Media from 'models/media';
 import Occurrence from 'models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
 
-type Props = { media: Media };
+type Props = { occurrence: Occurrence };
 
-const ClassificationStatus = ({ media }: Props) => {
-  const hasBeenIdentified = !!media.attrs?.species;
-
-  const userSpeciesMatchesAI = media.getIdentifiedTaxonThatMatchParent();
-
-  const isSpeciesSelected = (media?.parent as Occurrence)?.attrs?.taxon;
-
-  const species = isSpeciesSelected
-    ? userSpeciesMatchesAI
-    : media.getTopSpecies();
-
-  const showLoading = media.isIdentifying();
-
-  const selectedSpeciesMatch = !(isSpeciesSelected && !userSpeciesMatchesAI);
-
-  const { probability } = species || {};
-
-  if (showLoading)
+const ClassificationStatus = ({ occurrence }: Props) => {
+  if (occurrence.isIdentifying)
     return (
       <IonSpinner
         slot="end"
@@ -33,7 +16,13 @@ const ClassificationStatus = ({ media }: Props) => {
       />
     );
 
-  if (hasBeenIdentified && selectedSpeciesMatch)
+  let probability = occurrence.getSelectedTaxonProbability();
+  const userHasNotSelected = !Number.isFinite(probability);
+  if (userHasNotSelected) {
+    probability = occurrence.getTopSuggestionProbability();
+  }
+
+  if (probability)
     return <ProbabilityBadge probability={probability} className="" />;
 
   return (

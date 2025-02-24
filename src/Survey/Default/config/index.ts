@@ -6,7 +6,7 @@ import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import userModel from 'common/models/user';
 import appModel from 'models/app';
-import AppOccurrence from 'models/occurrence';
+import AppOccurrence, { MachineInvolvement } from 'models/occurrence';
 import AppSample from 'models/sample';
 import {
   coreAttributes,
@@ -229,12 +229,20 @@ const survey: Survey = {
       object({
         taxon: object({}, { required_error: 'Species is missing.' }).nullable(),
       }).safeParse(attrs).error,
+
+    modifySubmission(submission: any, occ: AppOccurrence) {
+      return { ...submission, ...occ.getClassifierSubmission() };
+    },
   },
 
   async create({ Sample, Occurrence, images, taxon, skipLocation }) {
     const ignoreErrors = () => {};
 
-    const occurrence = new Occurrence();
+    const occurrence = new Occurrence({
+      attrs: {
+        machineInvolvement: MachineInvolvement.NONE,
+      },
+    });
 
     if (images?.length) occurrence.media.push(...images);
 
