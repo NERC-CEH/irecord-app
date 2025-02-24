@@ -2,7 +2,7 @@ import { groupsReverse as groups } from 'common/data/informalGroups';
 import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
 import Sample from 'models/sample';
-import { Survey } from 'Survey/common/config';
+import { plantStageAttr, Survey } from 'Survey/common/config';
 
 const numberOptions = [
   { isPlaceholder: true, label: 'Ranges' },
@@ -69,6 +69,7 @@ const survey: Partial<Survey> & { taxa: string } = {
     skipAutoIncrement: true,
 
     attrs: {
+      stage: plantStageAttr,
       number: {
         menuProps: {
           label: 'Abundance',

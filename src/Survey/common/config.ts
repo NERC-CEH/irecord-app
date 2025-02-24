@@ -258,6 +258,30 @@ export const mothStageAttr = {
   remote: { id: 130, values: mothStages },
 };
 
+const plantStageOptions = [
+  { label: 'Not Recorded', value: null, isDefault: true },
+  { value: 'Flowering', id: 5331 },
+  { value: 'Fruiting', id: 5330 },
+  { value: 'Juvenile', id: 5328 },
+  { value: 'Mature', id: 5332 },
+  { value: 'Seedling', id: 5327 },
+  { value: 'Vegetative', id: 5329 },
+  { value: 'Sporophyte', id: 23874 },
+  { value: 'Gametophyte', id: 23875 },
+];
+
+export const plantStageAttr = {
+  menuProps: { icon: progressIcon },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please pick the life stage.',
+      inputProps: { options: plantStageOptions },
+    },
+  },
+  remote: { id: 466, values: plantStageOptions },
+};
+
 export type AttrConfig = {
   menuProps?: MenuProps;
   pageProps?: Omit<PageProps, 'attr' | 'model'>;

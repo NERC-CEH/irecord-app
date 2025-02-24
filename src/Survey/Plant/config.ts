@@ -4,7 +4,6 @@ import { groupsReverse as groups } from 'common/data/informalGroups';
 import VCs from 'common/data/vice_counties.data.json';
 import gridAlertService from 'common/helpers/gridAlertService';
 import numberIcon from 'common/images/number.svg';
-import progressIcon from 'common/images/progress-circles.svg';
 import appModel from 'models/app';
 import AppOccurrence, { MachineInvolvement } from 'models/occurrence';
 import userModel from 'models/user';
@@ -19,17 +18,8 @@ import {
   sensitivityPrecisionAttr,
   childGeolocationAttr,
   locationAttrValidator,
+  plantStageAttr,
 } from 'Survey/common/config';
-
-const stageOptions = [
-  { label: 'Not Recorded', value: null, isDefault: true },
-  { value: 'Flowering', id: 5331 },
-  { value: 'Fruiting', id: 5330 },
-  { value: 'Juvenile', id: 5328 },
-  { value: 'Mature', id: 5332 },
-  { value: 'Seedling', id: 5327 },
-  { value: 'Vegetative', id: 5329 },
-];
 
 const statusOptions = [
   { label: 'Not Recorded', value: null, isDefault: true },
@@ -235,17 +225,7 @@ const survey: Survey = {
           remote: { id: 507, values: statusOptions },
         },
 
-        stage: {
-          menuProps: { icon: progressIcon },
-          pageProps: {
-            attrProps: {
-              input: 'radio',
-              info: 'Please pick the life stage.',
-              inputProps: { options: stageOptions },
-            },
-          },
-          remote: { id: 466, values: stageOptions },
-        },
+        stage: plantStageAttr,
 
         identifiers: {
           menuProps: {
