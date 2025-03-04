@@ -69,8 +69,8 @@ const PlantHome = ({ sample }: Props) => {
 
   const isLocationFurtherThan5000m = (smp: Sample) =>
     distance(
-      [location.latitude, location.longitude],
-      [smp.attrs.location.latitude, smp.attrs.location.longitude],
+      [location?.latitude, location?.longitude],
+      [smp.attrs.location?.latitude, smp.attrs.location?.longitude],
       {
         units: 'meters',
       }

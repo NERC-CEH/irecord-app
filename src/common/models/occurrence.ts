@@ -156,12 +156,12 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
   }
 
   identify = (classifier?: 'plant') => {
-    switch (this.parent?.parent?.getSurvey().id) {
-      case plantSurveyConfig.id || classifier === 'plant':
-        return this.identifyPlant();
-      default:
-        return this.identifyOther();
-    }
+    const isPlant =
+      this.parent?.parent?.getSurvey().id === plantSurveyConfig.id ||
+      classifier === 'plant';
+    if (isPlant) return this.identifyPlant();
+
+    return this.identifyOther();
   };
 
   private async identifyOther() {
@@ -186,7 +186,7 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
     try {
       this.identification.identifying = true;
 
-      const classifierResults = await identify(this.media);
+      const classifierResults = await identify(this.media, 'plantnet');
 
       this.metadata.isClassified = true;
       this.attrs.classifier = classifierResults;
