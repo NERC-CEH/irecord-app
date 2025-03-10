@@ -10,14 +10,14 @@ import {
   useToast,
   useLoader,
   useAlert,
-  DrupalUserModelAttrs,
+  DrupalUserModelData,
 } from '@flumens';
 import { NavContext } from '@ionic/react';
 import * as Sentry from '@sentry/browser';
 import CONFIG from 'common/config';
 import { mainStore } from '../store';
 
-export interface Attrs extends DrupalUserModelAttrs {
+export interface Attrs extends DrupalUserModelData {
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -59,11 +59,13 @@ export class UserModel extends DrupalUserModel<Attrs> {
 
   getAchievedStatsMilestone?: any; // from extension
 
+  hasActivityExpired?: any; // from extension
+
   constructor(options: any) {
-    super({ ...options, attrs: { ...defaults, ...options.attrs } });
+    super({ ...options, data: { ...defaults, ...options.data } });
 
     const checkForValidation = () => {
-      if (this.isLoggedIn() && !this.attrs.verified) {
+      if (this.isLoggedIn() && !this.data.verified) {
         console.log('User: refreshing profile for validation');
         this.refreshProfile();
       }
@@ -79,28 +81,28 @@ export class UserModel extends DrupalUserModel<Attrs> {
 
   getPrettyName() {
     return this.isLoggedIn()
-      ? `${this.attrs.firstName} ${this.attrs.lastName}`
+      ? `${this.data.firstName} ${this.data.lastName}`
       : '';
   }
 
   async checkActivation() {
     if (!this.isLoggedIn()) return false;
 
-    if (!this.attrs.verified) {
+    if (!this.data.verified) {
       try {
         await this.refreshProfile();
       } catch (e) {
         // do nothing
       }
 
-      if (!this.attrs.verified) return false;
+      if (!this.data.verified) return false;
     }
 
     return true;
   }
 
   async resendVerificationEmail() {
-    if (!this.isLoggedIn() || this.attrs.verified) return false;
+    if (!this.isLoggedIn() || this.data.verified) return false;
 
     await this._sendVerificationEmail();
 
@@ -137,7 +139,7 @@ export const useUserStatusCheck = () => {
       return false;
     }
 
-    if (!userModel.attrs.verified) {
+    if (!userModel.data.verified) {
       await loader.show('Please wait...');
       const isVerified = await userModel.checkActivation();
       loader.hide();

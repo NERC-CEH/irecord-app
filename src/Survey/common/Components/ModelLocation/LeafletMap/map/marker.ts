@@ -46,7 +46,7 @@ const marker: any = {
 
   addParentMarker(sample: any) {
     if (sample.parent) {
-      const location = sample.parent.attrs.location || {};
+      const location = sample.parent.data.location || {};
       if (location.latitude) {
         const parentMarker = this.generateRectangleMarker(location, {
           color: 'blue',

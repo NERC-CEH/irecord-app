@@ -77,8 +77,7 @@ export default async function identify(
     list: `${UKSI_LIST_ID}`,
   });
 
-  // images.forEach((img: Media) => data.append('image[]', img.getRemoteURL()));
-  images.forEach((img: Media) => data.append('image', img.getRemoteURL())); // TODO: change to image[] once the proxy module accepts
+  images.forEach((img: Media) => data.append('image[]', img.getRemoteURL()));
 
   const options: any = {
     method: 'post',

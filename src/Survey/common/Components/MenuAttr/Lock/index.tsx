@@ -31,7 +31,7 @@ type Props = {
 const Lock = ({ model, attr, children }: Props) => {
   const toast = useToast();
 
-  let value = (model.attrs as any)[attr];
+  let value = (model.data as any)[attr];
   const survey = model.getSurvey();
   if (!value && survey.attrs?.[attr]?.menuProps?.getLock) {
     value = survey.attrs[attr].menuProps?.getLock?.(model);
@@ -41,7 +41,7 @@ const Lock = ({ model, attr, children }: Props) => {
 
   const sliderRef = useRef<any>(null);
 
-  if (model.isDisabled()) return <>{children}</>;
+  if (model.isDisabled) return <>{children}</>;
 
   const isLocked = appModel.isAttrLocked(model, attr);
   const toggleLockWrap = async () => {
@@ -131,7 +131,7 @@ export const WithLock = observer(
     const isLocked = appModel.isAttrLocked(model, attr);
 
     // eslint-disable-next-line no-unused-expressions
-    (model.attrs as any)[attr]; // force rerender on val change
+    (model.data as any)[attr]; // force rerender on val change
 
     const onChange = (newValue: any) => {
       if (!isLocked) return;

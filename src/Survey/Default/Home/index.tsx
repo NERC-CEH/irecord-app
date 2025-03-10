@@ -1,22 +1,24 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Page, Header, useToast } from '@flumens';
+import { Page, Header, useToast, useSample, useRemoteSample } from '@flumens';
 import { NavContext } from '@ionic/react';
 import Sample, { useValidateCheck } from 'models/sample';
-import { useUserStatusCheck } from 'models/user';
+import userModel, { useUserStatusCheck } from 'models/user';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
 
-type Props = {
-  sample: Sample;
-};
-
-const DefaultHome = ({ sample }: Props) => {
+const DefaultHome = () => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
+
+  let { sample } = useSample<Sample>();
+  sample = useRemoteSample(sample, () => userModel.isLoggedIn(), Sample);
+
   const checkSampleStatus = useValidateCheck(sample);
   const checkUserStatus = useUserStatusCheck();
+
+  if (!sample) return null;
 
   const _processSubmission = async () => {
     const isUserOK = await checkUserStatus();
@@ -47,7 +49,7 @@ const DefaultHome = ({ sample }: Props) => {
     <SurveyHeaderButton sample={sample} onClick={onFinish} />
   );
 
-  const { training } = sample.attrs;
+  const { training } = sample.data;
   const subheader = !!training && <TrainingBand />;
 
   return (

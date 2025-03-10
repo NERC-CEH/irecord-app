@@ -4,6 +4,7 @@ import { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
 import AppSample from 'models/sample';
 import userModel from 'models/user';
+import defaultSurvey from 'Survey/Default/config';
 import {
   coreAttributes,
   dateAttr,
@@ -13,14 +14,13 @@ import {
   activityAttr,
   locationAttr,
   getSystemAttrs,
-  makeSubmissionBackwardsCompatible,
   groupIdAttr,
   childGeolocationAttr,
   locationAttrValidator,
 } from 'Survey/common/config';
 
 function appendLockedAttrs(sample: AppSample) {
-  const defaultSurveyLocks = appModel.attrs.attrLocks.complex || {};
+  const defaultSurveyLocks = appModel.data.attrLocks.complex || {};
   const locks = defaultSurveyLocks['default-default'] || {}; // bypassing the API here!
   const coreLocks = Object.keys(locks).reduce((agg, key) => {
     if (coreAttributes.includes(key)) {
@@ -45,7 +45,7 @@ function autoIncrementAbundance(sample: AppSample) {
 
   if (!isNumberLocked && !skipAutoIncrement) {
     // eslint-disable-next-line no-param-reassign
-    sample.occurrences[0].attrs.number = 1;
+    sample.occurrences[0].data.number = 1;
   }
 }
 
@@ -90,11 +90,11 @@ const survey: Survey = {
 
           set: (value: string, sample: AppSample) => {
             // eslint-disable-next-line no-param-reassign
-            sample.attrs.date = value;
+            sample.data.date = value;
 
             const setDate = (smp: AppSample) => {
               // eslint-disable-next-line no-param-reassign
-              smp.attrs.date = value;
+              smp.data.date = value;
             };
             sample.samples.forEach(setDate);
             sample.save();
@@ -107,22 +107,19 @@ const survey: Survey = {
   smp: {
     async create({ Sample, Occurrence, taxon, images, surveySample }) {
       const occurrence = new Occurrence({
-        attrs: {
+        data: {
           machineInvolvement: MachineInvolvement.NONE,
         },
       });
       if (images) occurrence.media.push(...images);
 
-      const { groupId } = surveySample.attrs;
+      const { groupId } = surveySample.data;
 
       const sample = new Sample({
-        isSubSample: true,
-
-        metadata: {
-          survey_id: survey.id,
-          survey: 'default', // not list since it looks for taxa specific attrs
-        },
-        attrs: {
+        // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
+        skipStore: true,
+        data: {
+          surveyId: defaultSurvey.id, // not list since it looks for taxa specific attrs
           enteredSrefSystem: 4326,
           location: {},
           groupId,
@@ -136,18 +133,12 @@ const survey: Survey = {
       appendLockedAttrs(sample);
       autoIncrementAbundance(sample);
 
-      if (surveySample.attrs.childGeolocation) {
+      if (surveySample.data.childGeolocation) {
         const ignoreError = () => {};
         sample.startGPS().catch(ignoreError);
       }
 
       return sample;
-    },
-
-    modifySubmission(submission) {
-      makeSubmissionBackwardsCompatible(submission, survey);
-
-      return submission;
     },
 
     // occ config is taxa specific
@@ -179,11 +170,8 @@ const survey: Survey = {
     const groupId = appModel.getAttrLock('smp', 'groupId');
 
     const sample = new Sample({
-      metadata: {
-        survey_id: survey.id,
-        survey: survey.name,
-      },
-      attrs: {
+      data: {
+        surveyId: survey.id,
         date: new Date().toISOString(),
         enteredSrefSystem: 4326,
         location: {},
@@ -192,7 +180,7 @@ const survey: Survey = {
       },
     });
 
-    const { useGridNotifications } = appModel.attrs;
+    const { useGridNotifications } = appModel.data;
     if (useGridNotifications) gridAlertService.start(sample.cid, alert);
 
     return Promise.resolve(sample);
@@ -200,8 +188,6 @@ const survey: Survey = {
 
   modifySubmission(submission) {
     Object.assign(submission.values, getSystemAttrs());
-
-    makeSubmissionBackwardsCompatible(submission, survey);
 
     return submission;
   },

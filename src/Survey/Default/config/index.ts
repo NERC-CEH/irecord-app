@@ -18,7 +18,6 @@ import {
   commentAttr,
   identifiersAttr,
   getSystemAttrs,
-  makeSubmissionBackwardsCompatible,
   recorderAttr,
   groupIdAttr,
   sensitivityPrecisionAttr,
@@ -141,7 +140,7 @@ const survey: Survey = {
           label: 'Abundance',
           icon: numberIcon,
           parse: (_, model: any) =>
-            model.attrs['number-ranges'] || model.attrs.number,
+            model.data['number-ranges'] || model.data.number,
           isLocked: (model: any) => {
             const value =
               survey.occ?.attrs?.number?.menuProps?.getLock?.(model);
@@ -152,7 +151,7 @@ const survey: Survey = {
             );
           },
           getLock: (model: any) =>
-            model.attrs['number-ranges'] || model.attrs.number,
+            model.data['number-ranges'] || model.data.number,
           unsetLock: model => {
             appModel.unsetAttrLock(model, 'number', true);
             appModel.unsetAttrLock(model, 'number-ranges', true);
@@ -171,22 +170,22 @@ const survey: Survey = {
           attrProps: [
             {
               set: (value: number, model: AppOccurrence) =>
-                Object.assign(model.attrs, {
+                Object.assign(model.data, {
                   number: value,
                   'number-ranges': undefined,
                 }),
-              get: (model: AppOccurrence) => model.attrs.number,
+              get: (model: AppOccurrence) => model.data.number,
               input: 'slider',
               info: 'How many individuals of this species did you see?',
               inputProps: { max: 500 },
             },
             {
               set: (value: string, model: AppOccurrence) =>
-                Object.assign(model.attrs, {
+                Object.assign(model.data, {
                   number: undefined,
                   'number-ranges': value,
                 }),
-              get: (model: AppOccurrence) => model.attrs['number-ranges'],
+              get: (model: AppOccurrence) => model.data['number-ranges'],
               onChange: () => window.history.back(),
               input: 'radio',
               inputProps: { options: numberOptions },
@@ -239,9 +238,7 @@ const survey: Survey = {
     const ignoreErrors = () => {};
 
     const occurrence = new Occurrence({
-      attrs: {
-        machineInvolvement: MachineInvolvement.NONE,
-      },
+      data: { machineInvolvement: MachineInvolvement.NONE },
     });
 
     if (images?.length) occurrence.media.push(...images);
@@ -253,11 +250,8 @@ const survey: Survey = {
     }
 
     const sample = new Sample({
-      metadata: {
-        survey_id: survey.id,
-        survey: survey.name,
-      },
-      attrs: {
+      data: {
+        surveyId: survey.id,
         date: new Date().toISOString(),
         enteredSrefSystem: 4326,
         location: {},
@@ -269,7 +263,7 @@ const survey: Survey = {
     if (taxon) sample.setTaxon(taxon);
 
     // append locked attributes
-    const defaultSurveyLocks = appModel.attrs.attrLocks.default || {};
+    const defaultSurveyLocks = appModel.data.attrLocks.default || {};
     const locks = defaultSurveyLocks.default || {};
     const coreLocks = Object.keys(locks).reduce((agg, key) => {
       if (coreAttributes.includes(key)) {
@@ -304,16 +298,14 @@ const survey: Survey = {
   modifySubmission(submission) {
     Object.assign(submission.values, getSystemAttrs());
 
-    makeSubmissionBackwardsCompatible(submission, survey);
-
     return submission;
   },
 
   get(sample: AppSample) {
     const getTaxaSpecifigConfig = () => {
-      if (!sample.occurrences.length) return sample.survey;
+      if (!sample.occurrences.length) return sample.getSurvey(true);
 
-      if (!sample.metadata.taxa) return sample.survey;
+      if (!sample.metadata.taxa) return sample.getSurvey(true);
 
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       return _getFullTaxaGroupSurvey(sample.metadata.taxa);

@@ -12,7 +12,7 @@ type Props = {
 const Image = ({ media, onClick }: Props) => {
   let classifierStatus = null;
 
-  if (media.parent instanceof Occurrence) {
+  if (media.parent instanceof Occurrence && !media.isDisabled) {
     classifierStatus = (
       <div className="absolute bottom-0 right-0">
         <ClassificationStatus occurrence={media.parent} />

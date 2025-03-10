@@ -23,8 +23,7 @@ export default async () => {
               COALESCE(json(value) ->> "$.metadata.createdOn", CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
               COALESCE(json(value) ->> "$.metadata.updatedOn", CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
               json(value) ->> "$.metadata.syncedOn"
-        FROM generic;
-    `,
+        FROM generic;`,
       });
 
       console.log('SQLite migrate: main migrated');
@@ -45,7 +44,7 @@ export default async () => {
               json(value) ->> "$.metadata.syncedOn"
         FROM models
         ORDER BY id DESC
-        LIMIT 1000;`,
+        WHERE json_extract(value, '$.metadata.syncedOn') IS NULL;`, // don't copy uploaded ones
       });
       console.log('SQLite migrate: samples migrated');
     }

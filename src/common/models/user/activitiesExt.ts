@@ -39,7 +39,7 @@ const extension = {
 
     if (
       !(
-        (this.isLoggedIn() && this.attrs.verified && this._lastSyncExpired()) ||
+        (this.isLoggedIn() && this.data.verified && this._lastSyncExpired()) ||
         force
       )
     ) {
@@ -80,7 +80,7 @@ const extension = {
       activities.push(fullActivity);
     });
 
-    this.attrs.activities = activities;
+    this.data.activities = activities;
     this.save();
   },
 
@@ -92,7 +92,7 @@ const extension = {
       headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       params: {
         path: 'enter-app-record',
-        user_id: this.attrs.indiciaUserId,
+        user_id: this.data.indiciaUserId,
       },
       timeout: 80000,
     };
@@ -120,7 +120,7 @@ const extension = {
   },
 
   _removeExpired() {
-    const activities = this.attrs.activities || [];
+    const activities = this.data.activities || [];
     for (let i = activities.length - 1; i >= 0; i--) {
       const activity = activities[i];
       if (this.hasActivityExpired(activity)) {
@@ -135,7 +135,7 @@ const extension = {
   },
 
   getActivity(id: any) {
-    const { activities } = this.attrs;
+    const { activities } = this.data;
     let foundedActivity = null;
     activities.forEach((activity: Activity) => {
       if (id === activity.id) {
@@ -185,7 +185,7 @@ const extension = {
    * @private
    */
   _lastSyncExpired() {
-    const { activities } = this.attrs;
+    const { activities } = this.data;
 
     if (!activities.length) {
       return true;

@@ -41,7 +41,7 @@ mobxConfig({ enforceActions: 'never' });
   await samples.fetch();
   await groups.fetch();
 
-  appModel.attrs.sendAnalytics &&
+  appModel.data.sendAnalytics &&
     SentryBrowser.init({
       ...sentryOptions,
       dsn: config.sentryDSN,
@@ -50,11 +50,11 @@ mobxConfig({ enforceActions: 'never' });
       dist: config.build,
       initialScope: {
         user: { id: userModel.id },
-        tags: { session: appModel.attrs.appSession },
+        tags: { session: appModel.data.appSession },
       },
     });
 
-  appModel.attrs.appSession += 1;
+  appModel.data.appSession += 1;
 
   const container = document.getElementById('root');
   const root = createRoot(container!);

@@ -78,7 +78,7 @@ describe.skip('Update', () => {
   // });
 
   it('should not call any update if no update with new version', done => {
-    appModel.attrs.appVersion = '4.0.0';
+    appModel.data.appVersion = '4.0.0';
     CONFIG.version = '4.1.0';
     Update.run(() => {
       expect(applyUpdatesSpy.called).toBe(false);

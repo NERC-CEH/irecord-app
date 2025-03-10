@@ -1,17 +1,16 @@
 import { observer } from 'mobx-react';
-import { Page, Header, Main } from '@flumens';
+import { Page, Header, Main, useSample } from '@flumens';
 import { IonList } from '@ionic/react';
 import Occurrence from 'models/occurrence';
 import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
 import VerificationMessage from 'Survey/common/Components/VerificationMessage';
 
-type Props = {
-  occurrence: Occurrence;
-};
+const MothOccurrenceHome = () => {
+  const { occurrence } = useSample<any, Occurrence>();
+  if (!occurrence) return null;
 
-const MothOccurrenceHome = ({ occurrence }: Props) => {
-  const isDisabled = occurrence.isDisabled();
+  const { isDisabled } = occurrence;
 
   return (
     <Page id="survey-default-edit">

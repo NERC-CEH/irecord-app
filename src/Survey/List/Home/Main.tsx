@@ -28,9 +28,9 @@ const HomeMain = ({
   const { navigate } = useContext(NavContext);
   const promptImageSource = usePromptImageSource();
 
-  const { groupId } = sample.attrs;
+  const { groupId } = sample.data;
 
-  const isDisabled = sample.isDisabled();
+  const { isDisabled } = sample;
 
   const attachSpeciesImagesWrap = async () => {
     const shouldUseCamera = await promptImageSource();
@@ -44,7 +44,7 @@ const HomeMain = ({
     <Main>
       <IonList lines="full" className="mb-2 flex flex-col gap-4">
         {isDisabled && (
-          <div className="rounded-list">
+          <div className="rounded-list mb-2">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}

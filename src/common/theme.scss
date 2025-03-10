@@ -258,6 +258,9 @@ ion-item-divider {
 .date-input-attr ion-label[slot='end'] {
   color: var(--form-value-color);
   font-size: 1rem;
+  &.md {
+    font-size: 0.9rem;
+  }
 }
 
 // larger collapse headers
@@ -370,4 +373,11 @@ ion-accordion ion-icon[slot='start'].md {
 // Fix input list input width
 .input-list-attr-item input.plain-input {
   width: 100%;
+}
+
+// Fix menu item label sizes
+ion-item.in-list,
+ion-item[router-link] {
+  font-weight: 500;
+  font-size: 1rem;
 }

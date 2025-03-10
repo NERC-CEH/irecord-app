@@ -7,7 +7,7 @@ import GPS from 'helpers/GPS';
 const getSquare = (location: Location) =>
   locationToGrid({
     ...location,
-    accuracy: appModel.attrs.gridSquareUnit === 'monad' ? 500 : 1000, // tetrad otherwise
+    accuracy: appModel.data.gridSquareUnit === 'monad' ? 500 : 1000, // tetrad otherwise
   });
 
 type Location = any;
@@ -20,7 +20,7 @@ const showGridChangeAlert = (alert: any, newLocation: Location) => {
 
   isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Medium });
 
-  const { gridSquareUnit, useGridNotifications } = appModel.attrs;
+  const { gridSquareUnit, useGridNotifications } = appModel.data;
 
   const userSwitchNotificationsOff = !useGridNotifications;
   if (userSwitchNotificationsOff) return;

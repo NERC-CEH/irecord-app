@@ -62,11 +62,11 @@ function versionCompare(left, right) {
 
 export function updateSamples(samplesList, callback) {
   samplesList.each(sample => {
-    const { group } = sample.attrs;
+    const { group } = sample.data;
     if (group) {
       console.log('Update: moving a sample group to activity');
       // eslint-disable-next-line no-param-reassign
-      sample.attrs.activity = group;
+      sample.data.activity = group;
       sample.unset('group');
       sample.save();
     }
@@ -81,10 +81,10 @@ const API = {
    */
   run(callback, silent = false) {
     appModel.ready.then(() => {
-      let currentVersion = appModel.attrs.appVersion;
+      let currentVersion = appModel.data.appVersion;
 
       const newVersion = CONFIG.version;
-      let currentBuild = appModel.attrs.appBuild;
+      let currentBuild = appModel.data.appBuild;
       const newBuild = CONFIG.build;
 
       // part of 4.0.0 update START
@@ -101,12 +101,12 @@ const API = {
 
       // when Beta testing we set training mode
       if (currentVersion !== newVersion || currentBuild !== newBuild) {
-        appModel.attrs.useTraining = CONFIG.training;
+        appModel.data.useTraining = CONFIG.training;
       }
 
       let savePromise = Promise.resolve();
       if (currentBuild !== newBuild) {
-        appModel.attrs.appBuild = newBuild;
+        appModel.data.appBuild = newBuild;
         savePromise = appModel.save();
       }
 
@@ -114,7 +114,7 @@ const API = {
         if (currentVersion !== newVersion) {
           // TODO: check for backward downgrade
           // set new app version
-          appModel.attrs.appVersion = newVersion;
+          appModel.data.appVersion = newVersion;
           appModel.save().then(() => {
             // first install
             if (!currentVersion) {
@@ -179,7 +179,7 @@ const API = {
         const old = JSON.parse(oldStr);
         if (old && typeof old === 'object') {
           console.log('Update: updating userModel.');
-          setMobXAttrs(userModel.attrs, old);
+          setMobXAttrs(userModel.data, old);
           localStorage.removeItem('irecord-app-user');
           userModel.save().then(resolve);
           return;
@@ -192,7 +192,7 @@ const API = {
         const old = JSON.parse(oldStr);
         if (old && typeof old === 'object') {
           console.log('Update: updating appModel.');
-          setMobXAttrs(appModel.attrs, old);
+          setMobXAttrs(appModel.data, old);
           localStorage.removeItem('irecord-app-app');
           appModel.save().then(resolve);
           return;

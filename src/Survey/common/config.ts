@@ -77,7 +77,7 @@ export const groupIdAttr = {
     icon: peopleOutline,
     label: 'Activity',
     parse: (groupId: any) =>
-      groups.find((g: any) => g.id === groupId)?.attrs.title || groupId,
+      groups.find((g: any) => g.id === groupId)?.data.title || groupId,
   },
 };
 
@@ -119,10 +119,10 @@ export const sensitivityPrecisionAttr = (defaultPrecision = 2000) => ({
     label: 'Sensitive',
     icon: eyeOffOutline,
     type: 'toggle',
-    get: (model: any) => !!model.attrs.sensitivityPrecision,
+    get: (model: any) => !!model.data.sensitivityPrecision,
     set: (val: boolean, model: any) => {
       // eslint-disable-next-line no-param-reassign
-      model.attrs.sensitivityPrecision = val ? defaultPrecision : '';
+      model.data.sensitivityPrecision = val ? defaultPrecision : '';
     },
   },
 });
@@ -181,19 +181,6 @@ export const getSystemAttrs = () => {
     [`smpAttr:${systemAttrs.device_version.remote.id}`]: device.info?.osVersion,
     [`smpAttr:${systemAttrs.app_version.remote.id}`]: config.version,
   };
-};
-
-export const makeSubmissionBackwardsCompatible = (
-  submission: any,
-  surveyConfig: Survey
-) => {
-  if (!submission.values.survey_id) {
-    submission.values.survey_id = surveyConfig.id; //eslint-disable-line
-  }
-
-  if (!submission.values.input_form) {
-    submission.values.input_form = surveyConfig.webForm; //eslint-disable-line
-  }
 };
 
 export const locationAttr = {

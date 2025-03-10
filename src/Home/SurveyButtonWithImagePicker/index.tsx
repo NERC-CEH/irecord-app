@@ -42,12 +42,12 @@ const SurveyButtonWithImagePicker = ({
     // add to main collection
     samples.push(sample);
 
-    const { useSpeciesImageClassifier } = appModel.attrs;
+    const { useSpeciesImageClassifier } = appModel.data;
     const shouldAutoID =
       useSpeciesImageClassifier &&
       device.isOnline &&
       userModel.isLoggedIn() &&
-      userModel.attrs.verified;
+      userModel.data.verified;
     if (shouldAutoID) {
       const processError = (error: any) =>
         !error.isHandled && console.error(error); // don't toast this to user
@@ -108,7 +108,7 @@ const SurveyButtonWithImagePicker = ({
       config.dataPath,
       true
     );
-    Object.assign(image?.attrs, { ...newImageModel.attrs, species: null });
+    Object.assign(image?.data, { ...newImageModel.data, species: null });
 
     setEditImage(undefined);
 

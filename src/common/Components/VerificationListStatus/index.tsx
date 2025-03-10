@@ -13,7 +13,7 @@ const VerificationListIcon = ({ sample }: Props) => {
   let plausible = 0;
 
   const aggregateStatus = (occ: Occurrence) => {
-    if (!occ?.isUploaded()) return null;
+    if (!occ?.isUploaded) return null;
 
     const status = occ.getVerificationStatus();
     if (!status) return null;

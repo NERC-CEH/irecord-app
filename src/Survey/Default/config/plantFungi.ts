@@ -3,6 +3,7 @@ import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
 import Sample from 'models/sample';
 import { plantStageAttr, Survey } from 'Survey/common/config';
+import defaultSurveyConf from '.';
 
 const numberOptions = [
   { isPlaceholder: true, label: 'Ranges' },
@@ -45,7 +46,7 @@ const survey: Partial<Survey> & { taxa: string } = {
     const getTopParent = (m: Sample): Sample =>
       m.parent ? getTopParent(m.parent) : m;
     const topParent = getTopParent(model);
-    if (topParent.metadata.survey !== 'default') {
+    if (topParent.data.surveyId !== defaultSurveyConf.id) {
       group.splice(1, 0, 'occ:numberDAFOR');
     }
 
@@ -75,9 +76,9 @@ const survey: Partial<Survey> & { taxa: string } = {
           label: 'Abundance',
           icon: numberIcon,
           parse: (_, model: any) =>
-            model.attrs['number-ranges'] ||
-            model.attrs.numberDAFOR ||
-            model.attrs.number,
+            model.data['number-ranges'] ||
+            model.data.numberDAFOR ||
+            model.data.number,
 
           isLocked: (model: any) => {
             const value =
@@ -90,9 +91,9 @@ const survey: Partial<Survey> & { taxa: string } = {
             );
           },
           getLock: (model: any) =>
-            model.attrs['number-ranges'] ||
-            model.attrs.numberDAFOR ||
-            model.attrs.number,
+            model.data['number-ranges'] ||
+            model.data.numberDAFOR ||
+            model.data.number,
           unsetLock: model => {
             appModel.unsetAttrLock(model, 'number', true);
             appModel.unsetAttrLock(model, 'numberDAFOR', true);
@@ -117,12 +118,12 @@ const survey: Partial<Survey> & { taxa: string } = {
             // SLIDER
             {
               set: (value, model) =>
-                Object.assign(model.attrs, {
+                Object.assign(model.data, {
                   number: value,
                   numberDAFOR: undefined,
                   'number-ranges': undefined,
                 }),
-              get: model => model.attrs.number,
+              get: model => model.data.number,
               input: 'slider',
               info: 'How many individuals of this species did you see?',
               inputProps: { max: 500 },
@@ -130,12 +131,12 @@ const survey: Partial<Survey> & { taxa: string } = {
             // DAFOR
             {
               set: (value, model) =>
-                Object.assign(model.attrs, {
+                Object.assign(model.data, {
                   number: undefined,
                   numberDAFOR: value,
                   'number-ranges': undefined,
                 }),
-              get: model => model.attrs.numberDAFOR,
+              get: model => model.data.numberDAFOR,
               onChange: () => window.history.back(),
               input: 'radio',
               inputProps: { options: numberDAFOROptions },
@@ -143,12 +144,12 @@ const survey: Partial<Survey> & { taxa: string } = {
             // RANGES
             {
               set: (value, model) =>
-                Object.assign(model.attrs, {
+                Object.assign(model.data, {
                   number: undefined,
                   numberDAFOR: undefined,
                   'number-ranges': value,
                 }),
-              get: model => model.attrs['number-ranges'],
+              get: model => model.data['number-ranges'],
               onChange: () => window.history.back(),
               input: 'radio',
               inputProps: { options: numberOptions },

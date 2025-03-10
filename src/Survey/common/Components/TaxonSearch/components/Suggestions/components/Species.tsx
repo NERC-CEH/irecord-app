@@ -28,7 +28,7 @@ function prettifyName(
   }
 
   let secondaryName;
-  if (appModel.attrs.searchNamesOnly) {
+  if (appModel.data.searchNamesOnly) {
     if (species._dedupedScientificName)
       secondaryName = (
         <small>

@@ -2,26 +2,22 @@ import { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { useTranslation } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
-import { Page, Header, Main, useToast } from '@flumens';
+import { Page, Header, Main, useToast, useSample } from '@flumens';
 import { NavContext } from '@ionic/react';
 import appModel from 'models/app';
 import Occurrence, { Taxon as TaxonI } from 'models/occurrence';
 import Sample from 'models/sample';
 import TaxonSearch, { TaxonSearchFilters } from './TaxonSearch';
 
-type Props = {
-  sample: Sample;
-  subSample?: Sample;
-  occurrence?: Occurrence;
-};
-
-const Taxon = ({ sample, subSample, occurrence }: Props) => {
+const Taxon = () => {
   const { navigate, goBack } = useContext(NavContext);
   const { url } = useRouteMatch<any>();
   const toast = useToast();
   const { t } = useTranslation();
 
-  const surveyConfig = (subSample || sample)?.getSurvey();
+  const { sample, subSample, occurrence } = useSample<Sample, Occurrence>();
+
+  const surveyConfig = (subSample || sample)!.getSurvey();
   const shouldCreateOccurrences = !!surveyConfig.occ?.create;
 
   const createNewOccurrenceModel = async (taxon: any) => {
@@ -29,8 +25,11 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
       Occurrence,
       taxon,
     })) as Occurrence;
-    sample.occurrences.push(newOccurrence);
-    sample.save();
+
+    console.log(surveyConfig, newOccurrence);
+
+    sample!.occurrences.push(newOccurrence);
+    sample!.save();
 
     return newOccurrence;
   };
@@ -40,11 +39,11 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
       Sample,
       Occurrence,
       taxon,
-      surveySample: sample,
+      surveySample: sample!,
     })) as Sample;
 
-    sample.samples.push(newSample);
-    sample.save();
+    sample!.samples.push(newSample);
+    sample!.save();
 
     return newSample;
   };
@@ -85,7 +84,7 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
     });
   };
 
-  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.attrs;
+  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.data;
 
   const isSpeciesRestrictedSurvey =
     surveyConfig.name !== 'default' && surveyConfig.taxaGroups;
@@ -106,7 +105,7 @@ const Taxon = ({ sample, subSample, occurrence }: Props) => {
           showEditButton={!editingExisting}
           selectedFilters={informalGroups}
           namesFilter={namesFilter}
-          suggestedSpecies={occurrence?.attrs.classifier?.suggestions}
+          suggestedSpecies={occurrence?.data.classifier?.suggestions}
           suggestionsAreLoading={occurrence?.isIdentifying}
         />
       </Main>

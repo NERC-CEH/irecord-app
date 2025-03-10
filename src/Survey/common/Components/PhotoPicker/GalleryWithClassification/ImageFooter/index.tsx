@@ -32,11 +32,11 @@ const ImageFooter = ({
 
   const occurrence = image.parent instanceof Occurrence ? image.parent : null;
 
-  const allowToEdit = !image.parent?.isDisabled() && !occurrence?.isIdentifying;
+  const allowToEdit = !image.parent?.isDisabled && !occurrence?.isIdentifying;
 
   return (
     <div className="mx-4 flex justify-between gap-2">
-      {occurrence && (
+      {occurrence && !occurrence.isDisabled && (
         <SpeciesSuggestions
           occurrence={occurrence}
           identifySpecies={identifySpecies}

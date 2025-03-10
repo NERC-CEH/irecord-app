@@ -9,7 +9,7 @@ import { NavContext, isPlatform } from '@ionic/react';
 import CONFIG from 'common/config';
 import groups from 'common/models/collections/groups';
 import { db } from 'common/models/store';
-import appModel, { Attrs as AppModelAttrs } from 'models/app';
+import appModel, { Data as AppModelData } from 'models/app';
 import samples, { removeAllSynced } from 'models/collections/samples';
 import userModel from 'models/user';
 import Main from './Main';
@@ -125,11 +125,11 @@ const useDeleteUser = () => {
 // },
 
 function onToggle(
-  setting: keyof PickByType<AppModelAttrs, boolean>,
+  setting: keyof PickByType<AppModelData, boolean>,
   checked: boolean
 ) {
   isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
-  appModel.attrs[setting] = checked;
+  appModel.data[setting] = checked;
   appModel.save();
 }
 
@@ -143,7 +143,7 @@ const Container = () => {
     gridSquareUnit,
     useSpeciesImageClassifier,
     useGridNotifications,
-  } = appModel.attrs;
+  } = appModel.data;
 
   const toast = useToast();
 

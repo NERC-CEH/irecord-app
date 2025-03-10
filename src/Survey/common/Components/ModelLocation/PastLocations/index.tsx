@@ -33,7 +33,7 @@ const PastLocations = ({ model, isOpen, onClose }: Props) => {
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
     // eslint-disable-next-line no-param-reassign
-    Object.assign(model.attrs.location, location);
+    Object.assign(model.data.location, location);
     model.save();
   };
 

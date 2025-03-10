@@ -872,17 +872,11 @@ msgstr "location"
 msgid "Record"
 msgstr "Record"
 
-
-
-
-
-
-
-
-
-
 msgid "This record has been submitted and cannot be edited within this App."
 msgstr "This record has been submitted and cannot be edited within this App."
+
+msgid "To view the full record, please visit the iRecord website."
+msgstr "To view the full record, please visit the iRecord website."
 
 msgid "No species found with this name"
 msgstr "No species found with this name"

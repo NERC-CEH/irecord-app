@@ -24,7 +24,7 @@ function getLocation(location: any, model: any) {
 
   const useParentLocation = hasNoLocation && model.parent;
   if (useParentLocation) {
-    return model.parent.attrs.location || {};
+    return model.parent.data.location || {};
   }
 
   return location;

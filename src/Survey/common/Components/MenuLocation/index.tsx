@@ -28,7 +28,7 @@ const MenuLocation = ({
 }: Props) => {
   const { url } = useRouteMatch();
 
-  const { location } = sample.attrs;
+  const { location } = sample.data;
 
   const hasLocation = location?.latitude;
   const locationName = location?.name;
@@ -41,15 +41,19 @@ const MenuLocation = ({
     isRequired && <Badge color="warning">No location</Badge>
   );
 
+  const { isDisabled } = sample;
+
+  const noLocationNameBadge = !isDisabled ? (
+    <Badge color="warning">No site name</Badge>
+  ) : undefined;
+
   const locationNameItem = locationName ? (
     <div className="location-name-value">
       {StringHelp.limit(locationName, 25)}
     </div>
   ) : (
-    <Badge color="warning">No site name</Badge>
+    noLocationNameBadge
   );
-
-  const isDisabled = sample.isDisabled();
 
   return (
     <IonItem

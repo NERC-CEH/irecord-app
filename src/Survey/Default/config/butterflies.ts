@@ -65,7 +65,7 @@ const survey: Partial<Survey> & { taxa: string } = {
           label: 'Abundance',
           icon: numberIcon,
           parse: (_, model: any) =>
-            model.attrs['number-ranges'] || model.attrs.number,
+            model.data['number-ranges'] || model.data.number,
           isLocked: (model: any) => {
             const value =
               survey.occ?.attrs?.number?.menuProps?.getLock?.(model);
@@ -76,7 +76,7 @@ const survey: Partial<Survey> & { taxa: string } = {
             );
           },
           getLock: (model: any) =>
-            model.attrs['number-ranges'] || model.attrs.number,
+            model.data['number-ranges'] || model.data.number,
           unsetLock: model => {
             appModel.unsetAttrLock(model, 'number', true);
             appModel.unsetAttrLock(model, 'number-ranges', true);
@@ -95,22 +95,22 @@ const survey: Partial<Survey> & { taxa: string } = {
           attrProps: [
             {
               set: (value, model) =>
-                Object.assign(model.attrs, {
+                Object.assign(model.data, {
                   number: value,
                   'number-ranges': undefined,
                 }),
-              get: model => model.attrs.number,
+              get: model => model.data.number,
               input: 'slider',
               info: 'How many individuals of this species did you see?',
               inputProps: { max: 500 },
             },
             {
               set: (value, model) =>
-                Object.assign(model.attrs, {
+                Object.assign(model.data, {
                   number: undefined,
                   'number-ranges': value,
                 }),
-              get: model => model.attrs['number-ranges'],
+              get: model => model.data['number-ranges'],
               onChange: () => window.history.back(),
               input: 'radio',
               inputProps: { options: numberOptions },

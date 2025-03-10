@@ -3,7 +3,10 @@ export { options as sentryOptions } from '@flumens/utils/dist/sentry';
 export { default as Main } from '@flumens/ionic/dist/components/Main';
 export { default as Page } from '@flumens/ionic/dist/components/Page';
 export { default as Header } from '@flumens/ionic/dist/components/Header';
-export { default as RouteWithModels } from '@flumens/ionic/dist/components/RouteWithModels';
+export {
+  default as RouteWithModels,
+  getModels as getModelsFromRoute,
+} from '@flumens/ionic/dist/components/RouteWithModels';
 export {
   default as Attr,
   type Props as AttrProps,
@@ -57,28 +60,28 @@ export { default as SampleCollection } from '@flumens/models/dist/Indicia/Sample
 export * from '@flumens/models/dist/Indicia/helpers';
 export {
   default as Model,
-  type Attrs as ModelAttrs,
+  type Data as ModelData,
 } from '@flumens/models/dist/Model';
 export {
   default as Sample,
-  type Attrs as SampleAttrs,
+  type Data as SampleData,
   type Metadata as SampleMetadata,
   type Options as SampleOptions,
   type RemoteConfig,
 } from '@flumens/models/dist/Indicia/Sample';
 export {
   default as Media,
-  type Attrs as MediaAttrs,
+  type Data as MediaData,
 } from '@flumens/models/dist/Indicia/Media';
 export {
   default as Occurrence,
-  type Attrs as OccurrenceAttrs,
+  type Data as OccurrenceData,
   type Metadata as OccurrenceMetadata,
   type Options as OccurrenceOptions,
 } from '@flumens/models/dist/Indicia/Occurrence';
 export {
   default as DrupalUserModel,
-  type Attrs as DrupalUserModelAttrs,
+  type Data as DrupalUserModelData,
 } from '@flumens/models/dist/Drupal/User';
 // export { default as UserFeedbackRequest } from '@flumens/ionic/dist/components/UserFeedbackRequest';
 export {
@@ -94,10 +97,13 @@ export { default as ImageWithBackground } from '@flumens/ionic/dist/components/I
 export { default as Store } from '@flumens/models/dist/Stores/SQLiteStore';
 export { default as Collection } from '@flumens/models/dist/Collection';
 export {
+  type default as ElasticSample,
+  type Media as ElasticSampleMedia,
+} from '@flumens/models/dist/Indicia/ElasticSample.d';
+export {
   type default as ElasticOccurrence,
   type Media as ElasticOccurrenceMedia,
 } from '@flumens/models/dist/Indicia/ElasticOccurrence.d';
-
 export {
   default as TailwindContext,
   type ContextValue as TailwindContextValue,
@@ -110,3 +116,10 @@ export {
   default as TailwindBlockContext,
   defaultContext,
 } from '@flumens/tailwind/dist/components/Block/Context';
+
+export { default as useRemoteSample } from '@flumens/ionic/dist/hooks/useRemoteSample';
+export {
+  default as useSample,
+  withSample,
+  SamplesContext,
+} from '@flumens/ionic/dist/hooks/useSample';

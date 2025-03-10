@@ -25,8 +25,8 @@ const SpeciesSuggestions = ({
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
-  const identifierWasNotUsed = !occurrence.attrs?.classifier;
-  const speciesList = occurrence.attrs?.classifier?.suggestions;
+  const identifierWasNotUsed = !occurrence.data?.classifier;
+  const speciesList = occurrence.data?.classifier?.suggestions;
 
   if (occurrence.isIdentifying) {
     return (
@@ -36,7 +36,7 @@ const SpeciesSuggestions = ({
     );
   }
 
-  if (identifierWasNotUsed && !occurrence.isDisabled()) {
+  if (identifierWasNotUsed && !occurrence.isDisabled) {
     return (
       <Button
         className="shrink-0 bg-black/70 text-white"

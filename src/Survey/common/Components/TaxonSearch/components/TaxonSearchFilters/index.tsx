@@ -11,23 +11,23 @@ const Header = () => {
   const toggleModal = () => setShowModal(!showModal);
 
   const onSearchNamesFilterSelect = (filter: '' | 'scientific' | 'common') => {
-    if (filter === appModel.attrs.searchNamesOnly) {
+    if (filter === appModel.data.searchNamesOnly) {
       return;
     }
-    appModel.attrs.searchNamesOnly = filter;
+    appModel.data.searchNamesOnly = filter;
     appModel.save();
   };
 
   const isFiltering =
-    appModel.attrs.searchNamesOnly ||
-    appModel.attrs.taxonSearchGroupFilters.length;
+    appModel.data.searchNamesOnly ||
+    appModel.data.taxonSearchGroupFilters.length;
 
   const filtersCount =
-    (appModel.attrs.searchNamesOnly ? 1 : 0) +
-    appModel.attrs.taxonSearchGroupFilters.length;
+    (appModel.data.searchNamesOnly ? 1 : 0) +
+    appModel.data.taxonSearchGroupFilters.length;
 
   const onSearchTaxaFilterSelect = (newFilters: number[][]) => {
-    appModel.attrs.taxonSearchGroupFilters = newFilters;
+    appModel.data.taxonSearchGroupFilters = newFilters;
     appModel.save();
   };
 

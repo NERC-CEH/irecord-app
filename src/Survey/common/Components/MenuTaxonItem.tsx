@@ -9,10 +9,10 @@ interface Props {
 }
 
 const MenuTaxonItem = ({ occ }: Props) => {
-  const isDisabled = occ.isDisabled();
+  const { isDisabled } = occ;
   const { url } = useRouteMatch();
 
-  const { taxon } = occ.attrs;
+  const { taxon } = occ.data;
 
   const scientificName =
     taxon?.scientificName ||

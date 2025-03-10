@@ -54,7 +54,7 @@ describe('App Model attr locks extension', () => {
     it('should retrieve locked value', async () => {
       const appModel = await getAppModel();
 
-      appModel.attrs.attrLocks = { default: { default: { 'smp:a': 1 } } };
+      appModel.data.attrLocks = { default: { default: { 'smp:a': 1 } } };
       const lockedVal = appModel.getAttrLock('smp', 'a');
       expect(lockedVal).toEqual(1);
     });
@@ -62,7 +62,7 @@ describe('App Model attr locks extension', () => {
     it("should return empty if container or lock doesn't exist", async () => {
       // Given
       const appModel = await getAppModel();
-      appModel.attrs.attrLocks = { A: {} };
+      appModel.data.attrLocks = { A: {} };
 
       // When
       const lock = appModel.getAttrLock('smp', 'A', 'b');

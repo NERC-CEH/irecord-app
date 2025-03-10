@@ -24,9 +24,9 @@ const speciesOccAddedTimeSort = (
 };
 
 function increaseCount(occ: Occurrence, is5x: boolean) {
-  if (Number.isNaN(occ.attrs.number)) return;
+  if (Number.isNaN(occ.data.number)) return;
 
-  const addOneCount = () => (occ.attrs.number as number)++; // eslint-disable-line no-param-reassign
+  const addOneCount = () => (occ.data.number as number)++; // eslint-disable-line no-param-reassign
 
   if (is5x) {
     [...Array(5)].forEach(addOneCount);
@@ -52,12 +52,12 @@ const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
   }
 
   const onToggleSpeciesSort = () => {
-    const { speciesListSortedByTime } = appModel.attrs;
+    const { speciesListSortedByTime } = appModel.data;
     const newSort = !speciesListSortedByTime;
-    appModel.attrs.speciesListSortedByTime = newSort;
+    appModel.data.speciesListSortedByTime = newSort;
     appModel.save();
 
-    const prettySortName = appModel.attrs.speciesListSortedByTime
+    const prettySortName = appModel.data.speciesListSortedByTime
       ? 'last added'
       : 'alphabetical';
 
@@ -68,7 +68,7 @@ const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
     });
   };
 
-  const { speciesListSortedByTime } = appModel.attrs;
+  const { speciesListSortedByTime } = appModel.data;
 
   const nameSort = useSubSamples ? speciesNameSortForSamples : speciesNameSort;
 
@@ -97,9 +97,9 @@ const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
       <IonList id="list" lines="full" className="mb-2">
         <div className="rounded-list">
           <div className="list-divider species-list-header">
-            <IonLabel>Count</IonLabel>
+            {!sample.isDisabled && <IonLabel>Count</IonLabel>}
             <IonLabel>Species</IonLabel>
-            <IonLabel>{speciesList.length}</IonLabel>
+            <IonLabel className="!text-right">{speciesList.length}</IonLabel>
           </div>
 
           {speciesList}

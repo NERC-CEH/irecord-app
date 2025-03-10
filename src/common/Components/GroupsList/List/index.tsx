@@ -16,7 +16,7 @@ import {
 import { Button } from 'common/flumens';
 import Group, { RemoteAttributes } from 'common/models/group';
 import AllGroups from './All';
-import UserGroups from './User';
+import CurrentGroups from './Current';
 
 type Props = {
   currentValue?: string;
@@ -69,28 +69,6 @@ const GroupsList = ({
     group.title.toLowerCase().includes(currentSearch.toLowerCase());
   const allGroupsFiltered = remoteGroups.filter(bySearchPhrase);
 
-  const searchButton = (
-    <Button
-      fill="clear"
-      className={clsx(
-        'py-0',
-        (segment !== 'all' || !remoteGroups.length) && 'invisible'
-      )}
-      shape="round"
-      onPress={() => {
-        setCurrentSearch('');
-        setShowSearch(!showSearch);
-
-        if (!showSearch) setTimeout(() => searchbarRef.current.setFocus(), 300); // searchbar is hidden and needs to "unhide" before we can set focus
-      }}
-    >
-      <IonIcon
-        icon={showSearch ? closeOutline : searchOutline}
-        className="size-6"
-      />
-    </Button>
-  );
-
   const onJoinGroupWrap = async (groupId: string) => {
     await onJoinGroup(groupId);
     setCurrentSearch('');
@@ -109,13 +87,14 @@ const GroupsList = ({
       </IonRefresher>
 
       {onJoinGroup && (
-        <IonToolbar className="fixed top-0 text-black [--background:var(--ion-page-background)]">
+        <IonToolbar className="fixed top-0 text-black [&.ios]:[--background:var(--ion-page-background)] [&.md]:shadow-[-1px_2px_7px_0_#0000001a,0_2px_9px_0_#3e396b1a] [&.md]:[--background:white]">
           <div className="flex w-full items-center justify-end gap-2">
             <IonSearchbar
               placeholder="Activity name"
               className={clsx('!py-0 pr-0', !showSearch && 'hidden')}
               onIonChange={onSearch}
               ref={searchbarRef}
+              value={currentSearch}
             />
 
             {!showSearch && (
@@ -140,16 +119,33 @@ const GroupsList = ({
               </>
             )}
 
-            {searchButton}
+            <Button
+              fill="clear"
+              className="!bg-transparent py-0"
+              shape="round"
+              onPress={() => {
+                setCurrentSearch('');
+                setShowSearch(!showSearch);
+
+                if (!showSearch)
+                  setTimeout(() => searchbarRef.current.setFocus(), 300); // searchbar is hidden and needs to "unhide" before we can set focus
+              }}
+            >
+              <IonIcon
+                icon={showSearch ? closeOutline : searchOutline}
+                className="size-6"
+              />
+            </Button>
           </div>
         </IonToolbar>
       )}
 
       {segment === 'joined' && (
-        <UserGroups
+        <CurrentGroups
           currentValue={currentValue}
           onSelect={setGroup}
           onLeave={onLeaveGroup}
+          searchPhrase={currentSearch}
         />
       )}
 

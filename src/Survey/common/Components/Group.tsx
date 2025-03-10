@@ -1,20 +1,18 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Page, Main, Header } from '@flumens';
+import { Page, Main, Header, useSample } from '@flumens';
 import { NavContext } from '@ionic/react';
 import GroupsList from 'common/Components/GroupsList';
 import Sample from 'models/sample';
 
-type Props = {
-  sample: Sample;
-};
-
-const Group = ({ sample }: Props) => {
+const Group = () => {
   const { goBack } = useContext(NavContext);
+  const { sample } = useSample<Sample>();
+  if (!sample) return null;
 
   const onSelect = async (groupId: string) => {
     // eslint-disable-next-line no-param-reassign
-    sample.attrs.groupId = groupId;
+    sample.data.groupId = groupId;
     await sample.save();
     goBack();
   };

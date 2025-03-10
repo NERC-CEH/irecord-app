@@ -31,7 +31,7 @@ describe('Occurrence', () => {
     it('should call parent getSurvey', () => {
       const sample = new Sample();
 
-      const occurrence = new Occurrence({ attrs: { taxon: { group: 1 } } });
+      const occurrence = new Occurrence({ data: { taxon: { group: 1 } } });
       sample.occurrences.push(occurrence);
 
       occurrence.getSurvey();
@@ -39,7 +39,7 @@ describe('Occurrence', () => {
     });
 
     it('should throw an error if no parent sample', () => {
-      const occurrence = new Occurrence({ attrs: { taxon: { group: 1 } } });
+      const occurrence = new Occurrence({ data: { taxon: { group: 1 } } });
       expect(occurrence.getSurvey.bind(occurrence)).toThrow(
         'No parent exists to get survey'
       );

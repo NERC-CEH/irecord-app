@@ -1,10 +1,10 @@
 import { z, object } from 'zod';
-import { Model, ModelAttrs, UUIDv7 } from '@flumens';
+import { Model, ModelData, UUIDv7 } from '@flumens';
 import { groupsStore } from './store';
 
 export type RemoteAttributes = z.infer<typeof GroupModel.remoteSchema>;
 
-export type Attrs = Omit<RemoteAttributes, 'id' | 'createdOn'> & ModelAttrs;
+export type Attrs = Omit<RemoteAttributes, 'id' | 'createdOn'> & ModelData;
 
 class GroupModel extends Model<Attrs> {
   static remoteSchema = object({

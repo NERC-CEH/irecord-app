@@ -242,13 +242,13 @@ async function init(
     if (
       !samples.length ||
       !userModel.isLoggedIn() ||
-      !userModel.attrs.verified ||
+      !userModel.data.verified ||
       !device.isOnline
     )
       return;
 
     const lastSyncTime =
-      appModel.attrs.verifiedRecordsTimestamp || getEarliestTimestamp(samples);
+      appModel.data.verifiedRecordsTimestamp || getEarliestTimestamp(samples);
 
     const shouldSyncWait = new Date().getTime() - lastSyncTime < SQL_TO_ES_LAG;
     if (shouldSyncWait) return;
@@ -258,7 +258,7 @@ async function init(
       lastSyncTime
     );
 
-    appModel.attrs.verifiedRecordsTimestamp = new Date().getTime();
+    appModel.data.verifiedRecordsTimestamp = new Date().getTime();
     appModel.save();
 
     if (!Object.keys(updatedRemoteSamples).length) return;
@@ -279,7 +279,7 @@ async function init(
 
     const newVerified: Verification = {
       updated: updatedLocalOccurrences,
-      timestamp: appModel.attrs.verifiedRecordsTimestamp,
+      timestamp: appModel.data.verifiedRecordsTimestamp,
     };
 
     set(samples.verified, newVerified);

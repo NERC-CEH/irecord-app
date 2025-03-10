@@ -22,7 +22,7 @@ const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
   const { navigate } = useContext(NavContext);
   const promptImageSource = usePromptImageSource();
 
-  const isDisabled = sample.isDisabled();
+  const { isDisabled } = sample;
 
   const attachSpeciesImagesWrap = async () => {
     const shouldUseCamera = await promptImageSource();
@@ -32,13 +32,13 @@ const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
     attachSpeciesImages(shouldUseCamera);
   };
 
-  const hasDate = !!sample.attrs.date;
+  const hasDate = !!sample.data.date;
 
   return (
     <Main>
       <IonList lines="full">
         {isDisabled && (
-          <div className="rounded-list">
+          <div className="rounded-list mb-2">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}

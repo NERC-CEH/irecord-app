@@ -77,7 +77,7 @@ const Map = () => {
     if (
       !mapRef.current ||
       !userIsLoggedIn ||
-      !userModel.attrs.verified ||
+      !userModel.data.verified ||
       !device.isOnline
     )
       return;
@@ -202,9 +202,9 @@ const Map = () => {
         latitude={latitude}
         onClick={zoomIn}
         paint={{
-          'circle-stroke-color': '#003265',
+          'circle-stroke-color': '#a75d00',
           'circle-stroke-width': 1,
-          'circle-color': '#007dfa',
+          'circle-color': '#fa8b00',
           'circle-opacity': normalizedOpacity,
           'circle-radius': [
             'interpolate',

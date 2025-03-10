@@ -15,7 +15,7 @@ const LoginController = () => {
   const { t } = useTranslation();
 
   const onSuccessReturn = () => {
-    const { email } = userModel.attrs;
+    const { email } = userModel.data;
 
     toast.success(t('Successfully logged in as: {{email}}', { email }), {
       skipTranslation: true,

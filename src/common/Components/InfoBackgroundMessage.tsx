@@ -1,21 +1,21 @@
 import { observer } from 'mobx-react';
 import { InfoBackgroundMessage } from '@flumens';
-import appModel, { Attrs } from 'models/app';
+import appModel, { Data } from 'models/app';
 
 interface Props {
-  name?: keyof Attrs;
+  name?: keyof Data;
   children: any;
   className?: string;
   skipTranslation?: boolean;
 }
 
 const Message = ({ name, children, ...props }: Props) => {
-  if (name && !appModel.attrs[name]) {
+  if (name && !appModel.data[name]) {
     return null;
   }
 
   const hideMessage = () => {
-    (appModel.attrs as any)[name as any] = false;
+    (appModel.data as any)[name as any] = false;
     return {};
   };
 

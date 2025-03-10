@@ -64,7 +64,7 @@ const PastLocations = ({ onSelect }: Props) => {
     showDeletePopup(onDelete);
   };
 
-  const locations = appModel.attrs.locations || [];
+  const locations = appModel.data.locations || [];
 
   const listRef = createRef<any>();
 

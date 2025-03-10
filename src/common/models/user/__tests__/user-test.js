@@ -81,7 +81,7 @@ describe.skip('User Model', () => {
 
     it('should have attributes', () => {
       const userModel = new UserModel();
-      expect(userModel.attrs.activities instanceof Array).toBe(true);
+      expect(userModel.data.activities instanceof Array).toBe(true);
     });
 
     it('should sync activities from server', () => {
@@ -94,7 +94,7 @@ describe.skip('User Model', () => {
 
       return initUserModel().then(userModel => {
         const activitiesPromise = userModel.fetchActivities().then(() => {
-          const { activities } = userModel.attrs;
+          const { activities } = userModel.data;
           expect(activities.length).toBe(1);
         });
 
@@ -181,10 +181,10 @@ describe.skip('User Model', () => {
     it('should reset activities on logout', () =>
       initUserModel().then(userModel => {
         // eslint-disable-next-line no-param-reassign
-        userModel.attrs.activities = [getRandActivity(), getRandActivity()];
+        userModel.data.activities = [getRandActivity(), getRandActivity()];
 
         userModel.logOut();
-        const { activities } = userModel.attrs;
+        const { activities } = userModel.data;
         expect(activities.length).toBe(0);
       }));
 
@@ -195,7 +195,7 @@ describe.skip('User Model', () => {
       const expiredActivity = getRandActivity();
       expiredActivity.activity_to_date = '2000-01-01';
 
-      userModel.attrs.activities = [expiredActivity];
+      userModel.data.activities = [expiredActivity];
 
       let expired = userModel.hasActivityExpired(expiredActivity);
       expect(expired).toBe(true);
@@ -209,7 +209,7 @@ describe.skip('User Model', () => {
       activity = getRandActivity();
       const notUpdatedActivity = JSON.parse(JSON.stringify(activity));
       activity.name = 'new name';
-      userModel.attrs.activities = [activity];
+      userModel.data.activities = [activity];
       expired = userModel.hasActivityExpired(notUpdatedActivity);
       expect(expired).toBe(true);
     });
@@ -220,11 +220,11 @@ describe.skip('User Model', () => {
       const expiredActivity = getRandActivity();
       expiredActivity.activity_to_date = '2000-01-01';
 
-      userModel.attrs.activities = [expiredActivity, getRandActivity()];
+      userModel.data.activities = [expiredActivity, getRandActivity()];
       userModel.save();
 
       userModel = new UserModel();
-      const { activities } = userModel.attrs;
+      const { activities } = userModel.data;
       expect(activities.length).toBe(1);
     });
 
@@ -264,7 +264,7 @@ describe.skip('User Model', () => {
     it('should get activity by id', () => {
       const userModel = new UserModel();
       const activity = getRandActivity();
-      userModel.attrs.activities = [getRandActivity(), activity];
+      userModel.data.activities = [getRandActivity(), activity];
       const activity2 = userModel.getActivity(activity.id);
       expect(activity2).toEqual(activity);
     });
@@ -286,7 +286,7 @@ describe.skip('User Model', () => {
             }),
           ]);
           userModel.activities.synchronizing.then(() => {
-            const { activities } = userModel.attrs;
+            const { activities } = userModel.data;
             const parsedActivity = activities[0];
 
             expect(parsedActivity).toBeInstanceOf(Object);

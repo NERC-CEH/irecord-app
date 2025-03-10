@@ -18,18 +18,6 @@
         100% - 20px
       ); // -20px to match the padding of the list below
 
-      &[value='map'] {
-        border-radius: var(--theme-border-radius);
-        background: rgba(255, 255, 255, 0.9);
-      }
-
-      ion-badge {
-        display: inline;
-        vertical-align: top;
-        margin: 3px;
-        margin-left: 3px;
-      }
-
       ion-label {
         display: flex;
         flex-wrap: wrap;

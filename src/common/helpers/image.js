@@ -85,7 +85,7 @@ const Image = {
     }
 
     const imageModel = new ImageModel({
-      attrs: {
+      data: {
         data,
         type: 'jpeg',
         width,

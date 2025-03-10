@@ -15,7 +15,6 @@ import {
   commentAttr,
   identifiersAttr,
   mothStageAttr,
-  makeSubmissionBackwardsCompatible,
   sensitivityPrecisionAttr,
   locationAttrValidator,
 } from 'Survey/common/config';
@@ -128,7 +127,7 @@ const survey: Survey = {
 
     create({ Occurrence, taxon, images }) {
       const newOccurrence = new Occurrence({
-        attrs: {
+        data: {
           machineInvolvement: MachineInvolvement.NONE,
           taxon,
           number: 1,
@@ -136,7 +135,7 @@ const survey: Survey = {
       });
       if (images) newOccurrence.media.push(...images);
 
-      const locks = appModel.attrs.attrLocks.complex.moth || {};
+      const locks = appModel.data.attrLocks.complex.moth || {};
       appModel.appendAttrLocks(newOccurrence, locks);
       return newOccurrence;
     },
@@ -169,11 +168,8 @@ const survey: Survey = {
     }
 
     const sample = new Sample({
-      metadata: {
-        survey_id: survey.id,
-        survey: survey.name,
-      },
-      attrs: {
+      data: {
+        surveyId: survey.id,
         date: undefined, // user should specify the trap time
         enteredSrefSystem: 4326,
         location: {},
@@ -192,10 +188,8 @@ const survey: Survey = {
       ...getSystemAttrs(),
 
       // email must be added to submissions
-      'smpAttr:8': userModel.attrs.email,
+      'smpAttr:8': userModel.data.email,
     });
-
-    makeSubmissionBackwardsCompatible(submission, survey);
 
     return submission;
   },

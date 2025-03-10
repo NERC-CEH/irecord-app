@@ -31,7 +31,7 @@ const AnimatedNumber = ({ value }: Props) => {
         { property: 'background', fromValue: '#91a71c2b', toValue: '' },
       ]}
     >
-      <span className="text-primary-800 flex h-full w-full items-center justify-center">
+      <span className="flex h-full w-full items-center justify-center text-primary-800">
         {value}
       </span>
     </CreateAnimation>

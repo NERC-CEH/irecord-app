@@ -78,21 +78,23 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
   const { synchronising } = sample.remote;
 
   const href = !synchronising
-    ? `/survey/${survey.name}/${sample.cid}`
+    ? `/survey/${survey.name}/${sample.id || sample.cid}`
     : undefined;
 
   const deleteSurveyWrap = () => deleteSurvey();
 
   function getInfo() {
-    if (survey.name !== 'default') {
+    const [occ] = sample.occurrences;
+
+    if (survey.name !== 'default' || !occ) {
       return (
         <div className="survey-info">
-          <div className="flex flex-col justify-center">
+          <div className="flex w-full flex-col justify-center">
             <div className="text-base font-semibold capitalize">
-              <T>{survey.label}</T>
+              <T>{survey.label || 'Record'}</T>
             </div>
 
-            <div className="core">
+            <div className="overflow-hidden text-ellipsis">
               <Location sample={sample} />
             </div>
           </div>
@@ -100,16 +102,11 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
       );
     }
 
-    const [occ] = sample.occurrences;
-    if (!occ) return <div />;
-
     const taxon = occ.getPrettyName();
-
-    const isDefaultSurvey = !!occ.attrs.taxon && survey.name === 'default'; // photo-first sample check
 
     return (
       <div className="survey-info">
-        <div className="flex flex-col justify-center">
+        <div className="flex w-full max-w-full flex-col justify-center">
           {taxon ? (
             <div className="overflow-hidden text-ellipsis whitespace-nowrap text-base font-semibold">
               {taxon}
@@ -120,15 +117,9 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
             </Badge>
           )}
 
-          <div className="core py-1">
-            <Location sample={sample} />
-          </div>
+          <Location sample={sample} />
 
-          <Attributes
-            occ={occ}
-            isDefaultSurvey={isDefaultSurvey}
-            sample={sample}
-          />
+          <Attributes occ={occ} />
         </div>
       </div>
     );
@@ -146,12 +137,14 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
   };
 
   const getAvatar = () => {
-    const [occ] = sample.occurrences;
-    if (!occ) return null;
+    let img: any;
 
-    const media = occ.media.length && occ.media[0];
-    let img: any = media && media.getURL();
-    img = img ? <img src={img} /> : '';
+    const [occ] = sample.occurrences;
+    if (occ) {
+      const media = occ.media.length && occ.media[0];
+      img = media && media.getURL();
+      img = img ? <img src={img} /> : '';
+    }
 
     return <div className="photo">{img}</div>;
   };
@@ -173,7 +166,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
 
   const isDefaultSurvey = survey.name === 'default';
 
-  const { groupId, training } = sample.attrs;
+  const { groupId, training } = sample.data;
 
   const verificationStatus =
     survey.name === 'default' ? (
@@ -181,6 +174,8 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
     ) : (
       <VerificationListStatus sample={sample} />
     );
+
+  const allowDeletion = sample.isStored;
 
   const openItem = () => {
     if (sample.remote.synchronising) return; // fixes button onPressUp and other accidental navigation
@@ -207,11 +202,13 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
           {verificationStatus}
         </div>
       </IonItem>
-      <IonItemOptions side="end">
-        <IonItemOption color="danger" onClick={deleteSurveyWrap}>
-          <T>Delete</T>
-        </IonItemOption>
-      </IonItemOptions>
+      {allowDeletion && (
+        <IonItemOptions side="end">
+          <IonItemOption color="danger" onClick={deleteSurveyWrap}>
+            <T>Delete</T>
+          </IonItemOption>
+        </IonItemOptions>
+      )}
     </IonItemSliding>
   );
 };

@@ -64,7 +64,7 @@ export async function join(groupId: string) {
 
   const body = {
     values: {
-      id: userModel.attrs.indiciaUserId,
+      id: userModel.data.indiciaUserId,
     },
   };
 
@@ -88,7 +88,7 @@ export async function join(groupId: string) {
 }
 
 export async function leave(groupId: string) {
-  const url = `${CONFIG.backend.indicia.url}/index.php/services/rest/groups/${groupId}/users/${userModel.attrs.indiciaUserId}`;
+  const url = `${CONFIG.backend.indicia.url}/index.php/services/rest/groups/${groupId}/users/${userModel.data.indiciaUserId}`;
 
   const token = await userModel.getAccessToken();
 

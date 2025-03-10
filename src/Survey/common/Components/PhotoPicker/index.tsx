@@ -82,7 +82,7 @@ const AppPhotoPicker = ({
   const [editImage, setEditImage] = useState<Media>();
   const toast = useToast();
 
-  const { useSpeciesImageClassifier } = appModel.attrs;
+  const { useSpeciesImageClassifier } = appModel.data;
   const useClassifier = !disableClassifier && useSpeciesImageClassifier;
 
   const identifySpecies = () => {
@@ -96,7 +96,7 @@ const AppPhotoPicker = ({
       !useClassifier ||
       !device.isOnline ||
       !userModel.isLoggedIn() ||
-      !userModel.attrs.verified
+      !userModel.data.verified
     )
       return;
 
@@ -165,7 +165,7 @@ const AppPhotoPicker = ({
       config.dataPath,
       true
     );
-    Object.assign(image?.attrs, { ...newImageModel.attrs, species: null });
+    Object.assign(image?.data, { ...newImageModel.data, species: null });
 
     if (!image.parent) {
       // came straight from camera rather than editing existing
@@ -182,18 +182,18 @@ const AppPhotoPicker = ({
   const onCancelEdit = () => setEditImage(undefined);
 
   const onCropExisting = (media: Media) => {
-    if (model.isDisabled()) return;
+    if (model.isDisabled) return;
 
     setEditImage(media);
   };
 
-  const allowToEdit = allowToCrop && !model.isDisabled();
+  const allowToEdit = allowToCrop && !model.isDisabled;
 
   useOnBackButton(onCancelEdit, editImage);
 
   const onSpeciesSelect = (taxon: any) => model.setTaxon(taxon);
 
-  const isDisabled = model.isDisabled();
+  const { isDisabled } = model;
   if (isDisabled && !model.media.length) return null;
 
   return (

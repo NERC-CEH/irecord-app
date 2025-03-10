@@ -1,6 +1,14 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Page, Header, useToast, device, captureImage } from '@flumens';
+import {
+  Page,
+  Header,
+  useToast,
+  device,
+  captureImage,
+  useSample,
+  useRemoteSample,
+} from '@flumens';
 import { NavContext } from '@ionic/react';
 import distance from '@turf/distance';
 import config from 'common/config';
@@ -15,15 +23,16 @@ import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
 import './styles.scss';
 
-type Props = {
-  sample: Sample;
-};
-
-const PlantHome = ({ sample }: Props) => {
+const PlantHome = () => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
+
+  let { sample } = useSample<Sample>();
+  sample = useRemoteSample(sample, () => userModel.isLoggedIn(), Sample);
   const checkSampleStatus = useValidateCheck(sample);
   const checkUserStatus = useUserStatusCheck();
+
+  if (!sample) return null;
 
   const _processSubmission = async () => {
     const isUserOK = await checkUserStatus();
@@ -61,16 +70,16 @@ const PlantHome = ({ sample }: Props) => {
     <SurveyHeaderButton sample={sample} onClick={onFinish} />
   );
 
-  const { training } = sample.attrs;
+  const { training } = sample.data;
 
   const subheader = <div>{!!training && <TrainingBand />}</div>;
 
-  const { location } = sample.attrs;
+  const { location } = sample.data;
 
   const isLocationFurtherThan5000m = (smp: Sample) =>
     distance(
       [location?.latitude, location?.longitude],
-      [smp.attrs.location?.latitude, smp.attrs.location?.longitude],
+      [smp.data.location?.latitude, smp.data.location?.longitude],
       {
         units: 'meters',
       }
@@ -88,7 +97,7 @@ const PlantHome = ({ sample }: Props) => {
     if (!images) return;
 
     const imageArray = Array.isArray(images) ? images : [images];
-    const surveyConfig = sample.getSurvey();
+    const surveyConfig = sample!.getSurvey();
 
     const subSamplePromise = imageArray.map(async (img: any) => {
       const imageModel: any = await Media.getImageModel(img, config.dataPath);
@@ -96,16 +105,16 @@ const PlantHome = ({ sample }: Props) => {
       const subSample = await surveyConfig.smp!.create!({
         Occurrence,
         Sample,
-        surveySample: sample,
+        surveySample: sample!,
         images: [imageModel],
       });
 
-      const { useSpeciesImageClassifier } = appModel.attrs;
+      const { useSpeciesImageClassifier } = appModel.data;
       const shouldAutoID =
         useSpeciesImageClassifier &&
         device.isOnline &&
         userModel.isLoggedIn() &&
-        userModel.attrs.verified;
+        userModel.data.verified;
       if (shouldAutoID) {
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
@@ -116,9 +125,9 @@ const PlantHome = ({ sample }: Props) => {
     });
 
     const subSamples = await Promise.all(subSamplePromise);
-    sample.samples.push(...subSamples);
+    sample!.samples.push(...subSamples);
 
-    sample.save();
+    sample!.save();
   }
 
   return (

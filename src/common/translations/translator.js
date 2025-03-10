@@ -62,7 +62,7 @@ const newValueWrap = ({ newValue }) => {
   const newLanguageCode = newValue.replace('_', '-'); // backwards compatible
   i18n.changeLanguage(newLanguageCode);
 };
-observe(appModel.attrs, 'language', newValueWrap);
+observe(appModel.data, 'language', newValueWrap);
 
 // backwards compatible: START
 function translate(key) {

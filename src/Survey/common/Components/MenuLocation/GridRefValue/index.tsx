@@ -9,7 +9,7 @@ function getValue(sample: Sample) {
     return <IonSpinner />;
   }
 
-  return prettyPrintLocation(sample.attrs.location);
+  return prettyPrintLocation(sample.data.location);
 }
 
 type Props = {

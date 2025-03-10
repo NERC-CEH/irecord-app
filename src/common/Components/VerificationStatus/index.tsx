@@ -6,7 +6,7 @@ interface Props {
 }
 
 const VerificationStatus = ({ occ }: Props) => {
-  if (!occ?.isUploaded()) return null;
+  if (!occ?.isUploaded) return null;
 
   const status = occ.getVerificationStatus();
   if (!status) return null;

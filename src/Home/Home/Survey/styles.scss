@@ -89,21 +89,6 @@ ion-item-sliding.survey-list-item {
       }
     }
 
-    ion-badge[color='warning'] {
-      margin: 1px 0;
-      background-color: rgba(var(--ion-color-warning-rgb), 0.15);
-      width: -webkit-fit-content;
-      width: fit-content;
-      color: var(--ion-color-warning-dark);
-      font-weight: normal;
-
-      font-size: 1em;
-
-      &:not(:last-of-type) {
-        margin-bottom: 5px;
-      }
-    }
-
     .training-band {
       position: absolute;
       z-index: 1000;

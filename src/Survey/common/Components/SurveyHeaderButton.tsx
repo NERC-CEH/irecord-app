@@ -8,7 +8,7 @@ interface Props {
 }
 
 const SurveyHeaderButton = ({ sample, onClick }: Props) => {
-  const isDisabled = sample.isUploaded();
+  const isDisabled = sample.isUploaded;
   if (isDisabled) return null;
 
   const isInvalid = sample.validateRemote();

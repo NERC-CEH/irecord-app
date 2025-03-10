@@ -27,7 +27,7 @@ const PlantHomeMain = ({
   const { navigate } = useContext(NavContext);
   const promptImageSource = usePromptImageSource();
 
-  const isDisabled = sample.isDisabled();
+  const { isDisabled } = sample;
 
   const attachSpeciesImagesWrap = async () => {
     const shouldUseCamera = await promptImageSource();
@@ -41,7 +41,7 @@ const PlantHomeMain = ({
     <Main>
       <IonList lines="full">
         {isDisabled && (
-          <div className="rounded-list">
+          <div className="rounded-list mb-2">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}

@@ -29,7 +29,7 @@ const Taxon = () => {
     navigate(`${url}/${newSample.cid}`, undefined, 'replace');
   };
 
-  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.attrs;
+  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.data;
 
   const selectedFilters = taxonSearchGroupFilters.flat().flat();
 

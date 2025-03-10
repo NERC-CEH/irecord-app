@@ -41,8 +41,7 @@ export class Groups extends Collection<GroupModel> {
 
     const modelsJSON = await this.store.findAll();
 
-    const getModel = (modelJSON: any) =>
-      new this.Model({ ...modelJSON, attrs: modelJSON.data });
+    const getModel = (modelJSON: any) => new this.Model(modelJSON);
     const models = modelsJSON.map(getModel);
     this.push(...models);
 

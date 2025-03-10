@@ -5,7 +5,7 @@ import VCs from 'common/data/vice_counties.data.json';
 import gridAlertService from 'common/helpers/gridAlertService';
 import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
-import AppOccurrence, { MachineInvolvement } from 'models/occurrence';
+import Occurrence, { MachineInvolvement } from 'models/occurrence';
 import userModel from 'models/user';
 import {
   dateAttr,
@@ -14,7 +14,6 @@ import {
   locationAttr,
   getSystemAttrs,
   taxonAttr,
-  makeSubmissionBackwardsCompatible,
   sensitivityPrecisionAttr,
   childGeolocationAttr,
   locationAttrValidator,
@@ -137,10 +136,10 @@ const survey: Survey = {
             const byName = ({ name }: any) => name === val;
             const VC = VCs.find(byName);
             // eslint-disable-next-line no-param-reassign
-            model.attrs['vice-county'] = VC;
+            model.data['vice-county'] = VC;
           },
 
-          get: (model: any) => model.attrs['vice-county']?.name,
+          get: (model: any) => model.data['vice-county']?.name,
           inputProps: {
             options: VCs.map((vc: any) => ({ value: vc.name })),
           },
@@ -201,7 +200,7 @@ const survey: Survey = {
                 const re = /^(\d+|[DAFOR]|LA|LF)$/;
                 if (!re.test(value)) return;
                 // eslint-disable-next-line no-param-reassign
-                model.attrs.abundance = value;
+                model.data.abundance = value;
               },
               inputProps: { options: statusOptions },
             },
@@ -259,30 +258,36 @@ const survey: Survey = {
           ).nullable(),
         }).safeParse(attrs).error,
 
-      modifySubmission(submission: any, occ: AppOccurrence) {
+      modifySubmission(submission: any, occ: Occurrence) {
         return { ...submission, ...occ.getClassifierSubmission() };
       },
     },
 
-    async create({ Sample, Occurrence, taxon, images, surveySample }) {
-      const { gridSquareUnit } = appModel.attrs;
+    async create({
+      Sample,
+      Occurrence: OccurrenceClass,
+      taxon,
+      images,
+      surveySample,
+    }) {
+      const { gridSquareUnit } = appModel.data;
 
       const sample = new Sample({
-        isSubSample: true,
+        // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
+        skipStore: true,
 
         metadata: {
-          survey_id: survey.id,
-          survey: survey.name,
           gridSquareUnit,
         },
-        attrs: {
+        data: {
+          surveyId: survey.id,
           enteredSrefSystem: 'OSGB',
           location: {},
         },
       });
 
-      const occurrence = new Occurrence({
-        attrs: {
+      const occurrence = new OccurrenceClass({
+        data: {
           machineInvolvement: MachineInvolvement.NONE,
           taxon,
         },
@@ -291,21 +296,15 @@ const survey: Survey = {
 
       sample.occurrences.push(occurrence);
 
-      const locks = appModel.attrs.attrLocks.complex.plant || {};
+      const locks = appModel.data.attrLocks.complex.plant || {};
       appModel.appendAttrLocks(sample, locks);
 
-      if (surveySample.attrs.childGeolocation) {
+      if (surveySample.data.childGeolocation) {
         const ignoreError = () => {};
         sample.startGPS().catch(ignoreError);
       }
 
       return sample;
-    },
-
-    modifySubmission(submission) {
-      makeSubmissionBackwardsCompatible(submission, survey);
-
-      return submission;
     },
   },
 
@@ -325,7 +324,7 @@ const survey: Survey = {
     }).safeParse(attrs).error,
 
   create({ Sample, alert }) {
-    const { gridSquareUnit, useGridNotifications } = appModel.attrs;
+    const { gridSquareUnit, useGridNotifications } = appModel.data;
 
     // add currently logged in user as one of the recorders
     const recorders = [];
@@ -335,11 +334,10 @@ const survey: Survey = {
 
     const sample = new Sample({
       metadata: {
-        survey_id: survey.id,
-        survey: survey.name,
         gridSquareUnit,
       },
-      attrs: {
+      data: {
+        surveyId: survey.id,
         date: new Date().toISOString(),
         enteredSrefSystem: 'OSGB',
         sampleMethodId: 7305,
@@ -354,8 +352,6 @@ const survey: Survey = {
 
   modifySubmission(submission: any) {
     Object.assign(submission.values, getSystemAttrs());
-
-    makeSubmissionBackwardsCompatible(submission, survey);
 
     return submission;
   },

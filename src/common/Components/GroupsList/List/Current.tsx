@@ -17,19 +17,31 @@ import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
 
 type Props = {
   currentValue?: string;
+  searchPhrase?: string;
   onSelect: any;
   onLeave: any;
 };
 
-const UserGroups = ({ currentValue, onSelect, onLeave }: Props) => {
+const CurrentGroups = ({
+  currentValue,
+  onSelect,
+  onLeave,
+  searchPhrase,
+}: Props) => {
   const { t } = useTranslation();
 
   const getOption = (group: Group) => ({
     value: group.id!,
-    label: group.attrs.title,
+    label: group.data.title,
   });
 
-  const groupOptions: RadioOption[] = groups.map(getOption);
+  const bySearchPhrase = (group: Group) =>
+    !searchPhrase ||
+    group.data.title.toLowerCase().includes(searchPhrase.toLowerCase());
+
+  const groupOptions: RadioOption[] = groups
+    .filter(bySearchPhrase)
+    .map(getOption);
 
   groupOptions.unshift({
     value: '',
@@ -95,4 +107,4 @@ const UserGroups = ({ currentValue, onSelect, onLeave }: Props) => {
   );
 };
 
-export default observer(UserGroups);
+export default observer(CurrentGroups);

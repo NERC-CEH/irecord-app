@@ -9,11 +9,11 @@ import Sample from 'models/sample';
 import userModel from 'models/user';
 import { coreAttributes } from 'Survey/common/config';
 
-const isDAFOR = val =>
+const isDAFOR = (val: string) =>
   ['Dominant', 'Abundant', 'Frequent', 'Occasional', 'Rare'].includes(val);
 
-function getFullAttrName(model, attrName) {
-  let attrType = model;
+function getFullAttrName(model: 'smp' | 'occ' | any, attrName: string) {
+  let attrType: any = model;
 
   if (typeof model !== 'string') {
     attrType = model instanceof Sample ? `smp` : `occ`;
@@ -22,7 +22,7 @@ function getFullAttrName(model, attrName) {
   return `${attrType}:${attrName}`;
 }
 
-function getDefaultComplexSurveyConfig(model, fullAttrName) {
+function getDefaultComplexSurveyConfig(model: any, fullAttrName: string) {
   const isSample = model instanceof Sample;
   const isOccurrenceWithoutParent = !isSample && !model.parent;
   if (isOccurrenceWithoutParent) {
@@ -30,7 +30,7 @@ function getDefaultComplexSurveyConfig(model, fullAttrName) {
     return null;
   }
 
-  const surveyConfig = isSample ? model.getSurvey() : model.parent.getSurvey();
+  const surveyConfig = isSample ? model.getSurvey() : model.parent!.getSurvey();
 
   const isCoreAttr = coreAttributes.includes(fullAttrName);
   const surveyName = isCoreAttr ? 'default' : surveyConfig.name;
@@ -38,11 +38,12 @@ function getDefaultComplexSurveyConfig(model, fullAttrName) {
   return ['complex', `default-${surveyName}`];
 }
 
-function getSurveyConfig(model, fullAttrName) {
-  let surveyConfig = { name: 'default', complex: false };
+function getSurveyConfig(model: any, fullAttrName: string) {
+  let surveyConfig: any = { name: 'default', complex: false };
 
   if (typeof model !== 'string') {
-    const getTopParent = m => (m.parent ? getTopParent(m.parent) : m);
+    const getTopParent = (m: any): any =>
+      m.parent ? getTopParent(m.parent) : m;
     const surveyModel = getTopParent(model);
 
     surveyConfig = surveyModel.getSurvey();
@@ -78,20 +79,21 @@ export default {
       }
     }
 
-    function onLogout(change) {
+    const that = this;
+    function onLogout(change: any) {
       if (change.newValue === false) {
         console.log('AppModel:AttrLocks: removing currently locked activity.');
-        this.unsetAttrLock('smp', 'activity');
+        that.unsetAttrLock('smp', 'activity');
       }
     }
 
-    observe(userModel.attrs, 'isLoggedIn', onLogout.bind(this));
+    observe(userModel.data, 'email', onLogout.bind(this));
   },
 
-  getAllLocks(model, fullAttrName = '') {
-    const [surveyType, surveyName] = getSurveyConfig(model, fullAttrName);
+  getAllLocks(model: any, fullAttrName = ''): any {
+    const [surveyType, surveyName]: any = getSurveyConfig(model, fullAttrName);
 
-    const { attrLocks } = this.attrs;
+    const { attrLocks } = (this as any).data;
     if (!attrLocks[surveyType] || !attrLocks[surveyType][surveyName]) {
       return {};
     }
@@ -99,7 +101,12 @@ export default {
     return attrLocks[surveyType][surveyName];
   },
 
-  async setAttrLock(model, attr, value, skipConfig) {
+  async setAttrLock(
+    model: any,
+    attr: string,
+    value: any,
+    skipConfig?: boolean
+  ) {
     const survey = model.getSurvey?.();
     if (!skipConfig && survey && survey.attrs?.[attr]?.menuProps?.setLock) {
       survey.attrs?.[attr]?.menuProps?.setLock(model, attr, value);
@@ -107,8 +114,8 @@ export default {
     }
 
     const fullAttrName = getFullAttrName(model, attr);
-    const [surveyType, surveyName] = getSurveyConfig(model, fullAttrName);
-    const { attrLocks } = this.attrs;
+    const [surveyType, surveyName]: any = getSurveyConfig(model, fullAttrName);
+    const { attrLocks } = (this as any).data;
 
     if (!attrLocks[surveyType]) {
       extendObservable(attrLocks, {
@@ -122,16 +129,16 @@ export default {
       });
     }
 
-    this.attrs.attrLocks = attrLocks;
+    (this as any).data.attrLocks = attrLocks;
 
     const val = JSON.parse(JSON.stringify(value));
-    this.attrs.attrLocks[surveyType][surveyName][fullAttrName] = val;
+    (this as any).data.attrLocks[surveyType][surveyName][fullAttrName] = val;
 
-    await this.save();
+    await (this as any).save();
   },
 
-  async unsetAttrLock(model, attr, skipConfig) {
-    const survey = model.getSurvey?.();
+  async unsetAttrLock(model: any, attr: string, skipConfig?: boolean) {
+    const survey = (model as any).getSurvey?.();
     if (!skipConfig && survey && survey.attrs?.[attr]?.menuProps?.unsetLock) {
       survey.attrs?.[attr]?.menuProps?.unsetLock(model, attr);
       return;
@@ -141,17 +148,17 @@ export default {
     const locks = this.getAllLocks(model, fullAttrName);
 
     delete locks[fullAttrName];
-    await this.save();
+    await (this as any).save();
   },
 
-  getAttrLock(model, attr) {
+  getAttrLock(model: 'smp' | 'occ', attr: string) {
     const fullAttrName = getFullAttrName(model, attr);
     const locks = this.getAllLocks(model, fullAttrName);
 
     return locks[fullAttrName];
   },
 
-  isAttrLocked(model, attr, skipConfig) {
+  isAttrLocked(model: any, attr: string, skipConfig?: boolean) {
     const survey = model.getSurvey?.();
     if (!skipConfig && survey && survey.attrs?.[attr]?.menuProps?.isLocked) {
       return survey.attrs[attr].menuProps.isLocked(model);
@@ -166,12 +173,12 @@ export default {
     // TODO: clean this mess by splitting and moving to surveys attrs
     switch (fullAttrName) {
       case 'smp:activity':
-        value = model.attrs[attr] || {};
+        value = model.data[attr] || {};
         return lockedVal.id === value.id;
       case 'smp:location':
         if (!lockedVal) return false;
 
-        value = model.attrs[attr];
+        value = model.data[attr];
         // map or gridref
         return (
           lockedVal.latitude === value.latitude &&
@@ -179,19 +186,19 @@ export default {
         );
       case 'smp:locationName':
         if (!lockedVal) return false;
-        value = model.attrs.location;
+        value = model.data.location;
         return lockedVal === value.name;
 
       default:
-        value = model.attrs[attr];
+        value = model.data[attr];
         return JSON.stringify(value) === JSON.stringify(lockedVal);
     }
   },
 
-  appendAttrLocks(model, locks = {}, skipLocation) {
+  appendAttrLocks(model: any, locks: any = {}, skipLocation?: boolean) {
     const isOccurrenceOnly = model instanceof Occurrence;
 
-    function selectModel(attrType) {
+    function selectModel(attrType: 'smp' | 'occ') {
       const isSampleAttr = attrType === 'smp';
       if (isSampleAttr && isOccurrenceOnly) {
         throw new Error('Invalid attibute lock configuration');
@@ -212,7 +219,7 @@ export default {
       }
 
       const attrParts = attr.split(':');
-      const attrType = attrParts[0];
+      const attrType = attrParts[0] as 'smp' | 'occ';
       const attrName = attrParts[1];
 
       const selectedModel = selectModel(attrType);
@@ -225,7 +232,7 @@ export default {
               'SampleModel:AttrLocks: appending activity to the sample.'
             );
             // eslint-disable-next-line no-param-reassign
-            model.attrs.activity = val;
+            model.data.group = val;
           } else {
             // unset the activity as it's now expired
             console.log('SampleModel:AttrLocks: activity has expired.');
@@ -236,30 +243,30 @@ export default {
           if (skipLocation) {
             break;
           }
-          let { location } = selectedModel.attrs;
+          let { location } = selectedModel.data;
           val.name = location.name; // don't overwrite old name
-          selectedModel.attrs.location = val;
+          selectedModel.data.location = val;
           break;
         case 'smp:locationName':
           if (skipLocation) {
             break;
           }
-          location = selectedModel.attrs.location;
+          location = selectedModel.data.location;
           location.name = val;
-          selectedModel.attrs.location = location;
+          selectedModel.data.location = location;
           break;
         case 'occ:number':
           const isValidNumber = !Number.isNaN(Number(val));
 
           if (!isValidNumber && isDAFOR(val)) {
-            selectedModel.attrs.numberDAFOR = val;
+            selectedModel.data.numberDAFOR = val;
             break;
           }
           const numberAttrName = isValidNumber ? 'number' : 'number-ranges';
-          selectedModel.attrs[numberAttrName] = val;
+          selectedModel.data[numberAttrName] = val;
           break;
         default:
-          selectedModel.attrs[attrName] = val;
+          selectedModel.data[attrName] = val;
       }
     });
   },

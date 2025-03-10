@@ -20,11 +20,11 @@ import appLogo from './logo.svg';
 import './styles.scss';
 
 // const shouldShowFeedback = (appModel: AppModel, isLoggedIn: boolean) => {
-//   if (appModel.attrs.feedbackGiven) {
+//   if (appModel.data.feedbackGiven) {
 //     return false;
 //   }
 
-//   if (appModel.attrs.useTraining) {
+//   if (appModel.data.useTraining) {
 //     return false;
 //   }
 
@@ -52,14 +52,14 @@ const MenuMain = ({
   refreshAccount,
   resendVerificationEmail,
 }: Props) => {
-  const lang = appModel.attrs.language;
+  const lang = appModel.data.language;
 
   const isNotVerified = user.verified === false; // verified is undefined in old versions
   const userEmail = user.email;
 
   // const onFeedbackDone = () => {
   //   // eslint-disable-next-line no-param-reassign
-  //   appModel.attrs.feedbackGiven = true;
+  //   appModel.data.feedbackGiven = true;
   //   appModel.save();
   // };
 

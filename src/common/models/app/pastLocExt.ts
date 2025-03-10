@@ -13,7 +13,7 @@ type FullLocation = Location & {
 
 const extension: any = {
   async setLocation(origLocation: FullLocation, allowedMaxSaved = MAX_SAVED) {
-    let locations: FullLocation[] = [...this.attrs.locations];
+    let locations: FullLocation[] = [...this.data.locations];
     const location = JSON.parse(JSON.stringify(origLocation));
 
     if (!isValidLocation(location)) throw new Error('invalid location');
@@ -43,14 +43,14 @@ const extension: any = {
 
     locations = [location, ...locations];
 
-    this.attrs.locations = locations;
+    this.data.locations = locations;
     await this.save();
   },
 
   async removeLocation(locationId: number) {
-    const { locations } = this.attrs;
+    const { locations } = this.data;
 
-    this.attrs.locations = locations.filter(
+    this.data.locations = locations.filter(
       (loc: FullLocation) => loc.id !== locationId
     );
     await this.save();

@@ -73,9 +73,9 @@ const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
   } = menuProps;
   const valueRaw = metadata
     ? (model.metadata as any)[attr]
-    : (model.attrs as any)[attr];
+    : (model.data as any)[attr];
   const value = parseValue(valueRaw, parse, model);
-  const isDisabled = model.isDisabled();
+  const { isDisabled } = model;
 
   const link = `${match.url}/${attr}`;
 
@@ -89,7 +89,7 @@ const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
         set(checked, model);
       } else {
         // eslint-disable-next-line no-param-reassign
-        (model.attrs as any)[attr] = checked;
+        (model.data as any)[attr] = checked;
       }
 
       onChange && onChange(checked);

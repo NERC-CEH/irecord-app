@@ -36,7 +36,7 @@ const Lock = ({ sample, skipLocks, label }: Props) => {
   const isLocationNameLocked = appModel.isAttrLocked(sample, 'locationName');
   const isAnyLocked = isLocationLocked || isLocationNameLocked;
 
-  const { location } = sample.attrs;
+  const { location } = sample.data;
   // don't lock GPS because it varies more than a map or gridref
   const canLockLocation = !!location?.latitude;
   const canLockName = !!location?.name;
@@ -91,7 +91,7 @@ const Lock = ({ sample, skipLocks, label }: Props) => {
       return;
     }
 
-    const name = sample.attrs.location?.name;
+    const name = sample.data.location?.name;
     if (!name) return;
 
     toast.success(
@@ -105,7 +105,7 @@ const Lock = ({ sample, skipLocks, label }: Props) => {
     appModel.setAttrLock(sample, 'locationName', name);
   };
 
-  const isDisabled = sample.isDisabled();
+  const { isDisabled } = sample;
 
   const allowLocking = !skipLocks && (canLockName || canLockLocation);
 

@@ -1,6 +1,14 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
-import { Page, useToast, Header, captureImage, device } from '@flumens';
+import {
+  Page,
+  useToast,
+  Header,
+  captureImage,
+  device,
+  useSample,
+  useRemoteSample,
+} from '@flumens';
 import { NavContext } from '@ionic/react';
 import config from 'common/config';
 import appModel from 'common/models/app';
@@ -12,15 +20,17 @@ import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
 
-type Props = {
-  sample: Sample;
-};
-
-const MothHome = ({ sample }: Props) => {
+const MothHome = () => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
+
+  let { sample } = useSample<Sample>();
+  sample = useRemoteSample(sample, () => userModel.isLoggedIn(), Sample);
+
   const checkSampleStatus = useValidateCheck(sample);
   const checkUserStatus = useUserStatusCheck();
+
+  if (!sample) return null;
 
   const survey = sample.getSurvey();
 
@@ -66,17 +76,17 @@ const MothHome = ({ sample }: Props) => {
     if (!images) return;
 
     const imageArray = Array.isArray(images) ? images : [images];
-    const surveyConfig = sample.getSurvey();
+    const surveyConfig = sample!.getSurvey();
 
     const occurrencesPromise = imageArray.map(async (img: any) => {
       const imageModel: any = await Media.getImageModel(img, config.dataPath);
 
-      const { useSpeciesImageClassifier } = appModel.attrs;
+      const { useSpeciesImageClassifier } = appModel.data;
       const shouldAutoID =
         useSpeciesImageClassifier &&
         device.isOnline &&
         userModel.isLoggedIn() &&
-        userModel.attrs.verified;
+        userModel.data.verified;
       if (shouldAutoID) {
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
@@ -90,12 +100,12 @@ const MothHome = ({ sample }: Props) => {
     });
 
     const occurrences = await Promise.all(occurrencesPromise);
-    sample.occurrences.push(...occurrences);
+    sample!.occurrences.push(...occurrences);
 
-    sample.save();
+    sample!.save();
   }
 
-  const { training } = sample.attrs;
+  const { training } = sample.data;
   const subheader = !!training && <TrainingBand />;
 
   return (

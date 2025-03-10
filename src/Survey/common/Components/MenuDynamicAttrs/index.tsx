@@ -115,7 +115,7 @@ const MenuDynamicAttrs = ({
   };
 
   let { render } = surveyConfig;
-  if (!render) throw new Error('No render found');
+  if (!render) return null; // remote fetched surveys will not have it
 
   render = typeof render === 'function' ? render(model) : render;
   const attributes = render.map(getMenuAttr);

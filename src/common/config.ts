@@ -35,12 +35,11 @@ const config = {
     clientPass: process.env.APP_BACKEND_CLIENT_PASS as string,
 
     occurrenceServiceURL: `${indiciaUrl}/index.php/services/rest/es-occurrences/_search`,
+    sampleServiceURL: `${indiciaUrl}/index.php/services/rest/es-samples/_search`,
 
     mediaUrl: `${indiciaUrl}/upload/`,
 
-    indicia: {
-      url: indiciaUrl,
-    },
+    indicia: { url: indiciaUrl },
   },
 
   dataPath: '',

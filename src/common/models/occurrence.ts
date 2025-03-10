@@ -1,13 +1,12 @@
 import { IObservableArray, observable } from 'mobx';
 import {
   Occurrence as OccurrenceOriginal,
-  OccurrenceAttrs,
+  OccurrenceData,
   OccurrenceMetadata,
   validateRemoteModel,
 } from '@flumens';
 import identify, { Suggestion, Result } from 'common/services/indiciaAI';
 import { Taxon as SearchTaxon } from 'helpers/taxonSearch';
-import plantSurveyConfig from 'Survey/Plant/config';
 import { Survey } from 'Survey/common/config';
 import Media from './media';
 import Sample from './sample';
@@ -48,7 +47,7 @@ const byWarehouseId =
   (warehouseId: number) => (suggestion: ClassifierSuggestion) =>
     suggestion.warehouseId === warehouseId;
 
-type Attrs = Omit<OccurrenceAttrs, 'taxon'> & {
+type Attrs = Omit<OccurrenceData, 'taxon'> & {
   taxon?: Taxon;
   classifier?: Classifier;
   machineInvolvement?: MachineInvolvement;
@@ -75,10 +74,6 @@ type Metadata = OccurrenceMetadata & {
 };
 
 export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
-  static fromJSON(json: any) {
-    return super.fromJSON(json, Media);
-  }
-
   declare media: IObservableArray<Media>;
 
   declare parent?: Sample;
@@ -89,8 +84,12 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
 
   identification = observable({ identifying: false });
 
+  constructor(options: any) {
+    super({ ...options, Media });
+  }
+
   getPrettyName() {
-    const { taxon } = this.attrs;
+    const { taxon } = this.data;
     if (!taxon) return '';
 
     if (Number.isFinite(taxon.foundInName))
@@ -122,9 +121,7 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
       this.metadata?.verification?.verification_status === 'C' &&
       this.metadata?.verification?.verification_substatus !== '3';
 
-    return (
-      this.isUploaded() && this.metadata?.verification && !isRecordInReview
-    );
+    return this.isUploaded && this.metadata?.verification && !isRecordInReview;
   }
 
   getVerificationStatusMessage() {
@@ -157,7 +154,7 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
 
   identify = (classifier?: 'plant') => {
     const isPlant =
-      this.parent?.parent?.getSurvey().id === plantSurveyConfig.id ||
+      this.parent?.parent?.getSurvey().name === 'plant' ||
       classifier === 'plant';
     if (isPlant) return this.identifyPlant();
 
@@ -171,7 +168,7 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
       const classifierResults = await identify(this.media);
 
       this.metadata.isClassified = true;
-      this.attrs.classifier = classifierResults;
+      this.data.classifier = classifierResults;
 
       this.identification.identifying = false;
     } catch (error) {
@@ -189,7 +186,7 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
       const classifierResults = await identify(this.media, 'plantnet');
 
       this.metadata.isClassified = true;
-      this.attrs.classifier = classifierResults;
+      this.data.classifier = classifierResults;
 
       this.identification.identifying = false;
     } catch (error) {
@@ -201,17 +198,17 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
   }
 
   getSelectedTaxonProbability() {
-    if (!this.attrs.taxon || !this.attrs.classifier?.suggestions) return null;
+    if (!this.data.taxon || !this.data.classifier?.suggestions) return null;
 
-    const suggestion = this.attrs.classifier.suggestions.find(
-      byWarehouseId(this.attrs.taxon.warehouseId)
+    const suggestion = this.data.classifier.suggestions.find(
+      byWarehouseId(this.data.taxon.warehouseId)
     );
 
     return suggestion?.probability || 0;
   }
 
   getTopSuggestionProbability() {
-    return this.attrs.classifier?.suggestions?.[0]?.probability || null;
+    return this.data.classifier?.suggestions?.[0]?.probability || null;
   }
 
   setTaxon(newTaxon: Taxon) {
@@ -220,10 +217,10 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
   }
 
   updateMachineInvolvement(newTaxon?: Taxon) {
-    const suggestions = this.attrs.classifier?.suggestions;
+    const suggestions = this.data.classifier?.suggestions;
     if (!newTaxon || !suggestions) {
-      delete this.attrs.classifier;
-      this.attrs.machineInvolvement = MachineInvolvement.NONE;
+      delete this.data.classifier;
+      this.data.machineInvolvement = MachineInvolvement.NONE;
       return;
     }
 
@@ -232,20 +229,20 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
     );
     const userDidNotUseSuggestions = suggestionIndex < 0;
     if (userDidNotUseSuggestions) {
-      this.attrs.machineInvolvement = MachineInvolvement.HUMAN;
+      this.data.machineInvolvement = MachineInvolvement.HUMAN;
       return;
     }
 
     const isTopSuggestion = suggestionIndex === 0;
-    this.attrs.machineInvolvement = isTopSuggestion
+    this.data.machineInvolvement = isTopSuggestion
       ? MachineInvolvement.HUMAN_ACCEPTED_PREFERRED
       : MachineInvolvement.HUMAN_ACCEPTED_LESS_PREFERRED;
   }
 
   getClassifierSubmission() {
-    const { taxon, classifier, machineInvolvement } = this.attrs;
+    const { taxon, classifier, machineInvolvement } = this.data;
 
-    const getMediaPath = (media: Media) => media.attrs.queued;
+    const getMediaPath = (media: Media) => media.data.queued;
     const mediaPaths = this.media.map(getMediaPath);
 
     const getSuggestion = (

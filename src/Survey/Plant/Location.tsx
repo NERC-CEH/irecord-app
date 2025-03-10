@@ -4,6 +4,7 @@ import {
   gridrefAccuracy,
   isValidLocation,
   locationToGrid,
+  useSample,
 } from '@flumens';
 import appModel from 'models/app';
 import Sample from 'models/sample';
@@ -17,31 +18,28 @@ import ModelLocation, {
  */
 function updateChildrenLocations(sample: Sample) {
   sample.samples.forEach((subSample: Sample) => {
-    const location = JSON.parse(JSON.stringify(sample.attrs.location));
+    const location = JSON.parse(JSON.stringify(sample.data.location));
     delete location.name;
     // eslint-disable-next-line no-param-reassign
-    Object.assign(subSample.attrs.location, location);
+    Object.assign(subSample.data.location, location);
   });
 }
 
-type Props = {
-  sample: Sample;
-  subSample?: Sample;
-};
-
-const ModelGridLocation = ({ sample, subSample }: Props) => {
+const ModelGridLocation = () => {
   const toast = useToast();
 
-  const model = subSample || sample;
+  const { sample, subSample } = useSample<Sample>();
+
+  const model = subSample! || sample!;
 
   const setLocationWithGridCheck = (_: any, newLocation: any) => {
     if (!isValidLocation(newLocation)) return;
 
-    let { gridSquareUnit } = sample.metadata;
+    let { gridSquareUnit } = sample!.metadata;
     if (!checkGridType(newLocation, gridSquareUnit)) {
       // check if the grid unit has been changed and it matches the new unit
       // or this is the first time we are setting a location
-      gridSquareUnit = appModel.attrs.gridSquareUnit;
+      gridSquareUnit = appModel.data.gridSquareUnit;
 
       const isFromMap = newLocation.source === 'map';
       if (isFromMap) {

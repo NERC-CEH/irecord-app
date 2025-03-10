@@ -58,7 +58,7 @@ const FiltersModal = ({
 }: Props) => {
   useDisableBackButton(toggleModal, showModal);
 
-  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.attrs;
+  const { searchNamesOnly, taxonSearchGroupFilters } = appModel.data;
 
   const currentTaxaFilters = taxonSearchGroupFilters.map((s: any) =>
     JSON.stringify(s)

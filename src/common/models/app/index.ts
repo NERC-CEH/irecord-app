@@ -1,9 +1,9 @@
-import { Model, ModelAttrs } from '@flumens';
+import { Model, ModelData } from '@flumens';
 import { mainStore } from 'models/store';
 import AttributeLockExtension from './attrLockExt';
 import PastLocationsExtension from './pastLocExt';
 
-export type Attrs = ModelAttrs & {
+export type Data = ModelData & {
   showWelcome: boolean;
   language: string;
 
@@ -33,7 +33,7 @@ export type Attrs = ModelAttrs & {
   verifiedRecordsTimestamp: null | number;
 };
 
-export const defaults: Attrs = {
+export const defaults: Data = {
   showWelcome: true,
   language: 'EN',
 
@@ -63,7 +63,7 @@ export const defaults: Attrs = {
   verifiedRecordsTimestamp: null,
 };
 
-export class AppModel extends Model<Attrs> {
+export class AppModel extends Model<Data> {
   isAttrLocked: any; // from extension
 
   getAttrLock: any; // from extension
@@ -83,7 +83,7 @@ export class AppModel extends Model<Attrs> {
   printLocation: any; // from extension
 
   constructor(options: any) {
-    super({ ...options, attrs: { ...defaults, ...options.attrs } });
+    super({ ...options, data: { ...defaults, ...options.data } });
 
     Object.assign(this, PastLocationsExtension);
     Object.assign(this, AttributeLockExtension);
