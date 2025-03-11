@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import InfiniteLoader from 'react-window-infinite-loader';
-import { device, getRelativeDate, VirtualList } from '@flumens';
+import { device, getRelativeDate, VirtualList, useToast } from '@flumens';
 import {
   IonItem,
   IonLabel,
@@ -42,6 +42,7 @@ const canFetch = () => userModel.isLoggedIn() && device.isOnline;
 type Props = { isOpen: boolean };
 const UploadedSurveys = ({ isOpen }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   const uploaded = (sample: Sample) => sample.syncedAt;
   const uploadedSurveys = samplesCollection.filter(uploaded).sort(bySurveyDate);
@@ -172,6 +173,11 @@ const UploadedSurveys = ({ isOpen }: Props) => {
   }
 
   const onListRefreshPull = async (e: any) => {
+    if (!device.isOnline) {
+      toast.warn("Sorry, looks like you're offline.");
+      e?.detail?.complete();
+      return;
+    }
     cachedPages = 0;
     reachedBottom = false;
 
