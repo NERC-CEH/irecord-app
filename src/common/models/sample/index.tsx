@@ -120,8 +120,14 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
   getSurvey(skipGet?: boolean): Survey {
     let survey = getSurveyConfigs()[this.data.surveyId];
 
-    if (!survey && (this.metadata as any).survey_id) {
-      // backwards compatible
+    // backwards compatible, remove once everyone uploads their surveys
+    if (!survey && (this.metadata as any).survey) {
+      if ((this.metadata as any).survey === 'default') this.data.surveyId = 374;
+      if ((this.metadata as any).survey === 'list') this.data.surveyId = 576;
+      if ((this.metadata as any).survey === 'moth') this.data.surveyId = 90;
+      if ((this.metadata as any).survey === 'plant') this.data.surveyId = 325;
+      survey = getSurveyConfigs()[this.data.surveyId];
+    } else if (!survey && (this.metadata as any).survey_id) {
       survey = getSurveyConfigs()[(this.metadata as any).survey_id];
     }
 
