@@ -3,7 +3,7 @@
 /* eslint-disable camelcase */
 import { observable, set } from 'mobx';
 import axios, { AxiosRequestConfig } from 'axios';
-import { device, isAxiosNetworkError } from '@flumens';
+import { ElasticOccurrence, device, isAxiosNetworkError } from '@flumens';
 import CONFIG from 'common/config';
 import { matchAppSurveys } from 'common/services/ES';
 import { AppModel } from 'models/app';
@@ -12,37 +12,8 @@ import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import { UserModel } from 'models/user';
 
-// export type
-interface API_Occurrence {
-  source_system_key: string;
-}
-
-interface Verifier {
-  id?: string;
-  name?: string;
-}
-
-interface AutoChecks {
-  result: string;
-  enabled: string;
-  output: any[];
-}
-
-export interface Identification {
-  verifier?: Verifier;
-  auto_checks: AutoChecks;
-  verification_decision_source: string;
-  verification_substatus: string;
-  verified_on: string;
-  verification_status: string;
-}
-
-interface Source {
-  identification: Identification;
-  occurrence: API_Occurrence;
-}
 interface Hit {
-  _source: Source;
+  _source: ElasticOccurrence;
 }
 
 export type Verification = {
@@ -125,7 +96,7 @@ async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
 
   const samples: { [key: string]: Hit } = {};
 
-  const OPTIONS: AxiosRequestConfig = {
+  const options: AxiosRequestConfig = {
     method: 'post',
     url: CONFIG.backend.occurrenceServiceURL,
     headers: {
@@ -138,7 +109,7 @@ async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
 
   let data;
   try {
-    const res = await axios(OPTIONS);
+    const res = await axios(options);
     data = res.data;
   } catch (error: any) {
     if (isAxiosNetworkError(error)) return samples;
