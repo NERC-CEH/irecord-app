@@ -100,7 +100,7 @@ const SurveyButton = ({
             src={imagesOutline}
             className="size-5 shrink-0 rounded-full bg-primary-800 p-2 text-white shadow-md ring-[0.5px] ring-primary-800"
           />
-          <T>Select multiple photos from your gallery</T>
+          <T>Select multiple photos to add to a single record</T>
         </div>
 
         <div className="flex items-center gap-4" onClick={onShowOtherSurveys}>

@@ -1115,8 +1115,8 @@ msgid "Take a new photo of the species"
 msgstr "Take a new photo of the species"
 
 # Surveys list
-msgid "Select multiple photos from your gallery"
-msgstr "Select multiple photos from your gallery"
+msgid "Select multiple photos to add to a single record"
+msgstr "Select multiple photos to add to a single record"
 
 # Surveys list
 msgid "Show other surveys"
