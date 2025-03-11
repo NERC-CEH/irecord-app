@@ -155,7 +155,7 @@ function updateLocalOccurrences(
       const hasNotChanged =
         newVerification.verified_on ===
           occ.metadata.verification?.verified_on &&
-        newVerification.query === occ.metadata.verification.query;
+        newVerification.query === occ.metadata.verification?.query;
       if (hasNotChanged) return; // there is a window when the same update can be returned. We don't want to change the record in that case.
 
       occ.metadata.verification = { ...newVerification };
