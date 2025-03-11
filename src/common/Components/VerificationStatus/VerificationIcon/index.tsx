@@ -1,27 +1,32 @@
-import { checkmarkCircle, closeCircle } from 'ionicons/icons';
+import { checkmarkCircle, closeCircle, helpOutline } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
 import './styles.scss';
 
 interface Props {
-  status: 'verified' | 'plausible' | 'rejected';
+  status: 'verified' | 'plausible' | 'rejected' | 'queried';
 }
 
 const VerificationStatus = ({ status }: Props) => {
   let detailIcon;
   let idClass;
 
+  if (status === 'queried') {
+    idClass = '';
+    detailIcon = helpOutline;
+  }
+
   if (status === 'verified') {
-    idClass = 'id-green';
+    idClass = 'success';
     detailIcon = checkmarkCircle;
   }
 
   if (status === 'plausible') {
-    idClass = 'id-amber';
+    idClass = 'warning';
     detailIcon = checkmarkCircle;
   }
 
   if (status === 'rejected') {
-    idClass = 'id-red';
+    idClass = 'danger';
     detailIcon = closeCircle;
   }
 

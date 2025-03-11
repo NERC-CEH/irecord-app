@@ -3,20 +3,21 @@ ion-icon[slot='end'].verification-icon {
   --ionicon-stroke-width: 2em;
   margin: 0;
   margin-left: 5px;
-  max-width: 25px;
+  width: 40px;
+  height: 25px;
   font-size: 2em;
 }
 
 .verification-icon {
-  &.id-green {
+  &.success {
     color: var(--verification-success) !important;
   }
 
-  &.id-amber {
+  &.warning {
     color: var(--verification-plausible) !important;
   }
 
-  &.id-red {
+  &.danger {
     color: var(--verification-rejected) !important;
   }
 }

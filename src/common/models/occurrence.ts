@@ -68,6 +68,7 @@ type Metadata = OccurrenceMetadata & {
   verification?: {
     verification_status: any;
     verification_substatus: any;
+    query?: string;
     verified_on: any;
     verifier?: { name: string };
   };
@@ -102,12 +103,19 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
     );
   }
 
-  getVerificationStatus() {
+  getVerificationStatus():
+    | 'verified'
+    | 'plausible'
+    | 'rejected'
+    | 'queried'
+    | '' {
     const status = this.metadata?.verification?.verification_status;
 
     if (!status) return ''; // pending
 
     const substatus = this.metadata?.verification?.verification_substatus;
+
+    if (this.metadata?.verification?.query === 'Q') return 'queried';
 
     if (status.match(/V/i)) return 'verified';
     if (status.match(/C/i) && substatus === '3') return 'plausible';

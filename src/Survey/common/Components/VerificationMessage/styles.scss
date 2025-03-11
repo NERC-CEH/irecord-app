@@ -1,19 +1,7 @@
 .verification-message {
-  background: white; // above is transparent
-
-  ion-label {
-    padding: 10px 0;
-  }
-
-  &.verified {
-    --background: rgba(var(--verification-success-rgb), 0.27);
-    border: 1px solid rgba(var(--verification-success-rgb), 0.2);
-
-    h2 {
-      margin-bottom: 20px;
-      color: var(--verification-success-dark) !important;
-    }
-
+  &.success {
+    h2,
+    div,
     ion-icon,
     .info-button,
     ion-label ion-note {
@@ -22,15 +10,9 @@
     }
   }
 
-  &.plausible {
-    --background: rgba(var(--verification-plausible-rgb), 0.27);
-    border: 1px solid rgba(var(--verification-plausible-rgb), 0.2);
-
-    h2 {
-      margin-bottom: 20px;
-      color: var(--verification-plausible-dark) !important;
-    }
-
+  &.warning {
+    h2,
+    div,
     ion-icon,
     .info-button,
     ion-label ion-note {
@@ -39,16 +21,9 @@
     }
   }
 
-  &.rejected {
-    --background: rgba(var(--verification-rejected-rgb), 0.27);
-    border: 1px solid rgba(var(--verification-rejected-rgb), 0.2);
-
-    h2 {
-      margin-bottom: 20px;
-      color: var(--verification-rejected-dark) !important;
-    }
-
-    .h1,
+  &.danger {
+    h2,
+    div,
     ion-icon,
     .info-button,
     ion-label ion-note {

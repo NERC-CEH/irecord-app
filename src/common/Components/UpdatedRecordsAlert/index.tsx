@@ -37,13 +37,14 @@ const UpdatedRecordsDialog = () => {
     const verified = updatedOccurrences.filter(isStatus('verified')).length;
     const plausible = updatedOccurrences.filter(isStatus('plausible')).length;
     const rejected = updatedOccurrences.filter(isStatus('rejected')).length;
+    const queried = updatedOccurrences.filter(isStatus('queried')).length;
 
     const message = (
       <>
         <p>
           <T>
-            Some of your records have been verified. You can find those in your{' '}
-            <b>Uploaded</b> records list.
+            Some of your records have been verified or queried. You can find
+            those in your <b>Uploaded</b> records list.
           </T>
         </p>
 
@@ -73,6 +74,15 @@ const UpdatedRecordsDialog = () => {
                 <T>Rejected</T>:
               </span>
               <b>{rejected}</b>
+            </div>
+          )}
+          {!!queried && (
+            <div className="verified-count">
+              <VerificationIcon status="queried" />
+              <span>
+                <T>Queried</T>:
+              </span>
+              <b>{queried}</b>
             </div>
           )}
         </div>

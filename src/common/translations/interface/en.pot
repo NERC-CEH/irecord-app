@@ -2113,8 +2113,12 @@ msgid "rejected"
 msgstr "rejected"
 
 # Verification message 
-msgid "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided."
-msgstr "Thanks for sending in your record. A verifier has marked it as <2>{{statusMessage}}</2> in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided." "in this case. Please log in to the iRecord website to see any additional information that the verifier may have provided."
+msgid "Thanks for sending in your record. A verifier has marked it as <2>"{{statusMessage}}"</2> in this case."
+msgstr "Thanks for sending in your record. A verifier has marked it as <2>"{{statusMessage}}"</2> in this case."
+
+# Verification message 
+msgid "Please log in to the iRecord website to see any additional information that the verifier may have provided."
+msgstr "Please log in to the iRecord website to see any additional information that the verifier may have provided."
 
 # Account not verified alert button label
 msgid "Resend"
@@ -2148,6 +2152,10 @@ msgstr "Unconfirmed"
 msgid "Rejected"
 msgstr "Rejected"
 
+# Verification status
+msgid "Queried"
+msgstr "Queried"
+
 # Date
 msgid "Yesterday"
 msgstr "Yesterday"
@@ -2173,8 +2181,16 @@ msgid "New verified records"
 msgstr "New verified records"
 
 # Part of verification message
-msgid "Some of your records have been verified. You can find those in your <2>Uploaded</2> records list."
-msgstr "Some of your records have been verified. You can find those in your <2>Uploaded</2> records list."
+msgid "You can find the verifier query and comments on the iRecord website."
+msgstr "You can find the verifier query and comments on the iRecord website."
+
+# Part of verification message
+msgid "This record has been queried."
+msgstr "This record has been queried."
+
+# Part of verification message
+msgid "Some of your records have been verified or queried. You can find those in your <2>Uploaded</2> records list."
+msgstr "Some of your records have been verified or queried. You can find those in your <2>Uploaded</2> records list."
 
 # Part of verification message
 msgid "Do not show again"

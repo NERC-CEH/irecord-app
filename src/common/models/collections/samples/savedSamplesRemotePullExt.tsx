@@ -55,6 +55,11 @@ const getRecordsQuery = (timestamp: any) => {
               should: [
                 {
                   match_phrase: {
+                    'identification.query': 'Q',
+                  },
+                },
+                {
+                  match_phrase: {
                     'identification.verification_status': 'C',
                   },
                 },
@@ -91,10 +96,12 @@ const getRecordsQuery = (timestamp: any) => {
   });
 };
 
+type UpdatedSamples = Record<string, Hit>;
+
 async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
   console.log('SavedSamples: pulling remote verified surveys');
 
-  const samples: { [key: string]: Hit } = {};
+  const samples: UpdatedSamples = {};
 
   const options: AxiosRequestConfig = {
     method: 'post',
@@ -130,12 +137,13 @@ async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
 }
 
 function updateLocalOccurrences(
-  samples: typeof SavedSamplesProps,
-  updatedRemoteSamples: any
+  samples: Sample[],
+  updatedRemoteSamples: UpdatedSamples
 ): Occurrence[] {
   const nonPendingUpdatedOccurrences: Occurrence[] = [];
 
-  if (updatedRemoteSamples.length <= 0) return nonPendingUpdatedOccurrences;
+  if (Object.keys(updatedRemoteSamples).length <= 0)
+    return nonPendingUpdatedOccurrences;
 
   const findMatchingLocalSamples = (sample: Sample) => {
     const appendVerification = (occ: Occurrence) => {
@@ -145,14 +153,17 @@ function updateLocalOccurrences(
       const newVerification = updatedOccurrence._source.identification;
 
       const hasNotChanged =
-        newVerification.verified_on === occ.metadata.verification?.verified_on;
+        newVerification.verified_on ===
+          occ.metadata.verification?.verified_on &&
+        newVerification.query === occ.metadata.verification.query;
       if (hasNotChanged) return; // there is a window when the same update can be returned. We don't want to change the record in that case.
 
       occ.metadata.verification = { ...newVerification };
 
       const isNonPending =
         newVerification.verification_status === 'C' &&
-        newVerification.verification_substatus === '0';
+        newVerification.verification_substatus === '0' &&
+        !newVerification.query;
       if (isNonPending) return;
 
       nonPendingUpdatedOccurrences.push(occ);
@@ -175,7 +186,7 @@ function updateLocalOccurrences(
   return nonPendingUpdatedOccurrences;
 }
 
-function getEarliestTimestamp(samples: typeof SavedSamplesProps) {
+function getEarliestTimestamp(samples: Sample[]) {
   const byTime = (s1: Sample, s2: Sample) =>
     new Date(s1.createdAt).getTime() - new Date(s2.createdAt).getTime();
 
@@ -195,21 +206,22 @@ function getEarliestTimestamp(samples: typeof SavedSamplesProps) {
 }
 
 async function init(
-  samples: typeof SavedSamplesProps,
+  allSamples: typeof SavedSamplesProps,
   userModel: UserModel,
   appModel: AppModel
 ) {
   // in-memory observable to use in reports and other views
-  samples.verified = observable({ updated: [], timestamp: null });
+  allSamples.verified = observable({ updated: [], timestamp: null });
 
-  const originalResetDefaults = samples.reset;
+  const originalResetDefaults = allSamples.reset;
   // eslint-disable-next-line @getify/proper-arrows/name
-  samples.reset = () => {
-    set(samples.verified, { count: 0, timestamp: null });
+  allSamples.reset = () => {
+    set(allSamples.verified, { count: 0, timestamp: null });
     return originalResetDefaults();
   };
 
   async function sync() {
+    const samples: Sample[] = allSamples.filter(smp => smp.isStored);
     if (
       !samples.length ||
       !userModel.isLoggedIn() ||
@@ -253,10 +265,10 @@ async function init(
       timestamp: appModel.data.verifiedRecordsTimestamp,
     };
 
-    set(samples.verified, newVerified);
+    set(allSamples.verified, newVerified);
   }
 
-  samples.ready.then(sync);
+  allSamples.ready.then(sync);
   setInterval(sync, SYNC_WAIT);
 }
 
