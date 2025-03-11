@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { closeOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
@@ -32,7 +33,7 @@ const PastLocations = ({ model, isOpen, onClose }: Props) => {
 
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
-    // eslint-disable-next-line no-param-reassign
+    if (!model.data.location) model.data.location = {};
     Object.assign(model.data.location, location);
     model.save();
   };

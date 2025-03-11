@@ -187,7 +187,7 @@ export default {
       case 'smp:locationName':
         if (!lockedVal) return false;
         value = model.data.location;
-        return lockedVal === value.name;
+        return lockedVal === value?.name;
 
       default:
         value = model.data[attr];
@@ -252,6 +252,7 @@ export default {
             break;
           }
           location = selectedModel.data.location;
+          if (!location) location = {};
           location.name = val;
           selectedModel.data.location = location;
           break;

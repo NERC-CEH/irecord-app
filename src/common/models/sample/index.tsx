@@ -215,6 +215,7 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
       location.accuracy = accuracy;
     }
 
+    if (!this.data.location) this.data.location = {};
     Object.assign(this.data.location, location);
     return this.save();
   };
