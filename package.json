@@ -38,7 +38,7 @@
     "@capacitor/status-bar": "7.0.0",
     "@flumens/bigu": "0.4.0",
     "@flumens/ionic": "2.0.0-alpha.75",
-    "@flumens/models": "0.7.1",
+    "@flumens/models": "0.8.0",
     "@flumens/tailwind": "0.28.0",
     "@flumens/utils": "^0.2.0",
     "@hookform/resolvers": "^4.0.0",

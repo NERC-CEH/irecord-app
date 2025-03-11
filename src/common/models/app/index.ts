@@ -29,6 +29,11 @@ export type Data = ModelData & {
 
   useSpeciesImageClassifier: boolean;
 
+  /**
+   * Reset attribute locks.
+   */
+  attrLocksCleanedV620: boolean; // TODO: remove
+
   showVerifiedRecordsNotification: boolean;
   verifiedRecordsTimestamp: null | number;
 };
@@ -39,6 +44,7 @@ export const defaults: Data = {
 
   locations: [],
   attrLocks: { default: {}, complex: {} },
+  attrLocksCleanedV620: false,
   autosync: true,
   useTraining: false,
 
@@ -84,6 +90,15 @@ export class AppModel extends Model<Data> {
 
   constructor(options: any) {
     super({ ...options, data: { ...defaults, ...options.data } });
+
+    this.ready.then(() => {
+      if (!this.data.attrLocksCleanedV620) {
+        console.log('Resetting attr locks');
+        this.data.attrLocks = { default: {}, complex: {} };
+        this.data.attrLocksCleanedV620 = true;
+        this.save();
+      }
+    });
 
     Object.assign(this, PastLocationsExtension);
     Object.assign(this, AttributeLockExtension);
