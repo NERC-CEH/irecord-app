@@ -87,7 +87,7 @@ const GroupsList = ({
       </IonRefresher>
 
       {onJoinGroup && (
-        <IonToolbar className="fixed top-0 text-black [&.ios]:[--background:var(--ion-page-background)] [&.md]:shadow-[-1px_2px_7px_0_#0000001a,0_2px_9px_0_#3e396b1a] [&.md]:[--background:white]">
+        <IonToolbar className="fixed top-[env(safe-area-inset-top)] text-black [&.ios]:[--background:var(--ion-page-background)] [&.md]:shadow-[-1px_2px_7px_0_#0000001a,0_2px_9px_0_#3e396b1a] [&.md]:[--background:white]">
           <div className="flex w-full items-center justify-end gap-2">
             <IonSearchbar
               placeholder="Activity name"

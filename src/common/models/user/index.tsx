@@ -16,6 +16,7 @@ import { NavContext } from '@ionic/react';
 import * as Sentry from '@sentry/browser';
 import CONFIG from 'common/config';
 import { mainStore } from '../store';
+import activitiesExt from './activitiesExt';
 
 export interface Attrs extends DrupalUserModelData {
   firstName?: string;
@@ -63,6 +64,7 @@ export class UserModel extends DrupalUserModel<Attrs> {
 
   constructor(options: any) {
     super({ ...options, data: { ...defaults, ...options.data } });
+    Object.assign(this, activitiesExt);
 
     const checkForValidation = () => {
       if (this.isLoggedIn() && !this.data.verified) {

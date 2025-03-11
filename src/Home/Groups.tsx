@@ -18,7 +18,7 @@ const GroupsController = () => {
 
   return (
     <Page id="precise-area-count-edit-group">
-      <Main className="[--padding-top:50px]">
+      <Main className="[--padding-top:calc(env(safe-area-inset-top)+50px)]">
         <GroupsList onSelect={setGroupLock} allowToJoin />
       </Main>
     </Page>
