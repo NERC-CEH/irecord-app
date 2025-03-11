@@ -276,11 +276,10 @@ const survey: Survey = {
         // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
         skipStore: true,
 
-        metadata: {
-          gridSquareUnit,
-        },
+        metadata: { gridSquareUnit },
         data: {
           surveyId: survey.id,
+          inputForm: survey.webForm,
           enteredSrefSystem: 'OSGB',
           location: {},
         },
@@ -338,6 +337,7 @@ const survey: Survey = {
       },
       data: {
         surveyId: survey.id,
+        inputForm: survey.webForm,
         date: new Date().toISOString(),
         enteredSrefSystem: 'OSGB',
         sampleMethodId: 7305,

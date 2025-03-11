@@ -120,6 +120,7 @@ const survey: Survey = {
         skipStore: true,
         data: {
           surveyId: defaultSurvey.id, // not list since it looks for taxa specific attrs
+          inputForm: survey.webForm,
           enteredSrefSystem: 4326,
           location: {},
           groupId,
@@ -172,6 +173,7 @@ const survey: Survey = {
     const sample = new Sample({
       data: {
         surveyId: survey.id,
+        inputForm: survey.webForm,
         date: new Date().toISOString(),
         enteredSrefSystem: 4326,
         location: {},

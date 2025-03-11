@@ -252,6 +252,7 @@ const survey: Survey = {
     const sample = new Sample({
       data: {
         surveyId: survey.id,
+        inputForm: survey.webForm,
         date: new Date().toISOString(),
         enteredSrefSystem: 4326,
         location: {},

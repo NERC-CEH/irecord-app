@@ -170,6 +170,7 @@ const survey: Survey = {
     const sample = new Sample({
       data: {
         surveyId: survey.id,
+        inputForm: survey.webForm,
         date: undefined, // user should specify the trap time
         enteredSrefSystem: 4326,
         location: {},
