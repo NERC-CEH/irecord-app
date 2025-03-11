@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { useTranslation, Trans as T } from 'react-i18next';
@@ -23,17 +24,25 @@ type Props = {
 };
 
 const CurrentGroups = ({
-  currentValue,
+  currentValue: currentValueProp,
   onSelect,
   onLeave,
   searchPhrase,
 }: Props) => {
   const { t } = useTranslation();
 
+  // force update the radio styles
+  const [currentValue, forceRefresh] = useState(currentValueProp);
+
   const getOption = (group: Group) => ({
     value: group.id!,
     label: group.data.title,
   });
+
+  const onSelectWrap = (e: any) => {
+    onSelect(e.detail.value);
+    forceRefresh(e.detail.value);
+  };
 
   const bySearchPhrase = (group: Group) =>
     !searchPhrase ||
@@ -99,7 +108,8 @@ const CurrentGroups = ({
     <IonList lines="full" className="radio-input-attr">
       <IonRadioGroup
         value={currentValue}
-        onIonChange={(e: any) => onSelect(e.detail.value)}
+        allowEmptySelection
+        onIonChange={onSelectWrap}
       >
         {groupOptions.map(getGroupOption)}
       </IonRadioGroup>

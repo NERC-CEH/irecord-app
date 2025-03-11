@@ -11,9 +11,17 @@ import { RemoteAttributes } from 'models/group';
 import { useUserStatusCheck } from 'models/user';
 import List from './List';
 
-type Props = { allowToJoin?: boolean; onSelect?: (groupId: string) => void };
+type Props = {
+  currentValue?: any;
+  allowToJoin?: boolean;
+  onSelect?: (groupId: string) => void;
+};
 
-const GroupsList = ({ onSelect, allowToJoin = false }: Props) => {
+const GroupsList = ({
+  onSelect,
+  allowToJoin = false,
+  currentValue: currentValueProp,
+}: Props) => {
   const toast = useToast();
   const loader = useLoader();
   const checkUserStatus = useUserStatusCheck();
@@ -23,7 +31,8 @@ const GroupsList = ({ onSelect, allowToJoin = false }: Props) => {
 
   const [allRemoteGroups, setAllGroups] = useState<RemoteAttributes[]>([]);
 
-  const currentValue = appModel.getAttrLock('smp', 'groupId');
+  const currentValue =
+    currentValueProp || appModel.getAttrLock('smp', 'groupId');
 
   const joinGroup = async (groupId: string) => {
     console.log('Activities joining', groupId);

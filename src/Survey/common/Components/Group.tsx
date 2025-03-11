@@ -21,7 +21,7 @@ const Group = () => {
     <Page id="survey-default-edit-group">
       <Header title="Activity" />
       <Main>
-        <GroupsList onSelect={onSelect} />
+        <GroupsList onSelect={onSelect} currentValue={sample.data.groupId} />
       </Main>
     </Page>
   );

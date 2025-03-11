@@ -6,7 +6,7 @@ import appModel from 'common/models/app';
 const GroupsController = () => {
   const toast = useToast();
 
-  const setGroupLock = (groupId: string) => {
+  const setGroupLock = (groupId: string = '') => {
     groupId &&
       toast.success(
         'Any records you add from now on will be submitted to the chosen activity.',
