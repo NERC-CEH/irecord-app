@@ -18,15 +18,8 @@ export default class Media extends MediaOriginal<Attrs> {
   constructor(options: any) {
     super(options);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.remote.url = `${config.backend.indicia.url}/index.php/services/rest`;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line
-    this.remote.headers = async () => ({
-      Authorization: `Bearer ${await userModel.getAccessToken()}`,
-    });
+    this.remote.url = config.backend.indicia.url;
+    this.remote.getAccessToken = () => userModel.getAccessToken();
   }
 
   async destroy(silent?: boolean) {
