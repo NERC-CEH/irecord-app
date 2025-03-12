@@ -110,15 +110,6 @@ msgstr "contact us"
 msgid "How to make a new record"
 msgstr "How to make a new record"
 
-msgid "There are two ways to start a record"
-msgstr "There are two ways to start a record"
-
-msgid "Taking a photo"
-msgstr "Taking a photo"
-
-msgid "Selecting species"
-msgstr "Selecting species"
-
 msgid "Searching for species"
 msgstr "Searching for species"
 
@@ -1146,14 +1137,6 @@ msgid "To delete any surveys swipe it to the left."
 msgstr "To delete any surveys swipe it to the left."
 
 # Part of Help Page
-msgid "Press the camera button <2></2> in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
-msgstr "Press the camera button <2></2> in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
-
-# Part of Help Page
-msgid "Please press the plus <2></2> button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button <5></5> beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc."
-msgstr "Please press the plus <2></2> button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button <5></5> beside the species name or through the home-list page) and fill in the details of the sighting, like location, date, number seen etc."
-
-# Part of Help Page
 msgid "Type in a species name - English or scientific name, or a genus or family etc."
 msgstr "Type in a species name - English or scientific name, or a genus or family etc."
 
@@ -1230,16 +1213,28 @@ msgid "For more information about the record checking process see <2>Verificatio
 msgstr "For more information about the record checking process see <2>Verification: what, who and why</2> on the iRecord website."
 
 # Part of Help Page
-msgid "To send records to a specific activity you can select it in the Activities <1></1> page."
-msgstr "To send records to a specific activity you can select it in the Activities <1></1> page."
-
-# Part of Help Page
-msgid "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
-msgstr "<0>Note:</0> only the activities that allow this mobile app records and only the ones that you have joined on the iRecord website will be available to select."
-
-# Part of Help Page
 msgid "You can manage your saved locations both on any record's location page and from the settings <2></2> page"
 msgstr "You can manage your saved locations both on any record's location page and from the settings <2></2> page"
+
+# Part of Help Page 
+msgid "<0>Start off by tapping the plus <2></2> button on the home page. This gives you four options:</0><1>Add a record without a photo</1><p>Tap here to add your record. You will first be asked to give the name of the species you are recording, and then you can add the other record information.</p><3>Take a new photo of the species</3><p>Tap here to start a new record by adding a photo first, and then completing the species name and other details. The app provides image recognition that may be able to help suggest an identification for your species photo – once your photo has been added you can tap on it to see the suggested identifications. It is also possible to add extra photos of your species.</p><5>Select multiple photos to add to a single record</5><p>Tap here to select multiple photos from your gallery and add them to a single record. In this case the image recognition will provide a single suggested identification based on all the photos – tap on any one photo to see the suggestions, or tap on the “Species missing” button. Once you have agreed an ID and added the other details you can save the record with all the photos attached.</p><7>Show other surveys</7><p>Tap here to see the other survey options in the app. These allow you to add a list of records from the same site on the same date. Currently there are three options:</p><9><0>Plant List Survey (e.g. to record a list of species in a grid square)</0><1>Moth List Survey (e.g. for recording moths at a moth trap)</1><2>Species List Survey (e.g. for recording a range of different species on one date)</2></9><p>Records in the list will be linked to the overall location for the survey. For the Plant List and Species List surveys you can choose to “Geolocate list entries”. If you switch that on, the app will add a precise GPS location to each individual record in your list. Be careful not to leave this switched on if you are adding records from a different location (e.g. if you leave your survey site and then want to add more records after you have arrive home).</p>"
+msgstr "<0>Start off by tapping the plus <2></2> button on the home page. This gives you four options:</0><1>Add a record without a photo</1><p>Tap here to add your record. You will first be asked to give the name of the species you are recording, and then you can add the other record information.</p><3>Take a new photo of the species</3><p>Tap here to start a new record by adding a photo first, and then completing the species name and other details. The app provides image recognition that may be able to help suggest an identification for your species photo – once your photo has been added you can tap on it to see the suggested identifications. It is also possible to add extra photos of your species.</p><5>Select multiple photos to add to a single record</5><p>Tap here to select multiple photos from your gallery and add them to a single record. In this case the image recognition will provide a single suggested identification based on all the photos – tap on any one photo to see the suggestions, or tap on the “Species missing” button. Once you have agreed an ID and added the other details you can save the record with all the photos attached.</p><7>Show other surveys</7><p>Tap here to see the other survey options in the app. These allow you to add a list of records from the same site on the same date. Currently there are three options:</p><9><0>Plant List Survey (e.g. to record a list of species in a grid square)</0><1>Moth List Survey (e.g. for recording moths at a moth trap)</1><2>Species List Survey (e.g. for recording a range of different species on one date)</2></9><p>Records in the list will be linked to the overall location for the survey. For the Plant List and Species List surveys you can choose to “Geolocate list entries”. If you switch that on, the app will add a precise GPS location to each individual record in your list. Be careful not to leave this switched on if you are adding records from a different location (e.g. if you leave your survey site and then want to add more records after you have arrive home).</p>"
+
+# Part of Help Page 
+msgid "<p>If you have added a photo to your record, the app will offer suggestions about the identification (ID), using automatic image recognition.</p><p>After uploading a photo, check the thumbnail to see if it shows a coloured circle indicating the probability of a suggested ID. This uses ‘traffic light’ colours to suggest how confident the app is about the suggested ID:</p><2><0><0></0> = high confidence</0><1><0></0> = medium confidence</1><2><0></0> = low confidence</2></2><p>If you have already suggested an ID, and the image recognition suggests a different ID, a small red warning circle will be displayed – open the thumbnail or edit the species name to see the alternative ID suggestion.</p><p>Example of an ID that the image recognition agrees with, and has high confidence:</p><5></5><6>Identification agreed, with high confidence</6><7></7><8>! Alternative Identification suggested</8><p>When you open up the thumbnail image you can tap on the “Suggestions” button to see the suggested ID, and you can then tap on “Select” to set the identification for your record.</p><10></10>"
+msgstr "<p>If you have added a photo to your record, the app will offer suggestions about the identification (ID), using automatic image recognition.</p><p>After uploading a photo, check the thumbnail to see if it shows a coloured circle indicating the probability of a suggested ID. This uses ‘traffic light’ colours to suggest how confident the app is about the suggested ID:</p><2><0><0></0> = high confidence</0><1><0></0> = medium confidence</1><2><0></0> = low confidence</2></2><p>If you have already suggested an ID, and the image recognition suggests a different ID, a small red warning circle will be displayed – open the thumbnail or edit the species name to see the alternative ID suggestion.</p><p>Example of an ID that the image recognition agrees with, and has high confidence:</p><5></5><6>Identification agreed, with high confidence</6><7></7><8>! Alternative Identification suggested</8><p>When you open up the thumbnail image you can tap on the “Suggestions” button to see the suggested ID, and you can then tap on “Select” to set the identification for your record.</p><10></10>"
+
+# Part of Help Page 
+msgid "Respond to a queried record"
+msgstr "Respond to a queried record"
+
+# Part of Help Page 
+msgid "<p>The records that you upload from the app may be checked by a verifier. If a verifier queries one of your app records, the next time you open the app you will see a message to let you know:</p><1></1><p>Tap on “See Records” to see the records that have been queried – they will be shown with a question mark:</p><3></3>"
+msgstr "<p>The records that you upload from the app may be checked by a verifier. If a verifier queries one of your app records, the next time you open the app you will see a message to let you know:</p><1></1><p>Tap on “See Records” to see the records that have been queried – they will be shown with a question mark:</p><3></3>"
+
+# Part of Help Page 
+msgid "<0>To send records to a specific activity you can select it in the Activities <1></1> page. Activities you have already joined can be seen in “My Activities”. To join an Activity for the first time search for it in “All Activities”.</0><p>Make sure you remember to change your Activity setting if you want to add a record that is not linked to an activity. To do this, set the My Activity page to “Not linked to any activity”.</p>"
+msgstr "<0>To send records to a specific activity you can select it in the Activities <1></1> page. Activities you have already joined can be seen in “My Activities”. To join an Activity for the first time search for it in “All Activities”.</0><p>Make sure you remember to change your Activity setting if you want to add a record that is not linked to an activity. To do this, set the My Activity page to “Not linked to any activity”.</p>"
 
 # Part of Help Page
 msgid "Swipe a location left and click edit <2></2> or delete<4></4> buttons."
@@ -1471,24 +1466,8 @@ msgid "This app was hand crafted with love by<1> Flumens.</1> Agency specializin
 msgstr "This app was hand crafted with love by<1> Flumens.</1> Agency specializing in building bespoke data oriented sollutions. For suggestions and feedback please do not hesitate to <5>contact us</5>."
 
 # Help page content
-msgid "in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
-msgstr "in the home page header. This will prompt you to select the photo source: camera or gallery. Once you have picked a photo, the app will create a new record without any species associated with it."
-
-# Help page content
-msgid "button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button"
-msgstr "button in the home page. This will bring you to the taxa search page. After selecting the species, open the record (either by opening it directly from the taxa search page using the edit button"
-
-# Help page content
-msgid "When finished, press the Upload button in the record's page header."
-msgstr "When finished, press the Upload button in the record's page header."
-
-# Help page content
 msgid "Adding lists of records - surveying"
 msgstr "Adding lists of records - surveying"
-
-# Help page content
-msgid "You can record lists of species. Long-pressing the green plus button in the home page will show more advanced recording options."
-msgstr "You can record lists of species. Long-pressing the green plus button in the home page will show more advanced recording options."
 
 # Help page content
 msgid "To find a species from its scientific name you can use shortcuts, e.g. to find<1><i> Bellis perrenis</i></1> (Daisy) you can type:"
@@ -1501,34 +1480,6 @@ msgstr "Once you have added the name, you can add a photo, and the app will sugg
 # Help page content
 msgid "Image recognition"
 msgstr "Image recognition"
-
-# Help page content
-msgid "If you have added a photo to your record, the app will offer suggestions about the identification, using automatic image recognition."
-msgstr "If you have added a photo to your record, the app will offer suggestions about the identification, using automatic image recognition."
-
-# Help page content
-msgid "If you add a record using the plus button, you will be asked to add a species name to your record first. You can then add one or more photos, and the app will tell you if it agrees with the species name. If not it may suggest a different identification."
-msgstr "If you add a record using the plus button, you will be asked to add a species name to your record first. You can then add one or more photos, and the app will tell you if it agrees with the species name. If not it may suggest a different identification."
-
-# Help page content
-msgid "If you add a record using the photo button, you can add a photo first, and the app will be able to suggest an identification. You can then go on to use the suggested species name if you agree with it, or add your own identification instead."
-msgstr "If you add a record using the photo button, you can add a photo first, and the app will be able to suggest an identification. You can then go on to use the suggested species name if you agree with it, or add your own identification instead."
-
-# Help page content
-msgid "After uploading the photo, check the thumbnail to see if it shows a percentage indicating the probability of a suggested identification. If a different identification is being suggested a small red warning circle will be displayed – open the thumbnail to see alternative identification suggestions."
-msgstr "After uploading the photo, check the thumbnail to see if it shows a percentage indicating the probability of a suggested identification. If a different identification is being suggested a small red warning circle will be displayed – open the thumbnail to see alternative identification suggestions."
-
-# Help page content
-msgid "Identification agreed"
-msgstr "Identification agreed"
-
-# Help page content
-msgid "Alternative Identification suggested"
-msgstr "Alternative Identification suggested"
-
-# Help page content
-msgid "When you open up the thumbnail image you can tap on any of the alternative suggestions shown, and that will set the identification for your record."
-msgstr "When you open up the thumbnail image you can tap on any of the alternative suggestions shown, and that will set the identification for your record."
 
 # Help page content
 msgid "The image recognition process can be very helpful, but it doesn’t get it right every time! Check what is being suggested before making your final decision, and if you think the app suggestion is wrong feel free to stick to your own identification."
@@ -1624,8 +1575,8 @@ msgid "Are you sure you want to remove all successfully synchronised local recor
 msgstr "Are you sure you want to remove all successfully synchronised local records?<1><0>Note:</0> records on the server will not be touched.</1>"
 
 # Home page background message
-msgid "<0>You have no finished surveys.<br/><br/>Press <5></5> to add record details, or press <8></8> to add a photo first.</0>"
-msgstr "<0>You have no finished surveys.<br/><br/>Press <5></5> to add record details, or press <8></8> to add a photo first.</0>"
+msgid "<0>You have no finished surveys.<br/><br/>Press <5></5> to add one</0>"
+msgstr "<0>You have no finished surveys.<br/><br/>Press <5></5> to add one</0>"
 
 # Alert message 
 msgid "Incorrect password or email"
