@@ -48,6 +48,7 @@ mobxConfig({ enforceActions: 'never' });
       environment: config.environment,
       release: config.version,
       dist: config.build,
+      enabled: config.environment === 'production',
       initialScope: {
         user: { id: userModel.id },
         tags: { session: appModel.data.appSession },
