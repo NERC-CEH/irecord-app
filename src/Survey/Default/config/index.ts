@@ -90,6 +90,7 @@ const survey: Survey = {
   name: 'default',
   id: 374,
   webForm: 'enter-app-record',
+  webViewForm: 'record-details',
 
   taxaGroups: [], // all // TODO: remove?
 

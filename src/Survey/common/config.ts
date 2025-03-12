@@ -335,6 +335,10 @@ export interface Survey extends SampleConfig {
    */
   webForm?: string;
   /**
+   * Remote website survey view page path.
+   */
+  webViewForm?: string;
+  /**
    * Which species group this config belongs to. Allows to link multiple taxon groups together under a common name.
    */
   taxa?: string;

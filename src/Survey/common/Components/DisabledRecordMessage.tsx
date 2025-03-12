@@ -8,14 +8,13 @@ interface Props {
 }
 
 const DisabledRecordMessage = ({ sample }: Props) => {
-  const [occ] = sample.occurrences;
-
   const survey = sample.getSurvey();
 
-  const url =
+  const occParam =
     survey.name === 'default'
-      ? `${config.backend.url}/${survey.webForm}?occurrence_id=${occ.id}`
-      : `${config.backend.url}/${survey.webForm}?sample_id=${sample.id}`;
+      ? `&occurrence_id=${sample.occurrences[0].id}`
+      : '';
+  const url = `${config.backend.url}/${survey.webViewForm || survey.webForm}?sample_id=${sample.id}${occParam}`;
 
   return (
     <InfoMessage skipTranslation>
