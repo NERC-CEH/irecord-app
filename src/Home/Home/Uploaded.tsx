@@ -78,7 +78,7 @@ const UploadedSurveys = ({ isOpen }: Props) => {
     if (cachedPages) return; // if the view revisited
     fetchSurveys(0);
   };
-  useEffect(fetchRemoteSamplesFirstTime, []);
+  useEffect(fetchRemoteSamplesFirstTime, [userModel.isLoggedIn()]);
 
   const dates: any = [];
   const dateIndices: any = [];
@@ -86,7 +86,7 @@ const UploadedSurveys = ({ isOpen }: Props) => {
   const groupedSurveys: any = [];
   let counter: any = {};
 
-  const extraxtDates: (
+  const extractDates: (
     value: any,
     index: number,
     array: any[]
@@ -102,7 +102,7 @@ const UploadedSurveys = ({ isOpen }: Props) => {
     counter.count += 1;
     groupedSurveys.push(survey);
   };
-  [...surveys].forEach(extraxtDates);
+  [...surveys].forEach(extractDates);
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const Item = ({ index, ...itemProps }: { index: number }) => {
