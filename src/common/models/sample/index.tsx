@@ -57,6 +57,10 @@ type Metadata = SampleMetadata & {
    */
   taxa: keyof typeof taxonGroupSurveys;
   gridSquareUnit?: 'monad' | 'tetrad';
+  /**
+   * If overwrite which survey to use.
+   */
+  forceSurveyId?: number;
   saved?: boolean;
 };
 
@@ -118,18 +122,20 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
   }
 
   getSurvey(skipGet?: boolean): Survey {
-    let survey = getSurveyConfigs()[this.data.surveyId];
+    let surveyId = this.metadata.forceSurveyId || this.data.surveyId;
 
     // backwards compatible, remove once everyone uploads their surveys
-    if (!survey && (this.metadata as any).survey) {
-      if ((this.metadata as any).survey === 'default') this.data.surveyId = 374;
-      if ((this.metadata as any).survey === 'list') this.data.surveyId = 576;
-      if ((this.metadata as any).survey === 'moth') this.data.surveyId = 90;
-      if ((this.metadata as any).survey === 'plant') this.data.surveyId = 325;
-      survey = getSurveyConfigs()[this.data.surveyId];
-    } else if (!survey && (this.metadata as any).survey_id) {
-      survey = getSurveyConfigs()[(this.metadata as any).survey_id];
+    if ((this.metadata as any).survey) {
+      if ((this.metadata as any).survey === 'default') surveyId = 374;
+      if ((this.metadata as any).survey === 'list') surveyId = 576;
+      if ((this.metadata as any).survey === 'moth') surveyId = 90;
+      if ((this.metadata as any).survey === 'plant') surveyId = 325;
+    } else if ((this.metadata as any).survey_id) {
+      surveyId = (this.metadata as any).survey_id;
+      this.data.surveyId = surveyId;
     }
+
+    const survey = getSurveyConfigs()[surveyId];
 
     if (survey?.get && !skipGet) return survey.get(this);
 

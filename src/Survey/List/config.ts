@@ -118,8 +118,11 @@ const survey: Survey = {
       const sample = new Sample({
         // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
         skipStore: true,
+        metadata: {
+          forceSurveyId: defaultSurvey.id, // not list since it looks for taxa specific attrs
+        },
         data: {
-          surveyId: defaultSurvey.id, // not list since it looks for taxa specific attrs
+          surveyId: survey.id,
           inputForm: survey.webForm,
           enteredSrefSystem: 4326,
           location: {},
