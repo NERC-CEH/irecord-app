@@ -61,7 +61,11 @@ export default class Media extends MediaOriginal<Attrs> {
   getURL() {
     const { data: name, path } = this.data;
 
-    if (!isPlatform('hybrid') || process.env.NODE_ENV === 'test') {
+    if (
+      !isPlatform('hybrid') ||
+      process.env.NODE_ENV === 'test' ||
+      name?.includes('http')
+    ) {
       return name;
     }
 
