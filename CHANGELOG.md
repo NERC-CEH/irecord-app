@@ -1,14 +1,18 @@
 ## 6.2.0
 
-- Improved UI.
-- Updated libraries.
+- Added the ability to view all uploaded records, including those from other devices.
+- Improved AI suggestions.
 - Updated the species dictionary.
 - Simplified species filters.
+- Added queried record updates.
+- Added an option to join and leave activities.
+- Added more taxa-specific form attributes.
+- Improved UI.
+- Updated libraries.
 - Fixed grid square center calculation.
 - Fixed map showing training records.
 - Fixed Android navbar background color.
 - Fixed sub-sample dates getting out of sync.
-- Added an option to join and leave activities.
 
 ## 6.1.2
 
