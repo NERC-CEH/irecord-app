@@ -121,7 +121,7 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
     super.save();
   }
 
-  getSurvey(skipGet?: boolean): Survey {
+  getSurvey(): Survey {
     let surveyId = this.metadata.forceSurveyId || this.data.surveyId;
 
     // backwards compatible, remove once everyone uploads their surveys
@@ -135,9 +135,14 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
       this.data.surveyId = surveyId;
     }
 
+    // backwards compatible, remove once everyone uploads their surveys
+    if (!this.data.surveyId && !this.parent) {
+      this.data.surveyId = surveyId;
+    }
+
     const survey = getSurveyConfigs()[surveyId];
 
-    if (survey?.get && !skipGet) return survey.get(this);
+    if (survey?.get) return survey.get(this);
 
     const isSubSample = this.parent;
     if (isSubSample) return (survey.smp || {}) as Survey;

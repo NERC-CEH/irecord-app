@@ -305,9 +305,9 @@ const survey: Survey = {
 
   get(sample: AppSample) {
     const getTaxaSpecifigConfig = () => {
-      if (!sample.occurrences.length) return sample.getSurvey(true);
+      if (!sample.occurrences.length) return survey;
 
-      if (!sample.metadata.taxa) return sample.getSurvey(true);
+      if (!sample.metadata.taxa) return survey;
 
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       return _getFullTaxaGroupSurvey(sample.metadata.taxa);
