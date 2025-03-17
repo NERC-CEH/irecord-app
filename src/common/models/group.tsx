@@ -22,11 +22,11 @@ class GroupModel extends Model<Attrs> {
     indexedLocationIds: z.array(z.number()).nullable().optional(),
   });
 
-  static parseRemoteJSON({ id, createdOn, ...attrs }: RemoteAttributes) {
+  static parseRemoteJSON({ id, createdOn, ...data }: RemoteAttributes) {
     return {
       id,
       cid: UUIDv7(),
-      attrs,
+      data,
       createdAt: new Date(createdOn).getTime(),
     };
   }
