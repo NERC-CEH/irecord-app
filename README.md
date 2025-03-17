@@ -8,6 +8,8 @@ planning, research and education.
 
 App [home page](https://irecord.org.uk/app)
 
+App [demo page](https://irecord.app.flumens.io/demo.html)
+
 ## Contribution
 
 Think you've found a bug or have a new feature to suggest?
@@ -24,5 +26,5 @@ If you have any questions, please feel free to ask on the
 
 ## Copyright and license
 
-Code copyright 2020 Centre for Ecology & Hydrology.
+Code copyright 2025 Centre for Ecology & Hydrology.
 Code released under the [GNU GPL v3 license](LICENSE).
