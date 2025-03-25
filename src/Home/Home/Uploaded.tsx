@@ -44,7 +44,7 @@ const UploadedSurveys = ({ isOpen }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const uploaded = (sample: Sample) => sample.syncedAt;
+  const uploaded = (sample: Sample) => sample.isUploaded;
   const uploadedSurveys = samplesCollection.filter(uploaded).sort(bySurveyDate);
 
   const surveys = canFetch()

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { Trans as T, useTranslation } from 'react-i18next';
 import { useAlert } from '@flumens';
 import { NavContext, IonItem, IonCheckbox, IonLabel } from '@ionic/react';
-import VerificationIcon from 'common/Components/VerificationStatus/VerificationIcon';
+import VerificationIcon from 'common/Components/VerificationStatus/Icon';
 import appModel from 'models/app';
 import samples from 'models/collections/samples';
 import Occurrence from 'models/occurrence';
