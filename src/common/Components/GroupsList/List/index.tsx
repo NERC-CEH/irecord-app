@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { closeOutline, searchOutline } from 'ionicons/icons';
-import { Trans as T } from 'react-i18next';
+import { Trans as T, useTranslation } from 'react-i18next';
 import {
   IonIcon,
   IonLabel,
@@ -14,29 +14,30 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { Button } from 'common/flumens';
-import Group, { RemoteAttributes } from 'common/models/group';
+import Group from 'common/models/group';
 import AllGroups from './All';
-import CurrentGroups from './Current';
+import UserGroups from './User';
 
 type Props = {
   currentValue?: string;
-  onRefresh: any;
+  onRefresh: (type: 'member' | 'joinable') => void;
   setGroup: any;
-  onJoinGroup: any;
-  onLeaveGroup: any;
-  groups: Group[];
-  remoteGroups: RemoteAttributes[];
+  onJoinGroup?: (group: Group) => void;
+  onLeaveGroup: (group: Group) => void;
+  memberGroups: Group[];
+  joinableGroups: Group[];
 };
 
 const GroupsList = ({
   currentValue,
   setGroup,
   onRefresh,
-  remoteGroups,
-  groups,
+  joinableGroups,
+  memberGroups,
   onJoinGroup,
   onLeaveGroup,
 }: Props) => {
+  const { t } = useTranslation();
   const searchbarRef = useRef<any>(null);
   const [segment, setSegment] = useState<'joined' | 'all'>('joined');
 
@@ -44,8 +45,8 @@ const GroupsList = ({
     const newSegment = e.detail.value;
     setSegment(newSegment);
 
-    if (newSegment === 'all' && !remoteGroups.length) onRefresh('all');
-    if (newSegment === 'joined' && !groups.length) onRefresh('joined');
+    if (newSegment === 'all' && !joinableGroups.length) onRefresh('joinable');
+    if (newSegment === 'joined' && !memberGroups.length) onRefresh('member');
   };
 
   const [reachedTopOfList, setReachedTopOfList] = useState(true);
@@ -55,7 +56,8 @@ const GroupsList = ({
 
   const refreshGroups = async (e: any) => {
     e?.detail?.complete(); // refresh pull update
-    onRefresh(segment);
+
+    onRefresh(segment === 'joined' ? 'member' : 'joinable');
   };
 
   const [showSearch, setShowSearch] = useState(false);
@@ -64,13 +66,15 @@ const GroupsList = ({
     setCurrentSearch(e.detail.value);
   };
 
-  const bySearchPhrase = (group: RemoteAttributes) =>
+  const bySearchPhrase = (group: Group) =>
     !currentSearch ||
-    group.title.toLowerCase().includes(currentSearch.toLowerCase());
-  const allGroupsFiltered = remoteGroups.filter(bySearchPhrase);
+    group.data.title.toLowerCase().includes(currentSearch.toLowerCase());
 
-  const onJoinGroupWrap = async (groupId: string) => {
-    await onJoinGroup(groupId);
+  const joinableGroupsFiltered = joinableGroups.filter(bySearchPhrase);
+  const memberGroupsFiltered = memberGroups.filter(bySearchPhrase);
+
+  const onJoinGroupWrap = async (group: Group) => {
+    await onJoinGroup!(group);
     setCurrentSearch('');
     setShowSearch(false);
     setSegment('joined');
@@ -90,7 +94,7 @@ const GroupsList = ({
         <IonToolbar className="fixed top-[env(safe-area-inset-top)] text-black [&.ios]:[--background:var(--ion-page-background)] [&.md]:shadow-[-1px_2px_7px_0_#0000001a,0_2px_9px_0_#3e396b1a] [&.md]:[--background:white]">
           <div className="flex w-full items-center justify-end gap-2">
             <IonSearchbar
-              placeholder="Activity name"
+              placeholder={t('Activity name')}
               className={clsx('!py-0 pr-0', !showSearch && 'hidden')}
               onIonChange={onSearch}
               ref={searchbarRef}
@@ -141,17 +145,17 @@ const GroupsList = ({
       )}
 
       {segment === 'joined' && (
-        <CurrentGroups
+        <UserGroups
           currentValue={currentValue}
           onSelect={setGroup}
           onLeave={onLeaveGroup}
-          searchPhrase={currentSearch}
+          groups={memberGroupsFiltered}
         />
       )}
 
       {segment === 'all' && (
         <AllGroups
-          groups={allGroupsFiltered}
+          groups={joinableGroupsFiltered}
           onJoin={onJoinGroupWrap}
           onScroll={onScroll}
         />

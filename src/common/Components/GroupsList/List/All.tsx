@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
+import { Trans as T } from 'react-i18next';
 import { Badge, VirtualList, useAlert } from '@flumens';
 import { IonItem, IonList } from '@ionic/react';
-import { RemoteAttributes } from 'models/group';
+import Group from 'models/group';
 import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
 
 // https://stackoverflow.com/questions/47112393/getting-the-iphone-x-safe-area-using-javascript
@@ -17,9 +18,9 @@ const Item = ({
   ...itemProps
 }: {
   index: number;
-  data: { groups: RemoteAttributes[]; onOpen: any };
+  data: { groups: Group[]; onOpen: any };
 }) => {
-  const group: RemoteAttributes = groups[index];
+  const group: Group = groups[index];
 
   return (
     <IonItem
@@ -31,11 +32,11 @@ const Item = ({
       onClick={() => onOpen(group)}
     >
       <div className="flex flex-col gap-1">
-        <div className="line-clamp-1 font-bold">{group.title}</div>
+        <div className="line-clamp-1 font-bold">{group.data.title}</div>
 
-        {!!group.description && (
+        {!!group.data.description && (
           <div className="line-clamp-1 text-balance border-t border-solid border-[var(--background)] text-sm text-black/70">
-            {group.description}
+            {group.data.description}
           </div>
         )}
       </div>
@@ -45,34 +46,49 @@ const Item = ({
 
 type Props = {
   onScroll: any;
-  groups: RemoteAttributes[];
-  onJoin: (groupId: string) => void;
+  groups: Group[];
+  onJoin: (group: Group) => void;
 };
 
 const AllGroups = ({ groups, onJoin, onScroll }: Props) => {
   const alert = useAlert();
 
   const onOpen = useMemo(
-    () => (group: RemoteAttributes) =>
+    () => (group: Group) =>
       alert({
-        header: group.title,
+        header: group.data.title,
         message: (
           <div className="flex flex-col gap-1">
-            {!!group.description && (
+            {!!group.data.description && (
               <div className="text-balance border-t border-solid border-[var(--background)] text-sm text-black/70">
-                {group.description}
+                {group.data.description}
+              </div>
+            )}
+
+            {group.data.joiningMethod === 'R' && (
+              <div className="text-sm italic text-black/70">
+                <T>
+                  This activity requires administrator approval for membership
+                  requests.
+                </T>
               </div>
             )}
 
             <div className="mt-2">
-              {!!group.fromDate && (
+              {!!group.data.fromDate && (
                 <div>
-                  From: <Badge>{new Date(group.fromDate).toDateString()}</Badge>
+                  <T>From</T>:{' '}
+                  <Badge skipTranslation>
+                    {new Date(group.data.fromDate).toDateString()}
+                  </Badge>
                 </div>
               )}
-              {!!group.toDate && (
+              {!!group.data.toDate && (
                 <div>
-                  To: <Badge>{new Date(group.toDate).toDateString()}</Badge>
+                  <T>To</T>:{' '}
+                  <Badge skipTranslation>
+                    {new Date(group.data.toDate).toDateString()}
+                  </Badge>
                 </div>
               )}
             </div>
@@ -85,7 +101,7 @@ const AllGroups = ({ groups, onJoin, onScroll }: Props) => {
           },
           {
             text: 'Join',
-            handler: () => onJoin(group.id),
+            handler: () => onJoin(group),
           },
         ],
       }),

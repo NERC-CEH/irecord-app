@@ -16,10 +16,11 @@ export default class Media extends MediaOriginal<Attrs> {
   declare parent?: Sample | Occurrence;
 
   constructor(options: any) {
-    super(options);
-
-    this.remote.url = config.backend.indicia.url;
-    this.remote.getAccessToken = () => userModel.getAccessToken();
+    super({
+      ...options,
+      url: config.backend.indicia.url,
+      getAccessToken: () => userModel.getAccessToken(),
+    });
   }
 
   async destroy(silent?: boolean) {

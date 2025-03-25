@@ -197,7 +197,7 @@ describe('Sample', () => {
     });
   });
 
-  describe('getSubmission', () => {
+  describe('toDTO', () => {
     it('should add a system attributes', async () => {
       // Given
       config.version = '1';
@@ -205,7 +205,7 @@ describe('Sample', () => {
       const sample = await getDefaultSample();
 
       // When
-      const { values } = sample.getSubmission();
+      const { values } = sample.toDTO();
 
       // Then
       expect(values[`smpAttr:${systemAttrs.device.remote.id}`]).toEqual(

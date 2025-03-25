@@ -80,10 +80,14 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
   stopGPS: any; // from extension
 
   constructor(options: SampleOptions<Data>) {
-    super({ ...options, Sample, Occurrence, Media, store: samplesStore });
-
-    this.remote.url = config.backend.indicia.url;
-    this.remote.getAccessToken = () => userModel.getAccessToken();
+    super({
+      ...options,
+      Occurrence,
+      Media,
+      store: samplesStore,
+      url: config.backend.indicia.url,
+      getAccessToken: () => userModel.getAccessToken(),
+    });
 
     this.data.training = appModel.data.useTraining;
 
@@ -102,7 +106,7 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
   }
 
   async upload() {
-    if (this.remote.synchronising || this.isUploaded) return true;
+    if (this.isSynchronising || this.isUploaded) return true;
 
     const invalids = this.validateRemote();
     if (invalids) return false;

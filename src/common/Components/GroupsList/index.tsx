@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { device, useLoader, useToast } from 'common/flumens';
+import { observer } from 'mobx-react';
+import {
+  byGroupMembershipStatus,
+  device,
+  useLoader,
+  useToast,
+} from 'common/flumens';
 import appModel from 'common/models/app';
 import groups from 'common/models/collections/groups';
-import {
-  fetch as fetchAllGroups,
-  join,
-  leave,
-} from 'common/models/collections/groups/service';
-import { RemoteAttributes } from 'models/group';
+import Group from 'models/group';
 import { useUserStatusCheck } from 'models/user';
 import List from './List';
 
@@ -29,25 +29,21 @@ const GroupsList = ({
   // eslint-disable-next-line
   groups.length; // to force refresh when groups list is updated
 
-  const [allRemoteGroups, setAllGroups] = useState<RemoteAttributes[]>([]);
-
   const currentValue =
     currentValueProp || appModel.getAttrLock('smp', 'groupId');
 
-  const joinGroup = async (groupId: string) => {
-    console.log('Activities joining', groupId);
+  const joinGroup = async (group: Group) => {
+    console.log('Activities joining', group.id);
 
     try {
       await loader.show('Please wait...');
-      await join(groupId);
-      await groups.fetchRemote();
-      const docs = await fetchAllGroups({});
-      setAllGroups(docs);
+      await group.join();
+      await groups.fetchRemote({ type: 'member', form: ['enter-app-record'] });
+      await groups.fetchRemote({
+        type: 'joinable',
+        form: ['enter-app-record'],
+      });
 
-      const allGroupsWithoutTheJoined = allRemoteGroups.filter(
-        ({ id }: RemoteAttributes) => id !== groupId
-      );
-      setAllGroups(allGroupsWithoutTheJoined);
       toast.success('Successfully joined the activity.');
     } catch (err: any) {
       toast.error(err);
@@ -56,15 +52,17 @@ const GroupsList = ({
     loader.hide();
   };
 
-  const leaveGroup = async (groupId: string) => {
-    console.log('Activities leaving', groupId);
+  const leaveGroup = async (group: Group) => {
+    console.log('Activities leaving', group.id);
 
     try {
       await loader.show('Please wait...');
-      await leave(groupId);
-      await groups.fetchRemote();
-      const docs = await fetchAllGroups({});
-      setAllGroups(docs);
+      await group.leave();
+      await groups.fetchRemote({ type: 'member', form: ['enter-app-record'] });
+      await groups.fetchRemote({
+        type: 'joinable',
+        form: ['enter-app-record'],
+      });
 
       appModel.unsetAttrLock('smp', 'groupId');
 
@@ -76,7 +74,7 @@ const GroupsList = ({
     loader.hide();
   };
 
-  const refreshGroups = async (type: 'joined' | 'all') => {
+  const refreshGroups = async (type: 'member' | 'joinable') => {
     console.log('Groups refreshing', type);
 
     if (!device.isOnline) {
@@ -87,15 +85,10 @@ const GroupsList = ({
     const isUserOK = await checkUserStatus();
     if (!isUserOK) return;
 
-    try {
-      await loader.show('Please wait...');
+    await loader.show('Please wait...');
 
-      if (type === 'all') {
-        const docs = await fetchAllGroups({});
-        setAllGroups(docs);
-      } else {
-        await groups.fetchRemote();
-      }
+    try {
+      await groups.fetchRemote({ type, form: ['enter-app-record'] });
     } catch (err: any) {
       toast.error(err);
     }
@@ -103,17 +96,27 @@ const GroupsList = ({
     loader.hide();
   };
 
+  const byTitle = (group1: Group, group2: Group) =>
+    group1.data.title?.localeCompare(group2.data.title);
+
+  const memberGroups = groups
+    .filter(byGroupMembershipStatus('member'))
+    .sort(byTitle);
+  const joinableGroups = groups
+    .filter(byGroupMembershipStatus('joinable'))
+    .sort(byTitle);
+
   return (
     <List
       currentValue={currentValue}
-      groups={groups}
-      remoteGroups={allRemoteGroups}
+      memberGroups={memberGroups}
+      joinableGroups={joinableGroups}
       setGroup={onSelect}
-      onJoinGroup={allowToJoin && joinGroup}
+      onJoinGroup={allowToJoin ? joinGroup : undefined}
       onLeaveGroup={leaveGroup}
       onRefresh={refreshGroups}
     />
   );
 };
 
-export default GroupsList;
+export default observer(GroupsList);

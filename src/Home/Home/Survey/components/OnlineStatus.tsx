@@ -13,11 +13,10 @@ interface Props {
 
 const OnlineStatus = ({ onUpload, sample, uploadIsPrimary }: Props) => {
   const { saved } = sample.metadata;
-  const { synchronising } = sample.remote;
 
   if (!saved) return <Badge className="max-w-32">Draft</Badge>;
 
-  if (synchronising) return <IonSpinner className="survey-status" />;
+  if (sample.isSynchronising) return <IonSpinner className="survey-status" />;
 
   if (!sample.isStored)
     return (

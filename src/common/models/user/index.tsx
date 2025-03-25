@@ -18,7 +18,7 @@ import CONFIG from 'common/config';
 import { mainStore } from '../store';
 import activitiesExt from './activitiesExt';
 
-export interface Attrs extends DrupalUserModelData {
+export interface Data extends DrupalUserModelData {
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -29,7 +29,7 @@ export interface Attrs extends DrupalUserModelData {
   password?: any;
 }
 
-const defaults: Attrs = {
+const defaults: Data = {
   firstName: '',
   lastName: '',
   email: '',
@@ -37,7 +37,7 @@ const defaults: Attrs = {
   statistics: null,
 };
 
-export class UserModel extends DrupalUserModel<Attrs> {
+export class UserModel extends DrupalUserModel<Data> {
   static registerSchema: any = object({
     email: z.string().email('Please fill in'),
     password: z.string().min(1, 'Please fill in'),
@@ -111,10 +111,10 @@ export class UserModel extends DrupalUserModel<Attrs> {
     return true;
   }
 
-  resetDefaults() {
+  reset() {
     this.uploadCounter.count = 0;
 
-    return super.resetDefaults(defaults);
+    return super.reset(defaults);
   }
 }
 

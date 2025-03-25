@@ -1951,16 +1951,32 @@ msgid "Not linked to any activity"
 msgstr "Not linked to any activity"
 
 # Activities page 
-msgid "You haven't joined any activities yet. Go to the "All activities" tab to join an activity.<br/><br/>Pull the page down to refresh the list."
-msgstr "You haven't joined any activities yet. Go to the "All activities" tab to join an activity.<br/><br/>Pull the page down to refresh the list."
+msgid "You haven't joined any activities yet. Go to the \"All activities\" tab to join an activity.<br/><br/>Pull the page down to refresh the list."
+msgstr "You haven't joined any activities yet. Go to the \"All activities\" tab to join an activity.<br/><br/>Pull the page down to refresh the list."
 
 # Activities page  
 msgid "There are currently no new activities available to join.<br/><br/>Pull the page down to refresh the list."
 msgstr "There are currently no new activities available to join.<br/><br/>Pull the page down to refresh the list."
 
 # Activities page  
+msgid "Activity name"
+msgstr "Activity name"
+
+# Activities page  
 msgid "Join"
 msgstr "Join"
+
+# Activities page  
+msgid "This activity requires administrator approval for membership requests."
+msgstr "This activity requires administrator approval for membership requests."
+
+# Activities page  
+msgid "From"
+msgstr "From"
+
+# Activities page  
+msgid "To"
+msgstr "To"
 
 # Activities page  
 msgid "Successfully joined the activity."

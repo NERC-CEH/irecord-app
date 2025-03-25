@@ -28,7 +28,7 @@ const LoginController = () => {
     await loader.show('Please wait...');
 
     try {
-      await userModel.reset(email.trim());
+      await userModel.resetPassword(email.trim());
       alert({
         header: "We've sent an email to you",
         message: (

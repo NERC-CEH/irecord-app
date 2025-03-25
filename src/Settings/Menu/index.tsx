@@ -18,8 +18,8 @@ async function resetApp(toast: any) {
   console.log('Settings:Menu:Controller: resetting the application!');
 
   try {
-    await appModel.resetDefaults();
-    await userModel.resetDefaults();
+    await appModel.reset();
+    await userModel.reset();
     await groups.reset();
     await samples.reset();
 

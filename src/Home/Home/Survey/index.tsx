@@ -75,9 +75,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
 
   const survey = sample.getSurvey();
 
-  const { synchronising } = sample.remote;
-
-  const href = !synchronising
+  const href = !sample.isSynchronising
     ? `/survey/${survey.name}/${sample.id || sample.cid}`
     : undefined;
 
@@ -178,7 +176,7 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
   const allowDeletion = sample.isStored;
 
   const openItem = () => {
-    if (sample.remote.synchronising) return; // fixes button onPressUp and other accidental navigation
+    if (sample.isSynchronising) return; // fixes button onPressUp and other accidental navigation
     navigate(href!);
   };
 

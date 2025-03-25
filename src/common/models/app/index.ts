@@ -104,8 +104,8 @@ export class AppModel extends Model<Data> {
     Object.assign(this, AttributeLockExtension);
   }
 
-  resetDefaults() {
-    return super.resetDefaults(defaults);
+  reset() {
+    return super.reset(defaults);
   }
 }
 

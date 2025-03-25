@@ -56,11 +56,17 @@ export {
 export { default as Toggle } from '@flumens/tailwind/dist/components/Switch';
 export { default as ImageCropper } from '@flumens/ionic/dist/components/ImageCropper';
 export { default as ModelValidationMessage } from '@flumens/ionic/dist/components/ModelValidationMessage';
-export { default as SampleCollection } from '@flumens/models/dist/Indicia/SampleCollection';
 export * from '@flumens/models/dist/Indicia/helpers';
+export { default as SampleCollection } from '@flumens/models/dist/Indicia/SampleCollection';
+export {
+  default as GroupCollection,
+  byGroupMembershipStatus,
+} from '@flumens/models/dist/Indicia/GroupCollection';
+export { default as Group } from '@flumens/models/dist/Indicia/Group';
 export {
   default as Model,
   type Data as ModelData,
+  type Options as ModelOptions,
 } from '@flumens/models/dist/Model';
 export {
   default as Sample,
