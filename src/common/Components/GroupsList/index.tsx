@@ -40,6 +40,10 @@ const GroupsList = ({
       await group.join();
       await groups.fetchRemote({ type: 'member', form: ['enter-app-record'] });
       await groups.fetchRemote({
+        type: 'pending' as any,
+        form: ['enter-app-record'],
+      });
+      await groups.fetchRemote({
         type: 'joinable',
         form: ['enter-app-record'],
       });
@@ -59,6 +63,10 @@ const GroupsList = ({
       await loader.show('Please wait...');
       await group.leave();
       await groups.fetchRemote({ type: 'member', form: ['enter-app-record'] });
+      await groups.fetchRemote({
+        type: 'pending' as any,
+        form: ['enter-app-record'],
+      });
       await groups.fetchRemote({
         type: 'joinable',
         form: ['enter-app-record'],
@@ -89,6 +97,12 @@ const GroupsList = ({
 
     try {
       await groups.fetchRemote({ type, form: ['enter-app-record'] });
+      if (type === 'member') {
+        await groups.fetchRemote({
+          type: 'pending' as any,
+          form: ['enter-app-record'],
+        });
+      }
     } catch (err: any) {
       toast.error(err);
     }
