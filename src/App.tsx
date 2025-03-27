@@ -33,7 +33,6 @@ const samplesContext = { samples };
 const HomeRedirect = () => <Redirect to="home" />;
 
 const App = () => (
-  // @ts-expect-error ionic doesn't support react 19
   <IonApp>
     <OnboardingScreens>
       <TailwindContext.Provider value={tailwindContext}>

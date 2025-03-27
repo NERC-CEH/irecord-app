@@ -2,5 +2,8 @@
 	"appId": "uk.ac.ceh.irecord",
 	"appName": "iRecord App",
 	"webDir": "build",
-	"cordova": {}
+	"cordova": {},
+	"android": {
+		"adjustMarginsForEdgeToEdge": "force"
+	}
 }

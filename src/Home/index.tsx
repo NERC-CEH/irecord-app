@@ -58,7 +58,6 @@ const HomeController = () => {
 
   return (
     <>
-      {/* @ts-expect-error ionic doesn't support react 19 */}
       <IonTabs>
         <IonRouterOutlet>
           <Redirect exact path="/home" to="/home/surveys" />
@@ -69,7 +68,6 @@ const HomeController = () => {
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
-          {/* @ts-expect-error ionic doesn't support react 19 */}
           <IonTabButton tab="home/surveys" href="/home/surveys">
             <IonIcon icon={homeOutline} />
             <IonLabel>
@@ -78,7 +76,6 @@ const HomeController = () => {
             <PendingSurveysBadge className="absolute bottom-4 right-[calc(50%_-_15px)]" />
           </IonTabButton>
 
-          {/* @ts-expect-error ionic doesn't support react 19 */}
           <IonTabButton
             className={activitiesOn ? 'activities-button-on' : ''}
             tab="home/activities"
@@ -90,7 +87,6 @@ const HomeController = () => {
             </IonLabel>
           </IonTabButton>
 
-          {/* @ts-expect-error ionic doesn't support react 19 */}
           <IonTabButton className="z-10">
             <SurveyButtonWithImagePicker
               onPrimarySurvey={navigateToPrimarySurvey}
@@ -102,7 +98,6 @@ const HomeController = () => {
             />
           </IonTabButton>
 
-          {/* @ts-expect-error ionic doesn't support react 19 */}
           <IonTabButton tab="map" href="/home/map">
             <IonIcon icon={mapOutline} />
             <IonLabel>
@@ -110,7 +105,6 @@ const HomeController = () => {
             </IonLabel>
           </IonTabButton>
 
-          {/* @ts-expect-error ionic doesn't support react 19 */}
           <IonTabButton tab="menu" href="/home/menu">
             <IonIcon icon={menuOutline} />
             <IonLabel>
