@@ -135,8 +135,12 @@
     "webpack-dev-server": "^5.2.0"
   },
   "browserslist": [
-    "Android >= 6",
-    "iOS >= 12"
+    "Chrome >=89",
+    "ChromeAndroid >=89",
+    "Firefox >=75",
+    "Edge >=89",
+    "Safari >=15",
+    "iOS >=15"
   ],
   "engines": {
     "node": ">=20",
