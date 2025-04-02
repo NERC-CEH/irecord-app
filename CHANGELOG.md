@@ -9,10 +9,10 @@
 - Added more taxa-specific form attributes.
 - Improved UI.
 - Updated libraries.
-- Fixed grid square center calculation.
+- Fixed grid square centre calculation.
 - Fixed map showing training records.
-- Fixed Android navbar background color.
-- Fixed sub-sample dates getting out of sync.
+- Fixed Android navbar background colour.
+- Fixed sub-sample dates that are getting out of sync.
 
 ## 6.1.2
 
