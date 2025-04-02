@@ -22,7 +22,7 @@ const samples: SampleCollection<Sample> & { verified: Verification } =
 export async function uploadAllSamples(toast: any) {
   console.log('SavedSamples: uploading all.');
   const getUploadPromise = (s: Sample) =>
-    !s.isUploaded && s.metadata.saved && s.upload();
+    !s.isUploaded && s.isStored && s.metadata.saved && s.upload();
 
   const processError = (err: any) => {
     if (err.isHandled) return;

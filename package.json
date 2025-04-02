@@ -37,17 +37,17 @@
     "@capacitor/splash-screen": "7.0.0",
     "@capacitor/status-bar": "7.0.0",
     "@flumens/bigu": "0.4.0",
-    "@flumens/ionic": "2.0.0-alpha.75",
-    "@flumens/models": "0.11.4",
-    "@flumens/tailwind": "0.28.0",
-    "@flumens/utils": "^0.2.0",
+    "@flumens/ionic": "2.0.0-alpha.76",
+    "@flumens/models": "0.12.1",
+    "@flumens/tailwind": "0.28.3",
+    "@flumens/utils": "^0.3.3",
     "@hookform/resolvers": "^4.0.0",
     "@ionic-native/core": "5.36.0",
     "@ionic/core": "^8.5.2",
     "@ionic/react": "^8.5.2",
     "@ionic/react-router": "^8.5.2",
-    "@sentry/browser": "7.114.0",
-    "@sentry/integrations": "7.114.0",
+    "@mapbox/sphericalmercator": "^2.0.1",
+    "@sentry/browser": "9.10.1",
     "@turf/distance": "^7.2.0",
     "axios": "^1.7.9",
     "capacitor-blob-writer": "^1.1.19",
@@ -188,13 +188,9 @@
       [
         "@babel/env",
         {
-          "targets": {
-            "android": "5.1",
-            "ios": "10.2"
-          },
           "loose": true,
           "modules": "commonjs",
-          "corejs": "3.0.0",
+          "corejs": "3.22",
           "useBuiltIns": "usage"
         }
       ],
