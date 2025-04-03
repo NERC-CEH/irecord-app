@@ -151,6 +151,13 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
     const isSubSample = this.parent;
     if (isSubSample) return (survey.smp || {}) as Survey;
 
+    if (!survey) {
+      console.log(JSON.stringify(this.metadata));
+      console.log(JSON.stringify(this.data));
+      console.error(`Survey config was missing`);
+      return {} as Survey;
+    }
+
     return survey as Survey;
   }
 

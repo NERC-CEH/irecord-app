@@ -38,9 +38,9 @@
     "@capacitor/status-bar": "7.0.0",
     "@flumens/bigu": "0.4.0",
     "@flumens/ionic": "2.0.0-alpha.76",
-    "@flumens/models": "0.12.1",
+    "@flumens/models": "0.12.2",
     "@flumens/tailwind": "0.28.3",
-    "@flumens/utils": "^0.3.3",
+    "@flumens/utils": "^0.3.5",
     "@hookform/resolvers": "^4.0.0",
     "@ionic-native/core": "5.36.0",
     "@ionic/core": "^8.5.2",
@@ -135,16 +135,12 @@
     "webpack-dev-server": "^5.2.0"
   },
   "browserslist": [
-    "Chrome >=89",
     "ChromeAndroid >=89",
-    "Firefox >=75",
-    "Edge >=89",
-    "Safari >=15",
-    "iOS >=15"
+    "iOS >=12"
   ],
   "engines": {
     "node": ">=20",
-    "npm": ">=9"
+    "npm": ">=10"
   },
   "author": {
     "name": "Flumens",
