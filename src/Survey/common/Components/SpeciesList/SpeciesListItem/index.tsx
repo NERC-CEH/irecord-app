@@ -124,7 +124,7 @@ const SpeciesListItem = ({
     >
       <IonItem
         routerLink={`${url}/${modelPath}/${model.cid}`}
-        detail={!occ.hasOccurrenceBeenVerified()}
+        detail={!occ.hasOccurrenceBeenVerified() && isValid}
       >
         {getIncrementButton()}
 

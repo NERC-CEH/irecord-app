@@ -81,6 +81,11 @@ const MothHome = () => {
     const occurrencesPromise = imageArray.map(async (img: any) => {
       const imageModel: any = await Media.getImageModel(img, config.dataPath);
 
+      const occ = await surveyConfig.occ!.create!({
+        Occurrence,
+        images: [imageModel],
+      });
+
       const { useSpeciesImageClassifier } = appModel.data;
       const shouldAutoID =
         useSpeciesImageClassifier &&
@@ -90,13 +95,10 @@ const MothHome = () => {
       if (shouldAutoID) {
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
-        imageModel.identify().catch(processError);
+        occ.identify().catch(processError);
       }
 
-      return surveyConfig.occ!.create!({
-        Occurrence,
-        images: [imageModel],
-      });
+      return occ;
     });
 
     const occurrences = await Promise.all(occurrencesPromise);

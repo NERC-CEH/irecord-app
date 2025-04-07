@@ -103,6 +103,13 @@ const ListHome = () => {
     const subSamplePromise = imageArray.map(async (img: any) => {
       const imageModel: any = await Media.getImageModel(img, config.dataPath);
 
+      const subSample = await surveyConfig.smp!.create!({
+        Occurrence,
+        Sample,
+        surveySample: sample!,
+        images: [imageModel],
+      });
+
       const { useSpeciesImageClassifier } = appModel.data;
       const shouldAutoID =
         useSpeciesImageClassifier &&
@@ -110,17 +117,13 @@ const ListHome = () => {
         userModel.isLoggedIn() &&
         userModel.data.verified;
       if (shouldAutoID) {
+        const [occ] = subSample.occurrences;
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
-        imageModel.identify().catch(processError);
+        occ.identify().catch(processError);
       }
 
-      return surveyConfig.smp!.create!({
-        Occurrence,
-        Sample,
-        surveySample: sample!,
-        images: [imageModel],
-      });
+      return subSample;
     });
 
     const subSamples = await Promise.all(subSamplePromise);

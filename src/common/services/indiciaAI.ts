@@ -23,23 +23,22 @@ type RemoteSuggestion = z.infer<typeof suggestionSchema>;
 const resultSchema = object({
   classifierId: string(),
   classifierVersion: string(),
-  suggestions: array(suggestionSchema),
+  suggestions: array(z.any()), // loose for initial pass
 });
 
 type RemoteResult = z.infer<typeof resultSchema>;
 
-export type Suggestion = Pick<
-  Taxon,
-  'warehouseId' | 'group' | 'scientificName' | 'commonNames'
-> & {
+export type Suggestion = {
+  warehouseId: number;
+  group: number;
+  scientificName: string;
+  commonNames: string[];
+
   foundInName?: number;
-  probability: RemoteSuggestion['probability'];
+  probability: number;
 };
 
-export type Result = Pick<
-  RemoteResult,
-  'classifierId' | 'classifierVersion'
-> & {
+export type Result = RemoteResult & {
   suggestions: Suggestion[];
 };
 
@@ -106,8 +105,9 @@ export default async function identify(
     throw error;
   }
 
+  const hasValues = (val: any) => suggestionSchema.safeParse(val).success;
   const suggestions = await Promise.all(
-    response.suggestions.map(transformToTaxon)
+    response.suggestions.filter(hasValues).map(transformToTaxon)
   );
 
   // const suggestions = [
