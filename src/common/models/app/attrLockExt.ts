@@ -201,12 +201,10 @@ export default {
     function selectModel(attrType: 'smp' | 'occ') {
       const isSampleAttr = attrType === 'smp';
       if (isSampleAttr && isOccurrenceOnly) {
-        throw new Error('Invalid attibute lock configuration');
+        throw new Error('Invalid attribute lock configuration');
       }
 
-      if (isSampleAttr) {
-        return model;
-      }
+      if (isSampleAttr) return model;
 
       return isOccurrenceOnly ? model : model.occurrences[0];
     }
@@ -243,18 +241,17 @@ export default {
           if (skipLocation) {
             break;
           }
-          let { location } = selectedModel.data;
-          val.name = location.name; // don't overwrite old name
+          val.name = selectedModel.data.location.name; // don't overwrite old name
           selectedModel.data.location = val;
           break;
         case 'smp:locationName':
           if (skipLocation) {
             break;
           }
-          location = selectedModel.data.location;
-          if (!location) location = {};
-          location.name = val;
-          selectedModel.data.location = location;
+
+          if (!selectedModel.data.location) selectedModel.data.location = {};
+          selectedModel.data.location.name = val;
+
           break;
         case 'occ:number':
           const isValidNumber = !Number.isNaN(Number(val));
