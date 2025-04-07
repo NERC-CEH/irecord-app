@@ -94,7 +94,7 @@ export default async function identify(
     const res = await axios(options);
     const getValues = (doc: any) => mapKeys(doc, (_, key) => camelCase(key));
     response = getValues(res.data) as any;
-    response.suggestions = response.suggestions.map(getValues) as any;
+    response.suggestions = response.suggestions?.map(getValues) as any;
     resultSchema.parse(response);
   } catch (error: any) {
     if (isAxiosNetworkError(error))
