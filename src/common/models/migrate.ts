@@ -55,7 +55,7 @@ export default async () => {
               COALESCE(json(value) ->> "$.metadata.updatedOn", CAST((julianday('now') - 2440587.5)*86400000 AS INTEGER)),
               json(value) ->> "$.metadata.syncedOn"
               FROM models
-        WHERE json_extract(value, '$.metadata.syncedOn') IS NULL
+        WHERE json_extract(value, '$.metadata.syncedOn') IS NULL AND json_extract(value, '$.id') IS NULL 
         ORDER BY id DESC
         LIMIT 1000;`,
       });
