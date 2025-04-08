@@ -160,14 +160,14 @@ export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
     return this.identification.identifying;
   }
 
-  identify = (classifier?: 'plant') => {
+  async identify(classifier?: 'plant') {
     const isPlant =
       this.parent?.parent?.getSurvey().name === 'plant' ||
       classifier === 'plant';
     if (isPlant) return this.identifyPlant();
 
     return this.identifyOther();
-  };
+  }
 
   private async identifyOther() {
     try {

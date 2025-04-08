@@ -85,7 +85,7 @@ const AppPhotoPicker = ({
   const { useSpeciesImageClassifier } = appModel.data;
   const useClassifier = !disableClassifier && useSpeciesImageClassifier;
 
-  const identifySpecies = () => {
+  const identifySpecies = (manualTrigger = false) => {
     if (!(model instanceof Occurrence)) return;
 
     // must reset to avoid getting into mixed state where media has changed but not the classifier results
@@ -94,15 +94,21 @@ const AppPhotoPicker = ({
     if (
       !model.media.length ||
       !useClassifier ||
-      !device.isOnline ||
       !userModel.isLoggedIn() ||
       !userModel.data.verified
     )
       return;
 
-    const processError = (error: any) =>
-      !error.isHandled && console.error(error); // don't toast this to user
-    model.identify().catch(processError);
+    if (manualTrigger && !device.isOnline) {
+      toast.warn("Sorry, looks like you're offline.");
+      return;
+    }
+
+    model
+      .identify()
+      .catch((err: any) =>
+        manualTrigger ? toast.error(err) : console.error(err)
+      );
   };
 
   async function onAdd(shouldUseCamera: boolean) {
