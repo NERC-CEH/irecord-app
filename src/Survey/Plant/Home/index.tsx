@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
+import { Capacitor } from '@capacitor/core';
 import {
   Page,
   Header,
@@ -9,7 +10,7 @@ import {
   useSample,
   useRemoteSample,
 } from '@flumens';
-import { NavContext } from '@ionic/react';
+import { NavContext, isPlatform } from '@ionic/react';
 import distance from '@turf/distance';
 import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
@@ -22,6 +23,12 @@ import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
 import './styles.scss';
+
+const shouldAutoID = () =>
+  appModel.data.useSpeciesImageClassifier &&
+  device.isOnline &&
+  userModel.isLoggedIn() &&
+  userModel.data.verified;
 
 const PlantHome = () => {
   const toast = useToast();
@@ -100,7 +107,11 @@ const PlantHome = () => {
     const surveyConfig = sample!.getSurvey();
 
     const subSamplePromise = imageArray.map(async (img: any) => {
-      const imageModel: any = await Media.getImageModel(img, config.dataPath);
+      const imageModel: any = await Media.getImageModel(
+        isPlatform('hybrid') ? Capacitor.convertFileSrc(img) : img,
+        config.dataPath,
+        true
+      );
 
       const subSample = await surveyConfig.smp!.create!({
         Occurrence,
@@ -109,13 +120,7 @@ const PlantHome = () => {
         images: [imageModel],
       });
 
-      const { useSpeciesImageClassifier } = appModel.data;
-      const shouldAutoID =
-        useSpeciesImageClassifier &&
-        device.isOnline &&
-        userModel.isLoggedIn() &&
-        userModel.data.verified;
-      if (shouldAutoID) {
+      if (shouldAutoID()) {
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
         subSample.occurrences[0].identify('plant').catch(processError);

@@ -96,15 +96,11 @@ const SurveyButtonWithImagePicker = ({
 
     await deleteFile(oldFileName);
 
-    let savedURL = await saveFile(imageDataURL, newFileName);
-
-    savedURL = isPlatform('hybrid')
-      ? Capacitor.convertFileSrc(savedURL)
-      : savedURL;
+    const savedURL = await saveFile(imageDataURL, newFileName);
 
     // copy over new image values to existing model to preserve its observability
     const newImageModel: any = await Media.getImageModel(
-      savedURL,
+      isPlatform('hybrid') ? Capacitor.convertFileSrc(savedURL) : savedURL,
       config.dataPath,
       true
     );

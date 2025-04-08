@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
+import { Capacitor } from '@capacitor/core';
 import {
   Page,
   Header,
@@ -9,7 +10,7 @@ import {
   useSample,
   useRemoteSample,
 } from '@flumens';
-import { NavContext } from '@ionic/react';
+import { NavContext, isPlatform } from '@ionic/react';
 import distance from '@turf/distance';
 import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
@@ -21,6 +22,12 @@ import userModel, { useUserStatusCheck } from 'models/user';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
+
+const shouldAutoID = () =>
+  appModel.data.useSpeciesImageClassifier &&
+  device.isOnline &&
+  userModel.isLoggedIn() &&
+  userModel.data.verified;
 
 const ListHome = () => {
   const toast = useToast();
@@ -95,13 +102,16 @@ const ListHome = () => {
       multiple: !shouldUseCamera,
     });
 
-    if (!images) return;
+    if (!images.length) return;
 
-    const imageArray = Array.isArray(images) ? images : [images];
     const surveyConfig = sample!.getSurvey();
 
-    const subSamplePromise = imageArray.map(async (img: any) => {
-      const imageModel: any = await Media.getImageModel(img, config.dataPath);
+    const subSamplePromise = images.map(async (img: any) => {
+      const imageModel: any = await Media.getImageModel(
+        isPlatform('hybrid') ? Capacitor.convertFileSrc(img) : img,
+        config.dataPath,
+        true
+      );
 
       const subSample = await surveyConfig.smp!.create!({
         Occurrence,
@@ -110,13 +120,7 @@ const ListHome = () => {
         images: [imageModel],
       });
 
-      const { useSpeciesImageClassifier } = appModel.data;
-      const shouldAutoID =
-        useSpeciesImageClassifier &&
-        device.isOnline &&
-        userModel.isLoggedIn() &&
-        userModel.data.verified;
-      if (shouldAutoID) {
+      if (shouldAutoID()) {
         const [occ] = subSample.occurrences;
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user

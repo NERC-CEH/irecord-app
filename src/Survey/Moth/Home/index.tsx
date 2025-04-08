@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react';
+import { Capacitor } from '@capacitor/core';
 import {
   Page,
   useToast,
@@ -9,7 +10,7 @@ import {
   useSample,
   useRemoteSample,
 } from '@flumens';
-import { NavContext } from '@ionic/react';
+import { NavContext, isPlatform } from '@ionic/react';
 import config from 'common/config';
 import appModel from 'common/models/app';
 import Media from 'common/models/media';
@@ -19,6 +20,12 @@ import userModel, { useUserStatusCheck } from 'models/user';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
 import Main from './Main';
+
+const shouldAutoID = () =>
+  appModel.data.useSpeciesImageClassifier &&
+  device.isOnline &&
+  userModel.isLoggedIn() &&
+  userModel.data.verified;
 
 const MothHome = () => {
   const toast = useToast();
@@ -79,20 +86,18 @@ const MothHome = () => {
     const surveyConfig = sample!.getSurvey();
 
     const occurrencesPromise = imageArray.map(async (img: any) => {
-      const imageModel: any = await Media.getImageModel(img, config.dataPath);
+      const imageModel: any = await Media.getImageModel(
+        isPlatform('hybrid') ? Capacitor.convertFileSrc(img) : img,
+        config.dataPath,
+        true
+      );
 
       const occ = await surveyConfig.occ!.create!({
         Occurrence,
         images: [imageModel],
       });
 
-      const { useSpeciesImageClassifier } = appModel.data;
-      const shouldAutoID =
-        useSpeciesImageClassifier &&
-        device.isOnline &&
-        userModel.isLoggedIn() &&
-        userModel.data.verified;
-      if (shouldAutoID) {
+      if (shouldAutoID()) {
         const processError = (error: any) =>
           !error.isHandled && console.error(error); // don't toast this to user
         occ.identify().catch(processError);
