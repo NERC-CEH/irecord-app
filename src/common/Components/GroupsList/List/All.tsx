@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import DOMPurify from 'dompurify';
 import { Trans as T } from 'react-i18next';
 import { Badge, VirtualList, useAlert } from '@flumens';
 import { IonItem, IonList } from '@ionic/react';
@@ -22,6 +23,11 @@ const Item = ({
 }) => {
   const group: Group = groups[index];
 
+  const hasDescription = !!group.data.description;
+  const sanitizedDescription = hasDescription
+    ? DOMPurify.sanitize(group.data.description!, { ALLOWED_TAGS: [] })
+    : '';
+
   return (
     <IonItem
       className="max-h-[73px] rounded-md border border-solid border-neutral-300 [--min-height:73px]"
@@ -34,9 +40,9 @@ const Item = ({
       <div className="flex flex-col gap-1">
         <div className="line-clamp-1 font-bold">{group.data.title}</div>
 
-        {!!group.data.description && (
+        {hasDescription && (
           <div className="line-clamp-1 text-balance border-t border-solid border-[var(--background)] text-sm text-black/70">
-            {group.data.description}
+            {sanitizedDescription}
           </div>
         )}
       </div>
@@ -54,15 +60,23 @@ const AllGroups = ({ groups, onJoin, onScroll }: Props) => {
   const alert = useAlert();
 
   const onOpen = useMemo(
-    () => (group: Group) =>
+    () => (group: Group) => {
+      const hasDescription = !!group.data.description;
+      const sanitizedDescription = hasDescription
+        ? DOMPurify.sanitize(group.data.description!, {
+            ALLOWED_TAGS: ['b', 'strong', 'i', 'a'],
+          })
+        : '';
+
       alert({
         header: group.data.title,
         message: (
           <div className="flex flex-col gap-1">
-            {!!group.data.description && (
-              <div className="text-balance border-t border-solid border-[var(--background)] text-sm text-black/70">
-                {group.data.description}
-              </div>
+            {hasDescription && (
+              <div
+                className="text-balance border-t border-solid border-[var(--background)] text-sm text-black/70"
+                dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+              />
             )}
 
             {group.data.joiningMethod === 'R' && (
@@ -104,7 +118,8 @@ const AllGroups = ({ groups, onJoin, onScroll }: Props) => {
             handler: () => onJoin(group),
           },
         ],
-      }),
+      });
+    },
     [onJoin]
   );
 

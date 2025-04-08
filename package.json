@@ -53,6 +53,7 @@
     "capacitor-blob-writer": "^1.1.19",
     "clsx": "2.1.1",
     "deep-diff": "1.0.2",
+    "dompurify": "^3.2.5",
     "drizzle-orm": "^0.38.3",
     "i18next": "^24.2.1",
     "ionicons": "^7.4.0",
