@@ -46,7 +46,7 @@ const ListOccurrenceHome = () => {
                 routerLink: `${url}/occ/${occ.cid}/comment`,
               }}
             />
-            <MenuDynamicAttrs model={subSample} />
+            <MenuDynamicAttrs model={subSample} skipLocks />
             <MenuAttr
               model={occ}
               attr="sensitivityPrecision"
