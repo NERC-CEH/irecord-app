@@ -4,13 +4,12 @@ import clsx from 'clsx';
 import { useTranslation, Trans as T } from 'react-i18next';
 import {
   IonList,
-  IonRadioGroup,
   IonItem,
   IonItemOption,
   IonItemOptions,
   IonItemSliding,
-  IonRadio,
 } from '@ionic/react';
+import { RadioInput } from 'common/flumens';
 import Group from 'common/models/group';
 import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
 
@@ -32,9 +31,9 @@ const UserGroups = ({
   // force update the radio styles
   const [currentValue, forceRefresh] = useState(currentValueProp);
 
-  const onSelectWrap = (e: any) => {
-    onSelect(e.detail.value);
-    forceRefresh(e.detail.value);
+  const onSelectWrap = (newValue: any) => {
+    onSelect(newValue);
+    forceRefresh(newValue);
   };
 
   const groupOptions: (Group | null)[] = [...groups];
@@ -59,7 +58,7 @@ const UserGroups = ({
       <IonItemSliding
         key={value}
         className={clsx(
-          'my-3 rounded-md border border-solid',
+          'rounded-md border border-solid',
           !value && 'opacity-70',
           isSelected ? 'border-[var(--form-value-color)]' : 'border-neutral-300'
         )}
@@ -67,25 +66,22 @@ const UserGroups = ({
       >
         <IonItem
           className={clsx(
-            '!m-0 !rounded-none !border-none ![--border-radius:0]',
+            '!m-0 !rounded-none !border-none ![--border-radius:0] [--inner-padding-end:0px] [--padding-start:0px]',
             isSelected &&
               'bg-white text-[var(--form-value-color)] [--background:rgba(var(--color-tertiary-900-rgb),0.02)] [--ion-color-primary:var(--form-value-color)]'
           )}
         >
-          <IonRadio
-            labelPlacement="start"
-            value={value}
-            mode="ios"
-            disabled={isMembershipPending}
-          >
-            {label}
-            {isMembershipPending && (
-              <>
-                {' '}
-                (<T>Membership pending</T>)
-              </>
-            )}
-          </IonRadio>
+          <RadioInput.Option
+            label={
+              isMembershipPending
+                ? `${label} (${t('Membership pending')})`
+                : label
+            }
+            value={value!}
+            className="w-full border-none"
+            key={label}
+            isDisabled={isMembershipPending}
+          />
         </IonItem>
 
         <IonItemOptions side="end">
@@ -109,14 +105,14 @@ const UserGroups = ({
     );
 
   return (
-    <IonList lines="full" className="radio-input-attr">
-      <IonRadioGroup
+    <IonList lines="full" className="mt-4">
+      <RadioInput
+        onChange={onSelectWrap}
         value={currentValue}
         allowEmptySelection
-        onIonChange={onSelectWrap}
       >
         {groupOptions.map(getGroupOption)}
-      </IonRadioGroup>
+      </RadioInput>
     </IonList>
   );
 };
