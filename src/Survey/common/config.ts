@@ -57,6 +57,10 @@ export const commentAttr = {
     attrProps: {
       input: 'textarea',
       info: 'Please add any extra info about this record.',
+      inputProps: {
+        isMultiline: true,
+        className: 'h-36 [&>div>div>textarea]:h-36',
+      },
     },
   },
 };
