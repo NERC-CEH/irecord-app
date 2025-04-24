@@ -42,7 +42,7 @@ function prettifyName(
       </small>
     );
   } else {
-    const commonName = species.commonNames || [];
+    const commonName = species.commonNames?.[0];
     if (commonName) secondaryName = <small>{commonName}</small>;
   }
 
