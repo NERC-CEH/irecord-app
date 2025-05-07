@@ -11,7 +11,7 @@ import {
   mapMetresToZoom,
   Page,
 } from '@flumens';
-import { IonSpinner } from '@ionic/react';
+import { IonSpinner, useIonViewWillEnter } from '@ionic/react';
 import GeolocateButton from 'common/Components/GeolocateButton';
 import config from 'common/config';
 import { groups as informalGroups } from 'common/data/informalGroups';
@@ -226,6 +226,11 @@ const Map = () => {
 
   const transformRequest = (url: string) =>
     url.startsWith('https://api.os.uk') ? { url: `${url}&srs=3857` } : { url };
+
+  const refreshMapContainerSize = () => {
+    if (mapRef.current) mapRef.current.resize();
+  };
+  useIonViewWillEnter(refreshMapContainerSize); // using willEnter because otherwise shows a resize glitch due to animation time
 
   return (
     <Page id="home-map">
