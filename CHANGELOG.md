@@ -1,3 +1,7 @@
+## 6.2.1
+
+Fixed hidden pending records.
+
 ## 6.2.0
 
 - Added the ability to view all uploaded records, including those from other devices.
