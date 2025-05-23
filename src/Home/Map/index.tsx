@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T, useTranslation } from 'react-i18next';
 import { MapRef, LngLatBounds } from 'react-map-gl/mapbox';
@@ -10,6 +10,7 @@ import {
   ElasticOccurrence,
   mapMetresToZoom,
   Page,
+  useCallbackMapRefresh,
 } from '@flumens';
 import { IonSpinner, useIonViewWillEnter } from '@ionic/react';
 import GeolocateButton from 'common/Components/GeolocateButton';
@@ -41,11 +42,7 @@ const getTotalSquares = (squares: Square[]) => {
 
 const Map = () => {
   const { t } = useTranslation();
-  const [mapRef, setMapRef] = useState<{ current?: MapRef }>({});
-  const measuredRef = useCallback(
-    (node: any) => node && setMapRef({ current: node }),
-    []
-  );
+  const [mapRef, setMapRef] = useState<MapRef>();
 
   const [isFetchingRecords, setFetchingRecords] = useState<any>(null);
   const toast = useToast();
@@ -75,16 +72,16 @@ const Map = () => {
 
   const updateRecords = async () => {
     if (
-      !mapRef.current ||
+      !mapRef ||
       !userIsLoggedIn ||
       !userModel.data.verified ||
       !device.isOnline
     )
       return;
 
-    const bounds: LngLatBounds = mapRef.current.getBounds()!; // TODO: .pad(0.5); // padding +50%
+    const bounds: LngLatBounds = mapRef.getBounds()!; // TODO: .pad(0.5); // padding +50%
 
-    const zoomLevel = mapRef.current.getZoom();
+    const zoomLevel = mapRef.getZoom();
     const northWest = bounds.getNorthWest();
     const southEast = bounds.getSouthEast();
 
@@ -187,9 +184,9 @@ const Map = () => {
       radius / padding / 0.075 / Math.cos((latitude * Math.PI) / 180);
 
     const zoomIn = () => {
-      mapRef.current?.flyTo({
+      mapRef?.flyTo({
         center: [longitude, latitude],
-        zoom: mapMetresToZoom(square.size / 2) || mapRef.current.getZoom(),
+        zoom: mapMetresToZoom(square.size / 2) || mapRef.getZoom(),
         duration: 500,
       });
     };
@@ -227,16 +224,13 @@ const Map = () => {
   const transformRequest = (url: string) =>
     url.startsWith('https://api.os.uk') ? { url: `${url}&srs=3857` } : { url };
 
-  const refreshMapContainerSize = () => {
-    if (mapRef.current) mapRef.current.resize();
-  };
-  useIonViewWillEnter(refreshMapContainerSize); // using willEnter because otherwise shows a resize glitch due to animation time
+  useCallbackMapRefresh(useIonViewWillEnter, mapRef);
 
   return (
     <Page id="home-map">
       <MapContainer
         id="user-records"
-        ref={measuredRef}
+        onReady={setMapRef as any}
         accessToken={config.map.mapboxApiKey}
         maxZoom={17}
         customAttribution='&copy; <a href="http://www.ordnancesurvey.co.uk/">Ordnance Survey</a>'

@@ -7,7 +7,9 @@ import {
   MapContainer,
   mapFlyToLocation,
   Location,
+  useCallbackMapRefresh,
 } from '@flumens';
+import { useIonViewWillEnter } from '@ionic/react';
 import config from 'common/config';
 import PastLocationsControl from './PastLocationsControl';
 
@@ -109,6 +111,8 @@ const MapboxContainer = ({
       paint={{ 'circle-color': '#00bd1a', 'circle-stroke-color': 'white' }}
     />
   ));
+
+  useCallbackMapRefresh(useIonViewWillEnter, mapRef);
 
   return (
     <MapContainer
