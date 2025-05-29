@@ -206,6 +206,7 @@ const AppPhotoPicker = ({
         value={model.media}
         Image={useClassifier ? ImageWithClassification : undefined}
         Gallery={useClassifier ? GalleryWithClassification : undefined}
+        onRemove={onRemove}
         galleryProps={{
           onCrop: onCropExisting,
           onSpeciesSelect,
