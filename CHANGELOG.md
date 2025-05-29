@@ -1,3 +1,7 @@
+## 6.2.2
+
+Fixed photo deletion when species suggestions are switched off.
+
 ## 6.2.1
 
 Fixed hidden pending records.
