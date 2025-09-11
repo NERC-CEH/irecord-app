@@ -1,3 +1,7 @@
+## 6.2.3
+
+Fixed Android startup bug.
+
 ## 6.2.2
 
 Fixed photo deletion when species suggestions are switched off.

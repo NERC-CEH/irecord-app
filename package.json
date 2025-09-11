@@ -3,7 +3,7 @@
   "id": "uk.ac.ceh.irecord",
   "title": "iRecord App",
   "description": "iRecord mobile application.",
-  "version": "6.2.2",
+  "version": "6.2.3",
   "homepage": "https://irecord.org.uk",
   "scripts": {
     "prepare": "husky",
@@ -21,7 +21,7 @@
     "make:species": "cd src/common/data && tsx make.ts"
   },
   "dependencies": {
-    "@capacitor-community/sqlite": "^7.0.0",
+    "@capacitor-community/sqlite": "^7.0.1",
     "@capacitor/android": "7.2.0",
     "@capacitor/app": "7.0.1",
     "@capacitor/camera": "7.0.1",
