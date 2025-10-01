@@ -320,10 +320,12 @@ const Help = () => (
                 <img src={verified2Pic} alt="" className="mx-auto my-2 block" />
               </T>
               <p>
-                Tap on a queried record to get a link to that record via the
-                iRecord website. If you go to the website you will be able to
-                see what the query is, and to add a reply or edit your record if
-                required:
+                <T>
+                  Tap on a queried record to get a link to that record via the
+                  iRecord website. If you go to the website you will be able to
+                  see what the query is, and to add a reply or edit your record
+                  if required:
+                </T>
               </p>
               <img src={verified3Pic} alt="" className="mx-auto my-2 block" />
             </div>

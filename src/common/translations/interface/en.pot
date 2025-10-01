@@ -2294,3 +2294,147 @@ msgstr "Sensitivity"
 # From record attributes 
 msgid "This option will 'blur' the location details: they will be displayed as a 1 km square (rather than a precise point) and will have the site name hidden. Precise location details will be made available to verifiers and local records centres, but will not be displayed publicly."
 msgstr "This option will 'blur' the location details: they will be displayed as a 1 km square (rather than a precise point) and will have the site name hidden. Precise location details will be made available to verifiers and local records centres, but will not be displayed publicly."
+
+# From Help page
+msgid "Tap on a queried record to get a link to that record via the iRecord website. If you go to the website you will be able to see what the query is, and to add a reply or edit your record if required:"
+msgstr "Tap on a queried record to get a link to that record via the iRecord website. If you go to the website you will be able to see what the query is, and to add a reply or edit your record if required:"
+
+# Context term 
+msgid "Membership pending"
+msgstr "Membership pending"
+
+# Context term 
+msgid "Any records you add from now on will be submitted to the chosen activity."
+msgstr "Any records you add from now on will be submitted to the chosen activity."
+
+# Context term 
+msgid "Successfully left the activity."
+msgstr "Successfully left the activity."
+
+# Taxon group name 
+msgid "Amphibians and reptiles"
+msgstr "Amphibians and reptiles"
+
+# Taxon group name 
+msgid "Birds"
+msgstr "Birds"
+
+# Taxon group name 
+msgid "Fish"
+msgstr "Fish"
+
+# Taxon group name 
+msgid "Fungi and slime moulds"
+msgstr "Fungi and slime moulds"
+
+# Taxon group name 
+msgid "Insects"
+msgstr "Insects"
+
+# Taxon group name 
+msgid "Invertebrates"
+msgstr "Invertebrates"
+
+# Taxon group name 
+msgid "Lichens"
+msgstr "Lichens"
+
+# Taxon group name 
+msgid "Mammals"
+msgstr "Mammals"
+
+# Taxon group name 
+msgid "Other groups"
+msgstr "Other groups"
+
+# Taxon group name 
+msgid "Plants"
+msgstr "Plants"
+
+# Taxon group name 
+msgid "Ants, bees, sawflies, wasps"
+msgstr "Ants, bees, sawflies, wasps"
+
+# Taxon group name 
+msgid "Beetles"
+msgstr "Beetles"
+
+# Taxon group name 
+msgid "Butterflies"
+msgstr "Butterflies"
+
+# Taxon group name 
+msgid "Dragonflies and damselflies"
+msgstr "Dragonflies and damselflies"
+
+# Taxon group name 
+msgid "Grasshoppers and allies"
+msgstr "Grasshoppers and allies"
+
+# Taxon group name 
+msgid "Moths"
+msgstr "Moths"
+
+# Taxon group name 
+msgid "Other insect groups"
+msgstr "Other insect groups"
+
+# Taxon group name 
+msgid "Riverflies"
+msgstr "Riverflies"
+
+# Taxon group name 
+msgid "True bugs and hoppers"
+msgstr "True bugs and hoppers"
+
+# Taxon group name 
+msgid "True flies"
+msgstr "True flies"
+
+# Taxon group name 
+msgid "Centipedes, millipedes"
+msgstr "Centipedes, millipedes"
+
+# Taxon group name 
+msgid "Crustaceans"
+msgstr "Crustaceans"
+
+# Taxon group name 
+msgid "Molluscs"
+msgstr "Molluscs"
+
+# Taxon group name 
+msgid "Other invertebrate groups"
+msgstr "Other invertebrate groups"
+
+# Taxon group name 
+msgid "Spiders, harvestmen and other arachnids"
+msgstr "Spiders, harvestmen and other arachnids"
+
+# Taxon group name 
+msgid "Worms"
+msgstr "Worms"
+
+# Taxon group name 
+msgid "Vascular plants"
+msgstr "Vascular plants"
+
+# Taxon group name 
+msgid "Algae"
+msgstr "Algae"
+
+# Taxon group name 
+msgid "Mosses and relatives"
+msgstr "Mosses and relatives"
+
+# Attr name 
+msgid "Immature"
+msgstr "Immature"
+
+# Attr name 
+msgid "Chick"
+msgstr "Chick"
+
+# Attr name 
+msgid "Nest"
+msgstr "Nest"

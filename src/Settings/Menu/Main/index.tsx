@@ -282,7 +282,7 @@ const MenuMain = ({
           </InfoMessage>
           <IonItem onClick={showDatabaseExportDialog}>
             <IonIcon icon={cloudDownloadOutline} size="small" slot="start" />
-            Export database
+            <T>Export database</T>
           </IonItem>
 
           {!isPlatform('hybrid') && (
