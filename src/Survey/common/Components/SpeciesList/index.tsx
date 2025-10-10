@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import { filterOutline } from 'ionicons/icons';
+import { Trans as T } from 'react-i18next';
 import { InfoBackgroundMessage, useToast } from '@flumens';
 import { IonButton, IonIcon, IonList, IonLabel } from '@ionic/react';
 import appModel from 'models/app';
@@ -97,8 +98,14 @@ const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
       <IonList id="list" lines="full" className="mb-2">
         <div className="rounded-list">
           <div className="list-divider species-list-header">
-            {!sample.isDisabled && <IonLabel>Count</IonLabel>}
-            <IonLabel>Species</IonLabel>
+            {!sample.isDisabled && (
+              <IonLabel>
+                <T>Count</T>
+              </IonLabel>
+            )}
+            <IonLabel>
+              <T>Species</T>
+            </IonLabel>
             <IonLabel className="!text-right">{speciesList.length}</IonLabel>
           </div>
 

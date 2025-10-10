@@ -2442,3 +2442,15 @@ msgstr "Nest"
 # Setting page 
 msgid "Are you sure you want to export the data?<1>This feature is intended solely for technical support and is not a supported method for exporting your data</1>"
 msgstr "Are you sure you want to export the data?<1>This feature is intended solely for technical support and is not a supported method for exporting your data</1>"
+
+# Attr Name 
+msgid "Sensitive"
+msgstr "Sensitive"
+
+# Species list ordering option 
+msgid "Changed list ordering to alphabetical."
+msgstr "Changed list ordering to alphabetical."
+
+# Species list ordering option 
+msgid "Changed list ordering to last added."
+msgstr "Changed list ordering to last added."
