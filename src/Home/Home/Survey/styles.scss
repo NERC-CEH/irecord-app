@@ -50,6 +50,7 @@ ion-item-sliding.survey-list-item {
           border-radius: var(--theme-border-radius);
           background: white;
           width: fit-content;
+          max-width: 70px;
         }
 
         .number {
