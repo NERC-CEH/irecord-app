@@ -1866,10 +1866,6 @@ msgstr "Use grid alert"
 msgid "Status"
 msgstr "Status"
 
-# Plant survey attribute
-msgid "Sensitive"
-msgstr "Sensitive"
-
 # Status attribute message
 msgid "Please pick the status."
 msgstr "Please pick the status."
@@ -2080,8 +2076,8 @@ msgid "rejected"
 msgstr "rejected"
 
 # Verification message 
-msgid "Thanks for sending in your record. A verifier has marked it as <2>"{{statusMessage}}"</2> in this case."
-msgstr "Thanks for sending in your record. A verifier has marked it as <2>"{{statusMessage}}"</2> in this case."
+msgid "Thanks for sending in your record. A verifier has marked it as <2>\"{{statusMessage}}\"</2> in this case."
+msgstr "Thanks for sending in your record. A verifier has marked it as <2>\"{{statusMessage}}\"</2> in this case."
 
 # Verification message 
 msgid "Please log in to the iRecord website to see any additional information that the verifier may have provided."
@@ -2279,9 +2275,6 @@ msgstr "Suggestions:"
 msgid "Loading suggestions"
 msgstr "Loading suggestions"
 
-# Part of species identification message 
-msgid "Identifying..."
-msgstr "Identifying..."
 
 # Error message
 msgid "Not implemented on web."
@@ -2438,6 +2431,14 @@ msgstr "Chick"
 # Attr name 
 msgid "Nest"
 msgstr "Nest"
+
+# Setting page 
+msgid "Export database"
+msgstr "Export database"
+
+# Map page 
+msgid "You need to <1>login</1> to your account to be able to view the records."
+msgstr "You need to <1>login</1> to your account to be able to view the records."
 
 # Setting page 
 msgid "Are you sure you want to export the data?<1>This feature is intended solely for technical support and is not a supported method for exporting your data</1>"

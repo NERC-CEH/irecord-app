@@ -102,25 +102,23 @@ const GroupsList = ({
             />
 
             {!showSearch && (
-              <>
-                <IonSegment
-                  onIonChange={onSegmentClick}
-                  value={segment}
-                  className="mx-0"
-                >
-                  <IonSegmentButton value="joined">
-                    <IonLabel className="ion-text-wrap">
-                      <T>My activities</T>
-                    </IonLabel>
-                  </IonSegmentButton>
+              <IonSegment
+                onIonChange={onSegmentClick}
+                value={segment}
+                className="mx-0"
+              >
+                <IonSegmentButton value="joined">
+                  <IonLabel className="ion-text-wrap">
+                    <T>My activities</T>
+                  </IonLabel>
+                </IonSegmentButton>
 
-                  <IonSegmentButton value="all">
-                    <IonLabel className="ion-text-wrap">
-                      <T>All activities</T>
-                    </IonLabel>
-                  </IonSegmentButton>
-                </IonSegment>
-              </>
+                <IonSegmentButton value="all">
+                  <IonLabel className="ion-text-wrap">
+                    <T>All activities</T>
+                  </IonLabel>
+                </IonSegmentButton>
+              </IonSegment>
             )}
 
             <Button

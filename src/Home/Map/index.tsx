@@ -17,7 +17,7 @@ import GeolocateButton from 'common/Components/GeolocateButton';
 import config from 'common/config';
 import { groups as informalGroups } from 'common/data/informalGroups';
 import userModel from 'models/user';
-import MapFilters, { dateRanges, monthAgo } from './Filters';
+import MapFilters, { getDateRanges, monthAgo } from './Filters';
 import RecordProfiles from './RecordProfiles';
 import { fetchRecords, fetchSquares, Square } from './recordsService';
 import './styles.scss';
@@ -251,7 +251,7 @@ const Map = () => {
             <div className="filters-column">
               <div className="filters-row">
                 <MapFilters.Select
-                  options={dateRanges}
+                  options={getDateRanges()}
                   onChange={onStartDateSelect}
                   value={startDate}
                 />
