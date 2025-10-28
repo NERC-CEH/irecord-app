@@ -1,23 +1,31 @@
 /** ****************************************************************************
  * Extract common names as pointers in an array.
  **************************************************************************** */
-
-/* eslint-disable */
+// eslint-disable-next-line import/extensions
 import {
   GENUS_SPECIES_INDEX,
   GENUS_NAMES_INDEX,
   SPECIES_NAMES_INDEX,
-} from './constants.js';
+} from './constants';
 
-function isGenusPointer(p) {
+type GenusPointer = [number, number];
+type SpeciesPointer = [number, number, number];
+type NamePointer = GenusPointer | SpeciesPointer;
+type NamePointers = NamePointer[][];
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AllSpecies = any[];
+
+const isGenusPointer = (p: NamePointer): p is GenusPointer => {
   return p.length === 2;
-}
+};
 
 /**
  * Return common name from common names array pointer
- * @param p array pointersrc/common/pages/Taxon/utils/searchHelpers.js
+ * @param allSpecies - The species array
+ * @param p - Array pointer
  */
-function getCommonName(allSpecies, p) {
+const getCommonName = (allSpecies: AllSpecies, p: NamePointer): string => {
   if (isGenusPointer(p)) {
     const [genusIndex, nameIndex] = p;
     return allSpecies[genusIndex][GENUS_NAMES_INDEX][nameIndex].toLowerCase();
@@ -27,41 +35,56 @@ function getCommonName(allSpecies, p) {
   return allSpecies[genusIndex][GENUS_SPECIES_INDEX][speciesIndex][
     SPECIES_NAMES_INDEX
   ][nameIndex].toLowerCase();
-}
+};
 
 /**
  * Splits a word and adds it to common names array
- * @param word
- * @param index
+ * @param namePointers - The name pointers array
+ * @param word - The word to split and add
+ * @param index - The pointer indices
  */
-function addWord(namePointers, word, ...index) {
+const addWord = (
+  namePointers: NamePointers,
+  word: string,
+  ...index: number[]
+): void => {
   const words = word.split(' ');
-  words.forEach((_, wordIndex) => {
-    namePointers[wordIndex] = namePointers[wordIndex] || [];
-    namePointers[wordIndex].push(index);
-  });
-}
 
-function addGenusNamePointers(namePointers, names, genusIndex) {
-  names.forEach((name, nameIndex) =>
+  words.forEach((_: string, wordIndex: number) => {
+    // eslint-disable-next-line no-param-reassign
+    namePointers[wordIndex] = namePointers[wordIndex] || [];
+    namePointers[wordIndex].push(index as NamePointer);
+  });
+};
+
+const addGenusNamePointers = (
+  namePointers: NamePointers,
+  names: string[],
+  genusIndex: number
+): void => {
+  names.forEach((name: string, nameIndex: number) =>
     addWord(namePointers, name, genusIndex, nameIndex)
   );
-}
+};
 
-function addSpeciesNamePointers(namePointers, speciesArray, genusIndex) {
-  speciesArray.forEach((species, speciesIndex) => {
+const addSpeciesNamePointers = (
+  namePointers: NamePointers,
+  speciesArray: AllSpecies,
+  genusIndex: number
+): void => {
+  speciesArray.forEach((species: AllSpecies, speciesIndex: number) => {
     if (species[SPECIES_NAMES_INDEX]) {
-      species[SPECIES_NAMES_INDEX].forEach((name, nameIndex) =>
+      species[SPECIES_NAMES_INDEX].forEach((name: string, nameIndex: number) =>
         addWord(namePointers, name, genusIndex, speciesIndex, nameIndex)
       );
     }
   });
-}
+};
 
-function getNamePointers(genusArray) {
-  const namePointers = [];
+const getNamePointers = (genusArray: AllSpecies): NamePointers => {
+  const namePointers: NamePointers = [];
 
-  genusArray.forEach((speciesEntry, genusIndex) => {
+  genusArray.forEach((speciesEntry: AllSpecies, genusIndex: number) => {
     const genusNamesArray = speciesEntry[GENUS_NAMES_INDEX] || [];
     addGenusNamePointers(namePointers, genusNamesArray, genusIndex);
 
@@ -70,12 +93,15 @@ function getNamePointers(genusArray) {
   });
 
   return namePointers;
-}
+};
 
-const sortPointers = (species, namePointers) => {
+const sortPointers = (
+  species: AllSpecies,
+  namePointers: NamePointers
+): void => {
   // sort within each name-word-count index
-  const pointerSorter = (names, nameIndex) => {
-    names.sort((a, b) => {
+  const pointerSorter = (names: NamePointer[], nameIndex: number): void => {
+    names.sort((a: NamePointer, b: NamePointer) => {
       let spA = getCommonName(species, a);
       let spB = getCommonName(species, b);
 
@@ -87,9 +113,12 @@ const sortPointers = (species, namePointers) => {
 
       if (spA > spB) {
         return 1;
-      } else if (spA < spB) {
+      }
+
+      if (spA < spB) {
         return -1;
       }
+
       return 0;
     });
   };
@@ -97,7 +126,8 @@ const sortPointers = (species, namePointers) => {
   namePointers.forEach(pointerSorter);
 };
 
-export default species => {
+export default (species: AllSpecies): NamePointers => {
+  // eslint-disable-next-line no-console
   console.log('Building name map...');
 
   const namePointers = getNamePointers(species);

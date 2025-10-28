@@ -18,10 +18,17 @@ const MenuTaxonItem = ({ occ }: Props) => {
     taxon?.scientificName ||
     // backwards compatible
     (taxon as any)?.scientific_name;
-  const commonName =
-    taxon && Number.isFinite(taxon.foundInName)
-      ? taxon.commonNames[taxon.foundInName as number]
-      : '';
+
+  let commonName = '';
+
+  if (taxon && Number.isFinite(taxon.foundInName)) {
+    commonName = taxon.commonNames[taxon.foundInName as number];
+  }
+
+  if ((taxon as any)?.commonName) {
+    // in case pulling from warehouse, it is different format
+    commonName = (taxon as any).commonName;
+  }
 
   const empty = !commonName && !scientificName;
 

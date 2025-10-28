@@ -6,6 +6,7 @@ import camelCase from 'lodash/camelCase';
 import mapKeys from 'lodash/mapKeys';
 import { z, object } from 'zod';
 import makeCommonNameMap from './extractCommonNames';
+import makeWarehouseIdMap from './extractWarehouseIds';
 import optimise from './optimise';
 
 dotenv.config({ path: '../../../.env' });
@@ -71,7 +72,7 @@ async function fetch(): Promise<RemoteAttributes[]> {
   return docs;
 }
 
-function saveSpeciesToFile(species: any) {
+function saveSpeciesToFile(species: any): any {
   return new Promise((resolve, reject) => {
     console.log(`Writing ./species.data.json`);
 
@@ -107,6 +108,7 @@ function saveCommonNamesToFile(commonNames: any) {
 fetch()
   .then((species: any) => optimise(species))
   .then(saveSpeciesToFile)
+  .then(makeWarehouseIdMap)
   .then(makeCommonNameMap)
   .then(saveCommonNamesToFile)
   .then(() => console.log('All done!'));
