@@ -73,8 +73,8 @@ const EditMain = ({ sample }: Props) => {
   const { isDisabled } = sample;
 
   return (
-    <Main>
-      <IonList lines="full" className="mb-2 flex flex-col gap-4">
+    <Main className="[--padding-bottom:30px]">
+      <IonList lines="full" className="mb-2 flex! flex-col gap-4">
         {isDisabled && (
           <div className="rounded-list mb-2">
             <VerificationMessage occurrence={occ} />

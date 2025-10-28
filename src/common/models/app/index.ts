@@ -93,7 +93,6 @@ export class AppModel extends Model<Data> {
 
     this.ready.then(() => {
       if (!this.data.attrLocksCleanedV620) {
-        console.log('Resetting attr locks');
         this.data.attrLocks = { default: {}, complex: {} };
         this.data.attrLocksCleanedV620 = true;
         this.save();
@@ -109,6 +108,6 @@ export class AppModel extends Model<Data> {
   }
 }
 
-const appModel = new AppModel({ cid: 'app', store: mainStore });
+const appModel = new AppModel({ id: 'app', cid: 'app', store: mainStore });
 
 export default appModel;

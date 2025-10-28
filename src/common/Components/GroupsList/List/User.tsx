@@ -105,7 +105,7 @@ const UserGroups = ({
     );
 
   return (
-    <IonList lines="full" className="mt-4">
+    <IonList lines="full" className="mt-4!">
       <RadioInput
         onChange={onSelectWrap}
         value={currentValue}

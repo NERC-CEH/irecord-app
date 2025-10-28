@@ -1,15 +1,125 @@
-@import '@ionic/core/css/ionic.bundle.css';
+@import '@ionic/core/css/core.css';
+@import '@ionic/core/css/structure.css';
+@import '@ionic/core/css/typography.css';
+/* @import '@ionic/core/css/normalize.css'; // not adding because messes up tailwind buttons */
+
 @import '@flumens/ionic/dist/themes/rounded.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
+@source "../../node_modules/@flumens/tailwind";
+@source "../../node_modules/@flumens/ionic";
+
+@theme {
+  /* https://www.tailwindshades.com/#color=69.49640287769785%2C71.2820512820513%2C38.23529411764706&step-up=11&step-down=10&hue-shift=0&name=primary&base-stop=6&v=1&overrides=e30%3D */
+  --color-primary: oklch(68.775% 0.15379 119);
+  --color-primary-50: oklch(99.489% 0.00664 115.7);
+  --color-primary-100: oklch(97.549% 0.03299 114.39);
+  --color-primary-200: oklch(93.808% 0.08436 115.16);
+  --color-primary-300: oklch(90.197% 0.1314 116.66);
+  --color-primary-400: oklch(86.884% 0.16863 117.76);
+  --color-primary-500: oklch(82.989% 0.18685 119.01);
+  --color-primary-600: oklch(68.775% 0.15379 119);
+  --color-primary-700: oklch(55.109% 0.12133 118.73);
+  --color-primary-800: oklch(40.79% 0.0881 118.87);
+  --color-primary-900: oklch(24.754% 0.04857 118.05);
+  --color-primary-950: oklch(15.683% 0.02852 115.88);
+
+  /* https://www.tailwindshades.com/#color=210.17142857142855%2C100%2C34.31372549019608&step-up=9&step-down=13&hue-shift=0&name=secondary&base-stop=7&v=1&overrides=e30%3D */
+  --color-secondary: oklch(46.662% 0.15745 255.68);
+  --color-secondary-50: oklch(93.751% 0.03173 246.7);
+  --color-secondary-100: oklch(89.756% 0.05223 248.41);
+  --color-secondary-200: oklch(82.212% 0.09277 249.48);
+  --color-secondary-300: oklch(74.987% 0.13351 250.31);
+  --color-secondary-400: oklch(68.377% 0.17159 252.06);
+  --color-secondary-500: oklch(62.651% 0.2043 255.31);
+  --color-secondary-600: oklch(55.203% 0.18928 256.11);
+  --color-secondary-700: oklch(46.662% 0.15745 255.68);
+  --color-secondary-800: oklch(33.655% 0.10867 254.43);
+  --color-secondary-900: oklch(19.142% 0.05202 248.39);
+  --color-secondary-950: oklch(10.739% 0.02107 228.56);
+
+  /* https://www.tailwindshades.com/#color=278%2C20.833333333333336%2C28.235294117647058&step-up=10&step-down=10&hue-shift=0&name=tertiary&base-stop=7&v=1&overrides=e30%3D */
+  --color-tertiary: oklch(37.794% 0.0554 312.68);
+  --color-tertiary-50: oklch(94.293% 0.01072 316.49);
+  --color-tertiary-100: oklch(90.126% 0.01828 314.73);
+  --color-tertiary-200: oklch(81.472% 0.03575 314.06);
+  --color-tertiary-300: oklch(72.639% 0.05417 313.69);
+  --color-tertiary-400: oklch(63.526% 0.07317 312.43);
+  --color-tertiary-500: oklch(54.61% 0.08736 312.65);
+  --color-tertiary-600: oklch(46.393% 0.07182 312.66);
+  --color-tertiary-700: oklch(37.794% 0.0554 312.68);
+  --color-tertiary-800: oklch(28.675% 0.03769 312.71);
+  --color-tertiary-900: oklch(18.763% 0.01771 312.69);
+  --color-tertiary-950: oklch(13.322% 0.0082 315.38);
+
+  /* https://www.tailwindshades.com/#color=0%2C85.36585365853658%2C59.80392156862745&step-up=8&step-down=11&hue-shift=0&name=danger&base-stop=5&v=1&overrides=e30%3D */
+  --color-danger: oklch(63.538% 0.21167 25.6);
+  --color-danger-50: oklch(95.437% 0.0196 17.501);
+  --color-danger-100: oklch(91.236% 0.04024 17.913);
+  --color-danger-200: oklch(83.016% 0.08326 18.986);
+  --color-danger-300: oklch(75.547% 0.12772 20.507);
+  --color-danger-400: oklch(68.817% 0.17302 22.739);
+  --color-danger-500: oklch(63.538% 0.21167 25.6);
+  --color-danger-600: oklch(58.728% 0.23449 28.638);
+  --color-danger-700: oklch(48.633% 0.19267 28.477);
+  --color-danger-800: oklch(38.007% 0.14816 28.152);
+  --color-danger-900: oklch(26.604% 0.0996 27.398);
+  --color-danger-950: oklch(20.442% 0.07305 26.62);
+
+  /* Success */
+  --color-success: var(--color-primary);
+  --color-success-50: var(--color-primary-50);
+  --color-success-100: var(--color-primary-100);
+  --color-success-200: var(--color-primary-200);
+  --color-success-300: var(--color-primary-300);
+  --color-success-400: var(--color-primary-400);
+  --color-success-500: var(--color-primary-500);
+  --color-success-600: var(--color-primary-600);
+  --color-success-700: var(--color-primary-700);
+  --color-success-800: var(--color-primary-800);
+  --color-success-900: var(--color-primary-900);
+  --color-success-950: var(--color-primary-950);
+
+  /* https://www.tailwindshades.com/#color=23.17241379310345%2C100%2C28.431372549019606&step-up=10&step-down=11&hue-shift=0&name=warning&base-stop=7&v=1&overrides=e30%3D */
+  --color-warning: oklch(45.894% 0.1329 44.26);
+  --color-warning-50: oklch(95.066% 0.02805 51.848);
+  --color-warning-100: oklch(91.566% 0.05062 54.506);
+  --color-warning-200: oklch(84.531% 0.09654 52.709);
+  --color-warning-300: oklch(78.282% 0.14155 51.411);
+  --color-warning-400: oklch(72.885% 0.18105 47.96);
+  --color-warning-500: oklch(67.475% 0.20215 42.383);
+  --color-warning-600: oklch(57.004% 0.16801 43.272);
+  --color-warning-700: oklch(45.894% 0.1329 44.26);
+  --color-warning-800: oklch(32.855% 0.09149 46.589);
+  --color-warning-900: oklch(18.619% 0.04431 58.553);
+  --color-warning-950: oklch(9.2038% 0.0196 73.07);
+}
+
+/* tailwind is loaded later than ionic so resets some of the ionic's base styles */
 @layer base {
-  h1 {
-    // tailwind is loaded later than ionic so resets some of the ionic's base styles
-    @apply mt-5 text-2xl;
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    margin: revert-layer;
   }
+
+  a {
+    /* change link colours */
+    color: var(--ion-color-primary);
+  }
+}
+
+h1 {
+  @apply my-5 text-2xl;
+}
+h2 {
+  @apply my-2 text-base;
+}
+h3 {
+  @apply my-1 text-base;
 }
 
 :root {
@@ -99,10 +209,10 @@
 
   --light-shadow: 0px 0px 11px 0px #00000012;
 
-  --form-value-color: rgba(var(--color-primary-800-rgb), 0.9);
+  --form-value-color: var(--color-primary-800);
 }
 
-// status bar
+/* status bar */
 html.ios.plt-hybrid #status-bar-background {
   position: fixed;
   top: 0;
@@ -112,7 +222,7 @@ html.ios.plt-hybrid #status-bar-background {
   height: env(safe-area-inset-top);
 }
 
-// FONTS START
+/* FONTS START */
 @font-face {
   font-weight: 300;
   src: url('./fonts/Quicksand-Light.ttf');
@@ -177,9 +287,9 @@ ion-item {
 button[type='button'] > div {
   font-weight: 500;
 }
-// FONTS END
+/* FONTS END */
 
-// header colours
+/* header colours */
 .apps-section .apps-section-h,
 h1,
 h2,
@@ -187,7 +297,7 @@ h3 {
   color: var(--color-primary-900);
 }
 
-// make the toolbar white
+/* make the toolbar white */
 ion-header ion-toolbar {
   --background: white;
 
@@ -209,43 +319,45 @@ ion-header ion-toolbar {
   }
 }
 
-// change link colours
+/* change link colours */
 a {
   color: var(--color-primary-700);
   font-weight: 600;
 }
 
-// info messages
+/* info messages */
 .attr-page .info-message {
   @apply border-secondary-300/40 bg-secondary-50 text-secondary-900;
 }
 
-// ACCESSIBILITY IMPROVEMENTS START
+/* ACCESSIBILITY IMPROVEMENTS START */
 ion-button:not(.button-has-icon-only),
 ion-item {
   font-size: 1em;
-  &.md {
-    font-size: 0.9em;
-  }
-}
-// clearer image picker empty message
-.photo-picker {
-  &.ios .empty {
-    font-size: 0.9em !important;
-  }
-  &.md .empty {
-    font-size: 1em !important;
-  }
 }
 
-// brighter and bigger divider
+ion-button:not(.button-has-icon-only).md,
+ion-item.md {
+  font-size: 0.9em;
+}
+
+/* clearer image picker empty message */
+.photo-picker.ios .empty {
+  font-size: 0.9em !important;
+}
+
+.photo-picker.md .empty {
+  font-size: 1em !important;
+}
+
+/* brighter and bigger divider */
 ion-item-divider {
   padding: 0 5px 7px 5px;
   color: var(--ion-text-color);
   font-size: 0.9em;
 }
 
-// clearer menu items
+/* clearer menu items */
 .menu-attr-item,
 .attr-wrapper {
   ion-label[slot='end'] {
@@ -254,27 +366,28 @@ ion-item-divider {
   }
 }
 
-// menu date picker match other input value colors
+/* menu date picker match other input value colors */
 .date-input-attr ion-label[slot='end'] {
   color: var(--form-value-color);
   font-size: 1rem;
-  &.md {
-    font-size: 0.9rem;
-  }
 }
 
-// larger collapse headers
+.date-input-attr ion-label[slot='end'].md {
+  font-size: 0.9rem;
+}
+
+/* larger collapse headers */
 .collapse-block ion-label.ion-text-wrap {
   font-size: 1rem;
 }
 
-// clearer alert messages
+/* clearer alert messages */
 ion-alert div.alert-message.sc-ion-alert-md {
   color: black;
   font-size: 1.1em;
 }
 
-// increase link and menu label visibility
+/* increase link and menu label visibility */
 .field-label:first-of-type,
 ion-item[detail='true'][href],
 ion-item > ion-icon + ion-label,
@@ -282,14 +395,14 @@ ion-item.item > ion-icon + ion-label.sc-ion-label-md-h {
   font-weight: 500;
   font-size: 1rem;
 }
-// ACCESSIBILITY IMPROVEMENTS END
+/* ACCESSIBILITY IMPROVEMENTS END */
 
-// overwrite required item colours
+/* overwrite required item colours */
 .menu-attr-item.required.empty > ion-icon:first-of-type {
   color: black;
 }
 
-// subtle borders around rounded items
+/* subtle borders around rounded items */
 .search-result:nth-child(odd),
 .survey-list-item,
 .slider-input-attr,
@@ -298,43 +411,55 @@ ion-item.item > ion-icon + ion-label.sc-ion-label-md-h {
 #suggestions .empty,
 .taxa-filter-edit-dialog-form ion-item,
 .rounded-list:not(:empty) {
-  border: 1px solid rgba(var(--color-primary-800-rgb), 0.2);
+  border: 1px solid var(--color-neutral-300);
   border-radius: var(--theme-border-radius);
 }
 
-// Fix last date input in the list
+/* Hide unnecessary clear icon for search input components */
+[type='search']::-webkit-search-cancel-button,
+[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Fix mapbox attribution */
+.mapboxgl-ctrl {
+  display: block !important;
+}
+
+/* Fix last date input in the list */
 ion-list .rounded-list > .menu-attr-item:last-child,
 ion-list .rounded-list > .menu-attr-item:last-child > ion-item,
 ion-list .rounded-list > *:last-child .date-input-attr ion-item[slot='header'] {
   --border-style: none !important;
 }
 
-// TODO: Remove after fixing numberRanges: 1 as number
+/* TODO: Remove after fixing numberRanges: 1 as number */
 .radio-input-attr ion-item.hidden {
   display: none;
 }
 
-// list item picture
+/* list item picture */
 .list-avatar {
   @apply flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md bg-neutral-100;
 }
 
-// top of the list title
+/* top of the list title */
 .list-title {
-  @apply mx-1 mb-3 mt-4 flex items-center text-base font-semibold;
+  @apply mx-1 mt-4 mb-3 flex items-center text-base font-semibold;
 }
 
-// top of the list item
+/* top of the list item */
 .list-divider {
-  @apply flex items-center justify-between bg-primary-700/10 p-1 px-2 text-sm text-primary-900;
+  @apply bg-primary-700/10 text-primary-900 flex items-center justify-between p-1 px-2 text-sm;
 }
 
-// Make Android icons dark, same as iOS
+/* Make Android icons dark, same as iOS */
 ion-icon[slot='start'].md {
   color: var(--ion-text-color, #000);
 }
 
-// unify icon strokes and widths
+/* unify icon strokes and widths */
 ion-icon.size-5,
 ion-icon.size-6,
 .menu-attr-item ion-icon[slot='start'],
@@ -345,19 +470,19 @@ ion-item > ion-icon[slot='start'],
   height: 24px;
 }
 
-// Makes iOS menu items same height as Android
+/* Makes iOS menu items same height as Android */
 ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios {
   margin-top: 12px;
   margin-bottom: 12px;
 }
 
-// Make menu item value colours same as form values, e.g. Settings page
+/* Make menu item value colours same as form values, e.g. Settings page */
 ion-item .sc-ion-label-md-h.sc-ion-label-md-s.md[slot='end'],
 ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios[slot='end'] {
   color: var(--form-value-color);
 }
 
-// Unify menu lines with Tailwind package components
+/* Unify menu lines with Tailwind package components */
 .date-input-attr ion-accordion:last-of-type ion-item[slot='header'],
 .list-ios-lines-full ion-item.item-lines-default,
 .list-md-lines-full ion-item.item-lines-default {
@@ -365,17 +490,17 @@ ion-item .sc-ion-label-ios-h.sc-ion-label-ios-s.ios[slot='end'] {
   --border-color: #e5e5e5 !important;
 }
 
-// Fix menu date button label alignment for Android
+/* Fix menu date button label alignment for Android */
 ion-accordion ion-icon[slot='start'].md {
   margin-right: 37px;
 }
 
-// Fix input list input width
+/* Fix input list input width */
 .input-list-attr-item input.plain-input {
   width: 100%;
 }
 
-// Fix menu item label sizes
+/* Fix menu item label sizes */
 ion-item.in-list,
 ion-item[router-link] {
   font-weight: 500;

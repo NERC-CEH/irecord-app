@@ -65,7 +65,7 @@ const RegisterContainer = () => {
 
   return (
     <Page id="user-register">
-      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]" />
+      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]!" />
       <Main onSubmit={onRegister} />
     </Page>
   );

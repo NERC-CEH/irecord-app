@@ -1,6 +1,7 @@
 #home-menu {
   ion-content {
     --padding-top: env(safe-area-inset-top) !important;
+    --padding-bottom: 30px;
   }
 
   #feedback-request {

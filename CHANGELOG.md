@@ -1,3 +1,7 @@
+## 6.3.0
+
+- Updated libraries.
+
 ## 6.2.3
 
 Fixed Android startup bug.

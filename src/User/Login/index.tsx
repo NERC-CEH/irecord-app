@@ -45,17 +45,10 @@ const LoginController = () => {
 
     loader.hide();
   }
-  // ion-toolbar {
-  //   position: fixed;
-  //   ;
 
-  //   ion-back-button {
-  //     color: var(--ion-color-light-contrast);
-  //   }
-  // }
   return (
     <Page id="user-login">
-      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]" />
+      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]!" />
       <Main onSubmit={onLogin} />
     </Page>
   );

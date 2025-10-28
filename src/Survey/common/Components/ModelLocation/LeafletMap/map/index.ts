@@ -71,7 +71,7 @@ let API: any = {
         attribution: OSAttribution,
         accessToken: config.map.osApiKey,
         maxZoom: MAX_OS_ZOOM,
-      }
+      } as any
     );
 
     OS.options.bounds = bounds;

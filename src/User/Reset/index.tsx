@@ -54,7 +54,7 @@ const LoginController = () => {
 
   return (
     <Page id="user-reset">
-      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]" />
+      <Header className="ion-no-border [&>ion-toolbar]:[--background:transparent]!" />
       <Main onSubmit={onSubmit} />
     </Page>
   );

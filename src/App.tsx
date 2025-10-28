@@ -11,7 +11,7 @@ import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import UpdatedRecordsAlert from 'common/Components/UpdatedRecordsAlert';
 import samples from 'common/models/collections/samples';
-import 'common/theme.scss';
+import 'common/theme.css';
 import 'common/translations/translator';
 import Home from './Home';
 import OnboardingScreens from './Info/OnboardingScreens';

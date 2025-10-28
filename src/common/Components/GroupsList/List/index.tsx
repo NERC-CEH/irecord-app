@@ -95,7 +95,7 @@ const GroupsList = ({
           <div className="flex w-full items-center justify-end gap-2">
             <IonSearchbar
               placeholder={t('Activity name')}
-              className={clsx('!py-0 pr-0', !showSearch && 'hidden')}
+              className={clsx('!py-0 pr-0', !showSearch && 'hidden!')}
               onIonChange={onSearch}
               ref={searchbarRef}
               value={currentSearch}

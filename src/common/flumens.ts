@@ -40,6 +40,10 @@ export {
 export * from '@flumens/utils/dist/date';
 export { default as device } from '@flumens/utils/dist/device';
 export * from '@flumens/utils/dist/uuid';
+export {
+  default as MigrationManager,
+  type Migration,
+} from '@flumens/utils/dist/MigrationManager';
 export { useToast, useAlert, useLoader } from '@flumens/ionic/dist/hooks';
 export { default as Collapse } from '@flumens/ionic/dist/components/Collapse';
 export { default as InfoMessage } from '@flumens/tailwind/dist/components/InfoMessage';

@@ -42,7 +42,7 @@ const HomeMain = ({
 
   return (
     <Main>
-      <IonList lines="full" className="mb-2 flex flex-col gap-4">
+      <IonList lines="full" className="mb-2 flex! flex-col gap-4">
         {isDisabled && (
           <div className="rounded-list mb-2">
             <DisabledRecordMessage sample={sample} />

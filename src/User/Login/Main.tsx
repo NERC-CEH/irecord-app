@@ -35,12 +35,14 @@ const LoginMain = ({ onSubmit }: Props) => {
   return (
     <Main>
       <div className="mx-auto flex max-w-md flex-col gap-8 px-3 pt-3">
-        <h1 className="text-center">
-          <T>Welcome back</T>
-        </h1>
-        <h2 className="-mt-5 text-center">
-          <T>Sign in to your account to start</T>
-        </h2>
+        <div className="text-center">
+          <h1>
+            <T>Welcome back</T>
+          </h1>
+          <h2 className="my-0!">
+            <T>Sign in to your account to start</T>
+          </h2>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Fake onSubmit on Enter */}
