@@ -21,6 +21,7 @@ export type Data = ModelData & {
   shownLockingSwipeTip: boolean;
   showPastLocationsTip: boolean;
   showSurveyOptionsTip: boolean;
+  showPhotoCropTip: boolean;
   feedbackGiven: boolean;
   taxonSearchGroupFilters: number[][];
   searchNamesOnly: '' | 'scientific' | 'common';
@@ -57,6 +58,7 @@ export const defaults: Data = {
   shownLockingSwipeTip: false,
   showPastLocationsTip: true,
   showSurveyOptionsTip: true,
+  showPhotoCropTip: true,
   feedbackGiven: false,
   taxonSearchGroupFilters: [],
   searchNamesOnly: '',

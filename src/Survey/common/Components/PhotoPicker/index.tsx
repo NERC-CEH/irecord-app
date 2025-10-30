@@ -11,6 +11,7 @@ import {
   deleteFile,
 } from '@flumens';
 import { isPlatform, useIonActionSheet } from '@ionic/react';
+import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
 import config from 'common/config';
 import appModel from 'models/app';
 import Media from 'models/media';
@@ -222,7 +223,19 @@ const AppPhotoPicker = ({
           image={editImage?.getURL()}
           onDone={onDoneEdit}
           onCancel={onCancelEdit}
-        />
+        >
+          <InfoBackgroundMessage
+            name="showPhotoCropTip"
+            className="z-10 mx-auto mt-[calc(var(--ion-safe-area-top,0)+10px)] w-fit max-w-[90%]"
+          >
+            <b>Crop Your Photo</b>
+            <ul className="list-disc pl-5 text-left">
+              <li>Pinch to zoom in/out</li>
+              <li>Center the species in frame</li>
+              <li>Ensure good focus and lighting for best AI results</li>
+            </ul>
+          </InfoBackgroundMessage>
+        </ImageCropper>
       )}
     </>
   );

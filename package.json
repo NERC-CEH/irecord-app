@@ -38,7 +38,7 @@
     "@capacitor/splash-screen": "7.0.3",
     "@capacitor/status-bar": "7.0.3",
     "@flumens/bigu": "0.4.1",
-    "@flumens/ionic": "2.0.0-alpha.82",
+    "@flumens/ionic": "2.0.0-alpha.83",
     "@flumens/models": "0.16.1",
     "@flumens/tailwind": "0.36.3",
     "@flumens/utils": "^0.6.0",
