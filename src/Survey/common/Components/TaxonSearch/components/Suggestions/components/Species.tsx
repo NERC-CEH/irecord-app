@@ -15,16 +15,27 @@ function prettifyName(
   species: Taxon & { _dedupedScientificName?: string },
   searchPhrase?: string
 ) {
-  const foundInCommonName = Number.isFinite(species.foundInName);
+  let foundInCommonName = Number.isFinite(species.foundInName);
+  if (appModel.data.searchNamesOnly === 'scientific') {
+    foundInCommonName = false; // the species coming from search usually reflects what the user has selected (scientific name or common), but AI suggestions always have common name as the main one.
+  }
+
   const name = foundInCommonName
     ? species.commonNames[species.foundInName as number]
     : species.scientificName;
 
-  if (!searchPhrase) return name;
-
-  const searchPos = name.toLowerCase().indexOf(searchPhrase);
-  if (!(searchPos >= 0)) {
-    return name;
+  let primaryName: any = name;
+  if (searchPhrase) {
+    const searchPos = name.toLowerCase().indexOf(searchPhrase);
+    if (searchPos >= 0) {
+      primaryName = (
+        <span>
+          {name.slice(0, searchPos)}
+          <b>{name.slice(searchPos, searchPos + searchPhrase.length)}</b>
+          {name.slice(searchPos + searchPhrase.length)}
+        </span>
+      );
+    }
   }
 
   let secondaryName;
@@ -48,12 +59,7 @@ function prettifyName(
 
   return (
     <>
-      <span>
-        {name.slice(0, searchPos)}
-        <b>{name.slice(searchPos, searchPos + searchPhrase.length)}</b>
-        {name.slice(searchPos + searchPhrase.length)}
-      </span>
-
+      {primaryName}
       {secondaryName}
     </>
   );
@@ -92,7 +98,9 @@ const Species = ({
           </div>
         )}
 
-        <div className="taxon">{prettyName}</div>
+        <div className="mb-[3px] ml-2 flex w-full flex-col overflow-visible whitespace-normal font-normal leading-5">
+          {prettyName}
+        </div>
 
         <span className={`group ${!showEditButton ? 'right' : ''} `}>
           <T>{group}</T>

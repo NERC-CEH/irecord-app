@@ -128,18 +128,15 @@ const Suggestions = ({
   suggestedSpecies,
   suggestionsAreLoading,
 }: Props) => {
-  const getSuggestion = (species: ClassifierSuggestion) => {
-    const key = hashCode(JSON.stringify(species));
-    return (
-      <Species
-        key={key}
-        species={species}
-        showEditButton={showEditButton}
-        searchPhrase={searchPhrase}
-        onSelect={onSpeciesSelected}
-      />
-    );
-  };
+  const getSuggestion = (species: ClassifierSuggestion) => (
+    <Species
+      key={hashCode(JSON.stringify(species))}
+      species={species}
+      showEditButton={showEditButton}
+      searchPhrase={searchPhrase}
+      onSelect={onSpeciesSelected}
+    />
+  );
 
   const getSuggestedSpecies = (species: Taxon[]) => {
     const deDuped = deDuplicateSuggestions(species);
