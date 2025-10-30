@@ -69,7 +69,7 @@ const SpeciesSuggestions = ({
       const commonName = commonNames[0];
 
       return (
-        <div className="flex min-h-20 w-full items-center justify-start gap-2 border-b border-solid p-2">
+        <div className="flex min-h-20 w-full items-center justify-start gap-2 border-b border-neutral-100 border-solid p-2">
           <ProbabilityBadge
             probability={probability}
             className="shrink-0"

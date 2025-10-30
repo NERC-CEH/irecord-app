@@ -4,10 +4,9 @@ import mapKeys from 'lodash.mapkeys';
 import { z, object, string, array, number } from 'zod';
 import { HandledError, isAxiosNetworkError } from '@flumens';
 import config from 'common/config';
+import commonNamesByWarehouseId from 'common/data/species_ids.data.json';
 import Media from 'common/models/media';
-import { Taxon } from 'models/occurrence';
 import userModel from 'models/user';
-import speciesSearch from 'helpers/taxonSearch';
 
 const UKSI_LIST_ID = '15';
 
@@ -43,12 +42,7 @@ export type Result = RemoteResult & {
 };
 
 async function getCommonNames(sp: RemoteSuggestion) {
-  const taxa: Taxon[] = await speciesSearch(sp.taxon, {
-    namesFilter: 'scientific',
-    maxResults: 1,
-  });
-
-  const commonNames = taxa?.[0]?.commonNames;
+  const commonNames = (commonNamesByWarehouseId as any)[sp.taxaTaxonListId];
   if (!commonNames?.length) return { commonNames: [] };
 
   return { commonNames, foundInName: 0 };
@@ -72,10 +66,7 @@ export default async function identify(
   const upload = (img: Media) => img.uploadFile();
   await Promise.all(images.map(upload));
 
-  const data = new URLSearchParams({
-    list: `${UKSI_LIST_ID}`,
-  });
-
+  const data = new URLSearchParams({ list: `${UKSI_LIST_ID}` });
   images.forEach((img: Media) => data.append('image[]', img.getRemoteURL()));
 
   const options: any = {
@@ -109,25 +100,6 @@ export default async function identify(
   const suggestions = await Promise.all(
     response.suggestions.filter(hasValues).map(transformToTaxon)
   );
-
-  // const suggestions = [
-  //   {
-  //     probability: 0.999981,
-  //     warehouseId: 170202,
-  //     scientificName: 'Daucus carota',
-  //     group: 89,
-  //     commonNames: ['Wild Carrot', 'Carrot'],
-  //     foundInName: 0,
-  //   },
-  //   {
-  //     probability: 0.299981,
-  //     warehouseId: 215642,
-  //     scientificName: 'Berkheya pinnatifida',
-  //     group: 89,
-  //     commonNames: ['Lobed African Thistle'],
-  //     foundInName: 0,
-  //   },
-  // ];
 
   return {
     classifierId: response.classifierId,
