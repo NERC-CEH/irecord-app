@@ -100,7 +100,7 @@ const PendingSurveys = () => {
   const surveys = samplesCollection.filter(notUploaded).sort(bySurveyDate);
 
   const isFinished = (sample: Sample) => sample.metadata.saved;
-  const hasManyPending = () => surveys.filter(isFinished).length > 4;
+  const hasPending = () => surveys.filter(isFinished).length > 0;
 
   const onUploadAll = () => {
     const isLoggedIn = userModel.isLoggedIn();
@@ -132,7 +132,7 @@ const PendingSurveys = () => {
     );
   }
 
-  const showUploadAll = hasManyPending();
+  const showUploadAll = hasPending();
 
   return (
     <IonList>
