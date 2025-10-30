@@ -43,7 +43,13 @@
 
     ion-icon.species-entry-incomplete-warning {
       border-radius: 50%;
-      background-color: rgba(var(--ion-color-warning-rgb), 0.15);
+      background-color: color-mix(
+        in srgb,
+        var(--color-warning-700) 15%,
+        transparent
+      );
+      padding: 2px;
+
       width: 15px;
       height: 15px;
       color: var(--ion-color-warning);

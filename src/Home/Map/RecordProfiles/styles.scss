@@ -1,12 +1,9 @@
 #home-map .custom-alert {
   --verification-success: var(--ion-color-success);
-  --verification-success-rgb: var(--ion-color-success-rgb);
   --verification-success-dark: var(--ion-color-success-dark);
   --verification-plausible: #fcb500;
-  --verification-plausible-rgb: 252, 181, 0;
   --verification-plausible-dark: #3b2a00;
   --verification-rejected: var(--ion-color-danger);
-  --verification-rejected-rgb: var(--ion-color-danger-rgb);
   --verification-rejected-dark: var(--ion-color-danger-dark);
 
   ion-backdrop {

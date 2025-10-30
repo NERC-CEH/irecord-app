@@ -98,10 +98,10 @@ const SpeciesSuggestions = ({
 
     return (
       <div className="mx-2 mt-5">
-        <h2 className="mx-2 text-lg font-semibold">
+        <h2 className="mx-2 text-xl font-bold!">
           <T>Suggestions</T>:
         </h2>
-        <h3 className="mx-2 my-1 text-sm">
+        <div className="mx-2 my-1 opacity-80 text-sm">
           <div>
             <T>Note that AI confidence levels are not absolute.</T>
           </div>
@@ -111,7 +111,7 @@ const SpeciesSuggestions = ({
               possible.
             </T>
           </div>
-        </h3>
+        </div>
         <div className="flex flex-col">{suggestions}</div>
       </div>
     );

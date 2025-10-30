@@ -2,7 +2,8 @@
   ion-tab-bar {
     contain: none;
     --color: var(--ion-color-dark);
-    border-top: 1px solid rgba(var(--color-primary-700-rgb), 0.3);
+    border-top: 1px solid
+      color-mix(in srgb, var(--color-primary-800) 20%, transparent);
     padding: 5px 0;
     padding-bottom: var(--ion-safe-area-bottom, 0);
     --background: var(--color-primary-50);

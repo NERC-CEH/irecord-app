@@ -124,49 +124,37 @@ h3 {
 
 :root {
   --ion-color-primary: var(--color-primary);
-  --ion-color-primary-rgb: var(--color-primary-rgb);
   --ion-color-primary-contrast: var(--color-primary-50);
-  --ion-color-primary-contrast-rgb: var(--color-primary-50-rgb);
   --ion-color-primary-shade: var(--color-primary-800);
   --ion-color-primary-tint: var(--color-primary-500);
   --ion-color-primary-dark: var(--color-primary-950);
 
   --ion-color-secondary: var(--color-secondary);
-  --ion-color-secondary-rgb: var(--color-secondary-rgb);
   --ion-color-secondary-contrast: var(--color-secondary-50);
-  --ion-color-secondary-contrast-rgb: var(--color-secondary-50-rgb);
   --ion-color-secondary-shade: var(--color-secondary-700);
   --ion-color-secondary-tint: var(--color-secondary-500);
   --ion-color-secondary-dark: var(--color-secondary-950);
 
   --ion-color-tertiary: var(--color-tertiary);
-  --ion-color-tertiary-rgb: var(--color-tertiary-rgb);
   --ion-color-tertiary-contrast: var(--color-tertiary-50);
-  --ion-color-tertiary-contrast-rgb: var(--color-tertiary-50-rgb);
   --ion-color-tertiary-shade: var(--color-tertiary-700);
   --ion-color-tertiary-tint: var(--color-tertiary-500);
   --ion-color-tertiary-dark: var(--color-tertiary-950);
 
   --ion-color-success: var(--color-success);
-  --ion-color-success-rgb: var(--color-success-rgb);
   --ion-color-success-contrast: var(--color-success-50);
-  --ion-color-success-contrast-rgb: var(--color-success-50-rgb);
   --ion-color-success-shade: var(--color-success-700);
   --ion-color-success-tint: var(--color-success-500);
   --ion-color-success-dark: var(--color-success-950);
 
   --ion-color-warning: var(--color-warning);
-  --ion-color-warning-rgb: var(--color-warning-rgb);
   --ion-color-warning-contrast: var(--color-warning-50);
-  --ion-color-warning-contrast-rgb: var(--color-warning-50-rgb);
   --ion-color-warning-shade: var(--color-warning-700);
   --ion-color-warning-tint: var(--color-warning-500);
   --ion-color-warning-dark: var(--color-warning-900);
 
   --ion-color-danger: var(--color-danger);
-  --ion-color-danger-rgb: var(--color-danger-rgb);
   --ion-color-danger-contrast: var(--color-danger-50);
-  --ion-color-danger-contrast-rgb: var(--color-danger-50-rgb);
   --ion-color-danger-shade: var(--color-danger-700);
   --ion-color-danger-tint: var(--color-danger-500);
   --ion-color-danger-dark: var(--color-danger-950);
@@ -190,13 +178,10 @@ h3 {
   --attr-lock-color-tint: var(--ion-color-secondary-tint);
 
   --verification-success: var(--color-primary);
-  --verification-success-rgb: var(--color-primary-100-rgb);
   --verification-success-dark: var(--color-primary-800);
   --verification-plausible: #fcb500;
-  --verification-plausible-rgb: 252, 181, 0;
   --verification-plausible-dark: #3b2a00;
   --verification-rejected: var(--color-danger);
-  --verification-rejected-rgb: var(--color-danger-rgb);
   --verification-rejected-dark: var(--color-danger-900);
 
   --classifier-success: var(--color-primary);
@@ -281,7 +266,6 @@ ion-note,
 ion-label,
 ion-chip,
 ion-item {
-  font-weight: 400;
   font-family: 'Quicksand' !important;
 }
 button[type='button'] > div {
@@ -300,23 +284,23 @@ h3 {
 /* make the toolbar white */
 ion-header ion-toolbar {
   --background: white;
+}
 
-  ion-title,
-  ion-button,
-  ion-back-button {
-    color: var(--ion-color-dark) !important;
-    font-size: 1rem;
-  }
+ion-header ion-toolbar ion-title,
+ion-header ion-toolbar ion-button,
+ion-header ion-toolbar ion-back-button {
+  color: var(--ion-color-dark) !important;
+  font-size: 1rem;
+}
 
-  ion-input,
-  ion-icon {
-    color: var(--ion-color-dark) !important;
-    --placeholder-color: var(--ion-color-dark) !important;
-  }
+ion-header ion-toolbar ion-input,
+ion-header ion-toolbar ion-icon {
+  color: var(--ion-color-dark) !important;
+  --placeholder-color: var(--ion-color-dark) !important;
+}
 
-  ion-back-button {
-    background-color: transparent !important;
-  }
+ion-header ion-toolbar ion-back-button {
+  background-color: transparent !important;
 }
 
 /* change link colours */
@@ -358,12 +342,10 @@ ion-item-divider {
 }
 
 /* clearer menu items */
-.menu-attr-item,
-.attr-wrapper {
-  ion-label[slot='end'] {
-    opacity: 1 !important;
-    color: #000000b3;
-  }
+.menu-attr-item ion-label[slot='end'],
+.attr-wrapper ion-label[slot='end'] {
+  opacity: 1 !important;
+  color: #000000b3;
 }
 
 /* menu date picker match other input value colors */

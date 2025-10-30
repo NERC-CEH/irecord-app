@@ -68,7 +68,7 @@ const UserGroups = ({
           className={clsx(
             '!m-0 !rounded-none !border-none ![--border-radius:0] [--inner-padding-end:0px] [--padding-start:0px]',
             isSelected &&
-              'bg-white text-[var(--form-value-color)] [--background:rgba(var(--color-tertiary-900-rgb),0.02)] [--ion-color-primary:var(--form-value-color)]'
+              'bg-white text-[var(--form-value-color)] [--ion-color-primary:var(--form-value-color)]'
           )}
         >
           <RadioInput.Option
