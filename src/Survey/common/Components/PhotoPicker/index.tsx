@@ -232,7 +232,13 @@ const AppPhotoPicker = ({
             <ul className="list-disc pl-5 text-left">
               <li>Pinch to zoom in/out</li>
               <li>Center the species in frame</li>
-              <li>Ensure good focus and lighting for best AI results</li>
+              <li>
+                For best results from image recognition, we advise cropping in
+                closely to the species you want to identify
+              </li>
+              <li>
+                Where possible, ensure your image is in focus and well lit
+              </li>
             </ul>
           </InfoBackgroundMessage>
         </ImageCropper>

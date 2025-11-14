@@ -17,7 +17,9 @@ const migrations: Migration[] = [
         await db.query({ sql: `UPDATE samples SET id = NULL WHERE id is ''` });
         await db.query({ sql: `UPDATE groups SET id = NULL WHERE id is ''` });
       } catch (error) {
-        console.debug('🔵 groups table does not exist, skipping migration');
+        console.debug(
+          '🔵 samples/groups table does not exist, skipping migration'
+        );
       }
 
       // await db.sqliteConnection.closeAllConnections();

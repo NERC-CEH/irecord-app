@@ -2457,5 +2457,5 @@ msgid "Changed list ordering to last added."
 msgstr "Changed list ordering to last added."
 
 # Photo cropping instructions
-msgid "<0>Crop Your Photo</0><1><0>Pinch to zoom in/out</0><1>Center the species in frame</1><2>Ensure good focus and lighting for best AI results</2></1>"
-msgstr "<0>Crop Your Photo</0><1><0>Pinch to zoom in/out</0><1>Center the species in frame</1><2>Ensure good focus and lighting for best AI results</2></1>"
+msgid "<0>Crop Your Photo</0><1><0>Pinch to zoom in/out</0><1>Center the species in frame</1><2>For best results from image recognition, we advise cropping in closely to the species you want to identify</2><3>Where possible, ensure your image is in focus and well lit</3></1>"
+msgstr "<0>Crop Your Photo</0><1><0>Pinch to zoom in/out</0><1>Center the species in frame</1><2>For best results from image recognition, we advise cropping in closely to the species you want to identify</2><3>Where possible, ensure your image is in focus and well lit</3></1>"
