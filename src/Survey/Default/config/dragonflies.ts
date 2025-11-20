@@ -86,9 +86,9 @@ const survey: Partial<Survey> & { taxa: string } = {
         remote: { id: 34, values: numRanges },
       },
       coCount: {
-        menuProps: { icon: numberIcon, label: 'Cop. pairs' },
+        menuProps: { icon: numberIcon, label: 'Coupled pairs' },
         pageProps: {
-          headerProps: { title: 'Cop. pairs' },
+          headerProps: { title: 'Coupled pairs' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
@@ -98,9 +98,9 @@ const survey: Partial<Survey> & { taxa: string } = {
         remote: { id: 35, values: numRanges },
       },
       ovCount: {
-        menuProps: { icon: numberIcon, label: 'Ovip. females' },
+        menuProps: { icon: numberIcon, label: 'Ovipositing females' },
         pageProps: {
-          headerProps: { title: 'Ovip. females' },
+          headerProps: { title: 'Ovipositing females' },
           attrProps: {
             input: 'radio',
             info: 'How many individuals of this type?',
@@ -110,9 +110,9 @@ const survey: Partial<Survey> & { taxa: string } = {
         remote: { id: 36, values: numRanges },
       },
       scCount: {
-        menuProps: { icon: numberIcon, label: 'Ovip. scars' },
+        menuProps: { icon: numberIcon, label: 'Oviposition scars' },
         pageProps: {
-          headerProps: { title: 'Ovip. scars' },
+          headerProps: { title: 'Oviposition scars' },
           attrProps: {
             input: 'radio',
             info: 'This attribute should be recorded for Willow Emerald only.',

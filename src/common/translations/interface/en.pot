@@ -722,11 +722,17 @@ msgstr "Site type"
 msgid "Adults"
 msgstr "Adults"
 
-msgid "Cop. pairs"
-msgstr "Cop. pairs"
+# Odonata attribute name  
+msgid "Coupled pairs"
+msgstr "Coupled pairs"
 
-msgid "Ovip. females"
-msgstr "Ovip. females"
+# Odonata attribute name  
+msgid "Ovipositing females"
+msgstr "Ovipositing females"
+
+# Odonata attribute name  
+msgid "Oviposition scars"
+msgstr "Oviposition scars"
 
 msgid "Larvae"
 msgstr "Larvae"
@@ -1363,10 +1369,6 @@ msgstr "Please wait..."
 # as in letters and symbols
 msgid "characters"
 msgstr "characters"
-
-# Odonata attribute name 
-msgid "Ovip. scars"
-msgstr "Ovip. scars"
 
 # Odonata attribute info message 
 msgid "This attribute should be recorded for Willow Emerald only."
