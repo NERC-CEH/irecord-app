@@ -2467,3 +2467,7 @@ msgstr "<0>DAFOR refers to a subjective abundance scale comprising the following
 # Attribute help text 
 msgid "<0>Abundance (DAFOR, LA, LF or count).<1><0>DAFOR refers to a subjective abundance scale comprising the following ordered terms: <1>D</1>ominant / <3>A</3>bundant / <5>F</5>requent / <7>O</7>ccasional / <9>R</9>are. The prefix \"Locally\" can also be used with the Abundant and Frequent classes (e.g. LA = Locally Abundant).</0><p>Assessed abundance should either relate to the scale of the survey (e.g. 1 or 2 km grid squares), or be clearly qualified in the record comments field.</p></1></0>"
 msgstr "<0>Abundance (DAFOR, LA, LF or count).<1><0>DAFOR refers to a subjective abundance scale comprising the following ordered terms: <1>D</1>ominant / <3>A</3>bundant / <5>F</5>requent / <7>O</7>ccasional / <9>R</9>are. The prefix \"Locally\" can also be used with the Abundant and Frequent classes (e.g. LA = Locally Abundant).</0><p>Assessed abundance should either relate to the scale of the survey (e.g. 1 or 2 km grid squares), or be clearly qualified in the record comments field.</p></1></0>"
+
+# Survey verification message 
+msgid "Add quantity for at least one life stage."
+msgstr "Add quantity for at least one life stage."

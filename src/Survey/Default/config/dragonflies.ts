@@ -179,7 +179,7 @@ const survey: Partial<Survey> & { taxa: string } = {
             val.laCount ||
             val.exCount ||
             val.emCount,
-          'Stage is missing'
+          'Add quantity for at least one life stage.'
         )
         .safeParse(attrs).error,
   },
