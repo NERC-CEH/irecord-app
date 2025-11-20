@@ -1,0 +1,14 @@
+.info-popover ion-content {
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+  --overflow: hidden; // disable scrollbar
+
+  --background: white;
+
+  ion-note {
+    color: black;
+    font-weight: 200;
+  }
+}

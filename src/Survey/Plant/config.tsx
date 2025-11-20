@@ -2,6 +2,7 @@ import { peopleOutline, businessOutline, pencilOutline } from 'ionicons/icons';
 import { object, array, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import VCs from 'common/data/vice_counties.data.json';
+import { InfoButton } from 'common/flumens';
 import gridAlertService from 'common/helpers/gridAlertService';
 import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
@@ -195,7 +196,26 @@ const survey: Survey = {
           pageProps: {
             attrProps: {
               input: 'input',
-              info: 'Abundance (DAFOR, LA, LF or count).',
+              info: (
+                <>
+                  Abundance (DAFOR, LA, LF or count).
+                  <InfoButton label="READ MORE" header="Info" color="tertiary">
+                    <p>
+                      DAFOR refers to a subjective abundance scale comprising
+                      the following ordered terms: <b>D</b>ominant / <b>A</b>
+                      bundant / <b>F</b>requent / <b>O</b>ccasional / <b>R</b>
+                      are. The prefix "Locally" can also be used with the
+                      Abundant and Frequent classes (e.g. LA = Locally
+                      Abundant).
+                    </p>
+                    <p>
+                      Assessed abundance should either relate to the scale of
+                      the survey (e.g. 1 or 2 km grid squares), or be clearly
+                      qualified in the record comments field.
+                    </p>
+                  </InfoButton>
+                </>
+              ),
               set(value: any, model: any) {
                 const re = /^(\d+|[DAFOR]|LA|LF)$/;
                 if (!re.test(value)) return;

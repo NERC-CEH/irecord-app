@@ -1,3 +1,4 @@
+import Tooltip from 'common/Components/Tooltip';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
@@ -17,7 +18,26 @@ const numberOptions = [
 ];
 
 const numberDAFOROptions = [
-  { isPlaceholder: true, label: 'DAFOR' },
+  {
+    isPlaceholder: true,
+    label: (
+      <>
+        DAFOR{' '}
+        <Tooltip className="p-0 ml-2">
+          <p>
+            DAFOR refers to a subjective abundance scale comprising the
+            following ordered terms: <b>D</b>ominant / <b>A</b>bundant /{' '}
+            <b>F</b>requent / <b>O</b>ccasional / <b>R</b>are.
+          </p>
+          <p>
+            Assessed abundance should either relate to the scale of the survey
+            (e.g. 1 or 2 km grid squares), or be clearly qualified in the record
+            comments field.
+          </p>
+        </Tooltip>
+      </>
+    ),
+  },
   { value: 'Dominant', id: 1 },
   { value: 'Abundant', id: 2 },
   { value: 'Frequent', id: 3 },
