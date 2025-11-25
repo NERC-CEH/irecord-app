@@ -112,9 +112,7 @@ const SpeciesListItem = ({
 
   const modelPath = useSubSamples ? 'smp' : 'occ';
 
-  const survey = model.getSurvey();
-  const isValid =
-    !isDisabled && survey.verify ? !survey.verify(model.data) : true;
+  const isValid = !isDisabled && !model.validateRemote();
 
   return (
     <IonItemSliding
