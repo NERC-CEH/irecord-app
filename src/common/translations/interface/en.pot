@@ -2234,6 +2234,10 @@ msgid "Gall"
 msgstr "Gall"
 
 # Arthropods stage option
+msgid "Immature"
+msgstr "Immature"
+
+# Arthropods stage option
 msgid "Dead"
 msgstr "Dead"
 

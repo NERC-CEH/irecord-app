@@ -15,6 +15,7 @@ const stage = [
   { id: 17649, value: 'Mine (tenanted)' },
   { id: 17650, value: 'Case' },
   { id: 17651, value: 'Larval web' },
+  { id: 24307, value: 'Immature' },
   { id: 17652, value: 'Nymph' },
   { id: 17653, value: 'Gall' },
   { id: 17654, value: 'Egg' },
