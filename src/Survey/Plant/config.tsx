@@ -50,15 +50,6 @@ const survey: Survey = {
     groups.liverwort,
   ],
 
-  render: [
-    'smp:location',
-    'smp:childGeolocation',
-    'smp:vice-county',
-    'smp:date',
-    'smp:recorders',
-    'smp:comment',
-  ],
-
   attrs: {
     date: dateAttr,
 

@@ -2,11 +2,12 @@ import { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { camera, searchOutline } from 'ionicons/icons';
 import { useRouteMatch } from 'react-router';
-import { Button, InfoMessage, Main } from '@flumens';
+import { Button, InfoMessage, Main, useToast } from '@flumens';
 import { IonIcon, IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuAttr from 'Survey/common/Components/MenuAttr';
+import MenuLocation from 'Survey/common/Components/MenuLocation';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
 
@@ -23,6 +24,7 @@ const PlantHomeMain = ({
   showChildSampleDistanceWarning,
   attachSpeciesImages,
 }: Props) => {
+  const toast = useToast();
   const { url } = useRouteMatch();
   const { navigate } = useContext(NavContext);
   const promptImageSource = usePromptImageSource();
@@ -53,7 +55,29 @@ const PlantHomeMain = ({
               that this is correct.
             </InfoMessage>
           )}
-          <MenuDynamicAttrs model={sample} skipLocks />
+          <MenuLocation sample={sample} label="Square" />
+          <MenuAttr
+            model={sample}
+            attr="childGeolocation"
+            className="menu-attr-item"
+            onChange={(val: boolean) => {
+              if (!val || sample?.data?.location?.gridref) return;
+              sample.data.childGeolocation = false; // eslint-disable-line no-param-reassign
+              toast.warn(`Parent location must be selected first.`);
+            }}
+          />
+          <MenuAttr
+            model={sample}
+            attr="vice-county"
+            className="menu-attr-item"
+          />
+          <MenuAttr model={sample} attr="date" className="menu-attr-item" />
+          <MenuAttr
+            model={sample}
+            attr="recorders"
+            className="menu-attr-item"
+          />
+          <MenuAttr model={sample} attr="comment" className="menu-attr-item" />
         </div>
       </IonList>
 
