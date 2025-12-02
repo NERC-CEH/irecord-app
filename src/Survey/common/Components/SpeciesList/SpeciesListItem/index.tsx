@@ -14,6 +14,7 @@ import VerificationStatus from 'common/Components/VerificationStatus';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import IncrementalButton from 'Survey/common/Components/IncrementalButton';
+import CheckboxOption from '../BulkEdit/CheckboxOption';
 import './styles.scss';
 
 function useDeleteOccurrenceDialog(occ: Occurrence, onDelete: any) {
@@ -69,6 +70,7 @@ type Props = {
   increaseCount: any;
   onDelete: any;
   useSubSamples?: boolean;
+  isBulkEditing?: boolean;
 };
 
 const SpeciesListItem = ({
@@ -76,6 +78,7 @@ const SpeciesListItem = ({
   increaseCount,
   onDelete,
   useSubSamples,
+  isBulkEditing,
 }: Props) => {
   const { url } = useRouteMatch();
 
@@ -88,6 +91,8 @@ const SpeciesListItem = ({
   const showDeleteOccurrenceDialog = useDeleteOccurrenceDialog(occ, onDelete);
 
   if (!occ) return null; // if remote deleted but left sub-sample
+
+  const getEditButton = () => <CheckboxOption value={model.cid} />;
 
   const getIncrementButton = () => {
     const increaseCountWrap = () => increaseCount(occ);
@@ -114,6 +119,9 @@ const SpeciesListItem = ({
 
   const isValid = !isDisabled && !model.validateRemote();
 
+  const getStartElement = () =>
+    isBulkEditing ? getEditButton() : getIncrementButton();
+
   return (
     <IonItemSliding
       key={occ.cid}
@@ -124,7 +132,7 @@ const SpeciesListItem = ({
         routerLink={`${url}/${modelPath}/${model.cid}`}
         detail={!occ.hasOccurrenceBeenVerified() && isValid}
       >
-        {getIncrementButton()}
+        {getStartElement()}
 
         <div className="details">
           <div className="species">

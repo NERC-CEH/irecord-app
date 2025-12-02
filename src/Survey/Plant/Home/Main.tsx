@@ -10,12 +10,14 @@ import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
+import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
 
 type Props = {
   sample: Sample;
   onDelete: any;
   attachSpeciesImages: any;
   showChildSampleDistanceWarning: boolean;
+  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
 };
 
 const PlantHomeMain = ({
@@ -23,6 +25,7 @@ const PlantHomeMain = ({
   onDelete,
   showChildSampleDistanceWarning,
   attachSpeciesImages,
+  onBulkEdit,
 }: Props) => {
   const toast = useToast();
   const { url } = useRouteMatch();
@@ -103,7 +106,12 @@ const PlantHomeMain = ({
         </div>
       )}
 
-      <SpeciesList sample={sample} onDelete={onDelete} useSubSamples />
+      <SpeciesList
+        sample={sample}
+        onDelete={onDelete}
+        useSubSamples
+        onBulkEdit={onBulkEdit}
+      />
     </Main>
   );
 };

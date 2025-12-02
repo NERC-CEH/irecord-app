@@ -50,6 +50,9 @@ const survey: Partial<Survey> & { taxa: string } = {
     skipAutoIncrement: true,
 
     attrs: {
+      sex: null as any, // disable for bulk-editing
+      stage: null as any, // disable for bulk-editing
+
       microscopicallyChecked: {
         menuProps: {
           label: 'Microscopically Checked',

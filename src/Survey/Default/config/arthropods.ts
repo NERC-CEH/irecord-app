@@ -71,7 +71,7 @@ const survey: Partial<Survey> & { taxa: string } = {
   occ: {
     attrs: {
       stage: {
-        menuProps: { icon: progressIcon },
+        menuProps: { icon: progressIcon, required: true },
         pageProps: {
           attrProps: {
             input: 'radio',

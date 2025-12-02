@@ -69,10 +69,14 @@ const survey: Partial<Survey> & { taxa: string } = {
     //   remote: { id: 60 },
     // },
   },
+
   occ: {
     skipAutoIncrement: true,
 
     attrs: {
+      sex: null as any, // disable for bulk-editing
+      stage: null as any, // disable for bulk-editing
+
       adCount: {
         menuProps: { icon: numberIcon, label: 'Adults' },
         pageProps: {

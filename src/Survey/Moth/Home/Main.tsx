@@ -10,14 +10,21 @@ import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
+import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
 
 type Props = {
   sample: Sample;
   attachSpeciesImages: any;
   onDelete: any;
+  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
 };
 
-const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
+const MothHomeMain = ({
+  sample,
+  onDelete,
+  attachSpeciesImages,
+  onBulkEdit,
+}: Props) => {
   const { url } = useRouteMatch();
   const { navigate } = useContext(NavContext);
   const promptImageSource = usePromptImageSource();
@@ -80,7 +87,11 @@ const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
         </div>
       )}
 
-      <SpeciesList sample={sample} onDelete={onDelete} />
+      <SpeciesList
+        sample={sample}
+        onDelete={onDelete}
+        onBulkEdit={onBulkEdit}
+      />
     </Main>
   );
 };

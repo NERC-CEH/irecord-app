@@ -1,13 +1,14 @@
+import { useState } from 'react';
 import { observer } from 'mobx-react';
 import { filterOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { InfoBackgroundMessage, useToast } from '@flumens';
-import { IonButton, IonIcon, IonList, IonLabel } from '@ionic/react';
+import { IonList, IonIcon } from '@ionic/react';
 import appModel from 'models/app';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
+import BulkEdit, { Action } from './BulkEdit';
 import SpeciesListItem from './SpeciesListItem';
-import './styles.scss';
 
 const speciesNameSort = (occ1: Occurrence, occ2: Occurrence) =>
   occ1.getPrettyName().localeCompare(occ2.getPrettyName());
@@ -41,19 +42,30 @@ function increaseCount(occ: Occurrence, is5x: boolean) {
 type Props = {
   sample: Sample;
   onDelete: any;
+  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
   useSubSamples?: boolean;
 };
 
-const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
+const SpeciesList = ({
+  onDelete,
+  sample,
+  useSubSamples,
+  onBulkEdit,
+}: Props) => {
+  const [isBulkEditing, setIsBulkEditing] = useState(false);
   const toast = useToast();
 
   const models = useSubSamples ? sample.samples : sample.occurrences;
-  if (!models.length) {
+  if (!models.length)
     return <InfoBackgroundMessage>No species added</InfoBackgroundMessage>;
-  }
+
+  const { speciesListSortedByTime } = appModel.data;
+
+  const nameSort = useSubSamples ? speciesNameSortForSamples : speciesNameSort;
+
+  const sort = speciesListSortedByTime ? speciesOccAddedTimeSort : nameSort;
 
   const onToggleSpeciesSort = () => {
-    const { speciesListSortedByTime } = appModel.data;
     const newSort = !speciesListSortedByTime;
     appModel.data.speciesListSortedByTime = newSort;
     appModel.save();
@@ -69,12 +81,6 @@ const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
     });
   };
 
-  const { speciesListSortedByTime } = appModel.data;
-
-  const nameSort = useSubSamples ? speciesNameSortForSamples : speciesNameSort;
-
-  const sort = speciesListSortedByTime ? speciesOccAddedTimeSort : nameSort;
-
   const speciesList = [...models]
     .sort(sort as any)
     .map(model => (
@@ -84,35 +90,55 @@ const SpeciesList = ({ onDelete, sample, useSubSamples }: Props) => {
         increaseCount={increaseCount}
         onDelete={() => onDelete(model)}
         useSubSamples={useSubSamples}
+        isBulkEditing={isBulkEditing}
       />
     ));
 
   return (
-    <>
-      <div id="species-list-sort">
-        <IonButton fill="clear" size="small" onClick={onToggleSpeciesSort}>
-          <IonIcon icon={filterOutline} mode="md" />
-        </IonButton>
-      </div>
+    <div className="w-full">
+      <BulkEdit
+        onBulkEdit={onBulkEdit}
+        onEditChange={setIsBulkEditing}
+        models={models}
+      >
+        <IonList id="list" lines="full" className="w-full">
+          <div className="rounded-list">
+            <div className="list-divider">
+              {!isBulkEditing && (
+                <div className="flex justify-start gap-7">
+                  {!sample.isDisabled && !isBulkEditing && (
+                    <div className="max-w-[54px]">
+                      <T>Count</T>
+                    </div>
+                  )}
+                  <div className="shrink-0">
+                    <T>Species</T>{' '}
+                    {speciesList.length > 0 && (
+                      <span className="opacity-70">({speciesList.length})</span>
+                    )}
+                  </div>
+                </div>
+              )}
 
-      <IonList id="list" lines="full" className="mb-2">
-        <div className="rounded-list">
-          <div className="list-divider species-list-header">
-            {!sample.isDisabled && (
-              <IonLabel>
-                <T>Count</T>
-              </IonLabel>
-            )}
-            <IonLabel>
-              <T>Species</T>
-            </IonLabel>
-            <IonLabel className="!text-right">{speciesList.length}</IonLabel>
+              <div className="flex gap-4 items-center w-full justify-end">
+                <BulkEdit.Control />
+
+                {!isBulkEditing && (
+                  <IonIcon
+                    icon={filterOutline}
+                    mode="md"
+                    className="size-5 p-0"
+                    onClick={onToggleSpeciesSort}
+                  />
+                )}
+              </div>
+            </div>
+
+            {speciesList}
           </div>
-
-          {speciesList}
-        </div>
-      </IonList>
-    </>
+        </IonList>
+      </BulkEdit>
+    </div>
   );
 };
 
