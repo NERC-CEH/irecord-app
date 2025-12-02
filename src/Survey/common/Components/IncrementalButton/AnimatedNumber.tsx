@@ -27,7 +27,11 @@ const AnimatedNumber = ({ value }: Props) => {
       duration={2500}
       ref={first}
       fromTo={[
-        { property: 'color', fromValue: '#2c3400', toValue: '' },
+        {
+          property: 'color',
+          fromValue: 'var(--color-primary-700)',
+          toValue: 'var(--color-tertiary-800)',
+        },
         { property: 'background', fromValue: '#91a71c2b', toValue: '' },
       ]}
     >
