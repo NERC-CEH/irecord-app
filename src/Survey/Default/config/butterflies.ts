@@ -14,11 +14,11 @@ const sex = [
 ];
 
 const stage = [
-  { value: 'Adults', id: 3929 },
-  { value: 'Larvae', id: 3931 },
-  { value: 'Eggs', id: 3932 },
-  { value: 'Pupae', id: 3930 },
-  { value: 'Larval webs', id: 14079 },
+  { value: 'Adult', id: 3929 },
+  { value: 'Egg', id: 3932 },
+  { value: 'Larva', id: 3931 },
+  { value: 'Larval web', id: 14079 },
+  { value: 'Pupa', id: 3930 },
 ];
 
 const numberOptions = [
@@ -58,7 +58,18 @@ const survey: Partial<Survey> & { taxa: string } = {
             inputProps: { options: stage },
           },
         },
-        remote: { id: 293, values: stage },
+        remote: {
+          id: 293,
+          values: [
+            ...stage,
+            // for backwards compatibility - remove later:
+            { value: 'Adults', id: 3929 },
+            { value: 'Larvae', id: 3931 },
+            { value: 'Eggs', id: 3932 },
+            { value: 'Pupae', id: 3930 },
+            { value: 'Larval webs', id: 14079 },
+          ],
+        },
       },
       number: {
         menuProps: {
