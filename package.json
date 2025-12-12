@@ -100,7 +100,7 @@
     "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.28.5",
     "@capacitor/cli": "^7.4.4",
-    "@flumens/eslint-config": "^2.1.1",
+    "@flumens/eslint-config": "^2.1.2",
     "@flumens/prettier-config": "0.4.0",
     "@flumens/webpack-config": "^6.0.2",
     "@types/jest": "^29.5.14",
