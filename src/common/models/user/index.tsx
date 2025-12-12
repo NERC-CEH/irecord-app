@@ -23,10 +23,6 @@ export interface Data extends DrupalUserModelData {
   lastName?: string;
   email?: string;
   statistics: any;
-  /**
-   * @deprecated
-   */
-  password?: any;
 }
 
 const defaults: Data = {

@@ -416,11 +416,6 @@ ion-list .rounded-list > *:last-child .date-input-attr ion-item[slot='header'] {
   --border-style: none !important;
 }
 
-/* TODO: Remove after fixing numberRanges: 1 as number */
-.radio-input-attr ion-item.hidden {
-  display: none;
-}
-
 /* list item picture */
 .list-avatar {
   @apply flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md bg-neutral-100;

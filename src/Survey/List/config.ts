@@ -11,7 +11,6 @@ import {
   recorderAttr,
   commentAttr,
   Survey,
-  activityAttr,
   locationAttr,
   getSystemAttrs,
   groupIdAttr,
@@ -66,19 +65,9 @@ const survey: Survey = {
 
   attrs: {
     location: locationAttr,
-
     childGeolocation: childGeolocationAttr,
-
     recorder: recorderAttr,
-
-    /** @deprecated */
-    recorders: recorderAttr,
-
     comment: commentAttr,
-
-    /** @deprecated */
-    activity: activityAttr,
-
     groupId: groupIdAttr,
 
     date: {

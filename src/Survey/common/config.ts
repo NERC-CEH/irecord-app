@@ -65,17 +65,6 @@ export const commentAttr = {
   },
 };
 
-/**
- * @deprecated
- */
-export const activityAttr = {
-  menuProps: {
-    icon: peopleOutline,
-    parse: (value: any) => value?.title,
-  },
-  remote: { id: 'group_id', values: (activity: any) => activity.id },
-};
-
 export const groupIdAttr = {
   menuProps: {
     icon: peopleOutline,
@@ -164,9 +153,6 @@ export const systemAttrs = {
       values: {
         ios: 2398,
         android: 2399,
-        // backwards compatible
-        iOS: 2398,
-        Android: 2399,
       },
     },
   },

@@ -102,28 +102,6 @@ const useDeleteUser = () => {
   return deleteUser;
 };
 
-// TODO:
-// toggleGridAlertService(on) {
-//   if (!on) {
-//     gridAlertService.stop();
-//     return;
-//   }
-
-//   gridAlertService.start(location => {
-//     console.log(location.gridref);
-//     API.showGridNotification(location);
-//   });
-// },
-
-// showGridNotification(location) {
-//   const body = `<h1 style="text-align: center;">${location.gridref}</h1>`;
-
-//   radio.trigger('app:dialog', {
-//     title: 'Grid Square',
-//     body,
-//   });
-// },
-
 function onToggle(
   setting: keyof PickByType<AppModelData, boolean>,
   checked: boolean

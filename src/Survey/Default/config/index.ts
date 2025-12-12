@@ -11,7 +11,6 @@ import AppSample from 'models/sample';
 import {
   coreAttributes,
   dateAttr,
-  activityAttr,
   Survey,
   locationAttr,
   taxonAttr,
@@ -78,7 +77,6 @@ const numberOptions = [
   { isPlaceholder: true, label: 'Ranges' },
   { value: null, isDefault: true, label: 'Present' },
   { value: '1', id: 665 },
-  { value: 1, id: 665, className: 'hidden' }, // TODO: remove this in the future when users migrated
   { value: '2-5', id: 666 },
   { value: '6-20', id: 667 },
   { value: '21-100', id: 668 },
@@ -108,18 +106,9 @@ const survey: Survey = {
 
   attrs: {
     location: locationAttr,
-
     date: dateAttr,
-
     recorder: recorderAttr,
-
-    /** @deprecated */
-    recorders: recorderAttr,
-
     groupId: groupIdAttr,
-
-    /** @deprecated */
-    activity: activityAttr,
   },
 
   verify: (attrs: any) =>

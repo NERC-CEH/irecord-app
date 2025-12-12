@@ -52,12 +52,8 @@ const survey: Survey = {
 
   attrs: {
     location: locationAttr,
-
     date: dateAttr,
-
     recorder: recorderAttr,
-    /** @deprecated */
-    recorders: recorderAttr,
 
     method: {
       menuProps: { icon: numberIcon },
