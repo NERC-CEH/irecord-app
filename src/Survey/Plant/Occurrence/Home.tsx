@@ -12,6 +12,8 @@ const PlantOccurrenceHome = () => {
   const { subSample } = useSample<Sample>();
   if (!subSample) return null;
 
+  const surveyConfig = subSample.getSurvey();
+
   const [occ] = subSample.occurrences;
   const { isDisabled } = subSample;
 
@@ -34,7 +36,7 @@ const PlantOccurrenceHome = () => {
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
             <MenuLocation sample={subSample} skipName isRequired={false} />
-            <MenuDynamicAttrs model={subSample} />
+            <MenuDynamicAttrs model={subSample} surveyConfig={surveyConfig} />
           </div>
         </IonList>
       </Main>

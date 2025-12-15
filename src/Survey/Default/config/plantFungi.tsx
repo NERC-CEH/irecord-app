@@ -44,6 +44,102 @@ const numberDAFOROptions = [
   { value: 'Rare', id: 5 },
 ];
 
+const plantFungiNumberAttr = {
+  id: 'number',
+  menuProps: {
+    label: 'Abundance',
+    icon: numberIcon,
+    parse: (_: any, model: any) =>
+      model.data['number-ranges'] ||
+      model.data.numberDAFOR ||
+      model.data.number,
+
+    isLocked: (model: any) => {
+      const value = plantFungiNumberAttr.menuProps?.getLock?.(model);
+      return (
+        value &&
+        (value === appModel.getAttrLock(model, 'number') ||
+          value === appModel.getAttrLock(model, 'numberDAFOR') ||
+          value === appModel.getAttrLock(model, 'number-ranges'))
+      );
+    },
+    getLock: (model: any) =>
+      model.data['number-ranges'] ||
+      model.data.numberDAFOR ||
+      model.data.number,
+    unsetLock: (model: any) => {
+      appModel.unsetAttrLock(model, 'number', true);
+      appModel.unsetAttrLock(model, 'numberDAFOR', true);
+      appModel.unsetAttrLock(model, 'number-ranges', true);
+    },
+    setLock: (model: any, _: any, value: any) => {
+      const numberRegex = /^\d+$/; // https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
+      if (numberRegex.test(`${value}`)) {
+        appModel.setAttrLock(model, 'number', value, true);
+      } else if (numberDAFOROptions.map((o: any) => o.value).includes(value)) {
+        appModel.setAttrLock(model, 'numberDAFOR', value, true);
+      } else {
+        appModel.setAttrLock(model, 'number-ranges', value, true);
+      }
+    },
+  },
+  pageProps: {
+    headerProps: { title: 'Abundance' },
+    attrProps: [
+      // SLIDER
+      {
+        set: (value: any, model: any) =>
+          Object.assign(model.data, {
+            number: value,
+            numberDAFOR: undefined,
+            'number-ranges': undefined,
+          }),
+        get: (model: any) => model.data.number,
+        input: 'slider',
+        info: 'How many individuals of this species did you see?',
+        inputProps: { max: 500 },
+      },
+      // DAFOR
+      {
+        set: (value: any, model: any) =>
+          Object.assign(model.data, {
+            number: undefined,
+            numberDAFOR: value,
+            'number-ranges': undefined,
+          }),
+        get: (model: any) => model.data.numberDAFOR,
+        onChange: () => window.history.back(),
+        input: 'radio',
+        inputProps: { options: numberDAFOROptions },
+      },
+      // RANGES
+      {
+        set: (value: any, model: any) =>
+          Object.assign(model.data, {
+            number: undefined,
+            numberDAFOR: undefined,
+            'number-ranges': value,
+          }),
+        get: (model: any) => model.data['number-ranges'],
+        onChange: () => window.history.back(),
+        input: 'radio',
+        inputProps: { options: numberOptions },
+      },
+    ],
+  },
+  remote: { id: 16 },
+};
+
+const plantFungiNumberDAFORAttr = {
+  id: 'numberDAFOR',
+  remote: { id: 2, values: numberDAFOROptions },
+} as const;
+
+const plantFungiNumberRangesAttr = {
+  id: 'number-ranges',
+  remote: { id: 523, values: numberOptions },
+} as const;
+
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'plants-fungi',
   taxaGroups: [
@@ -89,97 +185,10 @@ const survey: Partial<Survey> & { taxa: string } = {
     skipAutoIncrement: true,
 
     attrs: {
-      stage: plantStageAttr,
-      number: {
-        menuProps: {
-          label: 'Abundance',
-          icon: numberIcon,
-          parse: (_, model: any) =>
-            model.data['number-ranges'] ||
-            model.data.numberDAFOR ||
-            model.data.number,
-
-          isLocked: (model: any) => {
-            const value =
-              survey.occ?.attrs?.number?.menuProps?.getLock?.(model);
-            return (
-              value &&
-              (value === appModel.getAttrLock(model, 'number') ||
-                value === appModel.getAttrLock(model, 'numberDAFOR') ||
-                value === appModel.getAttrLock(model, 'number-ranges'))
-            );
-          },
-          getLock: (model: any) =>
-            model.data['number-ranges'] ||
-            model.data.numberDAFOR ||
-            model.data.number,
-          unsetLock: model => {
-            appModel.unsetAttrLock(model, 'number', true);
-            appModel.unsetAttrLock(model, 'numberDAFOR', true);
-            appModel.unsetAttrLock(model, 'number-ranges', true);
-          },
-          setLock: (model, _, value) => {
-            const numberRegex = /^\d+$/; // https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
-            if (numberRegex.test(`${value}`)) {
-              appModel.setAttrLock(model, 'number', value, true);
-            } else if (
-              numberDAFOROptions.map((o: any) => o.value).includes(value)
-            ) {
-              appModel.setAttrLock(model, 'numberDAFOR', value, true);
-            } else {
-              appModel.setAttrLock(model, 'number-ranges', value, true);
-            }
-          },
-        },
-        pageProps: {
-          headerProps: { title: 'Abundance' },
-          attrProps: [
-            // SLIDER
-            {
-              set: (value, model) =>
-                Object.assign(model.data, {
-                  number: value,
-                  numberDAFOR: undefined,
-                  'number-ranges': undefined,
-                }),
-              get: model => model.data.number,
-              input: 'slider',
-              info: 'How many individuals of this species did you see?',
-              inputProps: { max: 500 },
-            },
-            // DAFOR
-            {
-              set: (value, model) =>
-                Object.assign(model.data, {
-                  number: undefined,
-                  numberDAFOR: value,
-                  'number-ranges': undefined,
-                }),
-              get: model => model.data.numberDAFOR,
-              onChange: () => window.history.back(),
-              input: 'radio',
-              inputProps: { options: numberDAFOROptions },
-            },
-            // RANGES
-            {
-              set: (value, model) =>
-                Object.assign(model.data, {
-                  number: undefined,
-                  numberDAFOR: undefined,
-                  'number-ranges': value,
-                }),
-              get: model => model.data['number-ranges'],
-              onChange: () => window.history.back(),
-              input: 'radio',
-              inputProps: { options: numberOptions },
-            },
-          ],
-        },
-        remote: { id: 16 },
-      },
-
-      numberDAFOR: { remote: { id: 2, values: numberDAFOROptions } },
-      'number-ranges': { remote: { id: 523, values: numberOptions } },
+      [plantStageAttr.id]: plantStageAttr,
+      [plantFungiNumberAttr.id]: plantFungiNumberAttr,
+      [plantFungiNumberDAFORAttr.id]: plantFungiNumberDAFORAttr,
+      [plantFungiNumberRangesAttr.id]: plantFungiNumberRangesAttr,
     },
   },
 };

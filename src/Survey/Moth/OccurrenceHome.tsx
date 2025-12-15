@@ -10,6 +10,8 @@ const MothOccurrenceHome = () => {
   const { occurrence } = useSample<any, Occurrence>();
   if (!occurrence) return null;
 
+  const surveyConfig = occurrence.getSurvey();
+
   const { isDisabled } = occurrence;
 
   return (
@@ -28,7 +30,7 @@ const MothOccurrenceHome = () => {
           </div>
 
           <div className="rounded-list">
-            <MenuDynamicAttrs model={occurrence} />
+            <MenuDynamicAttrs model={occurrence} surveyConfig={surveyConfig} />
           </div>
         </IonList>
       </Main>

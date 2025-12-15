@@ -63,6 +63,8 @@ const EditMain = ({ sample }: Props) => {
   useAttributeLockingTip(sample);
   const showSensitivityWarning = useSensitivityTip();
 
+  const surveyConfig = sample.getSurvey();
+
   const { url } = useRouteMatch();
 
   const [occ] = sample.occurrences;
@@ -110,7 +112,7 @@ const EditMain = ({ sample }: Props) => {
               routerLink: `${url}/occ/${occ.cid}/comment`,
             }}
           />
-          <MenuDynamicAttrs model={sample} />
+          <MenuDynamicAttrs model={sample} surveyConfig={surveyConfig} />
           <MenuAttr.WithLock
             model={occ}
             attr="sensitivityPrecision"

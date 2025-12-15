@@ -12,22 +12,25 @@ const stage = [
   { value: 'Dead - other', id: 21694 },
 ];
 
+const mammalStageAttr = {
+  id: 'stage',
+  menuProps: { icon: progressIcon },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      inputProps: { options: stage },
+    },
+  },
+  remote: { id: 873, values: stage },
+} as const;
+
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'mammals',
   taxaGroups: [groups.mammal],
 
   occ: {
     attrs: {
-      stage: {
-        menuProps: { icon: progressIcon },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            inputProps: { options: stage },
-          },
-        },
-        remote: { id: 873, values: stage },
-      },
+      [mammalStageAttr.id]: mammalStageAttr,
     },
 
     verify: (attrs: any) =>

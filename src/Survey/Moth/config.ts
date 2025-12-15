@@ -41,6 +41,54 @@ const methodOptions = [
   { value: 'Other method (add comment)', id: 2206 },
 ];
 
+const methodAttr = {
+  id: 'method',
+  menuProps: { icon: numberIcon },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please enter your sampling method (i.e. type of trap or recording method).',
+      inputProps: { options: methodOptions },
+    },
+  },
+  remote: { id: 263, values: methodOptions },
+} as const;
+
+const numberAttr = {
+  id: 'number',
+  menuProps: { icon: numberIcon, label: 'Quantity' },
+  pageProps: {
+    headerProps: { title: 'Quantity' },
+    attrProps: {
+      input: 'slider',
+      info: 'How many individuals of this species did you see?',
+      inputProps: {
+        inputProps: { max: 500 },
+      },
+    },
+  },
+
+  remote: { id: 133 },
+} as const;
+
+const sexAttr = {
+  id: 'sex',
+  menuProps: { icon: genderIcon },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please indicate the sex of the organism.',
+      inputProps: { options: sex },
+    },
+  },
+  remote: { id: 105, values: sex },
+} as const;
+
+const mothSensitivityPrecisionAttr = {
+  id: 'sensitivityPrecision',
+  ...sensitivityPrecisionAttr(1000),
+} as const;
+
 const survey: Survey = {
   name: 'moth',
   label: 'Moth List Survey',
@@ -51,23 +99,11 @@ const survey: Survey = {
   webForm: 'enter-moth-sightings',
 
   attrs: {
-    location: locationAttr,
-    date: dateAttr,
-    recorder: recorderAttr,
-
-    method: {
-      menuProps: { icon: numberIcon },
-      pageProps: {
-        attrProps: {
-          input: 'radio',
-          info: 'Please enter your sampling method (i.e. type of trap or recording method).',
-          inputProps: { options: methodOptions },
-        },
-      },
-      remote: { id: 263, values: methodOptions },
-    },
-
-    comment: commentAttr,
+    [locationAttr.id]: locationAttr,
+    [dateAttr.id]: dateAttr,
+    [recorderAttr.id]: recorderAttr,
+    [methodAttr.id]: methodAttr,
+    [commentAttr.id]: commentAttr,
   },
 
   occ: {
@@ -82,37 +118,13 @@ const survey: Survey = {
     ],
 
     attrs: {
-      taxon: taxonAttr,
-      number: {
-        menuProps: { icon: numberIcon, label: 'Quantity' },
-        pageProps: {
-          headerProps: { title: 'Quantity' },
-          attrProps: {
-            input: 'slider',
-            info: 'How many individuals of this species did you see?',
-            inputProps: {
-              inputProps: { max: 500 },
-            },
-          },
-        },
-
-        remote: { id: 133 },
-      },
-      stage: mothStageAttr,
-      sex: {
-        menuProps: { icon: genderIcon },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            info: 'Please indicate the sex of the organism.',
-            inputProps: { options: sex },
-          },
-        },
-        remote: { id: 105, values: sex },
-      },
-      identifiers: identifiersAttr,
-      comment: commentAttr,
-      sensitivityPrecision: sensitivityPrecisionAttr(1000),
+      [taxonAttr.id]: taxonAttr,
+      [numberAttr.id]: numberAttr,
+      [mothStageAttr.id]: mothStageAttr,
+      [sexAttr.id]: sexAttr,
+      [identifiersAttr.id]: identifiersAttr,
+      [commentAttr.id]: commentAttr,
+      [mothSensitivityPrecisionAttr.id]: mothSensitivityPrecisionAttr,
     },
 
     verify: (attrs: any) =>

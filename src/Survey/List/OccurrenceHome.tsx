@@ -18,6 +18,8 @@ const ListOccurrenceHome = () => {
   const { subSample } = useSample<Sample>();
   if (!subSample) return null;
 
+  const surveyConfig = subSample.getSurvey();
+
   const [occ] = subSample.occurrences;
   const { isDisabled } = subSample;
 
@@ -46,7 +48,11 @@ const ListOccurrenceHome = () => {
                 routerLink: `${url}/occ/${occ.cid}/comment`,
               }}
             />
-            <MenuDynamicAttrs model={subSample} skipLocks />
+            <MenuDynamicAttrs
+              model={subSample}
+              surveyConfig={surveyConfig}
+              skipLocks
+            />
             <MenuAttr
               model={occ}
               attr="sensitivityPrecision"

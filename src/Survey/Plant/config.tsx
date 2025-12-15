@@ -33,6 +33,195 @@ const statusOptions = [
   { value: 'Introduced - invasive', id: 5713 },
 ];
 
+const plantLocationAttr = {
+  ...locationAttr,
+  id: 'location',
+  menuProps: { label: 'Square' },
+  remote: {
+    id: 'entered_sref',
+    values(location: any, submission: any) {
+      // eslint-disable-next-line no-param-reassign
+      submission.values.location_name = location.name; // this is a native indicia attr
+      return location.gridref;
+    },
+  },
+} as const;
+
+const recordersAttr = {
+  id: 'recorders',
+  menuProps: { icon: peopleOutline, skipValueTranslation: true },
+  pageProps: {
+    attrProps: {
+      input: 'inputList',
+      info: 'If anyone helped with documenting the record please enter their name here.',
+      inputProps: { placeholder: 'Recorder name' },
+    },
+  },
+
+  remote: {
+    id: 1018,
+    values(val: any, submission: any) {
+      // add recorder count
+      let count;
+      switch (true) {
+        case val.length === 1:
+          count = 7299;
+          break;
+        case val.length === 2:
+          count = 7300;
+          break;
+        case val.length <= 5:
+          count = 7301;
+          break;
+        case val.length <= 10:
+          count = 7302;
+          break;
+        case val.length <= 20:
+          count = 7303;
+          break;
+        case val.length >= 21:
+          count = 7304;
+          break;
+        default:
+          throw new Error('No such recorderCount case found!');
+      }
+
+      // eslint-disable-next-line no-param-reassign
+      submission.values['smpAttr:992'] = count;
+
+      return val;
+    },
+  },
+} as const;
+
+const viceCountyAttr = {
+  id: 'vice-county',
+  menuProps: {
+    icon: businessOutline,
+    label: 'Vice County',
+    parse: (val: any) => val?.name,
+  },
+  pageProps: {
+    headerProps: { title: 'Vice County' },
+    attrProps: {
+      input: 'radio',
+      set: (val: any, model: any) => {
+        const byName = ({ name }: any) => name === val;
+        const VC = VCs.find(byName);
+        // eslint-disable-next-line no-param-reassign
+        model.data['vice-county'] = VC;
+      },
+
+      get: (model: any) => model.data['vice-county']?.name,
+      inputProps: {
+        options: VCs.map((vc: any) => ({ value: vc.name })),
+      },
+    },
+  },
+  remote: {
+    id: 991,
+    values(val: any, submission: any) {
+      const id = viceCountyAttr.remote?.id;
+      // eslint-disable-next-line no-param-reassign
+      submission.values[`smpAttr:${id}:name`] = val.name;
+
+      return parseInt(val.id, 10);
+    },
+  },
+} as const;
+
+const plantSmpLocationAttr = {
+  ...locationAttr,
+  id: 'location',
+  remote: {
+    id: 'entered_sref',
+    values(location: any, submission: any) {
+      // eslint-disable-next-line no-param-reassign
+      submission.values.location_name = location.name; // this is a native indicia attr
+      return location.gridref;
+    },
+  },
+} as const;
+
+const abundanceAttr = {
+  id: 'abundance',
+  menuProps: { icon: numberIcon, skipValueTranslation: true },
+  pageProps: {
+    attrProps: {
+      input: 'input',
+      info: (
+        <>
+          Abundance (DAFOR, LA, LF or count).
+          <InfoButton label="READ MORE" header="Info" color="tertiary">
+            <p>
+              DAFOR refers to a subjective abundance scale comprising the
+              following ordered terms: <b>D</b>ominant / <b>A</b>
+              bundant / <b>F</b>requent / <b>O</b>ccasional / <b>R</b>
+              are. The prefix "Locally" can also be used with the Abundant and
+              Frequent classes (e.g. LA = Locally Abundant).
+            </p>
+            <p>
+              Assessed abundance should either relate to the scale of the survey
+              (e.g. 1 or 2 km grid squares), or be clearly qualified in the
+              record comments field.
+            </p>
+          </InfoButton>
+        </>
+      ),
+      set(value: any, model: any) {
+        const re = /^(\d+|[DAFOR]|LA|LF)$/;
+        if (!re.test(value)) return;
+        // eslint-disable-next-line no-param-reassign
+        model.data.abundance = value;
+      },
+      inputProps: { options: statusOptions },
+    },
+  },
+  remote: {
+    id: 610,
+    values: (value: any) =>
+      typeof value === 'string' ? value.toUpperCase() : value, // fixes lowercase values
+  },
+} as const;
+
+const statusAttr = {
+  id: 'status',
+  menuProps: { icon: pencilOutline },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please pick the status.',
+      inputProps: { options: statusOptions },
+    },
+  },
+  remote: { id: 507, values: statusOptions },
+} as const;
+
+const plantOccIdentifiersAttr = {
+  id: 'identifiers',
+  menuProps: {
+    icon: peopleOutline,
+    label: 'Identified by',
+    skipValueTranslation: true,
+  },
+  pageProps: {
+    headerProps: { title: 'Identified by' },
+    attrProps: {
+      input: 'inputList',
+      info: 'If another person identified the species for you, please enter their name here.',
+      inputProps: {
+        placeholder: 'Name',
+      },
+    },
+  },
+  remote: { id: 125 },
+} as const;
+
+const plantSensitivityPrecisionAttr = {
+  ...sensitivityPrecisionAttr(),
+  id: 'sensitivityPrecision',
+} as const;
+
 const survey: Survey = {
   name: 'plant',
   label: 'Plant List Survey',
@@ -51,105 +240,12 @@ const survey: Survey = {
   ],
 
   attrs: {
-    date: dateAttr,
-
-    location: {
-      ...locationAttr,
-      menuProps: { label: 'Square' },
-      remote: {
-        id: 'entered_sref',
-        values(location, submission) {
-          // eslint-disable-next-line no-param-reassign
-          submission.values.location_name = location.name; // this is a native indicia attr
-          return location.gridref;
-        },
-      },
-    },
-
-    childGeolocation: childGeolocationAttr,
-
-    recorders: {
-      menuProps: { icon: peopleOutline, skipValueTranslation: true },
-      pageProps: {
-        attrProps: {
-          input: 'inputList',
-          info: 'If anyone helped with documenting the record please enter their name here.',
-          inputProps: { placeholder: 'Recorder name' },
-        },
-      },
-
-      remote: {
-        id: 1018,
-        values(val: any, submission: any) {
-          // add recorder count
-          let count;
-          switch (true) {
-            case val.length === 1:
-              count = 7299;
-              break;
-            case val.length === 2:
-              count = 7300;
-              break;
-            case val.length <= 5:
-              count = 7301;
-              break;
-            case val.length <= 10:
-              count = 7302;
-              break;
-            case val.length <= 20:
-              count = 7303;
-              break;
-            case val.length >= 21:
-              count = 7304;
-              break;
-            default:
-              throw new Error('No such recorderCount case found!');
-          }
-
-          // eslint-disable-next-line no-param-reassign
-          submission.values['smpAttr:992'] = count;
-
-          return val;
-        },
-      },
-    },
-
-    'vice-county': {
-      menuProps: {
-        icon: businessOutline,
-        label: 'Vice County',
-        parse: (val: any) => val?.name,
-      },
-      pageProps: {
-        headerProps: { title: 'Vice County' },
-        attrProps: {
-          input: 'radio',
-          set: (val: any, model: any) => {
-            const byName = ({ name }: any) => name === val;
-            const VC = VCs.find(byName);
-            // eslint-disable-next-line no-param-reassign
-            model.data['vice-county'] = VC;
-          },
-
-          get: (model: any) => model.data['vice-county']?.name,
-          inputProps: {
-            options: VCs.map((vc: any) => ({ value: vc.name })),
-          },
-        },
-      },
-      remote: {
-        id: 991,
-        values(val: any, submission: any) {
-          const id = survey.attrs?.['vice-county'].remote?.id;
-          // eslint-disable-next-line no-param-reassign
-          submission.values[`smpAttr:${id}:name`] = val.name;
-
-          return parseInt(val.id, 10);
-        },
-      },
-    },
-
-    comment: commentAttr,
+    [dateAttr.id]: dateAttr,
+    [plantLocationAttr.id]: plantLocationAttr,
+    [childGeolocationAttr.id]: childGeolocationAttr,
+    [recordersAttr.id]: recordersAttr,
+    [viceCountyAttr.id]: viceCountyAttr,
+    [commentAttr.id]: commentAttr,
   },
 
   smp: {
@@ -163,102 +259,19 @@ const survey: Survey = {
     ],
 
     attrs: {
-      date: dateAttr,
-
-      location: {
-        ...locationAttr,
-        remote: {
-          id: 'entered_sref',
-          values(location, submission) {
-            // eslint-disable-next-line no-param-reassign
-            submission.values.location_name = location.name; // this is a native indicia attr
-            return location.gridref;
-          },
-        },
-      },
+      [dateAttr.id]: dateAttr,
+      [plantSmpLocationAttr.id]: plantSmpLocationAttr,
     },
 
     occ: {
       attrs: {
-        taxon: taxonAttr,
-
-        abundance: {
-          menuProps: { icon: numberIcon, skipValueTranslation: true },
-          pageProps: {
-            attrProps: {
-              input: 'input',
-              info: (
-                <>
-                  Abundance (DAFOR, LA, LF or count).
-                  <InfoButton label="READ MORE" header="Info" color="tertiary">
-                    <p>
-                      DAFOR refers to a subjective abundance scale comprising
-                      the following ordered terms: <b>D</b>ominant / <b>A</b>
-                      bundant / <b>F</b>requent / <b>O</b>ccasional / <b>R</b>
-                      are. The prefix "Locally" can also be used with the
-                      Abundant and Frequent classes (e.g. LA = Locally
-                      Abundant).
-                    </p>
-                    <p>
-                      Assessed abundance should either relate to the scale of
-                      the survey (e.g. 1 or 2 km grid squares), or be clearly
-                      qualified in the record comments field.
-                    </p>
-                  </InfoButton>
-                </>
-              ),
-              set(value: any, model: any) {
-                const re = /^(\d+|[DAFOR]|LA|LF)$/;
-                if (!re.test(value)) return;
-                // eslint-disable-next-line no-param-reassign
-                model.data.abundance = value;
-              },
-              inputProps: { options: statusOptions },
-            },
-          },
-          remote: {
-            id: 610,
-            values: (value: any) =>
-              typeof value === 'string' ? value.toUpperCase() : value, // fixes lowercase values
-          },
-        },
-
-        status: {
-          menuProps: { icon: pencilOutline },
-          pageProps: {
-            attrProps: {
-              input: 'radio',
-              info: 'Please pick the status.',
-              inputProps: { options: statusOptions },
-            },
-          },
-          remote: { id: 507, values: statusOptions },
-        },
-
-        stage: plantStageAttr,
-
-        identifiers: {
-          menuProps: {
-            icon: peopleOutline,
-            label: 'Identified by',
-            skipValueTranslation: true,
-          },
-          pageProps: {
-            headerProps: { title: 'Identified by' },
-            attrProps: {
-              input: 'inputList',
-              info: 'If another person identified the species for you, please enter their name here.',
-              inputProps: {
-                placeholder: 'Name',
-              },
-            },
-          },
-          remote: { id: 125 },
-        },
-
-        comment: commentAttr,
-
-        sensitivityPrecision: sensitivityPrecisionAttr(),
+        [taxonAttr.id]: taxonAttr,
+        [abundanceAttr.id]: abundanceAttr,
+        [statusAttr.id]: statusAttr,
+        [plantStageAttr.id]: plantStageAttr,
+        [plantOccIdentifiersAttr.id]: plantOccIdentifiersAttr,
+        [commentAttr.id]: commentAttr,
+        [plantSensitivityPrecisionAttr.id]: plantSensitivityPrecisionAttr,
       },
 
       verify: (attrs: any) =>

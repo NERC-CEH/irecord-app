@@ -11,18 +11,13 @@ type Model = Sample | Occurrence;
 
 type Props = {
   model: Model;
-  surveyConfig?: any;
+  surveyConfig: any;
   skipLocks?: boolean;
 };
 
-const MenuDynamicAttrs = ({
-  model,
-  surveyConfig: surveyConfigProp,
-  skipLocks,
-}: Props) => {
+const MenuDynamicAttrs = ({ model, surveyConfig, skipLocks }: Props) => {
   const { url } = useRouteMatch();
 
-  const surveyConfig = surveyConfigProp || model.getSurvey();
   const getTaxonAttr = (element: any, occ: Occurrence) => {
     if (!(occ instanceof Occurrence)) {
       throw new Error('Invalid taxon attr configuration');

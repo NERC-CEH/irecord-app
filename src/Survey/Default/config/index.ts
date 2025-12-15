@@ -84,6 +84,101 @@ const numberOptions = [
   { value: '500+', id: 670 },
 ];
 
+const numberAttr = {
+  id: 'number',
+  menuProps: {
+    label: 'Abundance',
+    icon: numberIcon,
+    parse: (_: any, model: any) =>
+      model.data['number-ranges'] || model.data.number,
+    isLocked: (model: any) => {
+      const value = numberAttr.menuProps?.getLock?.(model);
+      return (
+        value &&
+        (value === appModel.getAttrLock(model, 'number') ||
+          value === appModel.getAttrLock(model, 'number-ranges'))
+      );
+    },
+    getLock: (model: any) => model.data['number-ranges'] || model.data.number,
+    unsetLock: (model: any) => {
+      appModel.unsetAttrLock(model, 'number', true);
+      appModel.unsetAttrLock(model, 'number-ranges', true);
+    },
+    setLock: (model: any, _: any, value: any) => {
+      const numberRegex = /^\d+$/; // https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
+      if (numberRegex.test(`${value}`)) {
+        appModel.setAttrLock(model, 'number', value, true);
+      } else {
+        appModel.setAttrLock(model, 'number-ranges', value, true);
+      }
+    },
+  },
+  pageProps: {
+    headerProps: { title: 'Abundance' },
+    attrProps: [
+      {
+        set: (value: number, model: AppOccurrence) =>
+          Object.assign(model.data, {
+            number: value,
+            'number-ranges': undefined,
+          }),
+        get: (model: AppOccurrence) => model.data.number,
+        input: 'slider',
+        info: 'How many individuals of this species did you see?',
+        inputProps: { max: 500 },
+      },
+      {
+        set: (value: string, model: AppOccurrence) =>
+          Object.assign(model.data, {
+            number: undefined,
+            'number-ranges': value,
+          }),
+        get: (model: AppOccurrence) => model.data['number-ranges'],
+        onChange: () => window.history.back(),
+        input: 'radio',
+        inputProps: { options: numberOptions },
+      },
+    ],
+  },
+  remote: { id: 16 },
+};
+
+const numberRangesAttr = {
+  id: 'number-ranges',
+  remote: { id: 523, values: numberOptions },
+} as const;
+
+const stageAttr = {
+  id: 'stage',
+  menuProps: { icon: progressIcon },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please pick the life stage.',
+      inputProps: { options: stageOptions },
+    },
+  },
+  remote: { id: 106, values: stageOptions },
+} as const;
+
+const sexAttr = {
+  id: 'sex',
+  menuProps: { icon: genderIcon },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please indicate the sex of the organism.',
+      inputProps: { options: sexOptions },
+    },
+  },
+  remote: { id: 105, values: sexOptions },
+} as const;
+
+const defaultSensitivityPrecisionAttr = {
+  ...sensitivityPrecisionAttr(1000),
+  id: 'sensitivityPrecision',
+};
+
 const survey: Survey = {
   name: 'default',
   id: 374,
@@ -105,10 +200,10 @@ const survey: Survey = {
   ],
 
   attrs: {
-    location: locationAttr,
-    date: dateAttr,
-    recorder: recorderAttr,
-    groupId: groupIdAttr,
+    [locationAttr.id]: locationAttr,
+    [dateAttr.id]: dateAttr,
+    [recorderAttr.id]: recorderAttr,
+    [groupIdAttr.id]: groupIdAttr,
   },
 
   verify: (attrs: any) =>
@@ -123,95 +218,14 @@ const survey: Survey = {
 
   occ: {
     attrs: {
-      taxon: taxonAttr,
-
-      number: {
-        menuProps: {
-          label: 'Abundance',
-          icon: numberIcon,
-          parse: (_, model: any) =>
-            model.data['number-ranges'] || model.data.number,
-          isLocked: (model: any) => {
-            const value =
-              survey.occ?.attrs?.number?.menuProps?.getLock?.(model);
-            return (
-              value &&
-              (value === appModel.getAttrLock(model, 'number') ||
-                value === appModel.getAttrLock(model, 'number-ranges'))
-            );
-          },
-          getLock: (model: any) =>
-            model.data['number-ranges'] || model.data.number,
-          unsetLock: model => {
-            appModel.unsetAttrLock(model, 'number', true);
-            appModel.unsetAttrLock(model, 'number-ranges', true);
-          },
-          setLock: (model, _, value) => {
-            const numberRegex = /^\d+$/; // https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
-            if (numberRegex.test(`${value}`)) {
-              appModel.setAttrLock(model, 'number', value, true);
-            } else {
-              appModel.setAttrLock(model, 'number-ranges', value, true);
-            }
-          },
-        },
-        pageProps: {
-          headerProps: { title: 'Abundance' },
-          attrProps: [
-            {
-              set: (value: number, model: AppOccurrence) =>
-                Object.assign(model.data, {
-                  number: value,
-                  'number-ranges': undefined,
-                }),
-              get: (model: AppOccurrence) => model.data.number,
-              input: 'slider',
-              info: 'How many individuals of this species did you see?',
-              inputProps: { max: 500 },
-            },
-            {
-              set: (value: string, model: AppOccurrence) =>
-                Object.assign(model.data, {
-                  number: undefined,
-                  'number-ranges': value,
-                }),
-              get: (model: AppOccurrence) => model.data['number-ranges'],
-              onChange: () => window.history.back(),
-              input: 'radio',
-              inputProps: { options: numberOptions },
-            },
-          ],
-        },
-        remote: { id: 16 },
-      },
-
-      'number-ranges': { remote: { id: 523, values: numberOptions } },
-
-      stage: {
-        menuProps: { icon: progressIcon },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            info: 'Please pick the life stage.',
-            inputProps: { options: stageOptions },
-          },
-        },
-        remote: { id: 106, values: stageOptions },
-      },
-      sex: {
-        menuProps: { icon: genderIcon },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            info: 'Please indicate the sex of the organism.',
-            inputProps: { options: sexOptions },
-          },
-        },
-        remote: { id: 105, values: sexOptions },
-      },
-      identifiers: identifiersAttr,
-      comment: commentAttr,
-      sensitivityPrecision: sensitivityPrecisionAttr(1000),
+      [taxonAttr.id]: taxonAttr,
+      [numberAttr.id]: numberAttr,
+      [numberRangesAttr.id]: numberRangesAttr,
+      [stageAttr.id]: stageAttr,
+      [sexAttr.id]: sexAttr,
+      [identifiersAttr.id]: identifiersAttr,
+      [commentAttr.id]: commentAttr,
+      [defaultSensitivityPrecisionAttr.id]: defaultSensitivityPrecisionAttr,
     },
 
     verify: (attrs: any) =>

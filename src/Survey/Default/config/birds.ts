@@ -42,6 +42,31 @@ const stage = [
   { value: 'Other', id: 17663 },
 ];
 
+const breedingAttr = {
+  id: 'breeding',
+  menuProps: { icon: clipboardOutline },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please pick the breeding details for this record.',
+      inputProps: { options: breedingOptions },
+    },
+  },
+  remote: { id: 823, values: breedingOptions },
+} as const;
+
+const birdStageAttr = {
+  id: 'stage',
+  menuProps: { icon: progressIcon },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      inputProps: { options: stage },
+    },
+  },
+  remote: { id: 872, values: stage },
+} as const;
+
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'birds',
   taxaGroups: [groups.bird],
@@ -62,28 +87,8 @@ const survey: Partial<Survey> & { taxa: string } = {
 
   occ: {
     attrs: {
-      stage: {
-        menuProps: { icon: progressIcon },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            inputProps: { options: stage },
-          },
-        },
-        remote: { id: 872, values: stage },
-      },
-
-      breeding: {
-        menuProps: { icon: clipboardOutline },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            info: 'Please pick the breeding details for this record.',
-            inputProps: { options: breedingOptions },
-          },
-        },
-        remote: { id: 823, values: breedingOptions },
-      },
+      [birdStageAttr.id]: birdStageAttr,
+      [breedingAttr.id]: breedingAttr,
     },
   },
 };

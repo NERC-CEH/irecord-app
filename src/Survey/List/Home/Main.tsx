@@ -31,6 +31,8 @@ const HomeMain = ({
   const { navigate } = useContext(NavContext);
   const promptImageSource = usePromptImageSource();
 
+  const surveyConfig = sample.getSurvey();
+
   const { groupId } = sample.data;
 
   const { isDisabled } = sample;
@@ -66,7 +68,11 @@ const HomeMain = ({
               that this is correct.
             </InfoMessage>
           )}
-          <MenuDynamicAttrs model={sample} skipLocks />
+          <MenuDynamicAttrs
+            model={sample}
+            surveyConfig={surveyConfig}
+            skipLocks
+          />
         </div>
       </IonList>
 

@@ -23,6 +23,19 @@ const stage = [
   { id: 17656, value: 'Other' },
 ];
 
+const arthropodStageAttr = {
+  id: 'stage',
+  menuProps: { icon: progressIcon, required: true },
+  pageProps: {
+    attrProps: {
+      input: 'radio',
+      info: 'Please pick the life stage.',
+      inputProps: { options: stage },
+    },
+  },
+  remote: { id: 829, values: stage },
+} as const;
+
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'arthropods',
   taxaGroups: [
@@ -70,17 +83,7 @@ const survey: Partial<Survey> & { taxa: string } = {
 
   occ: {
     attrs: {
-      stage: {
-        menuProps: { icon: progressIcon, required: true },
-        pageProps: {
-          attrProps: {
-            input: 'radio',
-            info: 'Please pick the life stage.',
-            inputProps: { options: stage },
-          },
-        },
-        remote: { id: 829, values: stage },
-      },
+      [arthropodStageAttr.id]: arthropodStageAttr,
     },
 
     verify: (attrs: any) =>

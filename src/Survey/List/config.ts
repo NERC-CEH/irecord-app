@@ -64,11 +64,11 @@ const survey: Survey = {
   ],
 
   attrs: {
-    location: locationAttr,
-    childGeolocation: childGeolocationAttr,
-    recorder: recorderAttr,
-    comment: commentAttr,
-    groupId: groupIdAttr,
+    [locationAttr.id]: locationAttr,
+    [childGeolocationAttr.id]: childGeolocationAttr,
+    [recorderAttr.id]: recorderAttr,
+    [commentAttr.id]: commentAttr,
+    [groupIdAttr.id]: groupIdAttr,
 
     date: {
       ...dateAttr,

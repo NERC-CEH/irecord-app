@@ -33,6 +33,7 @@ export const locationAttrValidator = (obj: any = {}) =>
 
 // eslint-disable-next-line import/prefer-default-export
 export const dateAttr = {
+  id: 'date',
   menuProps: {
     icon: calendarOutline,
     attrProps: {
@@ -49,9 +50,10 @@ export const dateAttr = {
   },
 
   values: (date: any) => dateFormat.format(new Date(date)),
-};
+} as const;
 
 export const commentAttr = {
+  id: 'comment',
   menuProps: { icon: clipboardOutline, skipValueTranslation: true },
   pageProps: {
     attrProps: {
@@ -63,18 +65,20 @@ export const commentAttr = {
       },
     },
   },
-};
+} as const;
 
 export const groupIdAttr = {
+  id: 'groupId',
   menuProps: {
     icon: peopleOutline,
     label: 'Activity',
     parse: (groupId: any) =>
       groups.find((g: any) => g.id === groupId)?.data.title || groupId,
   },
-};
+} as const;
 
 export const recorderAttr = {
+  id: 'recorder',
   menuProps: { icon: peopleOutline, skipValueTranslation: true },
   pageProps: {
     attrProps: {
@@ -86,9 +90,10 @@ export const recorderAttr = {
 
   required: true,
   remote: { id: 127 },
-};
+} as const;
 
 export const identifiersAttr = {
+  id: 'identifiers',
   menuProps: {
     icon: peopleOutline,
     label: 'Identified by',
@@ -105,7 +110,7 @@ export const identifiersAttr = {
     },
   },
   remote: { id: 18 },
-};
+} as const;
 
 export const sensitivityPrecisionAttr = (defaultPrecision = 2000) => ({
   menuProps: {
@@ -134,6 +139,7 @@ export const coreAttributes = [
 ];
 
 export const taxonAttr = {
+  id: 'taxon',
   remote: {
     id: 'taxa_taxon_list_id',
     values(taxon: Taxon) {
@@ -144,7 +150,7 @@ export const taxonAttr = {
       );
     },
   },
-};
+} as const;
 
 export const systemAttrs = {
   device: {
@@ -174,6 +180,7 @@ export const getSystemAttrs = () => {
 };
 
 export const locationAttr = {
+  id: 'location',
   remote: {
     id: 'entered_sref',
     values(location: any, submission: any) {
@@ -200,16 +207,17 @@ export const locationAttr = {
       return `${lat.toFixed(7)}, ${lon.toFixed(7)}`;
     },
   },
-};
+} as const;
 
 export const childGeolocationAttr = {
+  id: 'childGeolocation',
   menuProps: {
     label: 'Geolocate list entries',
     icon: locationOutline,
     type: 'toggle',
   },
   pageProps: { attrProps: { input: 'toggle' } },
-};
+} as const;
 
 const mothStages = [
   { value: 'Not recorded', id: 10647 },
@@ -224,6 +232,7 @@ const mothStages = [
 ];
 
 export const mothStageAttr = {
+  id: 'stage',
   menuProps: { icon: progressIcon, required: true },
   pageProps: {
     attrProps: {
@@ -233,7 +242,7 @@ export const mothStageAttr = {
     },
   },
   remote: { id: 130, values: mothStages },
-};
+} as const;
 
 const plantStageOptions = [
   { label: 'Not Recorded', value: null, isDefault: true },
@@ -248,6 +257,7 @@ const plantStageOptions = [
 ];
 
 export const plantStageAttr = {
+  id: 'stage',
   menuProps: { icon: progressIcon },
   pageProps: {
     attrProps: {
@@ -257,9 +267,10 @@ export const plantStageAttr = {
     },
   },
   remote: { id: 466, values: plantStageOptions },
-};
+} as const;
 
 export type AttrConfig = {
+  id: string;
   menuProps?: MenuProps;
   pageProps?: Omit<PageProps, 'attr' | 'model'>;
   remote?: RemoteConfig;
