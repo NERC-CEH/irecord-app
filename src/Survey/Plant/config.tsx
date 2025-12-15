@@ -250,12 +250,12 @@ const survey: Survey = {
 
   smp: {
     render: [
-      'occ:status',
-      'occ:stage',
-      'occ:abundance',
-      'occ:identifiers',
-      'occ:comment',
-      'occ:sensitivityPrecision',
+      statusAttr,
+      plantStageAttr,
+      abundanceAttr,
+      plantOccIdentifiersAttr,
+      commentAttr,
+      plantSensitivityPrecisionAttr,
     ],
 
     attrs: {

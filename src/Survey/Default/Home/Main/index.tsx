@@ -8,7 +8,7 @@ import appModel from 'models/app';
 import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttrs';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
@@ -74,6 +74,11 @@ const EditMain = ({ sample }: Props) => {
 
   const { isDisabled } = sample;
 
+  const renderArray =
+    typeof surveyConfig.render === 'function'
+      ? surveyConfig.render(sample)
+      : surveyConfig.render;
+
   return (
     <Main className="[--padding-bottom:30px]">
       <IonList lines="full" className="mb-2 flex! flex-col gap-4">
@@ -112,7 +117,9 @@ const EditMain = ({ sample }: Props) => {
               routerLink: `${url}/occ/${occ.cid}/comment`,
             }}
           />
-          <MenuDynamicAttrs model={sample} surveyConfig={surveyConfig} />
+          {renderArray?.map((config: any) => (
+            <MenuDynamicAttr key={config.id} model={sample} config={config} />
+          ))}
           <MenuAttr.WithLock
             model={occ}
             attr="sensitivityPrecision"

@@ -56,11 +56,11 @@ const survey: Survey = {
   webForm: 'enter-app-record-list',
 
   render: [
-    'smp:location',
-    'smp:childGeolocation',
-    'smp:date',
-    'smp:recorder',
-    'smp:comment',
+    { ...locationAttr, model: 'sample' },
+    { ...childGeolocationAttr, model: 'sample' },
+    { ...dateAttr, model: 'sample' },
+    { ...recorderAttr, model: 'sample' },
+    { ...commentAttr, model: 'sample' },
   ],
 
   attrs: {

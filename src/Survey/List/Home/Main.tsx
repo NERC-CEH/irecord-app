@@ -7,7 +7,7 @@ import { IonIcon, IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttrs';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
 import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
@@ -36,6 +36,10 @@ const HomeMain = ({
   const { groupId } = sample.data;
 
   const { isDisabled } = sample;
+
+  const renderArray = typeof surveyConfig.render === 'function' 
+    ? surveyConfig.render(sample) 
+    : surveyConfig.render;
 
   const attachSpeciesImagesWrap = async () => {
     const shouldUseCamera = await promptImageSource();
@@ -68,11 +72,14 @@ const HomeMain = ({
               that this is correct.
             </InfoMessage>
           )}
-          <MenuDynamicAttrs
-            model={sample}
-            surveyConfig={surveyConfig}
-            skipLocks
-          />
+          {renderArray?.map((config: any) => (
+            <MenuDynamicAttr 
+              key={config.id}
+              model={sample}
+              config={config}
+              skipLocks
+            />
+          ))}
         </div>
       </IonList>
 

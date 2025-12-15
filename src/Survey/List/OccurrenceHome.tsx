@@ -4,7 +4,7 @@ import { Page, Header, Main, useSample } from '@flumens';
 import { IonList } from '@ionic/react';
 import Sample from 'common/models/sample';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttrs';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
@@ -22,6 +22,11 @@ const ListOccurrenceHome = () => {
 
   const [occ] = subSample.occurrences;
   const { isDisabled } = subSample;
+
+  const renderArray =
+    typeof surveyConfig.render === 'function'
+      ? surveyConfig.render(subSample)
+      : surveyConfig.render;
 
   return (
     <Page id="survey-default-edit">
@@ -48,11 +53,14 @@ const ListOccurrenceHome = () => {
                 routerLink: `${url}/occ/${occ.cid}/comment`,
               }}
             />
-            <MenuDynamicAttrs
-              model={subSample}
-              surveyConfig={surveyConfig}
-              skipLocks
-            />
+            {renderArray?.map((config: any) => (
+              <MenuDynamicAttr
+                key={config.id}
+                model={subSample}
+                config={config}
+                skipLocks
+              />
+            ))}
             <MenuAttr
               model={occ}
               attr="sensitivityPrecision"

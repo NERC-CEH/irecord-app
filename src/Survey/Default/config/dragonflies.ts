@@ -146,14 +146,14 @@ const survey: Partial<Survey> & { taxa: string } = {
   taxaGroups: [groups.dragonfly],
 
   render: [
-    'smp:site',
-    'occ:adCount',
-    'occ:coCount',
-    'occ:ovCount',
-    'occ:scCount',
-    'occ:laCount',
-    'occ:exCount',
-    'occ:emCount',
+    { ...siteAttr, model: 'sample' },
+    adCountAttr,
+    coCountAttr,
+    ovCountAttr,
+    scCountAttr,
+    laCountAttr,
+    exCountAttr,
+    emCountAttr,
     // 'smp:siteOther',
   ],
 

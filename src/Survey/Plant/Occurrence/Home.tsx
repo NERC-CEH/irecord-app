@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import { Page, Header, Main, useSample } from '@flumens';
 import { IonList } from '@ionic/react';
 import Sample from 'common/models/sample';
-import MenuDynamicAttrs from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttrs';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
@@ -16,6 +16,10 @@ const PlantOccurrenceHome = () => {
 
   const [occ] = subSample.occurrences;
   const { isDisabled } = subSample;
+
+  const renderArray = typeof surveyConfig.smp?.render === 'function' 
+    ? surveyConfig.smp.render(subSample) 
+    : surveyConfig.smp?.render;
 
   return (
     <Page id="survey-default-edit">
@@ -36,7 +40,13 @@ const PlantOccurrenceHome = () => {
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
             <MenuLocation sample={subSample} skipName isRequired={false} />
-            <MenuDynamicAttrs model={subSample} surveyConfig={surveyConfig} />
+            {renderArray?.map((config: any) => (
+              <MenuDynamicAttr
+                key={config.id}
+                model={subSample}
+                config={config}
+              />
+            ))}
           </div>
         </IonList>
       </Main>

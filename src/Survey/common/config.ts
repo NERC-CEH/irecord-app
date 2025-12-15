@@ -271,6 +271,7 @@ export const plantStageAttr = {
 
 export type AttrConfig = {
   id: string;
+  model?: 'sample' | 'occurrence'; // defaults to 'occurrence' if not specified
   menuProps?: MenuProps;
   pageProps?: Omit<PageProps, 'attr' | 'model'>;
   remote?: RemoteConfig;

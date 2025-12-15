@@ -3,8 +3,9 @@ import { groupsReverse as groups } from 'common/data/informalGroups';
 import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
 import Sample from 'models/sample';
-import { plantStageAttr, Survey } from 'Survey/common/config';
+import { identifiersAttr, plantStageAttr, Survey } from 'Survey/common/config';
 import defaultSurveyConf from '.';
+import { sexAttr } from './common';
 
 const numberOptions = [
   { isPlaceholder: true, label: 'Ranges' },
@@ -157,26 +158,26 @@ const survey: Partial<Survey> & { taxa: string } = {
   ],
 
   render(model: Sample) {
-    const group = ['occ:number', 'occ:number-ranges'];
+    const group: any[] = [plantFungiNumberAttr, plantFungiNumberRangesAttr];
     const getTopParent = (m: Sample): Sample =>
       m.parent ? getTopParent(m.parent) : m;
     const topParent = getTopParent(model);
     if (topParent.data.surveyId !== defaultSurveyConf.id) {
-      group.splice(1, 0, 'occ:numberDAFOR');
+      group.splice(1, 0, plantFungiNumberDAFORAttr);
     }
 
     return [
       {
-        id: 'occ:number',
+        ...plantFungiNumberAttr,
         label: 'Abundance',
         icon: 'number',
         info: 'How many individuals of this species did you see?',
         group,
       },
 
-      'occ:stage',
-      'occ:sex',
-      'occ:identifiers',
+      plantStageAttr,
+      sexAttr,
+      identifiersAttr,
     ];
   },
 

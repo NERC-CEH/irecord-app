@@ -108,13 +108,13 @@ const survey: Survey = {
 
   occ: {
     render: [
-      'occ:taxon',
-      'occ:number',
-      'occ:stage',
-      'occ:sex',
-      'occ:identifiers',
-      'occ:comment',
-      'occ:sensitivityPrecision',
+      taxonAttr,
+      numberAttr,
+      mothStageAttr,
+      sexAttr,
+      identifiersAttr,
+      commentAttr,
+      mothSensitivityPrecisionAttr,
     ],
 
     attrs: {

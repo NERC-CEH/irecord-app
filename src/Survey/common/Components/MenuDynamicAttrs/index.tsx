@@ -5,49 +5,41 @@ import Sample from 'models/sample';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
+import { AttrConfig } from 'Survey/common/config';
 import './styles.scss';
 
 type Model = Sample | Occurrence;
 
 type Props = {
   model: Model;
-  surveyConfig: any;
+  config: AttrConfig | string | any;
   skipLocks?: boolean;
 };
 
-const MenuDynamicAttrs = ({ model, surveyConfig, skipLocks }: Props) => {
+const MenuDynamicAttr = ({ model, config, skipLocks }: Props) => {
   const { url } = useRouteMatch();
 
-  const getTaxonAttr = (element: any, occ: Occurrence) => {
+  const getTaxonAttr = (attrConfig: AttrConfig, occ: Occurrence) => {
     if (!(occ instanceof Occurrence)) {
       throw new Error('Invalid taxon attr configuration');
     }
 
-    return <MenuTaxonItem key={element} occ={occ} />;
+    return <MenuTaxonItem key={attrConfig.id} occ={occ} />;
   };
 
-  const getAttrParts = (element: any) => {
-    return element.split(':');
-  };
-
-  const getRouterLink = (el: any, m: Model) => {
+  const getRouterLink = (attrConfig: AttrConfig, m: Model) => {
     const isOccurrenceOnly = model instanceof Occurrence;
+    const isSampleAttr = attrConfig.model === 'sample';
 
-    const [attrType, attrName] = getAttrParts(el);
-
-    return attrType === 'occ' && !isOccurrenceOnly
-      ? `${url}/occ/${m.cid}/${attrName}`
-      : `${url}/${attrName}`;
+    return isSampleAttr && !isOccurrenceOnly
+      ? `${url}/${attrConfig.id}`
+      : `${url}/occ/${m.cid}/${attrConfig.id}`;
   };
 
-  const getLocationAttr = (
-    key: string,
-    selectedModel: Model,
-    attrConfig: any
-  ) => {
+  const getLocationAttr = (attrConfig: AttrConfig, selectedModel: Model) => {
     return (
       <MenuLocation.WithLock
-        key={key}
+        key={attrConfig.id}
         sample={selectedModel as Sample}
         skipLocks={skipLocks}
         label={attrConfig.menuProps?.label}
@@ -55,67 +47,53 @@ const MenuDynamicAttrs = ({ model, surveyConfig, skipLocks }: Props) => {
     );
   };
 
-  const getMenuAttr = (element: any) => {
-    let complexElement;
-    const isComplex = typeof element !== 'string';
-    if (isComplex) {
-      if (!element.group) {
-        throw new Error('No page description found when rendering menu item.');
-      }
-      complexElement = element;
-      element = complexElement.id; // eslint-disable-line
-    }
+  // handle AttrConfig objects
+  const attrConfig = config;
 
-    const [attrType, attrName] = getAttrParts(element);
+  // handle complex elements with group property
+  const hasGroup = 'group' in attrConfig && attrConfig.group;
+  if (hasGroup && !Array.isArray(attrConfig.group)) {
+    throw new Error('No page description found when rendering menu item.');
+  }
 
-    const isOccurrenceOnly = model instanceof Occurrence;
+  const isOccurrenceOnly = model instanceof Occurrence;
+  const isSampleAttr = attrConfig.model === 'sample';
 
-    const isSampleAttr = attrType === 'smp';
-    if (isSampleAttr && isOccurrenceOnly) {
-      throw new Error('Invalid attibute configuration');
-    }
+  if (isSampleAttr && isOccurrenceOnly) {
+    throw new Error('Invalid attribute configuration');
+  }
 
-    const selectedModel =
-      isSampleAttr || isOccurrenceOnly ? model : model.occurrences[0];
+  const selectedModel =
+    isSampleAttr || isOccurrenceOnly ? model : model.occurrences[0];
 
-    if (attrName === 'taxon')
-      return getTaxonAttr(element, selectedModel as Occurrence);
+  if (attrConfig.id === 'taxon')
+    return getTaxonAttr(attrConfig, selectedModel as Occurrence);
 
-    if (attrName === 'location') {
-      const attrConfig = surveyConfig.attrs[attrName];
-      return getLocationAttr(element, selectedModel, attrConfig);
-    }
+  if (attrConfig.id === 'location') {
+    return getLocationAttr(attrConfig, selectedModel);
+  }
 
-    const routerLink = getRouterLink(element, selectedModel);
+  const routerLink = getRouterLink(attrConfig, selectedModel);
 
-    if (skipLocks)
-      return (
-        <MenuAttr
-          key={element}
-          model={selectedModel}
-          attr={attrName}
-          className="menu-attr-item"
-          itemProps={{ routerLink }}
-        />
-      );
-
+  if (skipLocks)
     return (
-      <MenuAttr.WithLock
-        key={element}
+      <MenuAttr
+        key={attrConfig.id}
         model={selectedModel}
-        attr={attrName}
+        attr={attrConfig.id}
+        className="menu-attr-item"
         itemProps={{ routerLink }}
       />
     );
-  };
 
-  let { render } = surveyConfig;
-  if (!render) return null; // remote fetched surveys will not have it
-
-  render = typeof render === 'function' ? render(model) : render;
-  const attributes = render.map(getMenuAttr);
-
-  return attributes;
+  return (
+    <MenuAttr.WithLock
+      key={attrConfig.id}
+      model={selectedModel}
+      attr={attrConfig.id}
+      itemProps={{ routerLink }}
+    />
+  );
 };
 
-export default observer(MenuDynamicAttrs);
+export default observer(MenuDynamicAttr);
