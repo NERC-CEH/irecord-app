@@ -602,6 +602,34 @@ msgstr "How many individuals of this type?"
 msgid "How many individuals of this species did you see?"
 msgstr "How many individuals of this species did you see?"
 
+# Dragonfly attribute info 
+msgid "Total number of adults, including teneral adults. Also include in this total twice the count of coupled pairs plus the count of ovipositing females."
+msgstr "Total number of adults, including teneral adults. Also include in this total twice the count of coupled pairs plus the count of ovipositing females."
+
+# Dragonfly attribute info 
+msgid "Number of coupled pairs or mating pairs seen."
+msgstr "Number of coupled pairs or mating pairs seen."
+
+# Dragonfly attribute info 
+msgid "Number of egg-laying females seen."
+msgstr "Number of egg-laying females seen."
+
+# Dragonfly attribute info 
+msgid "Number of live larvae seen."
+msgstr "Number of live larvae seen."
+
+# Dragonfly attribute info 
+msgid "For Willow Emerald Damselfly only, enter 1 if any egg-laying scars seen in the bark of waterside tree branches."
+msgstr "For Willow Emerald Damselfly only, enter 1 if any egg-laying scars seen in the bark of waterside tree branches."
+
+# Dragonfly attribute info 
+msgid "Number of emergents – from larvae just out of the water to pre-flight adults, including deformed adults incapable of flight (do not include these in the total count of adults)."
+msgstr "Number of emergents – from larvae just out of the water to pre-flight adults, including deformed adults incapable of flight (do not include these in the total count of adults)."
+
+# Dragonfly attribute info 
+msgid "Number of shed larval skins (left over after the adult has emerged)."
+msgstr "Number of shed larval skins (left over after the adult has emerged)."
+
 msgid "Yikes!"
 msgstr "Yikes!"
 

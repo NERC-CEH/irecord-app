@@ -49,7 +49,7 @@ const adCountAttr = {
     headerProps: { title: 'Adults' },
     attrProps: {
       input: 'radio',
-      info: 'How many individuals of this type?',
+      info: 'Total number of adults, including teneral adults. Also include in this total twice the count of coupled pairs plus the count of ovipositing females.',
       inputProps: { options: numRanges },
     },
   },
@@ -63,7 +63,7 @@ const coCountAttr = {
     headerProps: { title: 'Coupled pairs' },
     attrProps: {
       input: 'radio',
-      info: 'How many individuals of this type?',
+      info: 'Number of coupled pairs or mating pairs seen.',
       inputProps: { options: numRanges },
     },
   },
@@ -77,7 +77,7 @@ const ovCountAttr = {
     headerProps: { title: 'Ovipositing females' },
     attrProps: {
       input: 'radio',
-      info: 'How many individuals of this type?',
+      info: 'Number of egg-laying females seen.',
       inputProps: { options: numRanges },
     },
   },
@@ -91,7 +91,7 @@ const scCountAttr = {
     headerProps: { title: 'Oviposition scars' },
     attrProps: {
       input: 'radio',
-      info: 'This attribute should be recorded for Willow Emerald only.',
+      info: 'For Willow Emerald Damselfly only, enter 1 if any egg-laying scars seen in the bark of waterside tree branches.',
       inputProps: { options: numRanges },
     },
   },
@@ -105,7 +105,7 @@ const laCountAttr = {
     headerProps: { title: 'Larvae' },
     attrProps: {
       input: 'radio',
-      info: 'How many individuals of this type?',
+      info: 'Number of live larvae seen.',
       inputProps: { options: numRanges },
     },
   },
@@ -119,7 +119,7 @@ const exCountAttr = {
     headerProps: { title: 'Exuviae' },
     attrProps: {
       input: 'radio',
-      info: 'How many individuals of this type?',
+      info: 'Number of shed larval skins (left over after the adult has emerged).',
       inputProps: { options: numRanges },
     },
   },
@@ -133,7 +133,7 @@ const emCountAttr = {
     headerProps: { title: 'Emergents' },
     attrProps: {
       input: 'radio',
-      info: 'How many individuals of this type?',
+      info: 'Number of emergents – from larvae just out of the water to pre-flight adults, including deformed adults incapable of flight (do not include these in the total count of adults).',
       inputProps: { options: numRanges },
     },
   },
