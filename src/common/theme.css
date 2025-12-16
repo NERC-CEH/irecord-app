@@ -387,7 +387,7 @@ ion-item.item > ion-icon + ion-label.sc-ion-label-md-h {
 /* subtle borders around rounded items */
 .search-result:nth-child(odd),
 .survey-list-item,
-.slider-input-attr,
+.slider-input,
 .input-list-attr .input-list-attr-item,
 .radio-input-attr ion-item,
 #suggestions .empty,

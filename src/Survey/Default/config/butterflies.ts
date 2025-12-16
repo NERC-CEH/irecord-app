@@ -109,7 +109,7 @@ const butterflyNumberAttr = {
         get: (model: any) => model.data.number,
         input: 'slider',
         info: 'How many individuals of this species did you see?',
-        inputProps: { max: 500 },
+        inputProps: { max: 10000 },
       },
       {
         set: (value: any, model: any) =>

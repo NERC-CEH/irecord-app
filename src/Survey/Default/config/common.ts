@@ -70,7 +70,7 @@ export const numberAttr = {
         get: (model: AppOccurrence) => model.data.number,
         input: 'slider',
         info: 'How many individuals of this species did you see?',
-        inputProps: { max: 500 },
+        inputProps: { max: 10000 },
       },
       {
         set: (value: string, model: AppOccurrence) =>
