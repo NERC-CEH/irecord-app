@@ -1,3 +1,7 @@
+## 6.3.1
+
+- Fixed plant survey occurrence attrs.
+  
 ## 6.3.0
 
 - Updated libraries.
@@ -14,6 +18,7 @@
 - Fixed common name AI suggestions.
 - Added photo cropping info.
 - Fixed uploaded record names.
+- Increased abundance count max values.
 - Fixed camera permissions.
 
 ## 6.2.3

@@ -17,9 +17,10 @@ const PlantOccurrenceHome = () => {
   const [occ] = subSample.occurrences;
   const { isDisabled } = subSample;
 
-  const renderArray = typeof surveyConfig.smp?.render === 'function' 
-    ? surveyConfig.smp.render(subSample) 
-    : surveyConfig.smp?.render;
+  const renderArray =
+    typeof surveyConfig?.render === 'function'
+      ? surveyConfig.render(subSample)
+      : surveyConfig?.render;
 
   return (
     <Page id="survey-default-edit">
