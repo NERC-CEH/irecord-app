@@ -121,10 +121,6 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
     return this.saveRemote();
   }
 
-  async save() {
-    super.save();
-  }
-
   getSurvey(): Survey {
     let surveyId = this.metadata.forceSurveyId || this.data.surveyId;
 
