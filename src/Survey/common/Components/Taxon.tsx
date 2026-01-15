@@ -26,8 +26,6 @@ const Taxon = () => {
       taxon,
     })) as Occurrence;
 
-    console.log(surveyConfig, newOccurrence);
-
     sample!.occurrences.push(newOccurrence);
     sample!.save();
 

@@ -174,7 +174,6 @@ const abundanceAttr = {
         // eslint-disable-next-line no-param-reassign
         model.data.abundance = value;
       },
-      inputProps: { options: statusOptions },
     },
   },
   remote: {
