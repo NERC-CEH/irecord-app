@@ -1,3 +1,7 @@
+## 6.3.2
+
+- Fixed moth survey occurrence attrs.
+  
 ## 6.3.1
 
 - Fixed plant survey occurrence attrs.

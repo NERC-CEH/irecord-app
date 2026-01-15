@@ -19,68 +19,45 @@ type Props = {
 const MenuDynamicAttr = ({ model, config, skipLocks }: Props) => {
   const { url } = useRouteMatch();
 
-  const getTaxonAttr = (attrConfig: AttrConfig, occ: Occurrence) => {
-    if (!(occ instanceof Occurrence)) {
-      throw new Error('Invalid taxon attr configuration');
-    }
-
-    return <MenuTaxonItem key={attrConfig.id} occ={occ} />;
-  };
-
-  const getRouterLink = (attrConfig: AttrConfig, m: Model) => {
-    const isOccurrenceOnly = model instanceof Occurrence;
-    const isSampleAttr = attrConfig.model === 'sample';
-
-    return isSampleAttr && !isOccurrenceOnly
-      ? `${url}/${attrConfig.id}`
-      : `${url}/occ/${m.cid}/${attrConfig.id}`;
-  };
-
-  const getLocationAttr = (attrConfig: AttrConfig, selectedModel: Model) => {
-    return (
-      <MenuLocation.WithLock
-        key={attrConfig.id}
-        sample={selectedModel as Sample}
-        skipLocks={skipLocks}
-        label={attrConfig.menuProps?.label}
-      />
-    );
-  };
-
-  // handle AttrConfig objects
-  const attrConfig = config;
+  const isOccurrenceOnly = model instanceof Occurrence;
+  const isSampleAttr = config.model === 'sample';
 
   // handle complex elements with group property
-  const hasGroup = 'group' in attrConfig && attrConfig.group;
-  if (hasGroup && !Array.isArray(attrConfig.group)) {
+  const hasGroup = 'group' in config && config.group;
+  if (hasGroup && !Array.isArray(config.group))
     throw new Error('No page description found when rendering menu item.');
-  }
 
-  const isOccurrenceOnly = model instanceof Occurrence;
-  const isSampleAttr = attrConfig.model === 'sample';
-
-  if (isSampleAttr && isOccurrenceOnly) {
+  if (isSampleAttr && isOccurrenceOnly)
     throw new Error('Invalid attribute configuration');
-  }
 
   const selectedModel =
     isSampleAttr || isOccurrenceOnly ? model : model.occurrences[0];
 
-  if (attrConfig.id === 'taxon')
-    return getTaxonAttr(attrConfig, selectedModel as Occurrence);
+  if (config.id === 'taxon')
+    return <MenuTaxonItem key={config.id} occ={selectedModel as Occurrence} />;
 
-  if (attrConfig.id === 'location') {
-    return getLocationAttr(attrConfig, selectedModel);
+  if (config.id === 'location')
+    return (
+      <MenuLocation.WithLock
+        key={config.id}
+        sample={selectedModel as Sample}
+        skipLocks={skipLocks}
+        label={config.menuProps?.label}
+      />
+    );
+
+  let routerLink = `${url}/${config.id}`;
+  const isOnSampleEditPageButPointToOcc = !isSampleAttr && !isOccurrenceOnly;
+  if (isOnSampleEditPageButPointToOcc) {
+    routerLink = `${url}/occ/${selectedModel.cid}/${config.id}`;
   }
-
-  const routerLink = getRouterLink(attrConfig, selectedModel);
 
   if (skipLocks)
     return (
       <MenuAttr
-        key={attrConfig.id}
+        key={config.id}
         model={selectedModel}
-        attr={attrConfig.id}
+        attr={config.id}
         className="menu-attr-item"
         itemProps={{ routerLink }}
       />
@@ -88,9 +65,9 @@ const MenuDynamicAttr = ({ model, config, skipLocks }: Props) => {
 
   return (
     <MenuAttr.WithLock
-      key={attrConfig.id}
+      key={config.id}
       model={selectedModel}
-      attr={attrConfig.id}
+      attr={config.id}
       itemProps={{ routerLink }}
     />
   );

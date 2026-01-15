@@ -14,9 +14,10 @@ const MothOccurrenceHome = () => {
 
   const { isDisabled } = occurrence;
 
-  const renderArray = typeof surveyConfig.render === 'function' 
-    ? surveyConfig.render(occurrence as any) 
-    : surveyConfig.render;
+  const renderArray =
+    typeof surveyConfig.render === 'function'
+      ? surveyConfig.render(occurrence as any)
+      : surveyConfig.render;
 
   return (
     <Page id="survey-default-edit">
@@ -35,7 +36,11 @@ const MothOccurrenceHome = () => {
 
           <div className="rounded-list">
             {renderArray?.map((config: any) => (
-              <MenuDynamicAttr key={config.id} model={occurrence} config={config} />
+              <MenuDynamicAttr
+                key={config.id}
+                model={occurrence}
+                config={config}
+              />
             ))}
           </div>
         </IonList>
