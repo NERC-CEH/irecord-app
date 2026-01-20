@@ -1,3 +1,7 @@
+## 6.3.3
+
+- Fixed bryophyte and dragonfly upload.
+
 ## 6.3.2
 
 - Fixed moth survey occurrence attrs.
