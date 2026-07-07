@@ -55,10 +55,12 @@ const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
 
   const { id } = attr;
 
+  const { isDisabled } = model;
+
   if ('type' in attr) {
     return (
       <IonItem className="[--border-style:none] [--inner-padding-end:0] [--padding-start:0] [&>div]:w-full">
-        <Block record={model.data} block={attr} />
+        <Block record={model.data} block={attr} isDisabled={isDisabled} />
       </IonItem>
     );
   }
@@ -78,7 +80,6 @@ const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
   const value = parseValue(valueRaw, parse, model);
   const label = labelProp || capitalize(id);
 
-  const { isDisabled } = model;
   if (isDisabled && !value) return null;
 
   if (type === 'toggle') {
