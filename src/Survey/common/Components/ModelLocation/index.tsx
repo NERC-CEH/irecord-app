@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import { useState } from 'react';
 import { observer } from 'mobx-react';
 import { t } from 'i18next';

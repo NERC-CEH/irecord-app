@@ -36,8 +36,6 @@ const HomeController = () => {
 
   const exitApp = () => {
     const onExitApp = () => !ionRouter.canGoBack() && AppPlugin.exitApp();
-
-    // eslint-disable-next-line func-names
     document.addEventListener('ionBackButton', (ev: any) =>
       ev.detail.register(-1, onExitApp)
     );

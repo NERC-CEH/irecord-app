@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-/* eslint-disable @typescript-eslint/no-var-requires */
+ 
 import {
   GENUS_SPECIES_INDEX,
   GENUS_NAMES_INDEX,
@@ -17,7 +17,7 @@ export function normalizeFirstWord(phrase: string) {
 }
 
 export function removeNonAlphanumerics(phrase: string) {
-  return phrase.replace(/\\[\-\'\"()\\]/g, '.?'); // eslint-disable-line
+  return phrase.replace(/\\[\-\'\"()\\]/g, '.?');  
 }
 
 export function getFirstWordRegex(searchPhrase: string) {
@@ -92,9 +92,9 @@ export function escapeRegExp(string: string) {
  */
 export function isPhraseScientific(searchPhrase: string) {
   const check = [
-    ' ssp.? ', // eslint-disable-line
-    ' subsect.? ', // eslint-disable-line
-    ' nothovar.? ', // eslint-disable-line
+    ' ssp.? ',  
+    ' subsect.? ',  
+    ' nothovar.? ',  
   ];
 
   const re = new RegExp(check.join('|'), 'i');

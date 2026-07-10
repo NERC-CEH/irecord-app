@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import sinon from 'sinon';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';

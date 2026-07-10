@@ -63,10 +63,8 @@ const useOnBackButton = (onCancelEdit: () => void, editImage?: Media) => {
         onCancelEdit();
       });
     };
-
-    // eslint-disable-next-line
     document.addEventListener('ionBackButton', disableHardwareBackButton);
-    // eslint-disable-next-line
+
     const removeEventListener = () =>
       document.removeEventListener('ionBackButton', disableHardwareBackButton);
     return removeEventListener;

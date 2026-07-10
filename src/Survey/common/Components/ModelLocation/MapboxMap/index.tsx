@@ -86,7 +86,7 @@ const MapboxContainer = ({
   const [mapRef, setMapRef] = useState<MapRef>();
   const flyToLocation = () => {
     mapFlyToLocation(
-      mapRef as any,
+      mapRef,
       isValidLocation(location) ? location : parentLocation || location // for location.geocoded
     );
   };

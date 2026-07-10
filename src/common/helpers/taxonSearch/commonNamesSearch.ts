@@ -72,7 +72,7 @@ function addToResults(results: Taxon[], genus: Genus, p: NamePointer) {
 
 function getNameFromPointer(genus: Genus, p: NamePointer) {
   if (isGenusPointer(p)) {
-    const genusPointer = p as GenusNamePointer;
+    const genusPointer = p;
     const nameIndex = genusPointer[1];
     return genus[GENUS_NAMES_INDEX]![nameIndex];
   }
@@ -110,7 +110,7 @@ function otherNamesMatchCheck(
 
 function groupMatchCheck(informalGroups: number[], group: number) {
   // check if species is in informal groups to search
-  if (informalGroups.length && informalGroups.indexOf(group) < 0) {
+  if (informalGroups.length && !informalGroups.includes(group)) {
     // skip this taxa because not in the searched informal groups
     return false;
   }

@@ -133,7 +133,7 @@ describe('Taxon Search Engine', () => {
       const searchSpecCase2 = () =>
         search('blackthorn').then(results => {
           expect(Object.keys(results)).not.toHaveLength(0);
-          // eslint-disable-next-line
+
           let found = false;
           results.forEach(species => {
             if (species.commonNames[0] === 'Blackthorn') {

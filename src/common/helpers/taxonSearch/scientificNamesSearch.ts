@@ -81,7 +81,7 @@ function searchGeneraDictionary(
   firstWordRegex: RegExp,
   otherWordsRegex?: RegExp
 ) {
-  let generaIndex = findFirstMatching(genera, genera as any, firstWord);
+  let generaIndex = findFirstMatching(genera, genera, firstWord);
 
   const notFound = generaIndex < 0;
   if (notFound) return;

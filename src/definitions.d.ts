@@ -23,3 +23,6 @@ declare module '*.png' {
 declare module '@changey/react-leaflet-markercluster' {
   export default any;
 }
+
+declare module '*.scss';
+declare module '*.css';

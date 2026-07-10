@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import en from './interface/en.pot';
 
 // Adding some context, reference and other in po files:

@@ -20,7 +20,7 @@ function updateChildrenLocations(sample: Sample) {
   sample.samples.forEach((subSample: Sample) => {
     const location = JSON.parse(JSON.stringify(sample.data.location));
     delete location.name;
-    // eslint-disable-next-line no-param-reassign
+
     Object.assign(subSample.data.location, location);
   });
 }

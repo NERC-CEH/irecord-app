@@ -11,7 +11,6 @@ const Group = () => {
   if (!sample) return null;
 
   const onSelect = async (groupId: string) => {
-    // eslint-disable-next-line no-param-reassign
     sample.data.groupId = groupId;
     await sample.save();
     goBack();

@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { checkmarkOutline } from 'ionicons/icons';
 import { Checkbox } from 'react-aria-components';
 import { IonIcon } from '@ionic/react';

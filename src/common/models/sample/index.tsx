@@ -281,6 +281,7 @@ export const useValidateCheck = (sample?: Sample) => {
   const showValidateCheck = () => {
     const invalids = sample?.validateRemote();
     if (invalids) {
+      console.log('Invalid sample', invalids);
       alert({
         header: t('Survey incomplete'),
         skipTranslation: true,

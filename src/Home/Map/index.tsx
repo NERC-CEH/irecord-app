@@ -230,7 +230,7 @@ const Map = () => {
     <Page id="home-map">
       <MapContainer
         id="user-records"
-        onReady={setMapRef as any}
+        onReady={setMapRef}
         accessToken={config.map.mapboxApiKey}
         maxZoom={17}
         customAttribution='&copy; <a href="http://www.ordnancesurvey.co.uk/">Ordnance Survey</a>'

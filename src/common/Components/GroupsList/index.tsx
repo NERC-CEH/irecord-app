@@ -40,7 +40,7 @@ const GroupsList = ({
       await group.join();
       await groups.fetchRemote({ type: 'member', form: ['enter-app-record'] });
       await groups.fetchRemote({
-        type: 'pending' as any,
+        type: 'pending',
         form: ['enter-app-record'],
       });
       await groups.fetchRemote({
@@ -64,7 +64,7 @@ const GroupsList = ({
       await group.leave();
       await groups.fetchRemote({ type: 'member', form: ['enter-app-record'] });
       await groups.fetchRemote({
-        type: 'pending' as any,
+        type: 'pending',
         form: ['enter-app-record'],
       });
       await groups.fetchRemote({
@@ -99,7 +99,7 @@ const GroupsList = ({
       await groups.fetchRemote({ type, form: ['enter-app-record'] });
       if (type === 'member') {
         await groups.fetchRemote({
-          type: 'pending' as any,
+          type: 'pending',
           form: ['enter-app-record'],
         });
       }

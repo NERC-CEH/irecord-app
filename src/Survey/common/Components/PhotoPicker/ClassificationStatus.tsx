@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { observer } from 'mobx-react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { IonIcon, IonSpinner } from '@ionic/react';
