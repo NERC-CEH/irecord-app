@@ -1,3 +1,7 @@
+## 6.5.0
+
+Changed recorder name formatting.
+
 ## 6.4.0
 
 - Updated libraries.

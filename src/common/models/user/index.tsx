@@ -79,7 +79,7 @@ export class UserModel extends DrupalUserModel<Data> {
 
   getPrettyName() {
     return this.isLoggedIn()
-      ? `${this.data.firstName} ${this.data.lastName}`
+      ? `${this.data.lastName}, ${this.data.firstName}`
       : '';
   }
 
