@@ -34,8 +34,6 @@ const Taxon = () => {
 
   const createNewSampleModel = async (taxon: TaxonI) => {
     const newSample = (await surveyConfig.smp?.create?.({
-      Sample,
-      Occurrence,
       taxon,
       surveySample: sample!,
     })) as Sample;

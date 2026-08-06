@@ -1,8 +1,8 @@
 import { object, string } from 'zod';
 import gridAlertService from 'common/helpers/gridAlertService';
-import { MachineInvolvement } from 'common/models/occurrence';
+import Occurrence, { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
-import AppSample from 'models/sample';
+import Sample from 'models/sample';
 import userModel from 'models/user';
 import defaultSurvey from 'Survey/Default/config';
 import {
@@ -25,7 +25,7 @@ export {
 } from 'Survey/common/config';
 export { defaultSensitivityPrecisionAttr } from 'Survey/Default/config';
 
-function appendLockedAttrs(sample: AppSample) {
+function appendLockedAttrs(sample: Sample) {
   const defaultSurveyLocks = appModel.data.attrLocks.complex || {};
   const locks = defaultSurveyLocks['default-default'] || {}; // bypassing the API here!
   const coreLocks = Object.keys(locks).reduce((agg, key) => {
@@ -43,7 +43,7 @@ function appendLockedAttrs(sample: AppSample) {
   appModel.appendAttrLocks(sample, fullSurveyLocks, true);
 }
 
-function autoIncrementAbundance(sample: AppSample) {
+function autoIncrementAbundance(sample: Sample) {
   const sampleSurvey = sample.getSurvey();
   const { skipAutoIncrement } = sampleSurvey.occ || {};
   const locks = appModel.getAllLocks(sample);
@@ -79,11 +79,11 @@ const survey = {
         attrProps: {
           ...dateAttr.menuProps.attrProps,
 
-          set: (value: string, sample: AppSample) => {
+          set: (value: string, sample: Sample) => {
             // eslint-disable-next-line no-param-reassign
             sample.data.date = value;
 
-            const setDate = (smp: AppSample) => {
+            const setDate = (smp: Sample) => {
               // eslint-disable-next-line no-param-reassign
               smp.data.date = value;
             };
@@ -96,7 +96,7 @@ const survey = {
   },
 
   smp: {
-    async create({ Sample, Occurrence, taxon, images, surveySample }) {
+    async create({ taxon, images, surveySample }) {
       const occurrence = new Occurrence({
         data: {
           machineInvolvement: MachineInvolvement.NONE,
@@ -155,7 +155,7 @@ const survey = {
         .nullable(),
     }).safeParse(attrs).error,
 
-  create({ Sample, alert }) {
+  create({ alert }) {
     // add currently logged in user as one of the recorders
     let recorder = '';
     if (userModel.isLoggedIn()) {

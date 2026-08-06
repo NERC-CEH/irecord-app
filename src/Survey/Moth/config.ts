@@ -3,6 +3,7 @@ import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import { MachineInvolvement } from 'common/models/occurrence';
+import Sample from 'common/models/sample';
 import appModel from 'models/app';
 import userModel from 'models/user';
 import {
@@ -171,7 +172,7 @@ const survey = {
         .nullable(),
     }).safeParse(attrs).error,
 
-  create({ Sample }) {
+  create() {
     // add currently logged in user as one of the recorders
     let recorder = '';
     if (userModel.isLoggedIn()) {

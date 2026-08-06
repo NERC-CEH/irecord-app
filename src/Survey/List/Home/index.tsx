@@ -16,7 +16,6 @@ import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
 import appModel from 'common/models/app';
 import Media from 'common/models/media';
-import Occurrence from 'common/models/occurrence';
 import Sample, { useValidateCheck } from 'models/sample';
 import userModel, { useUserStatusCheck } from 'models/user';
 import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
@@ -151,8 +150,6 @@ const ListHome = () => {
       );
 
       const subSample = await surveyConfig.smp!.create!({
-        Occurrence,
-        Sample,
         surveySample: sample!,
         images: [imageModel],
       });

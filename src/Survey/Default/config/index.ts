@@ -3,8 +3,8 @@ import mergeWith from 'lodash.mergewith';
 import { object, string } from 'zod';
 import userModel from 'common/models/user';
 import appModel from 'models/app';
-import AppOccurrence, { MachineInvolvement } from 'models/occurrence';
-import AppSample from 'models/sample';
+import Occurrence, { MachineInvolvement } from 'models/occurrence';
+import Sample from 'models/sample';
 import {
   coreAttributes,
   dateAttr,
@@ -116,12 +116,12 @@ const survey = {
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
       }).safeParse(attrs).error,
 
-    modifySubmission(submission: any, occ: AppOccurrence) {
+    modifySubmission(submission: any, occ: Occurrence) {
       return { ...submission, ...occ.getClassifierSubmission() };
     },
   },
 
-  async create({ Sample, Occurrence, images, taxon, skipLocation }) {
+  async create({ images, taxon, skipLocation }) {
     const ignoreErrors = () => {};
 
     const occurrence = new Occurrence({
@@ -189,7 +189,7 @@ const survey = {
     return submission;
   },
 
-  get(sample: AppSample) {
+  get(sample: Sample) {
     const getTaxaSpecifigConfig = () => {
       if (!sample.occurrences.length) return this;
 

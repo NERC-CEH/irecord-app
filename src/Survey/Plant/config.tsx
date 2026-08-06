@@ -7,6 +7,7 @@ import VCs from 'common/data/vice_counties.data.json';
 import { InfoButton } from 'common/flumens';
 import gridAlertService from 'common/helpers/gridAlertService';
 import numberIcon from 'common/images/number.svg';
+import Sample from 'common/models/sample';
 import appModel from 'models/app';
 import Occurrence, { MachineInvolvement } from 'models/occurrence';
 import userModel from 'models/user';
@@ -307,13 +308,7 @@ const survey = {
       },
     },
 
-    async create({
-      Sample,
-      Occurrence: OccurrenceClass,
-      taxon,
-      images,
-      surveySample,
-    }) {
+    async create({ taxon, images, surveySample }) {
       const { gridSquareUnit } = appModel.data;
 
       const sample = new Sample({
@@ -329,7 +324,7 @@ const survey = {
         },
       });
 
-      const occurrence = new OccurrenceClass({
+      const occurrence = new Occurrence({
         data: {
           machineInvolvement: MachineInvolvement.NONE,
           taxon,
@@ -366,7 +361,7 @@ const survey = {
         .nullable(),
     }).safeParse(attrs).error,
 
-  create({ Sample, alert }) {
+  create({ alert }) {
     const { gridSquareUnit, useGridNotifications } = appModel.data;
 
     // add currently logged in user as one of the recorders

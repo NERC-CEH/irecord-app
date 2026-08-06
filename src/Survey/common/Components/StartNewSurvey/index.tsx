@@ -3,8 +3,6 @@ import { useRouteMatch } from 'react-router';
 import { useAlert } from '@flumens';
 import { NavContext, IonPage } from '@ionic/react';
 import samples from 'models/collections/samples';
-import Occurrence from 'models/occurrence';
-import Sample from 'models/sample';
 import { Survey } from 'Survey/common/config';
 import './styles.scss';
 
@@ -22,7 +20,7 @@ function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
     const createSample = async () => {
       if (SurveyCreatePage) return;
 
-      const sample = await survey.create({ Sample, Occurrence, alert });
+      const sample = await survey.create({ alert });
       await sample.save();
 
       samples.push(sample);

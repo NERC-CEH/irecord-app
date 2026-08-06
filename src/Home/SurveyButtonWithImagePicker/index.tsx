@@ -14,8 +14,6 @@ import config from 'common/config';
 import appModel from 'models/app';
 import samples from 'models/collections/samples';
 import Media from 'models/media';
-import Occurrence from 'models/occurrence';
-import Sample from 'models/sample';
 import userModel from 'models/user';
 import defaultSurveyConfig from 'Survey/Default/config';
 import SurveyButton from './SurveyButton';
@@ -32,12 +30,7 @@ const SurveyButtonWithImagePicker = ({
   const toast = useToast();
 
   const onPrimarySurveyWrap = async (images: Media[]) => {
-    const sample = await defaultSurveyConfig.create({
-      Sample,
-      Occurrence,
-      images,
-    });
-
+    const sample = await defaultSurveyConfig.create({ images });
     await sample.save();
 
     // add to main collection

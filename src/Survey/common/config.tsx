@@ -315,8 +315,6 @@ export type SampleConfig = {
   render?: any[];
   attrs?: Attrs;
   create?: (props: {
-    Sample: typeof Sample;
-    Occurrence: typeof Occurrence;
     taxon?: Taxon;
     images?: Media[];
     surveySample: Sample;
@@ -373,8 +371,6 @@ export type Survey = {
   get?: (sample: Sample) => Survey;
 
   create: (props: {
-    Sample: typeof Sample;
-    Occurrence: typeof Occurrence;
     taxon?: Taxon;
     images?: Media[] | null;
     skipLocation?: boolean;
