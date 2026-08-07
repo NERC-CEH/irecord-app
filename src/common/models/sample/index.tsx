@@ -41,11 +41,8 @@ const ATTRS_TO_LEAVE = [
 ];
 
 type Data = SampleData & {
-  surveyId: any;
   location?: any;
-  groupId?: string;
   recorder?: any;
-  recorders?: any;
   childGeolocation?: any;
 };
 
@@ -62,14 +59,17 @@ type Metadata = SampleMetadata & {
   saved?: boolean;
 };
 
-export default class Sample extends SampleOriginal<Data, Metadata> {
+export default class Sample<T extends Data = Data> extends SampleOriginal<
+  T,
+  Metadata
+> {
   declare occurrences: IObservableArray<Occurrence>;
 
-  declare samples: IObservableArray<Sample>;
+  declare samples: IObservableArray<Sample<T>>;
 
   declare media: IObservableArray<Media>;
 
-  declare parent?: Sample;
+  declare parent?: Sample<T>;
 
   startGPS: any; // from extension
 
@@ -138,7 +138,7 @@ export default class Sample extends SampleOriginal<Data, Metadata> {
       this.data.surveyId = surveyId;
     }
 
-    const survey = getSurveyConfigs()[surveyId];
+    const survey = getSurveyConfigs()[surveyId!];
 
     if (survey?.get) return survey.get(this);
 

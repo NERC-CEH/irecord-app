@@ -8,7 +8,7 @@ import { AttrConfig } from 'Survey/common/config';
 export default function migrateOldAttr(
   record: Record<string, any>,
   oldName: string,
-  oldAttr: AttrConfig,
+  oldAttr: Pick<AttrConfig, 'remote'>,
   newAttr: Pick<BlockConf, 'id'>
 ) {
   const oldValue = record[oldName];
@@ -34,7 +34,7 @@ export default function migrateOldAttr(
         .filter(Boolean);
     } else {
       const remoteValue = findMatchingValue(oldValue);
-      if (remoteValue) {
+      if (remoteValue?.id) {
         newRecord[newAttr.id] = String(remoteValue.id);
       }
     }

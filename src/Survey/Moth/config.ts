@@ -106,10 +106,10 @@ const survey = {
 
   attrs: {
     [locationAttr.id]: locationAttr,
-    [dateAttr.id]: dateAttr,
+    [dateAttr.id]: { block: dateAttr },
     [recorderAttr.id]: recorderAttr,
     [methodAttr.id]: methodAttr,
-    [commentAttr.id]: commentAttr,
+    [commentAttr.id]: { block: commentAttr },
   },
 
   occ: {
@@ -129,7 +129,7 @@ const survey = {
       [mothStageAttr.id]: mothStageAttr,
       [sexAttr.id]: sexAttr,
       [identifiersAttr.id]: identifiersAttr,
-      [commentAttr.id]: commentAttr,
+      [commentAttr.id]: { block: commentAttr },
       [mothSensitivityPrecisionAttr.id]: mothSensitivityPrecisionAttr,
     },
 

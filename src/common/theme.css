@@ -9,6 +9,7 @@
 @source "../../node_modules/@flumens/ionic";
 
 @import '@flumens/ionic/dist/themes/rounded.css';
+@import '@flumens/ionic/dist/themes/tailwindUtils.css';
 
 @theme {
   /* https://www.tailwindshades.com/#color=69.49640287769785%2C71.2820512820513%2C38.23529411764706&step-up=11&step-down=10&hue-shift=0&name=primary&base-stop=6&v=1&overrides=e30%3D */
@@ -244,7 +245,8 @@ button {
 
 /* info messages */
 .info-message.blue,
-.attr-page .info-message {
+.attr-page .info-message,
+.attr-page .description-wrapper {
   @apply border-secondary-300/40 bg-secondary-50 text-secondary-900;
 }
 
@@ -275,4 +277,27 @@ ion-header ion-toolbar ion-back-button {
 /* fix block label weight */
 .menu-attr-item .choice-input-block .field-label + span {
   font-weight: 500;
+}
+
+/* Fix datetime styles */
+.menu-attr-item ion-datetime-button[slot='end'] {
+  max-width: none;
+}
+.menu-attr-item-lock.locked ion-datetime-button[slot='end'] {
+  --ion-text-color: var(--attr-lock-color);
+  --ion-color-step-300: var(--color-secondary-50);
+}
+
+/* Fix locked page link color */
+.menu-attr-item-lock.locked .page-link-block .link-value {
+  color: var(--attr-lock-color);
+}
+
+/* Fix info message background */
+.attr-page-block .info-message {
+  background: transparent;
+}
+
+.attr-page .attr-page-block .group {
+  @apply rounded-md overflow-hidden border border-neutral-300/50;
 }

@@ -1,13 +1,18 @@
 import {
   calendarOutline,
   peopleOutline,
-  clipboardOutline,
   eyeOffOutline,
   locationOutline,
 } from 'ionicons/icons';
 import { z } from 'zod';
-import { dateFormat, device, PageProps, RemoteConfig } from '@flumens';
-import { ChoiceInputConf } from '@flumens/tailwind/dist/Survey';
+import { device, PageProps, RemoteConfig } from '@flumens';
+import {
+  BlockConf,
+  ChoiceInputConf,
+  DateTimeInputConf,
+  TextInputConf,
+  YesNoInputConf,
+} from '@flumens/tailwind/dist/Survey';
 import { IonIcon } from '@ionic/react';
 import config from 'common/config';
 import progressIcon from 'common/images/progress-circles.svg';
@@ -35,39 +40,18 @@ export const locationAttrValidator = (obj: any = {}) =>
 
 export const dateAttr = {
   id: 'date',
-  menuProps: {
-    icon: calendarOutline,
-    attrProps: {
-      input: 'date',
-      inputProps: {
-        max: () => new Date(),
-        label: 'Date',
-        icon: calendarOutline,
-        autoFocus: false,
-        usePrettyDates: true,
-        presentation: 'date',
-      },
-    },
-  },
-
-  /** @deprecated  TODO: keep it backwards compatible, remove in the future once everyone uploads their records */
-  values: (date: any) => dateFormat.format(new Date(date)),
-} as const;
+  title: 'Date',
+  prefix: <IonIcon icon={calendarOutline} className="size-6" />,
+  type: 'dateTimeInput',
+  validation: { noFutureValues: true },
+} as const satisfies DateTimeInputConf;
 
 export const commentAttr = {
   id: 'comment',
-  menuProps: { icon: clipboardOutline, skipValueTranslation: true },
-  pageProps: {
-    attrProps: {
-      input: 'textarea',
-      info: 'Please add any extra info about this record.',
-      inputProps: {
-        isMultiline: true,
-        className: 'h-36 [&>div>div>textarea]:h-36',
-      },
-    },
-  },
-} as const;
+  title: 'Comment',
+  type: 'textInput',
+  appearance: 'multiline',
+} as const satisfies TextInputConf;
 
 export const groupIdAttr = {
   id: 'groupId',
@@ -207,13 +191,10 @@ export const locationAttr = {
 
 export const childGeolocationAttr = {
   id: 'childGeolocation',
-  menuProps: {
-    label: 'Geolocate list entries',
-    icon: locationOutline,
-    type: 'toggle',
-  },
-  pageProps: { attrProps: { input: 'toggle' } },
-} as const;
+  title: 'Geolocate list entries',
+  prefix: <IonIcon icon={locationOutline} className="size-6" />,
+  type: 'yesNoInput',
+} as const satisfies YesNoInputConf;
 
 const mothStages = [
   { value: 'Not recorded', id: 10647 },
@@ -255,14 +236,6 @@ const plantStageOptions = [
 /** @deprecated */
 export const plantStageAttrOld = {
   id: 'stage',
-  menuProps: { icon: progressIcon },
-  pageProps: {
-    attrProps: {
-      input: 'radio',
-      info: 'Please pick the life stage.',
-      inputProps: { options: plantStageOptions },
-    },
-  },
   remote: { id: 466, values: plantStageOptions },
 } as const;
 
@@ -292,7 +265,14 @@ export type AttrConfig = {
   remote?: RemoteConfig;
 };
 
-type Attrs = Record<string, AttrConfig>;
+export type BlockAttrConfig = {
+  block: BlockConf;
+  remote?: RemoteConfig;
+  menuProps?: undefined;
+  pageProps?: undefined;
+};
+
+type Attrs = Record<string, AttrConfig | BlockAttrConfig>;
 
 type OccurrenceConfig = {
   render?: any[];

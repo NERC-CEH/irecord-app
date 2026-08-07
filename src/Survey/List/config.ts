@@ -1,4 +1,6 @@
+import { calendarOutline } from 'ionicons/icons';
 import { object, string } from 'zod';
+import { dateFormat } from '@flumens';
 import gridAlertService from 'common/helpers/gridAlertService';
 import Occurrence, { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
@@ -7,7 +9,6 @@ import userModel from 'models/user';
 import defaultSurvey from 'Survey/Default/config';
 import {
   coreAttributes,
-  dateAttr,
   recorderAttr,
   commentAttr,
   Survey,
@@ -55,6 +56,27 @@ function autoIncrementAbundance(sample: Sample) {
   }
 }
 
+const dateAttr = {
+  id: 'date',
+  menuProps: {
+    icon: calendarOutline,
+    attrProps: {
+      input: 'date',
+      inputProps: {
+        max: () => new Date(),
+        label: 'Date',
+        icon: calendarOutline,
+        autoFocus: false,
+        usePrettyDates: true,
+        presentation: 'date',
+      },
+    },
+  },
+
+  /** @deprecated  TODO: keep it backwards compatible, remove in the future once everyone uploads their records */
+  values: (date: any) => dateFormat.format(new Date(date)),
+} as const;
+
 const SURVEY_ID = 576;
 const SURVEY_WEBFORM = 'enter-app-record-list';
 
@@ -67,9 +89,9 @@ const survey = {
 
   attrs: {
     [locationAttr.id]: locationAttr,
-    [childGeolocationAttr.id]: childGeolocationAttr,
+    [childGeolocationAttr.id]: { block: childGeolocationAttr },
     [recorderAttr.id]: recorderAttr,
-    [commentAttr.id]: commentAttr,
+    [commentAttr.id]: { block: commentAttr },
     [groupIdAttr.id]: groupIdAttr,
 
     date: {

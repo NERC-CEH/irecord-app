@@ -3,12 +3,14 @@ import { Route, Redirect } from 'react-router-dom';
 import {
   SamplesContext,
   TailwindBlockContext,
+  TailwindBlockContextProps,
   TailwindContext,
   TailwindContextValue,
   defaultContext,
 } from '@flumens';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import MenuDateAttr from 'common/Components/MenuDateAttr';
 import UpdatedRecordsAlert from 'common/Components/UpdatedRecordsAlert';
 import samples from 'common/models/collections/samples';
 import 'common/theme.css';
@@ -22,10 +24,10 @@ import User from './User/router';
 
 const platform = isPlatform('ios') ? 'ios' : 'android';
 const tailwindContext: TailwindContextValue = { platform };
-const tailwindBlockContext = {
+const tailwindBlockContext: TailwindBlockContextProps = {
   ...defaultContext,
   ...tailwindContext,
-  basePath: '',
+  DateTimeInput: MenuDateAttr,
 };
 
 const samplesContext = { samples };

@@ -21,6 +21,7 @@ import userModel, { useUserStatusCheck } from 'models/user';
 import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
+import surveyConfig, { Data } from '../config';
 import Main from './Main';
 import './styles.scss';
 
@@ -34,7 +35,7 @@ const PlantHome = () => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
 
-  let { sample } = useSample<Sample>();
+  let { sample } = useSample<Sample<Data>>();
   sample = useRemoteSample(sample, () => userModel.isLoggedIn(), Sample);
   const checkSampleStatus = useValidateCheck(sample);
   const checkUserStatus = useUserStatusCheck();
@@ -132,7 +133,6 @@ const PlantHome = () => {
     if (!images) return;
 
     const imageArray = Array.isArray(images) ? images : [images];
-    const surveyConfig = sample!.getSurvey();
 
     const subSamplePromise = imageArray.map(async (img: any) => {
       const imageModel: any = await Media.getImageModel(
@@ -141,7 +141,7 @@ const PlantHome = () => {
         true
       );
 
-      const subSample = await surveyConfig.smp!.create!({
+      const subSample = await surveyConfig.smp.create({
         surveySample: sample!,
         images: [imageModel],
       });

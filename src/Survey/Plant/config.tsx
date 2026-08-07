@@ -1,10 +1,26 @@
-import { peopleOutline, businessOutline, pencilOutline } from 'ionicons/icons';
+/* eslint-disable no-param-reassign */
+import {
+  peopleOutline,
+  businessOutline,
+  pencilOutline,
+  eyeOffOutline,
+} from 'ionicons/icons';
+import { Trans as T } from 'react-i18next';
 import { object, array, string } from 'zod';
-import { ChoiceInputConf } from '@flumens/tailwind/dist/Survey';
+import {
+  InfoButton,
+  type OccurrenceData,
+  type SampleData,
+  type inferAttrConfigTypes,
+} from '@flumens';
+import {
+  ChoiceInputConf,
+  TextInputConf,
+  YesNoInputConf,
+} from '@flumens/tailwind/dist/Survey';
 import { IonIcon } from '@ionic/react';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import VCs from 'common/data/vice_counties.data.json';
-import { InfoButton } from 'common/flumens';
 import gridAlertService from 'common/helpers/gridAlertService';
 import numberIcon from 'common/images/number.svg';
 import Sample from 'common/models/sample';
@@ -18,7 +34,6 @@ import {
   locationAttr,
   getSystemAttrs,
   taxonAttr,
-  sensitivityPrecisionAttr,
   childGeolocationAttr,
   locationAttrValidator,
   plantStageAttr,
@@ -44,88 +59,53 @@ const plantLocationAttr = {
   },
 } as const;
 
+const getRecorderCount = (recorders: any[]) => {
+  if (recorders.length === 1) return 7299;
+  if (recorders.length === 2) return 7300;
+  if (recorders.length <= 5) return 7301;
+  if (recorders.length <= 10) return 7302;
+  if (recorders.length <= 20) return 7303;
+  return 7304;
+};
+
+export const recordersCountAttr = { id: 'smpAttr:992' };
+
 export const recordersAttr = {
-  id: 'recorders',
-  menuProps: { icon: peopleOutline, skipValueTranslation: true },
-  pageProps: {
-    attrProps: {
-      input: 'inputList',
-      info: 'If anyone helped with documenting the record please enter their name here.',
-      inputProps: { placeholder: 'Recorder name' },
-    },
+  id: 'smpAttr:1018',
+  title: 'Recorders',
+  prefix: <IonIcon icon={peopleOutline} className="size-6" />,
+  type: 'textInput',
+  container: 'page',
+  multiple: true,
+  placeholder: 'Recorder name',
+  description:
+    'If anyone helped with documenting the record please enter their name here.',
+  onChange: (_, __, { record }) => {
+    const data = record;
+    const recorders = data['smpAttr:1018'] || [];
+    data[recordersCountAttr.id] = recorders.length
+      ? getRecorderCount(recorders)
+      : null;
   },
-
-  remote: {
-    id: 1018,
-    values(val: any, submission: any) {
-      // add recorder count
-      let count;
-      switch (true) {
-        case val.length === 1:
-          count = 7299;
-          break;
-        case val.length === 2:
-          count = 7300;
-          break;
-        case val.length <= 5:
-          count = 7301;
-          break;
-        case val.length <= 10:
-          count = 7302;
-          break;
-        case val.length <= 20:
-          count = 7303;
-          break;
-        case val.length >= 21:
-          count = 7304;
-          break;
-        default:
-          throw new Error('No such recorderCount case found!');
-      }
-
-      // eslint-disable-next-line no-param-reassign
-      submission.values['smpAttr:992'] = count;
-
-      return val;
-    },
-  },
-} as const;
+} as const satisfies TextInputConf;
 
 export const viceCountyAttr = {
-  id: 'vice-county',
-  menuProps: {
-    icon: businessOutline,
-    label: 'Vice County',
-    parse: (val: any) => val?.name,
-  },
-  pageProps: {
-    headerProps: { title: 'Vice County' },
-    attrProps: {
-      input: 'radio',
-      set: (val: any, model: any) => {
-        const byName = ({ name }: any) => name === val;
-        const VC = VCs.find(byName);
-        // eslint-disable-next-line no-param-reassign
-        model.data['vice-county'] = VC;
-      },
+  id: 'smpAttr:991',
+  title: 'Vice County',
+  prefix: <IonIcon icon={businessOutline} className="size-6" />,
+  type: 'choiceInput',
+  container: 'page',
+  appearance: 'list',
+  choices: VCs.map((vc: any) => ({ title: vc.name, dataName: `${vc.id}` })),
+  onChange: (val, op, { record }) => {
+    record[viceCountyAttr.id] = val;
 
-      get: (model: any) => model.data['vice-county']?.name,
-      inputProps: {
-        options: VCs.map((vc: any) => ({ value: vc.name })),
-      },
-    },
-  },
-  remote: {
-    id: 991,
-    values(val: any, submission: any) {
-      const id = viceCountyAttr.remote?.id;
-      // eslint-disable-next-line no-param-reassign
-      submission.values[`smpAttr:${id}:name`] = val.name;
+    const VC = VCs.find(vc => vc.id == val); // eslint-disable-line eqeqeq
+    if (!VC) return;
 
-      return parseInt(val.id, 10);
-    },
+    record[`${viceCountyAttr.id}:name`] = VC.name;
   },
-} as const;
+} as const satisfies ChoiceInputConf;
 
 const plantSmpLocationAttr = {
   ...locationAttr,
@@ -140,45 +120,36 @@ const plantSmpLocationAttr = {
   },
 } as const;
 
-const abundanceAttr = {
-  id: 'abundance',
-  menuProps: { icon: numberIcon, skipValueTranslation: true },
-  pageProps: {
-    attrProps: {
-      input: 'input',
-      info: (
-        <>
-          Abundance (DAFOR, LA, LF or count).
-          <InfoButton label="READ MORE" header="Info" color="tertiary">
-            <p>
-              DAFOR refers to a subjective abundance scale comprising the
-              following ordered terms: <b>D</b>ominant / <b>A</b>
-              bundant / <b>F</b>requent / <b>O</b>ccasional / <b>R</b>
-              are. The prefix "Locally" can also be used with the Abundant and
-              Frequent classes (e.g. LA = Locally Abundant).
-            </p>
-            <p>
-              Assessed abundance should either relate to the scale of the survey
-              (e.g. 1 or 2 km grid squares), or be clearly qualified in the
-              record comments field.
-            </p>
-          </InfoButton>
-        </>
-      ),
-      set(value: any, model: any) {
-        const re = /^(\d+|[DAFOR]|LA|LF)$/;
-        if (!re.test(value)) return;
-        // eslint-disable-next-line no-param-reassign
-        model.data.abundance = value;
-      },
-    },
+export const abundanceAttr = {
+  id: 'occAttr:610',
+  title: 'Abundance',
+  prefix: <IonIcon src={numberIcon} className="size-6" />,
+  type: 'textInput',
+  container: 'page',
+  description: (
+    <T>
+      Abundance (DAFOR, LA, LF or count).
+      <InfoButton label="READ MORE" header="Info" color="tertiary">
+        <p>
+          DAFOR refers to a subjective abundance scale comprising the following
+          ordered terms: <b>D</b>ominant / <b>A</b>
+          bundant / <b>F</b>requent / <b>O</b>ccasional / <b>R</b>
+          are. The prefix "Locally" can also be used with the Abundant and
+          Frequent classes (e.g. LA = Locally Abundant).
+        </p>
+        <p>
+          Assessed abundance should either relate to the scale of the survey
+          (e.g. 1 or 2 km grid squares), or be clearly qualified in the record
+          comments field.
+        </p>
+      </InfoButton>
+    </T>
+  ),
+  validation: { pattern: '^(\\d+|[DAFORdafor]|[Ll][Aa]|[Ll][Ff])$' },
+  onChange: (val, op, { record }) => {
+    record[abundanceAttr.id] = val.toUpperCase();
   },
-  remote: {
-    id: 610,
-    values: (value: any) =>
-      typeof value === 'string' ? value.toUpperCase() : value, // fixes lowercase values
-  },
-} as const;
+} as const satisfies TextInputConf;
 
 // remove after migration is complete
 /** @deprecated */
@@ -219,33 +190,62 @@ export const statusAttr = {
   ],
 } as const satisfies ChoiceInputConf;
 
-const plantOccIdentifiersAttr = {
-  id: 'identifiers',
-  menuProps: {
-    icon: peopleOutline,
-    label: 'Identified by',
-    skipValueTranslation: true,
-  },
-  pageProps: {
-    headerProps: { title: 'Identified by' },
-    attrProps: {
-      input: 'inputList',
-      info: 'If another person identified the species for you, please enter their name here.',
-      inputProps: {
-        placeholder: 'Name',
-      },
-    },
-  },
-  remote: { id: 125 },
-} as const;
+export const plantOccIdentifiersAttr = {
+  id: 'occAttr:125',
+  title: 'Identified by',
+  prefix: <IonIcon icon={peopleOutline} className="size-6" />,
+  type: 'textInput',
+  container: 'page',
+  multiple: true,
+  placeholder: 'Name',
+  description:
+    'If another person identified the species for you, please enter their name here.',
+} as const satisfies TextInputConf;
 
 const plantSensitivityPrecisionAttr = {
-  ...sensitivityPrecisionAttr(),
   id: 'sensitivityPrecision',
-} as const;
+  title: 'Sensitive',
+  prefix: <IonIcon icon={eyeOffOutline} className="size-6" />,
+  type: 'yesNoInput',
+  onChange: (_, __, { record }) => {
+    const data = record;
+    data.sensitivityPrecision = data.sensitivityPrecision ? 2000 : '';
+  },
+} as const satisfies YesNoInputConf;
 
 const SURVEY_ID = 325;
 const SURVEY_WEBFORM = 'enter-vascular-plants';
+
+const attrs = {
+  [dateAttr.id]: { block: dateAttr },
+  [plantLocationAttr.id]: plantLocationAttr,
+  [childGeolocationAttr.id]: { block: childGeolocationAttr },
+  [recordersAttr.id]: { block: recordersAttr },
+  [viceCountyAttr.id]: { block: viceCountyAttr },
+  [commentAttr.id]: { block: commentAttr },
+};
+
+const smpAttrs = {
+  [dateAttr.id]: { block: dateAttr },
+  [plantSmpLocationAttr.id]: plantSmpLocationAttr,
+};
+
+const smpOccAttrs = {
+  [taxonAttr.id]: taxonAttr,
+  [abundanceAttr.id]: { block: abundanceAttr },
+  [statusAttr.id]: { block: statusAttr },
+  [plantStageAttr.id]: { block: plantStageAttr },
+  [plantOccIdentifiersAttr.id]: { block: plantOccIdentifiersAttr },
+  [commentAttr.id]: { block: commentAttr },
+  [plantSensitivityPrecisionAttr.id]: {
+    block: plantSensitivityPrecisionAttr,
+  },
+};
+
+export type Data = SampleData &
+  inferAttrConfigTypes<typeof attrs> & { location?: any };
+export type SmpData = SampleData & inferAttrConfigTypes<typeof smpAttrs>;
+export type OccData = OccurrenceData & inferAttrConfigTypes<typeof smpOccAttrs>;
 
 const survey = {
   name: 'plant',
@@ -264,20 +264,10 @@ const survey = {
     groups.liverwort,
   ],
 
-  attrs: {
-    [dateAttr.id]: dateAttr,
-    [plantLocationAttr.id]: plantLocationAttr,
-    [childGeolocationAttr.id]: childGeolocationAttr,
-    [recordersAttr.id]: recordersAttr,
-    [viceCountyAttr.id]: viceCountyAttr,
-    [commentAttr.id]: commentAttr,
-  },
+  attrs,
 
   smp: {
-    attrs: {
-      [dateAttr.id]: dateAttr,
-      [plantSmpLocationAttr.id]: plantSmpLocationAttr,
-    },
+    attrs: smpAttrs,
 
     occ: {
       render: [
@@ -285,23 +275,15 @@ const survey = {
         plantStageAttr,
         abundanceAttr,
         plantOccIdentifiersAttr,
-        commentAttr,
         plantSensitivityPrecisionAttr,
+        commentAttr,
       ],
-      attrs: {
-        [taxonAttr.id]: taxonAttr,
-        [abundanceAttr.id]: abundanceAttr,
-        [statusAttr.id]: statusAttr,
-        [plantStageAttr.id]: plantStageAttr,
-        [plantOccIdentifiersAttr.id]: plantOccIdentifiersAttr,
-        [commentAttr.id]: commentAttr,
-        [plantSensitivityPrecisionAttr.id]: plantSensitivityPrecisionAttr,
-      },
+      attrs: smpOccAttrs,
 
-      verify: (attrs: any) =>
+      verify: (values: any) =>
         object({
           taxon: object({}, { error: 'Species is missing.' }).nullable(),
-        }).safeParse(attrs).error,
+        }).safeParse(values).error,
 
       modifySubmission(submission: any, occ: Occurrence) {
         return { ...submission, ...occ.getClassifierSubmission() };
@@ -311,7 +293,7 @@ const survey = {
     async create({ taxon, images, surveySample }) {
       const { gridSquareUnit } = appModel.data;
 
-      const sample = new Sample({
+      const sample = new Sample<Data>({
         // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
         skipStore: true,
 
@@ -346,7 +328,7 @@ const survey = {
     },
   },
 
-  verify: (attrs: any) =>
+  verify: (values: any) =>
     object({
       location: locationAttrValidator({
         name: string({ error: 'Location name is missing' }).min(
@@ -354,12 +336,12 @@ const survey = {
           'Location name is missing'
         ),
       }),
-      recorders: array(string(), {
+      [recordersAttr.id]: array(string(), {
         error: 'Recorders field is missing.',
       })
         .min(1)
         .nullable(),
-    }).safeParse(attrs).error,
+    }).safeParse(values).error,
 
   create({ alert }) {
     const { gridSquareUnit, useGridNotifications } = appModel.data;
@@ -380,8 +362,11 @@ const survey = {
         date: new Date().toISOString().split('T')[0],
         enteredSrefSystem: 'OSGB',
         sampleMethodId: 7305,
-        recorders,
-      },
+        [recordersAttr.id]: recorders,
+        [recordersCountAttr.id]: recorders.length
+          ? getRecorderCount(recorders)
+          : null,
+      } as any,
     });
 
     if (useGridNotifications) gridAlertService.start(sample.cid, alert);

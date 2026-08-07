@@ -15,6 +15,10 @@ export {
   type Props as PageProps,
 } from '@flumens/ionic/dist/components/AttrPage';
 export {
+  default as DatetimeButton,
+  type Props as DatetimeButtonProps,
+} from '@flumens/ionic/dist/components/DatetimeButton';
+export {
   default as MapContainer,
   useMapStyles,
 } from '@flumens/tailwind/dist/components/Map/Container';
@@ -124,6 +128,7 @@ export {
 } from '@flumens/tailwind/dist/Survey';
 export {
   default as TailwindBlockContext,
+  type ContextProps as TailwindBlockContextProps,
   defaultContext,
 } from '@flumens/tailwind/dist/components/Block/Context';
 
@@ -133,3 +138,5 @@ export {
   withSample,
   SamplesContext,
 } from '@flumens/ionic/dist/hooks/useSample';
+
+export type { inferAttrConfigTypes } from '@flumens/tailwind/dist/components/types';

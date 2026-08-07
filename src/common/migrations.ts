@@ -1,13 +1,33 @@
 /* eslint-disable no-restricted-syntax */
 import { Migration, SampleCollection } from '@flumens';
 import MigrationsManager from '@flumens/utils/dist/MigrationManager';
-import { statusAttr, statusAttrOld } from 'Survey/Plant/config';
+import {
+  abundanceAttr,
+  plantOccIdentifiersAttr,
+  recordersAttr,
+  recordersCountAttr,
+  statusAttr,
+  statusAttrOld,
+  viceCountyAttr,
+} from 'Survey/Plant/config';
 import { plantStageAttr, plantStageAttrOld } from 'Survey/common/config';
 import config from './config';
+import VCs from './data/vice_counties.data.json';
 import migrateOldAttr from './migrateOldAttr';
 import Occurrence from './models/occurrence';
 import Sample from './models/sample';
 import { db, samplesStore } from './models/store';
+
+const getRecorderCount = (recorders: any[]) => {
+  if (recorders.length === 1) return 7299;
+  if (recorders.length === 2) return 7300;
+  if (recorders.length <= 5) return 7301;
+  if (recorders.length <= 10) return 7302;
+  if (recorders.length <= 20) return 7303;
+  return 7304;
+};
+
+const clone = (value: any) => JSON.parse(JSON.stringify(value));
 
 // Run first migration
 // TODO: remove in future when all users have updated
@@ -54,7 +74,27 @@ const migrations: Migration[] = [
         if (isPlantSurvey) {
           console.log('🔵 Migrating sample', sample.cid);
 
-          // migrateOldAttr(sample.data, 'field-of-vision', {}, locationOfWatchAttr);
+          const data = sample.data as any;
+          const { recorders } = data;
+          if (recorders) {
+            const newRecorders = clone(recorders);
+            data[recordersAttr.id] = newRecorders;
+            if (newRecorders.length) {
+              data[recordersCountAttr.id] = getRecorderCount(newRecorders);
+            }
+            delete data.recorders;
+          }
+
+          const viceCounty = data['vice-county'];
+          if (viceCounty) {
+            const byValue = (vc: any) =>
+              `${vc.id}` === `${viceCounty}` || vc.name === viceCounty.name;
+            const VC =
+              typeof viceCounty === 'object' ? viceCounty : VCs.find(byValue);
+            data[viceCountyAttr.id] = `${VC?.id || viceCounty}`;
+            if (VC?.name) data[`${viceCountyAttr.id}:name`] = VC.name;
+            delete data['vice-county'];
+          }
 
           for (const subSample of sample.samples) {
             //   migrateOldAttr(subSample.data, 'swell', swellAttrOld, swellAttr);
@@ -72,6 +112,21 @@ const migrations: Migration[] = [
                 statusAttrOld,
                 statusAttr
               );
+
+              const occData = occurrence.data as any;
+              if (occData.abundance) {
+                occData[abundanceAttr.id] =
+                  typeof occData.abundance === 'string'
+                    ? occData.abundance.toUpperCase()
+                    : occData.abundance;
+                delete occData.abundance;
+              }
+              if (occData.identifiers) {
+                occData[plantOccIdentifiersAttr.id] = clone(
+                  occData.identifiers
+                );
+                delete occData.identifiers;
+              }
             }
           }
 

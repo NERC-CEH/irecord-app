@@ -82,7 +82,7 @@ const survey = {
 
   attrs: {
     [locationAttr.id]: locationAttr,
-    [dateAttr.id]: dateAttr,
+    [dateAttr.id]: { block: dateAttr },
     [recorderAttr.id]: recorderAttr,
     [groupIdAttr.id]: groupIdAttr,
   },
@@ -107,7 +107,7 @@ const survey = {
       [stageAttr.id]: stageAttr,
       [sexAttr.id]: sexAttr,
       [identifiersAttr.id]: identifiersAttr,
-      [commentAttr.id]: commentAttr,
+      [commentAttr.id]: { block: commentAttr },
       [defaultSensitivityPrecisionAttr.id]: defaultSensitivityPrecisionAttr,
     },
 

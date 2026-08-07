@@ -13,6 +13,7 @@ import {
 import VerificationStatus from 'common/Components/VerificationStatus';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
+import { abundanceAttr } from 'Survey/Plant/config';
 import IncrementalButton from 'Survey/common/Components/IncrementalButton';
 import CheckboxOption from '../BulkEdit/CheckboxOption';
 import './styles.scss';
@@ -95,7 +96,10 @@ const SpeciesListItem = ({
     const increase5xCountWrap = () => increaseCount(occ, true);
 
     const value =
-      occ.data.number || occ.data['number-ranges'] || occ.data.abundance;
+      occ.data.number ||
+      occ.data['number-ranges'] ||
+      occ.data.abundance ||
+      (occ.data as any)[abundanceAttr.id];
 
     if (!value && isDisabled) return null;
 

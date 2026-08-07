@@ -6,6 +6,10 @@
       --detail-icon-color: var(--attr-lock-color);
       --detail-icon-opacity: 0.55;
     }
+    ion-icon.lock {
+      opacity: 0.7;
+      color: var(--attr-lock-color);
+    }
 
     .choice-input-block label + span.react-aria-SelectValue,
     .choice-input-block svg:last-child,

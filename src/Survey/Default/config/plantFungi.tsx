@@ -2,11 +2,7 @@ import Tooltip from 'common/Components/Tooltip';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import numberIcon from 'common/images/number.svg';
 import appModel from 'models/app';
-import {
-  identifiersAttr,
-  plantStageAttrOld,
-  Survey,
-} from 'Survey/common/config';
+import { identifiersAttr, plantStageAttr, Survey } from 'Survey/common/config';
 import { sexAttr } from './common';
 
 const numberOptions = [
@@ -161,11 +157,11 @@ const survey: Partial<Survey> & { taxa: string } = {
 
   attrs: {},
   occ: {
-    render: [plantFungiNumberAttr, plantStageAttrOld, sexAttr, identifiersAttr],
+    render: [plantFungiNumberAttr, plantStageAttr, sexAttr, identifiersAttr],
     skipAutoIncrement: true,
 
     attrs: {
-      [plantStageAttrOld.id]: plantStageAttrOld,
+      [plantStageAttr.id]: { block: plantStageAttr },
       [plantFungiNumberAttr.id]: plantFungiNumberAttr,
       [plantFungiNumberDAFORAttr.id]: plantFungiNumberDAFORAttr,
       [plantFungiNumberRangesAttr.id]: plantFungiNumberRangesAttr,

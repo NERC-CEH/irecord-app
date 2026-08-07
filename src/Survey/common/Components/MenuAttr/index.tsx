@@ -12,6 +12,7 @@ import {
   BlockT,
   Block,
 } from '@flumens';
+import { onChange as updateBlockValue } from '@flumens/tailwind/dist/components/Block';
 import { IonIcon, IonItem } from '@ionic/react';
 import { capitalize } from 'common/helpers/string';
 import Occurrence from 'models/occurrence';
@@ -58,9 +59,36 @@ const MenuAttr = ({ attr, model, onChange, itemProps, className }: Props) => {
   const { isDisabled } = model;
 
   if ('type' in attr) {
+    const onBlockChange = (...args: Parameters<typeof updateBlockValue>) => {
+      updateBlockValue(...args);
+      if ('onChange' in attr) attr.onChange?.(...args);
+      onChange?.((model.data as any)[attr.id]);
+      model.save();
+    };
+
+    const getBlockBasePath = () => {
+      const { routerLink } = itemProps || {};
+      if (!routerLink?.endsWith(`/${id}`)) return '';
+      return routerLink.slice(match.url.length, -id.length - 1);
+    };
+
+    const pageLinkIcon = itemProps?.pageLinkIcon ? (
+      <IonIcon
+        src={itemProps?.detailIcon}
+        className="lock size-6 pr-2 opacity-25"
+      />
+    ) : undefined;
+
     return (
       <IonItem className="[--border-style:none] [--inner-padding-end:0] [--padding-start:0] [&>div]:w-full">
-        <Block record={model.data} block={attr} isDisabled={isDisabled} />
+        <Block
+          record={model.data}
+          block={attr}
+          isDisabled={isDisabled}
+          onChange={onBlockChange}
+          basePath={getBlockBasePath()}
+          pageLinkIcon={pageLinkIcon}
+        />
       </IonItem>
     );
   }
