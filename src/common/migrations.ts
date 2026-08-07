@@ -88,7 +88,9 @@ const migrations: Migration[] = [
           const viceCounty = data['vice-county'];
           if (viceCounty) {
             const byValue = (vc: any) =>
-              `${vc.id}` === `${viceCounty}` || vc.name === viceCounty.name;
+              `${vc.id}` === `${viceCounty}` ||
+              vc.name === viceCounty ||
+              vc.name === viceCounty.name;
             const VC =
               typeof viceCounty === 'object' ? viceCounty : VCs.find(byValue);
             data[viceCountyAttr.id] = `${VC?.id || viceCounty}`;
@@ -114,7 +116,7 @@ const migrations: Migration[] = [
               );
 
               const occData = occurrence.data as any;
-              if (occData.abundance) {
+              if (occData.abundance !== undefined && occData.abundance !== '') {
                 occData[abundanceAttr.id] =
                   typeof occData.abundance === 'string'
                     ? occData.abundance.toUpperCase()

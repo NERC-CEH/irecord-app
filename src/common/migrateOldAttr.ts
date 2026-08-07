@@ -24,7 +24,9 @@ export default function migrateOldAttr(
     const valueMap = oldAttr.remote!.values as any[];
 
     const findMatchingValue = (value: any) =>
-      valueMap.find(v => v.value === value || v.id === value);
+      valueMap.find(
+        v => v.value === value || v.id === value || `${v.id}` === `${value}`
+      );
 
     const isMultichoice = Array.isArray(oldValue);
     if (isMultichoice) {
