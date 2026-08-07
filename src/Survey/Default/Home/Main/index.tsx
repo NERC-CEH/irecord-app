@@ -112,11 +112,7 @@ const EditMain = ({ sample }: Props) => {
           <MenuLocation.WithLock sample={sample} />
           <MenuAttr.WithLock model={sample} attr={dateAttr} />
           <MenuAttr.WithLock model={sample} attr={recorderAttr} />
-          <MenuAttr.WithLock
-            model={occ}
-            attr={commentAttr}
-            itemProps={{ routerLink: `${url}/occ/${occ.cid}/comment` }}
-          />
+
           {surveyConfig.render?.map((attr: any) => (
             <MenuDynamicAttr key={attr.id} model={sample} attr={attr} />
           ))}
@@ -132,6 +128,11 @@ const EditMain = ({ sample }: Props) => {
             model={occ}
             attr={defaultSensitivityPrecisionAttr}
             onChange={showSensitivityWarning}
+          />
+          <MenuAttr.WithLock
+            model={occ}
+            attr={commentAttr}
+            itemProps={{ routerLink: `${url}/occ/${occ.cid}/comment` }}
           />
         </div>
       </IonList>

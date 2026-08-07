@@ -119,8 +119,8 @@ const survey = {
       mothStageAttr,
       sexAttr,
       identifiersAttr,
-      commentAttr,
       mothSensitivityPrecisionAttr,
+      commentAttr,
     ],
 
     attrs: {
