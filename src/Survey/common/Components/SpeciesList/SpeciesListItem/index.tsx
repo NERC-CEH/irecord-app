@@ -13,6 +13,7 @@ import {
 import VerificationStatus from 'common/Components/VerificationStatus';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
+import { numberAttr as mothNumberAttr } from 'Survey/Moth/config';
 import { abundanceAttr } from 'Survey/Plant/config';
 import IncrementalButton from 'Survey/common/Components/IncrementalButton';
 import CheckboxOption from '../BulkEdit/CheckboxOption';
@@ -99,7 +100,8 @@ const SpeciesListItem = ({
       occ.data.number ||
       occ.data['number-ranges'] ||
       occ.data.abundance ||
-      (occ.data as any)[abundanceAttr.id];
+      (occ.data as any)[abundanceAttr.id] ||
+      (occ.data as any)[mothNumberAttr.id];
 
     if (!value && isDisabled) return null;
 

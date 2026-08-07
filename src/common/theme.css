@@ -293,11 +293,6 @@ ion-header ion-toolbar ion-back-button {
   color: var(--attr-lock-color);
 }
 
-/* Fix info message background */
-.attr-page-block .info-message {
-  background: transparent;
-}
-
 .attr-page .attr-page-block .group {
   @apply rounded-md overflow-hidden border border-neutral-300/50;
 }

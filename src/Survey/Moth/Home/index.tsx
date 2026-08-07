@@ -20,6 +20,7 @@ import userModel, { useUserStatusCheck } from 'models/user';
 import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
+import { Data, mothStageAttr, OccData, sexAttr } from '../config';
 import Main from './Main';
 
 const shouldAutoID = () =>
@@ -32,7 +33,7 @@ const MothHome = () => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
 
-  let { sample } = useSample<Sample>();
+  let { sample } = useSample<Sample<Data>>();
   sample = useRemoteSample(sample, () => userModel.isLoggedIn(), Sample);
 
   const checkSampleStatus = useValidateCheck(sample);
@@ -55,24 +56,30 @@ const MothHome = () => {
 
     if (action === 'stage') {
       modelIds.forEach(async modelId => {
-        const occ = sample.occurrences.find(o => o.cid === modelId);
-        if (occ) (occ as any).data.stage = value;
+        const occ = sample.occurrences.find(
+          o => o.cid === modelId
+        ) as Occurrence<OccData>;
+        if (occ) occ.data[mothStageAttr.id] = value;
       });
       return;
     }
 
     if (action === 'sex') {
       modelIds.forEach(async modelId => {
-        const occ = sample.occurrences.find(o => o.cid === modelId);
-        if (occ) (occ as any).data.sex = value;
+        const occ = sample.occurrences.find(
+          o => o.cid === modelId
+        ) as Occurrence<OccData>;
+        if (occ) occ.data[sexAttr.id] = value;
       });
       return;
     }
 
     if (action === 'comment') {
       modelIds.forEach(async modelId => {
-        const occ = sample.occurrences.find(o => o.cid === modelId);
-        if (occ) (occ as any).data.comment = value;
+        const occ = sample.occurrences.find(
+          o => o.cid === modelId
+        ) as Occurrence<OccData>;
+        if (occ) occ.data.comment = value;
       });
       // return;
     }

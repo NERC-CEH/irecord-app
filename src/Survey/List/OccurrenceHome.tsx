@@ -42,13 +42,7 @@ const ListOccurrenceHome = () => {
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
             <MenuLocation sample={subSample} skipName isRequired={false} />
-            <MenuAttr
-              model={occ}
-              attr={commentAttr}
-              itemProps={{
-                routerLink: `${url}/occ/${occ.cid}/comment`,
-              }}
-            />
+
             {surveyConfig.render?.map((attr: any) => (
               <MenuDynamicAttr
                 key={attr.id}
@@ -70,6 +64,13 @@ const ListOccurrenceHome = () => {
               model={occ}
               attr={defaultSensitivityPrecisionAttr}
               onChange={showSensitivityWarning}
+            />
+            <MenuAttr
+              model={occ}
+              attr={commentAttr}
+              itemProps={{
+                routerLink: `${url}/occ/${occ.cid}/comment`,
+              }}
             />
           </div>
         </IonList>

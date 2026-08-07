@@ -2,6 +2,16 @@
 import { Migration, SampleCollection } from '@flumens';
 import MigrationsManager from '@flumens/utils/dist/MigrationManager';
 import {
+  methodAttr,
+  methodAttrOld,
+  mothIdentifiersAttr,
+  mothStageAttr,
+  numberAttr,
+  numberAttrOld,
+  sexAttr,
+  sexAttrOld,
+} from 'Survey/Moth/config';
+import {
   abundanceAttr,
   plantOccIdentifiersAttr,
   recordersAttr,
@@ -10,7 +20,12 @@ import {
   statusAttrOld,
   viceCountyAttr,
 } from 'Survey/Plant/config';
-import { plantStageAttr, plantStageAttrOld } from 'Survey/common/config';
+import {
+  identifiersAttr as identifiersAttrOld,
+  mothStageAttr as mothStageAttrOld,
+  plantStageAttr,
+  plantStageAttrOld,
+} from 'Survey/common/config';
 import config from './config';
 import VCs from './data/vice_counties.data.json';
 import migrateOldAttr from './migrateOldAttr';
@@ -71,6 +86,7 @@ const migrations: Migration[] = [
 
       for (const sample of samples) {
         const isPlantSurvey = sample.data.surveyId === 325;
+        const isMothSurvey = sample.data.surveyId === 90;
         if (isPlantSurvey) {
           console.log('🔵 Migrating sample', sample.cid);
 
@@ -130,6 +146,37 @@ const migrations: Migration[] = [
                 delete occData.identifiers;
               }
             }
+          }
+
+          // eslint-disable-next-line no-await-in-loop
+          await sample.save();
+        }
+
+        if (isMothSurvey) {
+          console.log('🔵 Migrating sample', sample.cid);
+
+          migrateOldAttr(sample.data, 'method', methodAttrOld, methodAttr);
+
+          for (const occurrence of sample.occurrences) {
+            migrateOldAttr(
+              occurrence.data,
+              'number',
+              numberAttrOld,
+              numberAttr
+            );
+            migrateOldAttr(
+              occurrence.data,
+              'stage',
+              mothStageAttrOld,
+              mothStageAttr
+            );
+            migrateOldAttr(occurrence.data, 'sex', sexAttrOld, sexAttr);
+            migrateOldAttr(
+              occurrence.data,
+              'identifiers',
+              identifiersAttrOld,
+              mothIdentifiersAttr
+            );
           }
 
           // eslint-disable-next-line no-await-in-loop

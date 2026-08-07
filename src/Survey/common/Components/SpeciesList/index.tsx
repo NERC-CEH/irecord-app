@@ -7,6 +7,7 @@ import { IonList, IonIcon } from '@ionic/react';
 import appModel from 'models/app';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
+import { numberAttr as mothNumberAttr } from 'Survey/Moth/config';
 import BulkEdit, { Action } from './BulkEdit';
 import SpeciesListItem from './SpeciesListItem';
 
@@ -26,9 +27,13 @@ const speciesOccAddedTimeSort = (
 };
 
 function increaseCount(occ: Occurrence, is5x: boolean) {
-  if (Number.isNaN(occ.data.number)) return;
+  const data = occ.data as any;
+  const attr = Number.isFinite(data[mothNumberAttr.id])
+    ? mothNumberAttr.id
+    : 'number';
+  if (Number.isNaN(data[attr])) return;
 
-  const addOneCount = () => (occ.data.number as number)++; // eslint-disable-line no-param-reassign
+  const addOneCount = () => data[attr]++;
 
   if (is5x) {
     [...Array(5)].forEach(addOneCount);

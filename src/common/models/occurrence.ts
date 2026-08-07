@@ -49,7 +49,7 @@ const byWarehouseId =
   (warehouseId: number) => (suggestion: ClassifierSuggestion) =>
     suggestion.warehouseId === warehouseId;
 
-type Attrs = Omit<OccurrenceData, 'taxon'> & {
+type Data = Omit<OccurrenceData, 'taxon'> & {
   taxon?: Taxon;
   classifier?: Classifier;
   machineInvolvement?: MachineInvolvement;
@@ -76,7 +76,9 @@ type Metadata = OccurrenceMetadata & {
   };
 };
 
-export default class Occurrence extends OccurrenceOriginal<Attrs, Metadata> {
+export default class Occurrence<
+  T extends Data = Data,
+> extends OccurrenceOriginal<T, Metadata> {
   static fromElasticDTO(json: ElasticOccurrence, options: any, survey?: any) {
     // // fix missing common names
     const commonNames = (speciesWarehouseIdMap as any)[
