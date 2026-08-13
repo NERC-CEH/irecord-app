@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState, Fragment } from 'react';
 import { chevronDownOutline, chevronForwardOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
-import { Button, CheckboxInput, Main, RadioInput } from '@flumens';
+import { Button, CheckboxInput, Main, RadioInput, capitalize } from '@flumens';
 import {
   IonButtons,
   IonToolbar,
@@ -12,7 +12,6 @@ import {
   NavContext,
   IonIcon,
 } from '@ionic/react';
-import { capitalize } from 'common/helpers/string';
 import appModel from 'common/models/app';
 import filters from './filters';
 

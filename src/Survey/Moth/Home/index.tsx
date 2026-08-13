@@ -14,13 +14,11 @@ import { NavContext, isPlatform } from '@ionic/react';
 import config from 'common/config';
 import appModel from 'common/models/app';
 import Media from 'common/models/media';
-import Occurrence from 'common/models/occurrence';
 import Sample, { useValidateCheck } from 'models/sample';
 import userModel, { useUserStatusCheck } from 'models/user';
-import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
-import { Data, mothStageAttr, OccData, sexAttr } from '../config';
+import { Data } from '../config';
 import Main from './Main';
 
 const shouldAutoID = () =>
@@ -40,50 +38,6 @@ const MothHome = () => {
   const checkUserStatus = useUserStatusCheck();
 
   if (!sample) return null;
-
-  const onBulkEdit = async (
-    action: Action,
-    modelIds: string[],
-    value?: any
-  ) => {
-    if (action === 'delete') {
-      modelIds.forEach(async modelId => {
-        const occ = sample.occurrences.find(o => o.cid === modelId);
-        if (occ) occ.destroy();
-      });
-      return;
-    }
-
-    if (action === 'stage') {
-      modelIds.forEach(async modelId => {
-        const occ = sample.occurrences.find(
-          o => o.cid === modelId
-        ) as Occurrence<OccData>;
-        if (occ) occ.data[mothStageAttr.id] = value;
-      });
-      return;
-    }
-
-    if (action === 'sex') {
-      modelIds.forEach(async modelId => {
-        const occ = sample.occurrences.find(
-          o => o.cid === modelId
-        ) as Occurrence<OccData>;
-        if (occ) occ.data[sexAttr.id] = value;
-      });
-      return;
-    }
-
-    if (action === 'comment') {
-      modelIds.forEach(async modelId => {
-        const occ = sample.occurrences.find(
-          o => o.cid === modelId
-        ) as Occurrence<OccData>;
-        if (occ) occ.data.comment = value;
-      });
-      // return;
-    }
-  };
 
   const survey = sample.getSurvey();
 
@@ -136,10 +90,7 @@ const MothHome = () => {
         true
       );
 
-      const occ = await surveyConfig.occ!.create!({
-        Occurrence,
-        images: [imageModel],
-      });
+      const occ = await surveyConfig.occ!.create!({ images: [imageModel] });
 
       if (shouldAutoID()) {
         const processError = (error: any) =>
@@ -169,7 +120,6 @@ const MothHome = () => {
       />
       <Main
         sample={sample}
-        onBulkEdit={onBulkEdit}
         onDelete={onSubSampleDelete}
         attachSpeciesImages={onSpeciesImageAttach}
       />

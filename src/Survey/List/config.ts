@@ -1,14 +1,16 @@
-import { calendarOutline } from 'ionicons/icons';
 import { object, string } from 'zod';
-import { dateFormat } from '@flumens';
+import {
+  dateFormatISO,
+  type SampleData,
+  type inferAttrConfigTypes,
+} from '@flumens';
 import gridAlertService from 'common/helpers/gridAlertService';
 import Occurrence, { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
 import Sample from 'models/sample';
 import userModel from 'models/user';
-import defaultSurvey from 'Survey/Default/config';
+import defaultSurvey, { getTaxaGroupSurvey } from 'Survey/Default/config';
 import {
-  coreAttributes,
   recorderAttr,
   commentAttr,
   Survey,
@@ -17,6 +19,7 @@ import {
   groupIdAttr,
   childGeolocationAttr,
   locationAttrValidator,
+  dateAttr,
 } from 'Survey/common/config';
 
 export {
@@ -26,59 +29,21 @@ export {
 } from 'Survey/common/config';
 export { defaultSensitivityPrecisionAttr } from 'Survey/Default/config';
 
-function appendLockedAttrs(sample: Sample) {
-  const defaultSurveyLocks = appModel.data.attrLocks.complex || {};
-  const locks = defaultSurveyLocks['default-default'] || {}; // bypassing the API here!
-  const coreLocks = Object.keys(locks).reduce((agg, key) => {
-    if (coreAttributes.includes(key)) {
-      // eslint-disable-next-line no-param-reassign
-      (agg as any)[key] = locks[key];
-    }
-    return agg;
-  }, {});
-
-  const surveyLocks = appModel.getAllLocks(sample);
-
-  const fullSurveyLocks = { ...coreLocks, ...surveyLocks };
-
-  appModel.appendAttrLocks(sample, fullSurveyLocks, true);
-}
-
-function autoIncrementAbundance(sample: Sample) {
-  const sampleSurvey = sample.getSurvey();
-  const { skipAutoIncrement } = sampleSurvey.occ || {};
-  const locks = appModel.getAllLocks(sample);
-  const isNumberLocked = locks['occ:number'];
-
-  if (!isNumberLocked && !skipAutoIncrement) {
-    // eslint-disable-next-line no-param-reassign
-    sample.occurrences[0].data.number = 1;
-  }
-}
-
-const dateAttr = {
-  id: 'date',
-  menuProps: {
-    icon: calendarOutline,
-    attrProps: {
-      input: 'date',
-      inputProps: {
-        max: () => new Date(),
-        label: 'Date',
-        icon: calendarOutline,
-        autoFocus: false,
-        usePrettyDates: true,
-        presentation: 'date',
-      },
-    },
-  },
-
-  /** @deprecated  TODO: keep it backwards compatible, remove in the future once everyone uploads their records */
-  values: (date: any) => dateFormat.format(new Date(date)),
-} as const;
+const getTaxon = (sample: Sample) => sample.getSurvey().taxa || null;
 
 const SURVEY_ID = 576;
 const SURVEY_WEBFORM = 'enter-app-record-list';
+
+const attrs = {
+  [locationAttr.id]: locationAttr,
+  [childGeolocationAttr.id]: { block: childGeolocationAttr },
+  [recorderAttr.id]: { block: recorderAttr },
+  [commentAttr.id]: { block: commentAttr },
+  [groupIdAttr.id]: groupIdAttr,
+  [dateAttr.id]: { block: dateAttr },
+};
+
+export type Data = SampleData & inferAttrConfigTypes<typeof attrs>;
 
 const survey = {
   name: 'list',
@@ -87,45 +52,10 @@ const survey = {
 
   webForm: SURVEY_WEBFORM,
 
-  attrs: {
-    [locationAttr.id]: locationAttr,
-    [childGeolocationAttr.id]: { block: childGeolocationAttr },
-    [recorderAttr.id]: recorderAttr,
-    [commentAttr.id]: { block: commentAttr },
-    [groupIdAttr.id]: groupIdAttr,
-
-    date: {
-      ...dateAttr,
-      menuProps: {
-        ...dateAttr.menuProps,
-        attrProps: {
-          ...dateAttr.menuProps.attrProps,
-
-          set: (value: string, sample: Sample) => {
-            // eslint-disable-next-line no-param-reassign
-            sample.data.date = value;
-
-            const setDate = (smp: Sample) => {
-              // eslint-disable-next-line no-param-reassign
-              smp.data.date = value;
-            };
-            sample.samples.forEach(setDate);
-            sample.save();
-          },
-        },
-      },
-    },
-  },
+  attrs,
 
   smp: {
     async create({ taxon, images, surveySample }) {
-      const occurrence = new Occurrence({
-        data: {
-          machineInvolvement: MachineInvolvement.NONE,
-        },
-      });
-      if (images) occurrence.media.push(...images);
-
       const { groupId } = surveySample.data;
 
       const sample = new Sample({
@@ -143,39 +73,66 @@ const survey = {
         },
       });
 
+      const taxonSurvey = taxon ? getTaxaGroupSurvey(taxon.group) : undefined;
+      const createOccurrence =
+        taxonSurvey?.occ?.create ?? survey.smp.occ.create;
+      const occurrence = await createOccurrence({
+        images: images!,
+        taxon,
+        isListSurvey: true,
+      });
+
       sample.occurrences.push(occurrence);
 
-      if (taxon) sample.setTaxon(taxon);
+      if (taxon) sample.setTaxon(taxon, occurrence.id, true);
 
-      appendLockedAttrs(sample);
-      autoIncrementAbundance(sample);
+      const locks = appModel.locks.getAll('list', getTaxon(sample));
+      Object.assign(sample.data, locks.smp);
 
-      if (surveySample.data.childGeolocation) {
-        const ignoreError = () => {};
-        sample.startGPS().catch(ignoreError);
-      }
+      if (surveySample.data.childGeolocation) sample.startGPS().catch(() => {});
 
       return sample;
     },
 
-    // occ config is taxa specific
+    occ: {
+      attrs: {
+        // occ config is taxa specific
+      },
+
+      async create({ images, taxon }) {
+        const occurrence = new Occurrence({
+          data: {
+            machineInvolvement: MachineInvolvement.NONE,
+            taxon,
+          },
+          media: images,
+        });
+
+        if (taxon) {
+          const taxa = getTaxaGroupSurvey(taxon.group)?.taxa || 'default';
+          const locks = appModel.locks.getAll('list', taxa);
+          Object.assign(occurrence.data, locks.occ);
+        }
+
+        return occurrence;
+      },
+    },
   },
 
-  verify: (attrs: any) =>
+  verify: (values: any) =>
     object({
-      location: locationAttrValidator({
-        name: string({ error: 'Location name is missing' }).min(
-          1,
-          'Location name is missing'
-        ),
-      }),
+      location: locationAttrValidator(),
+      locationName: string({ error: 'Location name is missing' }).min(
+        1,
+        'Location name is missing'
+      ),
       date: string({ error: 'Date is missing.' }).nullable(),
-      recorder: string({
+      [recorderAttr.id]: string({
         error: 'Recorder field is missing.',
       })
         .min(1, 'Recorder field is missing.')
         .nullable(),
-    }).safeParse(attrs).error,
+    }).safeParse(values).error,
 
   create({ alert }) {
     // add currently logged in user as one of the recorders
@@ -184,19 +141,20 @@ const survey = {
       recorder = userModel.getPrettyName();
     }
 
-    const groupId = appModel.getAttrLock('smp', 'groupId');
+    // get the groupId from the appModel, which is locked to the default value for this survey
+    const groupId = appModel.locks.get('default', 'all', 'smp', 'groupId');
 
-    const sample = new Sample({
+    const sample = new Sample<Data>({
       data: {
         surveyId: SURVEY_ID,
         inputForm: SURVEY_WEBFORM,
-        date: new Date().toISOString().split('T')[0],
+        date: dateFormatISO.format(new Date()),
         enteredSrefSystem: 4326,
         location: {},
-        recorder,
         groupId,
       },
     });
+    sample.data[recorderAttr.id] = recorder;
 
     const { useGridNotifications } = appModel.data;
     if (useGridNotifications) gridAlertService.start(sample.cid, alert);

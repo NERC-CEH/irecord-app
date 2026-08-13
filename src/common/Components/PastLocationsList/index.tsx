@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { star, starOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
-import { useAlert } from '@flumens';
+import { useAlert, escape } from '@flumens';
 import {
   IonList,
   IonItemOption,
@@ -11,8 +11,8 @@ import {
   IonItemOptions,
   IonItemSliding,
 } from '@ionic/react';
+import { printLocation } from 'common/helpers/location';
 import appModel from 'models/app';
-import StringHelp from 'helpers/string';
 import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
 import EditModal from './EditModal';
 import './styles.scss';
@@ -92,7 +92,7 @@ const PastLocations = ({ onSelect }: Props) => {
     }
 
     const updatedLocation = { ...editLocation };
-    updatedLocation.name = StringHelp.escape(name);
+    updatedLocation.name = escape(name);
     updatedLocation.favourite = favourite;
 
     appModel.setLocation(updatedLocation);
@@ -110,7 +110,7 @@ const PastLocations = ({ onSelect }: Props) => {
       );
 
     function getPastLocation(location: Location) {
-      const locationStr = appModel.printLocation(location);
+      const locationStr = printLocation(location);
       const { id, name, favourite, source } = location;
 
       return (

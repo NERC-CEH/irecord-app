@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import Badge from '@flumens/tailwind/dist/components/Badge';
-import appModel from 'models/app';
+import { getPrettyBlockValue } from '@flumens/tailwind/dist/components/Block';
+import { limit } from 'common/flumens';
 import Occurrence from 'models/occurrence';
-import StringHelp from 'helpers/string';
 
 type Props = {
   occ?: Occurrence;
@@ -11,41 +11,36 @@ type Props = {
 const Attributes = ({ occ }: Props) => {
   if (!occ) return null;
 
-  let number = StringHelp.limit(occ.data.number);
-  if (!number) {
-    number = StringHelp.limit(occ.data['number-ranges']);
-  }
-  const stage = StringHelp.limit(occ.data.stage);
-  const { comment } = occ.data;
+  const survey = occ.parent!.getSurvey();
+  const blocks = survey.occ?.render || [];
+  const getAttribute = (title: string) => {
+    const block = blocks.find((attr: any) => attr.title === title);
+    const rawValue =
+      block?.type === 'group' ? occ.data : (occ.data as any)[block?.id];
+    return {
+      block,
+      value: block && limit(getPrettyBlockValue(rawValue, block)),
+    };
+  };
 
-  const commentLocked = appModel.isAttrLocked(occ, 'comment');
-  const numberLocked = appModel.isAttrLocked(occ, 'number');
-  const stageLocked = appModel.isAttrLocked(occ, 'stage');
+  const number = getAttribute('Abundance');
+  const stage = getAttribute('Stage');
+  const { comment } = occ.data;
 
   return (
     <div className="flex flex-nowrap text-xs [&>*:not(:empty)]:mr-2">
-      {!!number && (
-        <Badge
-          size="small"
-          className={`text-xs ${numberLocked ? 'locked' : ''}`}
-        >
-          {number}
+      {!!number.value && (
+        <Badge size="small" className="text-xs">
+          {number.value}
         </Badge>
       )}
-      {!!stage && (
-        <Badge
-          size="small"
-          className={`text-xs ${stageLocked ? 'locked' : ''}`}
-        >
-          {stage}
+      {!!stage.value && (
+        <Badge size="small" className="text-xs">
+          {stage.value}
         </Badge>
       )}
 
-      {!!comment && (
-        <Badge className={`text-xs ${commentLocked ? 'locked' : ''}`}>
-          {comment}
-        </Badge>
-      )}
+      {!!comment && <Badge className="text-xs">{comment}</Badge>}
     </div>
   );
 };

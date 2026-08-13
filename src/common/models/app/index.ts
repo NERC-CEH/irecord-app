@@ -1,6 +1,6 @@
 import { Model, ModelData } from '@flumens';
 import { mainStore } from 'models/store';
-import AttributeLockExtension from './attrLockExt';
+import lockExtension from './attrLockExt';
 import PastLocationsExtension from './pastLocExt';
 
 export type Data = ModelData & {
@@ -8,7 +8,7 @@ export type Data = ModelData & {
   language: string;
 
   locations: any[];
-  attrLocks: any;
+  _attrLocks: any;
   autosync: boolean;
   useTraining: boolean;
 
@@ -30,11 +30,6 @@ export type Data = ModelData & {
 
   useSpeciesImageClassifier: boolean;
 
-  /**
-   * Reset attribute locks.
-   */
-  attrLocksCleanedV620: boolean; // TODO: remove
-
   showVerifiedRecordsNotification: boolean;
   verifiedRecordsTimestamp: null | number;
 };
@@ -44,8 +39,7 @@ export const defaults: Data = {
   language: 'EN',
 
   locations: [],
-  attrLocks: { default: {}, complex: {} },
-  attrLocksCleanedV620: false,
+  _attrLocks: {},
   autosync: true,
   useTraining: false,
 
@@ -72,37 +66,19 @@ export const defaults: Data = {
 };
 
 export class AppModel extends Model<Data> {
-  isAttrLocked: any; // from extension
-
-  getAttrLock: any; // from extension
-
-  setAttrLock: any; // from extension
-
-  unsetAttrLock: any; // from extension
-
-  appendAttrLocks: any; // from extension
-
-  getAllLocks: any; // from extension
+  locks = lockExtension(
+    () => this.data._attrLocks,
+    () => this.save()
+  );
 
   setLocation!: (newLocation: any) => void; // from extension
 
   removeLocation: any; // from extension
 
-  printLocation: any; // from extension
-
   constructor(options: any) {
     super({ ...options, data: { ...defaults, ...options.data } });
 
-    this.ready.then(() => {
-      if (!this.data.attrLocksCleanedV620) {
-        this.data.attrLocks = { default: {}, complex: {} };
-        this.data.attrLocksCleanedV620 = true;
-        this.save();
-      }
-    });
-
     Object.assign(this, PastLocationsExtension);
-    Object.assign(this, AttributeLockExtension);
   }
 
   reset() {

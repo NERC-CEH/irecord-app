@@ -5,22 +5,23 @@ import {
   locationOutline,
 } from 'ionicons/icons';
 import { z } from 'zod';
-import { device, PageProps, RemoteConfig } from '@flumens';
-import {
-  BlockConf,
+import type { RemoteConfig } from '@flumens/models/dist/Indicia/Sample';
+import type {
+  BlockConf as BlockT,
   ChoiceInputConf,
   DateTimeInputConf,
   TextInputConf,
   YesNoInputConf,
 } from '@flumens/tailwind/dist/Survey';
+import device from '@flumens/utils/dist/device';
 import { IonIcon } from '@ionic/react';
 import config from 'common/config';
 import progressIcon from 'common/images/progress-circles.svg';
 import groups from 'common/models/collections/groups';
-import Media from 'models/media';
-import Occurrence, { Taxon } from 'models/occurrence';
-import Sample from 'models/sample';
-import { Config as MenuProps } from 'Survey/common/Components/MenuAttr';
+import type Media from 'models/media';
+import type Occurrence from 'models/occurrence';
+import type { Taxon } from 'models/occurrence';
+import type Sample from 'models/sample';
 
 export const locationAttrValidator = (obj: any = {}) =>
   z
@@ -55,48 +56,53 @@ export const commentAttr = {
 
 export const groupIdAttr = {
   id: 'groupId',
-  menuProps: {
-    icon: peopleOutline,
-    label: 'Activity',
-    parse: (groupId: any) =>
-      groups.find((g: any) => g.id === groupId)?.data.title || groupId,
+  title: 'Activity',
+  prefix: <IonIcon src={peopleOutline} className="size-6" />,
+  type: 'choiceInput',
+  container: 'page',
+  get choices() {
+    return groups.map(group => ({
+      dataName: group.id!,
+      title: group.data.title,
+    }));
   },
-} as const;
+} as const satisfies ChoiceInputConf;
 
 export const recorderAttr = {
-  id: 'recorder',
-  menuProps: { icon: peopleOutline, skipValueTranslation: true },
-  pageProps: {
-    attrProps: {
-      input: 'input',
-      info: 'If anyone helped with documenting the record please enter their name here.',
-      inputProps: { placeholder: 'Recorder name' },
-    },
-  },
+  id: 'smpAttr:127',
+  title: 'Recorder',
+  prefix: <IonIcon icon={peopleOutline} className="size-6" />,
+  type: 'textInput',
+  container: 'page',
+  placeholder: 'Recorder name',
+  description:
+    'If anyone helped with documenting the record please enter their name here.',
+  validation: { required: true },
+} as const satisfies TextInputConf;
 
-  required: true,
+/** @deprecated */
+export const recorderAttrOld = {
+  id: 'recorder',
   remote: { id: 127 },
 } as const;
 
-export const identifiersAttr = {
+/** @deprecated */
+export const identifiersAttrOld = {
   id: 'identifiers',
-  menuProps: {
-    icon: peopleOutline,
-    label: 'Identified by',
-    skipValueTranslation: true,
-  },
-  pageProps: {
-    headerProps: { title: 'Identified by' },
-    attrProps: {
-      input: 'inputList',
-      info: 'If another person identified the species for you, please enter their name here.',
-      inputProps: {
-        placeholder: 'Name',
-      },
-    },
-  },
   remote: { id: 18 },
 } as const;
+
+export const identifiersAttr = {
+  id: 'occAttr:18',
+  title: 'Identified by',
+  prefix: <IonIcon icon={peopleOutline} className="size-6" />,
+  type: 'textInput',
+  container: 'page',
+  multiple: true,
+  placeholder: 'Name',
+  description:
+    'If another person identified the species for you, please enter their name here.',
+} as const satisfies TextInputConf;
 
 export const sensitivityPrecisionAttr = (defaultPrecision = 2000) => ({
   menuProps: {
@@ -116,7 +122,7 @@ export const coreAttributes = [
   'smp:locationName',
   'smp:enteredSrefSystem',
   'smp:date',
-  'smp:recorder',
+  `smp:${recorderAttr.id}`,
   'occ:comment',
   'occ:sensitivityPrecision',
   'smp:groupId',
@@ -165,7 +171,7 @@ export const locationAttr = {
     id: 'entered_sref',
     values(location: any, submission: any) {
       // convert accuracy for map and gridref sources
-      const { accuracy, source, gridref, altitude, name, altitudeAccuracy } =
+      const { accuracy, source, gridref, altitude, altitudeAccuracy } =
         location;
 
       // add other location related attributes
@@ -178,7 +184,6 @@ export const locationAttr = {
       submission.values['smpAttr:282'] = accuracy; // eslint-disable-line
       submission.values['smpAttr:283'] = altitude; // eslint-disable-line
       submission.values['smpAttr:284'] = altitudeAccuracy; // eslint-disable-line
-      submission.values['location_name'] = name; // eslint-disable-line
 
       const lat = parseFloat(location.latitude);
       const lon = parseFloat(location.longitude);
@@ -196,30 +201,46 @@ export const childGeolocationAttr = {
   type: 'yesNoInput',
 } as const satisfies YesNoInputConf;
 
-const mothStages = [
-  { value: 'Not recorded', id: 10647 },
-  { value: 'Adult', id: 2189 },
-  { value: 'Larva', id: 2190 },
-  { value: 'Larval web', id: 2191 },
-  { value: 'Larval case', id: 2192 },
-  { value: 'Mine', id: 2193 },
-  { value: 'Egg', id: 2194 },
-  { value: 'Egg batch', id: 2195 },
-  { value: 'Pupa', id: 17556 },
-];
+/** @deprecated */
+export const mothStageAttrOld = {
+  id: 'stage',
+  remote: {
+    id: 130,
+    values: [
+      { value: 'Not recorded', id: 10647 },
+      { value: 'Adult', id: 2189 },
+      { value: 'Larva', id: 2190 },
+      { value: 'Larval web', id: 2191 },
+      { value: 'Larval case', id: 2192 },
+      { value: 'Mine', id: 2193 },
+      { value: 'Egg', id: 2194 },
+      { value: 'Egg batch', id: 2195 },
+      { value: 'Pupa', id: 17556 },
+    ],
+  },
+} as const;
 
 export const mothStageAttr = {
-  id: 'stage',
-  menuProps: { icon: progressIcon, required: true },
-  pageProps: {
-    attrProps: {
-      input: 'radio',
-      info: 'Please indicate the stage of the organism. If you are recording larvae, cases or leaf-mines please add the foodplant in to the comments field, as this is often needed to verify the records.',
-      inputProps: { options: mothStages },
-    },
-  },
-  remote: { id: 130, values: mothStages },
-} as const;
+  id: 'occAttr:130',
+  title: 'Stage',
+  prefix: <IonIcon src={progressIcon} className="size-6" />,
+  type: 'choiceInput',
+  container: 'page',
+  choices: [
+    { title: 'Not recorded', dataName: '10647' },
+    { title: 'Adult', dataName: '2189' },
+    { title: 'Larva', dataName: '2190' },
+    { title: 'Larval web', dataName: '2191' },
+    { title: 'Larval case', dataName: '2192' },
+    { title: 'Mine', dataName: '2193' },
+    { title: 'Egg', dataName: '2194' },
+    { title: 'Egg batch', dataName: '2195' },
+    { title: 'Pupa', dataName: '17556' },
+  ],
+  validation: { required: true },
+  description:
+    'Please indicate the stage of the organism. If you are recording larvae, cases or leaf-mines please add the foodplant in to the comments field, as this is often needed to verify the records.',
+} as const satisfies ChoiceInputConf;
 
 const plantStageOptions = [
   { label: 'Not Recorded', value: null, isDefault: true },
@@ -260,13 +281,11 @@ export const plantStageAttr = {
 
 export type AttrConfig = {
   id: string;
-  menuProps?: MenuProps;
-  pageProps?: Omit<PageProps, 'attr' | 'model'>;
   remote?: RemoteConfig;
 };
 
 export type BlockAttrConfig = {
-  block: BlockConf;
+  block: BlockT;
   remote?: RemoteConfig;
   menuProps?: undefined;
   pageProps?: undefined;
@@ -278,11 +297,11 @@ type OccurrenceConfig = {
   render?: any[];
   attrs: Attrs;
   create?: (props: {
-    Occurrence: typeof Occurrence;
     taxon?: Taxon;
     identifier?: string;
     images?: Media[];
-  }) => Occurrence;
+    isListSurvey?: boolean;
+  }) => Occurrence | Promise<Occurrence>;
   verify?: (attrs: any) => any;
   modifySubmission?: (submission: any, model: any) => any;
   /**
@@ -298,7 +317,6 @@ export type SampleConfig = {
     taxon?: Taxon;
     images?: Media[];
     surveySample: Sample;
-    skipLocation?: any;
     alert?: any;
   }) => Promise<Sample>;
   verify?: (attrs: any) => any;

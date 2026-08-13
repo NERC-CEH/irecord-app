@@ -52,7 +52,12 @@ const HomeController = () => {
   const navigateToMothSurvey = () => navigate('/survey/moth');
   const navigateToPlantSurvey = () => navigate('/survey/plant');
 
-  const activitiesOn = !!appModel.getAttrLock('smp', 'groupId');
+  const activitiesOn = appModel.locks.isLocked(
+    'default',
+    'all',
+    'smp',
+    'groupId'
+  );
 
   return (
     <IonTabs>

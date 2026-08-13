@@ -21,11 +21,7 @@ const Taxon = () => {
   const shouldCreateOccurrences = !!surveyConfig.occ?.create;
 
   const createNewOccurrenceModel = async (taxon: any) => {
-    const newOccurrence = (await surveyConfig.occ?.create?.({
-      Occurrence,
-      taxon,
-    })) as Occurrence;
-
+    const newOccurrence = await surveyConfig.occ!.create!({ taxon });
     sample!.occurrences.push(newOccurrence);
     sample!.save();
 
@@ -94,7 +90,7 @@ const Taxon = () => {
   return (
     <Page id="taxon">
       <Header title="Species" rightSlot={rightSlot} />
-      <Main>
+      <Main className="pb-ion-s-10">
         <TaxonSearch
           onSpeciesSelected={onSpeciesSelected}
           resetOnSelect

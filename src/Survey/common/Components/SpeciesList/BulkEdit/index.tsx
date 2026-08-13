@@ -7,13 +7,55 @@ import {
   useState,
 } from 'react';
 import { chevronDownSharp, listOutline } from 'ionicons/icons';
+import { CheckboxGroup } from 'react-aria-components';
 import { Trans as T, useTranslation } from 'react-i18next';
 import { AttrProps, Button, useAlert, useToast } from '@flumens';
-import Checkbox from '@flumens/tailwind/dist/components/Checkbox';
 import { IonIcon, IonActionSheet } from '@ionic/react';
 import Occurrence from 'common/models/occurrence';
 import Sample from 'common/models/sample';
 import EditModal from './EditModal';
+
+type ValueEditConfig = AttrProps & { attrConfig: any; title?: string };
+
+const getValueConfig = (
+  config: any,
+  action: string
+): ValueEditConfig | null => {
+  const block = config.block || config;
+  if (!block.type && config.pageProps?.attrProps)
+    return {
+      ...(config.pageProps.attrProps as AttrProps),
+      attrConfig: config,
+      attr: action,
+      title: config.title || action,
+    };
+
+  if (block.type === 'choiceInput') {
+    return {
+      attrConfig: config,
+      attr: block.id,
+      title: block.title,
+      input: 'radio',
+      inputProps: {
+        options: block.choices.map(({ dataName, title }: any) => ({
+          value: dataName,
+          label: title || dataName,
+        })),
+      },
+    } as ValueEditConfig;
+  }
+
+  if (block.type === 'textInput') {
+    return {
+      attrConfig: config,
+      attr: block.id,
+      title: block.title,
+      input: 'textarea',
+    } as ValueEditConfig;
+  }
+
+  return null;
+};
 
 function useDeletePrompt() {
   const alert = useAlert();
@@ -41,13 +83,41 @@ function useDeletePrompt() {
   return showDeleteOccurrenceDialog;
 }
 
-export type Action = 'delete' | 'stage' | 'sex' | 'comment' | 'cancel';
+export type Action = string;
+type Models = (Sample | Occurrence)[];
+type Attrs = Record<Action, any>;
+export type BulkEditAttrs = Attrs | ((models: Models) => Attrs);
+
+export type OnBulkEdit = (
+  attrConfig: any,
+  models: Models,
+  value?: any
+) => void | Promise<void>;
+
+const onBulkEditDefault: OnBulkEdit = async (attrConfig, models, value) => {
+  if (!attrConfig) {
+    await Promise.all(models.map(model => model.destroy()));
+    return;
+  }
+
+  const attr = attrConfig.block || attrConfig;
+  await Promise.all(
+    models.map(async model => {
+      const target = model instanceof Sample ? model.occurrences[0] : model;
+      if (!target) return;
+
+      // eslint-disable-next-line no-param-reassign
+      (target.data as any)[attr.id] = value;
+      await target.save();
+    })
+  );
+};
 
 type BulkEditContextType = {
   bulkEditItems: string[];
   setBulkEditItems: (items: string[]) => void;
-  models: Sample[] | Occurrence[];
-  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
+  models: Models;
+  onBulkEdit?: OnBulkEdit;
   isBulkEditing: boolean;
   setIsBulkEditing: (isEditing: boolean) => void;
   onCancelBulkEdit: () => void;
@@ -133,26 +203,35 @@ const Control = () => {
 };
 
 type Props = {
-  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
+  attrs: BulkEditAttrs;
+  onBulkEdit?: OnBulkEdit;
   onEditChange: (isEditing: boolean) => void;
-  models: Sample[] | Occurrence[];
+  models: Models;
+  isDisabled?: boolean;
   children: ReactNode;
 };
 
-const BulkEdit = ({ onBulkEdit, onEditChange, models, children }: Props) => {
+const BulkEdit = ({
+  attrs,
+  onBulkEdit = onBulkEditDefault,
+  onEditChange,
+  models,
+  isDisabled,
+  children,
+}: Props) => {
   const { t } = useTranslation();
   const toast = useToast();
 
   const [isBulkEditing, setIsBulkEditing] = useState(false);
   const [bulkEditItems, setBulkEditItems] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [valueEditConfig, setValueEditConfig] = useState<
-    AttrProps & { attr: Action }
-  >();
+  const [valueEditConfig, setValueEditConfig] = useState<ValueEditConfig>();
   const showDeleteConfirmation = useDeletePrompt();
-
-  const getSurveyConfig = (cid: string) =>
-    models.find(smp => smp.cid === cid)?.getSurvey();
+  const selectedModels = models.filter(model =>
+    bulkEditItems.includes(model.cid)
+  );
+  const availableAttrs =
+    typeof attrs === 'function' ? attrs(selectedModels) : attrs;
 
   const onCancelBulkEdit = useCallback(() => {
     setIsOpen(false);
@@ -166,40 +245,33 @@ const BulkEdit = ({ onBulkEdit, onEditChange, models, children }: Props) => {
       const shouldDelete = await showDeleteConfirmation();
       if (!shouldDelete) return;
 
-      onBulkEdit!(action, bulkEditItems, null);
+      await onBulkEdit(undefined, selectedModels);
+
       onCancelBulkEdit();
       return;
     }
 
-    const isSubSample = models[0] instanceof Sample;
-    const surveys = bulkEditItems.map(getSurveyConfig).filter(s => !!s);
-    const hasDifferentSurveys = surveys.some((s, _, a) => s.taxa !== a[0].taxa);
-    if (hasDifferentSurveys) {
-      toast.warn(
-        'Only entries within the same species group can be edited in bulk.'
-      );
-      return;
-    }
-
-    const config = isSubSample
-      ? surveys[0].occ?.attrs[action]
-      : surveys[0].attrs![action];
+    const config = availableAttrs[action];
 
     if (!config) {
       toast.warn(`No ${action} attribute found for the selected entries.`);
       return;
     }
 
-    setValueEditConfig({
-      ...(config.pageProps?.attrProps as AttrProps),
-      attr: action,
-    });
+    const nextValueConfig = getValueConfig(config, action);
+    if (!nextValueConfig) {
+      toast.warn(`${action} cannot be bulk edited.`);
+      return;
+    }
+
+    setValueEditConfig({ ...nextValueConfig, attrConfig: config });
   };
 
-  const onNewValueSave = (newValue?: any) => {
-    if (newValue) onCancelBulkEdit();
-    if (valueEditConfig?.attr)
-      onBulkEdit!(valueEditConfig.attr, bulkEditItems, newValue);
+  const onNewValueSave = async (newValue?: any) => {
+    if (newValue !== undefined) {
+      await onBulkEdit(valueEditConfig!.attrConfig, selectedModels, newValue);
+      onCancelBulkEdit();
+    }
     setValueEditConfig(undefined);
   };
 
@@ -214,7 +286,7 @@ const BulkEdit = ({ onBulkEdit, onEditChange, models, children }: Props) => {
       bulkEditItems,
       setBulkEditItems,
       models,
-      onBulkEdit,
+      onBulkEdit: isDisabled ? undefined : onBulkEdit,
       isBulkEditing,
       setIsBulkEditing,
       onCancelBulkEdit,
@@ -226,6 +298,7 @@ const BulkEdit = ({ onBulkEdit, onEditChange, models, children }: Props) => {
       models,
       onBulkEdit,
       isBulkEditing,
+      isDisabled,
       onCancelBulkEdit,
       onEditChange,
     ]
@@ -233,31 +306,21 @@ const BulkEdit = ({ onBulkEdit, onEditChange, models, children }: Props) => {
 
   return (
     <BulkEditContext.Provider value={contextValue}>
-      <Checkbox
-        onChange={(newItems: any) => setBulkEditItems(newItems)}
-        value={bulkEditItems}
-        className="[&>div]:px-0!"
-      >
+      <CheckboxGroup onChange={setBulkEditItems} value={bulkEditItems}>
         {children}
-      </Checkbox>
+      </CheckboxGroup>
 
       <IonActionSheet
         onDidDismiss={onActionSheetDismiss}
         isOpen={isOpen}
         header="Bulk edit actions"
         buttons={[
-          {
-            text: t('Stage'),
-            data: { action: 'stage' },
-          },
-          {
-            text: t('Sex'),
-            data: { action: 'sex' },
-          },
-          {
-            text: t('Comment'),
-            data: { action: 'comment' },
-          },
+          ...Object.entries(availableAttrs).map(
+            ([action, config]: [string, any]) => ({
+              text: t(config.block?.title || config.title || action),
+              data: { action },
+            })
+          ),
           {
             text: t('Delete'),
             role: 'destructive',

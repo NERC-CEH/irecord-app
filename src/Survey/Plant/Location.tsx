@@ -19,8 +19,6 @@ import ModelLocation, {
 function updateChildrenLocations(sample: Sample) {
   sample.samples.forEach((subSample: Sample) => {
     const location = JSON.parse(JSON.stringify(sample.data.location));
-    delete location.name;
-
     Object.assign(subSample.data.location, location);
   });
 }

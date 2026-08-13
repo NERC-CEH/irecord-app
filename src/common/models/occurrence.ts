@@ -11,7 +11,7 @@ import identify, { Suggestion, Result } from 'common/services/indiciaAI';
 import { Taxon as SearchTaxon } from 'helpers/taxonSearch';
 import { Survey } from 'Survey/common/config';
 import Media from './media';
-import Sample from './sample';
+import type Sample from './sample';
 
 export enum MachineInvolvement {
   /**

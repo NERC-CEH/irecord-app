@@ -30,7 +30,7 @@ const GroupsList = ({
   groups.length; // to force refresh when groups list is updated
 
   const currentValue =
-    currentValueProp || appModel.getAttrLock('smp', 'groupId');
+    currentValueProp || appModel.locks.get('default', 'all', 'smp', 'groupId');
 
   const joinGroup = async (group: Group) => {
     console.log('Activities joining', group.id);
@@ -72,7 +72,9 @@ const GroupsList = ({
         form: ['enter-app-record'],
       });
 
-      appModel.unsetAttrLock('smp', 'groupId');
+      ['default', 'list'].forEach(survey =>
+        appModel.locks.unset(survey, 'all', 'smp', 'groupId')
+      );
 
       toast.success('Successfully left the activity.');
     } catch (err: any) {

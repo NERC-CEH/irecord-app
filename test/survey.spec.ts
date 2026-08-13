@@ -381,31 +381,26 @@ test.describe('Default survey', () => {
       .click();
     await expect(homePage.getByText('Hyde Park')).toBeVisible();
 
+    // enter stage
+    await homePage.getByRole('button', { name: /Stage/ }).click();
+    await homePage.getByRole('option', { name: 'Adult' }).click();
+
     // enter "test" in the comment field
-    await homePage.getByRole('link', { name: /Comment/ }).click();
-    await homePage.getByRole('textbox').fill('test');
-    await homePage
-      .locator('#attr-page-comment')
-      .getByRole('button', { name: 'Back' })
-      .click();
-
-    // dismiss "Tip: Locks for data entry" dialog that appears after first attribute entry
-    await homePage.getByRole('button', { name: 'OK, got it' }).click();
-
-    // enter stage — Stage page shows radio options, auto-navigates back on select
-    await homePage.getByRole('link', { name: /Stage/ }).click();
-    await homePage.locator('label', { hasText: 'Adult' }).tap();
+    await homePage.getByRole('textbox', { name: 'Comment' }).fill('test');
 
     // enter "2-5" in the abundance field
-    await homePage.getByRole('link', { name: /Abundance/ }).click();
+    await homePage.getByRole('button', { name: /Abundance/ }).click();
     await homePage.locator('label', { hasText: '2-5' }).tap();
 
-    // enter "Male" in the sex field
-    await homePage.getByRole('link', { name: /Sex/ }).click();
-    await homePage.locator('label', { hasText: 'Female' }).tap();
+    // dismiss "Tip: Locks for data entry" dialog shown when returning to the record
+    await homePage.getByRole('button', { name: 'OK, got it' }).click();
+
+    // enter "Female" in the sex field
+    await homePage.getByRole('button', { name: /Sex/ }).click();
+    await homePage.getByRole('option', { name: 'Female' }).click();
 
     // enter "Permanent territory" in the breeding field
-    await homePage.getByRole('link', { name: /Breeding/ }).click();
+    await homePage.getByRole('button', { name: /Breeding/ }).click();
     await homePage.locator('label', { hasText: 'Permanent territory' }).tap();
 
     // finish the record
@@ -415,20 +410,22 @@ test.describe('Default survey', () => {
     await expect(homePage.getByText('Pending')).toBeVisible();
     await expect(homePage.getByText('Blackbird')).toBeVisible();
     await expect(homePage.getByText('Hyde Park')).toBeVisible();
+    await expect(homePage.getByText('2-5', { exact: true })).toBeVisible();
+    await expect(homePage.getByText('Adult', { exact: true })).toBeVisible();
 
     // LOCKING
     // open the record again
     await homePage.locator('ion-item-sliding').tap();
 
     // lock Comment attr here
-    await pan(homePage.getByRole('link', { name: /Comment/ }), -200);
+    await pan(homePage.getByRole('textbox', { name: 'Comment' }), -200);
     await homePage
       .locator('.menu-attr-item-lock', { hasText: /Comment/ })
       .locator('ion-item-option')
       .tap();
 
     // lock bird stage here
-    await pan(homePage.getByRole('link', { name: /Stage/ }), -200);
+    await pan(homePage.getByRole('button', { name: /Stage/ }), -200);
     await homePage
       .locator('.menu-attr-item-lock', { hasText: /Stage/ })
       .locator('ion-item-option')
@@ -450,11 +447,11 @@ test.describe('Default survey', () => {
       .click();
 
     await expect(
-      homePage.getByRole('link', { name: /Comment.*test/i })
-    ).toBeVisible();
+      homePage.getByRole('textbox', { name: 'Comment' })
+    ).toHaveValue('test');
 
     await expect(
-      homePage.getByRole('link', { name: /Stage.*Adult/i })
+      homePage.getByRole('button', { name: /Adult.*Stage/i })
     ).toBeVisible();
 
     await homePage.getByRole('button', { name: 'Back' }).first().click();
@@ -473,11 +470,11 @@ test.describe('Default survey', () => {
       .click();
 
     await expect(
-      homePage.getByRole('link', { name: /Comment.*test/i })
-    ).toBeVisible();
+      homePage.getByRole('textbox', { name: 'Comment' })
+    ).toHaveValue('test');
 
     await expect(
-      homePage.getByRole('link', { name: /Stage.*Adult/i })
+      homePage.getByRole('button', { name: /Adult.*Stage/i })
     ).not.toBeVisible();
   });
 });
@@ -496,8 +493,12 @@ test('Create a Species List Survey', async ({ homePage }) => {
 
   // 2. Verify the form contains the expected fields
   await expect(homePage.getByRole('link', { name: /Location/ })).toBeVisible();
-  await expect(homePage.getByRole('link', { name: 'Recorder' })).toBeVisible();
-  await expect(homePage.getByRole('link', { name: 'Comment' })).toBeVisible();
+  await expect(
+    homePage.getByRole('button', { name: 'Recorder' })
+  ).toBeVisible();
+  await expect(
+    homePage.getByRole('textbox', { name: 'Comment' })
+  ).toBeVisible();
   await expect(
     homePage.getByRole('button', { name: 'Add Species' })
   ).toBeVisible();
@@ -549,12 +550,12 @@ test('Create a Species List Survey', async ({ homePage }) => {
   await expect(homePage.getByRole('link', { name: /TQ/ })).toBeVisible();
 
   // 6. Set recorder name
-  await homePage.getByRole('link', { name: 'Recorder' }).click();
+  await homePage.getByRole('button', { name: 'Recorder' }).click();
   await homePage
     .locator('input[placeholder="Recorder name"]')
     .fill('Test Recorder');
   await homePage
-    .locator('#attr-page-recorder')
+    .locator('[id="attr-page-smpAttr:127"]')
     .getByRole('button', { name: 'Back' })
     .click();
 
@@ -582,10 +583,14 @@ test('Create a Plant List Survey', async ({ homePage }) => {
     homePage.getByRole('link', { name: 'Square No location No site' })
   ).toBeVisible();
   await expect(
-    homePage.getByRole('link', { name: 'Vice County' })
+    homePage.getByRole('button', { name: 'Vice County' })
   ).toBeVisible();
-  await expect(homePage.getByRole('link', { name: 'Recorders' })).toBeVisible();
-  await expect(homePage.getByRole('link', { name: 'Comment' })).toBeVisible();
+  await expect(
+    homePage.getByRole('button', { name: 'Recorders' })
+  ).toBeVisible();
+  await expect(
+    homePage.getByRole('textbox', { name: 'Comment' })
+  ).toBeVisible();
   await expect(
     homePage.getByRole('button', { name: 'Add Species' })
   ).toBeVisible();
@@ -625,17 +630,17 @@ test('Create a Plant List Survey', async ({ homePage }) => {
   await expect(homePage.getByText('Hyde Park')).toBeVisible();
 
   // 5. Add a recorder — list-style input: fill text then click the add button
-  await homePage.getByRole('link', { name: 'Recorders' }).click();
+  await homePage.getByRole('button', { name: 'Recorders' }).click();
   await homePage
     .locator('input[placeholder="Recorder name"]')
     .fill('Test Recorder');
   await homePage
-    .locator('#attr-page-recorders')
+    .locator('[id="attr-page-smpAttr:1018"]')
     .getByRole('main')
     .getByRole('button')
     .click();
   await homePage
-    .locator('#attr-page-recorders')
+    .locator('[id="attr-page-smpAttr:1018"]')
     .getByRole('button', { name: 'Back' })
     .click();
 
@@ -662,9 +667,13 @@ test('Create a Moth List Survey', async ({ homePage }) => {
   await expect(
     homePage.getByRole('link', { name: 'Location No location No site' })
   ).toBeVisible();
-  await expect(homePage.getByRole('link', { name: 'Method' })).toBeVisible();
-  await expect(homePage.getByRole('link', { name: 'Recorder' })).toBeVisible();
-  await expect(homePage.getByRole('link', { name: 'Comment' })).toBeVisible();
+  await expect(homePage.getByRole('button', { name: 'Method' })).toBeVisible();
+  await expect(
+    homePage.getByRole('button', { name: 'Recorder' })
+  ).toBeVisible();
+  await expect(
+    homePage.getByRole('textbox', { name: 'Comment' })
+  ).toBeVisible();
   await expect(
     homePage.getByRole('button', { name: 'Add Species' })
   ).toBeVisible();
@@ -692,24 +701,22 @@ test('Create a Moth List Survey', async ({ homePage }) => {
     timeout: 15000,
   });
 
-  // 4. Set date — moth survey has no default date, must pick from calendar
-  await homePage.getByRole('button', { name: 'Date' }).click();
-
-  // the calendar highlights today with "Today," prefix in its accessible name
-  await homePage.getByRole('button', { name: /^Today,/ }).click();
+  // 4. Set date — moth survey has no default date
+  await homePage.getByRole('button', { name: /^\d{2}\/\d{2}\/\d{2}$/ }).click();
+  await homePage.keyboard.press('Escape');
 
   // 5. Set recorder name
-  await homePage.getByRole('link', { name: 'Recorder' }).click();
+  await homePage.getByRole('button', { name: 'Recorder' }).click();
   await homePage
     .locator('input[placeholder="Recorder name"]')
     .fill('Test Recorder');
   await homePage
-    .locator('#attr-page-recorder')
+    .locator('[id="attr-page-smpAttr:127"]')
     .getByRole('button', { name: 'Back' })
     .click();
 
-  // 6. Set trapping method — clicking the text label bypasses the overlay div
-  await homePage.getByRole('link', { name: 'Method' }).click();
+  // 6. Set trapping method
+  await homePage.getByRole('button', { name: 'Method' }).click();
   await homePage.getByText('Light trapping').click();
 
   // 7. Add Garden Tiger moth species
@@ -734,7 +741,7 @@ test('Create a Moth List Survey', async ({ homePage }) => {
 
   // 8. Set Stage for Garden Tiger — required field for moth occurrences
   await homePage.getByRole('link', { name: /Garden Tiger/ }).click();
-  await homePage.getByRole('link', { name: 'Stage' }).click();
+  await homePage.getByRole('button', { name: 'Stage' }).click();
   await homePage.getByText('Adult').click();
   await homePage
     .locator('#survey-default-edit')

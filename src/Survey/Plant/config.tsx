@@ -9,6 +9,7 @@ import { Trans as T } from 'react-i18next';
 import { object, array, string } from 'zod';
 import {
   InfoButton,
+  dateFormatISO,
   type OccurrenceData,
   type SampleData,
   type inferAttrConfigTypes,
@@ -51,9 +52,7 @@ const plantLocationAttr = {
   menuProps: { label: 'Square' },
   remote: {
     id: 'entered_sref',
-    values(location: any, submission: any) {
-      // eslint-disable-next-line no-param-reassign
-      submission.values.location_name = location.name; // this is a native indicia attr
+    values(location: any) {
       return location.gridref;
     },
   },
@@ -80,10 +79,9 @@ export const recordersAttr = {
   placeholder: 'Recorder name',
   description:
     'If anyone helped with documenting the record please enter their name here.',
-  onChange: (_, __, { record }) => {
-    const data = record;
-    const recorders = data['smpAttr:1018'] || [];
-    data[recordersCountAttr.id] = recorders.length
+  onChange: (recorders, _, { record }) => {
+    record[recordersAttr.id] = recorders;
+    record[recordersCountAttr.id] = recorders?.length
       ? getRecorderCount(recorders)
       : null;
   },
@@ -112,9 +110,7 @@ const plantSmpLocationAttr = {
   id: 'location',
   remote: {
     id: 'entered_sref',
-    values(location: any, submission: any) {
-      // eslint-disable-next-line no-param-reassign
-      submission.values.location_name = location.name; // this is a native indicia attr
+    values(location: any) {
       return location.gridref;
     },
   },
@@ -207,10 +203,7 @@ const plantSensitivityPrecisionAttr = {
   title: 'Sensitive',
   prefix: <IonIcon icon={eyeOffOutline} className="size-6" />,
   type: 'yesNoInput',
-  onChange: (_, __, { record }) => {
-    const data = record;
-    data.sensitivityPrecision = data.sensitivityPrecision ? 2000 : '';
-  },
+  choices: [{ dataName: '' }, { dataName: '2000' }],
 } as const satisfies YesNoInputConf;
 
 const SURVEY_ID = 325;
@@ -316,8 +309,9 @@ const survey = {
 
       sample.occurrences.push(occurrence);
 
-      const locks = appModel.data.attrLocks.complex.plant || {};
-      appModel.appendAttrLocks(sample, locks);
+      const locks = appModel.locks.getAll('plant');
+      Object.assign(sample.data, locks.smp);
+      Object.assign(occurrence.data, locks.occ);
 
       if (surveySample.data.childGeolocation) {
         const ignoreError = () => {};
@@ -330,12 +324,11 @@ const survey = {
 
   verify: (values: any) =>
     object({
-      location: locationAttrValidator({
-        name: string({ error: 'Location name is missing' }).min(
-          1,
-          'Location name is missing'
-        ),
-      }),
+      location: locationAttrValidator(),
+      locationName: string({ error: 'Location name is missing' }).min(
+        1,
+        'Location name is missing'
+      ),
       [recordersAttr.id]: array(string(), {
         error: 'Recorders field is missing.',
       })
@@ -359,7 +352,7 @@ const survey = {
       data: {
         surveyId: SURVEY_ID,
         inputForm: SURVEY_WEBFORM,
-        date: new Date().toISOString().split('T')[0],
+        date: dateFormatISO.format(new Date()),
         enteredSrefSystem: 'OSGB',
         sampleMethodId: 7305,
         [recordersAttr.id]: recorders,

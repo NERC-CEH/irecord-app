@@ -2,7 +2,6 @@ import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
 import { IonSpinner } from '@ionic/react';
 import { Badge } from 'common/flumens';
-import appModel from 'models/app';
 import Sample from 'models/sample';
 
 type Props = {
@@ -13,11 +12,9 @@ const Location = ({ sample }: Props) => {
   const isLocating = sample.isGPSRunning();
   const locationPrint = sample.printLocation();
 
-  const { location } = sample.data;
-  const locationName = location?.name;
+  const { locationName } = sample.data;
 
   const survey = sample.getSurvey();
-  const locationLocked = appModel.isAttrLocked(sample, 'locationName');
 
   if (!locationPrint) {
     if (isLocating) {
@@ -49,9 +46,7 @@ const Location = ({ sample }: Props) => {
   const locationPretty = sample.printLocation();
   return (
     <>
-      <span className={`text-sm ${locationLocked ? 'locked' : ''}`}>
-        {locationName}
-      </span>
+      <span className="text-sm">{locationName}</span>
 
       {survey.name !== 'default' && (
         <span className="text-sm">{` (${locationPretty})`}</span>

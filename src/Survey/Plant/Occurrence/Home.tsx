@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import { Page, Header, Main, useSample } from '@flumens';
 import { IonList } from '@ionic/react';
 import Sample from 'common/models/sample';
-import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
@@ -16,13 +16,11 @@ const PlantOccurrenceHome = () => {
   const [occ] = subSample.occurrences;
   const { isDisabled } = subSample;
 
-  const renderArray = surveyConfig.smp.occ.render;
-
   return (
     <Page id="survey-default-edit">
       <Header title="Edit" />
 
-      <Main>
+      <Main className="pb-ion-s-10">
         <IonList lines="full" className="mb-2 flex! flex-col gap-4">
           {isDisabled && (
             <div className="rounded-list">
@@ -37,12 +35,13 @@ const PlantOccurrenceHome = () => {
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
             <MenuLocation sample={subSample} skipName isRequired={false} />
-            {renderArray?.map((attr: any) => (
+            {surveyConfig.smp.occ.render?.map((attr: any) => (
               <MenuDynamicAttr
                 key={attr.id}
                 model={occ}
-                attr={attr}
+                block={attr}
                 useSeparateOccPage
+                survey={surveyConfig.name}
               />
             ))}
           </div>

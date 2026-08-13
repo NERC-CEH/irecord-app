@@ -198,6 +198,13 @@ describe('Sample', () => {
   });
 
   describe('toDTO', () => {
+    it('should submit the location name from sample data', async () => {
+      const sample = await getDefaultSample();
+      sample.data.locationName = 'Test site';
+
+      expect(sample.toDTO().values.location_name).toBe('Test site');
+    });
+
     it('should add a system attributes', async () => {
       // Given
       config.version = '1';

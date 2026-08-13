@@ -3,6 +3,12 @@ import { alertOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
 import { Badge, useAlert } from '@flumens';
+import type {
+  ChoiceInputConf,
+  NumberInputConf,
+  TextInputConf,
+} from '@flumens/tailwind/dist/Survey';
+import { getChoiceTitle } from '@flumens/tailwind/dist/components/Block';
 import {
   IonItemOption,
   IonItemOptions,
@@ -13,8 +19,6 @@ import {
 import VerificationStatus from 'common/Components/VerificationStatus';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
-import { numberAttr as mothNumberAttr } from 'Survey/Moth/config';
-import { abundanceAttr } from 'Survey/Plant/config';
 import IncrementalButton from 'Survey/common/Components/IncrementalButton';
 import CheckboxOption from '../BulkEdit/CheckboxOption';
 import './styles.scss';
@@ -69,6 +73,7 @@ type Props = {
   onDelete: any;
   useSubSamples?: boolean;
   isBulkEditing?: boolean;
+  numberAttrs?: (ChoiceInputConf | NumberInputConf | TextInputConf)[];
 };
 
 const SpeciesListItem = ({
@@ -77,6 +82,7 @@ const SpeciesListItem = ({
   onDelete,
   useSubSamples,
   isBulkEditing,
+  numberAttrs,
 }: Props) => {
   const { url } = useRouteMatch();
 
@@ -90,18 +96,20 @@ const SpeciesListItem = ({
 
   if (!occ) return null; // if remote deleted but left sub-sample
 
+  const value = numberAttrs
+    ?.map(attr => {
+      const rawValue = (occ.data as any)[attr.id];
+      return attr.type === 'choiceInput'
+        ? getChoiceTitle(attr, rawValue)
+        : rawValue;
+    })
+    .find(Boolean);
+
   const getEditButton = () => <CheckboxOption value={model.cid} />;
 
   const getIncrementButton = () => {
     const increaseCountWrap = () => increaseCount(occ);
     const increase5xCountWrap = () => increaseCount(occ, true);
-
-    const value =
-      occ.data.number ||
-      occ.data['number-ranges'] ||
-      occ.data.abundance ||
-      (occ.data as any)[abundanceAttr.id] ||
-      (occ.data as any)[mothNumberAttr.id];
 
     if (!value && isDisabled) return null;
 

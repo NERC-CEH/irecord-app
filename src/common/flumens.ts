@@ -41,6 +41,7 @@ export {
   usePhotoDeletePrompt,
 } from '@flumens/ionic/dist/components/PhotoPicker';
 export * from '@flumens/utils/dist/date';
+export * from '@flumens/utils/dist/string';
 export { default as device } from '@flumens/utils/dist/device';
 export * from '@flumens/utils/dist/uuid';
 export {
@@ -125,6 +126,11 @@ export { default as Block } from '@flumens/tailwind/dist/components/Block';
 export {
   type BlockConf as BlockT,
   type ChoiceValues,
+  type ChoiceInputConf,
+  type NumberInputConf,
+  type TextInputConf,
+  type YesNoInputConf,
+  type DateTimeInputConf,
 } from '@flumens/tailwind/dist/Survey';
 export {
   default as TailwindBlockContext,

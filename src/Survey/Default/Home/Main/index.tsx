@@ -15,7 +15,7 @@ import {
 } from 'Survey/Default/config';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
-import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttrs';
+import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
@@ -36,8 +36,13 @@ const useAttributeLockingTip = (sample: Sample) => {
     if (shownLockingSwipeTip) return;
 
     const [occ] = sample.occurrences;
-    const hasLockableAttributes =
-      occ && (occ.data.comment || occ.data.stage || occ.data.sex);
+    const hasStageOrSex = sample
+      .getSurvey()
+      .occ?.render?.some(
+        (attr: any) =>
+          ['Stage', 'Sex'].includes(attr.title) && (occ?.data as any)?.[attr.id]
+      );
+    const hasLockableAttributes = occ && (occ.data.comment || hasStageOrSex);
 
     if (!hasLockableAttributes) return;
 
@@ -68,6 +73,7 @@ const useAttributeLockingTip = (sample: Sample) => {
 
 const EditMain = ({ sample }: Props) => {
   useAttributeLockingTip(sample);
+  const survey = sample.getSurvey();
   const showSensitivityWarning = useSensitivityTip();
 
   const surveyConfig = sample.getSurvey();
@@ -82,7 +88,7 @@ const EditMain = ({ sample }: Props) => {
   const { isDisabled } = sample;
 
   return (
-    <Main className="[--padding-bottom:30px]">
+    <Main className="pb-ion-s-10">
       <IonList lines="full" className="mb-2 flex! flex-col gap-4">
         {isDisabled && (
           <div className="rounded-list mb-2">
@@ -99,7 +105,12 @@ const EditMain = ({ sample }: Props) => {
         {/* Only showing if pre-selected */}
         {groupId && (
           <div className="rounded-list">
-            <MenuAttr.WithLock model={sample} attr={groupIdAttr} />
+            <MenuAttr.WithLock
+              model={sample}
+              block={groupIdAttr}
+              survey={survey.name}
+              taxa="all"
+            />
           </div>
         )}
 
@@ -109,30 +120,61 @@ const EditMain = ({ sample }: Props) => {
 
         <div className="rounded-list">
           <MenuTaxonItem occ={occ} />
-          <MenuLocation.WithLock sample={sample} />
-          <MenuAttr.WithLock model={sample} attr={dateAttr} />
-          <MenuAttr.WithLock model={sample} attr={recorderAttr} />
+          <MenuLocation.WithLock
+            sample={sample}
+            survey={survey.name}
+            taxa="all"
+          />
+          <MenuAttr.WithLock
+            model={sample}
+            block={dateAttr}
+            survey={survey.name}
+            taxa="all"
+          />
+          <MenuAttr.WithLock
+            model={sample}
+            block={recorderAttr}
+            survey={survey.name}
+            taxa="all"
+          />
 
           {surveyConfig.render?.map((attr: any) => (
-            <MenuDynamicAttr key={attr.id} model={sample} attr={attr} />
+            <MenuDynamicAttr
+              key={attr.id}
+              model={sample}
+              block={attr}
+              survey={survey.name}
+              taxa={survey.taxa}
+            />
           ))}
           {surveyConfig.occ?.render?.map((attr: any) => (
             <MenuDynamicAttr
               key={attr.id}
               model={occ}
-              attr={attr}
+              block={attr}
               useSeparateOccPage
+              survey={survey.name}
+              taxa={survey.taxa}
             />
           ))}
           <MenuAttr.WithLock
             model={occ}
-            attr={defaultSensitivityPrecisionAttr}
-            onChange={showSensitivityWarning}
+            block={defaultSensitivityPrecisionAttr}
+            onChange={(val, _, { record }) => {
+              Object.assign(record, {
+                [defaultSensitivityPrecisionAttr.id]: val,
+              });
+              showSensitivityWarning(!!val);
+            }}
+            survey={survey.name}
+            taxa="all"
           />
           <MenuAttr.WithLock
             model={occ}
-            attr={commentAttr}
-            itemProps={{ routerLink: `${url}/occ/${occ.cid}/comment` }}
+            block={commentAttr}
+            link={`${url}/occ/${occ.cid}/comment`}
+            survey={survey.name}
+            taxa="all"
           />
         </div>
       </IonList>

@@ -6,8 +6,8 @@ import {
 import { Media as MediaOriginal } from '@flumens';
 import { isPlatform } from '@ionic/react';
 import config from 'common/config';
-import Occurrence from 'models/occurrence';
-import Sample from 'models/sample';
+import type Occurrence from 'models/occurrence';
+import type Sample from 'models/sample';
 import userModel from 'models/user';
 
 export default class Media extends MediaOriginal {

@@ -33,8 +33,11 @@ const PastLocations = ({ model, isOpen, onClose }: Props) => {
 
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
+    const { name, geocoded, ...coordinates } = location;
     if (!model.data.location) model.data.location = {};
-    Object.assign(model.data.location, location);
+    Object.assign(model.data.location, coordinates);
+    model.data.locationName = name;
+    model.metadata.geocoded = geocoded;
     model.save();
   };
 

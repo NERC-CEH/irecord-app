@@ -1,6 +1,33 @@
 import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
-import { mothStageAttr, Survey } from 'Survey/common/config';
+import {
+  commentAttr,
+  identifiersAttr,
+  mothStageAttr,
+  Survey,
+  taxonAttr,
+} from 'Survey/common/config';
+import {
+  defaultSensitivityPrecisionAttr,
+  numberAttr,
+  numberPageAttr,
+  numberRangesAttr,
+  sexAttr,
+} from './common';
+
+const occAttrs = {
+  [taxonAttr.id]: taxonAttr,
+  [numberPageAttr.id]: { block: numberPageAttr },
+  [numberAttr.id]: { block: numberAttr },
+  [numberRangesAttr.id]: { block: numberRangesAttr },
+  [identifiersAttr.id]: { block: identifiersAttr },
+  [commentAttr.id]: { block: commentAttr },
+  [defaultSensitivityPrecisionAttr.id]: {
+    block: defaultSensitivityPrecisionAttr,
+  },
+  [mothStageAttr.id]: { block: mothStageAttr },
+  [sexAttr.id]: { block: sexAttr },
+};
 
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'moths',
@@ -8,14 +35,14 @@ const survey: Partial<Survey> & { taxa: string } = {
   taxaGroups: [groups.moth],
 
   occ: {
-    attrs: {
-      [mothStageAttr.id]: mothStageAttr,
-    },
+    render: [numberPageAttr, mothStageAttr, sexAttr, identifiersAttr],
+
+    attrs: occAttrs,
 
     verify: (attrs: any) =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
-        stage: string({ error: 'Stage is missing.' }).nullable(),
+        [mothStageAttr.id]: string({ error: 'Stage is missing.' }).nullable(),
       }).safeParse(attrs).error,
   },
 };

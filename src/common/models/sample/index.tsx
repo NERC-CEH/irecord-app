@@ -14,6 +14,7 @@ import {
 } from '@flumens';
 import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
+import { printLocation } from 'common/helpers/location';
 import appModel from 'models/app';
 import userModel from 'models/user';
 import defaultSurvey, {
@@ -47,6 +48,7 @@ type Data = SampleData & {
 };
 
 type Metadata = SampleMetadata & {
+  geocoded?: any;
   /**
    * Taxa group name e.g. 'birds'.
    */
@@ -155,7 +157,11 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
     return survey;
   }
 
-  setTaxon(newTaxon: Taxon, occurrenceId?: string) {
+  setTaxon(
+    newTaxon: Taxon,
+    occurrenceId?: string,
+    skipOldTaxonRemoval?: boolean
+  ) {
     if (this.samples.length)
       throw new Error('setTaxon must be used with subSamples only');
 
@@ -170,7 +176,8 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
       : this.occurrences[0];
 
     if (this.getSurvey().name === 'default') {
-      if (occ.data.taxon) this.removeOldTaxonAttributes(occ, newTaxon);
+      if (occ.data.taxon && !skipOldTaxonRemoval)
+        this.removeOldTaxonAttributes(occ, newTaxon.group);
 
       const survey = getTaxaGroupSurvey(newTaxon.group);
       this.metadata.taxa = survey?.taxa as any;
@@ -181,9 +188,9 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
     occ.updateMachineInvolvement(newTaxon);
   }
 
-  removeOldTaxonAttributes(occ: Occurrence, newTaxon: any) {
+  removeOldTaxonAttributes(occ: Occurrence, taxonGroup: number) {
     const survey = this.getSurvey();
-    const newSurvey = getTaxaGroupSurvey(newTaxon.group) || defaultSurvey;
+    const newSurvey = getTaxaGroupSurvey(taxonGroup) || defaultSurvey;
 
     if (survey.taxa === newSurvey.taxa) return;
 
@@ -218,7 +225,7 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
    */
   printLocation() {
     const location = this.data.location || {};
-    return appModel.printLocation(location);
+    return printLocation(location);
   }
 
   setGPSLocation = (location: Location) => {

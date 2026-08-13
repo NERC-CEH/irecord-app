@@ -14,13 +14,16 @@ const MenuDateAttr = ({
   icon = calendarOutline,
   ...props
 }: Props) => (
-  <IonItem className="w-full pe-ion-i-2!" lines="full">
+  <IonItem
+    className="w-full pe-ion-i-2! [--border-color:var(--color-neutral-200)]"
+    lines="full"
+  >
     <IonIcon src={icon} slot="start" />
     <IonLabel className="opacity-100!">
       <T>{label}</T>
     </IonLabel>
 
-    <DatetimeButton id={`${id}${label}`} {...props} />
+    <DatetimeButton id={`${id}${label}`} showPrettyDates {...props} />
   </IonItem>
 );
 

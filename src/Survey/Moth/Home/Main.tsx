@@ -10,22 +10,23 @@ import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
-import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
-import { commentAttr, dateAttr, methodAttr, recorderAttr } from '../config';
+import {
+  commentAttr,
+  dateAttr,
+  methodAttr,
+  mothStageAttr,
+  numberAttr,
+  recorderAttr,
+  sexAttr,
+} from '../config';
 
 type Props = {
   sample: Sample;
   attachSpeciesImages: any;
   onDelete: any;
-  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
 };
 
-const MothHomeMain = ({
-  sample,
-  onDelete,
-  attachSpeciesImages,
-  onBulkEdit,
-}: Props) => {
+const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
   const { url } = useRouteMatch();
   const { navigate } = useContext(NavContext);
   const promptImageSource = usePromptImageSource();
@@ -43,7 +44,7 @@ const MothHomeMain = ({
   const hasDate = !!sample.data.date;
 
   return (
-    <Main>
+    <Main className="pb-ion-s-10">
       <IonList lines="full">
         {isDisabled && (
           <div className="rounded-list mb-2">
@@ -53,16 +54,16 @@ const MothHomeMain = ({
 
         <div className="rounded-list">
           <MenuLocation sample={sample} />
-          <MenuAttr model={sample} attr={dateAttr} />
+          <MenuAttr model={sample} block={dateAttr} />
           {!hasDate && (
             <InfoMessage inline>
               If trapping overnight please enter the date for the evening on
               which the trap was put out.
             </InfoMessage>
           )}
-          <MenuAttr model={sample} attr={recorderAttr} />
-          <MenuAttr model={sample} attr={methodAttr} />
-          <MenuAttr model={sample} attr={commentAttr} />
+          <MenuAttr model={sample} block={recorderAttr} />
+          <MenuAttr model={sample} block={methodAttr} />
+          <MenuAttr model={sample} block={commentAttr} />
         </div>
       </IonList>
 
@@ -91,7 +92,12 @@ const MothHomeMain = ({
       <SpeciesList
         sample={sample}
         onDelete={onDelete}
-        onBulkEdit={onBulkEdit}
+        bulkEditAttrs={{
+          stage: mothStageAttr,
+          sex: sexAttr,
+          comment: commentAttr,
+        }}
+        numberAttrs={[numberAttr]}
       />
     </Main>
   );

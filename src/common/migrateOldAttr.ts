@@ -1,20 +1,19 @@
 /* eslint-disable no-param-reassign */
 import { BlockConf } from '@flumens/tailwind/dist/Survey';
-import { AttrConfig } from 'Survey/common/config';
 
 /**
  * migrates old attribute format to new block-based format
  */
 export default function migrateOldAttr(
   record: Record<string, any>,
-  oldName: string,
-  oldAttr: Pick<AttrConfig, 'remote'>,
+  oldAttr: { id: string; remote?: any },
   newAttr: Pick<BlockConf, 'id'>
 ) {
+  const oldName = oldAttr.id;
   const oldValue = record[oldName];
 
   // if no old attribute is set then return
-  if (oldValue === undefined) return;
+  if (oldValue === undefined || oldValue === null || oldValue === '') return;
 
   const newRecord: any = {};
 
@@ -46,7 +45,10 @@ export default function migrateOldAttr(
     });
   } else {
     // direct value migration
-    newRecord[newAttr.id] = oldValue;
+    newRecord[newAttr.id] =
+      typeof oldValue === 'object'
+        ? JSON.parse(JSON.stringify(oldValue))
+        : oldValue;
   }
 
   // clean up old attribute

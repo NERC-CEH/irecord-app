@@ -5,7 +5,7 @@ import { z, object, string, array, number } from 'zod';
 import { HandledError, isAxiosNetworkError } from '@flumens';
 import config from 'common/config';
 import commonNamesByWarehouseId from 'common/data/species_ids.data.json';
-import Media from 'common/models/media';
+import type Media from 'common/models/media';
 import userModel from 'models/user';
 
 const UKSI_LIST_ID = '15';

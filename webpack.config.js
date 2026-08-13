@@ -28,6 +28,9 @@ appConfig.plugins.unshift(
   new webpack.EnvironmentPlugin(development)
 );
 
+if (appConfig.watchOptions)
+  appConfig.watchOptions.ignored = /[\\/]node_modules[\\/]/; // fixes @flumens package watch issue
+
 // For capacitor sqlite
 appConfig.resolve.fallback = { crypto: false };
 appConfig.plugins.push(

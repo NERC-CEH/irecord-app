@@ -16,7 +16,7 @@ import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
-import { MachineInvolvement } from 'common/models/occurrence';
+import Occurrence, { MachineInvolvement } from 'common/models/occurrence';
 import Sample from 'common/models/sample';
 import appModel from 'models/app';
 import userModel from 'models/user';
@@ -28,53 +28,55 @@ import {
   dateAttr,
   taxonAttr,
   commentAttr,
-  mothStageAttr as mothStageAttrOld,
   locationAttrValidator,
 } from 'Survey/common/config';
 
 export { commentAttr, dateAttr, recorderAttr } from 'Survey/common/config';
 
-const sexOptions = [
-  { value: 'Male', id: 1947 },
-  { value: 'Female', id: 1948 },
-  { value: 'Mixed', id: 3482 },
-];
-
-const methodOptions = [
-  { label: 'Not Recorded', value: null, isDefault: true },
-  { value: 'MV light', id: 2196 },
-  { value: 'LED light', id: 17557 },
-  { value: 'Actinic light', id: 2197 },
-  { value: 'Light trapping', id: 2198 },
-  { value: 'Daytime observation', id: 2199 },
-  { value: 'Dusking', id: 2200 },
-  { value: 'Attracted to a lighted window', id: 2201 },
-  { value: 'Sugaring', id: 2202 },
-  { value: 'Wine roping', id: 2203 },
-  { value: 'Beating tray', id: 2204 },
-  { value: 'Pheromone trap', id: 2205 },
-  { value: 'Other method (add comment)', id: 2206 },
-];
-
-const choice = ({ value, id, label }: any) => ({
-  title: label || value,
-  dataName: id ? `${id}` : '',
-});
-
 /** @deprecated */
 export const methodAttrOld = {
   id: 'method',
-  remote: { id: 263, values: methodOptions },
+  remote: {
+    id: 263,
+    values: [
+      { label: 'Not Recorded', value: null, isDefault: true },
+      { value: 'MV light', id: 2196 },
+      { value: 'LED light', id: 17557 },
+      { value: 'Actinic light', id: 2197 },
+      { value: 'Light trapping', id: 2198 },
+      { value: 'Daytime observation', id: 2199 },
+      { value: 'Dusking', id: 2200 },
+      { value: 'Attracted to a lighted window', id: 2201 },
+      { value: 'Sugaring', id: 2202 },
+      { value: 'Wine roping', id: 2203 },
+      { value: 'Beating tray', id: 2204 },
+      { value: 'Pheromone trap', id: 2205 },
+      { value: 'Other method (add comment)', id: 2206 },
+    ],
+  },
 } as const;
 
 export const methodAttr = {
   id: 'smpAttr:263',
   title: 'Method',
+  prefix: <IonIcon src={numberIcon} className="size-6" />,
   type: 'choiceInput',
   appearance: 'button',
-  choices: methodOptions.map(choice),
-  description:
-    'Please enter your sampling method (i.e. type of trap or recording method).',
+  choices: [
+    { title: 'Not Recorded', dataName: '' },
+    { title: 'MV light', dataName: '2196' },
+    { title: 'LED light', dataName: '17557' },
+    { title: 'Actinic light', dataName: '2197' },
+    { title: 'Light trapping', dataName: '2198' },
+    { title: 'Daytime observation', dataName: '2199' },
+    { title: 'Dusking', dataName: '2200' },
+    { title: 'Attracted to a lighted window', dataName: '2201' },
+    { title: 'Sugaring', dataName: '2202' },
+    { title: 'Wine roping', dataName: '2203' },
+    { title: 'Beating tray', dataName: '2204' },
+    { title: 'Pheromone trap', dataName: '2205' },
+    { title: 'Other method (add comment)', dataName: '2206' },
+  ],
 } as const satisfies ChoiceInputConf;
 
 /** @deprecated */
@@ -97,7 +99,14 @@ export const numberAttr = {
 /** @deprecated */
 export const sexAttrOld = {
   id: 'sex',
-  remote: { id: 105, values: sexOptions },
+  remote: {
+    id: 105,
+    values: [
+      { value: 'Male', id: 1947 },
+      { value: 'Female', id: 1948 },
+      { value: 'Mixed', id: 3482 },
+    ],
+  },
 } as const;
 
 export const sexAttr = {
@@ -106,7 +115,11 @@ export const sexAttr = {
   prefix: <img src={genderIcon} alt="" className="size-6" />,
   type: 'choiceInput',
   appearance: 'button',
-  choices: sexOptions.map(choice),
+  choices: [
+    { title: 'Male', dataName: '1947' },
+    { title: 'Female', dataName: '1948' },
+    { title: 'Mixed', dataName: '3482' },
+  ],
 } as const satisfies ChoiceInputConf;
 
 export const mothStageAttr = {
@@ -115,7 +128,17 @@ export const mothStageAttr = {
   type: 'choiceInput',
   container: 'page',
   prefix: <img src={progressIcon} alt="" className="size-6" />,
-  choices: (mothStageAttrOld.remote.values as any[]).map(choice),
+  choices: [
+    { title: 'Not recorded', dataName: '10647' },
+    { title: 'Adult', dataName: '2189' },
+    { title: 'Larva', dataName: '2190' },
+    { title: 'Larval web', dataName: '2191' },
+    { title: 'Larval case', dataName: '2192' },
+    { title: 'Mine', dataName: '2193' },
+    { title: 'Egg', dataName: '2194' },
+    { title: 'Egg batch', dataName: '2195' },
+    { title: 'Pupa', dataName: '17556' },
+  ],
   validation: { required: true },
   description:
     'Please indicate the stage of the organism. If you are recording larvae, cases or leaf-mines please add the foodplant in to the comments field, as this is often needed to verify the records.',
@@ -138,10 +161,7 @@ const mothSensitivityPrecisionAttr = {
   title: 'Sensitive',
   type: 'yesNoInput',
   prefix: <IonIcon src={eyeOffOutline} className="size-6" />,
-  onChange: (_, __, { record }) => {
-    // eslint-disable-next-line no-param-reassign
-    record.sensitivityPrecision = record.sensitivityPrecision ? 1000 : '';
-  },
+  choices: [{ dataName: '' }, { dataName: '1000' }],
 } as const satisfies YesNoInputConf;
 
 const SURVEY_ID = 90;
@@ -150,7 +170,7 @@ const SURVEY_WEBFORM = 'enter-moth-sightings';
 const attrs = {
   [locationAttr.id]: locationAttr,
   [dateAttr.id]: { block: dateAttr },
-  [recorderAttr.id]: recorderAttr,
+  [recorderAttr.id]: { block: recorderAttr },
   [methodAttr.id]: { block: methodAttr },
   [commentAttr.id]: { block: commentAttr },
 };
@@ -198,7 +218,7 @@ const survey = {
         [mothStageAttr.id]: string({ error: 'Stage is missing.' }).nullable(),
       }).safeParse(values).error,
 
-    create({ Occurrence, taxon, images }) {
+    create({ taxon, images }) {
       const newOccurrence = new Occurrence({
         data: {
           machineInvolvement: MachineInvolvement.NONE,
@@ -208,25 +228,25 @@ const survey = {
       });
       if (images) newOccurrence.media.push(...images);
 
-      const locks = appModel.data.attrLocks.complex.moth || {};
-      appModel.appendAttrLocks(newOccurrence, locks);
+      const locks = appModel.locks.getAll('moth');
+      Object.assign(newOccurrence.data, locks.occ);
+
       return newOccurrence;
     },
   },
 
   verify: (values: any) =>
     object({
-      location: locationAttrValidator({
-        name: string({ error: 'Location name is missing' }).min(
-          1,
-          'Location name is missing'
-        ),
-      }),
+      location: locationAttrValidator(),
+      locationName: string({ error: 'Location name is missing' }).min(
+        1,
+        'Location name is missing'
+      ),
       date: string({ error: 'Date is missing.' }).nullable(),
       [methodAttr.id]: string({ error: 'Method is missing.' })
         .min(1, 'Method is missing.')
         .nullable(),
-      recorder: string({ error: 'Recorder field is missing.' })
+      [recorderAttr.id]: string({ error: 'Recorder field is missing.' })
         .min(1, 'Recorder field is missing.')
         .nullable(),
     }).safeParse(values).error,
@@ -245,9 +265,9 @@ const survey = {
         date: undefined, // user should specify the trap time
         enteredSrefSystem: 4326,
         location: {},
-        recorder,
       },
     });
+    sample.data[recorderAttr.id] = recorder;
 
     const ignoreErrors = () => {};
     sample.startGPS().catch(ignoreErrors);

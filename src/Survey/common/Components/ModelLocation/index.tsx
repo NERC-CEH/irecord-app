@@ -46,7 +46,7 @@ export const setModelLocation = async (
   if (!model.data.location) Object.assign(model.data, { location: {} });
 
   Object.assign(
-    model.data.location, // carry over name, geocoded etc
+    model.data.location,
     getEmptyLocation(), // overwrite core location values
     newLocation
   );
@@ -54,7 +54,10 @@ export const setModelLocation = async (
   model.save();
 
   if (!isValidLocation(newLocation)) return;
-  appModel.setLocation(model.data.location);
+  appModel.setLocation({
+    ...model.data.location,
+    name: model.data.locationName,
+  });
 };
 
 type Styles = 'satellite' | 'os' | 'os_explorer';
@@ -107,8 +110,9 @@ const ModelLocationMap = ({
   });
 
   const model = subSample! || sample!;
-  const { isDisabled } = model;
+
   const location = model.data.location || {};
+  const mapLocation = { ...location, geocoded: model.metadata.geocoded };
   const parentLocation = model.parent?.data.location;
 
   const onManuallyTypedLocationChange = (e: any) => {
@@ -124,8 +128,10 @@ const ModelLocationMap = ({
     setLocation(model, newLocation);
   };
 
-  const onLocationNameChange = ({ name, geocoded }: any) => {
-    model.data.location = { ...model.data.location, name, geocoded };
+  const onLocationNameChange = ({ name, geocoded: newGeocoded }: any) => {
+    model.metadata.geocoded = newGeocoded;
+    model.data.locationName = name;
+    model.save();
   };
 
   const [showSettings, setShowSettings] = useState(false);
@@ -178,7 +184,7 @@ const ModelLocationMap = ({
         {!skipLocationName && (
           <MapHeader.LocationName
             onChange={onLocationNameChange}
-            value={location.name}
+            value={model.data.locationName}
             icon={locationNameIcon}
             placeholder="Site name eg nearby village"
             suggestions={appModel.data.locations || []}
@@ -195,10 +201,10 @@ const ModelLocationMap = ({
       <Main>
         {isMapboxMap && (
           <MapboxMap
-            location={location}
+            location={mapLocation}
             parentLocation={parentLocation}
             childLocations={childLocations}
-            isDisabled={isDisabled}
+            isDisabled={model.isDisabled}
             onMapClick={onMapClick}
             onGPSClick={onGPSClick}
             currentStyle={currentStyle}
@@ -211,7 +217,7 @@ const ModelLocationMap = ({
         {!isMapboxMap && (
           <LeafletMap
             model={model}
-            location={location}
+            location={mapLocation}
             childLocations={childLocations}
             setLocation={setLocation}
             onGPSClick={onGPSClick}

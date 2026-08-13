@@ -34,7 +34,7 @@ const Taxon = () => {
   return (
     <Page id="taxon">
       <Header title="Species" rightSlot={<TaxonSearchFilters />} />
-      <Main>
+      <Main className="pb-ion-s-10">
         <TaxonSearch
           onSpeciesSelected={onSpeciesSelected}
           namesFilter={searchNamesOnly}

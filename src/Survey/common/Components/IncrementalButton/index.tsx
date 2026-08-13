@@ -1,5 +1,5 @@
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import { Button } from '@flumens';
+import { Button, limit } from '@flumens';
 import { isPlatform } from '@ionic/react';
 import AnimatedNumber from './AnimatedNumber';
 
@@ -43,7 +43,7 @@ const IncrementalButton = ({
   if (isNumber) {
     valueItem = <AnimatedNumber value={value} />;
   } else if (value) {
-    valueItem = <span className="empty">{value}</span>;
+    valueItem = <span className="empty">{limit(`${value}`, 5)}</span>;
   } else {
     valueItem = <span className="empty">N/A</span>;
   }

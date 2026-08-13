@@ -3,12 +3,16 @@ import { observer } from 'mobx-react';
 import { filterOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { InfoBackgroundMessage, useToast } from '@flumens';
+import type {
+  ChoiceInputConf,
+  NumberInputConf,
+  TextInputConf,
+} from '@flumens/tailwind/dist/Survey';
 import { IonList, IonIcon } from '@ionic/react';
 import appModel from 'models/app';
 import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
-import { numberAttr as mothNumberAttr } from 'Survey/Moth/config';
-import BulkEdit, { Action } from './BulkEdit';
+import BulkEdit, { BulkEditAttrs, OnBulkEdit } from './BulkEdit';
 import SpeciesListItem from './SpeciesListItem';
 
 const speciesNameSort = (occ1: Occurrence, occ2: Occurrence) =>
@@ -26,29 +30,13 @@ const speciesOccAddedTimeSort = (
   return date2.getTime() - date1.getTime();
 };
 
-function increaseCount(occ: Occurrence, is5x: boolean) {
-  const data = occ.data as any;
-  const attr = Number.isFinite(data[mothNumberAttr.id])
-    ? mothNumberAttr.id
-    : 'number';
-  if (Number.isNaN(data[attr])) return;
-
-  const addOneCount = () => data[attr]++;
-
-  if (is5x) {
-    [...Array(5)].forEach(addOneCount);
-  } else {
-    addOneCount();
-  }
-
-  occ.save();
-}
-
 type Props = {
   sample: Sample;
   onDelete: any;
-  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
+  onBulkEdit?: OnBulkEdit;
+  bulkEditAttrs?: BulkEditAttrs;
   useSubSamples?: boolean;
+  numberAttrs?: (ChoiceInputConf | NumberInputConf | TextInputConf)[];
 };
 
 const SpeciesList = ({
@@ -56,6 +44,8 @@ const SpeciesList = ({
   sample,
   useSubSamples,
   onBulkEdit,
+  bulkEditAttrs = {},
+  numberAttrs,
 }: Props) => {
   const [isBulkEditing, setIsBulkEditing] = useState(false);
   const toast = useToast();
@@ -86,6 +76,18 @@ const SpeciesList = ({
     });
   };
 
+  function increaseCount(occ: Occurrence, is5x: boolean) {
+    const numberAttr = numberAttrs?.[0];
+    if (!numberAttr) return;
+
+    const data = occ.data as any;
+    const currentValue = Number(data[numberAttr.id]);
+    if (!Number.isFinite(currentValue)) return;
+
+    data[numberAttr.id] = currentValue + (is5x ? 5 : 1);
+    occ.save();
+  }
+
   const speciesList = [...models]
     .sort(sort as any)
     .map(model => (
@@ -96,17 +98,18 @@ const SpeciesList = ({
         onDelete={() => onDelete(model)}
         useSubSamples={useSubSamples}
         isBulkEditing={isBulkEditing}
+        numberAttrs={numberAttrs}
       />
     ));
-
-  const onBulkEditWrap = sample.isDisabled ? undefined : onBulkEdit;
 
   return (
     <div className="w-full">
       <BulkEdit
-        onBulkEdit={onBulkEditWrap}
+        attrs={bulkEditAttrs}
+        onBulkEdit={onBulkEdit}
         onEditChange={setIsBulkEditing}
         models={models}
+        isDisabled={sample.isDisabled}
       >
         <IonList id="list" lines="full" className="w-full">
           <div className="rounded-list">

@@ -38,7 +38,7 @@ const getBlockConfig = (attrProps?: AttrProps) => {
 };
 
 type Props = {
-  config?: AttrProps;
+  config?: AttrProps & { title?: string };
   onSave: (newValue?: any) => void;
 };
 
@@ -76,7 +76,7 @@ const EditModal = ({ config, onSave }: Props) => {
             </IonButton>
           </IonButtons>
           <IonTitle class="capitalize">
-            <T>{config?.attr}</T>
+            <T>{config?.title || config?.attr}</T>
           </IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={save}>

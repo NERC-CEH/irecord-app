@@ -3,9 +3,8 @@ import { locationOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { useRouteMatch } from 'react-router';
 import { IonItem, IonIcon, IonLabel } from '@ionic/react';
-import { Badge } from 'common/flumens';
+import { Badge, limit } from 'common/flumens';
 import Sample from 'models/sample';
-import StringHelp from 'helpers/string';
 import GridRefValue from './GridRefValue';
 import Lock from './Lock';
 
@@ -28,10 +27,9 @@ const MenuLocation = ({
 }: Props) => {
   const { url } = useRouteMatch();
 
-  const { location } = sample.data;
+  const { location, locationName } = sample.data;
 
   const hasLocation = location?.latitude;
-  const locationName = location?.name;
 
   const locationItem = hasLocation ? (
     <div className="location-value">
@@ -48,9 +46,7 @@ const MenuLocation = ({
   ) : undefined;
 
   const locationNameItem = locationName ? (
-    <div className="location-name-value">
-      {StringHelp.limit(locationName, 25)}
-    </div>
+    <div className="location-name-value">{limit(locationName, 25)}</div>
   ) : (
     noLocationNameBadge
   );

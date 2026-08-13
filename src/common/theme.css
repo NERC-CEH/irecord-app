@@ -275,7 +275,8 @@ ion-header ion-toolbar ion-back-button {
 }
 
 /* fix block label weight */
-.menu-attr-item .choice-input-block .field-label + span {
+.page-link-block .field-label,
+button.choice-input-block .field-label + span {
   font-weight: 500;
 }
 
@@ -289,6 +290,7 @@ ion-header ion-toolbar ion-back-button {
 }
 
 /* Fix locked page link color */
+.menu-attr-item-lock.locked textarea,
 .menu-attr-item-lock.locked .page-link-block .link-value {
   color: var(--attr-lock-color);
 }

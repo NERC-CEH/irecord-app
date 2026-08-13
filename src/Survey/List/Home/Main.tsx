@@ -5,12 +5,14 @@ import { useRouteMatch } from 'react-router';
 import { Button, InfoMessage, Main } from '@flumens';
 import { IonIcon, IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
+import { butterflyNumberRangesAttr } from 'Survey/Default/config/butterflies';
+import { numberAttr, numberRangesAttr } from 'Survey/Default/config/common';
+import { plantFungiNumberDAFORAttr } from 'Survey/Default/config/plantFungi';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
-import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
 import {
   childGeolocationAttr,
   commentAttr,
@@ -19,12 +21,40 @@ import {
 } from 'Survey/common/config';
 import { groupIdAttr } from '../config';
 
+const getActionConfig = (attrs: any, action: string) => {
+  if (action in attrs) return attrs[action];
+
+  return Object.values(attrs).find(
+    (config: any) => config?.block?.title?.toLowerCase() === action
+  );
+};
+
+type BulkEditModel = {
+  getSurvey: () => { taxa?: string; occ?: { attrs?: any } };
+};
+
+export const getBulkEditAttrs = (models: BulkEditModel[]) => {
+  const surveys = models.map(model => model.getSurvey());
+  const [survey] = surveys;
+  if (!survey || surveys.some(config => config.taxa !== survey.taxa))
+    return { comment: commentAttr };
+
+  const attrs = survey.occ?.attrs || {};
+  const stage = getActionConfig(attrs, 'stage');
+  const sex = getActionConfig(attrs, 'sex');
+
+  return {
+    ...(stage && { stage }),
+    ...(sex && { sex }),
+    comment: commentAttr,
+  };
+};
+
 type Props = {
   sample: Sample;
   onDelete: any;
   attachSpeciesImages: any;
   showChildSampleDistanceWarning: boolean;
-  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
 };
 
 const HomeMain = ({
@@ -32,7 +62,6 @@ const HomeMain = ({
   onDelete,
   showChildSampleDistanceWarning,
   attachSpeciesImages,
-  onBulkEdit,
 }: Props) => {
   const { url } = useRouteMatch();
   const { navigate } = useContext(NavContext);
@@ -51,7 +80,7 @@ const HomeMain = ({
   };
 
   return (
-    <Main>
+    <Main className="pb-ion-s-10">
       <IonList lines="full" className="mb-2 flex! flex-col gap-4">
         {isDisabled && (
           <div className="rounded-list mb-2">
@@ -62,7 +91,12 @@ const HomeMain = ({
         {/* Only showing if pre-selected */}
         {groupId && (
           <div className="rounded-list">
-            <MenuAttr.WithLock model={sample} attr={groupIdAttr} />
+            <MenuAttr.WithLock
+              model={sample}
+              block={groupIdAttr}
+              survey={sample.getSurvey().name}
+              taxa="all"
+            />
           </div>
         )}
 
@@ -75,10 +109,10 @@ const HomeMain = ({
           )}
 
           <MenuLocation sample={sample} />
-          <MenuAttr model={sample} attr={childGeolocationAttr} />
-          <MenuAttr model={sample} attr={dateAttr} />
-          <MenuAttr model={sample} attr={recorderAttr} />
-          <MenuAttr model={sample} attr={commentAttr} />
+          <MenuAttr model={sample} block={childGeolocationAttr} />
+          <MenuAttr model={sample} block={dateAttr} />
+          <MenuAttr model={sample} block={recorderAttr} />
+          <MenuAttr model={sample} block={commentAttr} />
         </div>
       </IonList>
 
@@ -107,8 +141,14 @@ const HomeMain = ({
       <SpeciesList
         sample={sample}
         onDelete={onDelete}
-        onBulkEdit={onBulkEdit}
+        bulkEditAttrs={getBulkEditAttrs}
         useSubSamples
+        numberAttrs={[
+          numberAttr,
+          numberRangesAttr,
+          butterflyNumberRangesAttr,
+          plantFungiNumberDAFORAttr,
+        ]}
       />
     </Main>
   );

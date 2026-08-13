@@ -10,8 +10,9 @@ import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
-import { Action } from 'Survey/common/Components/SpeciesList/BulkEdit';
+import { plantStageAttr } from 'Survey/common/config';
 import {
+  abundanceAttr,
   childGeolocationAttr,
   commentAttr,
   dateAttr,
@@ -24,7 +25,6 @@ type Props = {
   onDelete: any;
   attachSpeciesImages: any;
   showChildSampleDistanceWarning: boolean;
-  onBulkEdit?: (action: Action, modelIds: string[], value?: any) => void;
 };
 
 const PlantHomeMain = ({
@@ -32,7 +32,6 @@ const PlantHomeMain = ({
   onDelete,
   showChildSampleDistanceWarning,
   attachSpeciesImages,
-  onBulkEdit,
 }: Props) => {
   const toast = useToast();
   const { url } = useRouteMatch();
@@ -50,7 +49,7 @@ const PlantHomeMain = ({
   };
 
   return (
-    <Main>
+    <Main className="pb-ion-s-10">
       <IonList lines="full">
         {isDisabled && (
           <div className="rounded-list mb-2">
@@ -68,30 +67,19 @@ const PlantHomeMain = ({
           <MenuLocation sample={sample} label="Square" />
           <MenuAttr
             model={sample}
-            attr={childGeolocationAttr}
-            className="menu-attr-item"
+            block={childGeolocationAttr}
             onChange={(val: boolean) => {
-              if (!val || sample?.data?.location?.gridref) return;
-              sample.data.childGeolocation = false; // eslint-disable-line no-param-reassign
+              sample.data[childGeolocationAttr.id] = val; // eslint-disable-line no-param-reassign
+              if (!val || sample.data.location?.gridref) return;
+
+              sample.data[childGeolocationAttr.id] = false; // eslint-disable-line no-param-reassign
               toast.warn('Parent location must be selected first.');
             }}
           />
-          <MenuAttr
-            model={sample}
-            attr={viceCountyAttr}
-            className="menu-attr-item"
-          />
-          <MenuAttr model={sample} attr={dateAttr} className="menu-attr-item" />
-          <MenuAttr
-            model={sample}
-            attr={recordersAttr}
-            className="menu-attr-item"
-          />
-          <MenuAttr
-            model={sample}
-            attr={commentAttr}
-            className="menu-attr-item"
-          />
+          <MenuAttr model={sample} block={viceCountyAttr} />
+          <MenuAttr model={sample} block={dateAttr} />
+          <MenuAttr model={sample} block={recordersAttr} />
+          <MenuAttr model={sample} block={commentAttr} />
         </div>
       </IonList>
 
@@ -121,7 +109,8 @@ const PlantHomeMain = ({
         sample={sample}
         onDelete={onDelete}
         useSubSamples
-        onBulkEdit={onBulkEdit}
+        bulkEditAttrs={{ stage: plantStageAttr, comment: commentAttr }}
+        numberAttrs={[abundanceAttr]}
       />
     </Main>
   );

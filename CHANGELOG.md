@@ -1,6 +1,10 @@
 ## 6.5.0
 
-Changed recorder name formatting.
+- Updated survey forms and taxon-specific attribute controls.
+- Improved bulk editing with the correct stage and sex options for each species group.
+- Improved attribute and location locking across surveys and species groups.
+- Fixed Plant Survey geolocation being enabled without a parent location.
+- Changed recorder name formatting.
 
 ## 6.4.0
 

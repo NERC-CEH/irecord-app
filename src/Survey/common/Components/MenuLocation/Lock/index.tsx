@@ -22,24 +22,36 @@ import MenuLocation from '..';
 import './styles.scss';
 
 export type Props = {
+  survey: string;
+  taxa?: string;
   sample: Sample;
-  skipLocks?: boolean;
   label?: string;
 };
 
-const Lock = ({ sample, skipLocks, label }: Props) => {
+const Lock = ({ survey, taxa, sample, label }: Props) => {
   const sliderRef = useRef<any>(null);
   const toast = useToast();
   const alert = useAlert();
 
-  const isLocationLocked = appModel.isAttrLocked(sample, 'location');
-  const isLocationNameLocked = appModel.isAttrLocked(sample, 'locationName');
+  const { location, locationName } = sample.data;
+  const isLocationLocked = appModel.locks.isLocked(
+    survey,
+    taxa,
+    'smp',
+    'location',
+    location
+  );
+  const isLocationNameLocked = appModel.locks.isLocked(
+    survey,
+    taxa,
+    'smp',
+    'locationName',
+    locationName
+  );
   const isAnyLocked = isLocationLocked || isLocationNameLocked;
-
-  const { location } = sample.data;
   // don't lock GPS because it varies more than a map or gridref
   const canLockLocation = !!location?.latitude;
-  const canLockName = !!location?.name;
+  const canLockName = !!locationName;
   const gpsLocationSource = location?.source === 'gps';
 
   const toggleLocationLockWrap = () => {
@@ -57,18 +69,14 @@ const Lock = ({ sample, skipLocks, label }: Props) => {
 
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
-    const isLocked = appModel.getAttrLock(sample, 'location');
-    if (isLocked) {
-      appModel.unsetAttrLock(sample, 'location');
+    if (isLocationLocked) {
+      appModel.locks.unset(survey, taxa, 'smp', 'location');
       return;
     }
 
     if (!canLockLocation) return;
 
     const clonedLocation = JSON.parse(JSON.stringify(location));
-
-    // remove location name as it is locked separately
-    delete clonedLocation.name;
 
     toast.success(
       'The attribute value was locked and will be pre-filled for subsequent records.',
@@ -78,7 +86,7 @@ const Lock = ({ sample, skipLocks, label }: Props) => {
       }
     );
 
-    appModel.setAttrLock(sample, 'location', clonedLocation);
+    appModel.locks.set(survey, taxa, 'smp', 'location', clonedLocation);
   };
 
   const toggleNameLockWrap = () => {
@@ -87,11 +95,11 @@ const Lock = ({ sample, skipLocks, label }: Props) => {
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
     if (isLocationNameLocked) {
-      appModel.unsetAttrLock(sample, 'locationName');
+      appModel.locks.unset(survey, taxa, 'smp', 'locationName');
       return;
     }
 
-    const name = sample.data.location?.name;
+    const { locationName: name } = sample.data;
     if (!name) return;
 
     toast.success(
@@ -102,12 +110,12 @@ const Lock = ({ sample, skipLocks, label }: Props) => {
       }
     );
 
-    appModel.setAttrLock(sample, 'locationName', name);
+    appModel.locks.set(survey, taxa, 'smp', 'locationName', name);
   };
 
   const { isDisabled } = sample;
 
-  const allowLocking = !skipLocks && (canLockName || canLockLocation);
+  const allowLocking = canLockName || canLockLocation;
 
   const locationColor = gpsLocationSource ? 'medium' : 'secondary';
 

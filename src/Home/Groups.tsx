@@ -13,7 +13,7 @@ const GroupsController = () => {
         { color: 'secondary' }
       );
 
-    appModel.setAttrLock('smp', 'groupId', groupId);
+    appModel.locks.set('default', 'all', 'smp', 'groupId', groupId);
   };
 
   return (
