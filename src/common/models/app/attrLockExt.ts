@@ -77,6 +77,7 @@ export default (getLocks: () => Record<string, any>, save: () => void) => {
   ) {
     const lockedValue = get(survey, taxon, model, attr);
     if (arguments.length < 5) return lockedValue !== undefined;
+    if (value === undefined) return false; // if provided a value but undefined, then we say it is not locked
 
     return JSON.stringify(lockedValue) === JSON.stringify(value);
   }

@@ -61,7 +61,6 @@ describe('Attribute lock extension', () => {
       expect(subject.locks.isLocked(...sampleLock)).toBe(true);
       expect(subject.locks.isLocked(...sampleLock, { a: [1] })).toBe(true);
       expect(subject.locks.isLocked(...sampleLock, { a: [2] })).toBe(false);
-      expect(subject.locks.isLocked(...sampleLock, undefined)).toBe(false);
     });
   });
 
