@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { Migration, SampleCollection } from '@flumens';
+import { migrateOldAttr, Migration, SampleCollection } from '@flumens';
 import MigrationsManager from '@flumens/utils/dist/MigrationManager';
 import {
   arthropodStageAttr,
@@ -114,7 +114,6 @@ import {
 } from 'Survey/common/config';
 import config from './config';
 import VCs from './data/vice_counties.data.json';
-import migrateOldAttr from './migrateOldAttr';
 import Occurrence from './models/occurrence';
 import Sample from './models/sample';
 import { db, samplesStore } from './models/store';
@@ -152,118 +151,118 @@ export const migrateLocationTree = (sample: any) => {
   sample.samples.forEach(migrateLocationTree);
 };
 
-const migrateDefaultNumberAttrs = (record: any) => {
-  migrateOldAttr(record, defaultNumberAttrOld, defaultNumberAttr);
-  migrateOldAttr(record, defaultNumberRangesAttrOld, defaultNumberRangesAttr);
+const migrateDefaultNumberAttrs = (occ: Occurrence) => {
+  migrateOldAttr(occ, defaultNumberAttrOld, defaultNumberAttr);
+  migrateOldAttr(occ, defaultNumberRangesAttrOld, defaultNumberRangesAttr);
 };
 
-const migrateCommonDefaultOccAttrs = (record: any) => {
-  migrateOldAttr(record, defaultSexAttrOld, defaultSexAttr);
-  migrateOldAttr(record, identifiersAttrOld, identifiersAttr);
+const migrateCommonDefaultOccAttrs = (occ: Occurrence) => {
+  migrateOldAttr(occ, defaultSexAttrOld, defaultSexAttr);
+  migrateOldAttr(occ, identifiersAttrOld, identifiersAttr);
 };
 
-const migrateDefaultSampleAttrs = (record: any, taxa?: string) => {
+const migrateDefaultSampleAttrs = (sample: Sample, taxa?: string) => {
   if (taxa === 'bryophytes') {
-    migrateOldAttr(record, habitatAttrOld, habitatAttr);
+    migrateOldAttr(sample, habitatAttrOld, habitatAttr);
   }
 
   if (taxa === 'dragonflies') {
-    migrateOldAttr(record, siteAttrOld, siteAttr);
+    migrateOldAttr(sample, siteAttrOld, siteAttr);
   }
 };
 
-const migrateDefaultOccAttrs = (record: any, taxa?: string) => {
-  migrateCommonDefaultOccAttrs(record);
+const migrateDefaultOccAttrs = (occ: Occurrence, taxa?: string) => {
+  migrateCommonDefaultOccAttrs(occ);
 
   if (taxa === 'arthropods') {
-    migrateDefaultNumberAttrs(record);
-    migrateOldAttr(record, arthropodStageAttrOld, arthropodStageAttr);
+    migrateDefaultNumberAttrs(occ);
+    migrateOldAttr(occ, arthropodStageAttrOld, arthropodStageAttr);
     return;
   }
 
   if (taxa === 'birds') {
-    migrateDefaultNumberAttrs(record);
-    migrateOldAttr(record, birdStageAttrOld, birdStageAttr);
-    migrateOldAttr(record, breedingAttrOld, breedingAttr);
+    migrateDefaultNumberAttrs(occ);
+    migrateOldAttr(occ, birdStageAttrOld, birdStageAttr);
+    migrateOldAttr(occ, breedingAttrOld, breedingAttr);
     return;
   }
 
   if (taxa === 'bryophytes') {
     migrateOldAttr(
-      record,
+      occ,
       microscopicallyCheckedAttrOld,
       microscopicallyCheckedAttr
     );
-    migrateOldAttr(record, fruitAttrOld, fruitAttr);
-    migrateOldAttr(record, maleAttrOld, maleAttr);
-    migrateOldAttr(record, femaleAttrOld, femaleAttr);
-    migrateOldAttr(record, bulbilsAttrOld, bulbilsAttr);
-    migrateOldAttr(record, gemmaeAttrOld, gemmaeAttr);
-    migrateOldAttr(record, tubersAttrOld, tubersAttr);
-    deleteOldAttrs(record, ['stage', 'sex']);
+    migrateOldAttr(occ, fruitAttrOld, fruitAttr);
+    migrateOldAttr(occ, maleAttrOld, maleAttr);
+    migrateOldAttr(occ, femaleAttrOld, femaleAttr);
+    migrateOldAttr(occ, bulbilsAttrOld, bulbilsAttr);
+    migrateOldAttr(occ, gemmaeAttrOld, gemmaeAttr);
+    migrateOldAttr(occ, tubersAttrOld, tubersAttr);
+    deleteOldAttrs(occ.data, ['stage', 'sex']);
     return;
   }
 
   if (taxa === 'butterflies') {
-    migrateOldAttr(record, butterflyNumberAttrOld, butterflyNumberAttr);
+    migrateOldAttr(occ, butterflyNumberAttrOld, butterflyNumberAttr);
     migrateOldAttr(
-      record,
+      occ,
       butterflyNumberRangesAttrOld,
       butterflyNumberRangesAttr
     );
-    migrateOldAttr(record, butterflyStageAttrOld, butterflyStageAttr);
-    migrateOldAttr(record, butterflySexAttrOld, butterflySexAttr);
+    migrateOldAttr(occ, butterflyStageAttrOld, butterflyStageAttr);
+    migrateOldAttr(occ, butterflySexAttrOld, butterflySexAttr);
     return;
   }
 
   if (taxa === 'dragonflies') {
-    migrateOldAttr(record, adCountAttrOld, adCountAttr);
-    migrateOldAttr(record, coCountAttrOld, coCountAttr);
-    migrateOldAttr(record, ovCountAttrOld, ovCountAttr);
-    migrateOldAttr(record, scCountAttrOld, scCountAttr);
-    migrateOldAttr(record, laCountAttrOld, laCountAttr);
-    migrateOldAttr(record, exCountAttrOld, exCountAttr);
-    migrateOldAttr(record, emCountAttrOld, emCountAttr);
-    deleteOldAttrs(record, ['stage', 'sex']);
+    migrateOldAttr(occ, adCountAttrOld, adCountAttr);
+    migrateOldAttr(occ, coCountAttrOld, coCountAttr);
+    migrateOldAttr(occ, ovCountAttrOld, ovCountAttr);
+    migrateOldAttr(occ, scCountAttrOld, scCountAttr);
+    migrateOldAttr(occ, laCountAttrOld, laCountAttr);
+    migrateOldAttr(occ, exCountAttrOld, exCountAttr);
+    migrateOldAttr(occ, emCountAttrOld, emCountAttr);
+    deleteOldAttrs(occ.data, ['stage', 'sex']);
     return;
   }
 
   if (taxa === 'mammals') {
-    migrateDefaultNumberAttrs(record);
-    migrateOldAttr(record, mammalStageAttrOld, mammalStageAttr);
+    migrateDefaultNumberAttrs(occ);
+    migrateOldAttr(occ, mammalStageAttrOld, mammalStageAttr);
     return;
   }
 
   if (taxa === 'moths') {
-    migrateDefaultNumberAttrs(record);
-    migrateOldAttr(record, mothStageAttrOld, defaultMothStageAttr);
+    migrateDefaultNumberAttrs(occ);
+    migrateOldAttr(occ, mothStageAttrOld, defaultMothStageAttr);
     return;
   }
 
   if (taxa === 'plants-fungi') {
-    migrateOldAttr(record, plantFungiNumberAttrOld, plantFungiNumberAttr);
+    migrateOldAttr(occ, plantFungiNumberAttrOld, plantFungiNumberAttr);
     migrateOldAttr(
-      record,
+      occ,
       plantFungiNumberDAFORAttrOld,
       plantFungiNumberDAFORAttr
     );
     migrateOldAttr(
-      record,
+      occ,
       plantFungiNumberRangesAttrOld,
       plantFungiNumberRangesAttr
     );
-    migrateOldAttr(record, plantStageAttrOld, plantStageAttr);
+    migrateOldAttr(occ, plantStageAttrOld, plantStageAttr);
     return;
   }
 
   if (taxa === 'reptiles') {
-    migrateDefaultNumberAttrs(record);
-    migrateOldAttr(record, reptileStageAttrOld, reptileStageAttr);
+    migrateDefaultNumberAttrs(occ);
+    migrateOldAttr(occ, reptileStageAttrOld, reptileStageAttr);
     return;
   }
 
-  migrateDefaultNumberAttrs(record);
-  migrateOldAttr(record, defaultStageAttrOld, defaultStageAttr);
+  migrateDefaultNumberAttrs(occ);
+  migrateOldAttr(occ, defaultStageAttrOld, defaultStageAttr);
 };
 
 // Run first migration
@@ -298,7 +297,7 @@ const migrations: Migration[] = [
     up: async () => {
       console.log('🔵 Starting migration to new attribute schema');
 
-      const samples = new SampleCollection({
+      const samples = new SampleCollection<Sample>({
         store: samplesStore,
         Model: Sample,
         Occurrence,
@@ -315,7 +314,7 @@ const migrations: Migration[] = [
         migrateLocationTree(sample);
 
         if (isDefaultSurvey || isListSurvey || isMothSurvey)
-          migrateOldAttr(sample.data, recorderAttrOld, recorderAttr);
+          migrateOldAttr(sample, recorderAttrOld, recorderAttr);
 
         if (isPlantSurvey) {
           console.log('🔵 Migrating sample', sample.cid);
@@ -346,12 +345,8 @@ const migrations: Migration[] = [
 
           for (const subSample of sample.samples) {
             for (const occurrence of subSample.occurrences) {
-              migrateOldAttr(
-                occurrence.data,
-                plantStageAttrOld,
-                plantStageAttr
-              );
-              migrateOldAttr(occurrence.data, statusAttrOld, statusAttr);
+              migrateOldAttr(occurrence, plantStageAttrOld, plantStageAttr);
+              migrateOldAttr(occurrence, statusAttrOld, statusAttr);
 
               const occData = occurrence.data as any;
               if (occData.abundance !== undefined && occData.abundance !== '') {
@@ -377,17 +372,13 @@ const migrations: Migration[] = [
         if (isMothSurvey) {
           console.log('🔵 Migrating sample', sample.cid);
 
-          migrateOldAttr(sample.data, methodAttrOld, methodAttr);
+          migrateOldAttr(sample, methodAttrOld, methodAttr);
 
-          for (const occurrence of sample.occurrences) {
-            migrateOldAttr(occurrence.data, numberAttrOld, numberAttr);
-            migrateOldAttr(occurrence.data, mothStageAttrOld, mothStageAttr);
-            migrateOldAttr(occurrence.data, sexAttrOld, sexAttr);
-            migrateOldAttr(
-              occurrence.data,
-              identifiersAttrOld,
-              mothIdentifiersAttr
-            );
+          for (const occ of sample.occurrences) {
+            migrateOldAttr(occ, numberAttrOld, numberAttr);
+            migrateOldAttr(occ, mothStageAttrOld, mothStageAttr);
+            migrateOldAttr(occ, sexAttrOld, sexAttr);
+            migrateOldAttr(occ, identifiersAttrOld, mothIdentifiersAttr);
           }
 
           // eslint-disable-next-line no-await-in-loop
@@ -398,9 +389,9 @@ const migrations: Migration[] = [
           console.log('🔵 Migrating sample', sample.cid);
 
           const { taxa } = sample.metadata as any;
-          migrateDefaultSampleAttrs(sample.data, taxa);
-          for (const occurrence of sample.occurrences) {
-            migrateDefaultOccAttrs(occurrence.data, taxa);
+          migrateDefaultSampleAttrs(sample, taxa);
+          for (const occ of sample.occurrences) {
+            migrateDefaultOccAttrs(occ, taxa);
           }
 
           // eslint-disable-next-line no-await-in-loop
@@ -412,9 +403,9 @@ const migrations: Migration[] = [
 
           for (const subSample of sample.samples) {
             const { taxa } = subSample.metadata as any;
-            migrateDefaultSampleAttrs(subSample.data, taxa);
-            for (const occurrence of subSample.occurrences) {
-              migrateDefaultOccAttrs(occurrence.data, taxa);
+            migrateDefaultSampleAttrs(subSample, taxa);
+            for (const occ of subSample.occurrences) {
+              migrateDefaultOccAttrs(occ, taxa);
             }
           }
 

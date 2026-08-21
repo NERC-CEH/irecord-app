@@ -66,6 +66,7 @@ export { default as ImageCropper } from '@flumens/ionic/dist/components/ImageCro
 export { default as ModelValidationMessage } from '@flumens/ionic/dist/components/ModelValidationMessage';
 export * from '@flumens/models/dist/Indicia/helpers';
 export { default as SampleCollection } from '@flumens/models/dist/Indicia/SampleCollection';
+export { migrateOldAttr } from '@flumens/models/dist/Indicia/helpers';
 export {
   default as GroupCollection,
   byGroupMembershipStatus,
