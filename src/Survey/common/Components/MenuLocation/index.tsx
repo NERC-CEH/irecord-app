@@ -64,7 +64,7 @@ const MenuLocation = ({
         <T>{label}</T>
       </IonLabel>
 
-      <div slot="end" className="flex flex-col items-end gap-1 py-2">
+      <div className="flex flex-col items-end gap-1 py-2 text-nowrap text-(--form-value-color)">
         {locationItem}
         {!skipName && locationNameItem}
       </div>

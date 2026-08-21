@@ -39,7 +39,7 @@ const MenuTaxonItem = ({ occ }: Props) => {
     >
       <div
         slot="end"
-        className="flex w-full !max-w-none flex-col items-end py-2"
+        className="flex w-full max-w-none! flex-col items-end py-2 text-(--form-value-color)"
       >
         {empty && <Badge color="warning">Species missing</Badge>}
         {commonName && <div className="long">{commonName}</div>}
