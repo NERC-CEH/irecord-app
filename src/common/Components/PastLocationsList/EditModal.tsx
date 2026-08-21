@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import { createRef, useEffect } from 'react';
 import { Trans as T, useTranslation } from 'react-i18next';
 import { Main, useOnHideModal } from '@flumens';
 import {
@@ -10,9 +10,9 @@ import {
   IonHeader,
   IonTitle,
   IonButton,
-  IonModal,
   IonToggle,
   IonInput,
+  useIonModal,
 } from '@ionic/react';
 
 type Location = any;
@@ -28,12 +28,19 @@ const EditModal = ({ location, onLocationSave }: Props) => {
 
   const toggleRef = createRef<any>();
 
-  const closeModal = () => onLocationSave();
+  const closeModal = () => {
+    onLocationSave();
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    dismissModal();
+  };
 
-  useOnHideModal(onLocationSave);
+  useOnHideModal(closeModal);
 
-  const save = () =>
+  const save = () => {
     onLocationSave(inputRef.current.value, toggleRef.current.checked);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    dismissModal();
+  };
 
   const { name, favourite } = location || {};
 
@@ -63,8 +70,8 @@ const EditModal = ({ location, onLocationSave }: Props) => {
     </IonList>
   );
 
-  return (
-    <IonModal isOpen={!!location}>
+  const [presentModal, dismissModal] = useIonModal(
+    <>
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
@@ -81,8 +88,14 @@ const EditModal = ({ location, onLocationSave }: Props) => {
         </IonToolbar>
       </IonHeader>
       <Main fullscreen>{form}</Main>
-    </IonModal>
+    </>
   );
+
+  useEffect(() => {
+    if (location) presentModal();
+  }, [location]);
+
+  return null;
 };
 
 export default EditModal;
