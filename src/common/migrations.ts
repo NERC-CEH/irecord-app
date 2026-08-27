@@ -72,14 +72,6 @@ import {
   mammalStageAttrOld,
 } from 'Survey/Default/config/mammals';
 import {
-  plantFungiNumberAttr,
-  plantFungiNumberAttrOld,
-  plantFungiNumberDAFORAttr,
-  plantFungiNumberDAFORAttrOld,
-  plantFungiNumberRangesAttr,
-  plantFungiNumberRangesAttrOld,
-} from 'Survey/Default/config/plantFungi';
-import {
   reptileStageAttr,
   reptileStageAttrOld,
 } from 'Survey/Default/config/reptiles';
@@ -129,8 +121,21 @@ const getRecorderCount = (recorders: any[]) => {
 
 const clone = (value: any) => JSON.parse(JSON.stringify(value));
 
-const deleteOldAttrs = (record: any, attrs: string[]) => {
-  attrs.forEach(attr => Reflect.deleteProperty(record, attr));
+const preserveMigratedValue = (metadata: any, key: string, value: any) => {
+  if (value === undefined) return;
+  const migrated = metadata._migrated || {};
+  migrated[key] = clone(value);
+  Object.assign(metadata, { _migrated: migrated });
+};
+
+const deleteOldAttrs = (
+  model: { data: Record<string, any>; metadata: Record<string, any> },
+  attrs: string[]
+) => {
+  attrs.forEach(attr => {
+    preserveMigratedValue(model.metadata, attr, model.data[attr]);
+    Reflect.deleteProperty(model.data, attr);
+  });
 };
 
 const migrateLocation = (sample: any) => {
@@ -138,10 +143,12 @@ const migrateLocation = (sample: any) => {
   const { location } = data;
   if (location?.name !== undefined) {
     data.locationName ??= location.name;
+    preserveMigratedValue(metadata, 'location.name', location.name);
     delete location.name;
   }
   if (location?.geocoded !== undefined) {
     metadata.geocoded ??= location.geocoded;
+    preserveMigratedValue(metadata, 'location.geocoded', location.geocoded);
     delete location.geocoded;
   }
 };
@@ -161,6 +168,47 @@ export const getSampleTaxa = (sample: Sample) => {
 const migrateDefaultNumberAttrs = (occ: Occurrence) => {
   migrateOldAttr(occ, defaultNumberAttrOld, defaultNumberAttr);
   migrateOldAttr(occ, defaultNumberRangesAttrOld, defaultNumberRangesAttr);
+};
+
+export const plantFungiNumberRangesAttrOld = {
+  id: 'number-ranges',
+  remote: {
+    id: 523,
+    values: [
+      { isPlaceholder: true, title: 'Ranges' },
+      { value: '1', id: 665 },
+      { value: '2-5', id: 666 },
+      { value: '6-20', id: 667 },
+      { value: '21-100', id: 668 },
+      { value: '101-500', id: 669 },
+      { value: '500+', id: 670 },
+    ],
+  },
+} as const;
+
+export const plantFungiNumberDAFORAttrOld = {
+  id: 'numberDAFOR',
+  remote: {
+    id: 2,
+    values: [
+      { value: 'Dominant', id: 1 },
+      { value: 'Abundant', id: 2 },
+      { value: 'Frequent', id: 3 },
+      { value: 'Occasional', id: 4 },
+      { value: 'Rare', id: 5 },
+    ],
+  },
+} as const;
+
+export const plantFungiNumberAttrOld = {
+  id: 'number',
+  remote: { id: 16 },
+} as const;
+
+export const migrateOldPlantFungiAbundanceAttrs = (occ: Occurrence) => {
+  migrateOldAttr(occ, plantFungiNumberAttrOld, { id: 'occAttr:16' });
+  migrateOldAttr(occ, plantFungiNumberDAFORAttrOld, { id: 'occAttr:2' });
+  migrateOldAttr(occ, plantFungiNumberRangesAttrOld, { id: 'occAttr:523' });
 };
 
 const migrateCommonDefaultOccAttrs = (occ: Occurrence) => {
@@ -206,7 +254,7 @@ const migrateDefaultOccAttrs = (occ: Occurrence, taxa?: string) => {
     migrateOldAttr(occ, bulbilsAttrOld, bulbilsAttr);
     migrateOldAttr(occ, gemmaeAttrOld, gemmaeAttr);
     migrateOldAttr(occ, tubersAttrOld, tubersAttr);
-    deleteOldAttrs(occ.data, ['stage', 'sex']);
+    deleteOldAttrs(occ, ['stage', 'sex']);
     return;
   }
 
@@ -230,7 +278,7 @@ const migrateDefaultOccAttrs = (occ: Occurrence, taxa?: string) => {
     migrateOldAttr(occ, laCountAttrOld, laCountAttr);
     migrateOldAttr(occ, exCountAttrOld, exCountAttr);
     migrateOldAttr(occ, emCountAttrOld, emCountAttr);
-    deleteOldAttrs(occ.data, ['stage', 'sex']);
+    deleteOldAttrs(occ, ['stage', 'sex']);
     return;
   }
 
@@ -247,17 +295,7 @@ const migrateDefaultOccAttrs = (occ: Occurrence, taxa?: string) => {
   }
 
   if (taxa === 'plants-fungi') {
-    migrateOldAttr(occ, plantFungiNumberAttrOld, plantFungiNumberAttr);
-    migrateOldAttr(
-      occ,
-      plantFungiNumberDAFORAttrOld,
-      plantFungiNumberDAFORAttr
-    );
-    migrateOldAttr(
-      occ,
-      plantFungiNumberRangesAttrOld,
-      plantFungiNumberRangesAttr
-    );
+    migrateOldPlantFungiAbundanceAttrs(occ);
     migrateOldAttr(occ, plantStageAttrOld, plantStageAttr);
     return;
   }
@@ -327,14 +365,10 @@ const migrations: Migration[] = [
           console.log('🔵 Migrating sample', sample.cid);
 
           const data = sample.data as any;
-          const { recorders } = data;
-          if (recorders) {
-            const newRecorders = clone(recorders);
-            data[recordersAttr.id] = newRecorders;
-            if (newRecorders.length) {
-              data[recordersCountAttr.id] = getRecorderCount(newRecorders);
-            }
-            delete data.recorders;
+          migrateOldAttr(sample, { id: 'recorders' }, recordersAttr);
+          const newRecorders = data[recordersAttr.id];
+          if (newRecorders?.length) {
+            data[recordersCountAttr.id] = getRecorderCount(newRecorders);
           }
 
           const viceCounty = data['vice-county'];
@@ -347,7 +381,7 @@ const migrations: Migration[] = [
               typeof viceCounty === 'object' ? viceCounty : VCs.find(byValue);
             data[viceCountyAttr.id] = `${VC?.id || viceCounty}`;
             if (VC?.name) data[`${viceCountyAttr.id}:name`] = VC.name;
-            delete data['vice-county'];
+            deleteOldAttrs(sample, ['vice-county']);
           }
 
           for (const subSample of sample.samples) {
@@ -361,14 +395,13 @@ const migrations: Migration[] = [
                   typeof occData.abundance === 'string'
                     ? occData.abundance.toUpperCase()
                     : occData.abundance;
-                delete occData.abundance;
+                deleteOldAttrs(occurrence, ['abundance']);
               }
-              if (occData.identifiers) {
-                occData[plantOccIdentifiersAttr.id] = clone(
-                  occData.identifiers
-                );
-                delete occData.identifiers;
-              }
+              migrateOldAttr(
+                occurrence,
+                { id: 'identifiers' },
+                plantOccIdentifiersAttr
+              );
             }
           }
 

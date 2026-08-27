@@ -2,6 +2,7 @@
 
 - Updated survey forms and taxon-specific attribute controls.
 - Added Altitude, Time surveying, and Number of recorders fields to the Plant List Survey, made Identified by available for bryophytes, and expanded the Status options.
+- Updated the General Survey plant form with BSBI Status, Altitude, and a unified Abundance field, and removed Sex.
 - Improved bulk editing with the correct stage and sex options for each species group.
 - Improved attribute and location locking across surveys and species groups.
 - Fixed Plant Survey geolocation being enabled without a parent location.

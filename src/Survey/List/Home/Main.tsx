@@ -7,7 +7,7 @@ import { IonIcon, IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
 import { butterflyNumberRangesAttr } from 'Survey/Default/config/butterflies';
 import { numberAttr, numberRangesAttr } from 'Survey/Default/config/common';
-import { plantFungiNumberDAFORAttr } from 'Survey/Default/config/plantFungi';
+import { abundanceAttr } from 'Survey/Plant/config/common';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
@@ -147,7 +147,7 @@ const HomeMain = ({
           numberAttr,
           numberRangesAttr,
           butterflyNumberRangesAttr,
-          plantFungiNumberDAFORAttr,
+          abundanceAttr,
         ]}
       />
     </Main>

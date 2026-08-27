@@ -42,7 +42,7 @@
     "@flumens/bigu": "0.4.1",
     "@flumens/ionic": "2.0.0-alpha.109",
     "@flumens/models": "0.29.1",
-    "@flumens/tailwind": "0.50.1",
+    "@flumens/tailwind": "0.50.2",
     "@flumens/utils": "0.13.0",
     "@hookform/resolvers": "5.7.1",
     "@ionic-native/core": "5.36.0",

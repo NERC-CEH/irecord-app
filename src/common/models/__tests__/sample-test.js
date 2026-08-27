@@ -282,6 +282,14 @@ describe('Sample', () => {
       expect(survey.attrs).toStrictEqual(plantsSurvey.attrs);
     });
 
+    it('should validate Plant Survey abundance', () => {
+      const { verify } = plantsSurvey.smp.occ;
+
+      expect(verify({ taxon: {} })).toBeUndefined();
+      expect(verify({ taxon: {}, 'occAttr:610': '12' })).toBeUndefined();
+      expect(verify({ taxon: {}, 'occAttr:610': 'invalid' })).toBeDefined();
+    });
+
     it('should use bryophyte attributes only for bryophytes in plant surveys', async () => {
       const sample = await plantsSurvey.create({ Sample });
       const bryophyte = {

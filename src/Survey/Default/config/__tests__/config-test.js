@@ -40,6 +40,23 @@ describe('default survey', () => {
     });
   });
 
+  it('uses the current plant attributes', () => {
+    const { occ } = taxonGroupSurveys['plants-fungi'];
+    const renderIds = occ.render.map(({ id }) => id);
+
+    expect(renderIds).toEqual(
+      expect.arrayContaining(['occAttr:507', 'occAttr:577', 'occAttr:610'])
+    );
+    ['occAttr:2', 'occAttr:16', 'occAttr:105', 'occAttr:523'].forEach(id => {
+      expect(occ.attrs[id]).toBeUndefined();
+      expect(renderIds).not.toContain(id);
+    });
+
+    expect(occ.verify({ taxon: {} })).toBeUndefined();
+    expect(occ.verify({ taxon: {}, 'occAttr:610': 'LA' })).toBeUndefined();
+    expect(occ.verify({ taxon: {}, 'occAttr:610': 'invalid' })).toBeDefined();
+  });
+
   it('stores the selected sensitivity precision', () => {
     const record = {};
     const props = {
