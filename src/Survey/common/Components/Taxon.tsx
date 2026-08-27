@@ -78,6 +78,13 @@ const Taxon = () => {
 
   const { searchNamesOnly, taxonSearchGroupFilters } = appModel.data;
 
+  const recordedTaxa = [
+    ...sample!.occurrences,
+    ...sample!.samples.flatMap(smp => smp.occurrences),
+  ]
+    .map(occ => occ.data.taxon?.warehouseId)
+    .filter(Boolean) as number[];
+
   const isSpeciesRestrictedSurvey =
     surveyConfig.name !== 'default' && surveyConfig.taxaGroups;
   const rightSlot = !isSpeciesRestrictedSurvey && <TaxonSearchFilters />;
@@ -93,6 +100,7 @@ const Taxon = () => {
       <Main className="pb-ion-s-10">
         <TaxonSearch
           onSpeciesSelected={onSpeciesSelected}
+          recordedTaxa={recordedTaxa}
           resetOnSelect
           showEditButton={!editingExisting}
           selectedFilters={informalGroups}

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { createOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { IonItem, IonIcon } from '@ionic/react';
@@ -88,7 +89,10 @@ const Species = ({
 
   return (
     <IonItem
-      className="search-result relative overflow-hidden p-0 py-1 text-base [--background:none] [--inner-padding-end:0px] [--padding-start:0px]"
+      className={clsx(
+        'search-result relative overflow-hidden p-0 py-1 text-base [--background:none] pe-ion-i-0 ps-ion-0',
+        Boolean('isRecorded' in species && species.isRecorded) && 'recorded'
+      )}
       onClick={() => onSelect(species)}
     >
       <div className="flex w-full items-center py-1">
