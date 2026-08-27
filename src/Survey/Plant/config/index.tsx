@@ -4,6 +4,7 @@ import {
   businessOutline,
   pencilOutline,
   eyeOffOutline,
+  timeOutline,
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { object, array, string } from 'zod';
@@ -39,12 +40,15 @@ import {
   locationAttrValidator,
   plantStageAttr,
 } from 'Survey/common/config';
+import bryophytesSurvey from './bryophytes';
+import plantOccIdentifiersAttr, { altitudeAttr } from './common';
 
 export {
   commentAttr,
   dateAttr,
   childGeolocationAttr,
 } from 'Survey/common/config';
+export { altitudeAttr, default as plantOccIdentifiersAttr } from './common';
 
 const plantLocationAttr = {
   ...locationAttr,
@@ -58,16 +62,60 @@ const plantLocationAttr = {
   },
 } as const;
 
-const getRecorderCount = (recorders: any[]) => {
-  if (recorders.length === 1) return 7299;
-  if (recorders.length === 2) return 7300;
-  if (recorders.length <= 5) return 7301;
-  if (recorders.length <= 10) return 7302;
-  if (recorders.length <= 20) return 7303;
-  return 7304;
-};
+const singleRecorderValue = '7299';
 
-export const recordersCountAttr = { id: 'smpAttr:992' };
+export const recordersCountAttr = {
+  id: 'smpAttr:992',
+  title: 'No. of recorders',
+  prefix: <IonIcon icon={peopleOutline} className="size-6" />,
+  type: 'choiceInput',
+  container: 'page',
+  appearance: 'list',
+  description: 'Total number of recorders',
+  validation: { required: true },
+  choices: [
+    { title: 'Not selected', dataName: '' },
+    { title: '1', dataName: singleRecorderValue },
+    { title: '2', dataName: '7300' },
+    { title: '3-5', dataName: '7301' },
+    { title: '6-10', dataName: '7302' },
+    { title: '11-20', dataName: '7303' },
+    { title: '21+', dataName: '7304' },
+  ],
+} as const satisfies ChoiceInputConf;
+
+export const timeSurveyingAttr = {
+  id: 'smpAttr:993',
+  title: 'Time surveying',
+  prefix: <IonIcon icon={timeOutline} className="size-6" />,
+  type: 'choiceInput',
+  container: 'page',
+  appearance: 'list',
+  choices: [
+    { title: 'Not selected', dataName: '' },
+    { title: '29 mins or less', dataName: '7468' },
+    { title: '30 to 59 mins', dataName: '7469' },
+    { title: '1h - 1h29mins', dataName: '7470' },
+    { title: '1h30mins - 1h59mins', dataName: '7471' },
+    { title: '2h - 2h29mins', dataName: '7472' },
+    { title: '2h30mins -2h59mins', dataName: '7473' },
+    { title: '3h - 3h29mins', dataName: '7474' },
+    { title: '3h30mins - 3h59mins', dataName: '7475' },
+    { title: '4h - 4h29mins', dataName: '7476' },
+    { title: '4h30mins - 4h59mins', dataName: '7477' },
+    { title: '5h - 5h29mins', dataName: '7478' },
+    { title: '5h30mins - 5h59mins', dataName: '7479' },
+    { title: '6h - 6h29mins', dataName: '7480' },
+    { title: '6h30mins - 6h59mins', dataName: '7481' },
+    { title: '7h - 7h29mins', dataName: '7482' },
+    { title: '7h30mins - 7h59mins', dataName: '7483' },
+    { title: '8h - 8h29mins', dataName: '7484' },
+    { title: '8h30mins - 8h59mins', dataName: '7485' },
+    { title: '9h - 9h29mins', dataName: '7486' },
+    { title: '9h30mins - 9h59mins', dataName: '7487' },
+    { title: '10hrs or longer', dataName: '7488' },
+  ],
+} as const satisfies ChoiceInputConf;
 
 export const recordersAttr = {
   id: 'smpAttr:1018',
@@ -79,12 +127,6 @@ export const recordersAttr = {
   placeholder: 'Recorder name',
   description:
     'If anyone helped with documenting the record please enter their name here.',
-  onChange: (recorders, _, { record }) => {
-    record[recordersAttr.id] = recorders;
-    record[recordersCountAttr.id] = recorders?.length
-      ? getRecorderCount(recorders)
-      : null;
-  },
 } as const satisfies TextInputConf;
 
 export const viceCountyAttr = {
@@ -175,30 +217,34 @@ export const statusAttr = {
   appearance: 'button',
   choices: [
     { title: 'Not Recorded', dataName: '' },
-    { title: 'Native', dataName: '5709' },
-    { title: 'Unknown', dataName: '5710' },
-    { title: 'Introduced', dataName: '6775' },
-    { title: 'Introduced - planted', dataName: '5711' },
-    { title: 'Introduced - surviving', dataName: '10662' },
-    { title: 'Introduced - casual', dataName: '10663' },
-    { title: 'Introduced - established', dataName: '5712' },
-    { title: 'Introduced - invasive', dataName: '5713' },
+    { title: 'Native - origin unknown', dataName: '17548' },
+    { title: 'Introduced - accidental', dataName: '17549' },
+    { title: 'Introduced - accidental - regenerating', dataName: '17550' },
+    { title: 'Introduced - intentional', dataName: '17551' },
+    { title: 'Introduced - intentional - regenerating', dataName: '17552' },
+    { title: 'Introduced - origin unknown', dataName: '17553' },
+    {
+      title: 'Introduced - origin unknown - regenerating',
+      dataName: '17554',
+    },
+
+    // hidden choices for legacy records
+    { title: 'Native', dataName: '5709', className: 'hidden' },
+    { title: 'Unknown', dataName: '5710', className: 'hidden' },
+    { title: 'Introduced', dataName: '6775', className: 'hidden' },
+    { title: 'Introduced - planted', dataName: '5711', className: 'hidden' },
+    { title: 'Introduced - surviving', dataName: '10662', className: 'hidden' },
+    { title: 'Introduced - casual', dataName: '10663', className: 'hidden' },
+    {
+      title: 'Introduced - established',
+      dataName: '5712',
+      className: 'hidden',
+    },
+    { title: 'Introduced - invasive', dataName: '5713', className: 'hidden' },
   ],
 } as const satisfies ChoiceInputConf;
 
-export const plantOccIdentifiersAttr = {
-  id: 'occAttr:125',
-  title: 'Identified by',
-  prefix: <IonIcon icon={peopleOutline} className="size-6" />,
-  type: 'textInput',
-  container: 'page',
-  multiple: true,
-  placeholder: 'Name',
-  description:
-    'If another person identified the species for you, please enter their name here.',
-} as const satisfies TextInputConf;
-
-const plantSensitivityPrecisionAttr = {
+export const plantSensitivityPrecisionAttr = {
   id: 'sensitivityPrecision',
   title: 'Sensitive',
   prefix: <IonIcon icon={eyeOffOutline} className="size-6" />,
@@ -214,6 +260,8 @@ const attrs = {
   [plantLocationAttr.id]: plantLocationAttr,
   [childGeolocationAttr.id]: { block: childGeolocationAttr },
   [recordersAttr.id]: { block: recordersAttr },
+  [recordersCountAttr.id]: { block: recordersCountAttr },
+  [timeSurveyingAttr.id]: { block: timeSurveyingAttr },
   [viceCountyAttr.id]: { block: viceCountyAttr },
   [commentAttr.id]: { block: commentAttr },
 };
@@ -225,6 +273,7 @@ const smpAttrs = {
 
 const smpOccAttrs = {
   [taxonAttr.id]: taxonAttr,
+  [altitudeAttr.id]: { block: altitudeAttr },
   [abundanceAttr.id]: { block: abundanceAttr },
   [statusAttr.id]: { block: statusAttr },
   [plantStageAttr.id]: { block: plantStageAttr },
@@ -259,6 +308,30 @@ const survey = {
 
   attrs,
 
+  get(sample: Sample) {
+    if (!sample.occurrences.length) return this;
+
+    const taxaGroup = sample.occurrences[0].data.taxon?.group;
+    const taxaSurvey =
+      taxaGroup !== undefined &&
+      bryophytesSurvey.taxaGroups?.includes(taxaGroup)
+        ? bryophytesSurvey
+        : { taxa: 'default' };
+
+    return {
+      ...this.smp,
+      ...taxaSurvey,
+      attrs: {
+        ...this.smp?.attrs,
+        ...taxaSurvey.attrs,
+      },
+      occ: {
+        ...this.smp?.occ,
+        ...taxaSurvey.occ,
+      },
+    } as unknown as Survey;
+  },
+
   smp: {
     attrs: smpAttrs,
 
@@ -268,8 +341,6 @@ const survey = {
         plantStageAttr,
         abundanceAttr,
         plantOccIdentifiersAttr,
-        plantSensitivityPrecisionAttr,
-        commentAttr,
       ],
       attrs: smpOccAttrs,
 
@@ -309,7 +380,8 @@ const survey = {
 
       sample.occurrences.push(occurrence);
 
-      const locks = appModel.locks.getAll('plant');
+      const { taxa } = sample.getSurvey();
+      const locks = appModel.locks.getAll('plant', taxa);
       Object.assign(sample.data, locks.smp);
       Object.assign(occurrence.data, locks.occ);
 
@@ -356,9 +428,7 @@ const survey = {
         enteredSrefSystem: 'OSGB',
         sampleMethodId: 7305,
         [recordersAttr.id]: recorders,
-        [recordersCountAttr.id]: recorders.length
-          ? getRecorderCount(recorders)
-          : null,
+        [recordersCountAttr.id]: singleRecorderValue,
       } as any,
     });
 

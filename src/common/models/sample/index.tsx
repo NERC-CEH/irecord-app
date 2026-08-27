@@ -17,10 +17,6 @@ import gridAlertService from 'common/helpers/gridAlertService';
 import { printLocation } from 'common/helpers/location';
 import appModel from 'models/app';
 import userModel from 'models/user';
-import defaultSurvey, {
-  taxonGroupSurveys,
-  getTaxaGroupSurvey,
-} from 'Survey/Default/config';
 import { coreAttributes, Survey } from 'Survey/common/config';
 import getSurveyConfigs from 'Survey/common/surveyConfigs';
 import Media from '../media';
@@ -39,6 +35,7 @@ const ATTRS_TO_LEAVE = [
   'occ:training',
   'occ:classifier',
   'occ:machineInvolvement',
+  'occ:taxon',
 ];
 
 type Data = SampleData & {
@@ -49,10 +46,6 @@ type Data = SampleData & {
 
 type Metadata = SampleMetadata & {
   geocoded?: any;
-  /**
-   * Taxa group name e.g. 'birds'.
-   */
-  taxa: keyof typeof taxonGroupSurveys;
   gridSquareUnit?: 'monad' | 'tetrad';
   /**
    * If overwrite which survey to use.
@@ -175,27 +168,27 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
       ? this.occurrences.find(byId)!
       : this.occurrences[0];
 
-    if (this.getSurvey().name === 'default') {
-      if (occ.data.taxon && !skipOldTaxonRemoval)
-        this.removeOldTaxonAttributes(occ, newTaxon.group);
-
-      const survey = getTaxaGroupSurvey(newTaxon.group);
-      this.metadata.taxa = survey?.taxa as any;
-    }
+    const oldSurvey = this.getSurvey();
+    const hadTaxon = !!occ.data.taxon;
 
     occ.data.taxon = JSON.parse(JSON.stringify(newTaxon));
+
+    const newSurvey = this.getSurvey();
+    if (hadTaxon && !skipOldTaxonRemoval && oldSurvey.taxa !== newSurvey.taxa) {
+      this.removeOldTaxonAttributes(occ, oldSurvey);
+
+      const surveyName = this.parent?.getSurvey().name || newSurvey.name;
+      const locks = appModel.locks.getAll(surveyName, newSurvey.taxa);
+      Object.assign(this.data, locks.smp);
+      Object.assign(occ.data, locks.occ);
+    }
 
     occ.updateMachineInvolvement(newTaxon);
   }
 
-  removeOldTaxonAttributes(occ: Occurrence, taxonGroup: number) {
-    const survey = this.getSurvey();
-    const newSurvey = getTaxaGroupSurvey(taxonGroup) || defaultSurvey;
-
-    if (survey.taxa === newSurvey.taxa) return;
-
+  private removeOldTaxonAttributes(occ: Occurrence, oldSurvey: Survey) {
     process.env.NODE_ENV !== 'test' &&
-      console.log(`Removing old ${survey.taxa} taxa attributes`);
+      console.log(`Removing old ${oldSurvey.taxa} taxa attributes`);
 
     // remove non-core attributes for survey switch
     const removeSmpNonCoreAttr = (key: any) => {

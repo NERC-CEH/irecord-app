@@ -84,7 +84,7 @@ describe('Sample', () => {
 
       // When
       const bryophyte = { group: taxonGroupSurveys.bryophytes.taxaGroups[0] };
-      sample.removeOldTaxonAttributes(occ, bryophyte);
+      sample.setTaxon(bryophyte);
 
       // Then
       expect(sample.data.non_core_attr).toBeUndefined();
@@ -117,7 +117,7 @@ describe('Sample', () => {
 
       // When
       const bryophyte = { group: taxonGroupSurveys.bryophytes.taxaGroups[0] };
-      sample.removeOldTaxonAttributes(occ, bryophyte);
+      sample.setTaxon(bryophyte);
 
       // Then
       sampleKeys.forEach(key => {
@@ -281,6 +281,44 @@ describe('Sample', () => {
       expect(survey.taxaGroups).toStrictEqual(plantsSurvey.taxaGroups);
       expect(survey.attrs).toStrictEqual(plantsSurvey.attrs);
     });
+
+    it('should use bryophyte attributes only for bryophytes in plant surveys', async () => {
+      const sample = await plantsSurvey.create({ Sample });
+      const bryophyte = {
+        group: taxonGroupSurveys.bryophytes.taxaGroups[0],
+      };
+      const vascularPlant = {
+        group: taxonGroupSurveys['plants-fungi'].taxaGroups[0],
+      };
+      const bryophyteSample = await plantsSurvey.smp.create({
+        surveySample: sample,
+        taxon: bryophyte,
+      });
+      const vascularPlantSample = await plantsSurvey.smp.create({
+        surveySample: sample,
+        taxon: vascularPlant,
+      });
+      sample.samples.push(bryophyteSample, vascularPlantSample);
+
+      const bryophyteSurvey = bryophyteSample.getSurvey();
+      expect(bryophyteSurvey.taxa).toBe('bryophytes');
+      expect(bryophyteSurvey.occ.attrs['occAttr:577']).toBeDefined();
+      expect(bryophyteSurvey.occ.attrs['occAttr:125']).toBeDefined();
+      expect(bryophyteSurvey.occ.attrs['occAttr:470']).toBeDefined();
+
+      const vascularPlantSurvey = vascularPlantSample.getSurvey();
+      expect(vascularPlantSurvey.taxa).toBe('default');
+      expect(vascularPlantSurvey.occ.attrs['occAttr:577']).toBeDefined();
+      expect(vascularPlantSurvey.occ.attrs['occAttr:610']).toBeDefined();
+      expect(vascularPlantSurvey.occ.attrs['occAttr:470']).toBeUndefined();
+
+      bryophyteSample.occurrences[0].data['occAttr:470'] = true;
+      bryophyteSample.setTaxon(vascularPlant);
+      expect(bryophyteSample.getSurvey().taxa).toBe('default');
+      expect(
+        bryophyteSample.occurrences[0].data['occAttr:470']
+      ).toBeUndefined();
+    });
   });
 
   describe('setTaxon', () => {
@@ -337,16 +375,13 @@ describe('Sample', () => {
       expect(() => sample.setTaxon(newTaxon, '123')).toThrow(); // missing specific occurrence
     });
 
-    it('should set taxon group in sample metadata', async () => {
-      // Given
+    it('should update the species config', async () => {
       const sample = await getDefaultSample();
       const newTaxon = { group: taxonGroupSurveys.birds.taxaGroups[0] };
 
-      // When
       sample.setTaxon(newTaxon);
 
-      // Then
-      expect(sample.metadata.taxa).toEqual('birds');
+      expect(sample.getSurvey().taxa).toEqual('birds');
     });
   });
 });

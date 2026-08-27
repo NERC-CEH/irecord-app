@@ -2,11 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { onChange } from '@flumens/tailwind/dist/components/Block';
 import appModel from 'models/app';
-import defaultSurvey, {
-  getFullTaxaGroupSurvey,
-  getTaxaGroupSurvey,
-  taxonGroupSurveys,
-} from 'Survey/Default/config';
+import defaultSurvey, { taxonGroupSurveys } from 'Survey/Default/config';
 import birdsSurvey from '../birds';
 import butterfliesSurvey, { butterflyNumberRangesAttr } from '../butterflies';
 import {
@@ -93,80 +89,28 @@ describe('default survey', () => {
   });
 });
 
-describe('getFullTaxaGroupSurvey', () => {
-  it('should return default survey if no species group', () => {
-    // Given
-    const speciesGroup = null;
+describe('get', () => {
+  const getSurvey = taxaGroup =>
+    defaultSurvey.get({
+      occurrences: taxaGroup ? [{ data: { taxon: { group: taxaGroup } } }] : [],
+    });
 
-    // When
-    const survey = getFullTaxaGroupSurvey(speciesGroup);
-
-    // Then
-    expect(survey.taxa).toBe(defaultSurvey.taxa);
+  it('returns the default config without a matching species group', () => {
+    expect(getSurvey().taxa).toBe('default');
+    expect(getSurvey(111111111).taxa).toBe('default');
   });
 
-  it('should return default survey if no species group config was found', () => {
-    // Given
-    const speciesGroup = 111111111; // some random one
+  it('merges the matching species config', () => {
+    const survey = getSurvey(birdsSurvey.taxaGroups[0]);
 
-    // When
-    const survey = getFullTaxaGroupSurvey(speciesGroup);
-
-    // Then
-    expect(survey.taxa).toBe(defaultSurvey.taxa);
-  });
-
-  it('should not merge render object', () => {
-    // Given
-    const speciesGroup = 1; // some random one
-
-    // When
-    const survey = getFullTaxaGroupSurvey(speciesGroup);
-
-    // Then
-    expect(survey.taxa).toBe(defaultSurvey.taxa);
-  });
-
-  it('should return default render if none specified', () => {
-    // Given
-    const speciesGroup = 104;
-
-    // When
-    const survey = getFullTaxaGroupSurvey(speciesGroup);
-
-    // Then
-    expect(survey.render).toBe(defaultSurvey.render);
-  });
-
-  it('should retain recorder config for custom surveys', () => {
-    const survey = getFullTaxaGroupSurvey('dragonflies');
-
-    expect(survey.attrs['smpAttr:127']).toBeDefined();
-    expect(survey.attrs['smpAttr:59']).toBeDefined();
-  });
-});
-
-describe('getTaxaGroupSurvey', () => {
-  it('should should return a taxa survey that matches taxaGroup', () => {
-    // Given
-    const taxaGroup = birdsSurvey.taxaGroups[0];
-
-    // When
-    const survey = getTaxaGroupSurvey(taxaGroup);
-
-    // Then
     expect(survey.taxa).toBe('birds');
+    expect(survey.attrs['smpAttr:127']).toBeDefined();
+    expect(survey.occ.attrs['occAttr:823']).toBeDefined();
   });
 
-  it('should should return a taxa survey with highest taxaPriority', () => {
-    // Given
-    const taxaGroup = dragonfliesSurvey.taxaGroups[0];
+  it('uses the config with the highest taxa priority', () => {
+    const survey = getSurvey(dragonfliesSurvey.taxaGroups[0]);
 
-    // When
-    const survey = getTaxaGroupSurvey(taxaGroup);
-
-    // Then
-    expect(survey.taxa).not.toEqual('arthropods');
-    expect(survey.taxa).toEqual('dragonflies');
+    expect(survey.taxa).toBe('dragonflies');
   });
 });

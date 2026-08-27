@@ -151,6 +151,13 @@ export const migrateLocationTree = (sample: any) => {
   sample.samples.forEach(migrateLocationTree);
 };
 
+export const getSampleTaxa = (sample: Sample) => {
+  const hasTaxonGroup = sample.occurrences[0]?.data.taxon?.group !== undefined;
+  return hasTaxonGroup
+    ? sample.getSurvey().taxa
+    : (sample.metadata as any).taxa || sample.getSurvey().taxa;
+};
+
 const migrateDefaultNumberAttrs = (occ: Occurrence) => {
   migrateOldAttr(occ, defaultNumberAttrOld, defaultNumberAttr);
   migrateOldAttr(occ, defaultNumberRangesAttrOld, defaultNumberRangesAttr);
@@ -388,7 +395,7 @@ const migrations: Migration[] = [
         if (isDefaultSurvey) {
           console.log('🔵 Migrating sample', sample.cid);
 
-          const { taxa } = sample.metadata as any;
+          const taxa = getSampleTaxa(sample);
           migrateDefaultSampleAttrs(sample, taxa);
           for (const occ of sample.occurrences) {
             migrateDefaultOccAttrs(occ, taxa);
@@ -402,7 +409,7 @@ const migrations: Migration[] = [
           console.log('🔵 Migrating sample', sample.cid);
 
           for (const subSample of sample.samples) {
-            const { taxa } = subSample.metadata as any;
+            const taxa = getSampleTaxa(subSample);
             migrateDefaultSampleAttrs(subSample, taxa);
             for (const occ of subSample.occurrences) {
               migrateDefaultOccAttrs(occ, taxa);

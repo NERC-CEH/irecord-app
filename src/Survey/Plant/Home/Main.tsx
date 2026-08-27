@@ -5,18 +5,20 @@ import { useRouteMatch } from 'react-router';
 import { Button, InfoMessage, Main, useToast } from '@flumens';
 import { IonIcon, IonList, NavContext } from '@ionic/react';
 import Sample from 'models/sample';
+import { getBulkEditAttrs } from 'Survey/List/Home/Main';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import { usePromptImageSource } from 'Survey/common/Components/PhotoPicker';
 import SpeciesList from 'Survey/common/Components/SpeciesList';
-import { plantStageAttr } from 'Survey/common/config';
 import {
   abundanceAttr,
   childGeolocationAttr,
   commentAttr,
   dateAttr,
   recordersAttr,
+  recordersCountAttr,
+  timeSurveyingAttr,
   viceCountyAttr,
 } from '../config';
 
@@ -79,6 +81,8 @@ const PlantHomeMain = ({
           <MenuAttr model={sample} block={viceCountyAttr} />
           <MenuAttr model={sample} block={dateAttr} />
           <MenuAttr model={sample} block={recordersAttr} />
+          <MenuAttr model={sample} block={recordersCountAttr} />
+          <MenuAttr model={sample} block={timeSurveyingAttr} />
           <MenuAttr model={sample} block={commentAttr} />
         </div>
       </IonList>
@@ -109,7 +113,7 @@ const PlantHomeMain = ({
         sample={sample}
         onDelete={onDelete}
         useSubSamples
-        bulkEditAttrs={{ stage: plantStageAttr, comment: commentAttr }}
+        bulkEditAttrs={getBulkEditAttrs}
         numberAttrs={[abundanceAttr]}
       />
     </Main>

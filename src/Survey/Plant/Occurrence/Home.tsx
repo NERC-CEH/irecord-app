@@ -1,18 +1,27 @@
 import { observer } from 'mobx-react';
+import { useRouteMatch } from 'react-router';
 import { Page, Header, Main, useSample } from '@flumens';
 import { IonList } from '@ionic/react';
 import Sample from 'common/models/sample';
+import { commentAttr } from 'Survey/Default/config';
+import {
+  altitudeAttr,
+  plantSensitivityPrecisionAttr,
+} from 'Survey/Plant/config';
+import MenuAttr from 'Survey/common/Components/MenuAttr';
 import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttr';
 import MenuLocation from 'Survey/common/Components/MenuLocation';
 import MenuTaxonItem from 'Survey/common/Components/MenuTaxonItem';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
 import VerificationMessage from 'Survey/common/Components/VerificationMessage';
-import surveyConfig from '../config';
 
 const PlantOccurrenceHome = () => {
-  const { subSample } = useSample<Sample>();
-  if (!subSample) return null;
+  const { url } = useRouteMatch();
+  const { sample, subSample } = useSample<Sample, Sample>();
+  if (!sample || !subSample) return null;
 
+  const survey = sample.getSurvey();
+  const subSampleSurvey = subSample.getSurvey();
   const [occ] = subSample.occurrences;
   const { isDisabled } = subSample;
 
@@ -35,15 +44,44 @@ const PlantOccurrenceHome = () => {
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
             <MenuLocation sample={subSample} skipName isRequired={false} />
-            {surveyConfig.smp.occ.render?.map((attr: any) => (
+            {subSampleSurvey.render?.map((attr: any) => (
+              <MenuDynamicAttr
+                key={attr.id}
+                model={subSample}
+                block={attr}
+                survey={survey.name}
+                taxa={subSampleSurvey.taxa}
+              />
+            ))}
+            {subSampleSurvey.occ?.render?.map((attr: any) => (
               <MenuDynamicAttr
                 key={attr.id}
                 model={occ}
                 block={attr}
                 useSeparateOccPage
-                survey={surveyConfig.name}
+                survey={survey.name}
+                taxa={subSampleSurvey.taxa}
               />
             ))}
+            <MenuAttr.WithLock
+              model={occ}
+              block={plantSensitivityPrecisionAttr}
+              survey={survey.name}
+              taxa="all"
+            />
+            <MenuAttr.WithLock
+              model={occ}
+              block={altitudeAttr}
+              survey={survey.name}
+              taxa="all"
+            />
+            <MenuAttr.WithLock
+              model={occ}
+              block={commentAttr}
+              link={`${url}/occ/${occ.cid}/comment`}
+              survey={survey.name}
+              taxa="all"
+            />
           </div>
         </IonList>
       </Main>

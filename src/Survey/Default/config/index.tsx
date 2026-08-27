@@ -211,61 +211,40 @@ const survey = {
   },
 
   get(sample: Sample) {
-    const getTaxaConfig = () => {
-      if (!sample.occurrences.length) return this;
-      if (!sample.metadata.taxa) return this;
+    const taxaGroup = sample.occurrences[0]?.data.taxon?.group;
+    const taxaSurvey = getTaxaGroupSurvey(taxaGroup || 0);
 
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      return getFullTaxaGroupSurvey(sample.metadata.taxa);
-    };
+    const taxaConfig = {
+      ...this,
+      ...taxaSurvey,
+      attrs: {
+        ...this.attrs,
+        ...taxaSurvey?.attrs,
+      },
+      occ: {
+        ...this.occ,
+        ...taxaSurvey?.occ,
+      },
+    } as Survey;
 
-    const isSubSample = sample.parent;
-    if (isSubSample) {
-      const taxaConfig = getTaxaConfig();
-      const subSampleConfig = sample.parent?.getSurvey()?.smp;
-      const taxaSurvey: any = {
-        ...taxaConfig,
-        ...subSampleConfig,
-        occ: {
-          ...taxaConfig.occ,
-          ...subSampleConfig?.occ,
-          attrs: {
-            ...taxaConfig.occ?.attrs,
-            ...subSampleConfig?.occ?.attrs,
-          },
+    if (!sample.parent) return taxaConfig;
+
+    const subSampleConfig = sample.parent.getSurvey().smp;
+    const subSampleSurvey: any = {
+      ...taxaConfig,
+      ...subSampleConfig,
+      occ: {
+        ...taxaConfig.occ,
+        ...subSampleConfig?.occ,
+        attrs: {
+          ...taxaConfig.occ?.attrs,
+          ...subSampleConfig?.occ?.attrs,
         },
-      };
-      delete taxaSurvey.verify;
-      return taxaSurvey;
-    }
-
-    return getTaxaConfig();
+      },
+    };
+    delete subSampleSurvey.verify;
+    return subSampleSurvey;
   },
 } as const satisfies Survey;
 
 export default survey;
-
-/**
- * Finds the matching species group survey.
- * @param taxa species group name e.g. 'birds'.
- */
-export function getFullTaxaGroupSurvey(
-  taxa: keyof typeof taxonGroupSurveys
-): Survey {
-  const taxaSurvey = taxonGroupSurveys[taxa] || {};
-
-  const mergedSurvey = {
-    ...survey,
-    ...taxaSurvey,
-    attrs: {
-      ...survey.attrs,
-      ...taxaSurvey.attrs,
-    },
-    occ: {
-      ...survey.occ,
-      ...taxaSurvey.occ,
-    },
-  };
-
-  return mergedSurvey;
-}

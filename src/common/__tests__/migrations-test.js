@@ -1,4 +1,17 @@
-import { migrateLocationTree } from 'common/migrations';
+import { getSampleTaxa, migrateLocationTree } from 'common/migrations';
+
+it('gets taxa from the taxon group with a legacy metadata fallback', () => {
+  const sample = {
+    occurrences: [{ data: { taxon: { group: 1 } } }],
+    metadata: { taxa: 'legacy' },
+    getSurvey: () => ({ taxa: 'birds' }),
+  };
+
+  expect(getSampleTaxa(sample)).toBe('birds');
+
+  sample.occurrences = [];
+  expect(getSampleTaxa(sample)).toBe('legacy');
+});
 
 it('moves legacy location fields across the sample tree', () => {
   const child = {
