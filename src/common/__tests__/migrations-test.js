@@ -1,6 +1,6 @@
 import {
   getSampleTaxa,
-  migrateLocationTree,
+  migrateSampleTree,
   migrateOldPlantFungiAbundanceAttrs,
 } from 'common/migrations';
 
@@ -32,29 +32,45 @@ it('preserves legacy plant abundance attributes separately', () => {
   });
 });
 
-it('moves legacy location fields across the sample tree', () => {
+it('moves legacy sample fields across the sample tree', () => {
   const child = {
-    data: { location: { name: 'Child', geocoded: { center: [1, 2] } } },
+    data: {
+      date: '2026-08-29T08:23:59.139Z',
+      location: { name: 'Child', geocoded: { center: [1, 2] } },
+    },
     metadata: {},
     samples: [],
   };
   const sample = {
-    data: { location: { name: 'Parent', geocoded: { center: [3, 4] } } },
+    data: {
+      date: '2026-08-30T08:23:59.139Z',
+      location: { name: 'Parent', geocoded: { center: [3, 4] } },
+    },
     metadata: {},
     samples: [child],
   };
 
-  migrateLocationTree(sample);
+  migrateSampleTree(sample);
 
-  expect(sample.data).toEqual({ location: {}, locationName: 'Parent' });
+  expect(sample.data).toEqual({
+    date: '2026-08-30',
+    location: {},
+    locationName: 'Parent',
+  });
   expect(sample.metadata.geocoded).toEqual({ center: [3, 4] });
   expect(sample.metadata._migrated).toEqual({
+    date: '2026-08-30T08:23:59.139Z',
     'location.name': 'Parent',
     'location.geocoded': { center: [3, 4] },
   });
-  expect(child.data).toEqual({ location: {}, locationName: 'Child' });
+  expect(child.data).toEqual({
+    date: '2026-08-29',
+    location: {},
+    locationName: 'Child',
+  });
   expect(child.metadata.geocoded).toEqual({ center: [1, 2] });
   expect(child.metadata._migrated).toEqual({
+    date: '2026-08-29T08:23:59.139Z',
     'location.name': 'Child',
     'location.geocoded': { center: [1, 2] },
   });

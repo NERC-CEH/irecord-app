@@ -153,9 +153,17 @@ const migrateLocation = (sample: any) => {
   }
 };
 
-export const migrateLocationTree = (sample: any) => {
+export const migrateSampleTree = (sample: any) => {
   migrateLocation(sample);
-  sample.samples.forEach(migrateLocationTree);
+
+  const { data, metadata } = sample;
+  const { date } = data;
+  if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(date)) {
+    preserveMigratedValue(metadata, 'date', date);
+    data.date = date.slice(0, 10);
+  }
+
+  sample.samples.forEach(migrateSampleTree);
 };
 
 export const getSampleTaxa = (sample: Sample) => {
@@ -356,7 +364,7 @@ const migrations: Migration[] = [
         const isPlantSurvey = sample.data.surveyId === 325;
         const isMothSurvey = sample.data.surveyId === 90;
 
-        migrateLocationTree(sample);
+        migrateSampleTree(sample);
 
         if (isDefaultSurvey || isListSurvey || isMothSurvey)
           migrateOldAttr(sample, recorderAttrOld, recorderAttr);
