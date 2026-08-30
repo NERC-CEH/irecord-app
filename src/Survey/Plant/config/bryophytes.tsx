@@ -4,7 +4,9 @@ import {
   femaleAttr,
   fruitAttr,
   gemmaeAttr,
+  habitatAttr,
   maleAttr,
+  microhabitatAttr,
   microscopicallyCheckedAttr,
   tubersAttr,
 } from 'Survey/Default/config/bryophytes';
@@ -12,9 +14,14 @@ import { defaultSensitivityPrecisionAttr } from 'Survey/Default/config/common';
 import { commentAttr, Survey, taxonAttr } from 'Survey/common/config';
 import plantOccIdentifiersAttr, { altitudeAttr } from './common';
 
+const attrs = {
+  [habitatAttr.id]: { block: habitatAttr },
+};
+
 const occAttrs = {
   [taxonAttr.id]: taxonAttr,
   [altitudeAttr.id]: { block: altitudeAttr },
+  [microhabitatAttr.id]: { block: microhabitatAttr },
   [plantOccIdentifiersAttr.id]: { block: plantOccIdentifiersAttr },
   [commentAttr.id]: { block: commentAttr },
   [defaultSensitivityPrecisionAttr.id]: {
@@ -35,11 +42,12 @@ const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'bryophytes',
   taxaGroups: [groups.moss, groups.liverwort],
 
-  render: [],
-  attrs: {},
+  render: [habitatAttr],
+  attrs,
 
   occ: {
     render: [
+      microhabitatAttr,
       plantOccIdentifiersAttr,
       microscopicallyCheckedAttr,
       fruitAttr,

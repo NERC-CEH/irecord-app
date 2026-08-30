@@ -1,9 +1,14 @@
 import { clipboardOutline } from 'ionicons/icons';
-import { ChoiceInputConf, YesNoInputConf } from '@flumens/tailwind/dist/Survey';
+import {
+  ChoiceInputConf,
+  TextInputConf,
+  YesNoInputConf,
+} from '@flumens/tailwind/dist/Survey';
 import { IonIcon } from '@ionic/react';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import landIcon from 'common/images/land.svg';
+import { altitudeAttr } from 'Survey/Plant/config/common';
 import {
   commentAttr,
   identifiersAttr,
@@ -53,6 +58,13 @@ export const habitatAttr = {
     { title: 'Woodland', dataName: '1574' },
   ],
 } as const satisfies ChoiceInputConf;
+
+export const microhabitatAttr = {
+  id: 'occAttr:816',
+  title: 'Microhabitat',
+  prefix: <img src={landIcon} alt="" className="size-6" />,
+  type: 'textInput',
+} as const satisfies TextInputConf;
 
 const toggleAttr = (id: string, title: string, prefix: React.ReactNode) =>
   ({ id, title, prefix, type: 'yesNoInput' }) as const satisfies YesNoInputConf;
@@ -113,6 +125,8 @@ const occAttrs = {
   sex: null as any, // disable for bulk-editing
   stage: null as any, // disable for bulk-editing
 
+  [altitudeAttr.id]: { block: altitudeAttr },
+  [microhabitatAttr.id]: { block: microhabitatAttr },
   [microscopicallyCheckedAttr.id]: { block: microscopicallyCheckedAttr },
   [fruitAttr.id]: { block: fruitAttr },
   [maleAttr.id]: { block: maleAttr },
@@ -132,6 +146,8 @@ const survey: Partial<Survey> & { taxa: string } = {
 
   occ: {
     render: [
+      microhabitatAttr,
+      altitudeAttr,
       microscopicallyCheckedAttr,
       fruitAttr,
       maleAttr,

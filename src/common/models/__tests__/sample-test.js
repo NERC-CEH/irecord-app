@@ -310,12 +310,16 @@ describe('Sample', () => {
 
       const bryophyteSurvey = bryophyteSample.getSurvey();
       expect(bryophyteSurvey.taxa).toBe('bryophytes');
+      expect(bryophyteSurvey.attrs['smpAttr:208']).toBeDefined();
+      expect(bryophyteSurvey.occ.attrs['occAttr:816']).toBeDefined();
       expect(bryophyteSurvey.occ.attrs['occAttr:577']).toBeDefined();
       expect(bryophyteSurvey.occ.attrs['occAttr:125']).toBeDefined();
       expect(bryophyteSurvey.occ.attrs['occAttr:470']).toBeDefined();
 
       const vascularPlantSurvey = vascularPlantSample.getSurvey();
       expect(vascularPlantSurvey.taxa).toBe('default');
+      expect(vascularPlantSurvey.attrs['smpAttr:208']).toBeUndefined();
+      expect(vascularPlantSurvey.occ.attrs['occAttr:816']).toBeUndefined();
       expect(vascularPlantSurvey.occ.attrs['occAttr:577']).toBeDefined();
       expect(vascularPlantSurvey.occ.attrs['occAttr:610']).toBeDefined();
       expect(vascularPlantSurvey.occ.attrs['occAttr:470']).toBeUndefined();

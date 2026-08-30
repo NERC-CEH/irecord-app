@@ -57,6 +57,17 @@ describe('default survey', () => {
     expect(occ.verify({ taxon: {}, 'occAttr:610': 'invalid' })).toBeDefined();
   });
 
+  it('uses altitude and microhabitat for bryophytes', () => {
+    const { occ } = taxonGroupSurveys.bryophytes;
+
+    expect(occ.attrs['occAttr:577']).toBeDefined();
+    expect(occ.attrs['occAttr:816']).toBeDefined();
+    expect(occ.render.slice(0, 2).map(({ id }) => id)).toEqual([
+      'occAttr:816',
+      'occAttr:577',
+    ]);
+  });
+
   it('stores the selected sensitivity precision', () => {
     const record = {};
     const props = {
