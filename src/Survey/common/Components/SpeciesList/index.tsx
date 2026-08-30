@@ -81,10 +81,13 @@ const SpeciesList = ({
     if (!numberAttr) return;
 
     const data = occ.data as any;
-    const currentValue = Number(data[numberAttr.id]);
+    const currentValueRaw = data[numberAttr.id];
+    const isString = typeof currentValueRaw === 'string';
+    const currentValue = Number(currentValueRaw);
     if (!Number.isFinite(currentValue)) return;
 
-    data[numberAttr.id] = currentValue + (is5x ? 5 : 1);
+    const newValue = currentValue + (is5x ? 5 : 1);
+    data[numberAttr.id] = isString ? `${newValue}` : newValue;
     occ.save();
   }
 

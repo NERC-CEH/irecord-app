@@ -88,7 +88,7 @@ const PlantHomeMain = ({
       </IonList>
 
       {!isDisabled && (
-        <div className="mx-3 mb-2.5 mt-8 flex items-center justify-center gap-5">
+        <div className="mx-3 mb-4 mt-8 flex items-center justify-center gap-5">
           <Button
             color="primary"
             onPress={() => navigate(`${url}/taxon`)}

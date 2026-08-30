@@ -16,7 +16,7 @@ const IncrementalButton = ({
   value,
   disabled,
 }: Props) => {
-  const isNumber = Number.isFinite(value);
+  const isNumber = Number.isFinite(Number(value));
 
   const onClick = () => {
     if (disabled || !isNumber) return;
