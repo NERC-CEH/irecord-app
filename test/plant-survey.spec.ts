@@ -18,7 +18,7 @@ test('Create a Plant List Survey', async ({ homePage }) => {
     homePage.getByRole('button', { name: 'Recorders', exact: true })
   ).toBeVisible();
   await expect(
-    homePage.getByRole('button', { name: 'Number of recorders' })
+    homePage.getByRole('button', { name: 'No. of recorders' })
   ).toBeVisible();
   await expect(
     homePage.getByRole('button', { name: 'Time surveying' })
@@ -63,9 +63,10 @@ test('Create a Plant List Survey', async ({ homePage }) => {
     .getByRole('button', { name: 'Back' })
     .click();
 
-  await homePage.getByRole('button', { name: 'Number of recorders' }).click();
+  await homePage.getByRole('button', { name: 'No. of recorders' }).click();
   const recorderCountPage = homePage.locator('[id="attr-page-smpAttr:992"]');
   await recorderCountPage.getByText('1', { exact: true }).click();
+  await recorderCountPage.getByRole('button', { name: 'Back' }).click();
 
   await homePage.getByRole('button', { name: 'Time surveying' }).click();
   const timeSurveyingPage = homePage.locator('[id="attr-page-smpAttr:993"]');
