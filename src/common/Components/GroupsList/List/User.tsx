@@ -15,7 +15,7 @@ import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
 
 type Props = {
   currentValue?: string;
-  onSelect: any;
+  onSelect?: (groupId: string) => void;
   onLeave: (group: Group) => void;
   groups: Group[];
 };
@@ -31,8 +31,8 @@ const UserGroups = ({
   // force update the radio styles
   const [currentValue, setCurrentValue] = useState(currentValueProp);
 
-  const onSelectWrap = (newValue: any) => {
-    onSelect(newValue);
+  const onSelectWrap = (newValue: string) => {
+    onSelect?.(newValue);
     setCurrentValue(newValue);
   };
 

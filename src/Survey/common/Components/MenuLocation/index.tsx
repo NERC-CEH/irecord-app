@@ -10,8 +10,8 @@ import Lock from './Lock';
 
 type Props = {
   sample: Sample;
-  detailIcon?: any;
-  className?: any;
+  detailIcon?: string;
+  className?: string;
   skipName?: boolean;
   isRequired?: boolean;
   label?: string;

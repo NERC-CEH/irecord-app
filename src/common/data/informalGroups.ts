@@ -112,5 +112,5 @@ export const groups = {
 type Values = (typeof groups)[keyof typeof groups];
 
 export const groupsReverse: Record<Values, number> = Object.fromEntries(
-  Object.entries(groups).map(([k, v]) => [v, parseInt(k, 10)])
-) as any;
+  Object.entries(groups).map(([key, value]) => [value, parseInt(key, 10)])
+) as Record<Values, number>;

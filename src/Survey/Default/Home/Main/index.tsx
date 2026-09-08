@@ -36,12 +36,11 @@ const useAttributeLockingTip = (sample: Sample) => {
     if (shownLockingSwipeTip) return;
 
     const [occ] = sample.occurrences;
-    const hasStageOrSex = sample
-      .getSurvey()
-      .occ?.render?.some(
-        (attr: any) =>
-          ['Stage', 'Sex'].includes(attr.title) && (occ?.data as any)?.[attr.id]
-      );
+    const render = sample.getSurvey().occ?.render;
+    const attrs = typeof render === 'function' ? render(occ) : render;
+    const hasStageOrSex = attrs?.some(
+      attr => ['Stage', 'Sex'].includes(attr.title || '') && occ?.data[attr.id]
+    );
     const hasLockableAttributes = occ && (occ.data.comment || hasStageOrSex);
 
     if (!hasLockableAttributes) return;
@@ -75,13 +74,20 @@ const EditMain = ({ sample }: Props) => {
   useAttributeLockingTip(sample);
   const survey = sample.getSurvey();
   const showSensitivityWarning = useSensitivityTip();
-
-  const surveyConfig = sample.getSurvey();
-
   const { url } = useRouteMatch();
 
+  const surveyConfig = sample.getSurvey();
   const [occ] = sample.occurrences;
   if (!occ) return null;
+
+  const sampleRender =
+    typeof surveyConfig.render === 'function'
+      ? surveyConfig.render(sample)
+      : surveyConfig.render;
+  const occurrenceRender =
+    typeof surveyConfig.occ?.render === 'function'
+      ? surveyConfig.occ.render(occ)
+      : surveyConfig.occ?.render;
 
   const { groupId } = sample.data;
 
@@ -138,7 +144,7 @@ const EditMain = ({ sample }: Props) => {
             taxa="all"
           />
 
-          {surveyConfig.render?.map((attr: any) => (
+          {sampleRender?.map(attr => (
             <MenuDynamicAttr
               key={attr.id}
               model={sample}
@@ -147,7 +153,7 @@ const EditMain = ({ sample }: Props) => {
               taxa={survey.taxa}
             />
           ))}
-          {surveyConfig.occ?.render?.map((attr: any) => (
+          {occurrenceRender?.map(attr => (
             <MenuDynamicAttr
               key={attr.id}
               model={occ}

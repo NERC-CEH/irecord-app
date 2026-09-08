@@ -1,21 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { Gallery } from '@flumens';
 import Media from 'models/media';
+import type { Taxon } from 'models/occurrence';
 import ImageFooter from './ImageFooter';
 
 type Props = {
   items: Media[];
   showGallery: number;
   onClose: () => boolean;
-  onCrop: any;
-  onDelete: any;
-  onIdentify: any;
-  onSpeciesSelect: any;
+  onCrop: (media: Media) => void;
+  onDelete: (media: Media) => void | Promise<void>;
+  onIdentify: (manualTrigger?: boolean) => void;
+  onSpeciesSelect: (taxon: Taxon) => void;
   isDisabled: boolean;
 };
 
-const Footer = ({ children }: any) => (
+const Footer = ({ children }: { children?: ReactNode }) => (
   <div className="fixed bottom-0 w-full pb-[26px]">{children}</div>
 );
 
@@ -30,10 +31,10 @@ const GalleryComponent = ({
   isDisabled,
 }: Props) => {
   const getItem = (image: Media) => {
-    const onSpeciesSelectWrap = (...args: any) => {
+    const onSpeciesSelectWrap = (taxon: Taxon) => {
       if (isDisabled) return;
 
-      onSpeciesSelect(...args);
+      onSpeciesSelect(taxon);
       onClose();
     };
 

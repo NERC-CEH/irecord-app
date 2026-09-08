@@ -1,20 +1,26 @@
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import L, { LatLngExpression } from 'leaflet';
+import L, { type LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { getGridSquareCenter, getSquareBounds, locationToGrid } from '@flumens';
+import {
+  getGridSquareCenter,
+  getSquareBounds,
+  locationToGrid,
+  type Location,
+} from '@flumens';
 import { useIonViewDidEnter } from '@ionic/react';
+import type Sample from 'models/sample';
 import mapHelpers from './map';
 import './styles.scss';
 
 const DEFAULT_CENTER: LatLngExpression = [53.7326306, -2];
 
-function getLocation(location: any, model: any) {
-  const hasNoLocation = !location.latitude;
+type MapLocation = Partial<Location> & { updateTime?: number };
 
-  const hasGeolocation = location.geocoded?.center;
-  const useGeocodedLocation = hasNoLocation && hasGeolocation;
-  if (useGeocodedLocation) {
+function getLocation(location: MapLocation, model: Sample): MapLocation {
+  if (location.latitude !== undefined) return location;
+
+  if (location.geocoded?.center) {
     return {
       latitude: location.geocoded.center[1],
       longitude: location.geocoded.center[0],
@@ -22,56 +28,51 @@ function getLocation(location: any, model: any) {
     };
   }
 
-  const useParentLocation = hasNoLocation && model.parent;
-  if (useParentLocation) {
-    return model.parent.data.location || {};
-  }
-
-  return location;
+  return model.parent?.data.location || location;
 }
 
 function getCenter(
-  location: any,
+  location: MapLocation,
   defaultCenter: LatLngExpression
 ): LatLngExpression {
-  if (!location?.latitude) return defaultCenter;
+  if (location.latitude === undefined || location.longitude === undefined)
+    return defaultCenter;
 
   if (location.gridref) {
     const gridCenter = getGridSquareCenter(location.gridref);
-    if (gridCenter?.lat && gridCenter?.lng) {
-      return [gridCenter?.lat, gridCenter?.lng];
-    }
+    if (gridCenter) return [gridCenter.lat, gridCenter.lng];
   }
 
   return [location.latitude, location.longitude];
 }
 
 const centerMap = (
-  map: any,
-  location: any,
-  model: any,
+  map: L.Map,
+  location: MapLocation,
+  model: Sample,
   defaultCenter: LatLngExpression,
   defaultZoom?: number
 ) => {
-  const markerBounds = getSquareBounds(location?.gridref);
+  const markerBounds = location.gridref
+    ? getSquareBounds(location.gridref)
+    : null;
   if (markerBounds) {
     map.fitBounds(markerBounds);
-  } else {
-    const normalizedLocation = getLocation(location, model);
-    const center = getCenter(normalizedLocation, defaultCenter);
-    const zoom = defaultZoom; // || getZoom(normalizedLocation);
-    map.setView(center, zoom);
+    return;
   }
+
+  const center = getCenter(getLocation(location, model), defaultCenter);
+  map.setView(center, defaultZoom);
 };
 
 type Props = {
-  model: any;
-  location: any;
-  childLocations: any[];
-  setLocation: any;
-  onGPSClick?: any;
-  onLayersClick?: any;
-  onPastLocationsClick?: any;
+  model: Sample;
+  location: MapLocation;
+  childLocations: Location[];
+  setLocation: (model: Sample, location: Location) => void;
+  onGPSClick?: () => void;
+  onLayersClick?: () => void;
+  onPastLocationsClick?: (() => void) | false;
 };
 
 const Map = ({
@@ -79,12 +80,12 @@ const Map = ({
   location,
   childLocations,
   setLocation,
-  onGPSClick = null,
-  onLayersClick = null,
-  onPastLocationsClick = null,
+  onGPSClick,
+  onLayersClick,
+  onPastLocationsClick,
 }: Props) => {
   const defaultZoom = undefined;
-  const [map, setMap] = useState<any>(null);
+  const [map, setMap] = useState<L.Map | null>(null);
 
   useEffect(() => {
     const mapInstance = L.map('map', { zoomControl: false }).setView(
@@ -97,38 +98,33 @@ const Map = ({
       sample: model,
       map: mapInstance,
       onLayersClick,
-      onPastLocationsClick,
+      onPastLocationsClick: onPastLocationsClick || undefined,
     });
 
     centerMap(mapInstance, location, model, DEFAULT_CENTER, defaultZoom);
     setMap(mapInstance);
 
-    setTimeout(() => {
-      mapInstance.invalidateSize();
-    }, 10);
+    setTimeout(() => mapInstance.invalidateSize(), 10);
   }, []);
 
-  const updateLocation = () => mapHelpers.setCurrentLocation(location);
-  useEffect(updateLocation, [map, location.latitude, location.longitude]);
+  useEffect(() => mapHelpers.setCurrentLocation(location), [map, location]);
 
-  const refreshMap = () => map?.invalidateSize();
+  const refreshMap = () => {
+    map?.invalidateSize();
+  };
   useIonViewDidEnter(refreshMap, [map]);
 
-  const refreshMapOnResize = () => {
+  useEffect(() => {
     window.addEventListener('ionKeyboardDidHide', refreshMap);
-    return () => {
-      window.removeEventListener('ionKeyboardDidHide', refreshMap);
-    };
-  };
-  useEffect(refreshMapOnResize);
+    return () => window.removeEventListener('ionKeyboardDidHide', refreshMap);
+  });
 
-  const centerMapAndMarker = () => {
+  useEffect(() => {
     if (!map) return;
 
     centerMap(map, location, model, DEFAULT_CENTER, defaultZoom);
-    mapHelpers.updateMapMarker(location, true);
-  };
-  useEffect(centerMapAndMarker, [
+    mapHelpers.updateMapMarker(location);
+  }, [
     map,
     location.updateTime,
     location.latitude,
@@ -136,48 +132,43 @@ const Map = ({
     location.geocoded,
   ]);
 
-  const addChildMarkers = () => {
+  useEffect(() => {
     if (!map) return;
 
-    const addChildMarker = (loc: Location) => {
-      const marker = mapHelpers.generateCircleMarker(loc, false, {
-        fillColor: '#00bd1a',
-        color: 'white',
-      });
-      marker.addTo(map);
-    };
-    childLocations.map(addChildMarker);
-  };
-  useEffect(addChildMarkers, [map, childLocations]);
+    childLocations.forEach(childLocation => {
+      mapHelpers
+        .generateCircleMarker(childLocation, false, {
+          fillColor: '#00bd1a',
+          color: 'white',
+        })
+        .addTo(map);
+    });
+  }, [map, childLocations]);
 
-  const updateGPSState = () => {
+  useEffect(() => {
     if (!map) return;
     map.getContainer().classList.toggle('GPStracking', model.isGPSRunning());
-  };
-  useEffect(updateGPSState, [map, model.gps.locating]);
+  }, [map, model.gps.locating]);
 
-  const onMapClick = () => {
-    const onClick = (e: any) => {
-      const selectedLocation: any = {
-        latitude: parseFloat(e.latlng.lat.toFixed(5)),
-        longitude: parseFloat(e.latlng.lng.toFixed(5)),
+  useEffect(() => {
+    if (!map) return undefined;
+
+    const onClick = (event: L.LeafletMouseEvent) => {
+      const selectedLocation: Location = {
+        latitude: Number(event.latlng.lat.toFixed(5)),
+        longitude: Number(event.latlng.lng.toFixed(5)),
         source: 'map',
+        accuracy: mapHelpers._mapZoomToMetres(mapHelpers.getMapZoom()),
       };
-      const zoom = mapHelpers.getMapZoom();
-      selectedLocation.accuracy = mapHelpers._mapZoomToMetres(zoom);
       selectedLocation.gridref = locationToGrid(selectedLocation);
-
       setLocation(model, selectedLocation);
     };
 
-    // using debouncedclick to fix map dragging/zooming and triggering a click
-    const onClickHandler: any = { click: onClick };
-
-    map?.on(onClickHandler);
-
-    return () => map?.off(onClickHandler);
-  };
-  useEffect(onMapClick, [map]);
+    map.on('click', onClick);
+    return () => {
+      map.off('click', onClick);
+    };
+  }, [map]);
 
   return <div id="map" className="model-location-map" />;
 };

@@ -18,19 +18,23 @@ import {
   commentAttr,
   dateAttr,
   recorderAttr,
+  type Attrs,
 } from 'Survey/common/config';
 import { groupIdAttr } from '../config';
 
-const getActionConfig = (attrs: any, action: string) => {
+const getActionConfig = (attrs: Attrs, action: string) => {
   if (action in attrs) return attrs[action];
 
   return Object.values(attrs).find(
-    (config: any) => config?.block?.title?.toLowerCase() === action
+    config =>
+      config &&
+      ('block' in config ? config.block.title : undefined)?.toLowerCase() ===
+        action
   );
 };
 
 type BulkEditModel = {
-  getSurvey: () => { taxa?: string; occ?: { attrs?: any } };
+  getSurvey: () => { taxa?: string; occ?: { attrs?: Attrs } };
 };
 
 export const getBulkEditAttrs = (models: BulkEditModel[]) => {
@@ -52,8 +56,8 @@ export const getBulkEditAttrs = (models: BulkEditModel[]) => {
 
 type Props = {
   sample: Sample;
-  onDelete: any;
-  attachSpeciesImages: any;
+  onDelete: (sample: Sample) => void;
+  attachSpeciesImages: (useCamera: boolean) => void;
   showChildSampleDistanceWarning: boolean;
 };
 
@@ -140,7 +144,7 @@ const HomeMain = ({
 
       <SpeciesList
         sample={sample}
-        onDelete={onDelete}
+        onDelete={model => onDelete(model as Sample)}
         bulkEditAttrs={getBulkEditAttrs}
         useSubSamples
         numberAttrs={[

@@ -1,41 +1,19 @@
-import { BlockT } from 'common/flumens';
+import type { BlockT } from 'common/flumens';
+
+type LockProps = {
+  record: Record<string, unknown>;
+  block: BlockT;
+  survey: string;
+  taxa?: string;
+};
 
 export type LockConfig = {
-  /**
-   * For custom locked value checks. Useful for aggregated attrs like number + ranges.
-   */
-  isLocked?: (props: {
-    record: any;
-    block: BlockT;
-    survey: string;
-    taxa?: string;
-  }) => any;
-  /**
-   * For custom locked value getting. Useful for aggregated attrs like number + ranges.
-   */
-  get?: (props: {
-    record: any;
-    block: BlockT;
-    survey: string;
-    taxa?: string;
-  }) => any;
-  /**
-   * For custom locked value unsetting. Useful for aggregated attrs like number + ranges.
-   */
-  set?: (props: {
-    record: any;
-    block: BlockT;
-    survey: string;
-    taxa?: string;
-    value: any;
-  }) => any;
-  /**
-   * For custom locked value removal. Useful for aggregated attrs like number + ranges.
-   */
-  unset?: (props: {
-    record: any;
-    block: BlockT;
-    survey: string;
-    taxa?: string;
-  }) => any;
+  /** Custom check for aggregated locked values. */
+  isLocked?: (props: LockProps) => boolean;
+  /** Custom getter for aggregated locked values. */
+  get?: (props: LockProps) => unknown;
+  /** Custom setter for aggregated locked values. */
+  set?: (props: LockProps & { value: unknown }) => void;
+  /** Custom removal for aggregated locked values. */
+  unset?: (props: LockProps) => void;
 };

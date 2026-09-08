@@ -7,7 +7,7 @@ import Sample from 'models/sample';
 
 type Props = {
   sample: Sample;
-  onUpload: (e?: any) => void;
+  onUpload: () => void;
   uploadIsPrimary?: boolean;
 };
 

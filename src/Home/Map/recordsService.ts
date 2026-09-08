@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig, type CancelTokenSource } from 'axios';
 import { HandledError, isAxiosNetworkError, ElasticOccurrence } from '@flumens';
 import CONFIG from 'common/config';
 import { matchAppSurveys } from 'common/services/ES';
@@ -54,7 +54,7 @@ const getRecordsQuery = ({
   startDate,
   speciesGroup,
 }: RecordQueryOptions) => {
-  const must: any = [matchAppSurveys, notTraining];
+  const must: Record<string, unknown>[] = [matchAppSurveys, notTraining];
 
   if (startDate) {
     must.push({
@@ -90,7 +90,7 @@ const getRecordsQuery = ({
   });
 };
 
-let requestCancelToken: any;
+let requestCancelToken: CancelTokenSource | undefined;
 
 export async function fetchRecords(
   options: RecordQueryOptions
@@ -113,19 +113,20 @@ export async function fetchRecords(
     data: getRecordsQuery(options),
   };
 
-  let records = [];
+  let records: ElasticOccurrence[] = [];
 
   try {
-    const res = await axios(OPTIONS);
-    const getSource = (hit: any): ElasticOccurrence => hit._source;
-    const data = res.data.hits.hits.map(getSource);
+    const { data: response } = await axios<{
+      hits: { hits: { _source: ElasticOccurrence }[] };
+    }>(OPTIONS);
+    const data = response.hits.hits.map(hit => hit._source);
     // TODO: validate the response is correct
 
     records = data;
-  } catch (error: any) {
+  } catch (error) {
     if (axios.isCancel(error)) return null;
 
-    if (isAxiosNetworkError(error))
+    if (axios.isAxiosError(error) && isAxiosNetworkError(error))
       throw new HandledError(
         'Request aborted because of a network issue (timeout or similar).'
       );
@@ -151,7 +152,7 @@ const getSquaresQuery = ({
   startDate,
   speciesGroup,
 }: SquareQueryOptions) => {
-  const must: any = [matchAppSurveys, notTraining];
+  const must: Record<string, unknown>[] = [matchAppSurveys, notTraining];
 
   if (startDate) {
     must.push({
@@ -170,8 +171,6 @@ const getSquaresQuery = ({
   }
 
   const squareSizeInKm = squareSize / 1000;
-
-  /* eslint-disable @typescript-eslint/naming-convention */
   return JSON.stringify({
     size: 0,
     query: {
@@ -202,7 +201,6 @@ const getSquaresQuery = ({
     },
     sort: [{ 'event.date_start': 'desc' }],
   });
-  /* eslint-enable @typescript-eslint/naming-convention */
 };
 
 export async function fetchSquares(
@@ -226,16 +224,20 @@ export async function fetchSquares(
     data: getSquaresQuery(options),
   };
 
-  let records = [];
+  let response: {
+    aggregations?: {
+      by_srid?: {
+        buckets: { by_square?: { buckets: Omit<Square, 'size'>[] } }[];
+      };
+    };
+  } = {};
 
   try {
-    const { data } = await axios(OPTIONS);
-
-    records = data;
-  } catch (error: any) {
+    ({ data: response } = await axios<typeof response>(OPTIONS));
+  } catch (error) {
     if (axios.isCancel(error)) return null;
 
-    if (isAxiosNetworkError(error))
+    if (axios.isAxiosError(error) && isAxiosNetworkError(error))
       throw new HandledError(
         'Request aborted because of a network issue (timeout or similar).'
       );
@@ -243,13 +245,13 @@ export async function fetchSquares(
     throw error;
   }
 
-  const addSize = (square: Square): Square => ({
+  const addSize = (square: Omit<Square, 'size'>): Square => ({
     ...square,
     size: options.squareSize,
   });
 
   const squares =
-    records?.aggregations?.by_srid?.buckets[0]?.by_square?.buckets.map(addSize);
+    response.aggregations?.by_srid?.buckets[0]?.by_square?.buckets.map(addSize);
 
   return squares || [];
 }

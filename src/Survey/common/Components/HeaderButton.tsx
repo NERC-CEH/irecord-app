@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { Button } from '@flumens';
 
 type Props = {
   children: ReactNode;
-  onClick: any;
+  onClick: ComponentProps<typeof Button>['onPress'];
   isInvalid?: boolean;
   className?: string;
   fill?: 'outline' | 'solid' | 'clear';

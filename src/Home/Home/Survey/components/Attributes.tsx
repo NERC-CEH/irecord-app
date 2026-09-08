@@ -12,11 +12,12 @@ const Attributes = ({ occ }: Props) => {
   if (!occ) return null;
 
   const survey = occ.parent!.getSurvey();
-  const blocks = survey.occ?.render || [];
+  const render = survey.occ?.render;
+  const blocks = typeof render === 'function' ? render(occ) : render || [];
   const getAttribute = (title: string) => {
-    const block = blocks.find((attr: any) => attr.title === title);
+    const block = blocks.find(attr => attr.title === title);
     const rawValue =
-      block?.type === 'group' ? occ.data : (occ.data as any)[block?.id];
+      block?.type === 'group' ? occ.data : occ.data[block?.id || ''];
     return {
       block,
       value: block && limit(getPrettyBlockValue(rawValue, block)),

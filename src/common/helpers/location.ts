@@ -1,8 +1,11 @@
-import { isValidLocation, locationToGrid, Location } from '@flumens';
+import { isValidLocation, locationToGrid, type Location } from '@flumens';
 
-// eslint-disable-next-line import-x/prefer-default-export
-export const printLocation = (location: Location) => {
-  if (!isValidLocation(location)) return '';
+export const hasCoordinates = (
+  location?: Partial<Location>
+): location is Location => isValidLocation(location as Location);
+
+export const printLocation = (location: Partial<Location>) => {
+  if (!hasCoordinates(location)) return '';
 
   if (location.gridref) {
     let { accuracy } = location;
@@ -18,15 +21,15 @@ export const printLocation = (location: Location) => {
     // check if location is within UK
     let prettyLocation = locationToGrid(location);
     if (!prettyLocation) {
-      prettyLocation = `${parseFloat(location.latitude as any).toFixed(
-        4
-      )}, ${parseFloat(location.longitude as any).toFixed(4)}`;
+      prettyLocation = `${Number(location.latitude).toFixed(4)}, ${Number(
+        location.longitude
+      ).toFixed(4)}`;
     }
 
     return prettyLocation;
   }
 
-  return `${parseFloat(location.latitude as any).toFixed(4)}, ${parseFloat(
-    location.longitude as any
+  return `${Number(location.latitude).toFixed(4)}, ${Number(
+    location.longitude
   ).toFixed(4)}`;
 };

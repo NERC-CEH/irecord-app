@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, type ComponentType } from 'react';
 import { useRouteMatch } from 'react-router';
 import { useAlert } from '@flumens';
 import { NavContext, IonPage } from '@ionic/react';
@@ -8,7 +8,7 @@ import './styles.scss';
 
 type Props = {
   survey: Survey;
-  SurveyCreatePage?: any;
+  SurveyCreatePage?: ComponentType;
 };
 
 function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
@@ -37,13 +37,9 @@ function StartNewSurvey({ survey, SurveyCreatePage }: Props) {
   return <IonPage id="start-new-survey" />;
 }
 
-StartNewSurvey.with = (survey: Survey, SurveyCreatePage?: any) => {
-  const StartNewSurveyWithRouter = (params: any) => (
-    <StartNewSurvey
-      survey={survey}
-      SurveyCreatePage={SurveyCreatePage}
-      {...params}
-    />
+StartNewSurvey.with = (survey: Survey, SurveyCreatePage?: ComponentType) => {
+  const StartNewSurveyWithRouter = () => (
+    <StartNewSurvey survey={survey} SurveyCreatePage={SurveyCreatePage} />
   );
   return StartNewSurveyWithRouter;
 };

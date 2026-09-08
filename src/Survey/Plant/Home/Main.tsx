@@ -24,8 +24,8 @@ import {
 
 type Props = {
   sample: Sample;
-  onDelete: any;
-  attachSpeciesImages: any;
+  onDelete: (sample: Sample) => void;
+  attachSpeciesImages: (useCamera: boolean) => void;
   showChildSampleDistanceWarning: boolean;
 };
 
@@ -111,7 +111,7 @@ const PlantHomeMain = ({
 
       <SpeciesList
         sample={sample}
-        onDelete={onDelete}
+        onDelete={model => onDelete(model as Sample)}
         useSubSamples
         bulkEditAttrs={getBulkEditAttrs}
         numberAttrs={[abundanceAttr]}

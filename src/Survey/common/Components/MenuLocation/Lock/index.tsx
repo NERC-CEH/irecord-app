@@ -29,7 +29,7 @@ export type Props = {
 };
 
 const Lock = ({ survey, taxa, sample, label }: Props) => {
-  const sliderRef = useRef<any>(null);
+  const sliderRef = useRef<HTMLIonItemSlidingElement>(null);
   const toast = useToast();
   const alert = useAlert();
 
@@ -65,7 +65,7 @@ const Lock = ({ survey, taxa, sample, label }: Props) => {
 
       return;
     }
-    sliderRef.current.close();
+    sliderRef.current?.close();
 
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
@@ -76,7 +76,7 @@ const Lock = ({ survey, taxa, sample, label }: Props) => {
 
     if (!canLockLocation) return;
 
-    const clonedLocation = JSON.parse(JSON.stringify(location));
+    const clonedLocation = structuredClone(location);
 
     toast.success(
       'The attribute value was locked and will be pre-filled for subsequent records.',
@@ -90,7 +90,7 @@ const Lock = ({ survey, taxa, sample, label }: Props) => {
   };
 
   const toggleNameLockWrap = () => {
-    sliderRef.current.close();
+    sliderRef.current?.close();
 
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 

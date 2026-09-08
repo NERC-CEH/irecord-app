@@ -21,7 +21,7 @@ import {
   Survey,
   taxonAttr,
 } from 'Survey/common/config';
-import { defaultSensitivityPrecisionAttr } from './common';
+import { choicePlaceholder, defaultSensitivityPrecisionAttr } from './common';
 
 /** @deprecated */
 export const butterflySexAttrOld = {
@@ -119,7 +119,7 @@ export const butterflyNumberRangesAttr = {
   id: 'occAttr:203',
   type: 'choiceInput',
   choices: [
-    { isPlaceholder: true, title: 'Ranges' } as any,
+    choicePlaceholder('Ranges'),
     { dataName: '', title: 'Not Recorded' },
     { title: '1', dataName: '2402' },
     { title: '2-9', dataName: '2404' },
@@ -129,7 +129,7 @@ export const butterflyNumberRangesAttr = {
   ],
   onChange: (val, _, { record, history }) => {
     record[butterflyNumberRangesAttr.id] = val;
-    delete record[butterflyNumberAttr.id]; // eslint-disable-line @typescript-eslint/no-use-before-define
+    delete record[butterflyNumberAttr.id];
     history.goBack();
   },
 } as const satisfies ChoiceInputConf;
@@ -239,7 +239,7 @@ const survey: Partial<Survey> & { taxa: string } = {
 
     attrs: occAttrs,
 
-    verify: (attrs: any) =>
+    verify: attrs =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
         [butterflyStageAttr.id]: string({

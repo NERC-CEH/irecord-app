@@ -1,12 +1,11 @@
 import { useContext } from 'react';
 import { Trans as T } from 'react-i18next';
-import { TypeOf } from 'zod';
 import { useToast, useLoader, Page, Header, device, useAlert } from '@flumens';
 import { NavContext } from '@ionic/react';
-import userModel, { UserModel } from 'models/user';
+import userModel from 'models/user';
 import Main from './Main';
 
-type Details = TypeOf<typeof UserModel.loginSchema>;
+type Details = { email: string };
 
 const LoginController = () => {
   const { navigate } = useContext(NavContext);
@@ -45,8 +44,8 @@ const LoginController = () => {
           },
         ],
       });
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error : String(error));
     }
 
     loader.hide();

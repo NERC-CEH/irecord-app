@@ -9,18 +9,20 @@ import {
   captureImage,
   useSample,
   useRemoteSample,
+  HandledError,
 } from '@flumens';
 import { NavContext, isPlatform } from '@ionic/react';
 import distance from '@turf/distance';
 import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
+import { hasCoordinates } from 'common/helpers/location';
 import appModel from 'common/models/app';
 import Media from 'common/models/media';
 import Sample, { useValidateCheck } from 'models/sample';
 import userModel, { useUserStatusCheck } from 'models/user';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
-import surveyConfig, { Data } from '../config';
+import surveyConfig from '../config';
 import Main from './Main';
 import './styles.scss';
 
@@ -34,7 +36,7 @@ const PlantHome = () => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
 
-  let { sample } = useSample<Sample<Data>>();
+  let { sample } = useSample<Sample>();
   sample = useRemoteSample(sample, () => userModel.isLoggedIn(), Sample);
   const checkSampleStatus = useValidateCheck(sample);
   const checkUserStatus = useUserStatusCheck();
@@ -81,14 +83,19 @@ const PlantHome = () => {
 
   const { location } = sample.data;
 
-  const isLocationFurtherThan5000m = (smp: Sample) =>
-    distance(
-      [location?.latitude, location?.longitude],
-      [smp.data.location?.latitude, smp.data.location?.longitude],
-      {
-        units: 'meters',
-      }
-    ) > 5000;
+  const isLocationFurtherThan5000m = (smp: Sample) => {
+    const childLocation = smp.data.location;
+    if (!hasCoordinates(location) || !hasCoordinates(childLocation))
+      return false;
+
+    return (
+      distance(
+        [location.latitude, location.longitude],
+        [childLocation.latitude, childLocation.longitude],
+        { units: 'meters' }
+      ) > 5000
+    );
+  };
   const showChildSampleDistanceWarning = sample.samples.some(
     isLocationFurtherThan5000m
   );
@@ -103,12 +110,12 @@ const PlantHome = () => {
 
     const imageArray = Array.isArray(images) ? images : [images];
 
-    const subSamplePromise = imageArray.map(async (img: any) => {
-      const imageModel: any = await Media.getImageModel(
+    const subSamplePromise = imageArray.map(async img => {
+      const imageModel = (await Media.getImageModel(
         isPlatform('hybrid') ? Capacitor.convertFileSrc(img) : img,
         config.dataPath,
         true
-      );
+      )) as Media;
 
       const subSample = await surveyConfig.smp.create({
         surveySample: sample!,
@@ -116,8 +123,8 @@ const PlantHome = () => {
       });
 
       if (shouldAutoID()) {
-        const processError = (error: any) =>
-          !error.isHandled && console.error(error); // don't toast this to user
+        const processError = (error: unknown) =>
+          !(error instanceof HandledError) && console.error(error); // don't toast this to user
         subSample.occurrences[0].identify('plant').catch(processError);
       }
 

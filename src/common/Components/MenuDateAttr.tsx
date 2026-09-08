@@ -4,8 +4,8 @@ import { DatetimeButton, type DatetimeButtonProps } from '@flumens';
 import { IonIcon, IonItem, IonLabel } from '@ionic/react';
 
 type Props = {
-  label: any;
-  icon?: any;
+  label: string;
+  icon?: string;
 } & DatetimeButtonProps;
 
 const MenuDateAttr = ({

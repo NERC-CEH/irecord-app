@@ -7,6 +7,7 @@ import {
   saveFile,
   deleteFile,
   device,
+  HandledError,
 } from '@flumens';
 import { isPlatform } from '@ionic/react';
 import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
@@ -20,12 +21,19 @@ import SurveyButton from './SurveyButton';
 
 type URL = string;
 
+type Props = {
+  onPrimarySurvey: (sampleId?: string) => void;
+  onListSurvey: () => void;
+  onMothSurvey: () => void;
+  onPlantSurvey: () => void;
+};
+
 const SurveyButtonWithImagePicker = ({
   onPrimarySurvey,
   onListSurvey,
   onMothSurvey,
   onPlantSurvey,
-}: any) => {
+}: Props) => {
   const [editImage, setEditImage] = useState<Media>();
   const toast = useToast();
 
@@ -43,8 +51,8 @@ const SurveyButtonWithImagePicker = ({
       userModel.isLoggedIn() &&
       userModel.data.verified;
     if (shouldAutoID) {
-      const processError = (error: any) =>
-        !error.isHandled && console.error(error); // don't toast this to user
+      const processError = (error: unknown) =>
+        !(error instanceof HandledError) && console.error(error); // don't toast this to user
       sample.occurrences[0].identify().catch(processError);
     }
 
@@ -60,14 +68,12 @@ const SurveyButtonWithImagePicker = ({
       if (!photoURLs.length) return;
 
       const getImageModel = async (imageURL: URL) =>
-        Media.getImageModel(
+        (await Media.getImageModel(
           isPlatform('hybrid') ? Capacitor.convertFileSrc(imageURL) : imageURL,
           config.dataPath,
           true
-        );
-      const imageModels: Media[] = await Promise.all<any>(
-        photoURLs.map(getImageModel)
-      );
+        )) as Media;
+      const imageModels = await Promise.all(photoURLs.map(getImageModel));
 
       if (imageModels.length !== 1) {
         onPrimarySurveyWrap(imageModels);
@@ -75,17 +81,19 @@ const SurveyButtonWithImagePicker = ({
       }
 
       setEditImage(imageModels[0]);
-    } catch (e: any) {
-      toast.error(e);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
   }
 
   const onDoneEdit = async (imageDataURL: URL) => {
-    const image = editImage as Media;
+    if (!editImage) return;
+    const image = editImage;
 
     // overwrite existing file
-    const oldFileName: string = image?.getURL().split('/').pop() as string;
-    const extension = oldFileName.split('.').pop() as string;
+    const oldFileName = image.getURL().split('/').pop();
+    if (!oldFileName) throw new Error('Image filename is missing.');
+    const extension = oldFileName.split('.').pop() || 'jpg';
     const newFileName = `${Date.now()}.${extension}`;
 
     await deleteFile(oldFileName);
@@ -93,11 +101,11 @@ const SurveyButtonWithImagePicker = ({
     const savedURL = await saveFile(imageDataURL, newFileName);
 
     // copy over new image values to existing model to preserve its observability
-    const newImageModel: any = await Media.getImageModel(
+    const newImageModel = (await Media.getImageModel(
       isPlatform('hybrid') ? Capacitor.convertFileSrc(savedURL) : savedURL,
       config.dataPath,
       true
-    );
+    )) as Media;
     Object.assign(image?.data, { ...newImageModel.data, species: null });
 
     setEditImage(undefined);

@@ -23,6 +23,16 @@ const PlantOccurrenceHome = () => {
   const survey = sample.getSurvey();
   const subSampleSurvey = subSample.getSurvey();
   const [occ] = subSample.occurrences;
+  if (!occ) return null;
+
+  const sampleRender =
+    typeof subSampleSurvey.render === 'function'
+      ? subSampleSurvey.render(subSample)
+      : subSampleSurvey.render;
+  const occurrenceRender =
+    typeof subSampleSurvey.occ?.render === 'function'
+      ? subSampleSurvey.occ.render(occ)
+      : subSampleSurvey.occ?.render;
   const { isDisabled } = subSample;
 
   return (
@@ -44,7 +54,7 @@ const PlantOccurrenceHome = () => {
           <div className="rounded-list">
             <MenuTaxonItem occ={occ} />
             <MenuLocation sample={subSample} skipName isRequired={false} />
-            {subSampleSurvey.render?.map((attr: any) => (
+            {sampleRender?.map(attr => (
               <MenuDynamicAttr
                 key={attr.id}
                 model={subSample}
@@ -53,7 +63,7 @@ const PlantOccurrenceHome = () => {
                 taxa={subSampleSurvey.taxa}
               />
             ))}
-            {subSampleSurvey.occ?.render?.map((attr: any) => (
+            {occurrenceRender?.map(attr => (
               <MenuDynamicAttr
                 key={attr.id}
                 model={occ}

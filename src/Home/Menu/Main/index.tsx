@@ -16,6 +16,7 @@ import { Main, InfoMessage } from '@flumens';
 import { IonIcon, IonList, IonItem, IonButton } from '@ionic/react';
 import config from 'common/config';
 import { AppModel } from 'models/app';
+import type { Data as UserData } from 'models/user';
 import appLogo from './logo.svg';
 import './styles.scss';
 
@@ -36,11 +37,11 @@ import './styles.scss';
 // };
 
 type Props = {
-  logOut: any;
-  refreshAccount: any;
-  resendVerificationEmail: any;
+  logOut: () => void;
+  refreshAccount: () => void;
+  resendVerificationEmail: () => void;
   isLoggedIn: boolean;
-  user: any;
+  user: UserData;
   appModel: AppModel;
 };
 
@@ -88,14 +89,13 @@ const MenuMain = ({
               <IonIcon icon={exitOutline} size="small" slot="start" />
               <T>Logout</T>
               {': '}
-              {user.firstName} {user.secondName}
+              {String(user.firstName || '')} {String(user.secondName || '')}
             </IonItem>
           )}
 
           {isLoggedIn && isNotVerified && (
             <InfoMessage className="verification-warning">
-              Looks like your <b>{{ userEmail } as any}</b> email hasn't been
-              verified yet.
+              Looks like your <b>{userEmail}</b> email hasn't been verified yet.
               <div>
                 <IonButton fill="outline" onClick={refreshAccount}>
                   Refresh

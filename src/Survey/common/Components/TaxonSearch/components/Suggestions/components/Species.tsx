@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import clsx from 'clsx';
 import { createOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
@@ -25,7 +26,7 @@ function prettifyName(
     ? species.commonNames[species.foundInName as number]
     : species.scientificName;
 
-  let primaryName: any = name;
+  let primaryName: ReactNode = name;
   if (searchPhrase) {
     const searchPos = name.toLowerCase().indexOf(searchPhrase);
     if (searchPos >= 0) {
@@ -69,7 +70,10 @@ function prettifyName(
 type Props = {
   species: Taxon | ClassifierSuggestion;
   searchPhrase?: string;
-  onSelect: any;
+  onSelect: (
+    species: Taxon | ClassifierSuggestion,
+    editBtnClicked?: boolean
+  ) => void;
   showEditButton?: boolean;
 };
 
@@ -80,7 +84,7 @@ const Species = ({
   onSelect,
 }: Props) => {
   const prettyName = prettifyName(species, searchPhrase);
-  const group = (informalGroups as any)[species.group];
+  const group = informalGroups[species.group as keyof typeof informalGroups];
 
   let probability;
   if ('probability' in species) {

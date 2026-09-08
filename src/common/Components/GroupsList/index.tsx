@@ -12,7 +12,7 @@ import { useUserStatusCheck } from 'models/user';
 import List from './List';
 
 type Props = {
-  currentValue?: any;
+  currentValue?: string;
   allowToJoin?: boolean;
   onSelect?: (groupId: string) => void;
 };
@@ -30,7 +30,8 @@ const GroupsList = ({
   groups.length; // to force refresh when groups list is updated
 
   const currentValue =
-    currentValueProp || appModel.locks.get('default', 'all', 'smp', 'groupId');
+    currentValueProp ||
+    appModel.locks.get<string>('default', 'all', 'smp', 'groupId');
 
   const joinGroup = async (group: Group) => {
     console.log('Activities joining', group.id);
@@ -49,8 +50,8 @@ const GroupsList = ({
       });
 
       toast.success('Successfully joined the activity.');
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
 
     loader.hide();
@@ -77,8 +78,8 @@ const GroupsList = ({
       );
 
       toast.success('Successfully left the activity.');
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
 
     loader.hide();
@@ -105,15 +106,15 @@ const GroupsList = ({
           form: ['enter-app-record'],
         });
       }
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
 
     loader.hide();
   };
 
   const byTitle = (group1: Group, group2: Group) =>
-    group1.data.title?.localeCompare(group2.data.title);
+    group1.data.title.localeCompare(group2.data.title);
 
   const memberGroups = groups
     .filter(byGroupMembershipStatus('member'))

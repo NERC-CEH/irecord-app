@@ -1,6 +1,6 @@
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useCallback,
   useContext,
   useMemo,
@@ -9,22 +9,45 @@ import {
 import { chevronDownSharp, listOutline } from 'ionicons/icons';
 import { CheckboxGroup } from 'react-aria-components';
 import { Trans as T, useTranslation } from 'react-i18next';
-import { AttrProps, Button, useAlert, useToast } from '@flumens';
+import {
+  type AttrProps,
+  Button,
+  useAlert,
+  useToast,
+  type Choice,
+} from '@flumens';
 import { IonIcon, IonActionSheet } from '@ionic/react';
 import Occurrence from 'common/models/occurrence';
 import Sample from 'common/models/sample';
 import EditModal from './EditModal';
 
-type ValueEditConfig = AttrProps & { attrConfig: any; title?: string };
+type EditableBlock = {
+  id: string;
+  title?: string;
+  type?: string;
+  choices?: readonly Choice[];
+};
+
+type BulkAttrConfig = Partial<EditableBlock> & {
+  block?: EditableBlock;
+  pageProps?: { attrProps?: AttrProps };
+};
+
+type ValueEditConfig = AttrProps & {
+  attrConfig: BulkAttrConfig;
+  title?: string;
+};
 
 const getValueConfig = (
-  config: any,
+  config: BulkAttrConfig,
   action: string
 ): ValueEditConfig | null => {
   const block = config.block || config;
+  if (!block.id) return null;
+
   if (!block.type && config.pageProps?.attrProps)
     return {
-      ...(config.pageProps.attrProps as AttrProps),
+      ...config.pageProps.attrProps,
       attrConfig: config,
       attr: action,
       title: config.title || action,
@@ -37,7 +60,7 @@ const getValueConfig = (
       title: block.title,
       input: 'radio',
       inputProps: {
-        options: block.choices.map(({ dataName, title }: any) => ({
+        options: block.choices!.map(({ dataName, title }) => ({
           value: dataName,
           label: title || dataName,
         })),
@@ -83,15 +106,14 @@ function useDeletePrompt() {
   return showDeleteOccurrenceDialog;
 }
 
-export type Action = string;
 type Models = (Sample | Occurrence)[];
-type Attrs = Record<Action, any>;
+type Attrs = Record<string, BulkAttrConfig>;
 export type BulkEditAttrs = Attrs | ((models: Models) => Attrs);
 
 export type OnBulkEdit = (
-  attrConfig: any,
+  attrConfig: BulkAttrConfig | undefined,
   models: Models,
-  value?: any
+  value?: unknown
 ) => void | Promise<void>;
 
 const onBulkEditDefault: OnBulkEdit = async (attrConfig, models, value) => {
@@ -101,13 +123,15 @@ const onBulkEditDefault: OnBulkEdit = async (attrConfig, models, value) => {
   }
 
   const attr = attrConfig.block || attrConfig;
+  if (!attr.id) return;
+  const { id } = attr;
+
   await Promise.all(
     models.map(async model => {
       const target = model instanceof Sample ? model.occurrences[0] : model;
       if (!target) return;
 
-      // eslint-disable-next-line no-param-reassign
-      (target.data as any)[attr.id] = value;
+      target.data[id] = value;
       await target.save();
     })
   );
@@ -154,7 +178,7 @@ const Control = () => {
 
   const onToggleAll = () =>
     !bulkEditItems.length
-      ? setBulkEditItems(models.map((m: any) => m.cid))
+      ? setBulkEditItems(models.map(model => model.cid))
       : setBulkEditItems([]);
 
   const showBulkActions = () => setIsOpen(true);
@@ -240,7 +264,7 @@ const BulkEdit = ({
     setIsBulkEditing(false);
   }, [onEditChange]);
 
-  const processBulkAction = async (action: Action) => {
+  const processBulkAction = async (action: string) => {
     if (action === 'delete') {
       const shouldDelete = await showDeleteConfirmation();
       if (!shouldDelete) return;
@@ -267,7 +291,7 @@ const BulkEdit = ({
     setValueEditConfig({ ...nextValueConfig, attrConfig: config });
   };
 
-  const onNewValueSave = async (newValue?: any) => {
+  const onNewValueSave = async (newValue?: unknown) => {
     if (newValue !== undefined) {
       await onBulkEdit(valueEditConfig!.attrConfig, selectedModels, newValue);
       onCancelBulkEdit();
@@ -275,10 +299,12 @@ const BulkEdit = ({
     setValueEditConfig(undefined);
   };
 
-  const onActionSheetDismiss = async (event: any) => {
+  const onActionSheetDismiss = async (
+    event: CustomEvent<{ data?: { action?: string } }>
+  ) => {
     setIsOpen(false);
-    const action = event.detail.data?.action as Action;
-    if (action !== 'cancel') processBulkAction(action);
+    const action = event.detail.data?.action;
+    if (action && action !== 'cancel') processBulkAction(action);
   };
 
   const contextValue = useMemo(
@@ -315,12 +341,10 @@ const BulkEdit = ({
         isOpen={isOpen}
         header="Bulk edit actions"
         buttons={[
-          ...Object.entries(availableAttrs).map(
-            ([action, config]: [string, any]) => ({
-              text: t(config.block?.title || config.title || action),
-              data: { action },
-            })
-          ),
+          ...Object.entries(availableAttrs).map(([action, config]) => ({
+            text: t(config?.block?.title || config?.title || action),
+            data: { action },
+          })),
           {
             text: t('Delete'),
             role: 'destructive',

@@ -76,7 +76,7 @@ function searchGeneraDictionary(
   results: Taxon[],
   genera: Genera,
   maxResults: number,
-  informalGroupsMatch: any,
+  informalGroupsMatch: (genus: Genus) => boolean,
   firstWord: string,
   firstWordRegex: RegExp,
   otherWordsRegex?: RegExp

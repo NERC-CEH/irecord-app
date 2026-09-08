@@ -54,7 +54,7 @@ const survey: Partial<Survey> & { taxa: string } = {
     ],
     skipAutoIncrement: true,
     attrs: occAttrs,
-    verify: (values: any) =>
+    verify: values =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
         [abundanceAttr.id]: abundanceSchema,

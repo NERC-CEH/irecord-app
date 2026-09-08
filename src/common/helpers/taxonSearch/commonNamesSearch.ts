@@ -66,7 +66,7 @@ function addToResults(results: Taxon[], genus: Genus, p: NamePointer) {
   if (isGenusPointer(p)) {
     addGenusToResults(results, genus, p);
   } else {
-    addSpeciesToResults(results, genus, p as CommonNamePointer);
+    addSpeciesToResults(results, genus, p);
   }
 }
 
@@ -77,7 +77,7 @@ function getNameFromPointer(genus: Genus, p: NamePointer) {
     return genus[GENUS_NAMES_INDEX]![nameIndex];
   }
 
-  const commonNamePointer = p as CommonNamePointer;
+  const commonNamePointer = p;
   const speciesIndex = commonNamePointer[1];
   const nameIndex = commonNamePointer[2];
   const speciesEntry = genus[GENUS_SPECIES_INDEX]![speciesIndex];

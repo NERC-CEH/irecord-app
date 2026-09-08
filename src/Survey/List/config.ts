@@ -7,7 +7,7 @@ import {
 import gridAlertService from 'common/helpers/gridAlertService';
 import Occurrence, { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
-import Sample from 'models/sample';
+import Sample, { type Data as AppSampleData } from 'models/sample';
 import userModel from 'models/user';
 import defaultSurvey, { getTaxaGroupSurvey } from 'Survey/Default/config';
 import {
@@ -119,7 +119,7 @@ const survey = {
     },
   },
 
-  verify: (values: any) =>
+  verify: values =>
     object({
       location: locationAttrValidator(),
       locationName: string({ error: 'Location name is missing' }).min(
@@ -142,22 +142,29 @@ const survey = {
     }
 
     // get the groupId from the appModel, which is locked to the default value for this survey
-    const groupId = appModel.locks.get('default', 'all', 'smp', 'groupId');
+    const lockedGroupId = appModel.locks.get(
+      'default',
+      'all',
+      'smp',
+      'groupId'
+    );
+    const groupId =
+      typeof lockedGroupId === 'string' ? lockedGroupId : undefined;
 
-    const sample = new Sample<Data>({
-      data: {
-        surveyId: SURVEY_ID,
-        inputForm: SURVEY_WEBFORM,
-        date: dateFormatISO.format(new Date()),
-        enteredSrefSystem: 4326,
-        location: {},
-        groupId,
-      },
-    });
+    const data: AppSampleData = {
+      surveyId: SURVEY_ID,
+      inputForm: SURVEY_WEBFORM,
+      date: dateFormatISO.format(new Date()),
+      enteredSrefSystem: 4326,
+      location: {},
+      groupId,
+    };
+    const sample = new Sample({ data });
     sample.data[recorderAttr.id] = recorder;
 
     const { useGridNotifications } = appModel.data;
-    if (useGridNotifications) gridAlertService.start(sample.cid, alert);
+    if (useGridNotifications && alert)
+      gridAlertService.start(sample.cid, alert);
 
     return Promise.resolve(sample);
   },

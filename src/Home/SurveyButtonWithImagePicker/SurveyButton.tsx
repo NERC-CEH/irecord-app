@@ -16,12 +16,12 @@ const vibrate = () =>
   isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
 type Props = {
-  onPrimarySurvey: any;
-  onListSurvey: any;
-  onPlantSurvey: any;
-  onMothSurvey: any;
-  onCameraSurveyStart: any;
-  onGallerySurveyStart: any;
+  onPrimarySurvey: () => void;
+  onListSurvey: () => void;
+  onPlantSurvey: () => void;
+  onMothSurvey: () => void;
+  onCameraSurveyStart: () => void;
+  onGallerySurveyStart: () => void;
 };
 
 const SurveyButton = ({

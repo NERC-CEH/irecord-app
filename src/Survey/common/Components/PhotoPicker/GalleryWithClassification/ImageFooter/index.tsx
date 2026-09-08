@@ -1,16 +1,17 @@
 import { observer } from 'mobx-react';
 import { cropOutline, trashBinOutline } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
-import { Button, Occurrence, usePhotoDeletePrompt } from 'common/flumens';
+import { Button, usePhotoDeletePrompt } from 'common/flumens';
 import Media from 'models/media';
+import Occurrence, { type Taxon } from 'models/occurrence';
 import SpeciesSuggestions from './SpeciesSuggestions';
 
 type Props = {
-  onCrop: any;
-  onDelete: any;
+  onCrop: (media: Media) => void;
+  onDelete: (media: Media) => void | Promise<void>;
   image: Media;
-  identifySpecies?: any;
-  onSpeciesSelect: any;
+  identifySpecies?: (manualTrigger?: boolean) => void;
+  onSpeciesSelect: (taxon: Taxon) => void;
 };
 
 const ImageFooter = ({

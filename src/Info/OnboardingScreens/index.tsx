@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { arrowForward, checkmarkOutline } from 'ionicons/icons';
 import SwiperCore from 'swiper';
@@ -22,7 +22,7 @@ import welcomeBackground4 from './images/welcome_4.jpg';
 import './styles.scss';
 
 type Props = {
-  children: any;
+  children: ReactNode;
 };
 
 const OnBoardingScreens = ({ children }: Props) => {

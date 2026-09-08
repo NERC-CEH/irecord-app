@@ -1,6 +1,7 @@
-import { useState, ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 import { informationCircleOutline } from 'ionicons/icons';
+import type { PressEvent } from 'react-aria-components';
 import { Trans as T } from 'react-i18next';
 import { Button } from '@flumens';
 import { IonContent, IonPopover, IonIcon } from '@ionic/react';
@@ -12,12 +13,16 @@ type Props = {
 };
 
 const Tooltip = ({ children, className }: Props) => {
-  const [infoState, setInfoState] = useState<any>({
+  const [infoState, setInfoState] = useState<{
+    showInfo: boolean;
+    event?: PressEvent;
+  }>({
     showInfo: false,
     event: undefined,
   });
 
-  const showInfo = (e: any) => setInfoState({ showInfo: true, event: e });
+  const showInfo = (event: PressEvent) =>
+    setInfoState({ showInfo: true, event });
   const hideInfo = () => setInfoState({ showInfo: false, event: undefined });
 
   return (

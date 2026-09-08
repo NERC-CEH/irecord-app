@@ -14,7 +14,7 @@ const { AttrPageFromRoute } = AttrPage;
 const baseURL = `/survey/${survey.name}`;
 
 const routes = [
-  [baseURL, StartNewSurvey.with(survey), true],
+  [baseURL, StartNewSurvey.with(survey)],
   [`${baseURL}/:smpId`, Home],
   [`${baseURL}/:smpId/:attr`, withSample(AttrPageFromRoute)],
   [`${baseURL}/:smpId/location`, Location],
@@ -28,8 +28,8 @@ const routes = [
     withSample(AttrPageFromRoute),
   ],
   [`${baseURL}/:smpId/smp/:subSmpId/occ/:occId/taxon`, Taxon],
-].map(([route, component]: any) => (
+] as const;
+
+export default routes.map(([route, component]) => (
   <Route key={route} path={route} component={component} exact />
 ));
-
-export default routes;

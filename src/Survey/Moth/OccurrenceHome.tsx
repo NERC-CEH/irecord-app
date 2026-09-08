@@ -2,16 +2,18 @@ import { observer } from 'mobx-react';
 import { Page, Header, Main, useSample } from '@flumens';
 import { IonList } from '@ionic/react';
 import Occurrence from 'models/occurrence';
+import Sample from 'models/sample';
 import MenuDynamicAttr from 'Survey/common/Components/MenuDynamicAttr';
 import PhotoPicker from 'Survey/common/Components/PhotoPicker';
 import VerificationMessage from 'Survey/common/Components/VerificationMessage';
 import surveyConfig from './config';
 
 const MothOccurrenceHome = () => {
-  const { occurrence } = useSample<any, Occurrence>();
+  const { occurrence } = useSample<Sample, Occurrence>();
   if (!occurrence) return null;
 
   const { isDisabled } = occurrence;
+  const blocks = surveyConfig.occ.render;
 
   return (
     <Page id="survey-default-edit">
@@ -29,7 +31,7 @@ const MothOccurrenceHome = () => {
           </div>
 
           <div className="rounded-list">
-            {surveyConfig.occ.render?.map((config: any) => (
+            {blocks?.map(config => (
               <MenuDynamicAttr
                 key={config.id}
                 model={occurrence}

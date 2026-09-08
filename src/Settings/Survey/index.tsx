@@ -12,9 +12,9 @@ const GridType = () => {
 
   const message = 'Please pick your grid square unit.';
 
-  const values = Object.keys(gridrefAccuracy).map(key => ({
-    label: t(gridrefAccuracy[key].label),
-    value: key,
+  const values = Object.entries(gridrefAccuracy).map(([value, config]) => ({
+    label: t(config.label),
+    value,
   }));
 
   const navigateBack = () => goBack();

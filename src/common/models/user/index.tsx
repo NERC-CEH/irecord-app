@@ -10,19 +10,24 @@ import {
   useToast,
   useLoader,
   useAlert,
-  DrupalUserModelData,
+  type DrupalUserModelData,
+  type DrupalUserModelOptions,
 } from '@flumens';
 import { NavContext } from '@ionic/react';
 import { setUser } from '@sentry/browser';
 import CONFIG from 'common/config';
 import { mainStore } from '../store';
-import activitiesExt from './activitiesExt';
+import activitiesExt, {
+  type ActivitiesExtension,
+  type Activity,
+} from './activitiesExt';
 
 export type Data = {
   firstName?: string;
   lastName?: string;
   email?: string;
-  statistics: any;
+  statistics: Record<string, number> | null;
+  activities: Activity[];
 } & DrupalUserModelData;
 
 const defaults: Data = {
@@ -31,34 +36,35 @@ const defaults: Data = {
   email: '',
 
   statistics: null,
+  activities: [],
 };
 
 export class UserModel extends DrupalUserModel<Data> {
-  static registerSchema: any = object({
+  static registerSchema = object({
     email: z.string().email('Please fill in'),
     password: z.string().min(1, 'Please fill in'),
     firstName: z.string().min(1, 'Please fill in'),
     secondName: z.string().min(1, 'Please fill in'),
   });
 
-  static resetSchema: any = object({
+  static resetSchema = object({
     email: z.string().email('Please fill in'),
   });
 
-  static loginSchema: any = object({
+  static loginSchema = object({
     email: z.string().email('Please fill in'),
     password: z.string().min(1, 'Please fill in'),
   });
 
   uploadCounter = observable({ count: 0 });
 
-  refreshUploadCountStat?: any; // from extension
+  declare activities: ActivitiesExtension['activities'];
 
-  getAchievedStatsMilestone?: any; // from extension
+  declare syncActivities: ActivitiesExtension['syncActivities'];
 
-  hasActivityExpired?: any; // from extension
+  declare hasActivityExpired: ActivitiesExtension['hasActivityExpired'];
 
-  constructor(options: any) {
+  constructor(options: DrupalUserModelOptions<Data>) {
     super({ ...options, data: { ...defaults, ...options.data } });
     Object.assign(this, activitiesExt);
 
@@ -150,8 +156,8 @@ export const useUserStatusCheck = () => {
             toast.success(
               'A new verification email was successfully sent now. If you did not receive the email, then check your Spam or Junk email folders.'
             );
-          } catch (err: any) {
-            toast.error(err);
+          } catch (error) {
+            toast.error(error instanceof Error ? error : String(error));
           }
           loader.hide();
         };

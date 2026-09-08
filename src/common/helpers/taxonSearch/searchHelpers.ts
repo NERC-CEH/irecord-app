@@ -1,12 +1,9 @@
-/* eslint-disable */
-
- 
 import {
   GENUS_SPECIES_INDEX,
   GENUS_NAMES_INDEX,
   SPECIES_NAMES_INDEX,
 } from 'common/data/constants';
-import { CommonNamePointer, Genera, GenusNamePointer, NamePointer } from '.';
+import { Genera, NamePointer } from '.';
 
 const SCI_NAME_INDEX = 2; // in genera and above
 
@@ -17,24 +14,12 @@ export function normalizeFirstWord(phrase: string) {
 }
 
 export function removeNonAlphanumerics(phrase: string) {
-  return phrase.replace(/\\[\-\'\"()\\]/g, '.?');  
+  return phrase.replace(/\\[-'"()\\]/g, '.?');
 }
 
-export function getFirstWordRegex(searchPhrase: string) {
-  const searchWords = searchPhrase.split(' ');
-  const firstWord = normalizeFirstWord(searchWords[0]);
-  const firstWordRegexStr = getFirstWordRegexString(firstWord);
-  const firstWordRegex = new RegExp(firstWordRegexStr, 'i');
-  return { firstWord, firstWordRegexStr, firstWordRegex };
-}
-
-export function getOtherWordsRegex(searchPhrase: string) {
-  const searchWords = searchPhrase.split(' ');
-  const otherWords = searchWords.splice(1).join(' ');
-  if (!otherWords) return {};
-
-  const otherWordsRegex = new RegExp(getOtherWordsRegexString(otherWords), 'i');
-  return { otherWords, otherWordsRegex };
+/** Escape string for use in a regular expression. */
+export function escapeRegExp(string: string) {
+  return string.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // TODO: change èéöüáöëïåß -> eeou..
@@ -75,14 +60,21 @@ export function getOtherWordsRegexString(phraseOrig: string) {
   return words.join('');
 }
 
-/**
- * Escape string for using in regex.
- * @param string
- * @returns {*}
- * @private
- */
-export function escapeRegExp(string: string) {
-  return string.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&');
+export function getFirstWordRegex(searchPhrase: string) {
+  const searchWords = searchPhrase.split(' ');
+  const firstWord = normalizeFirstWord(searchWords[0]);
+  const firstWordRegexStr = getFirstWordRegexString(firstWord);
+  const firstWordRegex = new RegExp(firstWordRegexStr, 'i');
+  return { firstWord, firstWordRegexStr, firstWordRegex };
+}
+
+export function getOtherWordsRegex(searchPhrase: string) {
+  const searchWords = searchPhrase.split(' ');
+  const otherWords = searchWords.splice(1).join(' ');
+  if (!otherWords) return {};
+
+  const otherWordsRegex = new RegExp(getOtherWordsRegexString(otherWords), 'i');
+  return { otherWords, otherWordsRegex };
 }
 
 /**
@@ -91,14 +83,50 @@ export function escapeRegExp(string: string) {
  * @private
  */
 export function isPhraseScientific(searchPhrase: string) {
-  const check = [
-    ' ssp.? ',  
-    ' subsect.? ',  
-    ' nothovar.? ',  
-  ];
+  const check = [' ssp.? ', ' subsect.? ', ' nothovar.? '];
 
   const re = new RegExp(check.join('|'), 'i');
   return re.test(searchPhrase);
+}
+
+export function binarySearch(
+  array: readonly unknown[],
+  comparator: (index: number) => number,
+  lowOrig?: number,
+  highOrig?: number
+): number {
+  const low = lowOrig || 0;
+  let high = highOrig;
+  if (high !== 0 && !high) high = array.length - 1;
+  if (high < low) return -1;
+
+  const mid = Math.floor((low + high) / 2);
+  const compared = comparator(mid);
+  if (compared > 0) return binarySearch(array, comparator, low, mid - 1);
+  if (compared < 0) return binarySearch(array, comparator, mid + 1, high);
+  return mid;
+}
+
+export const isGenusPointer = (pointer: NamePointer) => pointer.length === 2;
+
+export function getCommonName(
+  allSpecies: Genera,
+  pointer: NamePointer
+): string {
+  if (isGenusPointer(pointer)) {
+    const [genusIndex, nameIndex] = pointer;
+    return (
+      allSpecies[genusIndex]?.[GENUS_NAMES_INDEX]?.[nameIndex].toLowerCase() ||
+      ''
+    );
+  }
+
+  const [genusIndex, speciesIndex, nameIndex] = pointer;
+  return (
+    allSpecies[genusIndex]?.[GENUS_SPECIES_INDEX]?.[speciesIndex]?.[
+      SPECIES_NAMES_INDEX
+    ]?.[nameIndex].toLowerCase() || ''
+  );
 }
 
 /**
@@ -127,17 +155,14 @@ export function findFirstMatching(
     if (useNamePointers) {
       const pointers = searchArray as NamePointer[];
       // common name from pointer
-      searchPhrase = searchPhrase.split(' ')[0];
-      let p = pointers[index]!;
-
-      value = getCommonName(species, p);
+      [searchPhrase] = searchPhrase.split(' ');
+      value = getCommonName(species, pointers[index]);
       // select word
       value = value.split(' ')[wordCount!];
 
       // get a previous entry to compare against
       if (index > 0) {
-        p = pointers[index - 1];
-        prevValue = getCommonName(species, p);
+        prevValue = getCommonName(species, pointers[index - 1]);
         // select word
         prevValue = prevValue.split(' ')[wordCount!];
       }
@@ -172,60 +197,4 @@ export function findFirstMatching(
   }
 
   return binarySearch(searchArray, comparator);
-}
-
-/**
- * Binary search.
- * Find the index of the first matching entry in array
- * O(Log n) (30K - lookup 14 times)
- */
-export function binarySearch(
-  array: any[],
-  comparator: any,
-  lowOrig?: number,
-  highOrig?: number
-): number {
-  // initial set up
-  const low = lowOrig || 0;
-  let high = highOrig;
-  if (high !== 0 && !high) {
-    high = array.length - 1;
-  }
-
-  // checkup
-  if (high < low) return -1;
-
-  const mid = parseInt(`${(low + high) / 2}`, 10);
-  const campared = comparator(mid);
-  if (campared > 0) return binarySearch(array, comparator, low, mid - 1);
-  if (campared < 0) return binarySearch(array, comparator, mid + 1, high);
-
-  return mid;
-}
-
-export const isGenusPointer = (p: NamePointer) => (p as any).length === 2;
-
-/**
- * Return common name from common names array pointer
- */
-export function getCommonName(allSpecies: Genera, p: NamePointer): string {
-  if (isGenusPointer(p)) {
-    const genusPointer = p as GenusNamePointer;
-    const genusIndex = genusPointer[0];
-    const nameIndex = genusPointer[1];
-    return (
-      allSpecies[genusIndex]?.[GENUS_NAMES_INDEX]?.[nameIndex].toLowerCase() ||
-      ''
-    );
-  }
-
-  const commonNamePointer = p as CommonNamePointer;
-  const genusIndex = commonNamePointer[0];
-  const speciesIndex = commonNamePointer[1];
-  const nameIndex = commonNamePointer[2];
-  return (
-    allSpecies[genusIndex]?.[GENUS_SPECIES_INDEX]?.[speciesIndex]?.[
-      SPECIES_NAMES_INDEX
-    ]?.[nameIndex].toLowerCase() || ''
-  );
 }

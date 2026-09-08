@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 import { Route } from 'react-router-dom';
 import { AttrPage, withSample } from 'common/flumens';
 import Group from 'Survey/common/Components/Group';
@@ -12,15 +13,17 @@ const url = `/survey/${survey.name}`;
 
 const { AttrPageFromRoute } = AttrPage;
 
-const routes = [
-  [url, StartNewSurvey.with(survey, NewSurveyTaxon)],
-  [`${url}/:smpId`, Home],
-  [`${url}/:smpId/:attr`, withSample(AttrPageFromRoute)],
-  [`${url}/:smpId/location`, ModelLocation],
-  [`${url}/:smpId/groupId`, Group],
-  [`${url}/:smpId/occ/:occId/:attr`, withSample(AttrPageFromRoute)],
-  [`${url}/:smpId/occ/:occId/taxon`, Taxon],
-].map(([route, component]: any) => (
+const routes = (
+  [
+    [url, StartNewSurvey.with(survey, NewSurveyTaxon)],
+    [`${url}/:smpId`, Home],
+    [`${url}/:smpId/:attr`, withSample(AttrPageFromRoute)],
+    [`${url}/:smpId/location`, ModelLocation],
+    [`${url}/:smpId/groupId`, Group],
+    [`${url}/:smpId/occ/:occId/:attr`, withSample(AttrPageFromRoute)],
+    [`${url}/:smpId/occ/:occId/taxon`, Taxon],
+  ] satisfies [string, ComponentType][]
+).map(([route, component]) => (
   <Route key={route} path={route} component={component} exact />
 ));
 

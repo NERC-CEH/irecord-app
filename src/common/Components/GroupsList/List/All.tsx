@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, type UIEventHandler } from 'react';
 import DOMPurify from 'dompurify';
 import { Trans as T } from 'react-i18next';
-import { Badge, VirtualList, useAlert } from '@flumens';
+import { Badge, VirtualList, useAlert, type ItemProps } from '@flumens';
 import { IonItem, IonList } from '@ionic/react';
 import Group from 'models/group';
 import InfoBackgroundMessage from 'Components/InfoBackgroundMessage';
@@ -13,14 +13,13 @@ const SAFE_AREA_TOP = parseInt(rawSafeAreaTop.replace('px', ''), 10);
 const LIST_PADDING = 10 + SAFE_AREA_TOP;
 const LIST_ITEM_HEIGHT = 75 + 10; // 10px for padding
 
+type RowData = { groups: Group[]; onOpen: (group: Group) => void };
+
 const Item = ({
   index,
   data: { groups, onOpen },
-  ...itemProps
-}: {
-  index: number;
-  data: { groups: Group[]; onOpen: any };
-}) => {
+  style,
+}: ItemProps<RowData>) => {
   const group: Group = groups[index];
 
   const hasDescription = !!group.data.description;
@@ -32,7 +31,7 @@ const Item = ({
     <IonItem
       className="max-h-[73px] rounded-md border border-solid border-neutral-300 [--min-height:73px]"
       key={group.id}
-      style={(itemProps as any).style}
+      style={style}
       lines="none"
       detail
       onClick={() => onOpen(group)}
@@ -51,7 +50,7 @@ const Item = ({
 };
 
 type Props = {
-  onScroll: any;
+  onScroll: UIEventHandler<HTMLDivElement>;
   groups: Group[];
   onJoin: (group: Group) => void;
 };

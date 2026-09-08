@@ -1,11 +1,11 @@
 /// <reference types="jest" />
-import lockExtension from '../attrLockExt';
+import lockExtension, { type AttrLocks } from '../attrLockExt';
 
 const sampleLock = ['default', 'arthropods', 'smp', 'a'] as const;
 const occurrenceLock = ['default', 'arthropods', 'occ', 'b'] as const;
 
 const createSubject = () => {
-  const data = { _attrLocks: {} as Record<string, any> };
+  const data = { _attrLocks: {} as AttrLocks };
   const save = jest.fn();
   const locks = lockExtension(() => data._attrLocks, save);
 
@@ -47,9 +47,9 @@ describe('Attribute lock extension', () => {
       const value = { a: [1] };
       await subject.locks.set(...sampleLock, value);
 
-      const lockedValue = subject.locks.get(...sampleLock);
+      const lockedValue = subject.locks.get<typeof value>(...sampleLock);
       expect(lockedValue).not.toBe(value);
-      expect(lockedValue.a).not.toBe(value.a);
+      expect(lockedValue!.a).not.toBe(value.a);
     });
   });
 

@@ -212,7 +212,7 @@ const survey = {
 
     attrs: occAttrs,
 
-    verify: (values: any) =>
+    verify: values =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
         [mothStageAttr.id]: string({ error: 'Stage is missing.' }).nullable(),
@@ -235,7 +235,7 @@ const survey = {
     },
   },
 
-  verify: (values: any) =>
+  verify: values =>
     object({
       location: locationAttrValidator(),
       locationName: string({ error: 'Location name is missing' }).min(
@@ -258,16 +258,16 @@ const survey = {
       recorder = userModel.getPrettyName();
     }
 
-    const sample = new Sample<Data>({
+    const sample = new Sample({
       data: {
         surveyId: SURVEY_ID,
         inputForm: SURVEY_WEBFORM,
         date: undefined, // user should specify the trap time
         enteredSrefSystem: 4326,
         location: {},
+        [recorderAttr.id]: recorder,
       },
     });
-    sample.data[recorderAttr.id] = recorder;
 
     const ignoreErrors = () => {};
     sample.startGPS().catch(ignoreErrors);
@@ -275,7 +275,7 @@ const survey = {
     return Promise.resolve(sample);
   },
 
-  modifySubmission(submission: any) {
+  modifySubmission(submission) {
     Object.assign(submission.values, {
       ...getSystemAttrs(),
 

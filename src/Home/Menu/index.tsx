@@ -8,7 +8,7 @@ import Main from './Main';
 const useConfirmationDialog = () => {
   const alert = useAlert();
 
-  const showConfirmationDialog = (callback: any) => {
+  const showConfirmationDialog = (callback: () => void) => {
     alert({
       header: 'Logout',
       message: (
@@ -57,8 +57,8 @@ const Controller = () => {
       if (!userModel.data.verified) {
         toast.warn('The user has not been activated or is blocked.');
       }
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
     loader.hide();
   };
@@ -70,8 +70,8 @@ const Controller = () => {
       toast.success(
         'A new verification email was successfully sent now. If you did not receive the email, then check your Spam or Junk email folders.'
       );
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
     loader.hide();
   };

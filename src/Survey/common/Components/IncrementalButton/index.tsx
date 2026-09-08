@@ -4,9 +4,9 @@ import { isPlatform } from '@ionic/react';
 import AnimatedNumber from './AnimatedNumber';
 
 type Props = {
-  onClick: any;
-  onLongClick?: any;
-  value: number;
+  onClick: () => void;
+  onLongClick?: () => void;
+  value?: string | number;
   disabled?: boolean;
 };
 
@@ -41,7 +41,7 @@ const IncrementalButton = ({
 
   let valueItem;
   if (isNumber) {
-    valueItem = <AnimatedNumber value={value} />;
+    valueItem = <AnimatedNumber value={Number(value)} />;
   } else if (value) {
     valueItem = <span className="empty">{limit(`${value}`, 5)}</span>;
   } else {

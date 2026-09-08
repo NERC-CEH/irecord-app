@@ -2,7 +2,13 @@ import { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T, useTranslation } from 'react-i18next';
 import { useAlert } from '@flumens';
-import { NavContext, IonItem, IonCheckbox, IonLabel } from '@ionic/react';
+import {
+  NavContext,
+  IonItem,
+  IonCheckbox,
+  IonLabel,
+  type CheckboxCustomEvent,
+} from '@ionic/react';
 import VerificationIcon from 'common/Components/VerificationStatus/Icon';
 import appModel from 'models/app';
 import samples from 'models/collections/samples';
@@ -18,7 +24,7 @@ const UpdatedRecordsDialog = () => {
 
   const { showVerifiedRecordsNotification } = appModel.data;
 
-  const onToggleAlert = (e: any) => {
+  const onToggleAlert = (e: CheckboxCustomEvent) => {
     appModel.data.showVerifiedRecordsNotification = !e.detail.checked;
   };
 

@@ -1,7 +1,11 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonSearchbar, useIonViewDidEnter } from '@ionic/react';
-import { Taxon } from 'models/occurrence';
+import {
+  IonSearchbar,
+  useIonViewDidEnter,
+  type SearchbarCustomEvent,
+} from '@ionic/react';
+import type { ClassifierSuggestion, Taxon } from 'models/occurrence';
 import searchSpecies, { Options, SearchResults } from 'helpers/taxonSearch';
 import Suggestions from './components/Suggestions';
 
@@ -10,13 +14,16 @@ export { default as TaxonSearchFilters } from './components/TaxonSearchFilters';
 const MIN_SEARCH_LENGTH = 2;
 
 type Props = {
-  onSpeciesSelected: any;
-  recordedTaxa?: any[];
+  onSpeciesSelected: (
+    species: Taxon | ClassifierSuggestion,
+    editButtonPressed?: boolean
+  ) => void;
+  recordedTaxa?: number[];
   selectedFilters?: number[];
   namesFilter?: Options['namesFilter'];
   resetOnSelect?: boolean;
   showEditButton?: boolean;
-  suggestedSpecies?: Taxon[];
+  suggestedSpecies?: ClassifierSuggestion[];
   suggestionsAreLoading?: boolean;
 };
 
@@ -32,7 +39,7 @@ const TaxonSearch = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  const inputEl = useRef<any>(null);
+  const inputEl = useRef<HTMLIonSearchbarElement>(null);
 
   const [searchResults, setSearchResults] = useState<Taxon[]>();
   const [searchPhrase, setSearchPhrase] = useState('');
@@ -44,19 +51,18 @@ const TaxonSearch = ({
         : result
     );
 
-  const onInputKeystroke = async (e: any) => {
-    let newSearchPhrase = e.target.value;
+  const onInputKeystroke = async (e: SearchbarCustomEvent) => {
+    const inputValue = e.target.value;
 
     const isValidSearch =
-      typeof newSearchPhrase === 'string' &&
-      newSearchPhrase.length >= MIN_SEARCH_LENGTH;
+      typeof inputValue === 'string' && inputValue.length >= MIN_SEARCH_LENGTH;
     if (!isValidSearch) {
       setSearchResults(undefined);
       setSearchPhrase('');
       return;
     }
 
-    newSearchPhrase = newSearchPhrase.toLowerCase();
+    const newSearchPhrase = inputValue.toLowerCase();
 
     // search
     const newSearchResults = await searchSpecies(newSearchPhrase, {
@@ -74,13 +80,18 @@ const TaxonSearch = ({
     setSearchPhrase('');
   };
 
-  const onSpeciesSelectedWrap = (species: any, editButtonPressed?: boolean) => {
+  const onSpeciesSelectedWrap = (
+    species: Taxon | ClassifierSuggestion,
+    editButtonPressed?: boolean
+  ) => {
     onSpeciesSelected(species, editButtonPressed);
     if (resetOnSelect && !editButtonPressed) {
       setSearchResults(undefined);
       setSearchPhrase('');
-      inputEl.current.value = '';
-      inputEl.current.setFocus();
+      if (inputEl.current) {
+        inputEl.current.value = '';
+        inputEl.current.setFocus();
+      }
     }
   };
 

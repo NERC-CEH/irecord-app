@@ -14,7 +14,7 @@ import samples, { removeAllSynced } from 'models/collections/samples';
 import userModel from 'models/user';
 import Main from './Main';
 
-async function resetApp(toast: any) {
+async function resetApp(toast: ReturnType<typeof useToast>) {
   console.log('Settings:Menu:Controller: resetting the application!');
 
   try {
@@ -24,19 +24,19 @@ async function resetApp(toast: any) {
     await samples.reset();
 
     toast.success('Done', { position: 'bottom' });
-  } catch (e: any) {
-    toast.error(`${e.message}`);
+  } catch (error) {
+    toast.error(error instanceof Error ? error : String(error));
   }
 }
 
-async function deleteAllSamples(toast: any) {
+async function deleteAllSamples(toast: ReturnType<typeof useToast>) {
   console.log('Settings:Menu:Controller: deleting all samples.');
 
   try {
     await removeAllSynced();
     toast.success('Done', { position: 'bottom' });
-  } catch (e: any) {
-    toast.error(`${e.message}`);
+  } catch (error) {
+    toast.error(error instanceof Error ? error : String(error));
   }
 }
 
@@ -64,10 +64,11 @@ const importDatabase = async () => {
     input.type = 'file';
     input.addEventListener('change', () => {
       const fileReader = new FileReader();
-      fileReader.onloadend = async (e: any) =>
-        resolve(
-          new Blob([e.target.result], { type: 'application/vnd.sqlite3' })
-        );
+      fileReader.onloadend = event => {
+        const result = event.target?.result;
+        if (result)
+          resolve(new Blob([result], { type: 'application/vnd.sqlite3' }));
+      };
       fileReader.readAsArrayBuffer(input.files![0]);
     });
     input.click();
@@ -92,8 +93,8 @@ const useDeleteUser = () => {
       await userModel.delete();
       goBack();
       toast.success('Done', { position: 'bottom' });
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
 
     loader.hide();
@@ -139,7 +140,7 @@ const Container = () => {
         useSpeciesImageClassifier={useSpeciesImageClassifier}
         resetApp={() => resetApp(toast)}
         deleteAllSamples={() => deleteAllSamples(toast)}
-        onToggle={(setting: any, checked: any) => onToggle(setting, checked)}
+        onToggle={onToggle}
         exportDatabase={exportDatabase}
         importDatabase={importDatabase}
       />

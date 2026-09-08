@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { IonContent, IonPopover } from '@ionic/react';
 import Badge from './Badge';
 
@@ -9,15 +9,18 @@ type Props = {
 };
 
 const ProbabilityBadge = ({ probability, className, showInfo }: Props) => {
-  const [infoState, setInfoState] = useState<any>({
+  const [infoState, setInfoState] = useState<{
+    showInfo: boolean;
+    event?: MouseEvent<HTMLDivElement>;
+  }>({
     showInfo: false,
     event: undefined,
   });
 
-  const onShowInfo = (e: any) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setInfoState({ showInfo: true, event: e });
+  const onShowInfo = (event: MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setInfoState({ showInfo: true, event });
   };
 
   const hideInfo = () => setInfoState({ showInfo: false, event: undefined });

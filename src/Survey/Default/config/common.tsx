@@ -2,6 +2,7 @@
 import { eyeOffOutline, informationCircleOutline } from 'ionicons/icons';
 import type {
   ChoiceInputConf,
+  Choice,
   NumberInputConf,
   YesNoInputConf,
 } from '@flumens';
@@ -14,13 +15,26 @@ import progressIcon from 'common/images/progress-circles.svg';
 import appModel from 'common/models/app';
 import { LockConfig } from 'Survey/common/Components/MenuAttr/Lock/types';
 
-export const toChoice = ({ value, id, label }: any) => ({
-  title: label || value,
+type RemoteChoice = {
+  value?: string | number | null;
+  id?: string | number;
+  label?: string;
+  isPlaceholder?: boolean;
+};
+
+export const toChoice = ({ value, id, label }: RemoteChoice): Choice => ({
+  title: label || (value == null ? '' : String(value)),
   dataName: id ? `${id}` : '',
 });
 
-export const toChoices = (options: any[]) =>
+export const toChoices = (options: readonly RemoteChoice[]) =>
   options.filter(option => !option.isPlaceholder).map(toChoice);
+
+export const choicePlaceholder = (title: string) => ({
+  isPlaceholder: true,
+  title,
+  dataName: '',
+});
 
 /** @deprecated */
 export const numberAttrOld = {
@@ -61,7 +75,7 @@ export const numberRangesAttr = {
   id: 'occAttr:523',
   type: 'choiceInput',
   choices: [
-    { isPlaceholder: true, title: 'Ranges' } as any,
+    choicePlaceholder('Ranges'),
     { title: 'Present', dataName: '' },
     { title: '1', dataName: '665' },
     { title: '2-5', dataName: '666' },
@@ -72,7 +86,7 @@ export const numberRangesAttr = {
   ],
   onChange: (val, _, { record, history }) => {
     record[numberRangesAttr.id] = val;
-    delete record[numberAttr.id]; // eslint-disable-line @typescript-eslint/no-use-before-define
+    delete record[numberAttr.id];
     history.goBack();
   },
 } as const satisfies ChoiceInputConf;

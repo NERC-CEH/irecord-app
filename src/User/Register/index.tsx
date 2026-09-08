@@ -56,8 +56,8 @@ const RegisterContainer = () => {
           },
         ],
       });
-    } catch (err: any) {
-      toast.error(err);
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error : String(error));
     }
 
     loader.hide();

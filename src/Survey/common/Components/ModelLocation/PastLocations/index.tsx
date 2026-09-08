@@ -13,6 +13,7 @@ import {
   IonIcon,
   IonTitle,
 } from '@ionic/react';
+import type { FullLocation } from 'models/app/pastLocExt';
 import Sample from 'models/sample';
 import PastLocationsList from 'Components/PastLocationsList';
 import './styles.scss';
@@ -23,11 +24,11 @@ const DEFAULT_SNAP_POSITION = 0.35;
 type Props = {
   model: Sample;
   isOpen: boolean;
-  onClose: any;
+  onClose: () => void;
 };
 
 const PastLocations = ({ model, isOpen, onClose }: Props) => {
-  const onSelectPastLocation = (location: any) => {
+  const onSelectPastLocation = (location: FullLocation) => {
     if (model.isGPSRunning()) model.stopGPS();
     onClose();
 

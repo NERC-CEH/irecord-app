@@ -43,29 +43,38 @@ export {
   default as GroupCollection,
   byGroupMembershipStatus,
 } from '@flumens/models/dist/Indicia/GroupCollection';
-export { default as Group } from '@flumens/models/dist/Indicia/Group';
+export {
+  default as Group,
+  type Options as GroupOptions,
+} from '@flumens/models/dist/Indicia/Group';
 export {
   default as Model,
   type Data as ModelData,
+  type Options as ModelOptions,
 } from '@flumens/models/dist/Model';
 export {
   default as Sample,
   type Data as SampleData,
   type Metadata as SampleMetadata,
   type Options as SampleOptions,
+  type Submission as SampleSubmission,
+  type Survey as BaseSurvey,
 } from '@flumens/models/dist/Indicia/Sample';
 export {
   default as Media,
   type Data as MediaData,
+  type Options as MediaOptions,
 } from '@flumens/models/dist/Indicia/Media';
 export {
   default as Occurrence,
   type Data as OccurrenceData,
   type Metadata as OccurrenceMetadata,
+  type Options as OccurrenceOptions,
 } from '@flumens/models/dist/Indicia/Occurrence';
 export {
   default as DrupalUserModel,
   type Data as DrupalUserModelData,
+  type Options as DrupalUserModelOptions,
 } from '@flumens/models/dist/Drupal/User';
 export { default as Store } from '@flumens/models/dist/Stores/SQLiteStore';
 export {
@@ -84,12 +93,18 @@ export {
   type RadioOption,
 } from '@flumens/tailwind/dist/components/Radio';
 export { default as CheckboxInput } from '@flumens/tailwind/dist/components/Checkbox';
-export { default as VirtualList } from '@flumens/tailwind/dist/components/VirtualList';
+export {
+  default as VirtualList,
+  type ItemProps,
+} from '@flumens/tailwind/dist/components/VirtualList';
 export {
   default as Input,
   type Props as InputProps,
 } from '@flumens/tailwind/dist/components/Input';
-export { default as InfoMessage } from '@flumens/tailwind/dist/components/InfoMessage';
+export {
+  default as InfoMessage,
+  type Props as InfoMessageProps,
+} from '@flumens/tailwind/dist/components/InfoMessage';
 export { default as Badge } from '@flumens/tailwind/dist/components/Badge';
 export { default as Button } from '@flumens/tailwind/dist/components/Button';
 export { default as InfoBackgroundMessage } from '@flumens/tailwind/dist/components/InfoBackgroundMessage';
@@ -101,6 +116,7 @@ export {
 export { default as Block } from '@flumens/tailwind/dist/components/Block';
 export {
   type BlockConf as BlockT,
+  type Choice,
   type ChoiceValues,
   type ChoiceInputConf,
   type NumberInputConf,

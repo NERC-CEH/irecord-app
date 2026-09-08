@@ -135,7 +135,7 @@ const survey: Partial<Survey> & { taxa: string } = {
 
     attrs: occAttrs,
 
-    verify: (attrs: any) =>
+    verify: attrs =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
         [arthropodStageAttr.id]: string({

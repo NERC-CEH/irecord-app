@@ -1,20 +1,20 @@
-import { Model, ModelData } from '@flumens';
+import { Model, type ModelData, type ModelOptions } from '@flumens';
 import { mainStore } from 'models/store';
-import lockExtension from './attrLockExt';
-import PastLocationsExtension from './pastLocExt';
+import lockExtension, { type AttrLocks } from './attrLockExt';
+import PastLocationsExtension, { type FullLocation } from './pastLocExt';
 
 export type Data = ModelData & {
   showWelcome: boolean;
   language: string;
 
-  locations: any[];
-  _attrLocks: any;
+  locations: FullLocation[];
+  _attrLocks: AttrLocks;
   autosync: boolean;
   useTraining: boolean;
 
   useExperiments: boolean;
   useGridNotifications: boolean;
-  gridSquareUnit: 'monad';
+  gridSquareUnit: 'monad' | 'tetrad';
   speciesListSortedByTime: boolean;
 
   showSurveysDeleteTip: boolean;
@@ -71,11 +71,14 @@ export class AppModel extends Model<Data> {
     () => this.save()
   );
 
-  setLocation!: (newLocation: any) => void; // from extension
+  declare setLocation: (
+    newLocation: FullLocation,
+    allowedMaxSaved?: number
+  ) => Promise<void>;
 
-  removeLocation: any; // from extension
+  declare removeLocation: (locationId: number) => Promise<void>;
 
-  constructor(options: any) {
+  constructor(options: ModelOptions<Data>) {
     super({ ...options, data: { ...defaults, ...options.data } });
 
     Object.assign(this, PastLocationsExtension);

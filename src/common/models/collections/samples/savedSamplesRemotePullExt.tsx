@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { observable, set } from 'mobx';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 import { ElasticOccurrence, device, isAxiosNetworkError } from '@flumens';
 import CONFIG from 'common/config';
 import { matchAppSurveys } from 'common/services/ES';
@@ -22,7 +22,7 @@ export type Verification = {
 const SQL_TO_ES_LAG = 15 * 60 * 1000; // 15mins
 const SYNC_WAIT = SQL_TO_ES_LAG;
 
-const getRecordsQuery = (timestamp: any) => {
+const getRecordsQuery = (timestamp: number) => {
   const lastFetchTime = new Date(timestamp - SQL_TO_ES_LAG);
 
   const dateFormat = new Intl.DateTimeFormat('en-GB', {
@@ -96,7 +96,10 @@ const getRecordsQuery = (timestamp: any) => {
 
 type UpdatedSamples = Record<string, Hit>;
 
-async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
+async function fetchUpdatedRemoteSamples(
+  userModel: UserModel,
+  timestamp: number
+) {
   console.log('SavedSamples: pulling remote verified surveys');
 
   const samples: UpdatedSamples = {};
@@ -116,8 +119,8 @@ async function fetchUpdatedRemoteSamples(userModel: UserModel, timestamp: any) {
   try {
     const res = await axios(options);
     data = res.data;
-  } catch (error: any) {
-    if (isAxiosNetworkError(error)) return samples;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && isAxiosNetworkError(error)) return samples;
 
     console.error(error);
     return samples;

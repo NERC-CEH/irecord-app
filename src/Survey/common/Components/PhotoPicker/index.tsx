@@ -15,7 +15,7 @@ import InfoBackgroundMessage from 'common/Components/InfoBackgroundMessage';
 import config from 'common/config';
 import appModel from 'models/app';
 import Media from 'models/media';
-import Occurrence from 'models/occurrence';
+import Occurrence, { type Taxon } from 'models/occurrence';
 import Sample from 'models/sample';
 import userModel from 'models/user';
 import GalleryWithClassification from './GalleryWithClassification';
@@ -28,7 +28,7 @@ export function usePromptImageSource() {
   const { t } = useTranslation();
   const [presentActionSheet] = useIonActionSheet();
 
-  const promptImageSource = (resolve: any) => {
+  const promptImageSource = (resolve: (value: boolean | null) => void) => {
     presentActionSheet({
       buttons: [
         { text: t('Gallery'), handler: () => resolve(false) },
@@ -52,12 +52,18 @@ type Props = {
 
 const useOnBackButton = (onCancelEdit: () => void, editImage?: Media) => {
   const hideModal = () => {
-    const disableHardwareBackButton = (event: any) => {
-      // eslint-disable-next-line
-      event.detail.register(100, (processNextHandler: any) => {
+    const disableHardwareBackButton = (event: Event) => {
+      (
+        event as CustomEvent<{
+          register: (
+            priority: number,
+            handler: (processNextHandler: () => void) => void
+          ) => void;
+        }>
+      ).detail.register(100, processNextHandler => {
         if (!editImage) {
           processNextHandler();
-          return null;
+          return;
         }
 
         onCancelEdit();
@@ -105,8 +111,10 @@ const AppPhotoPicker = ({
 
     model
       .identify()
-      .catch((err: any) =>
-        manualTrigger ? toast.error(err) : console.error(err)
+      .catch(error =>
+        manualTrigger
+          ? toast.error(error instanceof Error ? error : String(error))
+          : console.error(error)
       );
   };
 
@@ -118,14 +126,12 @@ const AppPhotoPicker = ({
       if (!photoURLs.length) return;
 
       const getImageModel = async (imageURL: URL) =>
-        Media.getImageModel(
+        (await Media.getImageModel(
           isPlatform('hybrid') ? Capacitor.convertFileSrc(imageURL) : imageURL,
           config.dataPath,
           true
-        );
-      const imageModels: Media[] = await Promise.all<any>(
-        photoURLs.map(getImageModel)
-      );
+        )) as Media;
+      const imageModels = await Promise.all(photoURLs.map(getImageModel));
 
       const canEdit = imageModels.length === 1;
       if (canEdit) {
@@ -138,22 +144,24 @@ const AppPhotoPicker = ({
       model.save();
 
       identifySpecies();
-    } catch (e: any) {
-      toast.error(e);
+    } catch (error) {
+      toast.error(error instanceof Error ? error : String(error));
     }
   }
 
-  const onRemove = async (m: any) => {
-    await m.destroy();
+  const onRemove = async (media: Media) => {
+    await media.destroy();
     identifySpecies();
   };
 
   const onDoneEdit = async (imageDataURL: URL) => {
-    const image = editImage as Media;
+    if (!editImage) return;
+    const image = editImage;
 
     // overwrite existing file
-    const oldFileName: string = image?.getURL().split('/').pop() as string;
-    const extension = oldFileName.split('.').pop() as string;
+    const oldFileName = image.getURL().split('/').pop();
+    if (!oldFileName) throw new Error('Image filename is missing.');
+    const extension = oldFileName.split('.').pop() || 'jpg';
     const newFileName = `${Date.now()}.${extension}`;
 
     await deleteFile(oldFileName);
@@ -161,11 +169,11 @@ const AppPhotoPicker = ({
     const savedURL = await saveFile(imageDataURL, newFileName);
 
     // copy over new image values to existing model to preserve its observability
-    const newImageModel = await Media.getImageModel(
+    const newImageModel = (await Media.getImageModel(
       isPlatform('hybrid') ? Capacitor.convertFileSrc(savedURL) : savedURL,
       config.dataPath,
       true
-    );
+    )) as Media;
     Object.assign(image?.data, { ...newImageModel.data, species: null });
 
     if (!image.parent) {
@@ -192,7 +200,7 @@ const AppPhotoPicker = ({
 
   useOnBackButton(onCancelEdit, editImage);
 
-  const onSpeciesSelect = (taxon: any) => model.setTaxon(taxon);
+  const onSpeciesSelect = (taxon: Taxon) => model.setTaxon(taxon);
 
   const { isDisabled } = model;
   if (isDisabled && !model.media.length) return null;

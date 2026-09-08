@@ -4,6 +4,7 @@ import { camera, searchOutline } from 'ionicons/icons';
 import { useRouteMatch } from 'react-router';
 import { Main, InfoMessage, Button } from '@flumens';
 import { IonIcon, IonList, NavContext } from '@ionic/react';
+import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import DisabledRecordMessage from 'Survey/common/Components/DisabledRecordMessage';
 import MenuAttr from 'Survey/common/Components/MenuAttr';
@@ -22,8 +23,8 @@ import {
 
 type Props = {
   sample: Sample;
-  attachSpeciesImages: any;
-  onDelete: any;
+  attachSpeciesImages: (useCamera: boolean) => void;
+  onDelete: (occurrence: Occurrence) => void;
 };
 
 const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
@@ -91,7 +92,7 @@ const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
 
       <SpeciesList
         sample={sample}
-        onDelete={onDelete}
+        onDelete={model => onDelete(model as Occurrence)}
         bulkEditAttrs={{
           stage: mothStageAttr,
           sex: sexAttr,

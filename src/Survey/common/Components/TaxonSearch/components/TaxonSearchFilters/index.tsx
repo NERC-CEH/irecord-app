@@ -10,7 +10,9 @@ const Header = () => {
 
   const toggleModal = () => setShowModal(!showModal);
 
-  const onSearchNamesFilterSelect = (filter: '' | 'scientific' | 'common') => {
+  const onSearchNamesFilterSelect = (filter: string) => {
+    if (filter !== '' && filter !== 'scientific' && filter !== 'common') return;
+
     if (filter === appModel.data.searchNamesOnly) {
       return;
     }

@@ -42,9 +42,9 @@ export async function selectSpecies(
 }
 
 export async function setLocation(page: Page, gridRef: string) {
-  const locationPage = page.locator('#model-location').last();
+  const locationPage = page.locator('#model-location:visible');
   const locationInput = locationPage.locator('input[placeholder="Location"]');
-  await locationInput.pressSequentially(gridRef, { delay: 500 });
+  await locationInput.fill(gridRef);
   await expect(locationInput).toHaveValue(gridRef);
   await page.waitForTimeout(500); // wait for ionInput's debounce to persist
   await locationPage

@@ -10,7 +10,7 @@ import {
   device,
   useAlert,
   locationToGrid,
-  Location,
+  type Location,
 } from '@flumens';
 import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
@@ -38,14 +38,16 @@ const ATTRS_TO_LEAVE = [
   'occ:taxon',
 ];
 
-type Data = SampleData & {
-  location?: any;
-  recorder?: any;
-  childGeolocation?: any;
+export type Data = SampleData & {
+  location?: Partial<Location>;
+  recorder?: string;
+  childGeolocation?: boolean;
 };
 
-type Metadata = SampleMetadata & {
-  geocoded?: any;
+type GeocodedLocation = { center: [number, number] };
+
+export type Metadata = SampleMetadata & {
+  geocoded?: GeocodedLocation;
   gridSquareUnit?: 'monad' | 'tetrad';
   /**
    * If overwrite which survey to use.
@@ -66,13 +68,15 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
 
   declare parent?: Sample<T>;
 
-  startGPS: any; // from extension
+  declare startGPS: (accuracyLimit?: number) => Promise<void>;
 
-  isGPSRunning: any; // from extension
+  declare isGPSRunning: () => boolean;
 
-  stopGPS: any; // from extension
+  declare stopGPS: () => void;
 
-  constructor(options: SampleOptions<Data>) {
+  declare gps: { locating: string | null };
+
+  constructor(options: SampleOptions<Data, Metadata>) {
     super({
       ...options,
       Occurrence,
@@ -80,7 +84,7 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
       store: samplesStore,
       url: config.backend.indicia.url,
       getAccessToken: () => userModel.getAccessToken(),
-    });
+    } as SampleOptions<T, Metadata>);
 
     this.data.training = appModel.data.useTraining;
 
@@ -118,13 +122,17 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
     let surveyId = this.metadata.forceSurveyId || this.data.surveyId;
 
     // backwards compatible, remove once everyone uploads their surveys
-    if ((this.metadata as any).survey) {
-      if ((this.metadata as any).survey === 'default') surveyId = 374;
-      if ((this.metadata as any).survey === 'list') surveyId = 576;
-      if ((this.metadata as any).survey === 'moth') surveyId = 90;
-      if ((this.metadata as any).survey === 'plant') surveyId = 325;
-    } else if ((this.metadata as any).survey_id) {
-      surveyId = (this.metadata as any).survey_id;
+    const legacyMetadata = this.metadata as Metadata & {
+      survey?: 'default' | 'list' | 'moth' | 'plant';
+      survey_id?: number;
+    };
+    if (legacyMetadata.survey) {
+      if (legacyMetadata.survey === 'default') surveyId = 374;
+      if (legacyMetadata.survey === 'list') surveyId = 576;
+      if (legacyMetadata.survey === 'moth') surveyId = 90;
+      if (legacyMetadata.survey === 'plant') surveyId = 325;
+    } else if (legacyMetadata.survey_id) {
+      surveyId = legacyMetadata.survey_id;
       this.data.surveyId = surveyId;
     }
 
@@ -171,7 +179,7 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
     const oldSurvey = this.getSurvey();
     const hadTaxon = !!occ.data.taxon;
 
-    occ.data.taxon = JSON.parse(JSON.stringify(newTaxon));
+    occ.data.taxon = structuredClone(newTaxon);
 
     const newSurvey = this.getSurvey();
     if (hadTaxon && !skipOldTaxonRemoval && oldSurvey.taxa !== newSurvey.taxa) {
@@ -191,23 +199,14 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
       console.log(`Removing old ${oldSurvey.taxa} taxa attributes`);
 
     // remove non-core attributes for survey switch
-    const removeSmpNonCoreAttr = (key: any) => {
-      if (!ATTRS_TO_LEAVE.includes(`smp:${key}`)) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        delete this.data[key];
-      }
+    const removeSmpNonCoreAttr = (key: string) => {
+      if (!ATTRS_TO_LEAVE.includes(`smp:${key}`)) delete this.data[key];
     };
 
     Object.keys(this.data).forEach(removeSmpNonCoreAttr);
 
-    const removeOccNonCoreAttr = (key: any) => {
-      if (!ATTRS_TO_LEAVE.includes(`occ:${key}`)) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-
-        delete occ.data[key];
-      }
+    const removeOccNonCoreAttr = (key: string) => {
+      if (!ATTRS_TO_LEAVE.includes(`occ:${key}`)) delete occ.data[key];
     };
     Object.keys(occ.data).forEach(removeOccNonCoreAttr);
   }

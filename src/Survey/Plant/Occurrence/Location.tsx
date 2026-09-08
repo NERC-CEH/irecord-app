@@ -1,4 +1,4 @@
-import { useToast, locationToGrid, useSample } from '@flumens';
+import { useToast, locationToGrid, useSample, type Location } from '@flumens';
 import Sample from 'common/models/sample';
 import ModelLocation, {
   setModelLocation as setLocation,
@@ -10,7 +10,22 @@ const ModelGridOccurrenceLocation = () => {
   const model = subSample! || sample!;
   if (!model) return null;
 
-  const setLocationWithGridCheck = (_: any, newLocation: any) => {
+  const setLocationWithGridCheck = (
+    _model: Sample,
+    newLocation: Partial<Location>
+  ) => {
+    if (
+      !newLocation.gridref ||
+      newLocation.latitude === undefined ||
+      newLocation.longitude === undefined
+    )
+      return;
+    const location: Location = {
+      ...newLocation,
+      latitude: newLocation.latitude,
+      longitude: newLocation.longitude,
+    };
+
     const { gridref: parentGridref, accuracy } =
       model.parent?.data?.location || {};
     if (!parentGridref) {
@@ -20,11 +35,10 @@ const ModelGridOccurrenceLocation = () => {
       return;
     }
 
-    const gridCoords = locationToGrid(newLocation);
-    const gridWithParentAcc = locationToGrid({ ...newLocation, accuracy });
+    const gridCoords = locationToGrid(location);
+    const gridWithParentAcc = locationToGrid({ ...location, accuracy });
     const isWithinParent = parentGridref === gridWithParentAcc;
-    const isAccurateEnough =
-      newLocation?.gridref?.length >= parentGridref.length;
+    const isAccurateEnough = newLocation.gridref.length >= parentGridref.length;
     if (!gridCoords || !isAccurateEnough || !isWithinParent) {
       toast.warn(`Selected location should be within ${parentGridref}`, {
         position: 'bottom',

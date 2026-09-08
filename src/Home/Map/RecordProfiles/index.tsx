@@ -19,7 +19,7 @@ type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 type Media = ArrayElement<ElasticOccurrence['occurrence']['media']>;
 type Props = {
   records: ElasticOccurrence[];
-  onClose: any;
+  onClose: () => void;
 };
 
 const statuses = {

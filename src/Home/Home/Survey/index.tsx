@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, type CSSProperties } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
 import { Badge, useAlert, useToast } from '@flumens';
@@ -63,7 +63,7 @@ function useSurveyDeletePrompt(sample: Sample) {
 type Props = {
   sample: Sample;
   uploadIsPrimary?: boolean;
-  style?: any;
+  style?: CSSProperties;
 };
 
 const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
@@ -135,16 +135,8 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
   };
 
   const getAvatar = () => {
-    let img: any;
-
-    const [occ] = sample.occurrences;
-    if (occ) {
-      const media = occ.media.length && occ.media[0];
-      img = media && media.getURL();
-      img = img ? <img src={img} /> : '';
-    }
-
-    return <div className="photo">{img}</div>;
+    const media = sample.occurrences[0]?.media[0];
+    return <div className="photo">{media && <img src={media.getURL()} />}</div>;
   };
 
   const getSpeciesCount = () => {
@@ -184,8 +176,8 @@ const Survey = ({ sample, style, uploadIsPrimary }: Props) => {
     <IonItemSliding className="survey-list-item" style={style}>
       <IonItem onClick={openItem} detail={false}>
         <div className="survey-info-container">
-          {groupId && <div className="activity-band" />}
-          {training && <div className="training-band" />}
+          {!!groupId && <div className="activity-band" />}
+          {!!training && <div className="training-band" />}
 
           {isDefaultSurvey ? getAvatar() : getSpeciesCount()}
 

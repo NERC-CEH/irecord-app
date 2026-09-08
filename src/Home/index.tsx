@@ -36,12 +36,16 @@ const HomeController = () => {
 
   const exitApp = () => {
     const onExitApp = () => !ionRouter.canGoBack() && AppPlugin.exitApp();
-    document.addEventListener('ionBackButton', (ev: any) =>
-      ev.detail.register(-1, onExitApp)
-    );
+    const listener = (event: Event) =>
+      (
+        event as CustomEvent<{
+          register: (priority: number, handler: () => void) => void;
+        }>
+      ).detail.register(-1, onExitApp);
+    document.addEventListener('ionBackButton', listener);
 
     const removeEventListener = () =>
-      document.addEventListener('ionBackButton', onExitApp);
+      document.removeEventListener('ionBackButton', listener);
     return removeEventListener;
   };
   useEffect(exitApp, []);
@@ -95,8 +99,6 @@ const HomeController = () => {
             onListSurvey={navigateToListSurvey}
             onMothSurvey={navigateToMothSurvey}
             onPlantSurvey={navigateToPlantSurvey}
-            onCameraSurveyStart={navigateToPrimarySurvey}
-            onGallerySurveyStart={navigateToPrimarySurvey}
           />
         </IonTabButton>
 

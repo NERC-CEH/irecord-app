@@ -8,6 +8,7 @@ import {
   IonToolbar,
   IonSegment,
   IonSegmentButton,
+  type SegmentCustomEvent,
 } from '@ionic/react';
 import { getPending } from 'common/models/collections/samples';
 import PendingSurveys from './Pending';
@@ -22,8 +23,8 @@ const UserSurveyComponent = () => {
     match.params?.id && setSegment(match.params?.id);
   }, [match.params?.id]);
 
-  const onSegmentClick = (e: any) => {
-    const newSegment = e.detail.value;
+  const onSegmentClick = (event: SegmentCustomEvent) => {
+    const newSegment = String(event.detail.value);
     setSegment(newSegment);
 
     const basePath = match.path.split('/:id?')[0];

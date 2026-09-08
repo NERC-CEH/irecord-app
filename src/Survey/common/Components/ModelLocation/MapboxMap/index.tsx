@@ -1,24 +1,25 @@
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { MapRef, ViewState } from 'react-map-gl/mapbox';
+import type { LngLatBoundsLike } from 'mapbox-gl';
+import type { MapMouseEvent, MapRef, ViewState } from 'react-map-gl/mapbox';
 import {
-  isValidLocation,
   mapMetresToZoom,
   MapContainer,
   mapFlyToLocation,
-  Location,
+  type Location,
   useCallbackMapRefresh,
 } from '@flumens';
 import { useIonViewWillEnter } from '@ionic/react';
 import config from 'common/config';
+import { hasCoordinates } from 'common/helpers/location';
 import PastLocationsControl from './PastLocationsControl';
 
-const OS_MAX_BOUNDS = [
+const OS_MAX_BOUNDS: LngLatBoundsLike = [
   [-8.834, 49.562], // Southwest
   [1.9, 60.934], // Northeast
 ];
 
-const style: Record<any, any> = {
+const style = {
   satellite: {
     mapStyle: 'mapbox://styles/mapbox/satellite-streets-v11',
   },
@@ -30,22 +31,24 @@ const style: Record<any, any> = {
 };
 
 const getInitialView = (
-  location: Location,
-  parentLocation: Location
+  location: Partial<Location>,
+  parentLocation?: Partial<Location>
 ): Partial<ViewState> => {
-  if (isValidLocation(location))
+  if (hasCoordinates(location))
     return {
       zoom: mapMetresToZoom(location.accuracy) || 15,
       latitude: location.latitude,
       longitude: location.longitude,
     };
 
-  if (isValidLocation(parentLocation))
+  if (hasCoordinates(parentLocation)) {
+    const parent = parentLocation;
     return {
-      zoom: mapMetresToZoom(parentLocation.accuracy) || 13,
-      latitude: parentLocation.latitude,
-      longitude: parentLocation.longitude,
+      zoom: mapMetresToZoom(parent.accuracy) || 13,
+      latitude: parent.latitude,
+      longitude: parent.longitude,
     };
+  }
 
   if (location.geocoded) {
     return {
@@ -59,16 +62,16 @@ const getInitialView = (
 };
 
 type Props = {
-  location: any;
-  parentLocation: any;
-  childLocations: any[];
-  isDisabled: any;
-  isLocating: any;
-  onMapClick: any;
-  onGPSClick: any;
+  location: Partial<Location>;
+  parentLocation?: Partial<Location>;
+  childLocations: Location[];
+  isDisabled: boolean;
+  isLocating: boolean;
+  onMapClick: (event: MapMouseEvent) => void;
+  onGPSClick: () => void;
   currentStyle: 'satellite' | 'os';
-  onLayersClick: any;
-  onPastLocationsClick: any;
+  onLayersClick: () => void;
+  onPastLocationsClick?: (() => void) | false;
 };
 
 const MapboxContainer = ({
@@ -85,10 +88,10 @@ const MapboxContainer = ({
 }: Props) => {
   const [mapRef, setMapRef] = useState<MapRef>();
   const flyToLocation = () => {
-    mapFlyToLocation(
-      mapRef,
-      isValidLocation(location) ? location : parentLocation || location // for location.geocoded
-    );
+    const target = hasCoordinates(location)
+      ? location
+      : parentLocation || location; // location may only have geocoded coordinates
+    mapFlyToLocation(mapRef, target as Location);
   };
   useEffect(flyToLocation, [
     mapRef,
@@ -101,7 +104,7 @@ const MapboxContainer = ({
   // when maxBounds changes between styles
   useEffect(() => {
     const map = mapRef?.getMap();
-    map?.setMaxBounds(currentStyle === 'os' ? (OS_MAX_BOUNDS as any) : null);
+    map?.setMaxBounds(currentStyle === 'os' ? OS_MAX_BOUNDS : null!);
   }, [mapRef, currentStyle]);
 
   const transformRequest = (url: string) =>
@@ -141,10 +144,12 @@ const MapboxContainer = ({
 
       <MapContainer.OSGBGrid />
 
-      <MapContainer.Marker
-        parentGridref={parentLocation?.gridref}
-        {...location}
-      />
+      {hasCoordinates(location) && (
+        <MapContainer.Marker
+          parentGridref={parentLocation?.gridref || undefined}
+          {...location}
+        />
+      )}
 
       {childLocationMarkers}
     </MapContainer>

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import {
@@ -30,21 +30,21 @@ type Props = {
   survey: string;
   taxa?: string;
   model: Sample | Occurrence;
-  children: any;
+  children: ReactNode;
   block: BlockT & { lock?: LockConfig };
 } & MenuAttrProps;
 
 const Lock = observer(({ survey, taxa, model, block, children }: Props) => {
   const toast = useToast();
 
-  let value = (model.data as any)[block.id];
+  let value = model.data[block.id];
   if (!value && block.lock?.get) {
     value = block.lock?.get?.({ record: model.data, block, survey, taxa });
   }
 
   const allowLocking = !!value;
 
-  const sliderRef = useRef<any>(null);
+  const sliderRef = useRef<HTMLIonItemSlidingElement>(null);
 
   if (model.isDisabled) return <>{children}</>;
 
@@ -61,12 +61,12 @@ const Lock = observer(({ survey, taxa, model, block, children }: Props) => {
   }
 
   const toggleLockWrap = async () => {
-    const isOpen = sliderRef.current.classList.contains(
+    const isOpen = sliderRef.current?.classList.contains(
       'item-sliding-active-slide'
     );
     if (!isOpen) return;
 
-    sliderRef.current.close(); // needs to be after the openness check
+    sliderRef.current?.close(); // needs to be after the openness check
 
     isPlatform('hybrid') && Haptics.impact({ style: ImpactStyle.Light });
 
@@ -141,7 +141,7 @@ export const WithLock = observer(
     const { id } = block;
 
     const type = model instanceof Sample ? 'smp' : 'occ';
-    const currentVal = (model.data as any)[id];
+    const currentVal = model.data[id];
     let isLocked = appModel.locks.isLocked(survey, taxa, type, id, currentVal);
     if (block.lock?.isLocked) {
       isLocked = block.lock?.isLocked?.({
@@ -153,7 +153,7 @@ export const WithLock = observer(
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    (model.data as any)[id]; // force rerender on val change
+    model.data[id]; // force rerender on val change
 
     const onChange = (...args: Parameters<typeof onChangeOrig>) => {
       onChangeProp ? onChangeProp(...args) : onChangeOrig(...args);

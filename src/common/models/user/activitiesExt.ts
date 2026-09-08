@@ -2,37 +2,56 @@
  * App Model activities functions.
  **************************************************************************** */
 import { observable } from 'mobx';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 import { array, object, string } from 'zod';
 import { HandledError, isAxiosNetworkError } from '@flumens';
 import config from 'common/config';
 
 export type Activity = {
-  id: any;
+  id: number | null;
   title: string;
   description: string;
   group_type: string;
-  group_from_date: any;
-  group_to_date: any;
+  group_from_date: string;
+  group_to_date: string;
+  synced_on: string;
 };
+
+type RemoteActivity = { id: string; title: string } & Partial<
+  Omit<Activity, 'id' | 'title' | 'synced_on'>
+>;
 
 const schemaBackend = object({
   data: array(
     object({
       id: string(),
       title: string(),
-      // description: null
-      // group_type: Yup.string,
-      // group_from_date: null
-      // group_to_date: null
     })
   ),
 });
 
-const extension = {
+export type ActivitiesExtension = {
+  activities: { synchronizing: boolean };
+  syncActivities: (force: boolean) => Promise<void>;
+  _fetchActivities: () => Promise<RemoteActivity[]>;
+  _removeExpired: () => void;
+  hasActivity: (activity: Activity) => boolean;
+  getActivity: (id: number | null) => Activity | null;
+  hasActivityExpired: (activity: Activity) => boolean;
+  _lastSyncExpired: () => boolean;
+};
+
+type ExtensionThis = ActivitiesExtension & {
+  data: { verified?: boolean; indiciaUserId?: number; activities: Activity[] };
+  isLoggedIn: () => boolean;
+  getAccessToken: () => Promise<string>;
+  save: () => Promise<void>;
+};
+
+const extension: ActivitiesExtension & ThisType<ExtensionThis> = {
   activities: observable({ synchronizing: false }),
 
-  async syncActivities(force: boolean) {
+  async syncActivities(force) {
     console.log('UserModel:Activities: synchronising.');
 
     if (this.activities.synchronizing) return;
@@ -48,40 +67,30 @@ const extension = {
     }
 
     const data = await this._fetchActivities();
+    const syncedOn = new Date().toString();
 
-    const activities: Activity[] = [];
-    const defaultActivity = {
-      synced_on: new Date().toString(),
-      id: null,
-      title: '',
-      description: '',
-      group_type: '',
-      group_from_date: '',
-      group_to_date: '',
-    };
-
-    data.forEach((activity: Activity) => {
-      const fullActivity = { ...{}, ...defaultActivity, ...activity };
-      fullActivity.id = parseInt(fullActivity.id, 10);
-
-      // from
-      let date;
-      if (fullActivity.group_from_date) {
-        date = new Date(fullActivity.group_from_date);
-        fullActivity.group_from_date = date.toString();
-      }
-
-      // to
-      if (fullActivity.group_to_date) {
-        date = new Date(fullActivity.group_to_date);
+    this.data.activities = data.map(activity => {
+      const from = activity.group_from_date
+        ? new Date(activity.group_from_date).toString()
+        : '';
+      let to = '';
+      if (activity.group_to_date) {
+        const date = new Date(activity.group_to_date);
         date.setDate(date.getDate() + 1); // include the last day
-        fullActivity.group_to_date = date.toString();
+        to = date.toString();
       }
-      activities.push(fullActivity);
-    });
 
-    this.data.activities = activities;
-    this.save();
+      return {
+        ...activity,
+        id: Number.parseInt(activity.id, 10),
+        description: activity.description || '',
+        group_type: activity.group_type || '',
+        group_from_date: from,
+        group_to_date: to,
+        synced_on: syncedOn,
+      };
+    });
+    await this.save();
   },
 
   async _fetchActivities() {
@@ -99,18 +108,19 @@ const extension = {
 
     try {
       this.activities.synchronizing = true;
-      const { data: response } = await axios(options);
+      const { data: response } = await axios<{ data: RemoteActivity[] }>(
+        options
+      );
 
-      const isValidResponse = await schemaBackend.safeParse(response).success;
-      if (!isValidResponse) throw new Error('Invalid server response.');
+      if (!schemaBackend.safeParse(response).success)
+        throw new Error('Invalid server response.');
 
       this.activities.synchronizing = false;
-
       return response.data;
-    } catch (error: any) {
+    } catch (error) {
       this.activities.synchronizing = false;
 
-      if (isAxiosNetworkError(error))
+      if (axios.isAxiosError(error) && isAxiosNetworkError(error))
         throw new HandledError(
           'Request aborted because of a network issue (timeout or similar).'
         );
@@ -120,7 +130,7 @@ const extension = {
   },
 
   _removeExpired() {
-    const activities = this.data.activities || [];
+    const { activities } = this.data;
     for (let i = activities.length - 1; i >= 0; i--) {
       const activity = activities[i];
       if (this.hasActivityExpired(activity)) {
@@ -130,77 +140,46 @@ const extension = {
     }
   },
 
-  hasActivity(activity: Activity) {
+  hasActivity(activity) {
     return this.getActivity(activity.id) !== null;
   },
 
-  getActivity(id: any) {
-    const { activities } = this.data;
-    let foundedActivity = null;
-    activities.forEach((activity: Activity) => {
-      if (id === activity.id) {
-        foundedActivity = activity;
-      }
-    });
-    return foundedActivity;
+  getActivity(id) {
+    return this.data.activities.find(activity => id === activity.id) || null;
   },
 
-  /**
-   * Check if an activity has expired and should be deleted/updated.
-   */
-  hasActivityExpired(activity: Activity) {
+  hasActivityExpired(activity) {
     if (!activity?.id) return true;
 
-    // check if old one was updated
     const savedActivity = this.getActivity(activity.id);
     if (!savedActivity) return true;
 
-    const savedActivityCopy = JSON.parse(JSON.stringify(savedActivity));
-    delete savedActivityCopy.synced_on;
+    const savedActivityCopy = { ...savedActivity, synced_on: undefined };
+    const activityCopy = { ...activity, synced_on: undefined };
+    if (JSON.stringify(savedActivityCopy) !== JSON.stringify(activityCopy))
+      return true;
 
-    const activityCopy = JSON.parse(JSON.stringify(activity));
-    delete activityCopy.synced_on;
-
-    const isEqual = JSON.stringify(savedActivity) === JSON.stringify(activity);
-    if (!isEqual) return true;
-
-    // check if out of range
     const today = new Date();
-    let tooLate = false;
-    if (activity.group_to_date) {
-      tooLate = new Date(activity.group_to_date) < today;
-    }
-    let tooEarly = false;
-    if (activity.group_from_date) {
-      tooEarly = new Date(activity.group_from_date) > today;
-    }
+    const tooLate = activity.group_to_date
+      ? new Date(activity.group_to_date) < today
+      : false;
+    const tooEarly = activity.group_from_date
+      ? new Date(activity.group_from_date) > today
+      : false;
 
-    // activity not found in available list, or activity found but out of date range
     return tooEarly || tooLate;
   },
 
-  /**
-   * Checks if the last sync was done too long ago.
-   * @returns {boolean}
-   * @private
-   */
   _lastSyncExpired() {
     const { activities } = this.data;
-
-    if (!activities.length) {
-      return true;
-    }
+    if (!activities.length) return true;
 
     const lastSync = new Date(activities[0].synced_on);
-
-    function daydiff(first: Date, second: Date) {
-      return Math.round(
-        (second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)
-      );
-    }
-
-    return daydiff(lastSync, new Date()) >= 1;
+    const daysSinceSync = Math.round(
+      (Date.now() - lastSync.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    return daysSinceSync >= 1;
   },
-} as any;
+};
 
 export default extension;

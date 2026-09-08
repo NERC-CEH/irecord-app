@@ -6,9 +6,10 @@ import {
   SPECIES_ID_INDEX,
   SPECIES_NAMES_INDEX,
 } from './constants';
+import type { OptimisedSpecies } from './optimise';
 
-function saveMapToFile(ids: any) {
-  return new Promise((resolve, reject) => {
+function saveMapToFile(ids: Record<string, string[]>) {
+  return new Promise<Record<string, string[]>>((resolve, reject) => {
     console.log('Writing ./species_ids.data.json');
     fs.writeFile('./species_ids.data.json', JSON.stringify(ids), err => {
       if (err) {
@@ -21,18 +22,19 @@ function saveMapToFile(ids: any) {
   });
 }
 
-export default async (species: any[]) => {
-  const warehouseIdMap: Record<string, any> = {};
+export default async (species: OptimisedSpecies) => {
+  const warehouseIdMap: Record<string, string[]> = {};
 
-  species.forEach((speciesEntry: any) => {
+  species.forEach(speciesEntry => {
     if (speciesEntry[GENUS_NAMES_INDEX]) {
       warehouseIdMap[speciesEntry[GENUS_ID_INDEX]] =
         speciesEntry[GENUS_NAMES_INDEX];
     }
 
     const speciesArray = speciesEntry[GENUS_SPECIES_INDEX] || [];
-    speciesArray.forEach((sp: any) => {
-      warehouseIdMap[sp[SPECIES_ID_INDEX]] = sp[SPECIES_NAMES_INDEX];
+    speciesArray.forEach(sp => {
+      const names = sp[SPECIES_NAMES_INDEX];
+      if (names) warehouseIdMap[String(sp[SPECIES_ID_INDEX])] = names;
     });
   });
 

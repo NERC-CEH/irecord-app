@@ -170,8 +170,8 @@ const occAttrs = {
   [defaultSensitivityPrecisionAttr.id]: {
     block: defaultSensitivityPrecisionAttr,
   },
-  sex: null as any, // disable for bulk-editing
-  stage: null as any, // disable for bulk-editing
+  sex: { id: 'sex' }, // disable for bulk-editing
+  stage: { id: 'stage' }, // disable for bulk-editing
 
   [adCountAttr.id]: { block: adCountAttr },
   [coCountAttr.id]: { block: coCountAttr },
@@ -206,7 +206,7 @@ const survey: Partial<Survey> & { taxa: string } = {
 
     attrs: occAttrs,
 
-    verify: (values: any) =>
+    verify: values =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
         [adCountAttr.id]: string().nullable().optional(),
@@ -218,7 +218,7 @@ const survey: Partial<Survey> & { taxa: string } = {
         [emCountAttr.id]: string().nullable().optional(),
       })
         .refine(
-          (val: any) =>
+          val =>
             val[adCountAttr.id] ||
             val[coCountAttr.id] ||
             val[ovCountAttr.id] ||

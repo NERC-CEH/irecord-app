@@ -1,5 +1,9 @@
 /* eslint-disable no-restricted-syntax */
-import { migrateOldAttr, Migration, SampleCollection } from '@flumens';
+import {
+  migrateOldAttr as migrateOldAttrBase,
+  type Migration,
+  SampleCollection,
+} from '@flumens';
 import MigrationsManager from '@flumens/utils/dist/MigrationManager';
 import {
   arthropodStageAttr,
@@ -110,7 +114,20 @@ import Occurrence from './models/occurrence';
 import Sample from './models/sample';
 import { db, samplesStore } from './models/store';
 
-const getRecorderCount = (recorders: any[]) => {
+type AttrConfig = { id: string; remote?: unknown };
+
+const migrateOldAttr = (
+  model: Sample | Occurrence,
+  oldAttr: AttrConfig,
+  newAttr: AttrConfig
+) =>
+  migrateOldAttrBase(
+    model,
+    oldAttr as Parameters<typeof migrateOldAttrBase>[1],
+    newAttr
+  );
+
+const getRecorderCount = (recorders: unknown[]) => {
   if (recorders.length === 1) return 7299;
   if (recorders.length === 2) return 7300;
   if (recorders.length <= 5) return 7301;
@@ -119,17 +136,20 @@ const getRecorderCount = (recorders: any[]) => {
   return 7304;
 };
 
-const clone = (value: any) => JSON.parse(JSON.stringify(value));
-
-const preserveMigratedValue = (metadata: any, key: string, value: any) => {
+const preserveMigratedValue = (
+  metadata: Record<string, unknown>,
+  key: string,
+  value: unknown
+) => {
   if (value === undefined) return;
-  const migrated = metadata._migrated || {};
-  migrated[key] = clone(value);
+  const migrated =
+    (metadata._migrated as Record<string, unknown> | undefined) || {};
+  migrated[key] = structuredClone(value);
   Object.assign(metadata, { _migrated: migrated });
 };
 
 const deleteOldAttrs = (
-  model: { data: Record<string, any>; metadata: Record<string, any> },
+  model: { data: Record<string, unknown>; metadata: Record<string, unknown> },
   attrs: string[]
 ) => {
   attrs.forEach(attr => {
@@ -138,10 +158,10 @@ const deleteOldAttrs = (
   });
 };
 
-const migrateLocation = (sample: any) => {
+const migrateLocation = (sample: Sample) => {
   const { data, metadata } = sample;
   const { location } = data;
-  if (location?.name !== undefined) {
+  if (location && 'name' in location && typeof location.name === 'string') {
     data.locationName ??= location.name;
     preserveMigratedValue(metadata, 'location.name', location.name);
     delete location.name;
@@ -153,7 +173,7 @@ const migrateLocation = (sample: any) => {
   }
 };
 
-export const migrateSampleTree = (sample: any) => {
+export const migrateSampleTree = (sample: Sample) => {
   migrateLocation(sample);
 
   const { data, metadata } = sample;
@@ -167,10 +187,11 @@ export const migrateSampleTree = (sample: any) => {
 };
 
 export const getSampleTaxa = (sample: Sample) => {
+  const surveyTaxa = sample.getSurvey().taxa;
   const hasTaxonGroup = sample.occurrences[0]?.data.taxon?.group !== undefined;
-  return hasTaxonGroup
-    ? sample.getSurvey().taxa
-    : (sample.metadata as any).taxa || sample.getSurvey().taxa;
+  if (hasTaxonGroup) return surveyTaxa;
+  if (typeof sample.metadata.taxa === 'string') return sample.metadata.taxa;
+  return surveyTaxa;
 };
 
 const migrateDefaultNumberAttrs = (occ: Occurrence) => {
@@ -372,21 +393,24 @@ const migrations: Migration[] = [
         if (isPlantSurvey) {
           console.log('🔵 Migrating sample', sample.cid);
 
-          const data = sample.data as any;
+          const { data } = sample;
           migrateOldAttr(sample, { id: 'recorders' }, recordersAttr);
           const newRecorders = data[recordersAttr.id];
-          if (newRecorders?.length) {
+          if (Array.isArray(newRecorders) && newRecorders.length) {
             data[recordersCountAttr.id] = getRecorderCount(newRecorders);
           }
 
           const viceCounty = data['vice-county'];
           if (viceCounty) {
-            const byValue = (vc: any) =>
-              `${vc.id}` === `${viceCounty}` ||
+            const viceCountyObject =
+              typeof viceCounty === 'object' && viceCounty
+                ? (viceCounty as { id?: unknown; name?: unknown })
+                : undefined;
+            const byValue = (vc: (typeof VCs)[number]) =>
+              vc.id === `${viceCounty}` ||
               vc.name === viceCounty ||
-              vc.name === viceCounty.name;
-            const VC =
-              typeof viceCounty === 'object' ? viceCounty : VCs.find(byValue);
+              vc.name === viceCountyObject?.name;
+            const VC = viceCountyObject || VCs.find(byValue);
             data[viceCountyAttr.id] = `${VC?.id || viceCounty}`;
             if (VC?.name) data[`${viceCountyAttr.id}:name`] = VC.name;
             deleteOldAttrs(sample, ['vice-county']);
@@ -397,12 +421,13 @@ const migrations: Migration[] = [
               migrateOldAttr(occurrence, plantStageAttrOld, plantStageAttr);
               migrateOldAttr(occurrence, statusAttrOld, statusAttr);
 
-              const occData = occurrence.data as any;
-              if (occData.abundance !== undefined && occData.abundance !== '') {
+              const { data: occData } = occurrence;
+              const { abundance } = occData;
+              if (abundance !== undefined && abundance !== '') {
                 occData[abundanceAttr.id] =
-                  typeof occData.abundance === 'string'
-                    ? occData.abundance.toUpperCase()
-                    : occData.abundance;
+                  typeof abundance === 'string'
+                    ? abundance.toUpperCase()
+                    : abundance;
                 deleteOldAttrs(occurrence, ['abundance']);
               }
               migrateOldAttr(

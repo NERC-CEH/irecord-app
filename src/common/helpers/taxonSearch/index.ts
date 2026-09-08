@@ -28,31 +28,31 @@ let species: Genera;
 type GenusIndex = number;
 type SpeciesIndex = number;
 type NameIndex = number;
-export type GenusNamePointer = { 0: GenusIndex; 1: NameIndex };
-export type CommonNamePointer = {
-  0: GenusIndex;
-  1: SpeciesIndex;
-  2: NameIndex;
-};
+export type GenusNamePointer = [GenusIndex, NameIndex];
+export type CommonNamePointer = [GenusIndex, SpeciesIndex, NameIndex];
 export type NamePointer = GenusNamePointer | CommonNamePointer;
 export type NamePointers = NamePointer[][];
 let commonNamePointers: NamePointers;
+
+function fromStaticData<T>(data: unknown) {
+  return data as T;
+}
 
 const loadData = async () => {
   const { default: data } = await import(
     /* webpackChunkName: "data" */ 'common/data/species.data.json'
   );
-  species = data as any;
+  species = fromStaticData<Genera>(data);
   const { default: pointersData } = await import(
     /* webpackChunkName: "data" */ 'common/data/species_names.data.json'
   );
-  commonNamePointers = pointersData as any;
+  commonNamePointers = fromStaticData<NamePointers>(pointersData);
 };
 
 const MAX = 20;
 
 /* Species dictionary load. */
-let initPromise: any;
+let initPromise: Promise<void> | undefined;
 
 export type Options = {
   maxResults?: number;
@@ -95,7 +95,7 @@ export default async function search(
     await initPromise;
   }
 
-  let results: any = [];
+  let results: SearchResults = [];
 
   if (!searchPhrase) return results;
 

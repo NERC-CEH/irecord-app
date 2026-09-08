@@ -22,9 +22,9 @@ const MenuTaxonItem = ({ occ }: Props) => {
     commonName = taxon.commonNames[taxon.foundInName as number];
   }
 
-  if ((taxon as any)?.commonName) {
+  if (taxon?.commonName) {
     // in case pulling from warehouse, it is different format
-    commonName = (taxon as any).commonName;
+    commonName = taxon.commonName;
   }
 
   const empty = !commonName && !scientificName;

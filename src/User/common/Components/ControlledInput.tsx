@@ -1,9 +1,21 @@
-import { Controller } from 'react-hook-form';
+import {
+  Controller,
+  type Control,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
 import { Input, InputProps } from '@flumens';
 
-type Props = { control: any; name: string } & Partial<InputProps>;
+type Props<T extends FieldValues> = {
+  control: Control<T>;
+  name: Path<T>;
+} & Partial<InputProps>;
 
-const ControlledInput = ({ control, name, ...props }: Props) => (
+const ControlledInput = <T extends FieldValues>({
+  control,
+  name,
+  ...props
+}: Props<T>) => (
   <Controller
     control={control}
     name={name}

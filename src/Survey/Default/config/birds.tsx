@@ -1,11 +1,14 @@
 import { clipboardOutline } from 'ionicons/icons';
-import { ChoiceInputConf } from '@flumens/tailwind/dist/Survey';
+import type { ChoiceInputConf } from '@flumens/tailwind/dist/Survey';
 import { IonIcon } from '@ionic/react';
 import { groupsReverse as groups } from 'common/data/informalGroups';
-import { inferAttrConfigTypes, OccurrenceData } from 'common/flumens';
+import { inferAttrConfigTypes } from 'common/flumens';
 import progressIcon from 'common/images/progress-circles.svg';
 import appModel from 'common/models/app';
-import Occurrence, { MachineInvolvement } from 'common/models/occurrence';
+import Occurrence, {
+  MachineInvolvement,
+  type Data,
+} from 'common/models/occurrence';
 import {
   commentAttr,
   identifiersAttr,
@@ -13,6 +16,7 @@ import {
   taxonAttr,
 } from 'Survey/common/config';
 import {
+  choicePlaceholder,
   defaultSensitivityPrecisionAttr,
   numberAttr,
   numberPageAttr,
@@ -58,14 +62,14 @@ export const breedingAttr = {
   choices: [
     { dataName: '', title: 'Not recorded' },
 
-    { isPlaceholder: true, title: 'Non-breeding' },
+    choicePlaceholder('Non-breeding'),
     { title: '00: Migration, Flying or Summering (M/F/U)', dataName: '17588' },
 
-    { isPlaceholder: true, title: 'Possible breeding' },
+    choicePlaceholder('Possible breeding'),
     { title: '01: Nesting habitat (H)', dataName: '17589' },
     { title: '02: Singing male (S)', dataName: '17590' },
 
-    { isPlaceholder: true, title: 'Probable breeding' },
+    choicePlaceholder('Probable breeding'),
     { title: '03: Pair in suitable habitat (P)', dataName: '17591' },
     { title: '04: Permanent territory (T)', dataName: '17592' },
     { title: '05: Courtship and display (D)', dataName: '17593' },
@@ -74,7 +78,7 @@ export const breedingAttr = {
     { title: '08: Brood patch on incubating adult (I)', dataName: '17596' },
     { title: '09: Nest building (B)', dataName: '17597' },
 
-    { isPlaceholder: true, title: 'Confirmed breeding' } as any,
+    choicePlaceholder('Confirmed breeding'),
     { title: '10: Distraction display (DD)', dataName: '17598' },
     { title: '11: Used nest or eggshells (UN)', dataName: '17599' },
     { title: '12: Recently fledged (FL)', dataName: '17600' },
@@ -134,7 +138,7 @@ const occAttrs = {
   [sexAttr.id]: { block: sexAttr },
 };
 
-export type OccData = OccurrenceData & inferAttrConfigTypes<typeof occAttrs>;
+export type OccData = Data & inferAttrConfigTypes<typeof occAttrs>;
 
 const survey: Partial<Survey> & { taxa: string } = {
   taxa: 'birds',
@@ -152,11 +156,12 @@ const survey: Partial<Survey> & { taxa: string } = {
     attrs: occAttrs,
 
     async create({ images, taxon, isListSurvey }) {
-      const occurrence = new Occurrence<OccData>({
-        data: {
-          machineInvolvement: MachineInvolvement.NONE,
-          taxon,
-        },
+      const data: Data = {
+        machineInvolvement: MachineInvolvement.NONE,
+        taxon,
+      };
+      const occurrence = new Occurrence({
+        data,
         media: images,
       });
 

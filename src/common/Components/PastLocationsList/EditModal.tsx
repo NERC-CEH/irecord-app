@@ -14,19 +14,18 @@ import {
   IonInput,
   useIonModal,
 } from '@ionic/react';
-
-type Location = any;
+import type { FullLocation } from 'models/app/pastLocExt';
 
 type Props = {
-  location?: Location;
-  onLocationSave: any;
+  location: FullLocation | null;
+  onLocationSave: (name?: string, favourite?: boolean) => void;
 };
 
 const EditModal = ({ location, onLocationSave }: Props) => {
   const { t } = useTranslation();
-  const inputRef = createRef<any>();
+  const inputRef = createRef<HTMLIonInputElement>();
 
-  const toggleRef = createRef<any>();
+  const toggleRef = createRef<HTMLIonToggleElement>();
 
   const closeModal = () => {
     onLocationSave();
@@ -37,7 +36,10 @@ const EditModal = ({ location, onLocationSave }: Props) => {
   useOnHideModal(closeModal);
 
   const save = () => {
-    onLocationSave(inputRef.current.value, toggleRef.current.checked);
+    onLocationSave(
+      String(inputRef.current?.value || ''),
+      toggleRef.current?.checked
+    );
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     dismissModal();
   };

@@ -32,7 +32,7 @@ const speciesOccAddedTimeSort = (
 
 type Props = {
   sample: Sample;
-  onDelete: any;
+  onDelete: (model: Sample | Occurrence) => void;
   onBulkEdit?: OnBulkEdit;
   bulkEditAttrs?: BulkEditAttrs;
   useSubSamples?: boolean;
@@ -50,13 +50,18 @@ const SpeciesList = ({
   const [isBulkEditing, setIsBulkEditing] = useState(false);
   const toast = useToast();
 
-  const models = useSubSamples ? sample.samples : sample.occurrences;
+  const models: (Sample | Occurrence)[] = useSubSamples
+    ? [...sample.samples]
+    : [...sample.occurrences];
   if (!models.length)
     return <InfoBackgroundMessage>No species added</InfoBackgroundMessage>;
 
   const { speciesListSortedByTime } = appModel.data;
 
-  const nameSort = useSubSamples ? speciesNameSortForSamples : speciesNameSort;
+  const nameSort = (first: Sample | Occurrence, second: Sample | Occurrence) =>
+    useSubSamples
+      ? speciesNameSortForSamples(first as Sample, second as Sample)
+      : speciesNameSort(first as Occurrence, second as Occurrence);
 
   const sort = speciesListSortedByTime ? speciesOccAddedTimeSort : nameSort;
 
@@ -80,7 +85,7 @@ const SpeciesList = ({
     const numberAttr = numberAttrs?.[0];
     if (!numberAttr) return;
 
-    const data = occ.data as any;
+    const { data } = occ;
     const currentValueRaw = data[numberAttr.id];
     const isString = typeof currentValueRaw === 'string';
     const currentValue = Number(currentValueRaw);
@@ -92,7 +97,7 @@ const SpeciesList = ({
   }
 
   const speciesList = [...models]
-    .sort(sort as any)
+    .sort(sort)
     .map(model => (
       <SpeciesListItem
         key={model.cid}

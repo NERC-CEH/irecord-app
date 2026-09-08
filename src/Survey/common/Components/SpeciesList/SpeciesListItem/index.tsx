@@ -23,7 +23,7 @@ import IncrementalButton from 'Survey/common/Components/IncrementalButton';
 import CheckboxOption from '../BulkEdit/CheckboxOption';
 import './styles.scss';
 
-function useDeleteOccurrenceDialog(occ: Occurrence, onDelete: any) {
+function useDeleteOccurrenceDialog(occ: Occurrence, onDelete: () => void) {
   const alert = useAlert();
 
   const showDeleteOccurrenceDialog = () => {
@@ -69,8 +69,8 @@ const getLocationCommponent = (model: Sample) => {
 
 type Props = {
   model: Sample | Occurrence;
-  increaseCount: any;
-  onDelete: any;
+  increaseCount: (occurrence: Occurrence, is5x: boolean) => void;
+  onDelete: () => void;
   useSubSamples?: boolean;
   isBulkEditing?: boolean;
   numberAttrs?: (ChoiceInputConf | NumberInputConf | TextInputConf)[];
@@ -98,17 +98,20 @@ const SpeciesListItem = ({
 
   const value = numberAttrs
     ?.map(attr => {
-      const rawValue = (occ.data as any)[attr.id];
+      const rawValue = occ.data[attr.id];
       return attr.type === 'choiceInput'
         ? getChoiceTitle(attr, rawValue)
         : rawValue;
     })
-    .find(Boolean);
+    .find(
+      (item): item is string | number =>
+        typeof item === 'string' || typeof item === 'number'
+    );
 
   const getEditButton = () => <CheckboxOption value={model.cid} />;
 
   const getIncrementButton = () => {
-    const increaseCountWrap = () => increaseCount(occ);
+    const increaseCountWrap = () => increaseCount(occ, false);
     const increase5xCountWrap = () => increaseCount(occ, true);
 
     if (!value && isDisabled) return null;

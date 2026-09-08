@@ -1,9 +1,10 @@
+import type { MouseEventHandler } from 'react';
 import { starOutline } from 'ionicons/icons';
 import { MapContainer } from '@flumens';
 import { IonIcon } from '@ionic/react';
 import './styles.scss';
 
-type Props = { onClick: any };
+type Props = { onClick: MouseEventHandler<HTMLButtonElement> };
 
 const PastLocationsControl = ({ onClick }: Props) => (
   <MapContainer.Control>

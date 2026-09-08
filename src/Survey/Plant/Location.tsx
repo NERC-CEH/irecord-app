@@ -2,10 +2,11 @@ import {
   useToast,
   checkGridType,
   gridrefAccuracy,
-  isValidLocation,
   locationToGrid,
   useSample,
+  type Location,
 } from '@flumens';
+import { hasCoordinates } from 'common/helpers/location';
 import appModel from 'models/app';
 import Sample from 'models/sample';
 import ModelLocation, {
@@ -17,9 +18,11 @@ import ModelLocation, {
  * @param sample
  */
 function updateChildrenLocations(sample: Sample) {
-  sample.samples.forEach((subSample: Sample) => {
-    const location = JSON.parse(JSON.stringify(sample.data.location));
-    Object.assign(subSample.data.location, location);
+  sample.samples.forEach(subSample => {
+    const location = structuredClone(sample.data.location);
+    Object.assign(subSample.data, {
+      location: { ...subSample.data.location, ...location },
+    });
   });
 }
 
@@ -28,26 +31,29 @@ const ModelGridLocation = () => {
 
   const { sample, subSample } = useSample<Sample>();
 
-  const model = subSample! || sample!;
+  if (!sample) return null;
+  const model = subSample || sample;
 
-  const setLocationWithGridCheck = (_: any, newLocation: any) => {
-    if (!isValidLocation(newLocation)) return;
+  const setLocationWithGridCheck = (
+    _: Sample,
+    newLocation: Partial<Location>
+  ) => {
+    if (!hasCoordinates(newLocation)) return;
+    const location = newLocation;
 
-    let { gridSquareUnit } = sample!.metadata;
-    if (!checkGridType(newLocation, gridSquareUnit)) {
+    let { gridSquareUnit } = sample.metadata;
+    if (!checkGridType(location, gridSquareUnit)) {
       // check if the grid unit has been changed and it matches the new unit
       // or this is the first time we are setting a location
       gridSquareUnit = appModel.data.gridSquareUnit;
 
-      const isFromMap = newLocation.source === 'map';
-      if (isFromMap) {
+      if (location.source === 'map') {
         const accuracy = gridSquareUnit === 'monad' ? 500 : 1000; // tetrad otherwise
-        const gridref = locationToGrid({ ...newLocation, accuracy });
-        newLocation.gridref = gridref; // eslint-disable-line no-param-reassign
-        newLocation.accuracy = accuracy; // eslint-disable-line no-param-reassign
+        location.gridref = locationToGrid({ ...location, accuracy });
+        location.accuracy = accuracy;
       }
 
-      if (!checkGridType(newLocation, gridSquareUnit)) {
+      if (!checkGridType(location, gridSquareUnit)) {
         const prettyName = gridrefAccuracy[gridSquareUnit].label;
 
         toast.warn(`Selected location should be a ${prettyName}`, {
@@ -57,7 +63,7 @@ const ModelGridLocation = () => {
       }
     }
 
-    setLocation(model, newLocation);
+    setLocation(model, location);
 
     updateChildrenLocations(model);
 

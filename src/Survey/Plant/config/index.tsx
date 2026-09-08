@@ -11,6 +11,7 @@ import {
   type OccurrenceData,
   type SampleData,
   type inferAttrConfigTypes,
+  type Location,
 } from '@flumens';
 import {
   ChoiceInputConf,
@@ -62,7 +63,7 @@ const plantLocationAttr = {
   menuProps: { label: 'Square' },
   remote: {
     id: 'entered_sref',
-    values(location: any) {
+    values(location: Partial<Location>) {
       return location.gridref;
     },
   },
@@ -142,7 +143,7 @@ export const viceCountyAttr = {
   type: 'choiceInput',
   container: 'page',
   appearance: 'list',
-  choices: VCs.map((vc: any) => ({ title: vc.name, dataName: `${vc.id}` })),
+  choices: VCs.map(vc => ({ title: vc.name, dataName: vc.id })),
   onChange: (val, op, { record }) => {
     record[viceCountyAttr.id] = val;
 
@@ -158,7 +159,7 @@ const plantSmpLocationAttr = {
   id: 'location',
   remote: {
     id: 'entered_sref',
-    values(location: any) {
+    values(location: Partial<Location>) {
       return location.gridref;
     },
   },
@@ -225,7 +226,7 @@ const smpOccAttrs = {
 };
 
 export type Data = SampleData &
-  inferAttrConfigTypes<typeof attrs> & { location?: any };
+  inferAttrConfigTypes<typeof attrs> & { location?: Partial<Location> };
 export type SmpData = SampleData & inferAttrConfigTypes<typeof smpAttrs>;
 export type OccData = OccurrenceData & inferAttrConfigTypes<typeof smpOccAttrs>;
 
@@ -269,7 +270,7 @@ const survey = {
         ...this.smp?.occ,
         ...taxaSurvey.occ,
       },
-    } as unknown as Survey;
+    } as Survey;
   },
 
   smp: {
@@ -284,13 +285,13 @@ const survey = {
       ],
       attrs: smpOccAttrs,
 
-      verify: (values: any) =>
+      verify: values =>
         object({
           taxon: object({}, { error: 'Species is missing.' }).nullable(),
           [abundanceAttr.id]: abundanceSchema,
         }).safeParse(values).error,
 
-      modifySubmission(submission: any, occ: Occurrence) {
+      modifySubmission(submission, occ) {
         return { ...submission, ...occ.getClassifierSubmission() };
       },
     },
@@ -298,7 +299,7 @@ const survey = {
     async create({ taxon, images, surveySample }) {
       const { gridSquareUnit } = appModel.data;
 
-      const sample = new Sample<Data>({
+      const sample = new Sample({
         // only top samples should have the store, otherwise sync() will save sub-samples on attr change.
         skipStore: true,
 
@@ -335,7 +336,7 @@ const survey = {
     },
   },
 
-  verify: (values: any) =>
+  verify: values =>
     object({
       location: locationAttrValidator(),
       locationName: string({ error: 'Location name is missing' }).min(
@@ -370,15 +371,16 @@ const survey = {
         sampleMethodId: 7305,
         [recordersAttr.id]: recorders,
         [recordersCountAttr.id]: singleRecorderValue,
-      } as any,
+      },
     });
 
-    if (useGridNotifications) gridAlertService.start(sample.cid, alert);
+    if (useGridNotifications && alert)
+      gridAlertService.start(sample.cid, alert);
 
     return Promise.resolve(sample);
   },
 
-  modifySubmission(submission: any) {
+  modifySubmission(submission) {
     Object.assign(submission.values, getSystemAttrs());
 
     return submission;

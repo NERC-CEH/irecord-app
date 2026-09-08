@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 import camelCase from 'lodash.camelcase';
 import mapKeys from 'lodash.mapkeys';
 import { z, object, string, array, number } from 'zod';
@@ -22,7 +22,7 @@ type RemoteSuggestion = z.infer<typeof suggestionSchema>;
 const resultSchema = object({
   classifierId: string(),
   classifierVersion: string(),
-  suggestions: array(z.any()), // loose for initial pass
+  suggestions: array(z.unknown()), // validated individually below
 });
 
 type RemoteResult = z.infer<typeof resultSchema>;
@@ -42,7 +42,9 @@ export type Result = RemoteResult & {
 };
 
 async function getCommonNames(sp: RemoteSuggestion) {
-  const commonNames = (commonNamesByWarehouseId as any)[sp.taxaTaxonListId];
+  const commonNames = (commonNamesByWarehouseId as Record<string, string[]>)[
+    sp.taxaTaxonListId
+  ];
   if (!commonNames?.length) return { commonNames: [] };
 
   return { commonNames, foundInName: 0 };
@@ -69,7 +71,7 @@ export default async function identify(
   const data = new URLSearchParams({ list: UKSI_LIST_ID });
   images.forEach((img: Media) => data.append('image[]', img.getRemoteURL()));
 
-  const options: any = {
+  const options: AxiosRequestConfig = {
     method: 'post',
     url: `${config.backend.url}/api-proxy/indicia?_api_proxy_uri=${classifier}`,
     headers: {
@@ -82,13 +84,18 @@ export default async function identify(
 
   let response: RemoteResult;
   try {
-    const res = await axios(options);
-    const getValues = (doc: any) => mapKeys(doc, (_, key) => camelCase(key));
-    response = getValues(res.data) as any;
-    response.suggestions = response.suggestions?.map(getValues) as any;
-    resultSchema.parse(response);
-  } catch (error: any) {
-    if (isAxiosNetworkError(error))
+    const { data: rawResponse } = await axios<unknown>(options);
+    const getValues = (doc: unknown): Record<string, unknown> =>
+      doc && typeof doc === 'object'
+        ? mapKeys(doc, (_, key) => camelCase(key))
+        : {};
+    const values = getValues(rawResponse);
+    const suggestions = Array.isArray(values.suggestions)
+      ? values.suggestions.map(getValues)
+      : [];
+    response = resultSchema.parse({ ...values, suggestions });
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && isAxiosNetworkError(error))
       throw new HandledError(
         'Request aborted because of a network issue (timeout or similar).'
       );
@@ -96,7 +103,8 @@ export default async function identify(
     throw error;
   }
 
-  const hasValues = (val: any) => suggestionSchema.safeParse(val).success;
+  const hasValues = (value: unknown): value is RemoteSuggestion =>
+    suggestionSchema.safeParse(value).success;
   const suggestions = await Promise.all(
     response.suggestions.filter(hasValues).map(transformToTaxon)
   );

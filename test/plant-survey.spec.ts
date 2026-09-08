@@ -45,6 +45,7 @@ test('Create a Plant List Survey', async ({ homePage }) => {
     .click();
   await setLocation(homePage, 'TQ1234');
   await expect(homePage.getByText('Hyde Park')).toBeVisible();
+  await expect(homePage.getByText('TQ 12 34')).toBeVisible();
 
   // 5. Add a recorder — list-style input: fill text then click the add button
   await homePage

@@ -1,27 +1,26 @@
 import { observable } from 'mobx';
-import { updateModelLocation } from '@flumens';
+import {
+  updateModelLocation,
+  type Location,
+  type LocationModelLike,
+} from '@flumens';
 import GPS from 'helpers/GPS';
-
-export type LatLng = [number, number];
-
-export type Location = {
-  latitude: number;
-  longitude: number;
-  accuracy: number;
-};
 
 const DEFAULT_ACCURACY_LIMIT = 50; // meters
 
-type Extension = {
+type ExtensionThis = LocationModelLike & {
   gps: { locating: null | string };
-  startGPS: any;
-  stopGPS: any;
-  isGPSRunning: any;
-  attrs?: any;
-  save?: any;
+  stopGPS: () => void;
 };
 
-const extension = (): Extension => ({
+type Extension = {
+  gps: { locating: null | string };
+  startGPS: (accuracyLimit?: number) => Promise<void>;
+  stopGPS: () => void;
+  isGPSRunning: () => boolean;
+};
+
+const extension = (): Extension & ThisType<ExtensionThis> => ({
   gps: observable({ locating: null }),
 
   async startGPS(accuracyLimit = DEFAULT_ACCURACY_LIMIT) {
@@ -32,12 +31,13 @@ const extension = (): Extension => ({
 
       onUpdate() {},
 
-      callback(error: Error, location: Location) {
+      callback(error: Error | null, location?: Location) {
         if (error) {
           that.stopGPS();
           return;
         }
-        if (location.accuracy <= options.accuracyLimit) {
+        if (!location) return;
+        if ((location.accuracy ?? Infinity) <= options.accuracyLimit) {
           that.stopGPS();
         }
 

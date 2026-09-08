@@ -4,7 +4,8 @@ import {
   eyeOffOutline,
   locationOutline,
 } from 'ionicons/icons';
-import { z } from 'zod';
+import { z, type ZodError } from 'zod';
+import { useAlert, type Location, type SampleSubmission } from '@flumens';
 import type { RemoteConfig } from '@flumens/models/dist/Indicia/Sample';
 import type {
   BlockConf as BlockT,
@@ -23,7 +24,7 @@ import type Occurrence from 'models/occurrence';
 import type { Taxon } from 'models/occurrence';
 import type Sample from 'models/sample';
 
-export const locationAttrValidator = (obj: any = {}) =>
+export const locationAttrValidator = (shape: z.ZodRawShape = {}) =>
   z
     .object(
       {
@@ -32,10 +33,10 @@ export const locationAttrValidator = (obj: any = {}) =>
       },
       { error: 'Location is missing.' }
     )
-    .extend(obj)
+    .extend(shape)
     .refine(
-      (val: any) =>
-        Number.isFinite(val.latitude) && Number.isFinite(val.longitude),
+      value =>
+        Number.isFinite(value.latitude) && Number.isFinite(value.longitude),
       'Location is missing.'
     );
 
@@ -109,8 +110,8 @@ export const sensitivityPrecisionAttr = (defaultPrecision = 2000) => ({
     label: 'Sensitive',
     icon: eyeOffOutline,
     type: 'toggle',
-    get: (model: any) => !!model.data.sensitivityPrecision,
-    set: (val: boolean, model: any) => {
+    get: (model: Sample | Occurrence) => !!model.data.sensitivityPrecision,
+    set: (val: boolean, model: Sample | Occurrence) => {
       // eslint-disable-next-line no-param-reassign
       model.data.sensitivityPrecision = val ? defaultPrecision : '';
     },
@@ -130,6 +131,8 @@ export const coreAttributes = [
 
 export const taxonAttr = {
   id: 'taxon',
+  type: 'custom',
+  component: () => null,
   remote: {
     id: 'taxa_taxon_list_id',
     values: (taxon: Taxon) => taxon.warehouseId,
@@ -146,17 +149,17 @@ export const systemAttrs = {
       },
     },
   },
-
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   device_version: { remote: { id: 759 } },
-  // eslint-disable-next-line @typescript-eslint/naming-convention
+
   app_version: { remote: { id: 1139 } },
 };
 
 export const getSystemAttrs = () => {
-  const platform = (systemAttrs.device.remote.values as any)[
-    device.info?.platform as any
-  ];
+  const platformName = device.info?.platform;
+  const platform =
+    platformName === 'ios' || platformName === 'android'
+      ? systemAttrs.device.remote.values[platformName]
+      : undefined;
 
   return {
     [`smpAttr:${systemAttrs.device.remote.id}`]: platform,
@@ -169,7 +172,7 @@ export const locationAttr = {
   id: 'location',
   remote: {
     id: 'entered_sref',
-    values(location: any, submission: any) {
+    values(location: Location, submission: SampleSubmission) {
       // convert accuracy for map and gridref sources
       const { accuracy, source, gridref, altitude, altitudeAccuracy } =
         location;
@@ -185,8 +188,8 @@ export const locationAttr = {
       submission.values['smpAttr:283'] = altitude; // eslint-disable-line
       submission.values['smpAttr:284'] = altitudeAccuracy; // eslint-disable-line
 
-      const lat = parseFloat(location.latitude);
-      const lon = parseFloat(location.longitude);
+      const lat = Number(location.latitude);
+      const lon = Number(location.longitude);
       if (Number.isNaN(lat) || Number.isNaN(lat)) return null;
 
       return `${lat.toFixed(7)}, ${lon.toFixed(7)}`;
@@ -291,19 +294,23 @@ export type BlockAttrConfig = {
   pageProps?: undefined;
 };
 
-type Attrs = Record<string, AttrConfig | BlockAttrConfig>;
+export type Attrs = Record<string, AttrConfig | BlockAttrConfig>;
 
 type OccurrenceConfig = {
-  render?: any[];
+  render?: BlockT[] | ((model: Occurrence) => BlockT[]);
   attrs: Attrs;
   create?: (props: {
     taxon?: Taxon;
     identifier?: string;
     images?: Media[];
     isListSurvey?: boolean;
+    alert?: ReturnType<typeof useAlert>;
   }) => Occurrence | Promise<Occurrence>;
-  verify?: (attrs: any) => any;
-  modifySubmission?: (submission: any, model: any) => any;
+  verify?: (attrs: Record<string, unknown>) => ZodError | undefined;
+  modifySubmission?: (
+    submission: SampleSubmission,
+    model: Occurrence
+  ) => SampleSubmission;
   /**
    * Set to true if multi-species surveys shouldn't auto-increment it to 1 when adding to lists.
    */
@@ -311,16 +318,22 @@ type OccurrenceConfig = {
 };
 
 export type SampleConfig = {
-  render?: any[];
+  render?: BlockT[] | ((model: Sample) => BlockT[]);
   attrs?: Attrs;
   create?: (props: {
     taxon?: Taxon;
     images?: Media[];
     surveySample: Sample;
-    alert?: any;
+    alert?: ReturnType<typeof useAlert>;
   }) => Promise<Sample>;
-  verify?: (attrs: any) => any;
-  modifySubmission?: (submission: any, model: any) => any;
+  verify?: (
+    attrs: Record<string, unknown>,
+    model: Sample
+  ) => ZodError | undefined;
+  modifySubmission?: (
+    submission: SampleSubmission,
+    model: Sample
+  ) => SampleSubmission;
   smp?: SampleConfig;
   occ?: OccurrenceConfig;
 };
@@ -372,6 +385,6 @@ export type Survey = {
     taxon?: Taxon;
     images?: Media[] | null;
     skipLocation?: boolean;
-    alert?: any;
+    alert?: ReturnType<typeof useAlert>;
   }) => Promise<Sample>;
-} & SampleConfig;
+} & Omit<SampleConfig, 'create'>;

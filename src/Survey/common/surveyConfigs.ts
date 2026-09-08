@@ -4,7 +4,7 @@ import mothSurvey from 'Survey/Moth/config';
 import plantSurvey from 'Survey/Plant/config';
 import { Survey } from './config';
 
-const getSurveyConfigs = (): Record<any, Survey> => ({
+const getSurveyConfigs = (): Record<string | number, Survey> => ({
   [defaultSurvey.id]: defaultSurvey,
   [listSurvey.id]: listSurvey,
   [plantSurvey.id]: plantSurvey,

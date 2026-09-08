@@ -3,7 +3,7 @@ import {
   Filesystem,
   Directory as FilesystemDirectory,
 } from '@capacitor/filesystem';
-import { Media as MediaOriginal } from '@flumens';
+import { Media as MediaOriginal, type MediaOptions } from '@flumens';
 import { isPlatform } from '@ionic/react';
 import config from 'common/config';
 import type Occurrence from 'models/occurrence';
@@ -13,7 +13,7 @@ import userModel from 'models/user';
 export default class Media extends MediaOriginal {
   declare parent?: Sample | Occurrence;
 
-  constructor(options: any) {
+  constructor(options: MediaOptions = {}) {
     super({
       ...options,
       url: config.backend.indicia.url,
@@ -35,6 +35,7 @@ export default class Media extends MediaOriginal {
     }
 
     const URL = this.data.data;
+    if (!URL) return;
 
     try {
       if (this.data.path) {
@@ -65,7 +66,7 @@ export default class Media extends MediaOriginal {
       process.env.NODE_ENV === 'test' ||
       name?.includes('http')
     ) {
-      return name;
+      return name || '';
     }
 
     let pathToFile = config.dataPath;

@@ -27,8 +27,8 @@ const occAttrs = {
   [defaultSensitivityPrecisionAttr.id]: {
     block: defaultSensitivityPrecisionAttr,
   },
-  sex: null as any,
-  stage: null as any,
+  sex: { id: 'sex' },
+  stage: { id: 'stage' },
   [microscopicallyCheckedAttr.id]: { block: microscopicallyCheckedAttr },
   [fruitAttr.id]: { block: fruitAttr },
   [maleAttr.id]: { block: maleAttr },

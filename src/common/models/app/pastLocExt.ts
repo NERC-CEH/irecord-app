@@ -5,16 +5,34 @@ import { isValidLocation, Location, hashCode } from '@flumens';
 
 export const MAX_SAVED = 250;
 
-type FullLocation = Location & {
+export type FullLocation = Location & {
   name?: string;
   id?: number;
   favourite?: boolean;
+  date?: Date | string;
 };
 
-const extension: any = {
+type ExtensionThis = {
+  data: { locations: FullLocation[] };
+  save: () => Promise<void>;
+  setLocation: (
+    location: FullLocation,
+    allowedMaxSaved?: number
+  ) => Promise<void>;
+  removeLocation: (locationId: number) => Promise<void>;
+  _removeNonFavouriteBackwards: (locations: FullLocation[]) => boolean;
+  _getLocationHash: (location: FullLocation) => number;
+};
+
+const extension: ThisType<ExtensionThis> & {
+  setLocation: ExtensionThis['setLocation'];
+  removeLocation: ExtensionThis['removeLocation'];
+  _removeNonFavouriteBackwards: ExtensionThis['_removeNonFavouriteBackwards'];
+  _getLocationHash: ExtensionThis['_getLocationHash'];
+} = {
   async setLocation(origLocation: FullLocation, allowedMaxSaved = MAX_SAVED) {
     let locations: FullLocation[] = [...this.data.locations];
-    const location = JSON.parse(JSON.stringify(origLocation));
+    const location = structuredClone(origLocation);
     if (!isValidLocation(location)) throw new Error('invalid location');
 
     if (!location.name) return;

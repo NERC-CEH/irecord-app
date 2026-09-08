@@ -1,11 +1,11 @@
 import { Geolocation, Position } from '@capacitor/geolocation';
-import { HandledError } from '@flumens';
+import { HandledError, type Location } from '@flumens';
 import { isPlatform } from '@ionic/core';
 
-type Options = {
-  callback: any;
-  onUpdate?: any;
-  accuracyLimit?: any;
+export type Options = {
+  callback: (error: Error | null, location?: Location) => void;
+  onUpdate?: (location: Location) => void;
+  accuracyLimit?: number;
 };
 
 const GPS_ACCURACY_LIMIT = 100; // meters
@@ -37,7 +37,7 @@ const API = {
       }
     }
 
-    const onPosition = (position: Position | null, err: Error) => {
+    const onPosition = (position: Position | null, err?: Error) => {
       if (err) {
         callback?.(err);
         return;
@@ -51,10 +51,10 @@ const API = {
         accuracy: Number(position.coords.accuracy.toFixed(0)),
         altitude: position.coords.altitude
           ? Number(position.coords.altitude.toFixed(0))
-          : null,
+          : undefined,
         altitudeAccuracy: position.coords.altitudeAccuracy
           ? Number(position.coords.altitudeAccuracy.toFixed(0))
-          : null,
+          : undefined,
       };
 
       if (location.accuracy <= accuracyLimit) {
@@ -78,8 +78,9 @@ export async function hasGPSPermissions() {
   try {
     const permission = await Geolocation.checkPermissions();
     return permission?.location !== 'denied';
-  } catch (err: any) {
-    if (err?.message === GPS_DISABLED_ERROR_MESSAGE) return false;
+  } catch (error) {
+    if (error instanceof Error && error.message === GPS_DISABLED_ERROR_MESSAGE)
+      return false;
   }
 
   return false;

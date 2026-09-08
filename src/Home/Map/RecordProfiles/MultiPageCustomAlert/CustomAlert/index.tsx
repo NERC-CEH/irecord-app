@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react';
 import { IonBackdrop } from '@ionic/react';
 import './styles.scss';
 
 type Props = {
-  children: any;
+  children: ReactNode;
 };
 
 const CustomAlert = ({ children }: Props) => (

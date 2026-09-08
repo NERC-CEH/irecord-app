@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type UIEventHandler } from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { closeOutline, searchOutline } from 'ionicons/icons';
@@ -12,6 +12,9 @@ import {
   IonSegment,
   IonSegmentButton,
   IonToolbar,
+  type RefresherCustomEvent,
+  type SearchbarCustomEvent,
+  type SegmentCustomEvent,
 } from '@ionic/react';
 import { Button } from 'common/flumens';
 import Group from 'common/models/group';
@@ -21,7 +24,7 @@ import UserGroups from './User';
 type Props = {
   currentValue?: string;
   onRefresh: (type: 'member' | 'joinable') => void;
-  setGroup: any;
+  setGroup?: (groupId: string) => void;
   onJoinGroup?: (group: Group) => void;
   onLeaveGroup: (group: Group) => void;
   memberGroups: Group[];
@@ -38,11 +41,11 @@ const GroupsList = ({
   onLeaveGroup,
 }: Props) => {
   const { t } = useTranslation();
-  const searchbarRef = useRef<any>(null);
+  const searchbarRef = useRef<HTMLIonSearchbarElement>(null);
   const [segment, setSegment] = useState<'joined' | 'all'>('joined');
 
-  const onSegmentClick = (e: any) => {
-    const newSegment = e.detail.value;
+  const onSegmentClick = (e: SegmentCustomEvent) => {
+    const newSegment = e.detail.value as 'joined' | 'all';
     setSegment(newSegment);
 
     if (newSegment === 'all' && !joinableGroups.length) onRefresh('joinable');
@@ -51,10 +54,10 @@ const GroupsList = ({
 
   const [reachedTopOfList, setReachedTopOfList] = useState(true);
 
-  const onScroll = ({ scrollOffset }: any) =>
-    setReachedTopOfList(scrollOffset < 80);
+  const onScroll: UIEventHandler<HTMLDivElement> = event =>
+    setReachedTopOfList(event.currentTarget.scrollTop < 80);
 
-  const refreshGroups = async (e: any) => {
+  const refreshGroups = async (e: RefresherCustomEvent) => {
     e?.detail?.complete(); // refresh pull update
 
     onRefresh(segment === 'joined' ? 'member' : 'joinable');
@@ -62,8 +65,8 @@ const GroupsList = ({
 
   const [showSearch, setShowSearch] = useState(false);
   const [currentSearch, setCurrentSearch] = useState('');
-  const onSearch = (e: any) => {
-    setCurrentSearch(e.detail.value);
+  const onSearch = (e: SearchbarCustomEvent) => {
+    setCurrentSearch(e.detail.value || '');
   };
 
   const bySearchPhrase = (group: Group) =>
@@ -130,7 +133,7 @@ const GroupsList = ({
                 setShowSearch(!showSearch);
 
                 if (!showSearch)
-                  setTimeout(() => searchbarRef.current.setFocus(), 300); // searchbar is hidden and needs to "unhide" before we can set focus
+                  setTimeout(() => searchbarRef.current?.setFocus(), 300); // searchbar is hidden and needs to "unhide" before we can set focus
               }}
             >
               <IonIcon

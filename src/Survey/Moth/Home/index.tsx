@@ -9,16 +9,17 @@ import {
   device,
   useSample,
   useRemoteSample,
+  HandledError,
 } from '@flumens';
 import { NavContext, isPlatform } from '@ionic/react';
 import config from 'common/config';
 import appModel from 'common/models/app';
 import Media from 'common/models/media';
+import Occurrence from 'common/models/occurrence';
 import Sample, { useValidateCheck } from 'models/sample';
 import userModel, { useUserStatusCheck } from 'models/user';
 import SurveyHeaderButton from 'Survey/common/Components/SurveyHeaderButton';
 import TrainingBand from 'Survey/common/Components/TrainingBand';
-import { Data } from '../config';
 import Main from './Main';
 
 const shouldAutoID = () =>
@@ -31,7 +32,7 @@ const MothHome = () => {
   const toast = useToast();
   const { navigate } = useContext(NavContext);
 
-  let { sample } = useSample<Sample<Data>>();
+  let { sample } = useSample<Sample>();
   sample = useRemoteSample(sample, () => userModel.isLoggedIn(), Sample);
 
   const checkSampleStatus = useValidateCheck(sample);
@@ -68,8 +69,8 @@ const MothHome = () => {
     <SurveyHeaderButton sample={sample} onClick={onFinish} />
   );
 
-  const onSubSampleDelete = async (subSample: Sample) => {
-    await subSample.destroy();
+  const onSubSampleDelete = async (occurrence: Occurrence) => {
+    await occurrence.destroy();
   };
 
   async function onSpeciesImageAttach(shouldUseCamera: boolean) {
@@ -83,18 +84,18 @@ const MothHome = () => {
     const imageArray = Array.isArray(images) ? images : [images];
     const surveyConfig = sample!.getSurvey();
 
-    const occurrencesPromise = imageArray.map(async (img: any) => {
-      const imageModel: any = await Media.getImageModel(
+    const occurrencesPromise = imageArray.map(async img => {
+      const imageModel = (await Media.getImageModel(
         isPlatform('hybrid') ? Capacitor.convertFileSrc(img) : img,
         config.dataPath,
         true
-      );
+      )) as Media;
 
       const occ = await surveyConfig.occ!.create!({ images: [imageModel] });
 
       if (shouldAutoID()) {
-        const processError = (error: any) =>
-          !error.isHandled && console.error(error); // don't toast this to user
+        const processError = (error: unknown) =>
+          !(error instanceof HandledError) && console.error(error); // don't toast this to user
         occ.identify().catch(processError);
       }
 

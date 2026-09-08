@@ -18,7 +18,7 @@ const remoteSchema = object({
   commonName: z.string().optional(),
   cym: z.string().optional(),
   synonym: z.string().optional(),
-});
+}).passthrough();
 
 export type RemoteAttributes = z.infer<typeof remoteSchema>;
 
@@ -36,7 +36,7 @@ if (!ANON_WAREHOUSE_TOKEN) {
 async function fetch(): Promise<RemoteAttributes[]> {
   console.log('Pulling all the species from remote report.');
 
-  const data = [];
+  const data: Record<string, unknown>[] = [];
   let offset = 0;
 
   while (true) {
@@ -48,7 +48,7 @@ async function fetch(): Promise<RemoteAttributes[]> {
     };
 
     // eslint-disable-next-line no-await-in-loop
-    const res = await axios(options);
+    const res = await axios<{ data: Record<string, unknown>[] }>(options);
 
     if (!res.data.data?.length) break;
 
@@ -59,20 +59,17 @@ async function fetch(): Promise<RemoteAttributes[]> {
 
   console.log(`Pulled ${data.length} species`);
 
-  const getValues = (doc: any) =>
+  const getValues = (doc: Record<string, unknown>) =>
     mapKeys(doc, (_, key) => (key.includes(':') ? key : camelCase(key)));
 
-  const byTaxon = (s1: any, s2: any) => s1.taxon.localeCompare(s2.taxon);
-
-  const docs: any = data.map(getValues).sort(byTaxon);
-
-  docs.forEach(remoteSchema.parse);
+  const docs = data.map(getValues).map(doc => remoteSchema.parse(doc));
+  docs.sort((first, second) => first.taxon.localeCompare(second.taxon));
 
   return docs;
 }
 
-function saveSpeciesToFile(species: any): any {
-  return new Promise((resolve, reject) => {
+function saveSpeciesToFile<T>(species: T) {
+  return new Promise<T>((resolve, reject) => {
     console.log('Writing ./species.data.json');
 
     fs.writeFile('./species.data.json', JSON.stringify(species), err => {
@@ -86,8 +83,8 @@ function saveSpeciesToFile(species: any): any {
   });
 }
 
-function saveCommonNamesToFile(commonNames: any) {
-  return new Promise((resolve, reject) => {
+function saveCommonNamesToFile<T>(commonNames: T) {
+  return new Promise<T>((resolve, reject) => {
     console.log('Writing ./species_names.data.json');
     fs.writeFile(
       './species_names.data.json',
@@ -105,7 +102,7 @@ function saveCommonNamesToFile(commonNames: any) {
 }
 
 fetch()
-  .then((species: any) => optimise(species))
+  .then(optimise)
   .then(saveSpeciesToFile)
   .then(makeWarehouseIdMap)
   .then(makeCommonNameMap)

@@ -17,7 +17,7 @@ import filters from './filters';
 
 type Props = {
   onTaxaFilterChange: (newFilters: number[][]) => void;
-  onNameFilterChange: (e: any) => void;
+  onNameFilterChange: (value: string) => void;
   toggleModal: () => void;
   showModal: boolean;
 };
@@ -26,8 +26,12 @@ const useDisableBackButton = (toggleModal: () => void, showModal: boolean) => {
   const { goBack } = useContext(NavContext);
 
   const disableBackButton = () => {
-    const disableHardwareBackButton = (event: any) =>
-      event.detail.register(100, () => {
+    const disableHardwareBackButton = (event: Event) =>
+      (
+        event as CustomEvent<{
+          register: (priority: number, handler: () => void) => void;
+        }>
+      ).detail.register(100, () => {
         if (!showModal) {
           goBack();
           return null;
@@ -59,16 +63,22 @@ const FiltersModal = ({
 
   const { searchNamesOnly, taxonSearchGroupFilters } = appModel.data;
 
-  const currentTaxaFilters = taxonSearchGroupFilters.map((s: any) =>
-    JSON.stringify(s)
+  const currentTaxaFilters = taxonSearchGroupFilters.map(filter =>
+    JSON.stringify(filter)
   );
 
   const [isExpanded, setIsExpanded] = useState('');
 
   const taxaMultiGroupValues: string[] = [];
 
-  const taxaFilterOptions = Object.entries(filters).map(
-    ([filterName, options]: any) => {
+  type FilterOption = {
+    label: string;
+    value: string;
+    subFilters?: { label: string; value: string }[];
+  };
+
+  const taxaFilterOptions: FilterOption[] = Object.entries(filters).map(
+    ([filterName, options]) => {
       const hasSubFilters = !Array.isArray(options);
       if (!hasSubFilters)
         return {
@@ -76,10 +86,12 @@ const FiltersModal = ({
           value: JSON.stringify(options),
         };
 
-      const subFilters = Object.keys(options).map((subFilterName: string) => ({
-        label: capitalize(subFilterName),
-        value: JSON.stringify(options[subFilterName]),
-      }));
+      const subFilters = Object.entries(options).map(
+        ([subFilterName, value]) => ({
+          label: capitalize(subFilterName),
+          value: JSON.stringify(value),
+        })
+      );
 
       // caching for easier lookups
       taxaMultiGroupValues.push(JSON.stringify(Object.values(options)));
@@ -126,14 +138,14 @@ const FiltersModal = ({
   };
 
   const taxaFilterOptionItems = taxaFilterOptions.map(
-    ({ label, value, subFilters }: any) => {
+    ({ label, value, subFilters }) => {
       const hasSelectedSomeSubFilters = !subFilters
         ? false
-        : subFilters.some(({ value: subFilterValue }: any) =>
+        : subFilters.some(({ value: subFilterValue }) =>
             currentTaxaFilters.includes(subFilterValue)
           );
 
-      const subFilterOptionItems = subFilters?.map((subFilter: any) => (
+      const subFilterOptionItems = subFilters?.map(subFilter => (
         <CheckboxInput.Option
           label={subFilter.label}
           value={subFilter.value}

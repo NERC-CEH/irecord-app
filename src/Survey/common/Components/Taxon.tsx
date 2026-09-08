@@ -11,7 +11,7 @@ import TaxonSearch, { TaxonSearchFilters } from './TaxonSearch';
 
 const Taxon = () => {
   const { navigate, goBack } = useContext(NavContext);
-  const { url } = useRouteMatch<any>();
+  const { url } = useRouteMatch();
   const toast = useToast();
   const { t } = useTranslation();
 
@@ -20,7 +20,7 @@ const Taxon = () => {
   const surveyConfig = (subSample || sample)!.getSurvey();
   const shouldCreateOccurrences = !!surveyConfig.occ?.create;
 
-  const createNewOccurrenceModel = async (taxon: any) => {
+  const createNewOccurrenceModel = async (taxon: TaxonI) => {
     const newOccurrence = await surveyConfig.occ!.create!({ taxon });
     sample!.occurrences.push(newOccurrence);
     sample!.save();

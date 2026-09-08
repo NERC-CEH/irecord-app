@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { object, string } from 'zod';
 import {
   dateFormatISO,
@@ -112,7 +111,7 @@ const survey = {
 
   attrs,
 
-  verify: (values: any) =>
+  verify: values =>
     object({
       location: locationAttrValidator(),
       locationName: string({ error: 'Location name is missing' }).min(
@@ -126,12 +125,12 @@ const survey = {
 
     attrs: occAttrs,
 
-    verify: (values: any) =>
+    verify: values =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),
       }).safeParse(values).error,
 
-    modifySubmission(submission: any, occ: Occurrence) {
+    modifySubmission(submission, occ) {
       return { ...submission, ...occ.getClassifierSubmission() };
     },
 
@@ -163,20 +162,23 @@ const survey = {
       recorder = userModel.getPrettyName();
     }
 
-    const sample = new Sample<Data>({
+    const sample = new Sample({
       data: {
         surveyId: SURVEY_ID,
         inputForm: SURVEY_WEBFORM,
         date: dateFormatISO.format(new Date()),
         enteredSrefSystem: 4326,
         location: {},
+        [recorderAttr.id]: recorder,
       },
     });
-    sample.data[recorderAttr.id] = recorder;
 
     const taxonSurvey = taxon ? getTaxaGroupSurvey(taxon.group) : undefined;
     const createOccurrence = taxonSurvey?.occ?.create ?? survey.occ.create;
-    const occurrence = await createOccurrence({ images: images!, taxon });
+    const occurrence = await createOccurrence({
+      images: images || undefined,
+      taxon,
+    });
     sample.occurrences.push(occurrence);
 
     if (taxon) sample.setTaxon(taxon, occurrence.id, true);
@@ -230,9 +232,10 @@ const survey = {
     if (!sample.parent) return taxaConfig;
 
     const subSampleConfig = sample.parent.getSurvey().smp;
-    const subSampleSurvey: any = {
+    const subSampleSurvey: Survey = {
       ...taxaConfig,
       ...subSampleConfig,
+      create: taxaConfig.create,
       occ: {
         ...taxaConfig.occ,
         ...subSampleConfig?.occ,

@@ -9,7 +9,14 @@ function getValue(sample: Sample) {
     return <IonSpinner />;
   }
 
-  return prettyPrintLocation(sample.data.location);
+  const { location } = sample.data;
+  if (!location?.latitude || !location.longitude) return null;
+
+  return prettyPrintLocation({
+    ...location,
+    latitude: location.latitude,
+    longitude: location.longitude,
+  });
 }
 
 type Props = {

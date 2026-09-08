@@ -1,5 +1,5 @@
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import { locationToGrid } from '@flumens';
+import { locationToGrid, useAlert, type Location } from '@flumens';
 import { isPlatform } from '@ionic/core';
 import appModel from 'models/app';
 import GPS from 'helpers/GPS';
@@ -10,9 +10,9 @@ const getSquare = (location: Location) =>
     accuracy: appModel.data.gridSquareUnit === 'monad' ? 500 : 1000, // tetrad otherwise
   });
 
-type Location = any;
+type Alert = ReturnType<typeof useAlert>;
 
-const showGridChangeAlert = (alert: any, newLocation: Location) => {
+const showGridChangeAlert = (alert: Alert, newLocation: Location) => {
   if (!newLocation.gridref) {
     console.warn('No gridref in grid alert');
     return;
@@ -39,7 +39,7 @@ const clientIds: string[] = [];
 let lastGridref = '';
 
 const service = {
-  async start(clientId: string, alert: any) {
+  async start(clientId: string, alert: Alert) {
     if (!alert) throw new Error('Grid notifications alert object is missing.');
 
     if (clientIds.includes(clientId)) {
@@ -56,15 +56,17 @@ const service = {
     const options = {
       accuracyLimit: 100, // meters
 
-      callback(error: Error, loc: Location) {
-        if (error) {
+      callback(error: Error | null, loc?: Location) {
+        if (error || !loc) {
           console.error(error);
           service.stop();
           return;
         }
 
         const currentGridref = getSquare(loc);
-        const location = { ...{ gridref: currentGridref }, ...loc };
+        if (!currentGridref) return;
+
+        const location = { ...loc, gridref: currentGridref };
 
         // no change, only first time set up
         if (!lastGridref) {

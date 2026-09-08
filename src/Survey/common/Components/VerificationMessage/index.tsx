@@ -1,4 +1,6 @@
+import type { ReactNode } from 'react';
 import clsx from 'clsx';
+import type { TFunction } from 'i18next';
 import { checkmarkCircle, closeCircle, helpOutline } from 'ionicons/icons';
 import { useTranslation, Trans as T } from 'react-i18next';
 import { InfoMessage, InfoButton } from '@flumens';
@@ -10,10 +12,10 @@ const getVerificationText = (
   status: string,
   message: string,
   taxonName: string,
-  t: any
+  t: TFunction
 ) => {
   const statusMessage = message || status;
-  const verifyStatus: Record<string, any> = {
+  const verifyStatus: Record<string, ReactNode> = {
     queried: (
       <>
         <h2 className="mb-5">
@@ -55,7 +57,7 @@ const getVerificationText = (
         <div>
           <T>
             Thanks for sending in your record. From this record details, we
-            think it could be the <b>{{ taxonName } as any}</b> species.
+            think it could be the <b>{taxonName}</b> species.
           </T>
         </div>
       </>
@@ -72,7 +74,7 @@ const getVerificationText = (
         <div>
           <T>
             Thanks for sending in your record. A verifier has marked it as{' '}
-            <b>"{{ statusMessage: t(statusMessage) } as any}"</b> in this case.
+            <b>"{t(statusMessage)}"</b> in this case.
           </T>
         </div>
         <div className="mt-5">
@@ -126,9 +128,9 @@ const VerificationMessage = ({ occurrence }: Props) => {
     verified: 'success',
     plausible: 'warning',
     rejected: 'danger',
-    queried: '',
-  };
-  const color: any = colors[status];
+    queried: undefined,
+  } as const;
+  const color = colors[status];
 
   return (
     <InfoMessage

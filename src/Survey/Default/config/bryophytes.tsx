@@ -122,8 +122,8 @@ const occAttrs = {
   [defaultSensitivityPrecisionAttr.id]: {
     block: defaultSensitivityPrecisionAttr,
   },
-  sex: null as any, // disable for bulk-editing
-  stage: null as any, // disable for bulk-editing
+  sex: { id: 'sex' }, // disable for bulk-editing
+  stage: { id: 'stage' }, // disable for bulk-editing
 
   [altitudeAttr.id]: { block: altitudeAttr },
   [microhabitatAttr.id]: { block: microhabitatAttr },

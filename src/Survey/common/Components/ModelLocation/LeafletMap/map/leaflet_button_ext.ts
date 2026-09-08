@@ -1,142 +1,158 @@
 import L from 'leaflet';
 import './leaflet_button_ext.scss';
 
-/**
- * https://gist.github.com/ejh/2935327
- */
-export default L.Control.extend({
-  options: {
-    position: 'bottomleft',
-  },
-  initialize(options: any) {
-    this._button = {};
-    this.setButton(options);
+type ButtonOptions = L.ControlOptions & {
+  containerClassName?: string;
+  className?: string;
+  title?: string;
+  body?: string;
+  text?: string;
+  iconUrl?: string;
+  onClick?: (event: Event) => void;
+  hideText?: boolean;
+  maxWidth?: number;
+  doToggle?: boolean;
+  toggleStatus?: boolean;
+};
+
+type ButtonState = {
+  body: string;
+  text: string;
+  iconUrl: string;
+  hideText: boolean;
+  maxWidth: number;
+  onClick?: (event: Event) => void;
+  doToggle?: boolean;
+  toggleStatus?: boolean;
+  title?: string;
+};
+
+export default class LeafletButton extends L.Control {
+  options: ButtonOptions = { position: 'bottomleft' };
+
+  private button: ButtonState = {
+    body: '',
+    text: '',
+    iconUrl: '',
+    hideText: false,
+    maxWidth: 70,
+  };
+
+  private container?: HTMLElement;
+
+  private map?: L.Map;
+
+  constructor(options: ButtonOptions) {
+    super(options);
     this.options = { ...this.options, ...options };
-  },
+    this.setButton(options);
+  }
 
-  onAdd(map: any) {
-    this._map = map;
-    const containerClassName =
-      'leaflet-control-button ' + (this.options.containerClassName || ''); // eslint-disable-line
-    const container = L.DomUtil.create('div', containerClassName);
+  onAdd(map: L.Map) {
+    this.map = map;
+    const className = `leaflet-control-button ${
+      this.options.containerClassName || ''
+    }`;
+    this.container = L.DomUtil.create('div', className);
+    if (this.options.title) this.container.title = this.options.title;
+    this.update();
+    return this.container;
+  }
 
-    if (this.options.title) {
-      container.title = this.options.title;
-    }
-
-    this._container = container;
-
-    this._update();
-    return this._container;
-  },
-
-  onRemove() {},
-
-  setButton(options: any) {
-    const button = {
-      body: options.body, // string
-      text: options.text, // string
-      iconUrl: options.iconUrl, // string
-      onClick: options.onClick, // callback function
-      hideText: !!options.hideText, // forced bool
-      maxWidth: options.maxWidth || 70, // number
-      doToggle: options.doToggle, // bool
-      toggleStatus: options.toggleStatus, // bool
-      title: options.title ? options.title : '', // string
+  setButton(options: ButtonOptions) {
+    this.button = {
+      body: options.body || '',
+      text: options.text || '',
+      iconUrl: options.iconUrl || '',
+      onClick: options.onClick,
+      hideText: !!options.hideText,
+      maxWidth: options.maxWidth || 70,
+      doToggle: options.doToggle,
+      toggleStatus: options.toggleStatus,
+      title: options.title || '',
     };
-
-    this._button = button;
-    this._update();
-  },
+    this.update();
+  }
 
   getText() {
-    return this._button.text;
-  },
+    return this.button.text;
+  }
 
   getIconUrl() {
-    return this._button.iconUrl;
-  },
+    return this.button.iconUrl;
+  }
 
   destroy() {
-    this._button = {};
-    this._update();
-  },
+    this.button = {
+      body: '',
+      text: '',
+      iconUrl: '',
+      hideText: false,
+      maxWidth: 70,
+    };
+    this.update();
+  }
 
-  toggle(e?: any) {
-    if (typeof e === 'boolean') {
-      this._button.toggleStatus = e;
-    } else {
-      this._button.toggleStatus = !this._button.toggleStatus;
-    }
-    this._update();
-  },
+  toggle(status?: boolean) {
+    this.button.toggleStatus =
+      typeof status === 'boolean' ? status : !this.button.toggleStatus;
+    this.update();
+  }
 
-  _update() {
-    if (!this._map) {
-      return;
-    }
+  private update() {
+    if (!this.map || !this.container) return;
 
-    this._container.innerHTML = '';
-    this._makeButton(this._button);
-  },
+    this.container.innerHTML = '';
+    this.makeButton(this.button);
+  }
 
-  _makeButton(button: any) {
-    const className =
-      'leaflet-buttons-control-button ' + (this.options.className || ''); // eslint-disable-line
-    const newButton = L.DomUtil.create('div', className, this._container);
-    if (button.toggleStatus) {
-      L.DomUtil.addClass(newButton, 'leaflet-buttons-control-toggleon');
-    }
+  private makeButton(button: ButtonState) {
+    const className = `leaflet-buttons-control-button ${
+      this.options.className || ''
+    }`;
+    const element = L.DomUtil.create('div', className, this.container);
+    if (button.toggleStatus)
+      L.DomUtil.addClass(element, 'leaflet-buttons-control-toggleon');
+
     if (button.body) {
-      // MY MOD
-      newButton.innerHTML = button.body;
+      element.innerHTML = button.body;
     } else {
       const image = L.DomUtil.create(
         'img',
         'leaflet-buttons-control-img',
-        newButton
+        element
       );
       image.setAttribute('src', button.iconUrl);
 
-      if (button.text !== '') {
-        L.DomUtil.create('br', '', newButton); // there must be a better way
-
+      if (button.text) {
+        L.DomUtil.create('br', '', element);
         const span = L.DomUtil.create(
           'span',
           'leaflet-buttons-control-text',
-          newButton
+          element
         );
-        const text = document.createTextNode(button.text); // is there an L.DomUtil for this?
-        span.appendChild(text);
-        if (button.hideText) {
+        span.appendChild(document.createTextNode(button.text));
+        if (button.hideText)
           L.DomUtil.addClass(span, 'leaflet-buttons-control-text-hide');
-        }
       }
     }
 
-    L.DomEvent.addListener(newButton, 'click', L.DomEvent.stop)
-      .addListener(newButton, 'click', button.onClick, this)
-      .addListener(newButton, 'click', this._clicked, this);
-    L.DomEvent.disableClickPropagation(newButton);
-    return newButton;
-  },
+    L.DomEvent.on(element, 'click', L.DomEvent.stop)
+      .on(element, 'click', button.onClick || (() => undefined), this)
+      .on(element, 'click', this.clicked, this);
+    L.DomEvent.disableClickPropagation(element);
+    return element;
+  }
 
-  _clicked() {
-    // 'this' refers to button
-    if (this._button.doToggle) {
-      if (this._button.toggleStatus) {
-        // currently true, remove class
-        L.DomUtil.removeClass(
-          this._container.childNodes[0],
-          'leaflet-buttons-control-toggleon'
-        );
-      } else {
-        L.DomUtil.addClass(
-          this._container.childNodes[0],
-          'leaflet-buttons-control-toggleon'
-        );
-      }
-      this.toggle();
+  private clicked() {
+    if (!this.button.doToggle || !this.container?.firstElementChild) return;
+
+    const child = this.container.firstElementChild as HTMLElement;
+    if (this.button.toggleStatus) {
+      L.DomUtil.removeClass(child, 'leaflet-buttons-control-toggleon');
+    } else {
+      L.DomUtil.addClass(child, 'leaflet-buttons-control-toggleon');
     }
-  },
-} as any);
+    this.toggle();
+  }
+}
