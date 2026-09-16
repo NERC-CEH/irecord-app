@@ -4,6 +4,9 @@ export const hasCoordinates = (
   location?: Partial<Location>
 ): location is Location => isValidLocation(location as Location);
 
+export const getGridRefSystem = (gridref?: string | null) =>
+  /^[A-Z]\d/i.test(gridref || '') ? ('OSIE' as const) : ('OSGB' as const);
+
 export const printLocation = (location: Partial<Location>) => {
   if (!hasCoordinates(location)) return '';
 

@@ -69,6 +69,8 @@ const plantLocationAttr = {
   },
 } as const;
 
+const BRITISH_SREF_SYSTEM = 'OSGB';
+
 const singleRecorderValue = '7299';
 
 export const recordersCountAttr = {
@@ -307,7 +309,8 @@ const survey = {
         data: {
           surveyId: SURVEY_ID,
           inputForm: SURVEY_WEBFORM,
-          enteredSrefSystem: 'OSGB',
+          enteredSrefSystem:
+            surveySample.data.enteredSrefSystem || BRITISH_SREF_SYSTEM,
           location: {},
         },
       });
@@ -367,7 +370,7 @@ const survey = {
         surveyId: SURVEY_ID,
         inputForm: SURVEY_WEBFORM,
         date: dateFormatISO.format(new Date()),
-        enteredSrefSystem: 'OSGB',
+        enteredSrefSystem: BRITISH_SREF_SYSTEM,
         sampleMethodId: 7305,
         [recordersAttr.id]: recorders,
         [recordersCountAttr.id]: singleRecorderValue,

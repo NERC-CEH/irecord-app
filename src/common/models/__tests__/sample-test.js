@@ -9,7 +9,9 @@ import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import userModel from 'models/user';
 import defaultSurvey, { taxonGroupSurveys } from 'Survey/Default/config';
+import { updateChildrenLocations } from 'Survey/Plant/Location';
 import plantsSurvey from 'Survey/Plant/config';
+import { setModelLocation } from 'Survey/common/Components/ModelLocation';
 import { coreAttributes, systemAttrs } from 'Survey/common/config';
 
 i18n.use(initReactI18next).init({ lng: 'en' });
@@ -224,6 +226,32 @@ describe('Sample', () => {
       expect(values[`smpAttr:${systemAttrs.app_version.remote.id}`]).toEqual(
         '1'
       );
+    });
+
+    it('should submit Irish Plant grid references using OSIE', async () => {
+      const location = {
+        gridref: 'H3382',
+        latitude: 54.685,
+        longitude: -7.489,
+        accuracy: 500,
+        source: 'gridref',
+      };
+      const sample = await plantsSurvey.create({});
+      await setModelLocation(sample, location);
+
+      const subSample = await plantsSurvey.smp.create({
+        surveySample: sample,
+        taxon: validTaxon,
+      });
+      expect(subSample.data.enteredSrefSystem).toBe('OSIE');
+
+      sample.samples.push(subSample);
+      updateChildrenLocations(sample);
+
+      const submission = sample.toDTO();
+
+      expect(submission.values.entered_sref_system).toBe('OSIE');
+      expect(submission.samples[0].values.entered_sref_system).toBe('OSIE');
     });
   });
 

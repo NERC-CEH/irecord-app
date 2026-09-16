@@ -14,7 +14,7 @@ import {
 } from '@flumens';
 import config from 'common/config';
 import gridAlertService from 'common/helpers/gridAlertService';
-import { printLocation } from 'common/helpers/location';
+import { getGridRefSystem, printLocation } from 'common/helpers/location';
 import appModel from 'models/app';
 import userModel from 'models/user';
 import { coreAttributes, Survey } from 'Survey/common/config';
@@ -234,6 +234,14 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
       location.source = 'gridref';
       location.gridref = gridref;
       location.accuracy = accuracy;
+    }
+
+    const usesGridRefSystem =
+      this.data.enteredSrefSystem === 'OSGB' ||
+      this.data.enteredSrefSystem === 'OSIE';
+
+    if (usesGridRefSystem) {
+      this.data.enteredSrefSystem = getGridRefSystem(location.gridref);
     }
 
     if (!this.data.location) this.data.location = {};

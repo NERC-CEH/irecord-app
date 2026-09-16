@@ -17,10 +17,11 @@ import ModelLocation, {
  * Updates child sample locations to match the parent (survey) sample.
  * @param sample
  */
-function updateChildrenLocations(sample: Sample) {
+export function updateChildrenLocations(sample: Sample) {
   sample.samples.forEach(subSample => {
     const location = structuredClone(sample.data.location);
     Object.assign(subSample.data, {
+      enteredSrefSystem: sample.data.enteredSrefSystem,
       location: { ...subSample.data.location, ...location },
     });
   });

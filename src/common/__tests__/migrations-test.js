@@ -1,6 +1,7 @@
 import {
   getSampleTaxa,
   migrateSampleTree,
+  migratePlantGridRefSystems,
   migrateOldPlantFungiAbundanceAttrs,
 } from 'common/migrations';
 
@@ -30,6 +31,28 @@ it('preserves legacy plant abundance attributes separately', () => {
     expect(occurrence.data).toEqual({ [newKey]: newValue });
     expect(occurrence.metadata._migrated).toEqual({ [oldKey]: oldValue });
   });
+});
+
+it('sets Plant grid reference systems across the sample tree', () => {
+  const child = {
+    data: {
+      enteredSrefSystem: 'OSIE',
+      location: { gridref: 'SU1234' },
+    },
+    samples: [],
+  };
+  const sample = {
+    data: {
+      enteredSrefSystem: 'OSGB',
+      location: { gridref: 'H3382' },
+    },
+    samples: [child],
+  };
+
+  migratePlantGridRefSystems(sample);
+
+  expect(sample.data.enteredSrefSystem).toBe('OSIE');
+  expect(child.data.enteredSrefSystem).toBe('OSGB');
 });
 
 it('moves legacy sample fields across the sample tree', () => {

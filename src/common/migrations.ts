@@ -110,6 +110,7 @@ import {
 } from 'Survey/common/config';
 import config from './config';
 import VCs from './data/vice_counties.data.json';
+import { getGridRefSystem } from './helpers/location';
 import Occurrence from './models/occurrence';
 import Sample from './models/sample';
 import { db, samplesStore } from './models/store';
@@ -184,6 +185,18 @@ export const migrateSampleTree = (sample: Sample) => {
   }
 
   sample.samples.forEach(migrateSampleTree);
+};
+
+export const migratePlantGridRefSystems = (sample: Sample) => {
+  const gridref = sample.data.location?.gridref;
+
+  if (gridref) {
+    Object.assign(sample.data, {
+      enteredSrefSystem: getGridRefSystem(gridref),
+    });
+  }
+
+  sample.samples.forEach(migratePlantGridRefSystems);
 };
 
 export const getSampleTaxa = (sample: Sample) => {
@@ -488,6 +501,30 @@ const migrations: Migration[] = [
       }
 
       console.log('🔵 Migration completed successfully');
+    },
+  },
+
+  {
+    version: '6.5.2',
+    name: 'Set Plant grid reference systems',
+    up: async () => {
+      const samples = new SampleCollection<Sample>({
+        store: samplesStore,
+        Model: Sample,
+        Occurrence,
+      });
+
+      await samples.fetch();
+
+      for (const sample of samples) {
+        const isPlantSurvey = sample.data.surveyId === 325;
+        if (isPlantSurvey) {
+          migratePlantGridRefSystems(sample);
+
+          // eslint-disable-next-line no-await-in-loop
+          await sample.save();
+        }
+      }
     },
   },
 ];

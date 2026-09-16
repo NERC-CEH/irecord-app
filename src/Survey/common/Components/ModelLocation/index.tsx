@@ -21,7 +21,7 @@ import {
 import { isPlatform } from '@ionic/core';
 import { useIonViewWillLeave, type InputCustomEvent } from '@ionic/react';
 import config from 'common/config';
-import { hasCoordinates } from 'common/helpers/location';
+import { getGridRefSystem, hasCoordinates } from 'common/helpers/location';
 import locationNameIcon from 'common/images/location-name.svg';
 import appModel from 'models/app';
 import Sample, { getEmptyLocation } from 'models/sample';
@@ -53,6 +53,16 @@ export const setModelLocation = async (
     getEmptyLocation(), // overwrite core location values
     newLocation
   );
+
+  const usesGridRefSystem =
+    model.data.enteredSrefSystem === 'OSGB' ||
+    model.data.enteredSrefSystem === 'OSIE';
+
+  if (usesGridRefSystem) {
+    Object.assign(model.data, {
+      enteredSrefSystem: getGridRefSystem(newLocation.gridref),
+    });
+  }
 
   model.save();
 
