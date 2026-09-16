@@ -1,3 +1,7 @@
+## 6.5.2
+
+- Fixed Plant survey Irish grid refs.
+  
 ## 6.5.0
 
 - Updated survey forms, including Plant and bryophyte attributes.

@@ -54,7 +54,7 @@ const PlantHomeMain = ({
     <Main className="pb-ion-s-10">
       <IonList lines="full">
         {isDisabled && (
-          <div className="rounded-list mb-2">
+          <div className="rounded-list mb-4">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}
@@ -88,7 +88,7 @@ const PlantHomeMain = ({
       </IonList>
 
       {!isDisabled && (
-        <div className="mx-3 mb-4 mt-8 flex items-center justify-center gap-5">
+        <div className="mx-3 mt-8 flex items-center justify-center gap-5">
           <Button
             color="primary"
             onPress={() => navigate(`${url}/taxon`)}
@@ -109,13 +109,15 @@ const PlantHomeMain = ({
         </div>
       )}
 
-      <SpeciesList
-        sample={sample}
-        onDelete={model => onDelete(model as Sample)}
-        useSubSamples
-        bulkEditAttrs={getBulkEditAttrs}
-        numberAttrs={[abundanceAttr]}
-      />
+      <div className="mt-4">
+        <SpeciesList
+          sample={sample}
+          onDelete={model => onDelete(model as Sample)}
+          useSubSamples
+          bulkEditAttrs={getBulkEditAttrs}
+          numberAttrs={[abundanceAttr]}
+        />
+      </div>
     </Main>
   );
 };

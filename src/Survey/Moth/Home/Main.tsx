@@ -48,7 +48,7 @@ const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
     <Main className="pb-ion-s-10">
       <IonList lines="full">
         {isDisabled && (
-          <div className="rounded-list mb-2">
+          <div className="rounded-list mb-4">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}
@@ -69,7 +69,7 @@ const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
       </IonList>
 
       {!isDisabled && (
-        <div className="mx-3 mb-4 mt-8 flex items-center justify-center gap-5">
+        <div className="mx-3 mt-8 flex items-center justify-center gap-5">
           <Button
             color="primary"
             onPress={() => navigate(`${url}/taxon`)}
@@ -90,16 +90,18 @@ const MothHomeMain = ({ sample, onDelete, attachSpeciesImages }: Props) => {
         </div>
       )}
 
-      <SpeciesList
-        sample={sample}
-        onDelete={model => onDelete(model as Occurrence)}
-        bulkEditAttrs={{
-          stage: mothStageAttr,
-          sex: sexAttr,
-          comment: commentAttr,
-        }}
-        numberAttrs={[numberAttr]}
-      />
+      <div className="mt-4">
+        <SpeciesList
+          sample={sample}
+          onDelete={model => onDelete(model as Occurrence)}
+          bulkEditAttrs={{
+            stage: mothStageAttr,
+            sex: sexAttr,
+            comment: commentAttr,
+          }}
+          numberAttrs={[numberAttr]}
+        />
+      </div>
     </Main>
   );
 };

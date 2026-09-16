@@ -97,13 +97,13 @@ const EditMain = ({ sample }: Props) => {
     <Main className="pb-ion-s-10">
       <IonList lines="full" className="mb-2 flex! flex-col gap-4">
         {isDisabled && (
-          <div className="rounded-list mb-2">
+          <div className="rounded-list mb-4">
             <VerificationMessage occurrence={occ} />
           </div>
         )}
 
         {isDisabled && (
-          <div className="rounded-list mb-2">
+          <div className="rounded-list mb-4">
             <DisabledRecordMessage sample={sample} />
           </div>
         )}
