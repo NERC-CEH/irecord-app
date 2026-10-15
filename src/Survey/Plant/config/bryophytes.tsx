@@ -57,7 +57,6 @@ const survey: Partial<Survey> & { taxa: string } = {
       gemmaeAttr,
       tubersAttr,
     ],
-    skipAutoIncrement: true,
     attrs: occAttrs,
   },
 };

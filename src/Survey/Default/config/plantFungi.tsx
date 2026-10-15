@@ -1,5 +1,7 @@
 import { object } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
+import appModel from 'common/models/app';
+import Occurrence, { Data, MachineInvolvement } from 'common/models/occurrence';
 import {
   abundanceAttr,
   abundanceSchema,
@@ -52,8 +54,27 @@ const survey: Partial<Survey> & { taxa: string } = {
       altitudeAttr,
       identifiersAttr,
     ],
-    skipAutoIncrement: true,
+
     attrs: occAttrs,
+
+    async create({ images, taxon, isListSurvey }) {
+      const occurrence = new Occurrence<Data>({
+        data: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+        },
+        media: images,
+      });
+
+      const locks = appModel.locks.getAll(
+        isListSurvey ? 'list' : 'default',
+        survey.taxa
+      );
+      Object.assign(occurrence.data, locks.occ);
+
+      return occurrence;
+    },
+
     verify: values =>
       object({
         taxon: object({}, { error: 'Species is missing.' }).nullable(),

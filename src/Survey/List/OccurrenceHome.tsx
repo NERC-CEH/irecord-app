@@ -21,7 +21,7 @@ const ListOccurrenceHome = () => {
 
   const survey = sample.getSurvey();
   const subSampleSurvey = subSample.getSurvey();
-  console.log(subSampleSurvey);
+
   const [occ] = subSample.occurrences;
   if (!occ) return null;
 

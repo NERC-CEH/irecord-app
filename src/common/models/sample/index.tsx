@@ -177,21 +177,35 @@ export default class Sample<T extends Data = Data> extends SampleOriginal<
       : this.occurrences[0];
 
     const oldSurvey = this.getSurvey();
+    const oldTaxonGroup = occ.data.taxon?.group;
     const hadTaxon = !!occ.data.taxon;
 
     occ.data.taxon = structuredClone(newTaxon);
+    occ.updateMachineInvolvement(newTaxon);
 
     const newSurvey = this.getSurvey();
-    if (hadTaxon && !skipOldTaxonRemoval && oldSurvey.taxa !== newSurvey.taxa) {
+
+    if (skipOldTaxonRemoval || oldTaxonGroup === newTaxon.group) return;
+
+    const usingNewTaxaGroup = oldSurvey.taxa !== newSurvey.taxa;
+    if (hadTaxon && usingNewTaxaGroup)
       this.removeOldTaxonAttributes(occ, oldSurvey);
 
-      const surveyName = this.parent?.getSurvey().name || newSurvey.name;
+    const surveyName = this.parent?.getSurvey().name || newSurvey.name;
+
+    // Default survey defers occurrence locks until a taxon is selected.
+    const isDefaultSurvey = surveyName === 'default' || surveyName === 'list';
+    if (usingNewTaxaGroup || (!hadTaxon && isDefaultSurvey)) {
       const locks = appModel.locks.getAll(surveyName, newSurvey.taxa);
       Object.assign(this.data, locks.smp);
       Object.assign(occ.data, locks.occ);
     }
 
-    occ.updateMachineInvolvement(newTaxon);
+    const isListSurvey = surveyName === 'list';
+    Object.assign(
+      occ.data,
+      newSurvey.occ?.getDefaultValues?.({ data: occ.data, isListSurvey })
+    );
   }
 
   private removeOldTaxonAttributes(occ: Occurrence, oldSurvey: Survey) {

@@ -1,3 +1,7 @@
+## 6.5.3
+
+- Fixed List survey default abundance values.
+
 ## 6.5.2
 
 - Fixed Plant survey Irish grid refs.

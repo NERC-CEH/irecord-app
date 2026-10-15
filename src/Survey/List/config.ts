@@ -5,11 +5,15 @@ import {
   type inferAttrConfigTypes,
 } from '@flumens';
 import gridAlertService from 'common/helpers/gridAlertService';
-import Occurrence, { MachineInvolvement } from 'common/models/occurrence';
 import appModel from 'models/app';
+import Occurrence, {
+  MachineInvolvement,
+  type Data as AppOccData,
+} from 'models/occurrence';
 import Sample, { type Data as AppSampleData } from 'models/sample';
 import userModel from 'models/user';
 import defaultSurvey, { getTaxaGroupSurvey } from 'Survey/Default/config';
+import { numberAttr, numberRangesAttr } from 'Survey/Default/config/common';
 import {
   recorderAttr,
   commentAttr,
@@ -73,14 +77,7 @@ const survey = {
         },
       });
 
-      const taxonSurvey = taxon ? getTaxaGroupSurvey(taxon.group) : undefined;
-      const createOccurrence =
-        taxonSurvey?.occ?.create ?? survey.smp.occ.create;
-      const occurrence = await createOccurrence({
-        images: images!,
-        taxon,
-        isListSurvey: true,
-      });
+      const occurrence = await survey.smp.occ.create({ images, taxon });
 
       sample.occurrences.push(occurrence);
 
@@ -99,8 +96,20 @@ const survey = {
         // occ config is taxa specific
       },
 
+      getDefaultValues: ({ data }) =>
+        data.taxon &&
+        data[numberAttr.id] == null &&
+        data[numberRangesAttr.id] == null
+          ? { [numberAttr.id]: 1 }
+          : {},
+
       async create({ images, taxon }) {
-        const occurrence = new Occurrence({
+        const groupSurvey = taxon ? getTaxaGroupSurvey(taxon.group) : undefined;
+        const groupCreate = taxon ? groupSurvey?.occ?.create : undefined;
+        if (groupCreate)
+          return groupCreate({ images, taxon, isListSurvey: true });
+
+        const occurrence = new Occurrence<AppOccData>({
           data: {
             machineInvolvement: MachineInvolvement.NONE,
             taxon,
@@ -109,9 +118,15 @@ const survey = {
         });
 
         if (taxon) {
-          const taxa = getTaxaGroupSurvey(taxon.group)?.taxa || 'default';
+          const taxa = groupSurvey?.taxa || 'default';
           const locks = appModel.locks.getAll('list', taxa);
           Object.assign(occurrence.data, locks.occ);
+
+          // For a photo-first approach we don't want to default to 1
+          Object.assign(
+            occurrence.data,
+            survey.smp.occ.getDefaultValues({ data: occurrence.data })
+          );
         }
 
         return occurrence;

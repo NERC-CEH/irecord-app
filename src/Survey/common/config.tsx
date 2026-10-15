@@ -297,6 +297,13 @@ export type BlockAttrConfig = {
 export type Attrs = Record<string, AttrConfig | BlockAttrConfig>;
 
 type OccurrenceConfig = {
+  /** We mainly want to set any default occurrence data values in the create
+   * function directly, but when changing taxon groups we are re-creating the
+   * default occurrence rather than creating new one. */
+  getDefaultValues?: (props: {
+    data: Occurrence['data'];
+    isListSurvey?: boolean;
+  }) => Record<string, unknown>;
   render?: BlockT[] | ((model: Occurrence) => BlockT[]);
   attrs: Attrs;
   create?: (props: {
@@ -311,10 +318,6 @@ type OccurrenceConfig = {
     submission: SampleSubmission,
     model: Occurrence
   ) => SampleSubmission;
-  /**
-   * Set to true if multi-species surveys shouldn't auto-increment it to 1 when adding to lists.
-   */
-  skipAutoIncrement?: boolean;
 };
 
 export type SampleConfig = {

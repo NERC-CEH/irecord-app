@@ -14,6 +14,10 @@ import genderIcon from 'common/images/gender.svg';
 import numberIcon from 'common/images/number.svg';
 import progressIcon from 'common/images/progress-circles.svg';
 import appModel from 'common/models/app';
+import Occurrence, {
+  MachineInvolvement,
+  type Data,
+} from 'common/models/occurrence';
 import { LockConfig } from 'Survey/common/Components/MenuAttr/Lock/types';
 import {
   commentAttr,
@@ -238,6 +242,37 @@ const survey: Partial<Survey> & { taxa: string } = {
     ],
 
     attrs: occAttrs,
+
+    // Butterflies use a different range attribute from other animals.
+    getDefaultValues: ({ data, isListSurvey }) =>
+      isListSurvey &&
+      data[butterflyNumberAttr.id] == null &&
+      data[butterflyNumberRangesAttr.id] == null
+        ? { [butterflyNumberAttr.id]: 1 }
+        : {},
+
+    async create({ images, taxon, isListSurvey }) {
+      const occurrence = new Occurrence<Data>({
+        data: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+        },
+        media: images,
+      });
+
+      const locks = appModel.locks.getAll(
+        isListSurvey ? 'list' : 'default',
+        survey.taxa
+      );
+      Object.assign(occurrence.data, locks.occ);
+
+      Object.assign(
+        occurrence.data,
+        survey.occ?.getDefaultValues?.({ data: occurrence.data, isListSurvey })
+      );
+
+      return occurrence;
+    },
 
     verify: attrs =>
       object({

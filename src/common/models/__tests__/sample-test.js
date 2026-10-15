@@ -9,8 +9,9 @@ import Occurrence from 'models/occurrence';
 import Sample from 'models/sample';
 import userModel from 'models/user';
 import defaultSurvey, { taxonGroupSurveys } from 'Survey/Default/config';
+import mothSurvey, { numberAttr as mothNumberAttr } from 'Survey/Moth/config';
 import { updateChildrenLocations } from 'Survey/Plant/Location';
-import plantsSurvey from 'Survey/Plant/config';
+import plantsSurvey, { abundanceAttr } from 'Survey/Plant/config';
 import { setModelLocation } from 'Survey/common/Components/ModelLocation';
 import { coreAttributes, systemAttrs } from 'Survey/common/config';
 
@@ -35,6 +36,7 @@ describe('Sample', () => {
 
   afterEach(() => {
     sampleRemoteCreateStub.restore();
+    jest.restoreAllMocks();
   });
 
   it('should set training mode', async () => {
@@ -362,6 +364,46 @@ describe('Sample', () => {
   });
 
   describe('setTaxon', () => {
+    it.each([0, 5])(
+      'preserves an edited moth count of %s on first species selection',
+      count => {
+        const getLocks = jest.spyOn(appModel.locks, 'getAll').mockReturnValue({
+          smp: {},
+          occ: { [mothNumberAttr.id]: 1 },
+        });
+        const sample = new Sample({ data: { surveyId: mothSurvey.id } });
+        const occurrence = mothSurvey.occ.create({});
+        sample.occurrences.push(occurrence);
+        occurrence.data[mothNumberAttr.id] = count;
+        getLocks.mockClear();
+
+        occurrence.setTaxon({ group: taxonGroupSurveys.moths.taxaGroups[0] });
+
+        expect(getLocks).not.toHaveBeenCalled();
+        expect(occurrence.data[mothNumberAttr.id]).toBe(count);
+      }
+    );
+
+    it('preserves edited plant abundance on first species selection', async () => {
+      const getLocks = jest.spyOn(appModel.locks, 'getAll').mockReturnValue({
+        smp: {},
+        occ: { [abundanceAttr.id]: '1' },
+      });
+      const surveySample = new Sample({ data: { surveyId: plantsSurvey.id } });
+      const sample = await plantsSurvey.smp.create({ surveySample });
+      surveySample.samples.push(sample);
+      const [occurrence] = sample.occurrences;
+      occurrence.data[abundanceAttr.id] = '5';
+      getLocks.mockClear();
+
+      occurrence.setTaxon({
+        group: taxonGroupSurveys['plants-fungi'].taxaGroups[0],
+      });
+
+      expect(getLocks).not.toHaveBeenCalled();
+      expect(occurrence.data[abundanceAttr.id]).toBe('5');
+    });
+
     it('should set taxon', async () => {
       // Given
       const sample = await getDefaultSample();

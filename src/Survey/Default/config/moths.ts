@@ -1,5 +1,7 @@
 import { object, string } from 'zod';
 import { groupsReverse as groups } from 'common/data/informalGroups';
+import appModel from 'models/app';
+import Occurrence, { MachineInvolvement, type Data } from 'models/occurrence';
 import {
   commentAttr,
   identifiersAttr,
@@ -38,6 +40,36 @@ const survey: Partial<Survey> & { taxa: string } = {
     render: [numberPageAttr, mothStageAttr, sexAttr, identifiersAttr],
 
     attrs: occAttrs,
+
+    getDefaultValues: ({ data, isListSurvey }) =>
+      isListSurvey &&
+      data[numberAttr.id] == null &&
+      data[numberRangesAttr.id] == null
+        ? { [numberAttr.id]: 1 }
+        : {},
+
+    async create({ images, taxon, isListSurvey }) {
+      const occurrence = new Occurrence<Data>({
+        data: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+        },
+        media: images,
+      });
+
+      const locks = appModel.locks.getAll(
+        isListSurvey ? 'list' : 'default',
+        survey.taxa
+      );
+      Object.assign(occurrence.data, locks.occ);
+
+      Object.assign(
+        occurrence.data,
+        survey.occ?.getDefaultValues?.({ data: occurrence.data, isListSurvey })
+      );
+
+      return occurrence;
+    },
 
     verify: attrs =>
       object({

@@ -7,7 +7,10 @@ import {
 } from '@flumens';
 import userModel from 'common/models/user';
 import appModel from 'models/app';
-import Occurrence, { MachineInvolvement } from 'models/occurrence';
+import Occurrence, {
+  MachineInvolvement,
+  type Data as AppOccData,
+} from 'models/occurrence';
 import Sample from 'models/sample';
 import {
   dateAttr,
@@ -135,7 +138,7 @@ const survey = {
     },
 
     async create({ images, taxon }) {
-      const occurrence = new Occurrence({
+      const occurrence = new Occurrence<AppOccData>({
         data: {
           machineInvolvement: MachineInvolvement.NONE,
           taxon,
@@ -239,6 +242,10 @@ const survey = {
       occ: {
         ...taxaConfig.occ,
         ...subSampleConfig?.occ,
+        // A matching taxa survey might intentionally have no defaults, so don't use list default values.
+        getDefaultValues: taxaSurvey
+          ? taxaSurvey.occ?.getDefaultValues
+          : subSampleConfig?.occ?.getDefaultValues,
         attrs: {
           ...taxaConfig.occ?.attrs,
           ...subSampleConfig?.occ?.attrs,

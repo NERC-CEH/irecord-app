@@ -96,6 +96,7 @@ const SpeciesListItem = ({
 
   if (!occ) return null; // if remote deleted but left sub-sample
 
+  // Empty choice labels must not mask later abundance values or imply absence.
   const value = numberAttrs
     ?.map(attr => {
       const rawValue = occ.data[attr.id];
@@ -105,7 +106,7 @@ const SpeciesListItem = ({
     })
     .find(
       (item): item is string | number =>
-        typeof item === 'string' || typeof item === 'number'
+        (typeof item === 'string' && item !== '') || typeof item === 'number'
     );
 
   const getEditButton = () => <CheckboxOption value={model.cid} />;
