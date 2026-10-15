@@ -6,6 +6,39 @@ import {
   setRecorder,
 } from './utils';
 
+test('Species List Survey defaults animal counts and shows N/A for plants and fungi', async ({
+  homePage,
+}) => {
+  await openOtherSurvey(homePage, 'Species List Survey');
+  await homePage.getByRole('button', { name: 'Add Species' }).click();
+
+  await selectSpecies(
+    homePage,
+    'Blue Tit',
+    /^Blue TitCyanistes caeruleusbird$/
+  );
+  await selectSpecies(
+    homePage,
+    'Small Tortoiseshell',
+    /^Small TortoiseshellAglais urticae/
+  );
+  await selectSpecies(homePage, 'Daisy', /^DaisyBellis perennis/);
+  await selectSpecies(homePage, 'Fly Agaric', /^Fly AgaricAmanita muscaria/);
+  await homePage.getByRole('button', { name: 'Back' }).click();
+
+  for (const species of ['Blue Tit', 'Small Tortoiseshell']) {
+    await expect(
+      homePage.getByRole('link', { name: new RegExp(`^1 ${species}$`) })
+    ).toBeVisible();
+  }
+
+  for (const species of ['Daisy', 'Fly Agaric']) {
+    await expect(
+      homePage.getByRole('link', { name: new RegExp(`^N/A ${species}$`) })
+    ).toBeVisible();
+  }
+});
+
 test('Create a Species List Survey', async ({ homePage }) => {
   // 1. Open the Species List Survey.
   await openOtherSurvey(homePage, 'Species List Survey');

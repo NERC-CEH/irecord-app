@@ -2,6 +2,8 @@ import { object, string } from 'zod';
 import { ChoiceInputConf } from '@flumens/tailwind/dist/Survey';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import progressIcon from 'common/images/progress-circles.svg';
+import appModel from 'models/app';
+import Occurrence, { MachineInvolvement, type Data } from 'models/occurrence';
 import {
   commentAttr,
   identifiersAttr,
@@ -134,6 +136,33 @@ const survey: Partial<Survey> & { taxa: string } = {
     render: [numberPageAttr, arthropodStageAttr, sexAttr, identifiersAttr],
 
     attrs: occAttrs,
+
+    async create({ images, taxon, isListSurvey }) {
+      const occurrence = new Occurrence<Data>({
+        data: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+        },
+        media: images,
+      });
+
+      const locks = appModel.locks.getAll(
+        isListSurvey ? 'list' : 'default',
+        survey.taxa
+      );
+      Object.assign(occurrence.data, locks.occ);
+
+      // Preserve locked counts (including zero) and ranges.
+      if (
+        isListSurvey &&
+        occurrence.data[numberAttr.id] == null &&
+        occurrence.data[numberRangesAttr.id] == null
+      ) {
+        occurrence.data[numberAttr.id] = 1;
+      }
+
+      return occurrence;
+    },
 
     verify: attrs =>
       object({

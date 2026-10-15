@@ -156,12 +156,11 @@ const survey: Partial<Survey> & { taxa: string } = {
     attrs: occAttrs,
 
     async create({ images, taxon, isListSurvey }) {
-      const data: Data = {
-        machineInvolvement: MachineInvolvement.NONE,
-        taxon,
-      };
-      const occurrence = new Occurrence({
-        data,
+      const occurrence = new Occurrence<OccData>({
+        data: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+        },
         media: images,
       });
 
@@ -171,13 +170,15 @@ const survey: Partial<Survey> & { taxa: string } = {
       );
       Object.assign(occurrence.data, locks.occ);
 
+      // Preserve locked counts (including zero) and ranges.
       if (
         isListSurvey &&
-        !occurrence.data[numberAttr.id] &&
-        !occurrence.data[numberRangesAttr.id]
+        occurrence.data[numberAttr.id] == null &&
+        occurrence.data[numberRangesAttr.id] == null
       ) {
         occurrence.data[numberAttr.id] = 1;
       }
+
       return occurrence;
     },
   },

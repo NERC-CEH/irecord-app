@@ -311,10 +311,6 @@ type OccurrenceConfig = {
     submission: SampleSubmission,
     model: Occurrence
   ) => SampleSubmission;
-  /**
-   * Set to true if multi-species surveys shouldn't auto-increment it to 1 when adding to lists.
-   */
-  skipAutoIncrement?: boolean;
 };
 
 export type SampleConfig = {

@@ -7,7 +7,10 @@ import {
 } from '@flumens';
 import userModel from 'common/models/user';
 import appModel from 'models/app';
-import Occurrence, { MachineInvolvement } from 'models/occurrence';
+import Occurrence, {
+  MachineInvolvement,
+  type Data as AppOccData,
+} from 'models/occurrence';
 import Sample from 'models/sample';
 import {
   dateAttr,
@@ -135,7 +138,7 @@ const survey = {
     },
 
     async create({ images, taxon }) {
-      const occurrence = new Occurrence({
+      const occurrence = new Occurrence<AppOccData>({
         data: {
           machineInvolvement: MachineInvolvement.NONE,
           taxon,

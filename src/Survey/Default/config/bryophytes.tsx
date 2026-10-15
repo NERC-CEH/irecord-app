@@ -8,6 +8,8 @@ import { IonIcon } from '@ionic/react';
 import { groupsReverse as groups } from 'common/data/informalGroups';
 import genderIcon from 'common/images/gender.svg';
 import landIcon from 'common/images/land.svg';
+import appModel from 'common/models/app';
+import Occurrence, { Data, MachineInvolvement } from 'common/models/occurrence';
 import { altitudeAttr } from 'Survey/Plant/config/common';
 import {
   commentAttr,
@@ -157,9 +159,25 @@ const survey: Partial<Survey> & { taxa: string } = {
       tubersAttr,
     ],
 
-    skipAutoIncrement: true,
-
     attrs: occAttrs,
+
+    async create({ images, taxon, isListSurvey }) {
+      const occurrence = new Occurrence<Data>({
+        data: {
+          machineInvolvement: MachineInvolvement.NONE,
+          taxon,
+        },
+        media: images,
+      });
+
+      const locks = appModel.locks.getAll(
+        isListSurvey ? 'list' : 'default',
+        survey.taxa
+      );
+      Object.assign(occurrence.data, locks.occ);
+
+      return occurrence;
+    },
   },
 };
 
