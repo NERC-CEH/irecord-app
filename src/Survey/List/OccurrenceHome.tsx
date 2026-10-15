@@ -25,6 +25,8 @@ const ListOccurrenceHome = () => {
   const [occ] = subSample.occurrences;
   if (!occ) return null;
 
+  const hasTaxon = !!occ.data.taxon;
+
   const sampleRender =
     typeof subSampleSurvey.render === 'function'
       ? subSampleSurvey.render(subSample)
@@ -54,25 +56,27 @@ const ListOccurrenceHome = () => {
             <MenuTaxonItem occ={occ} />
             <MenuLocation sample={subSample} skipName isRequired={false} />
 
-            {sampleRender?.map(attr => (
-              <MenuDynamicAttr
-                key={attr.id}
-                model={subSample}
-                block={attr}
-                survey={survey.name}
-                taxa={subSampleSurvey.taxa}
-              />
-            ))}
-            {occurrenceRender?.map(attr => (
-              <MenuDynamicAttr
-                key={attr.id}
-                model={occ}
-                block={attr}
-                useSeparateOccPage
-                survey={survey.name}
-                taxa={subSampleSurvey.taxa}
-              />
-            ))}
+            {hasTaxon &&
+              sampleRender?.map(attr => (
+                <MenuDynamicAttr
+                  key={attr.id}
+                  model={subSample}
+                  block={attr}
+                  survey={survey.name}
+                  taxa={subSampleSurvey.taxa}
+                />
+              ))}
+            {hasTaxon &&
+              occurrenceRender?.map(attr => (
+                <MenuDynamicAttr
+                  key={attr.id}
+                  model={occ}
+                  block={attr}
+                  useSeparateOccPage
+                  survey={survey.name}
+                  taxa={subSampleSurvey.taxa}
+                />
+              ))}
             <MenuAttr.WithLock
               model={occ}
               block={defaultSensitivityPrecisionAttr}

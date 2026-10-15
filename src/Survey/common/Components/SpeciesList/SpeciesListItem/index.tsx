@@ -122,7 +122,7 @@ const SpeciesListItem = ({
         onClick={increaseCountWrap}
         onLongClick={increase5xCountWrap}
         value={value}
-        disabled={isDisabled}
+        disabled={isDisabled || !occ.data.taxon}
       />
     );
   };

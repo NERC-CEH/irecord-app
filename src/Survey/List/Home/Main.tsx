@@ -4,6 +4,7 @@ import { camera, searchOutline } from 'ionicons/icons';
 import { useRouteMatch } from 'react-router';
 import { Button, InfoMessage, Main } from '@flumens';
 import { IonIcon, IonList, NavContext } from '@ionic/react';
+import Occurrence from 'common/models/occurrence';
 import Sample from 'models/sample';
 import { butterflyNumberRangesAttr } from 'Survey/Default/config/butterflies';
 import { numberAttr, numberRangesAttr } from 'Survey/Default/config/common';
@@ -33,15 +34,17 @@ const getActionConfig = (attrs: Attrs, action: string) => {
   );
 };
 
-type BulkEditModel = {
-  getSurvey: () => { taxa?: string; occ?: { attrs?: Attrs } };
-};
+export const getBulkEditAttrs = (models: (Sample | Occurrence)[]) => {
+  const defaultAttrs = { comment: commentAttr };
+  const selectedModelWithoutTaxa = models.some(
+    model => !(model as Sample).occurrences[0]?.data.taxon
+  );
+  if (selectedModelWithoutTaxa) return defaultAttrs;
 
-export const getBulkEditAttrs = (models: BulkEditModel[]) => {
   const surveys = models.map(model => model.getSurvey());
   const [survey] = surveys;
   if (!survey || surveys.some(config => config.taxa !== survey.taxa))
-    return { comment: commentAttr };
+    return defaultAttrs;
 
   const attrs = survey.occ?.attrs || {};
   const stage = getActionConfig(attrs, 'stage');
@@ -50,7 +53,7 @@ export const getBulkEditAttrs = (models: BulkEditModel[]) => {
   return {
     ...(stage && { stage }),
     ...(sex && { sex }),
-    comment: commentAttr,
+    ...defaultAttrs,
   };
 };
 

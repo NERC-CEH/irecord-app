@@ -80,6 +80,8 @@ const EditMain = ({ sample }: Props) => {
   const [occ] = sample.occurrences;
   if (!occ) return null;
 
+  const hasTaxon = !!occ.data.taxon;
+
   const sampleRender =
     typeof surveyConfig.render === 'function'
       ? surveyConfig.render(sample)
@@ -144,25 +146,27 @@ const EditMain = ({ sample }: Props) => {
             taxa="all"
           />
 
-          {sampleRender?.map(attr => (
-            <MenuDynamicAttr
-              key={attr.id}
-              model={sample}
-              block={attr}
-              survey={survey.name}
-              taxa={survey.taxa}
-            />
-          ))}
-          {occurrenceRender?.map(attr => (
-            <MenuDynamicAttr
-              key={attr.id}
-              model={occ}
-              block={attr}
-              useSeparateOccPage
-              survey={survey.name}
-              taxa={survey.taxa}
-            />
-          ))}
+          {hasTaxon &&
+            sampleRender?.map(attr => (
+              <MenuDynamicAttr
+                key={attr.id}
+                model={sample}
+                block={attr}
+                survey={survey.name}
+                taxa={survey.taxa}
+              />
+            ))}
+          {hasTaxon &&
+            occurrenceRender?.map(attr => (
+              <MenuDynamicAttr
+                key={attr.id}
+                model={occ}
+                block={attr}
+                useSeparateOccPage
+                survey={survey.name}
+                taxa={survey.taxa}
+              />
+            ))}
           <MenuAttr.WithLock
             model={occ}
             block={defaultSensitivityPrecisionAttr}
