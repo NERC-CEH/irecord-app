@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
-import { IonSpinner, IonModal } from '@ionic/react';
+import { IonSpinner, useIonModal } from '@ionic/react';
 import { Button } from 'common/flumens';
 import Occurrence, { ClassifierSuggestion } from 'common/models/occurrence';
 import ProbabilityBadge from 'Survey/common/Components/ProbabilityBadge';
@@ -21,32 +21,8 @@ const SpeciesSuggestions = ({
   identifySpecies,
   onSpeciesSelect,
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const onOpen = () => setIsOpen(true);
-  const onClose = () => setIsOpen(false);
-
   const identifierWasNotUsed = !occurrence.data?.classifier;
   const speciesList = occurrence.data?.classifier?.suggestions;
-
-  if (occurrence.isIdentifying) {
-    return (
-      <div className="flex items-center justify-center gap-3 rounded-md border border-white bg-black/70 p-3 text-white">
-        <T>Identifying...</T> <IonSpinner color="light" className="size-5" />
-      </div>
-    );
-  }
-
-  if (identifierWasNotUsed && !occurrence.isDisabled) {
-    return (
-      <Button
-        className="shrink-0 bg-black/70 text-white"
-        onPress={() => identifySpecies?.(true)}
-        fill="outline"
-      >
-        Get species suggestions
-      </Button>
-    );
-  }
 
   const getSuggestions = () => {
     const identifierFoundNoSpecies = !speciesList?.length;
@@ -83,7 +59,8 @@ const SpeciesSuggestions = ({
           <Button
             className="shrink-0 px-3 py-2 text-sm"
             onPress={() => {
-              setIsOpen(false);
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              dismissSuggestions();
               onSpeciesSelect(suggestion);
             }}
             fill="outline"
@@ -117,30 +94,48 @@ const SpeciesSuggestions = ({
     );
   };
 
-  return (
-    <>
-      <Button
-        className="shrink-0 bg-black/70 pl-3 text-white"
-        onPress={onOpen}
-        fill="outline"
-        prefix={<ClassificationStatus occurrence={occurrence} />}
-      >
-        Suggestions
-      </Button>
+  const [presentSuggestions, dismissSuggestions] = useIonModal(getSuggestions);
+  useEffect(() => dismissSuggestions, []);
 
-      <IonModal
-        isOpen={isOpen}
-        backdropDismiss={false}
-        backdropBreakpoint={0.5}
-        breakpoints={SNAP_POSITIONS}
-        initialBreakpoint={DEFAULT_SNAP_POSITION}
-        canDismiss
-        onIonModalWillDismiss={onClose}
-        className="[&::part(handle)]:mt-2"
+  if (occurrence.isIdentifying) {
+    return (
+      <div className="flex items-center justify-center gap-3 rounded-md border border-white bg-black/70 p-3 text-white">
+        <T>Identifying...</T> <IonSpinner color="light" className="size-5" />
+      </div>
+    );
+  }
+
+  if (identifierWasNotUsed && !occurrence.isDisabled) {
+    return (
+      <Button
+        className="shrink-0 bg-black/70 text-white"
+        onPress={() => identifySpecies?.(true)}
+        fill="outline"
       >
-        {getSuggestions()}
-      </IonModal>
-    </>
+        Get species suggestions
+      </Button>
+    );
+  }
+
+  const onOpen = () =>
+    presentSuggestions({
+      backdropDismiss: false,
+      backdropBreakpoint: 0.5,
+      breakpoints: SNAP_POSITIONS,
+      initialBreakpoint: DEFAULT_SNAP_POSITION,
+      canDismiss: true,
+      cssClass: '[&::part(handle)]:mt-2',
+    });
+
+  return (
+    <Button
+      className="shrink-0 bg-black/70 pl-3 text-white"
+      onPress={onOpen}
+      fill="outline"
+      prefix={<ClassificationStatus occurrence={occurrence} />}
+    >
+      Suggestions
+    </Button>
   );
 };
 

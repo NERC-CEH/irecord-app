@@ -1,6 +1,7 @@
 ## 6.5.3
 
 - Fixed List survey default abundance values.
+- Bug fixes.
 
 ## 6.5.2
 
